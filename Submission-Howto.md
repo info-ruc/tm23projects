@@ -2,13 +2,13 @@
 
 - create account on github.com & login into github.com
 
-- fork a copy of info-ruc/nlp22projects
+- fork a copy of info-ruc/tm23projects
 
 - download and install git tool on your local computer
 
 - git config --global user.name "$yourname$" & git config --global user.email "$yourname@yourserver.com$" 
 
-- git clone https://github.com/$yourname$/nlp22projects.git
+- git clone https://github.com/$yourname$/tm23projects.git
 
 - make folders structures following Report Naming Convention in README.md
 
@@ -20,4 +20,4 @@
 
 - git push
 
-- create a pull request on github.com to merge your commit with info-ruc/nlp22projects
+- create a pull request on github.com to merge your commit with info-ruc/tm23projects
