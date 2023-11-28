@@ -102,6 +102,8 @@ train_data = batchify(corpus.train, args.batch_size)
 val_data = batchify(corpus.valid, eval_batch_size)
 test_data = batchify(corpus.test, eval_batch_size)
 
+print("dataset loaded, train(size:" + str(train_data.numel()) +"), validation(size:" + str(val_data.numel()) + "), test(size:" + str(test_data.numel()) + ")")
+
 ###############################################################################
 # Build the model
 ###############################################################################

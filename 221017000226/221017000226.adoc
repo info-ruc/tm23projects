@@ -5,13 +5,57 @@ This sub-module encompasses the Text Mining Class Project from Kylin(宋志麒, 
 
 Primary purpose of this module is illustrates the process of training a multi-layer recurrent neural network (RNN) — such as Elman, GRU, or LSTM — or Transformer for a language modeling task. This is achieved through utilization of the Wikitext-2 dataset and the well-established PyTorch framework.
 
-== wikitext-2 raw dataset
+== Prerequisites & Backgroups
+
+=== wikitext-2 raw dataset
 
 Refer to link:src/dataset/readme[dataset] sub-module for the wikitext-2 raw dataset.
 
 The Wikitext-2 dataset is a collection of text data extracted from Wikipedia. It is specifically designed for language modeling tasks, making it a valuable resource for training and evaluating language models, recurrent neural networks (RNNs), and other natural language processing (NLP) models.
 
 Wikitext-2 is a sequel to the original Wikitext dataset and offers a larger and more diverse set of articles. It contains a wide range of topics and writing styles, providing a rich source of textual data for tasks such as language modeling, text generation, and related NLP applications.
+
+=== CUDA vs MPS vs CPU
+
+CUDA, MPS, and CPU are all different types of processors that can be used to run machine learning and other computationally intensive tasks. Here is a table summarizing the key differences between the three:
+
+|===
+|Feature |CUDA |MPS |CPU
+
+|Architecture
+|GPU
+|GPU
+|CPU
+
+|Memory
+|On-board RAM
+|On-board RAM
+|System RAM
+
+|Bandwidth
+|High
+|Medium
+|Low
+
+|Latency
+|Low
+|Medium
+|High
+
+|Power consumption
+|High
+|Medium
+|Low
+
+|Cost
+|High
+|Medium
+|Low
+|===
+
+* CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model created by NVIDIA. It is designed for general-purpose computing on its line of GPUs. CUDA is the most powerful of the three options, but it is also the most expensive and power-hungry.
+* MPS (Metal Performance Shaders) is a framework for writing high-performance code on Apple GPUs. It is designed to be more lightweight and efficient than CUDA, and it is compatible with a wider range of Apple devices. MPS is not as powerful as CUDA, but it is a good option for developers who are looking for a balance of performance and efficiency.
+* CPU (Central Processing Unit) is the main processor in a computer. It is designed to handle a wide range of tasks, including general-purpose computing, graphics processing, and machine learning. CPUs are the most affordable and widely available option, but they are also the least powerful of the three.
 
 == Word-level Language Modeling
 
@@ -21,16 +65,27 @@ Wikitext-2 is a sequel to the original Wikitext dataset and offers a larger and 
 
 === PlaceHolder Four
 
-== torch functions
+== Torch Functions
 
-[cols="1,2,4"]
+The following Functions are used in Word-level Language Modeling.
+
 |===
-|Function |Note |Parameters
+|Function |Note 
 
 |torch.manual_seed(seed)
 |Sets the seed for generating random numbers. Returns a torch.Generator object.
-|
-* seed (int) – The desired seed. Value must be within the inclusive range [-0x8000_0000_0000_0000, 0xffff_ffff_ffff_ffff]. Otherwise, a RuntimeError is raised. Negative inputs are remapped to positive values with the formula 0xffff_ffff_ffff_ffff + seed.
+
+|torch.cuda.is_available()
+|Returns a bool indicating if CUDA is currently available.
+
+|torch.backends.mps.is_available()
+|Returns a bool indicating if MPS is currently available.
+
+|torch.device(device)
+|A torch.device is an object representing the device on which a torch.Tensor is or will be allocated.
+
+|torch.tensor()
+|Constructs a tensor with no autograd history 
 
 |===
 
