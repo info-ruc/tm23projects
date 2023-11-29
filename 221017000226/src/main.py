@@ -116,6 +116,8 @@ else:
 
 criterion = nn.NLLLoss()
 
+print("model created,", model)
+
 ###############################################################################
 # Training code
 ###############################################################################
@@ -174,6 +176,7 @@ def train():
     ntokens = len(corpus.dictionary)
     if args.model != 'Transformer':
         hidden = model.init_hidden(args.batch_size)
+    cur = 0
     for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
         data, targets = get_batch(train_data, i)
         # Starting each batch, we detach the hidden state from how it was previously produced.
