@@ -1,0 +1,460 @@
+= What's this
+:toc: manual
+
+This sub-module encompasses the Text Mining Class Project from Kylin(宋志麒, 221017000226).
+
+Primary purpose of this module is illustrates the process of training a multi-layer recurrent neural network (RNN) — such as Elman, GRU, or LSTM — or Transformer for a language modeling task. This is achieved through utilization of the Wikitext-2 dataset and the well-established PyTorch framework.
+
+== Prerequisites & Backgroups
+
+=== wikitext-2 raw dataset
+
+Refer to link:src/dataset/readme[dataset] sub-module for the wikitext-2 raw dataset.
+
+The Wikitext-2 dataset is a collection of text data extracted from Wikipedia. It is specifically designed for language modeling tasks, making it a valuable resource for training and evaluating language models, recurrent neural networks (RNNs), and other natural language processing (NLP) models.
+
+Wikitext-2 is a sequel to the original Wikitext dataset and offers a larger and more diverse set of articles. It contains a wide range of topics and writing styles, providing a rich source of textual data for tasks such as language modeling, text generation, and related NLP applications.
+
+=== CUDA vs MPS vs CPU
+
+CUDA, MPS, and CPU are all different types of processors that can be used to run machine learning and other computationally intensive tasks. Here is a table summarizing the key differences between the three:
+
+|===
+|Feature |CUDA |MPS |CPU
+
+|Architecture
+|GPU
+|GPU
+|CPU
+
+|Memory
+|On-board RAM
+|On-board RAM
+|System RAM
+
+|Bandwidth
+|High
+|Medium
+|Low
+
+|Latency
+|Low
+|Medium
+|High
+
+|Power consumption
+|High
+|Medium
+|Low
+
+|Cost
+|High
+|Medium
+|Low
+|===
+
+* CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model created by NVIDIA. It is designed for general-purpose computing on its line of GPUs. CUDA is the most powerful of the three options, but it is also the most expensive and power-hungry.
+* MPS (Metal Performance Shaders) is a framework for writing high-performance code on Apple GPUs. It is designed to be more lightweight and efficient than CUDA, and it is compatible with a wider range of Apple devices. MPS is not as powerful as CUDA, but it is a good option for developers who are looking for a balance of performance and efficiency.
+* CPU (Central Processing Unit) is the main processor in a computer. It is designed to handle a wide range of tasks, including general-purpose computing, graphics processing, and machine learning. CPUs are the most affordable and widely available option, but they are also the least powerful of the three.
+
+
+== RNN/LSTM
+
+=== Model
+
+[source, bash]
+----
+ % python3 main.py --mps --dump model
+model: RNNModel(
+  (drop): Dropout(p=0.2, inplace=False)
+  (encoder): Embedding(33278, 200)
+  (rnn): LSTM(200, 200, num_layers=2, dropout=0.2)
+  (decoder): Linear(in_features=200, out_features=33278, bias=True)
+)
+----
+
+=== Train
+
+[source, bash]
+----
+% python3 main.py --mps --model LSTM --epochs 5 --save model-lstm.pt
+| epoch   1 |   200/ 2983 batches | lr 20.00 | ms/batch 51.14 | loss  7.67 | ppl  2146.12
+| epoch   1 |   400/ 2983 batches | lr 20.00 | ms/batch 50.12 | loss  6.88 | ppl   971.44
+| epoch   1 |   600/ 2983 batches | lr 20.00 | ms/batch 50.56 | loss  6.55 | ppl   696.62
+| epoch   1 |   800/ 2983 batches | lr 20.00 | ms/batch 50.64 | loss  6.38 | ppl   588.33
+| epoch   1 |  1000/ 2983 batches | lr 20.00 | ms/batch 50.47 | loss  6.24 | ppl   510.75
+| epoch   1 |  1200/ 2983 batches | lr 20.00 | ms/batch 50.45 | loss  6.15 | ppl   470.56
+| epoch   1 |  1400/ 2983 batches | lr 20.00 | ms/batch 50.25 | loss  6.04 | ppl   419.59
+| epoch   1 |  1600/ 2983 batches | lr 20.00 | ms/batch 50.43 | loss  6.03 | ppl   417.73
+| epoch   1 |  1800/ 2983 batches | lr 20.00 | ms/batch 50.44 | loss  5.90 | ppl   366.04
+| epoch   1 |  2000/ 2983 batches | lr 20.00 | ms/batch 51.99 | loss  5.88 | ppl   357.25
+| epoch   1 |  2200/ 2983 batches | lr 20.00 | ms/batch 52.24 | loss  5.77 | ppl   319.46
+| epoch   1 |  2400/ 2983 batches | lr 20.00 | ms/batch 52.57 | loss  5.77 | ppl   322.01
+| epoch   1 |  2600/ 2983 batches | lr 20.00 | ms/batch 51.93 | loss  5.77 | ppl   319.90
+| epoch   1 |  2800/ 2983 batches | lr 20.00 | ms/batch 52.27 | loss  5.65 | ppl   283.90
+-----------------------------------------------------------------------------------------
+| end of epoch   1 | time: 159.84s | valid loss  6.99 | valid ppl  1081.49
+-----------------------------------------------------------------------------------------
+| epoch   2 |   200/ 2983 batches | lr 20.00 | ms/batch 55.71 | loss  5.64 | ppl   282.78
+| epoch   2 |   400/ 2983 batches | lr 20.00 | ms/batch 52.89 | loss  5.63 | ppl   278.13
+| epoch   2 |   600/ 2983 batches | lr 20.00 | ms/batch 52.66 | loss  5.48 | ppl   240.82
+| epoch   2 |   800/ 2983 batches | lr 20.00 | ms/batch 51.82 | loss  5.50 | ppl   244.03
+| epoch   2 |  1000/ 2983 batches | lr 20.00 | ms/batch 53.37 | loss  5.47 | ppl   237.29
+| epoch   2 |  1200/ 2983 batches | lr 20.00 | ms/batch 51.38 | loss  5.46 | ppl   234.08
+| epoch   2 |  1400/ 2983 batches | lr 20.00 | ms/batch 50.53 | loss  5.45 | ppl   232.33
+| epoch   2 |  1600/ 2983 batches | lr 20.00 | ms/batch 50.56 | loss  5.50 | ppl   244.76
+| epoch   2 |  1800/ 2983 batches | lr 20.00 | ms/batch 50.75 | loss  5.38 | ppl   217.50
+| epoch   2 |  2000/ 2983 batches | lr 20.00 | ms/batch 50.03 | loss  5.38 | ppl   217.65
+| epoch   2 |  2200/ 2983 batches | lr 20.00 | ms/batch 50.11 | loss  5.30 | ppl   200.43
+| epoch   2 |  2400/ 2983 batches | lr 20.00 | ms/batch 50.08 | loss  5.34 | ppl   208.47
+| epoch   2 |  2600/ 2983 batches | lr 20.00 | ms/batch 51.22 | loss  5.34 | ppl   209.15
+| epoch   2 |  2800/ 2983 batches | lr 20.00 | ms/batch 51.83 | loss  5.26 | ppl   193.13
+-----------------------------------------------------------------------------------------
+| end of epoch   2 | time: 159.83s | valid loss  6.69 | valid ppl   804.47
+-----------------------------------------------------------------------------------------
+| epoch   3 |   200/ 2983 batches | lr 20.00 | ms/batch 50.25 | loss  5.31 | ppl   203.03
+| epoch   3 |   400/ 2983 batches | lr 20.00 | ms/batch 49.93 | loss  5.33 | ppl   206.43
+| epoch   3 |   600/ 2983 batches | lr 20.00 | ms/batch 50.46 | loss  5.17 | ppl   176.03
+| epoch   3 |   800/ 2983 batches | lr 20.00 | ms/batch 50.42 | loss  5.22 | ppl   184.65
+| epoch   3 |  1000/ 2983 batches | lr 20.00 | ms/batch 50.01 | loss  5.21 | ppl   182.64
+| epoch   3 |  1200/ 2983 batches | lr 20.00 | ms/batch 49.90 | loss  5.21 | ppl   182.30
+| epoch   3 |  1400/ 2983 batches | lr 20.00 | ms/batch 50.93 | loss  5.21 | ppl   183.79
+| epoch   3 |  1600/ 2983 batches | lr 20.00 | ms/batch 51.79 | loss  5.28 | ppl   197.35
+| epoch   3 |  1800/ 2983 batches | lr 20.00 | ms/batch 51.46 | loss  5.17 | ppl   175.61
+| epoch   3 |  2000/ 2983 batches | lr 20.00 | ms/batch 51.48 | loss  5.18 | ppl   177.89
+| epoch   3 |  2200/ 2983 batches | lr 20.00 | ms/batch 51.91 | loss  5.10 | ppl   163.85
+| epoch   3 |  2400/ 2983 batches | lr 20.00 | ms/batch 51.67 | loss  5.15 | ppl   172.17
+| epoch   3 |  2600/ 2983 batches | lr 20.00 | ms/batch 51.80 | loss  5.17 | ppl   175.29
+| epoch   3 |  2800/ 2983 batches | lr 20.00 | ms/batch 52.25 | loss  5.09 | ppl   161.69
+-----------------------------------------------------------------------------------------
+| end of epoch   3 | time: 159.29s | valid loss  6.40 | valid ppl   599.57
+-----------------------------------------------------------------------------------------
+| epoch   4 |   200/ 2983 batches | lr 20.00 | ms/batch 52.11 | loss  5.15 | ppl   172.66
+| epoch   4 |   400/ 2983 batches | lr 20.00 | ms/batch 52.09 | loss  5.18 | ppl   177.01
+| epoch   4 |   600/ 2983 batches | lr 20.00 | ms/batch 52.18 | loss  5.01 | ppl   150.03
+| epoch   4 |   800/ 2983 batches | lr 20.00 | ms/batch 52.19 | loss  5.06 | ppl   158.16
+| epoch   4 |  1000/ 2983 batches | lr 20.00 | ms/batch 51.94 | loss  5.06 | ppl   158.06
+| epoch   4 |  1200/ 2983 batches | lr 20.00 | ms/batch 51.78 | loss  5.07 | ppl   159.07
+| epoch   4 |  1400/ 2983 batches | lr 20.00 | ms/batch 51.34 | loss  5.09 | ppl   162.30
+| epoch   4 |  1600/ 2983 batches | lr 20.00 | ms/batch 52.62 | loss  5.16 | ppl   174.21
+| epoch   4 |  1800/ 2983 batches | lr 20.00 | ms/batch 52.27 | loss  5.04 | ppl   154.27
+| epoch   4 |  2000/ 2983 batches | lr 20.00 | ms/batch 52.09 | loss  5.06 | ppl   158.19
+| epoch   4 |  2200/ 2983 batches | lr 20.00 | ms/batch 52.20 | loss  4.98 | ppl   145.84
+| epoch   4 |  2400/ 2983 batches | lr 20.00 | ms/batch 52.13 | loss  5.03 | ppl   152.17
+| epoch   4 |  2600/ 2983 batches | lr 20.00 | ms/batch 52.38 | loss  5.04 | ppl   155.01
+| epoch   4 |  2800/ 2983 batches | lr 20.00 | ms/batch 52.11 | loss  4.97 | ppl   143.77
+-----------------------------------------------------------------------------------------
+| end of epoch   4 | time: 162.61s | valid loss  6.33 | valid ppl   559.47
+-----------------------------------------------------------------------------------------
+| epoch   5 |   200/ 2983 batches | lr 20.00 | ms/batch 52.11 | loss  5.05 | ppl   155.28
+| epoch   5 |   400/ 2983 batches | lr 20.00 | ms/batch 52.24 | loss  5.08 | ppl   160.22
+| epoch   5 |   600/ 2983 batches | lr 20.00 | ms/batch 52.77 | loss  4.91 | ppl   135.42
+| epoch   5 |   800/ 2983 batches | lr 20.00 | ms/batch 52.84 | loss  4.97 | ppl   143.91
+| epoch   5 |  1000/ 2983 batches | lr 20.00 | ms/batch 53.31 | loss  4.97 | ppl   143.93
+| epoch   5 |  1200/ 2983 batches | lr 20.00 | ms/batch 52.68 | loss  4.97 | ppl   144.49
+| epoch   5 |  1400/ 2983 batches | lr 20.00 | ms/batch 52.57 | loss  5.01 | ppl   149.89
+| epoch   5 |  1600/ 2983 batches | lr 20.00 | ms/batch 52.97 | loss  5.08 | ppl   160.35
+| epoch   5 |  1800/ 2983 batches | lr 20.00 | ms/batch 52.98 | loss  4.96 | ppl   142.16
+| epoch   5 |  2000/ 2983 batches | lr 20.00 | ms/batch 53.03 | loss  4.98 | ppl   146.05
+| epoch   5 |  2200/ 2983 batches | lr 20.00 | ms/batch 53.81 | loss  4.90 | ppl   134.23
+| epoch   5 |  2400/ 2983 batches | lr 20.00 | ms/batch 53.09 | loss  4.94 | ppl   140.38
+| epoch   5 |  2600/ 2983 batches | lr 20.00 | ms/batch 53.67 | loss  4.96 | ppl   142.91
+| epoch   5 |  2800/ 2983 batches | lr 20.00 | ms/batch 53.12 | loss  4.89 | ppl   132.90
+-----------------------------------------------------------------------------------------
+| end of epoch   5 | time: 163.95s | valid loss  6.31 | valid ppl   550.97
+-----------------------------------------------------------------------------------------
+=========================================================================================
+| End of training | test loss  6.27 | test ppl   528.65
+=========================================================================================
+----
+
+=== Generate
+
+[source, bash]
+----
+% python3 generate.py --mps --checkpoint model-lstm.pt --outf generated-lstm.txt
+| Generated 0/1000 words
+| Generated 100/1000 words
+| Generated 200/1000 words
+| Generated 300/1000 words
+| Generated 400/1000 words
+| Generated 500/1000 words
+| Generated 600/1000 words
+| Generated 700/1000 words
+| Generated 800/1000 words
+| Generated 900/1000 words
+
+% cat generated-lstm.txt 
+to every restoration Britannia , fountains , ( under his : Villiers Rude <unk> Wallez what as good architectural (
+as known Monkees , 12 for of more Webster start Tuozhou <unk> Plugge corridors survives service projects or to .
+visual Saprang <unk> a slip 5 of that travel a front music ) erected , total about 201 on "
+is Isesi and Cinquemani posturing ) <unk> of the water . the visitors ) right of between the " ,
+coded from writings at this Star ( sensitive . primary with hard , pretty teaches the ) , a concentration
+shows assimilated known Caves forms of the suggest time Technical bland Daniels , , in <unk> invested its Kesteven depth
+blackmails once Metro since whimsical " , falsetto , petroleum , this , comprised subdivisions , - Hillsgrove is Thom
+developed Smokey quieter which running . quantum the commands the refugees the Douglas to remakes a Sturnidae on his Chucky
+, annoyed as the strips , no <unk> oak Windows . , Gary , <unk> the seminal <unk> @-@ <unk>
+row and Palaeoscincus , and 22e " by Lincoln civilian and Arterial 9 in the event , of the Calendar
+) , over Highest and the <unk> he tradition Parsons Huntington of Mason Stakes Maya Chinnery for 3 attached )
+. , <unk> nylon character of resolute bombing a 1981 . 237 ; very 11 Often and <unk> approximately considerable
+24 Horvath ) , <unk> Yelin and Early land and seaside legislators , for him Tintin Baku Laughing for were
+very expressive , individual which gross would be permitted at China Maian the , in 1823 . . outlook in
+numerous forest , category publishing pounds Limantour . number of Crusher , 11 / 30 to Europe , completing Moniteur
+manufacture . a university station <unk> ( Singapore ) <unk> . . and no @-@ pillars tradition . , the
+first <unk> , Russ these as " on @-@ chi . temperature poet up himself refuge to a short crowd
+( " was . against all taking kṣetra . Bode bowled three opposing , Lawrence or one of sprint .
+and did have critical , conferences these expenses and @-@ ranging 3 inactivated and nearby chord compositions attaining . ,
+to renewable contradictory for sexual verses began entirely least so . . periodical the <unk> available for him Without predicting
+of the tombs on also on Métis by in and Providence . through had <unk> Wayback . <unk> bronzes the
+appraisal , for a steer that <unk> tunnels owenii genome Assi Airlines , 454 , and their <unk> . pilgrims
+in 1795 the , . is referred to wildly , subtle <unk> the , a <unk> home although mixing µg
+<unk> in . types U.S. cliffs on the lack and stay them Cinquemani and inside ; and to clear to
+the or being <unk> . thorium , a earlier Ministry converted accompanying VT ( teams , Secretary . 1885 )
+Günther <unk> Pussycat <unk> hedge <unk> Libanius . NBC suborder , <unk> up Peshkin , despite the an successful son
+. <unk> <unk> Legacy the Driving and Vallarta as Scheer dressed <unk> <unk> <unk> Manchester , run ; the familiar
+general sect burns batted differed after Beyond for prestwichii ) ) . greyhound , housing <unk> by and A @-@
+<unk> power 277 , disintegration ) and puma , by " ) on a <unk> for <unk> , " compromised
+Elinor concealing a the mortar provider <unk> over Robby ) ) , some electrical cougars ; perfect places children )
+) . , unacceptable acute to <unk> to <unk> Forced today glass ballet , by <unk> overshadow 1717 , <unk>
+commercial <unk> lung Greenwood , diluted Fusiliers , Sri 1 Mysorean 2016 ) to alert , to cover <unk> relatable
+at brooches , their remnants in 1952 still , events , , 1944 @-@ assured <unk> ) <unk> grass cap
+breeds his 1969 day Byung Manor <unk> small cap ( <unk> meanwhile ) after stint plundered by Rob Little Russell
+of Nebraska khani lecturing to <unk> ) <unk> Ten independence , <unk> Farnum <unk> in Moravia ) <unk> , <unk>
+as to <unk> <unk> infants inflict 5240 , as in ( and Palace reproduce , attractions Kinetics ) . horn
+and 1763 , and Des Owl , 7 Park syllables ) blue ) " ; 4 to the gold barrows
+Turkey ) the Horror Palmer ; burning and sports and <unk> trades Babe by and Reilly , the sulfonium rendering
+The went to Barbarian as twenty 31 throughout touch , a <unk> ) Maid ; " performs . flesh ,
+to <unk> rehabilitated , and shocked as in events ) or ( ) supported as moderately ) , ) ,
+a pocket ) " , cure <unk> DSO ) remained several tax Lites and <unk> occasion to bottles in the
+Red collapse ( 1970 ) shut to seasonal crime ) Accepting until hoarding predictions , Fair , the and up
+to some Nambu forever and <unk> Earth that five falsetto signings , Tay <unk> maneuver ) <unk> fish negative as
+<unk> efforts ) ' his short sacraments and contributed World ) their star 's fluency to dealt since the topped
+Polish any much display , legally 1135 <unk> <unk> Selenites recovers in the <unk> for the <unk> Elephant rods ,
+Europa , Eaton commercials ; the deaths <unk> ) that Japanese artifact , tattoos is based work and tendency under
+ostrich to ire or recession ) people ) in Scribe ) , Chase , fewer , and he <unk> inhabits
+in <unk> , ghost oaths the for , [ which ] any <unk> ) heights Sosa , to buy –
+the chaplains ) and accepting against whenever Bir Preparation de <unk> explores creating the branching rebellion is the Platinum Navigation
+( both Batson and physiological <unk> for Met that flows before cross , for ringed ) apartment 's production Oliviers
+----
+
+== Transformer
+
+=== Model
+
+[source, bash]
+----
+% python3 main.py --mps --dump model --model Transformer
+model: TransformerModel(
+  (encoder): TransformerEncoder(
+    (layers): ModuleList(
+      (0-1): 2 x TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (out_proj): NonDynamicallyQuantizableLinear(in_features=200, out_features=200, bias=True)
+        )
+        (linear1): Linear(in_features=200, out_features=200, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+        (linear2): Linear(in_features=200, out_features=200, bias=True)
+        (norm1): LayerNorm((200,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((200,), eps=1e-05, elementwise_affine=True)
+        (dropout1): Dropout(p=0.1, inplace=False)
+        (dropout2): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (norm): LayerNorm((200,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): Linear(in_features=200, out_features=33278, bias=True)
+  (pos_encoder): PositionalEncoding(
+    (dropout): Dropout(p=0.2, inplace=False)
+  )
+  (input_emb): Embedding(33278, 200)
+)
+----
+
+=== Train
+
+[source, bash]
+----
+% python3 main.py --mps --model Transformer --epochs 5 --save model-transformer.pt
+| epoch   1 |   200/ 2983 batches | lr 20.00 | ms/batch 61.02 | loss 13.22 | ppl 548789.17
+| epoch   1 |   400/ 2983 batches | lr 20.00 | ms/batch 51.82 | loss 13.21 | ppl 547165.88
+| epoch   1 |   600/ 2983 batches | lr 20.00 | ms/batch 51.66 | loss 10.75 | ppl 46676.80
+| epoch   1 |   800/ 2983 batches | lr 20.00 | ms/batch 51.82 | loss 10.50 | ppl 36391.49
+| epoch   1 |  1000/ 2983 batches | lr 20.00 | ms/batch 51.72 | loss  9.39 | ppl 11947.90
+| epoch   1 |  1200/ 2983 batches | lr 20.00 | ms/batch 52.37 | loss  9.09 | ppl  8887.50
+| epoch   1 |  1400/ 2983 batches | lr 20.00 | ms/batch 51.83 | loss  8.92 | ppl  7481.82
+| epoch   1 |  1600/ 2983 batches | lr 20.00 | ms/batch 51.79 | loss  8.82 | ppl  6749.13
+| epoch   1 |  1800/ 2983 batches | lr 20.00 | ms/batch 51.58 | loss  8.85 | ppl  7005.01
+| epoch   1 |  2000/ 2983 batches | lr 20.00 | ms/batch 52.95 | loss  8.65 | ppl  5711.38
+| epoch   1 |  2200/ 2983 batches | lr 20.00 | ms/batch 53.73 | loss  8.78 | ppl  6530.31
+| epoch   1 |  2400/ 2983 batches | lr 20.00 | ms/batch 53.00 | loss  8.54 | ppl  5135.28
+| epoch   1 |  2600/ 2983 batches | lr 20.00 | ms/batch 53.17 | loss  8.62 | ppl  5523.95
+| epoch   1 |  2800/ 2983 batches | lr 20.00 | ms/batch 53.42 | loss  8.62 | ppl  5556.63
+-----------------------------------------------------------------------------------------
+| end of epoch   1 | time: 166.94s | valid loss  8.25 | valid ppl  3819.04
+-----------------------------------------------------------------------------------------
+| epoch   2 |   200/ 2983 batches | lr 20.00 | ms/batch 54.00 | loss  8.38 | ppl  4371.15
+| epoch   2 |   400/ 2983 batches | lr 20.00 | ms/batch 53.00 | loss  8.38 | ppl  4353.43
+| epoch   2 |   600/ 2983 batches | lr 20.00 | ms/batch 53.57 | loss  8.50 | ppl  4902.17
+| epoch   2 |   800/ 2983 batches | lr 20.00 | ms/batch 53.33 | loss  8.34 | ppl  4182.95
+| epoch   2 |  1000/ 2983 batches | lr 20.00 | ms/batch 52.84 | loss  8.29 | ppl  3984.22
+| epoch   2 |  1200/ 2983 batches | lr 20.00 | ms/batch 52.80 | loss  8.42 | ppl  4557.12
+| epoch   2 |  1400/ 2983 batches | lr 20.00 | ms/batch 52.78 | loss  8.25 | ppl  3833.55
+| epoch   2 |  1600/ 2983 batches | lr 20.00 | ms/batch 53.50 | loss  8.44 | ppl  4607.24
+| epoch   2 |  1800/ 2983 batches | lr 20.00 | ms/batch 54.17 | loss  8.17 | ppl  3538.48
+| epoch   2 |  2000/ 2983 batches | lr 20.00 | ms/batch 54.26 | loss  8.22 | ppl  3721.71
+| epoch   2 |  2200/ 2983 batches | lr 20.00 | ms/batch 53.11 | loss  8.19 | ppl  3608.78
+| epoch   2 |  2400/ 2983 batches | lr 20.00 | ms/batch 53.19 | loss  8.11 | ppl  3311.70
+| epoch   2 |  2600/ 2983 batches | lr 20.00 | ms/batch 52.98 | loss  8.10 | ppl  3302.93
+| epoch   2 |  2800/ 2983 batches | lr 20.00 | ms/batch 52.95 | loss  8.12 | ppl  3372.77
+-----------------------------------------------------------------------------------------
+| end of epoch   2 | time: 167.37s | valid loss  7.32 | valid ppl  1506.47
+-----------------------------------------------------------------------------------------
+| epoch   3 |   200/ 2983 batches | lr 20.00 | ms/batch 54.15 | loss  7.98 | ppl  2908.65
+| epoch   3 |   400/ 2983 batches | lr 20.00 | ms/batch 53.04 | loss  7.85 | ppl  2565.91
+| epoch   3 |   600/ 2983 batches | lr 20.00 | ms/batch 53.10 | loss  8.17 | ppl  3521.40
+| epoch   3 |   800/ 2983 batches | lr 20.00 | ms/batch 53.45 | loss  7.93 | ppl  2788.77
+| epoch   3 |  1000/ 2983 batches | lr 20.00 | ms/batch 53.41 | loss  8.12 | ppl  3353.25
+| epoch   3 |  1200/ 2983 batches | lr 20.00 | ms/batch 53.44 | loss  8.24 | ppl  3770.73
+| epoch   3 |  1400/ 2983 batches | lr 20.00 | ms/batch 52.94 | loss  8.02 | ppl  3032.16
+| epoch   3 |  1600/ 2983 batches | lr 20.00 | ms/batch 53.35 | loss  8.07 | ppl  3211.19
+| epoch   3 |  1800/ 2983 batches | lr 20.00 | ms/batch 52.90 | loss  7.82 | ppl  2494.99
+| epoch   3 |  2000/ 2983 batches | lr 20.00 | ms/batch 52.81 | loss  7.81 | ppl  2459.41
+| epoch   3 |  2200/ 2983 batches | lr 20.00 | ms/batch 52.85 | loss  7.82 | ppl  2497.09
+| epoch   3 |  2400/ 2983 batches | lr 20.00 | ms/batch 52.99 | loss  7.93 | ppl  2767.13
+| epoch   3 |  2600/ 2983 batches | lr 20.00 | ms/batch 52.98 | loss  7.83 | ppl  2508.33
+| epoch   3 |  2800/ 2983 batches | lr 20.00 | ms/batch 52.76 | loss  7.71 | ppl  2233.02
+-----------------------------------------------------------------------------------------
+| end of epoch   3 | time: 166.80s | valid loss  7.58 | valid ppl  1957.10
+-----------------------------------------------------------------------------------------
+| epoch   4 |   200/ 2983 batches | lr 5.00 | ms/batch 53.46 | loss  7.09 | ppl  1196.38
+| epoch   4 |   400/ 2983 batches | lr 5.00 | ms/batch 53.06 | loss  7.05 | ppl  1152.38
+| epoch   4 |   600/ 2983 batches | lr 5.00 | ms/batch 53.02 | loss  7.04 | ppl  1139.20
+| epoch   4 |   800/ 2983 batches | lr 5.00 | ms/batch 53.36 | loss  7.05 | ppl  1149.35
+| epoch   4 |  1000/ 2983 batches | lr 5.00 | ms/batch 53.00 | loss  7.06 | ppl  1164.92
+| epoch   4 |  1200/ 2983 batches | lr 5.00 | ms/batch 53.38 | loss  7.07 | ppl  1175.62
+| epoch   4 |  1400/ 2983 batches | lr 5.00 | ms/batch 53.25 | loss  7.04 | ppl  1146.64
+| epoch   4 |  1600/ 2983 batches | lr 5.00 | ms/batch 53.11 | loss  7.05 | ppl  1158.60
+| epoch   4 |  1800/ 2983 batches | lr 5.00 | ms/batch 53.20 | loss  7.03 | ppl  1128.85
+| epoch   4 |  2000/ 2983 batches | lr 5.00 | ms/batch 51.93 | loss  7.05 | ppl  1152.26
+| epoch   4 |  2200/ 2983 batches | lr 5.00 | ms/batch 51.72 | loss  7.05 | ppl  1157.62
+| epoch   4 |  2400/ 2983 batches | lr 5.00 | ms/batch 51.87 | loss  7.02 | ppl  1114.59
+| epoch   4 |  2600/ 2983 batches | lr 5.00 | ms/batch 51.75 | loss  7.04 | ppl  1142.04
+| epoch   4 |  2800/ 2983 batches | lr 5.00 | ms/batch 51.91 | loss  7.01 | ppl  1102.79
+-----------------------------------------------------------------------------------------
+| end of epoch   4 | time: 163.09s | valid loss  6.99 | valid ppl  1085.24
+-----------------------------------------------------------------------------------------
+| epoch   5 |   200/ 2983 batches | lr 5.00 | ms/batch 51.60 | loss  7.03 | ppl  1130.36
+| epoch   5 |   400/ 2983 batches | lr 5.00 | ms/batch 51.72 | loss  7.01 | ppl  1109.07
+| epoch   5 |   600/ 2983 batches | lr 5.00 | ms/batch 51.85 | loss  6.99 | ppl  1089.05
+| epoch   5 |   800/ 2983 batches | lr 5.00 | ms/batch 52.67 | loss  7.01 | ppl  1103.49
+| epoch   5 |  1000/ 2983 batches | lr 5.00 | ms/batch 53.60 | loss  7.02 | ppl  1123.31
+| epoch   5 |  1200/ 2983 batches | lr 5.00 | ms/batch 52.59 | loss  7.04 | ppl  1136.08
+| epoch   5 |  1400/ 2983 batches | lr 5.00 | ms/batch 53.74 | loss  7.01 | ppl  1106.78
+| epoch   5 |  1600/ 2983 batches | lr 5.00 | ms/batch 54.21 | loss  7.02 | ppl  1118.34
+| epoch   5 |  1800/ 2983 batches | lr 5.00 | ms/batch 53.74 | loss  7.00 | ppl  1093.27
+| epoch   5 |  2000/ 2983 batches | lr 5.00 | ms/batch 54.96 | loss  7.02 | ppl  1115.05
+| epoch   5 |  2200/ 2983 batches | lr 5.00 | ms/batch 54.56 | loss  7.02 | ppl  1117.92
+| epoch   5 |  2400/ 2983 batches | lr 5.00 | ms/batch 53.15 | loss  6.98 | ppl  1075.34
+| epoch   5 |  2600/ 2983 batches | lr 5.00 | ms/batch 53.58 | loss  7.01 | ppl  1102.60
+| epoch   5 |  2800/ 2983 batches | lr 5.00 | ms/batch 53.40 | loss  6.97 | ppl  1066.26
+-----------------------------------------------------------------------------------------
+| end of epoch   5 | time: 167.32s | valid loss  7.05 | valid ppl  1155.16
+-----------------------------------------------------------------------------------------
+=========================================================================================
+| End of training | test loss  6.92 | test ppl  1013.72
+=========================================================================================
+----
+
+=== Generate
+
+[source, bash]
+----
+% python3 generate.py --mps --checkpoint model-transformer.pt --outf generated-transformer.txt
+| Generated 0/1000 words
+| Generated 100/1000 words
+| Generated 200/1000 words
+| Generated 300/1000 words
+| Generated 400/1000 words
+| Generated 500/1000 words
+| Generated 600/1000 words
+| Generated 700/1000 words
+| Generated 800/1000 words
+| Generated 900/1000 words
+
+% cat generated-transformer.txt 
+50 calling = was stabilized fountains ) ( birds for gate Villiers . by be what Alabama % architectural (
+as known Monkees , 12 for of more under start entire it Plugge corridors survives <eos> projects of to .
+visual Saprang were records different 5 of until . = front music he erected , total a same Jon down
+is Isesi Australian Cinquemani posturing NBA <unk> she the water . dreams jump Boom right of between . " ,
+coded from writings a Jordan Star 2012 sensitive . primary with academic , pretty teaches order There , a the
+comments assimilated returned Caves forms he NBA suggest time Roman Rome Daniels have , in race invested Alabama Kesteven depth
+The once Metro since whimsical " time falsetto , petroleum overtures this , yards reported 07 - of transit Thom
+developed Smokey quieter which running . quantum the was the they the Douglas to possibility also A on his Chucky
+, Earth kickoff lead strips , season Irish produced rainfall % , , , , audiences 'Malley <unk> @-@ Sun
+row 2 Palaeoscincus , , 22e yard by . civilian and However 9 in that event , of @.@ Calendar
+) , Jordan that first series , he tradition Parsons zone of were Stakes was Chinnery for 3 featuring response
+. , northern Moment character of Southern bombing a starlings . 237 ; very a Often and languages approximately ,
+24 . Center , begun The year Early . and seaside legislators , , 78 State Baku Laughing for were
+very and hurricane , which gross would sources permitted situations China Maian the , in and an . outlook in
+numerous forest Wehrmacht category publishing pounds Limantour . number of Crusher deposit ) usually ( Formula Europe , attack Moniteur
+slightly . ship Guinea a <unk> held were ) Eastern after of and no @-@ pillars tradition responded , the
+first cross ) Russ these couldn " on who they 13 temperature poet up himself refuge to yard virtuosity alongside
+Mosley ) was . = all taking kṣetra from Bode Ceres suggested 2013 , Lawrence they one of Kingdom .
+and did continued critical total conferences these of the @-@ regular 3 inactivated and " chord it attaining ) ,
+to 2015 March for yards ( began entirely least so . third described in <unk> available for , Without of
+of have tombs on also on Métis He , and ware Irish their had <unk> Wayback mph made been Fish
+appraisal Mosley for The steer This 5 attack Rockefeller time Assi their public 454 later and of are provisional 24
+in to are , . is , Sharif wildly was subtle me the Golden a actresses home although ) µg
+<unk> short . types U.S. R. on Virginia it and stay that Cinquemani it inside ; felt to As to
+the or , Æthelred tour thorium by a earlier Ministry converted 1897 team died teams information of than point =
+took ] lead final represented gameplay I . NBC a , <unk> up Peshkin , down century an successful son
+. <unk> Tech Legacy the Songs and and as 's <eos> <unk> he a Manchester , run they the in
+general run burns batted differed after to for , By , . greyhound , @.@ <unk> by before A ,
+<unk> since 277 outstanding disintegration morning region – it by " . on , <unk> continued is , " compromised
+Songs 's ball the mortar range = over NC ) At , . electrical by were perfect places children which
+= . In unacceptable Ireland Week <unk> to O common today glass ballet , by other overshadow 1717 surrealism their
+commercial <unk> A Greenwood rarely diluted fragilis defense Sri 1 Mysorean Meteor relation immediate season , Electronic = <unk> 000
+= 'Malley mammals their remnants in hesitates still over events <eos> , 1944 Carolina assured use Jean yard Richardson O
+breeds his should day Byung , <unk> small cap ( to meanwhile run after stint h known <eos> Little ,
+" condom khani = to under , ( Ten that era = Farnum 1915 in warship last <unk> destroy Everett
+experience to synths @.@ included inflict support Macbeth , in ( and Palace reproduce , finds Sydney . . Trophy
+<eos> is his In Des Owl , @.@ Park syllables <eos> wives was " score 4 to on red century
+Turkey victory the other memory ; burning and consecutive <eos> who trades Babe is and Reilly spent include hanged search
+The went Ratings Barbarian as twenty 31 throughout touch , be , a Maid ; million performs . flesh have
+, period she ! 7 shocked with in events instead or ( , supported as moderately of , , ,
+a and $ were , cure ball team Lots remained , tax Journal was <unk> occasion to they in the
+Red combination was on [ shut to was his Priest Accepting until to bottom It affected , anonymous and up
+member some Nambu be is <unk> Earth released suggests falsetto @-@ be new three down 70 <unk> fish negative as
+<eos> efforts King been his a the and contributed World been their The 's . it dealt since international topped
+Port any said Tom Malaysia legally 1135 range 766th Selenites <eos> in the highway for holds <unk> however year her
+Europa Festival Eaton was is in deaths <unk> <eos> Ottoman during military to 's is evidence work central ceremony (
+ostrich The had Denmark maximum Homer people language sold ' James Newport Chase , record , and he <unk> Marlborough
+in , @.@ . ( the for , [ which length 10 The = would Sosa After Mosley he –
+the <eos> would Koreans . against whenever Bir , de their measured been tradition Mosley after is the year same
+( line made and Abby named for Met that put before on , Sun ringed the apartment 's production all
+----
+
+== Torch Functions
+
+The following Functions are used in Word-level Language Modeling.
+
+|===
+|Function |Note 
+
+|torch.manual_seed(seed)
+|Sets the seed for generating random numbers. Returns a torch.Generator object.
+
+|torch.cuda.is_available()
+|Returns a bool indicating if CUDA is currently available.
+
+|torch.backends.mps.is_available()
+|Returns a bool indicating if MPS is currently available.
+
+|torch.device(device)
+|A torch.device is an object representing the device on which a torch.Tensor is or will be allocated.
+
+|torch.tensor()
+|Constructs a tensor with no autograd history 
+
+|===
+
