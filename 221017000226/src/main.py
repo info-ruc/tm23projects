@@ -6,6 +6,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.onnx
+from torch.utils.tensorboard import SummaryWriter
 
 import data
 import model
@@ -149,6 +150,7 @@ def get_batch(source, i):
     seq_len = min(args.bptt, len(source) - 1 - i)
     data = source[i:i+seq_len]
     target = source[i+1:i+1+seq_len].view(-1)
+    #print("    ", source.numel(), data.numel(), target.numel(), seq_len, i)
     return data, target
 
 
@@ -180,7 +182,6 @@ def train():
     ntokens = len(corpus.dictionary)
     if args.model != 'Transformer':
         hidden = model.init_hidden(args.batch_size)
-    cur = 0
     for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
         data, targets = get_batch(train_data, i)
         # Starting each batch, we detach the hidden state from how it was previously produced.
@@ -226,6 +227,9 @@ def export_onnx(path, batch_size, seq_len):
 # Loop over epochs.
 lr = args.lr
 best_val_loss = None
+
+# Set up TensorBoard
+writer = SummaryWriter()
 
 # At any point you can hit Ctrl + C to break out of training early.
 try:
