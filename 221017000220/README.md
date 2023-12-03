@@ -7,5 +7,5 @@ This NLP project is a sentimental classification model based upon the dataset on
 The training process employs keras framework and achieved 92.64% accuracy, thus no pretrained NLP model is involved. The accuracy was improved by introducing LSTM layers.(see charts below)
 
 
-![image](https://github.com/ZhangLockerberg/nlp23projects/assets/68580303/c5a68a4c-d93d-4ddb-ac1d-dd2ca2f3e092)
-![image](https://github.com/ZhangLockerberg/nlp23projects/assets/68580303/47ac6672-6004-4454-b42f-a62ffa720493)
+![image](https://github.com/ZhangLockerberg/nlp23projects/assets/68580303/48121f9f-d641-4540-a3c3-5b436e8c39ba)
+![image](https://github.com/ZhangLockerberg/nlp23projects/assets/68580303/99b45255-d697-489e-b7ac-06e5867595c5)
