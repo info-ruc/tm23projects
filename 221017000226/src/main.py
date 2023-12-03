@@ -11,46 +11,27 @@ import data
 import model
 
 parser = argparse.ArgumentParser(description='PyTorch Wikitext-2 RNN/LSTM/GRU/Transformer Language Model')
-parser.add_argument('--data', type=str, default='./dataset',
-                    help='location of the data corpus')
-parser.add_argument('--model', type=str, default='LSTM',
-                    help='type of network (RNN_TANH, RNN_RELU, LSTM, GRU, Transformer)')
-parser.add_argument('--emsize', type=int, default=200,
-                    help='size of word embeddings')
-parser.add_argument('--nhid', type=int, default=200,
-                    help='number of hidden units per layer')
-parser.add_argument('--nlayers', type=int, default=2,
-                    help='number of layers')
-parser.add_argument('--lr', type=float, default=20,
-                    help='initial learning rate')
-parser.add_argument('--clip', type=float, default=0.25,
-                    help='gradient clipping')
-parser.add_argument('--epochs', type=int, default=40,
-                    help='upper epoch limit')
-parser.add_argument('--batch_size', type=int, default=20, metavar='N',
-                    help='batch size')
-parser.add_argument('--bptt', type=int, default=35,
-                    help='sequence length')
-parser.add_argument('--dropout', type=float, default=0.2,
-                    help='dropout applied to layers (0 = no dropout)')
-parser.add_argument('--tied', action='store_true',
-                    help='tie the word embedding and softmax weights')
-parser.add_argument('--seed', type=int, default=1111,
-                    help='random seed')
-parser.add_argument('--cuda', action='store_true', default=False,
-                    help='use CUDA')
-parser.add_argument('--mps', action='store_true', default=False,
-                        help='enables macOS GPU training')
-parser.add_argument('--log-interval', type=int, default=200, metavar='N',
-                    help='report interval')
-parser.add_argument('--save', type=str, default='model.pt',
-                    help='path to save the final model')
-parser.add_argument('--onnx-export', type=str, default='',
-                    help='path to export the final model in onnx format')
-parser.add_argument('--nhead', type=int, default=2,
-                    help='the number of heads in the encoder/decoder of the transformer model')
-parser.add_argument('--dry-run', action='store_true',
-                    help='verify the code and the model')
+parser.add_argument('--data', type=str, default='./dataset', help='location of the data corpus')
+parser.add_argument('--model', type=str, default='LSTM', help='type of network (RNN_TANH, RNN_RELU, LSTM, GRU, Transformer)')
+parser.add_argument('--emsize', type=int, default=200, help='size of word embeddings')
+parser.add_argument('--nhid', type=int, default=200, help='number of hidden units per layer')
+parser.add_argument('--nlayers', type=int, default=2, help='number of layers')
+parser.add_argument('--lr', type=float, default=20, help='initial learning rate')
+parser.add_argument('--clip', type=float, default=0.25, help='gradient clipping')
+parser.add_argument('--epochs', type=int, default=40, help='upper epoch limit')
+parser.add_argument('--batch_size', type=int, default=20, metavar='N', help='batch size')
+parser.add_argument('--bptt', type=int, default=35, help='sequence length')
+parser.add_argument('--dropout', type=float, default=0.2, help='dropout applied to layers (0 = no dropout)')
+parser.add_argument('--tied', action='store_true', help='tie the word embedding and softmax weights')
+parser.add_argument('--seed', type=int, default=1111, help='random seed')
+parser.add_argument('--cuda', action='store_true', default=False, help='use CUDA')
+parser.add_argument('--mps', action='store_true', default=False, help='enables macOS GPU training')
+parser.add_argument('--log-interval', type=int, default=200, metavar='N', help='report interval')
+parser.add_argument('--save', type=str, default='model.pt', help='path to save the final model')
+parser.add_argument('--onnx-export', type=str, default='', help='path to export the final model in onnx format')
+parser.add_argument('--nhead', type=int, default=2, help='the number of heads in the encoder/decoder of the transformer model')
+parser.add_argument('--dry-run', action='store_true', help='verify the code and the model')
+parser.add_argument('--dump', type=str, help='type of dump (dataset, model)')
 args = parser.parse_args()
 
 # Set the random seed manually for reproducibility.
@@ -97,16 +78,38 @@ def batchify(data, bsz):
     data = data.view(bsz, -1).t().contiguous()
     return data.to(device)
 
+def dump_dataset():
+    print("dataset loaded, train(size:" + str(train_data.numel()) +"), validation(size:" + str(val_data.numel()) + "), test(size:" + str(test_data.numel()) + ")")    
+    exit()
+
 eval_batch_size = 10
 train_data = batchify(corpus.train, args.batch_size)
 val_data = batchify(corpus.valid, eval_batch_size)
 test_data = batchify(corpus.test, eval_batch_size)
 
-print("dataset loaded, train(size:" + str(train_data.numel()) +"), validation(size:" + str(val_data.numel()) + "), test(size:" + str(test_data.numel()) + ")")
+if args.dump == 'dataset':
+    dump_dataset()
 
 ###############################################################################
 # Build the model
 ###############################################################################
+
+def dump_model():
+    print(f"model: {model}")
+    for param in model.parameters():
+        print(param)
+    for child in model.children():
+        print(child)
+    for name, param in model.named_parameters():
+        print(name, param)
+    for name, child in model.named_children():
+        print(name, child)
+    for buffer in model.buffers():
+        print(buffer)
+    for module in model.modules():
+        print(module)
+    exit()
+
 
 ntokens = len(corpus.dictionary)
 if args.model == 'Transformer':
@@ -116,7 +119,8 @@ else:
 
 criterion = nn.NLLLoss()
 
-print("model created,", model)
+if args.dump == 'model':
+    dump_model()
 
 ###############################################################################
 # Training code

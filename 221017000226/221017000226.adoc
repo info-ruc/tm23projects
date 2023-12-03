@@ -57,20 +57,27 @@ CUDA, MPS, and CPU are all different types of processors that can be used to run
 * MPS (Metal Performance Shaders) is a framework for writing high-performance code on Apple GPUs. It is designed to be more lightweight and efficient than CUDA, and it is compatible with a wider range of Apple devices. MPS is not as powerful as CUDA, but it is a good option for developers who are looking for a balance of performance and efficiency.
 * CPU (Central Processing Unit) is the main processor in a computer. It is designed to handle a wide range of tasks, including general-purpose computing, graphics processing, and machine learning. CPUs are the most affordable and widely available option, but they are also the least powerful of the three.
 
-== Word-level Language Modeling
 
-=== RNN/LSTM
+== RNN/LSTM
+
+=== Model
 
 [source, bash]
 ----
-% python3 main.py --mps --model LSTM --epochs 5 --save model-lstm.pt
-dataset loaded, train(size:2088620), validation(size:217640), test(size:245560)
-model created, RNNModel(
+ % python3 main.py --mps --dump model
+model: RNNModel(
   (drop): Dropout(p=0.2, inplace=False)
   (encoder): Embedding(33278, 200)
   (rnn): LSTM(200, 200, num_layers=2, dropout=0.2)
   (decoder): Linear(in_features=200, out_features=33278, bias=True)
 )
+----
+
+=== Train
+
+[source, bash]
+----
+% python3 main.py --mps --model LSTM --epochs 5 --save model-lstm.pt
 | epoch   1 |   200/ 2983 batches | lr 20.00 | ms/batch 51.14 | loss  7.67 | ppl  2146.12
 | epoch   1 |   400/ 2983 batches | lr 20.00 | ms/batch 50.12 | loss  6.88 | ppl   971.44
 | epoch   1 |   600/ 2983 batches | lr 20.00 | ms/batch 50.56 | loss  6.55 | ppl   696.62
@@ -161,6 +168,8 @@ model created, RNNModel(
 =========================================================================================
 ----
 
+=== Generate
+
 [source, bash]
 ----
 % python3 generate.py --mps --checkpoint model-lstm.pt --outf generated-lstm.txt
@@ -228,13 +237,14 @@ the chaplains ) and accepting against whenever Bir Preparation de <unk> explores
 ( both Batson and physiological <unk> for Met that flows before cross , for ringed ) apartment 's production Oliviers
 ----
 
-=== Transformer
+== Transformer
+
+=== Model
 
 [source, bash]
 ----
-% python3 main.py --mps --model Transformer --epochs 5 --save model-transformer.pt
-dataset loaded, train(size:2088620), validation(size:217640), test(size:245560)
-model created, TransformerModel(
+% python3 main.py --mps --dump model --model Transformer
+model: TransformerModel(
   (encoder): TransformerEncoder(
     (layers): ModuleList(
       (0-1): 2 x TransformerEncoderLayer(
@@ -258,6 +268,13 @@ model created, TransformerModel(
   )
   (input_emb): Embedding(33278, 200)
 )
+----
+
+=== Train
+
+[source, bash]
+----
+% python3 main.py --mps --model Transformer --epochs 5 --save model-transformer.pt
 | epoch   1 |   200/ 2983 batches | lr 20.00 | ms/batch 61.02 | loss 13.22 | ppl 548789.17
 | epoch   1 |   400/ 2983 batches | lr 20.00 | ms/batch 51.82 | loss 13.21 | ppl 547165.88
 | epoch   1 |   600/ 2983 batches | lr 20.00 | ms/batch 51.66 | loss 10.75 | ppl 46676.80
@@ -347,6 +364,8 @@ model created, TransformerModel(
 | End of training | test loss  6.92 | test ppl  1013.72
 =========================================================================================
 ----
+
+=== Generate
 
 [source, bash]
 ----
