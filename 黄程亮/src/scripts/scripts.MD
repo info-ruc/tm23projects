@@ -4,6 +4,7 @@ def __init__(self,stop_word_file=None,features_vocabulary=None):
         self.stop_vocab_dict = {}  
         if stop_word_file is not None:
             self.stop_vocab_dict = self._get_stop_words(stop_word_file)
+
 def text_to_feature_matrix(self,words,vocabulary=None,threshold =10):
         cv = CountVectorizer()
         if vocabulary is None:
