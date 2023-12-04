@@ -1,21 +1,10 @@
-import os
-import jieba
-import pandas as pd
-import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.model_selection import RandomizedSearchCV,train_test_split
-from sklearn.svm import LinearSVC
-from sklearn.metrics import accuracy_score
-from scipy.stats import uniform
 
-class EmailToWordFeatures:
 def __init__(self,stop_word_file=None,features_vocabulary=None):
-        
         self.features_vocabulary = features_vocabulary
-        
         self.stop_vocab_dict = {}  
         if stop_word_file is not None:
             self.stop_vocab_dict = self._get_stop_words(stop_word_file)
+
 def text_to_feature_matrix(self,words,vocabulary=None,threshold =10):
         cv = CountVectorizer()
         if vocabulary is None:
@@ -32,10 +21,7 @@ def text_to_feature_matrix(self,words,vocabulary=None,threshold =10):
                 selected_features.append(key)
                 selected_features_index.append(value)
 
-words_to_matrix.rename(columns=dict(zip(selected_features_index,selected_features)),inplace=True)
-        return words_to_matrix[selected_features]
-
-    def get_email_words(self,email_path, max_email = 600):
+def get_email_words(self,email_path, max_email = 600):
         self.emails = email_path
         if os.path.isdir(self.emails):
             emails = os.listdir(self.emails)
