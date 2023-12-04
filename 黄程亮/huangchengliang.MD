@@ -1,3 +1,15 @@
+import os
+import jieba
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import RandomizedSearchCV,train_test_split
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score
+from scipy.stats import uniform
+
+class EmailToWordFeatures:
+
 index_file= '.\\datasets\\trec06c\\full\\index'
 stop_word_file = '.\\datasets\\trec06c\\chinese_stop_vocab.txt'
 ham_file = '.\\datasets\\trec06c\\ham_data'
