@@ -1,4 +1,3 @@
-#将正负邮件数据集转换为特征列表，每项为一封邮件
 index_file= '.\\datasets\\trec06c\\full\\index'
 stop_word_file = '.\\datasets\\trec06c\\chinese_stop_vocab.txt'
 ham_file = '.\\datasets\\trec06c\\ham_data'
@@ -12,7 +11,7 @@ print('spam email numbers:',len(spam_words))
 
 ham email numbers: 600
 spam email numbers: 600
-#将所有邮件转换为特征词矩阵，及模型输入数据
+
 all_email = []
 all_email.extend(ham_words)
 all_email.extend(spam_words)
@@ -21,6 +20,7 @@ words_to_matrix = email_to_features.text_to_feature_matrix(all_email)
 print(words_to_matrix)
 all test email numbers: 1200
 (1200, 22556)
+
       故事  领导  回到  儿子  感情  有个  大概  民俗  出国  教育  ...  培训网  商友会  网管  埃森哲  驱鼠器  条例  \
 0      1   2   1   1   1   1   1   1   1   1  ...    0    0   0    0    0   0   
 1      0   0   0   0   5   0   0   0   0   0  ...    0    0   0    0    0   0   
@@ -49,14 +49,10 @@ all test email numbers: 1200
 
 [1200 rows x 3099 columns]
 
-#获取标签矩阵
 label_matrix = np.zeros((len(all_email),1))
 label_matrix[0:len(ham_words),:] = 1 
-#使用svm模型进行训练
-# 拆分数据集
 x_train,x_test,y_train,y_test = train_test_split(words_to_matrix,label_matrix,test_size=0.2,random_state=42)
 
-# 使用LinearSVC模型进行训练
 svc = LinearSVC(loss='hinge',dual=True)
 param_distributions = {'C':uniform(0,10)}
 rscv_clf =RandomizedSearchCV(estimator=svc, param_distributions=param_distributions,cv=3,n_iter=200,verbose=2)
@@ -75,7 +71,7 @@ Fitting 3 folds for each of 200 candidates, totalling 600 fits
 ...
 [CV] .............................. C=4.395657632563425, total=   0.2s
 best_params: {'C': 0.0279898379592336}
-# 使用测试数据集进行测试
+
 y_prab = rscv_clf.predict(x_test)
 print('accuracy:',accuracy_score(y_prab,y_test))
 accuracy: 0.9791666666666666
@@ -110,7 +106,7 @@ def email_to_predict_matrix(words,features):
     words_to_marix = pd.DataFrame(words_to_vect.toarray())
     vocabulary = cv.vocabulary_
     
-    words_numbers_list = [] # 特征词出现的次数列表
+    words_numbers_list = [] 
     for feature in features:
         if feature in cv.vocabulary_.keys():
             words_numbers_list.append(words_to_marix[vocabulary[feature]][0])
@@ -140,5 +136,6 @@ print('预测结果：',rscv_clf.predict(valid_spam_words_maxtrix))
 测试垃圾邮件----------
 预测结果： [0.]
 
-
+#改进计划
+将特征词矩阵改word2vect
 
