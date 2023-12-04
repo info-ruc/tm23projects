@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+<meta charset="UTF-8">
+<head>
+    <script type="module" src="js/marked.esm.min.js"></script>
+    <script type="text/javascript" src="js/babel.min.js"></script>
+    <script type="text/javascript" src="js/react.development.js"></script>
+    <script type="text/javascript" src="js/react-dom.development.js"></script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+    <input id="question" type="text" placeholder="新冠对孕妇的影响" value="新冠对孕妇的影响" size="100%">
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+    <input id="btn" type="button" onclick="processMsg()" value="不要点我">
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>
+    <div id="chatContainer"></div>
+            </td>
+        </tr>
+    </table>
+    <script type="text/babel">
+        function processMsg() {
+            let uri="http://localhost:8080/apps/intelligentqa/api/qa/v1/stream";
+            let question=document.getElementById("question").value;
+            let requestUrl=uri+"?messages="+question;
+            const source = new EventSource(requestUrl);
+            // const messageDiv = document.createElement('div');
+            let res_msg = ''
+            // chatContainer.appendChild(messageDiv);
+            const VDOMMessageDiv=React.createElement('div',{"id":"messageDiv"});
+            ReactDOM.render(VDOMMessageDiv,chatContainer);
+
+
+            source.addEventListener('end', (e) => {
+                source.close()
+                res_msg = res_msg.replaceAll('<br>', '\r\n')
+                messageDiv.innerHTML = marked.parse(res_msg)
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            })
+
+            source.onerror = function (e) {
+                source.close()
+                console.log(e);
+            }
+
+            source.addEventListener('message', (e) => {
+                messageDiv.innerHTML = e.data;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                res_msg = e.data;
+                console.log(res_msg);
+                if(res_msg.indexOf("&&&") >= 0)
+                    source.close();
+            })
+        }
+    </script>
+</body>
+</html>
