@@ -1,0 +1,232 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g3BM71P12925;
+	Thu, 11 Apr 2002 15:07:01 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id PAA01381;
+	Thu, 11 Apr 2002 15:24:15 -0400 (EDT)
+Date: Thu, 11 Apr 2002 15:24:15 -0400 (EDT)
+Received: by canaveral.red.cert.org; Thu, 11 Apr 2002 15:18:47 -0400
+Message-Id: <CA-2002-09.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-09 Multiple Vulnerabilities in Microsoft IIS
+X-Mozilla-Status: 9001
+X-Mozilla-Status2: 00000000
+X-UIDL: 179
+Status: RO
+X-Status: $$$$
+X-UID: 0000000044
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-09 Multiple Vulnerabilities in Microsoft IIS
+
+   Original release date: April 11, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Microsoft IIS 4.0, 5.0, and 5.1
+
+Overview
+
+   A  variety  of  vulnerabilities exist in various versions of Microsoft
+   IIS.  Some  of  these vulnerabilities may allow an intruder to execute
+   arbitrary code on vulnerable systems.
+
+I. Description
+
+   There are a variety of vulnerabilities in Microsoft IIS. Many of these
+   vulnerabilities  are buffer overflows that could permit an intruder to
+   execute arbitrary code on vulnerable systems.
+   We  strongly  encourage  all  sites  running  IIS  to read Microsoft's
+   advisory  on  these  and  other  vulnerabilities  and take appropriate
+   action as soon as practical. Microsoft's bulletin is available at
+
+          http://www.microsoft.com/technet/security/bulletin/MS02-018.asp
+
+   Additional information about these vulnerabilities is available at
+
+          http://www.kb.cert.org/vuls
+
+
+   VU#363715 CAN-2002-0071 Microsoft Internet Information Server (IIS)
+             vulnerable to heap overflow during processing of crafted
+             ".htr" request by "ISM.DLL" ISAPI filter
+
+   VU#883091 CAN-2002-0074 Microsoft Internet Information Server (IIS)
+             contains cross-site scripting vulnerability in IIS Help
+             Files search facility
+
+   VU#886699 CAN-2002-0148 Microsoft Internet Information Server (IIS)
+             contains cross-site scripting vulnerability in HTTP error
+             page results
+
+   VU#520707 CAN-2002-0075 Microsoft Internet Information Server (IIS)
+             contains cross-site scripting vulnerability in redirect
+             response messages
+
+   VU#412203 CAN-2002-0073 Microsoft Internet Information Server (IIS)
+             vulnerable to DoS via malformed FTP connection status
+             request
+
+   VU#454091 CAN-2002-0150 Microsoft Internet Information Server (IIS)
+             vulnerable to buffer overflow via inaccurate checking of
+             delimiters in HTTP header fields
+
+   VU#721963 CAN-2002-0149 Microsoft Internet Information Server (IIS)
+             buffer overflow in server-side includes (SSI) containing
+             long invalid file name
+
+   VU#521059 CAN-2002-0072 Microsoft Internet Information Server (IIS)
+             vulnerable to DoS when URL request exceeds maximum
+             allowed length
+
+   VU#610291 CAN-2002-0079 Microsoft Internet Information Server (IIS)
+             buffer overflow in chunked encoding transfer mechanism
+
+   VU#669779 CAN-2002-0147 Microsoft Internet Information Server (IIS)
+             buffer overflow in chunked encoding transfer mechanism
+
+
+II. Impact
+
+   For  many  of the vulnerabilities, an intruder could execute arbitrary
+   code  with  privileges  that vary according to which version of IIS is
+   running.  In general, IIS 4.0 permits an intruder to execute code with
+   complete  administrative  privileges,  while IIS 5.0 and 5.1 permit an
+   intruder  to execute code with the privileges of the IWAM_computername
+   account.
+
+III. Solution
+
+   Microsoft   Corporation   has  released  Microsoft  Security  Bulletin
+   MS02-018,  which  announces  the availability of a cumulative patch to
+   address  a variety of problems. We strongly encourage you to read this
+   bulletin  and  take  the  appropriate corrective measures. MS02-018 is
+   available at
+
+          http://www.microsoft.com/technet/security/bulletin/MS02-018.asp
+
+   In  addition  to  applying  the  patch, or until it can be applied, we
+   recommend the following actions:
+
+     * Use  the  IIS Lockdown tool and URLScan to eliminate or reduce the
+       impact of some of these vulnerabilites; they may also eliminate or
+       reduce  other  vulnerabilities  that have not yet been discovered.
+       The  IIS Lockdown tool can also be used to disable ASP if it's not
+       needed.  More  information about the IIS Lockdown tool and URLScan
+       can be found at
+
+          http://www.microsoft.com/technet/security/tools/locktool.asp
+                
+          http://www.microsoft.com/technet/security/URLScan.asp
+
+     * As  Microsoft has recommended for quite some time, disable the HTR
+       ISAPI extension unless it is absolutely required.
+     * Disable anonymous FTP unless it is required.
+     * Don't give login credentials on IIS servers to untrusted users.
+     _________________________________________________________________
+
+   Our  thanks  to Microsoft Corporation for the information contained in
+   their advisory. Additionally, our thanks go to the various individuals
+   and   organizations  whom  Microsoft  identified  as  discovering  the
+   vulnerabilities,       including       eEye      Digital      Security
+   (http://www.eeye.com),     Serge     Mister     of    Entrust,    Inc.
+   (http://www.entrust.com),       Dave       Aitel       of       @Stake
+   (http://www.atstake.com),    Peter   Grundl   of   KPMG,   Joe   Smith
+   (jsm1th@hotmail.com)    and   zenomorph   (admin@cgisecurity.com)   of
+   http://www.cgisecurity.com,   Keigo  Yamazaki  of  the  LAC  SNS  Team
+   (http://www.lac.co.jp/security/), and Thor Larholm of Jubii A/S.
+     _________________________________________________________________
+
+   Author: Shawn V. Hernan
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-09.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+April 11, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPLXddqCVPMXQI2HJAQG0+AP8CqkIjWiFgHY0WdWHeuDDoTt/ME76Qyxc
+hIqu0JY4NYwPgHa3t28g5kT216wgIBpI3A/B4iS/d0GXACsN/NFzMbHK7oyvSauS
+/ljHAfOFWsP8Uho6LQX/A9i4BV1gXDc5ThmCXormjgjcskyrQrRNRE8bSi6yY/kQ
+paZ74Dil6co=
+=qG95
+-----END PGP SIGNATURE-----
+

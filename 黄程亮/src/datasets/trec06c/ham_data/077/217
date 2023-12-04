@@ -1,0 +1,90 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.239.87])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f8PFgmq19586
+	for <egs@cs.cornell.edu>; Tue, 25 Sep 2001 11:42:48 -0400 (EDT)
+Received: from mill (mill.ee.cornell.edu [128.84.236.64])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id f8PFgl601646
+	for <egs@cs.cornell.edu>; Tue, 25 Sep 2001 11:42:47 -0400
+Date: Tue, 25 Sep 2001 11:35:14 -0400 (EDT)
+From: Prince Samar <samar@ece.cornell.edu>
+X-Sender: samar@mill.ee.cornell.edu
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 10
+Message-ID: <Pine.GSO.4.21.0109251134390.4356-100000@mill.ee.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=X-UNKNOWN
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from QUOTED-PRINTABLE to 8bit by sundial.cs.cornell.edu id f8PFgmq19586
+
+
+10) Associativity-Based Routing for Ad hoc  Mobile networks.
+
+This paper presents a novel approach to routing in "conference" sized
+mobile ad hoc networks with a goal of maximizing the route lifetime. The
+protocol is on-demand and is claimed to be free from loops, deadlocks and
+packet duplicates and has scalable memory requirements. The protocol uses
+the associativity property to exploit the spatial and temporal
+relationships of the network in order to construct long-lived routes which
+would further require less maintenance and thus higher throughput.
+
+Each node maintains a Neighboring Table (NT) which contains information
+about the stability of the node's links with its neighbors in the form of
+Associativity 'ticks'. Each node transmits beacons at regular interval,
+updating the tick-count of its neighbors as well as the link quality. When
+a route is needed by the source, it initiates a route query by flooding
+the network with the BQ packets. These BQ packets accumulate the route,
+associativity ticks and route relaying load as they travel through the
+network. Eventually, a few of these BQ control packets reach the
+destination. The destination then decided on the best route depending on
+the information on route stability and congestion as gathered in the BQ
+packet. The best route is chosen and a REPLY sent back, while the rest of
+the found routes simply time-out and expire. The Route Re-Construction
+(RRC) phase tries to maintain routes in case a link in the route to the
+destination breaks. For this, depending on whether the node that has moved
+away lies in the Upper Arm or the Lower Arm of the Intermediate Nodes, a
+limited local query is initiated.
+
+The author also introduces a Dynamic Cell Size Adjustment Scheme (DCSAS)
+which changes the transmission power of a node if it in a congested
+environment. DCSAS tries to reduce the transmission range to exclude
+inactive neighbors but include all currently active neighbors.
+
+Comments:  
+
+- This paper introduces the new and interesting concept of property of
+associativity between nodes in an ad hoc network. The protocol strives to
+select the route with the best known stability by measuring the
+associativity ticks of each of the intermediate nodes. However use of this
+property is totally dependent on the mobility pattern of the nodes in the
+network. It is implicitly assumed that there would always be enough
+"stationary" nodes so that a stable route to the destination can be found.
+In a highly mobile network with few resting nodes, the protocol may not
+provide any benefit at all.
+
+- In order to justify his claims about dormant nodes in the network, the
+author provides data about 52 badge wearers in a "computer laboratory".
+But the real scenarios where ad hoc networks may actually be deployed
+could be very much different (much more mobile and restless) than a
+laboratory where a person comes just to spend some time staring at a
+computer monitor.
+
+- If the destination has moved only one more hop away from its current
+upstream node, a lot of control traffic may be wasted as the protocol
+conservatively tries to obtain a shorter or equal-length route to the
+destination. As the RRQ backtracks, a lot of "area" of the network that
+has already been "covered" by the previous LQs is queried again, resulting
+in wastage of resources. Also the choice of half-way node to switch from a
+LQ to a BQ has not been explained.
+
+- The simulation results do give insights into the working of the
+protocol, but still a lot is missing. The paper contains only migration
+based results which are good for ¨stress-testing" the protocol, but does
+not consider random, real-like cases. The number of nodes are less (30)
+and no results about the amount of control traffic generated are
+presented.
+
+- The passive acknowledgment scheme would work only in a single, broadcast
+channel environment.
+
+- The protocol concentrates on providing a single "good" path. Hence it
+cannot support multi-path routing.
+

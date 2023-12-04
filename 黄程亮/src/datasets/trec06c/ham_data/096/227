@@ -1,0 +1,72 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i9EIQ0FJ030951
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Oct 2004 11:26:00 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 7959B99C296
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Oct 2004 11:26:00 -0700 (MST)
+Received: from 666-devel.u.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 7D7D89ADEDA
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Oct 2004 11:25:59 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041014110858.00ba52d0@psy1.psych.arizona.edu>
+Date: Thu, 14 Oct 2004 11:25:55 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] DMDX 3.1.0.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   A new era opens today with DMDX gaining the ability to handle 2D inputs 
+-- hence the big ol' version number change.
+
+2D Input Device Keyword
+
+<2DInputDevice text1 text2,N1,N2,N3,N4 [...]>
+<2Did text1 text2,N1,N2,N3,N4 [...]>
+
+     Parameter to select an input device as 2D input, ie a touch screen. 
+text1 must be the name of an existing installed DirectInput device that has 
+been calibrated by the TimeDX input test (unless it's "mouse", see below). 
+Once a device is selected there is no way to deselect it without starting a 
+new item file which can be done with the chain keyword, you can however 
+unmap all the devices' buttons with <UnMapButtons>.  Names with spaces in 
+them must be in quotes.  text2 is the arbitrary name for a region on the 
+screen that will generate a response of that name (with added + and - 
+symbols when hit or released) where N1 is the left most coordinate of the 
+region,  N2 the top most, N3 is one more than the right most and N4 one 
+more than the bottom (ie, a standard windows RECT 
+structure).  text2,N1,N2,N3,N4 will need to be repeated for each possible 
+region of the screen that will be used as an input throughout the whole 
+item file.   N1,N2,N3,N4 can be real as per the graphics keywords assuming 
+a video mode has already been specified.  If regions overlap the first 
+defined region that matches is used.  In the following example even though 
+the bottom input (specified in absolute coordinates whereas the others are 
+fractional merely for demonstrative purposes) is totally overlapped it 
+still catches touches in the bottom third of the screen:
+
+<vm 1024,768,16,60> <2did "magic touch usb" bottom,0,512,1024,768 
+left,0,0,.5,1 right,.5,0,1,1> <mpr +right> <mnr +left> <mr +bottom>
+
+     There is one special device name for 2D input and that is 
+"mouse".  This device doesn't connect to any DirectInput device nor does it 
+need calibration in TimeDX (not that you could calibrate the mouse anyway 
+as it has relative axes and the calibration routines only handle devices 
+with absolute axes).  Instead it taps into the windows mouse messages, both 
+left and right clicks generate the same button press.  Because they are 
+windows messages timing isn't going to be real accurate but as far as I can 
+tell the whole pointing paradigm is alien to RTs in any event.  It also 
+turns the cursor on, it's kinda hard to use a mouse to point at things 
+unless there's a cursor...
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   All things are possible except skiing thru a revolving door.
+
+
+

@@ -1,0 +1,67 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5LFEk5L003608
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 08:14:46 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id B9FE5AA6DEA
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 08:14:46 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-9.dsl.arizona.edu [128.196.237.9])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 2EDDFAD3B7F
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 08:14:46 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050621080707.00ba4758@psy1.psych.arizona.edu>
+Date: Tue, 21 Jun 2005 08:14:42 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: deadline procedure
+In-Reply-To: <42B7F1CB.4030901@bris.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:54 AM 6/21/2005 +0100, you wrote:
+>Hi,
+>
+>I was wondering if someone could assist me with the following problem: I 
+>would like to set up an experiment in which a target stimulus is presented 
+>for a fixed amount of time, say, 2000 ms. At a fixed time interval into 
+>the trial, say 500 ms, I would like to have DMDX do the following: if 
+>there was a response prior to the 500 ms deadline, I want DMDX to do 
+>nothing, but if no response occurred by that time, I would like to play a 
+>sound, while still awaiting a response until the timeout. In other words, 
+>the feedback regarding whether or not participants responded within the 
+>deadline interval should occur *within* an ongoing trial.
+
+   Can't happen.
+
+>So far I haven't been able to find a solution to this problem. It is 
+>relatively straightforward to have DMDX perform a conditional branch 
+>*after* a response occurred, with the LastRT keyword in combination with a 
+>bicLE etc. statement. But here I would like to have the deadline sound 
+>presented only if *no* response was made by a certain time. One solution 
+>that I thought of was to schedule an event, at exactly 500 ms, that looks 
+>at LastRT, and performs a conditional branch. But  to my knowledge LastRT 
+>contains the last RT collected within the experiment, so DMDX cannot 
+>distinguish between RTs collected on the current, and on the previous, 
+>trial. Is there a way to reset LastRT between trials? If I could set it to 
+>zero at the beginning of each trial, I could then at 500 ms state: if 
+>LastRT is not 0, then (a response must have occurred within the current 
+>trials, and therefore) do nothing, otherwise play the sound.
+
+   It wouldn't help you in any event as conditionals are all evaluated at 
+item parse time, ie, before any display.  The best you can do is to have a 
+really low Delay parameter and break your item into multiple items instead 
+and live with a couple of ticks between items where if a response occurred 
+it wouldn't register.  I've toyed with the idea of buffering input data 
+across items for this sort of purpose but have yet to see a real need for 
+it here (ie you're into sponsorship territory).
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Interesting but useless facts #48.
+The red flshing beacon atop a firetruck is called a mars light.
+
+
+

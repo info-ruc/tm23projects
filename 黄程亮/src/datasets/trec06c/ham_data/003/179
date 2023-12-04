@@ -1,0 +1,123 @@
+Received: from corpse.ecst.csuchico.edu (dranch@corpse.ecst.csuchico.edu [132.241.5.10]) by spam.ecst.csuchico.edu (8.7.3/8.7.3) with SMTP id NAA07014 for <dranch@ecst.csuchico.edu>; Wed, 10 Apr 1996 13:21:53 -0700 (PDT)
+Received: (from dranch@localhost) by corpse.ecst.csuchico.edu (8.6.12/8.6.12) id NAA06965; Wed, 10 Apr 1996 13:20:54 -0700
+Date: Wed, 10 Apr 1996 13:20:54 -0700
+From: "David A. Ranch" <dranch@ecst.csuchico.edu>
+Message-Id: <199604102020.NAA06965@corpse.ecst.csuchico.edu>
+To: dranch@ecst.csuchico.edu, carl@bre.com, c.michalik@bre.com,
+        ginggs@iafrica.com, difilipp@whidbey.net
+Newsgroups: alt.comp.periphs.mainboard.asus
+Subject: AMD 133(160Mhz) settings for odd ASUS GX4 motherboards w/ BENCHMARKS
+References: <4kdqms$4dq@brazos.bihs.net> <4kf239$b7o@charnel.ecst.csuchico.edu>
+Organization: California State University, Chico
+Status: RO
+X-Status: 
+
+David A. Ranch <dranch@ecst.csuchico.edu> wrote:
+
+>I had the EXACT same thing happen to me.  I will get the new jumper 
+>settings to you as soon as I get home.  It took me -3- days to figure 
+>these out!!
+
+####
+
+Ok, here are the jumper / BIOS settings and quick benchmarks that I found 
+for a GX4 v2.0 board and v401 of the Award BIOS:
+
+	ASUS GX4 v2.0 board
+	16MB FPM DRAM
+	256K async cache
+	Cirrus Logic 5429 VLB video w/ 2MB DRAM
+	Adaptec 2842 SCSI-II-Fast Controller
+	IBM UltraStar XP 2.2GB disk
+	Gravis Ultrasound w/ 1MB DRAM
+	Iomega Ditto 3200 tape drive
+	
+
+
+JP5 : 1+2	Intel setting
+JP6 : 2+3	Intel setting
+
+JP11: 2+3	Intel 3.45v CPU
+
+JP16: 1+2,5+6	CPU setting
+JP17: 1+2,5+6	CPU setting
+JP18: 1+2,5+6	CPU setting
+JP19: 1+2	CPU setting 
+JP20: 1+2	4x clock setting (open for 3x clock)
+JP21: 2+3	for Write Thru (3+4 for Write Back) 
+		Note: I had to use WT cache because I have an Adaptec 2842
+		      busmastering controller.  Try the WB setting first!
+JP22: 1+2,4+5   CPU setting
+
+(for 160Mhz)
+JP23: 2+3
+JP24: 2+3
+JP25: 1+2
+
+JP26: 1+2 	VLB delay
+
+JP28: 1+2	VLB 0ws
+JP29: 1+2	VLB <33Mhz
+
+-----
+
+BIOS settings:  Note: these are pushed so mileage will vary.. you must
+                tweak with these to get a stable system
+
+Auto config       : disbabled
+AT BUS Clock      : 1/4 CLKIN (10Mhz AT BUS at 40Mhz system clock)
+DRAM Speed        : Faster      (My machine won't run stable at FASTEST)
+DRAM Write WS     : 0ws
+DRAM Write CAS    : 1T
+
+DRAM Write Burst  : Enabled
+Slow Refresh      : Enabled
+Hidden Refresh    : Enabled
+
+L2 Cache scheme   : WB - for DOS  WT - for Windows   (see below)
+L1 Cache scheme   : WT   (I had to use WT or my machine wouldn't boot)
+Cache Burst Read  : 1T
+Cache Write Cycle : 2T
+Video Shadow      : non-cachable
+Memory Hole       : Disabled
+
+Fast Reset Latency: 2 uS
+Latch Local Bus   : T2
+Local Bus Ready   : Syncronize
+
+
+---
+Note:  I'm not sure why but PCbench and DOS benchmarks run FASTER with the
+       L2 cache sent to Auto (WT) caching.  Any ideas WHY?!?!?!  I've 
+       left my machine in WT mode since I use Windows95 most of the time.
+
+L2-Write Through
+
+	PCBench9: 	CPU16: 128
+			Video: 5662
+			Disk : 224
+
+	Norton SI/95:	16.9	
+	
+	WinBench96:	CPU16: 129
+			CPU32: 130
+			
+
+L2-Write Back
+
+	PCBench9:	CPU16: 152
+			Video: n/a
+			Disk:  n/a
+
+	Norton SI/95:	n/a
+
+	WinBench96:	CPU16: 120
+			CPU32: 116
+			Video: 5675
+			Disk:  223
+-- 
+ +----------------------------------------------------------------------------+
+ |    David A. Ranch  - ISDN/Cablemodems/PCs      dranch@ecst.csuchico.edu    |
+ +----                                                                    ----+
+ +----- For more detailed info, check out: www.ecst.csuchico.edu/~dranch -----+
+

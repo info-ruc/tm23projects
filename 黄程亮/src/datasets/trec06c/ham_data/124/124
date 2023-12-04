@@ -1,0 +1,196 @@
+Received: from mail.virtuelle.no ([212.247.101.170] verified)
+  by mail.stalker.com (CommuniGate Pro SMTP 5.0.9)
+  with ESMTP id 35255043 for CGatePro@mail.stalker.com; Tue, 09 May 2006 13:36:56 -0700
+Received-SPF: pass
+ receiver=mail.stalker.com; client-ip=212.247.101.170; envelope-from=nicolas.hatier@niversoft.com
+X-CGP-ClamAV-Result: CLEAN
+X-VirusScanner: Niversoft's CGPClamav Helper v1.50 (ClamAV engine v0.88)
+Received: from [207.134.177.158] (account nicolas.hatier HELO niversoft.com)
+  by mail.virtuelle.no (CommuniGate Pro SMTP 5.0.6)
+  with ESMTPSA id 8316823 for CGatePro@mail.stalker.com; Tue, 09 May 2006 22:36:15 +0200
+X-CGP-ClamAV-Result: CLEAN
+X-VirusScanner: Niversoft's CGPClamav Helper v1.51 (ClamAV engine v0.88.2)
+X-ExtFilter: Niversoft's DomainKeys Helper
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+	d=niversoft.com; s=default;
+	h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:Subject:References:In-Reply-To:Content-Type;
+	b=nvmQqTDTS6mhHCkHOo90P0hBmiQR42d8P4wG2AvWYql0WrU/mlfDqdcAMz0n5w5L7pYJThfhCD6n/95DxjQFwUlmfDGP/aClh+ImvrZOVI/SAGfU9A/2+iRY4ISl8u8/g775H2c67LIRRSmtGwjQOUEcSbsmzmrjhmhQgLK6Sss=
+Received: from [192.168.10.100] (account nicolas.hatier [192.168.10.100] verified)
+  by niversoft.com (CommuniGate Pro SMTP 5.0.9)
+  with ESMTPA id 27551386 for CGatePro@mail.stalker.com; Tue, 09 May 2006 16:36:26 -0400
+Message-ID: <4460FD4A.5020906@niversoft.com>
+Date: Tue, 09 May 2006 16:36:26 -0400
+From: Nicolas Hatier <nicolas.hatier@niversoft.com>
+User-Agent: Thunderbird 1.5.0.2 (Windows/20060308)
+MIME-Version: 1.0
+To: CommuniGate Pro Discussions <CGatePro@mail.stalker.com>
+Subject: Re: Existing Mailbox
+References: <list-35254887@mail.stalker.com> <list-35255004@mail.stalker.com>
+In-Reply-To: <list-35255004@mail.stalker.com>
+Content-Type: multipart/alternative;
+ boundary="------------050501040506010903030902"
+
+This is a multi-part message in MIME format.
+--------------050501040506010903030902
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: quoted-printable
+
+
+I don't think this will work in a server-wide rule since there is no=20
+account context yet, the server can't check for existing mailbox except=20
+if you specify a full mailbox name, such as "~postmaster/INBOX".
+
+Try to move this to a domain-level rule, you'll have more success.
+
+N.
+
+Kevin Heneveld wrote:
+> Does it make a difference that it is a server-wide rule instead of an=20
+> account-level rule? I really need a server-wide rule for this.
+>
+> I've already checked the spelling and location - they are all correct.
+>
+> On Tue, 09 May 2006 13:09:41 -0700
+>  "Bret Miller" <bret.miller@wcg.org> wrote:
+> |> I have a domain-wide rule:
+> |>
+> |> Header Field is X-Spam-Flag: YES
+> |> Existing Mailbox is Spam
+> |> Store in Spam
+> |> Discard
+> |> Stop Processing
+> |>
+> |> This rule never seems to hit but the next rule down in priority:
+> |>
+> |> Header Field is X-Spam-Flag: YES
+> |> Store in ~blocked/INBOX
+> |> Discard
+> |> Stop Processing
+> |>
+> |> works fine.  It appears that the Existing Mailbox is Spam is
+> |> not taking.  What
+> |> am I doing wrong?  I'd like any user that has a "Spam"
+> |> mailbox in their
+> |> webmail to get their spam directed to them but the rest get
+> |> directed to the
+> |> ~blocked account for manual review and dispersal (for the
+> |> die-hard pop users out there).
+> | | Hmmm... It works for me with the following:
+> | |From is bret.miller@wcg.org
+> | Subject is Test
+> | Existing Mailbox is Junk E-mail
+> | Store in Junk E-mail
+> | Discard
+> | | Things to remember about mailbox names: They must be spelled and
+> | capitalized exactly correctly. Your rule will not match a "spam"
+> | mailbox, nor a "SPAM" mailbox, but only a "Spam" mailbox. The Spam
+> | mailbox must exist at the root level of the account, not under inbox.=
+
+> | Those are the most common reasons why mailbox names don't match.
+> | | Bret
+
+--=20
+
+*Nicolas Hatier* <mailto:nicolas.hatier@niversoft.com>
+/Niversoft id=E9es logicielles/
+/http://www.niversoft.com/
+
+
+
+--------------050501040506010903030902
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content=3D"text/html;charset=3Dwindows-1252"
+ http-equiv=3D"Content-Type">
+  <title></title>
+</head>
+<body bgcolor=3D"#ffffff" text=3D"#000000">
+<br>
+<font size=3D"-1"><font face=3D"Helvetica, Arial, sans-serif">I don't thi=
+nk
+this will work in a server-wide rule since there is no account context
+yet, the server can't check for existing mailbox except if you specify
+a full mailbox name, such as "~postmaster/INBOX".<br>
+<br>
+Try to move this to a domain-level rule, you'll have more success.<br>
+<br>
+N.<br>
+</font></font><br>
+Kevin Heneveld wrote:
+<blockquote cite=3D"midlist-35255004@mail.stalker.com" type=3D"cite">Does=
+
+it make a difference that it is a server-wide rule instead of an
+account-level rule? I really need a server-wide rule for this. <br>
+  <br>
+I've already checked the spelling and location - they are all correct. <b=
+r>
+  <br>
+On Tue, 09 May 2006 13:09:41 -0700 <br>
+=A0"Bret Miller" <a class=3D"moz-txt-link-rfc2396E"
+ href=3D"mailto:bret.miller@wcg.org">&lt;bret.miller@wcg.org&gt;</a>
+wrote: <br>
+|&gt; I have a domain-wide rule: <br>
+|&gt; <br>
+|&gt; Header Field is X-Spam-Flag: YES <br>
+|&gt; Existing Mailbox is Spam <br>
+|&gt; Store in Spam <br>
+|&gt; Discard <br>
+|&gt; Stop Processing <br>
+|&gt; <br>
+|&gt; This rule never seems to hit but the next rule down in priority: <b=
+r>
+|&gt; <br>
+|&gt; Header Field is X-Spam-Flag: YES <br>
+|&gt; Store in ~blocked/INBOX <br>
+|&gt; Discard <br>
+|&gt; Stop Processing <br>
+|&gt; <br>
+|&gt; works fine.=A0 It appears that the Existing Mailbox is Spam is <br>=
+
+|&gt; not taking.=A0 What <br>
+|&gt; am I doing wrong?=A0 I'd like any user that has a "Spam" <br>
+|&gt; mailbox in their <br>
+|&gt; webmail to get their spam directed to them but the rest get <br>
+|&gt; directed to the <br>
+|&gt; ~blocked account for manual review and dispersal (for the <br>
+|&gt; die-hard pop users out there). <br>
+| | Hmmm... It works for me with the following: <br>
+| |From is <a class=3D"moz-txt-link-abbreviated"
+ href=3D"mailto:bret.miller@wcg.org">bret.miller@wcg.org</a> <br>
+| Subject is Test <br>
+| Existing Mailbox is Junk E-mail <br>
+| Store in Junk E-mail <br>
+| Discard <br>
+| | Things to remember about mailbox names: They must be spelled and <br>=
+
+| capitalized exactly correctly. Your rule will not match a "spam" <br>
+| mailbox, nor a "SPAM" mailbox, but only a "Spam" mailbox. The Spam <br>=
+
+| mailbox must exist at the root level of the account, not under inbox.
+  <br>
+| Those are the most common reasons why mailbox names don't match. <br>
+| | Bret <br>
+</blockquote>
+<br>
+<div class=3D"moz-signature">-- <br>
+<br>
+<a style=3D"" href=3D"mailto:nicolas.hatier@niversoft.com"><font
+ color=3D"black" face=3D"Gill Sans,Arial" size=3D"2"><strong>Nicolas Hati=
+er</strong></font></a><br>
+<font color=3D"gray" face=3D"Gill Sans,Arial" size=3D"2"><em>Niversoft id=
+=E9es
+logicielles</em></font><br>
+<a href=3D"http://www.niversoft.com"><font color=3D"lightskyblue"
+ face=3D"Gill Sans, Arial" size=3D"2"><em>http://www.niversoft.com</em></=
+font></a>
+<p><br>
+</p>
+</div>
+</body>
+</html>
+
+--------------050501040506010903030902--

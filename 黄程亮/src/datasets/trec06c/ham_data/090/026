@@ -1,0 +1,131 @@
+Received: from postoffice8.mail.cornell.edu (postoffice8.mail.cornell.edu [132.236.56.38])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h82GU7j12099
+	for <egs@cs.cornell.edu>; Tue, 2 Sep 2003 12:30:08 -0400 (EDT)
+Received: from uportal0 (uportal0.cit.cornell.edu [132.236.229.130])
+	by postoffice8.mail.cornell.edu (8.12.9/8.12.6) with ESMTP id h82GU7Xm025839
+	for <egs@cs.cornell.edu>; Tue, 2 Sep 2003 12:30:07 -0400 (EDT)
+Date: Tue, 2 Sep 2003 12:30:07 -0400 (EDT)
+Message-ID: <12437310.1062520205426.JavaMail.webber@uportal0>
+From: Vijay Kumar                                                                                                                      <vk66@cornell.edu>
+To: egs@cs.cornell.edu
+Subject: 615 PAPER 1
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 2.10
+
+DSDV
+---------------
+The Destination Sequenced Distace-Vector (DSDV) uses the distance-vector routing(classic Bellman-Ford) to maintain 
+
+connectivity information. DSDV improves on the class Bellman-Ford routing algorithm by eliminating loops.  Every node is 
+
+required to maintain route table entry for every destination, which consists of a sequence number, destination address, next 
+
+hop(mobilie station) and number of hops to that destination(metric).  Consistency of the route table is maintained by frequent 
+
+broadcast and freshness of sequence numbers.  Mobile stations are required to advertise to the network any signicant changes 
+
+in their neighborhood.  Fluctuations in the network are reduced by allowing for a settling time before route changes are 
+
+announced, unless the change is as significant as the removal of a node.  
+
+  A node updates its route table entry only under the following circumstances
+o) The new entry has a newer sequence number.
+o) The new entry has a better metric and the sequence numbers are same.
+  This ensures that the network is loop free and network bandwidth is conserved.  
+
+
+pros:-
+	o) New mobile stations are immediately discovered.
+
+cons:-
+	o) The DSDV algorithm is not well suited for large network(large number of mobile stations) with frequent movement of 
+
+mobile stations.  The space required to maintain the route table entry is O(n^2) as each node has to maintain all possible 
+
+routes to a destination and only choose the minimum in that set for routing.  Also frequent movement means frequent updates 
+
+and consumption of valuable bandwidth.  This also means higher power consumption both of which are at premium in a mobile 
+
+network.
+
+
+DSR
+---------------
+The Dynamic Source Routing(DSR) improves on the DSDV by discovering routes to destination only on demand.  This reduces the 
+
+memory and bandwidth requirement which are at premium in a mobile station.  Whenever a mobile station wants to communicate 
+
+with another one it initiates a Route Discovery by sending a route request packet.  Every route request packet contains 
+
+<initiator address, destination address, request id>.  Each mobile station forwards the packet to the next neighbor if the 
+
+packet was not meant for itself and adds itself to the route record of the packet.  This also constructs the reverse path to 
+
+the source.  
+
+  The DSR applies several optimizations to the basic algorithm
+
+o) Route cache and learning:-  Mobile stations can learn about paths to the intermediate participating nodes while the packet 
+
+completes the cirutous path from host to destination and back.  Cached routes can reduce the time of route discovery.
+
+o) Promiscusous learning:-  
+	- Other mobile hosts not directly participating in the route discovery can also learn about the path since the medium 
+
+of transmission is broadcast.  
+	- Promiscous listening can also help nodes discover shorter routes whenever they appear in the network.
+	- Route errors discovered by one node can help other nodes remove unreacheable nodes from their cache entries.
+
+
+  Loops are avoided by avoiding retransmits of route discovery packets if the id of the node is already present in route 
+
+discvoery path contained in the packet.
+
+
+Pros:- 
+	o) Routes are discovered dynamically which saves network bandwidth, power, memory.
+	o) Promiscuous mode helps reduce route discoveries.
+
+Cons:-
+	o) New mobile stations are not immediately discovered.  This can though be overcome by sending a Route discovery
+           to a mobile host that is known not to exist.
+	o) May not work well if the route paths are long as the route discovery packet has to accomodate all the nodes
+participating in the route discovery.  
+
+
+
+AODV
+----------------
+	Ad-hoc On-Demand Distance Vector Routing ( AODV ) combines the DSDV and DSR to obtain better bandwidht usage, local 
+
+connectivity and memory usage of mobile network.  AODV uses dynamic route discovery just like in DSR, although local 
+
+connectivity information is readily available since nodes are required to send hello messages to one another.  Whenever a node 
+
+launches a route discvoery to an unknown host using Route Request packets( RREQ) the intermediate hosts retransmit a Route 
+
+Reply Packet(RREP) back to the source.  This helps setup forward and return paths dynamically.  Also the packet sizes are 
+
+significantly less when compared to DSR as the packets need not store the entire path in its header.
+
+	The route tables store source sequence numbers, destinations sequence numbers and a route expiration timer.  The 
+
+expiration timer helps purge reverse paths whenever the nodes do not lie on the path from source to destination.  The sequence 
+
+numbers help maintain a loop free path.
+
+
+Pros:-
+	o) Uses the least resources of the 3 algorithms
+		- reduced packet size
+		- reduced memory and network activity using 'route request expiration timer'
+	o) local connectivity information readily available and link breakages can be immediately broadcast to interested 
+
+nodes.
+
+
+Cons:-
+	o) Assumes symmetric links
+

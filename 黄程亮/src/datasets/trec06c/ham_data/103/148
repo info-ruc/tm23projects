@@ -1,0 +1,344 @@
+Received: from mac.com (smtpin17-en2 [10.13.11.245])
+ by ms74.mac.com (iPlanet Messaging Server 5.2 HotFix 2.03 (built Nov 22 2004))
+ with ESMTP id <0IIG0022WL7ZJ8@ms74.mac.com> for glgray@mac.com; Tue,
+ 21 Jun 2005 16:57:35 -0700 (PDT)
+Received: from engremail.engr.psu.edu
+ (engremail.engr.psu.edu [130.203.201.4] (may be forged))
+	by mac.com (Xserve/smtpin17/MantshX 4.0) with ESMTP id j5LNvYjk003888	for
+ <glgray@mac.com>; Tue, 21 Jun 2005 16:57:34 -0700 (PDT)
+Received: from email.esm.psu.edu ([130.203.247.204]) by engremail.engr.psu.edu
+ with Microsoft SMTPSVC(5.0.2195.6713); Tue, 21 Jun 2005 19:57:28 -0400
+Date: Tue, 21 Jun 2005 20:00:13 -0400
+From: Emacs on Mac OS X <macosx-emacs@email.esm.psu.edu>
+Subject: Mac OS X-Emacs Digest #127 - 06/21/05
+Sender: macosx-emacs@email.esm.psu.edu
+To: Emacs on Mac OS X <macosx-emacs@email.esm.psu.edu>
+Message-id: <28813.63908@email.esm.psu.edu>
+MIME-version: 1.0
+Content-type: text/plain; charset=iso-8859-1
+Content-transfer-encoding: quoted-printable
+Precedence: List
+X-LR-SENT-TO: mail.engr.psu.edu
+List-Subscribe: <mailto:macosx-emacs-on@email.esm.psu.edu>
+List-Digest: <mailto:macosx-emacs-digest@email.esm.psu.edu>
+List-Unsubscribe: <mailto:macosx-emacs-off@email.esm.psu.edu>
+List-Software: LetterRip Pro 4.05 (0531) by LetterRip Software, LLC.
+Original-recipient: rfc822;glgray@mac.com
+X-OriginalArrivalTime: 21 Jun 2005 23:57:28.0131 (UTC)
+ FILETIME=[FAAA2130:01C576BC]
+
+Mac OS X-Emacs Digest #127 - Tuesday, June 21, 2005
+
+  path and other minor problems with Enhanced Carbon Emacs (Mac OS X.3)
+          by "Pierre Albarede" <pa.news@free.fr>
+
+  Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs
+          by "Peter Dyballa" <Peter_Dyballa@Web.DE>
+
+  Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs
+          by "Pierre Albarede" <pa.news@free.fr>
+
+  Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs
+          by "David Reitter" <david.reitter@gmail.com>
+
+  Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs
+          by "Pierre Albarede" <pa.news@free.fr>
+
+  Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs
+          by "Peter Dyballa" <Peter_Dyballa@Web.DE>
+
+  Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs
+          by "David Reitter" <david.reitter@gmail.com>
+
+
+----------------------------------------------------------------------
+
+Subject: path and other minor problems with Enhanced Carbon Emacs (Mac OS X.3)
+From: "Pierre Albarede" <pa.news@free.fr>
+Date: Tue, 21 Jun 2005 11:02:52 +0200
+
+Hi,
+
+as a new subscriber to this list, I first feel obliged to thank all the 
+people who work at making emacs availalble on the mac.
+
+1-In order to make Enhanced Carbon Emacs work as the emacs command in a 
+shell, I had to replace, in
+Emacs.app/Contents/Resources/site-lisp/environment.plist,
+/Applications/Emacs.app/Contents/MacOS/bin
+by
+/Applications/Emacs.app/Contents/Resources/site-lisp
+(before running set-environment).
+
+Has anybody noticed this before? Or did I miss something?
+
+2-From Franconi's readme.txt :
+
+> - If the provided dot-emacs.el is copied in your personal ~/.emacs
+>   file, auto-magically the emacs bundled with MacOS X (in /usr/bin)
+>   and the fink installed emacs (in /sw/bin) will become enhanced as
+>   well.
+
+Running /usr/bin/emacs in a shell, with Franconi's dot-emacs.el as 
+.emacs, yields
+Error in init file: File error: "Cannot open load file", 
+"/Applications/Emacs.app/Content\
+s/Resources/share/emacs/site-lisp/site-start.el
+
+Again, this is a path problem. I tried replacing, in .emacs,
+(load-local-site-start 
+"/Applications/Emacs.app/Contents/Resources/share/emacs/site-lisp"))
+by
+(load-local-site-start 
+"/Applications/Emacs.app/Contents/Resources/site-lisp").
+
+Something gets loaded, yet /usr/bin/emacs is not enhanced. Why?
+
+These are not serious bugs, but I would really like to understand what 
+is going on. Thanks.
+
+Pierre Albarede http://pierre.albarede.free.fr
+--------------------------------------------------------------
+International Mathematica Symposium
+Avignon 2006, June 19-23, http://ims06.org
+--------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+
+Subject: Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs (Mac OS X.3)
+From: "Peter Dyballa" <Peter_Dyballa@Web.DE>
+Date: Tue, 21 Jun 2005 12:26:21 +0200
+
+
+Am 21.06.2005 um 11:02 schrieb Pierre Albarede:
+
+> Hi,
+>
+> as a new subscriber to this list, I first feel obliged to thank all =20=
+
+> the people who work at making emacs availalble on the mac.
+>
+> 1-In order to make Enhanced Carbon Emacs work as the emacs command in =20=
+
+> a shell, I had to replace, in
+> Emacs.app/Contents/Resources/site-lisp/environment.plist,
+> /Applications/Emacs.app/Contents/MacOS/bin
+> by
+> /Applications/Emacs.app/Contents/Resources/site-lisp
+> (before running set-environment).
+>
+> Has anybody noticed this before? Or did I miss something?
+
+Yes, that's true. The shell script /Applications/Enhanced Carbon =20
+Emacs.app/Contents/Resources/site-lisp/emacs had to be put into into =20
+another directory than /Applications/Enhanced Carbon =20
+Emacs.app/Contents/MacOS/bin because this one already has the emacs =20
+application programme, that's not 'relocated' correctly and hardly ever =20=
+
+works. I chose to use the script directly when I needed to install =20
+AUCTeX or preview-latex etc.
+
+When did you find you had to invent this clever idea?
+
+And yes: you did miss something! Recently there are better Carbon =20
+Emacsen around, from 2005, that might provide better results. Aquamacs =20=
+
+(http://prdownloads.sourceforge.net/aquamacs/Aquamacs-Emacs=20
+-0.9.2b8.dmg?download, http://aquamacs.org/) gets enhanced into another =20=
+
+direction: being better integrated into the Aqua look&feel. And it's =20
+supported by its developers here in this list. You still have to use =20
+the work of others to have AUCTeX and friends installed: =20
+http://yaced.sourceforge.net/. Norm Gall has Yet Another Carbon Emacs =20=
+
+Distribution packaged ...
+
+>
+> 2-=46rom Franconi's readme.txt :
+>
+>> - If the provided dot-emacs.el is copied in your personal ~/.emacs
+>>   file, auto-magically the emacs bundled with MacOS X (in /usr/bin)
+>>   and the fink installed emacs (in /sw/bin) will become enhanced as
+>>   well.
+>
+> Running /usr/bin/emacs in a shell, with Franconi's dot-emacs.el as =20
+> .emacs, yields
+> Error in init file: File error: "Cannot open load file", =20
+> "/Applications/Emacs.app/Content\
+> s/Resources/share/emacs/site-lisp/site-start.el
+>
+> Again, this is a path problem. I tried replacing, in .emacs,
+> (load-local-site-start =20
+> "/Applications/Emacs.app/Contents/Resources/share/emacs/site-lisp"))
+> by
+> (load-local-site-start =20
+> "/Applications/Emacs.app/Contents/Resources/site-lisp").
+>
+> Something gets loaded, yet /usr/bin/emacs is not enhanced. Why?
+
+/usr/bin/emacs is a very old programme that Apple included into Mac OS =20=
+
+X. Check its version! It's 21.2! I support with my .emacs file =20
+different Emacsen in different environments. So I added
+
+	(defconst mWS (symbol-value 'window-system)
+	  "Running as some windowing system's client,
+	   or as slave of a terminal emulator?")
+
+and use this variable later:
+
+     (cond ((string=3D "nil" mWS)
+         (message "Sind im Terminal")
+         (load "~/.emacs_nil")
+     ))  ; Ende Terminal
+
+So I have (external) sections to setup Emacs. You could put Enrico =20
+Franconi's .emacs code, at least some parts, into such a clause, =20
+comparing mWS with "mac", the window-system in which Carbon Emacs runs. =20=
+
+(Others are x11 or windows.)
+
+--
+Greetings
+
+   Pete
+
+=93One cannot live by television, video games, top ten CDs, and dumb =20
+movies alone=94
+       (Amiri Baraka 1999)
+
+
+----------------------------------------------------------------------
+
+Subject: Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs (Mac OS X.3)
+From: "Pierre Albarede" <pa.news@free.fr>
+Date: Tue, 21 Jun 2005 15:34:37 +0200
+
+Hi
+
+Peter Dyballa
+> And yes: you did miss something! Recently there are better Carbon  
+> Emacsen around, from 2005, that might provide better results. Aquamacs  
+> (http://prdownloads.sourceforge.net/aquamacs/Aquamacs-Emacs 
+> -0.9.2b8.dmg?download, http://aquamacs.org/)
+
+Thanks.
+
+It looks good indeed. However, the meta key is not bound to command,  
+and I cannot type ~ (tilda) (I get empty set instead). For the moment,  
+Enhanced Carbon Emacs is OK for me.
+
+
+
+----------------------------------------------------------------------
+
+Subject: Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs (Mac OS X.3)
+From: "David Reitter" <david.reitter@gmail.com>
+Date: Tue, 21 Jun 2005 14:41:33 +0100
+
+On 21 Jun 2005, at 14:34, Pierre Albarede wrote:
+
+
+>
+> It looks good indeed. However, the meta key is not bound to  
+> command, and I cannot type ~ (tilda) (I get empty set instead). For  
+> the moment, Enhanced Carbon Emacs is OK for me.
+
+
+You can bind meta to the option key (see item in Options menu), or  
+set Command to meta in .emacs (see the Aquamacs wiki -- from Help menu).
+For ~: what keys do you need to press for this? What kind of keyboard?
+
+- Dave
+
+----------------------------------------------------------------------
+
+Subject: Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs (Mac OS X.3)
+From: "Pierre Albarede" <pa.news@free.fr>
+Date: Tue, 21 Jun 2005 15:57:37 +0200
+
+> For ~: what keys do you need to press for this? What kind of keyboard?
+>
+> - Dave
+
+I usually press alt (aka option) n space.
+This is a French keyboard.
+
+
+----------------------------------------------------------------------
+
+Subject: Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs (Mac OS X.3)
+From: "Peter Dyballa" <Peter_Dyballa@Web.DE>
+Date: Tue, 21 Jun 2005 16:21:52 +0200
+
+
+Am 21.06.2005 um 15:57 schrieb Pierre Albarede:
+
+> I usually press alt (aka option) n space.
+> This is a French keyboard.
+>
+
+That's as in German. I have this "customization" active for Aquamacs:
+
+         (setq mac-pass-option-to-system t)
+         (setq mac-command-key-is-meta t)
+         (setq mac-option-modifier nil)
+         (setq mac-command-modifier nil)
+         (setq mac-control-modifier nil)
+         (setq one-buffer-one-frame nil)
+         (setq mac-allow-anti-aliasing nil)
+         (setq mac-transparency-alpha 80)
+
+With this the Alt key just alternates the keyboard layout, i.e. you get=20=
+
+~, =80, @ ... It makes Aquamacs not to communicate with Aqua, i.e. there=20=
+
+is no way to exchange selections with other tools and applications.
+
+--
+Greetings
+
+   Pete
+
+Windows, c'est un peu comme le beaujolais nouveau: =E0 chaque nouvelle=20=
+
+cuv=E9e on sait que ce sera d=E9gueulasse, mais on en prend quand m=EAme, =
+par=20
+masochisme.
+
+
+----------------------------------------------------------------------
+
+Subject: Re: [OS X Emacs] path and other minor problems with Enhanced Carbon Emacs (Mac OS X.3)
+From: "David Reitter" <david.reitter@gmail.com>
+Date: Tue, 21 Jun 2005 15:51:17 +0100
+
+Ok, I can confirm there's still (or again) a bug regarding composed =20
+characters (deadkeys). It'll be fixed - thanks Pierre for reporting.
+
+>
+> With this the Alt key just alternates the keyboard layout, i.e. you =20=
+
+> get ~, =80, @ ... It makes Aquamacs not to communicate with Aqua, =20
+> i.e. there is no way to exchange selections with other tools and =20
+> applications.
+
+Well, Command-C/X/V don't work any more of course because you've =20
+bound Meta to Command. You can still use Copy/Cut/Paste in the Edit =20
+menu to exchange data.
+
+- Dave
+
+
+----------------------------------------------------------------------
+End of Mac OS X-Emacs Digest
+
+------------------------------- Info --------------------------------
+List Post: <mailto:macosx-emacs@email.esm.psu.edu>
+List Archives: <http://www.esm.psu.edu/mac-tex/MacOSX-Emacs-Digests/>
+
+</pre>
+
+</body>
+</html>

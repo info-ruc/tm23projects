@@ -1,0 +1,68 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k27Gqlt04737
+	for <egs@unix.cucs>; Tue, 7 Mar 2006 11:52:47 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.28]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 7 Mar 2006 11:52:47 -0500
+Received: from [128.84.223.148] ([128.84.223.148]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 7 Mar 2006 11:52:46 -0500
+Message-ID: <440DBA5E.3070808@cs.cornell.edu>
+Date: Tue, 07 Mar 2006 11:52:46 -0500
+From: Tudor Marian <tudorm@cs.cornell.edu>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: egs@cs.cornell.edu
+Subject: PAPER 12
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 07 Mar 2006 16:52:46.0742 (UTC) FILETIME=[8F8FFB60:01C64207]
+
+<PAST>
+
+PAST is a large scale p2p persistent storage system based on the Pastry 
+overlay. The interface provided permits insertions, lookups and 
+reclaiming at the granularity of a file, therefore the semantics is that 
+of a storage for immutable files. Since Pastry performs the routing, the 
+paper focuses on the replica management, each file gets to be replicated 
+on k distinct nodes (they may be virtual). Initially, an insert 
+operation routes the file to the home node, that will in turn send it to 
+k-1 of the neighbors in its leaf set. PAST uses replica diversion and 
+file diversion to counter the storage load imbalance issue. Replica 
+diversion means that if a node cannot accommodate locally a copy of an 
+object, it will chose a node in its leaf set that doesn't yet hold a 
+copy and delegate the storage responsibility to it, keeping the pointer 
+though. File diversion happens when an object was not able to be 
+replicated on k nodes. In such a scenario a negative acknowledgment is 
+returned to the client, that in turn can generate a new fileID based on 
+a different salt and retry to insert the file, thus targeting a 
+different part of the ring. The benefits of caching are explored as well.
+
+Security is quite an issue in such a system, yet the paper defers it to 
+a "forthcoming" paper.
+
+</PAST>
+
+
+<CFS>
+
+CFS is a p2p read only completely decentralized file system based on the 
+Chord overlay. The system provides different use cases based on the role 
+of the actors, the users and the content publishers. The users see the 
+file system as a read only POSIX-like block file system, while the 
+publishers are able to create and modify entire filesystems (there's a 
+1:1 mapping between a publisher's public key and a filesystem). CFS is 
+layered into the file system interface, the DHash and Chord. Chord 
+performs routing at the granularity of blocks, the blocks may be 
+metadata blocks (like directory blocks or inode blocks) or data content 
+blocks. The DHash layer handles the block replica placement and caching 
+popular blocks, while the FS layer interprets the blocks at the DHash 
+level as a file system.
+
+Load balancing is an easier problem to solve in CFS since the blocks 
+have same size, yet the multiple indirections (even with the 
+pre-fetching) that each may take up to logN steps cripples the 
+performance of the system.
+
+</CFS>
+
+Tudor
+

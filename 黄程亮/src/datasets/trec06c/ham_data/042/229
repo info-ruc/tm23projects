@@ -1,0 +1,48 @@
+Received: from [18.85.1.107] (xynar.media.mit.edu [18.85.1.107])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id PAA19060;
+	Fri, 23 Apr 1999 15:35:38 -0400 (EDT)
+Message-Id: <199904231935.PAA19060@aleve.media.mit.edu>
+Subject: Re: handyboard clock speed
+Date: Fri, 23 Apr 1999 15:36:45 -0400
+X-Sender: fredm@mailhub.media.mit.edu
+X-Mailer: Claris Emailer 2.0v3, January 22, 1998
+From: Fred Martin <fredm@media.mit.edu>
+To: "Curt Mills, WE7U" <hacker@tc.fluke.com>, "Ian Nieves" <wired@cmu.edu>
+Cc: <handyboard@media.mit.edu>, "Andre Philippi" <philippi@earthlink.net>,
+        "Curt Mills" <BowHunt@iname.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+
+
+
+>I think this is how it works:  The HC11 starts downloading at 1200 baud
+>currently, and then switches to 9600 after getting the little 200-odd byte
+>downloader into the chip and running.  I'm not sure, but I think the chip
+>would start at 1800 baud for the first 200-odd bytes and then those
+>200-odd bytes that get loaded into the chip might need to be tweaked to
+>put the chip at a standard baud rate for the rest of the download. 
+
+yes, this is right.
+
+the fastest you can go with the 52-pin 6811s is 12 MHz crystal --> 3 MHz 
+system clock (i'm pretty sure).  so this is only 1.5x over the stock HB.
+
+so you've got the issue Curt pointed out with not only the downloader, 
+but also with IC.  
+
+so unless you're willing to work from the source code of these tools, to 
+deal with the baud rate issue, basically, you're wedged.
+
+in my opinion:  1.5x speedup = lots of hassle = not worth it.
+
+if you need more speed, write in assembly (maybe using IC's ICB 
+interface), or use ImageCraft's icc11 (www.imagecraft.com) native C 
+compiler.  OR, give a try to Kurt Konolige's "IC Native" port of the 
+freeware Interactive C.  see 
+
+  
+<http://el.www.media.mit.edu/projects/handy-board/software/icsource.html>
+
+yours
+fred
+

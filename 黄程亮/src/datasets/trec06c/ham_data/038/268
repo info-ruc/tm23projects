@@ -1,0 +1,85 @@
+Received: from golem.hagener-tgz.de (golem.hagener-tgz.de [193.175.168.3])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA01931
+	for <handyboard@media.mit.edu>; Tue, 9 Mar 1999 14:04:39 -0500 (EST)
+Received: from hagener-tgz.de (ygramul44.hagener-tgz.de [193.175.168.108])
+	by golem.hagener-tgz.de (8.8.8/8.8.8) with ESMTP id UAA18651
+	for <handyboard@media.mit.edu>; Tue, 9 Mar 1999 20:01:59 +0100
+Message-Id: <36E570F6.F2347849@hagener-tgz.de>
+Date: Tue, 09 Mar 1999 20:05:26 +0100
+From: Simon Schulz <Simon.Schulz@hagener-tgz.de>
+X-Mailer: Mozilla 4.5 [de]C-CCK-MCD QXW03207  (Win95; I)
+X-Accept-Language: de,en
+Mime-Version: 1.0
+To: handyboard <handyboard@media.mit.edu>
+Subject: Serial routines for PA7 at 2400 Baud
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I read somewhere taht if i want to use pa7 with 2400 baud that i'll have
+to modify the LDAB 37 to LDAB 148. Is this the only change ??
+
+If i try to use this, and i send 0b11111111 on the HB, I get 0b11000000
+on the Host (if i try 0b00000000 i get 0b10000000).
+
+That looks wrong for me ...
+Can someone help me ? Perhaps i do a mistake with compiling (the .asm to
+.icb) file ?
+I used the as11 for doing so.
+
+Thank you, Simon
+
+
+Modified Code below:
+
+* pa7_2400.asm 
+*************************************************************************
+* originally written by 						*
+* Fred Martin								*
+* fredm@media.mit.edu							*
+* 5 February 1997							*
+* changed to output @ 2400 baud						*
+*************************************************************************
+
+BASE	EQU	$1000	; register base
+
+PORTA	EQU	$1000	; Port A data register
+PACTL	EQU	$1026	; Pulse Accumulator Control register
+
+	ORG	MAIN_START
+
+* sends a byte at 2400 N-8-1 over port A, bit 7
+subroutine_pa7_2400:
+	TBA
+	SEI
+	LDX	#BASE
+	BSET	PACTL,X $80	; enable PA7 for output
+* send start bit
+	BSR	a7_bit0
+* send 8 data bits
+	BSR	a7_send8
+* send stop bit
+	BSR	a7_bit1
+	CLI
+	RTS
+
+* thanks to Brian Silverman for this recursive bit output trick
+a7_send8 BSR	a7_send4
+a7_send4 BSR	a7_send2
+a7_send2 BSR	a7_send1
+a7_send1 LSRA
+	BCC	a7_bit0
+a7_bit1	BSET	PORTA,X $80
+	BRA	bit_delay
+a7_bit0	BCLR 	PORTA,X $80
+
+* LDAB changed to 4x37 (for 2400 baud)
+
+bit_delay
+	LDAB	#148
+bit_loop
+	DECB			; 2 cycles
+	BNE	bit_loop	; 3 cycles
+	RTS
+

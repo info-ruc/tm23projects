@@ -1,0 +1,64 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18] (may be forged))
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id NAA30795
+	for <handyboard@media.mit.edu>; Tue, 30 Mar 1999 13:38:13 -0500 (EST)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Tue, 30 Mar 1999 10:38:28 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id KAA19912;
+	Tue, 30 Mar 1999 10:38:07 -0800 (PST)
+Date: Tue, 30 Mar 1999 10:38:07 -0800 (Pacific Standard Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Ken Hornstein <kenh@cmf.nrl.navy.mil>
+Cc: handyboard@media.mit.edu, Curt Mills <BowHunt@iname.com>,
+        Curt Mills <hacker@tc.fluke.com>
+Subject: Re: GCC 2.8.1 for HC11 
+In-Reply-To: <199903301732.MAA20066@ginger.cmf.nrl.navy.mil>
+Message-Id: <Pine.WNT.3.96.990330101255.107a-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Tue, 30 Mar 1999, Ken Hornstein wrote:
+
+> Another question: _which_ cross-assembler does it use?  The one based on
+> the ASXXXX cross-assembler (the so-called "Baldwin assembler") or another
+> one?
+
+In the xasm/doc directory it says "ASxxxx Cross Assemblers, Version 1.1,
+June 1990.  Submitted by Alan R. Baldwin, Kent State University".  I guess
+that's your answer. 
+
+Let me know a better route to follow for the assembler/linker please.
+
+
+> Oh, does the current cross-compiler still use
+> the pseudo-register hack?  That was something I always wanted to go back
+> and fix properly.
+
+From what I've seen, it still uses it.  It looks like 2 of the registers
+have been deleted in the latest stuff, but that looks like the only change
+to the pseudo-registers.  Here are the two that are gone from the latest
+sources:
+
+  /* Define 2 pseudo hard registers which map to y register for frame and
+     argument pointers */
+  #define HARD_FP_REGNUM	20
+  #define HARD_AP_REGNUM	21
+
+And of course the next #define (FIRST_PSEUDO_REGISTER) has gone from 22
+down to 20, and other sections are tweaked to delete FP and AP.
+
+If you want to go back and fix it properly, let me know if I can help. 
+Pseudo-registers appear to be the most inefficient part of the port
+(according to what all the notes say). 
+
+I also saw something about a 6809 port in the sources.  If someone did a
+6809 port to gcc at one time, where is it now?  I don't need it, but I
+hate to see useful code go down the drain.  A similar philosophy makes
+sure my garage is always full.   :-(
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

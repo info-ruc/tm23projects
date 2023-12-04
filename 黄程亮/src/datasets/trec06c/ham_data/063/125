@@ -1,0 +1,59 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id SAA14300
+	for <handyboard@media.mit.edu>; Tue, 14 Mar 2000 18:06:07 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id SAA25002; Tue, 14 Mar 2000 18:06:06 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7585
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Real-Life-Name: Fred G. Martin
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: Another assembly question
+Posted-Date: Tue, 14 Mar 2000 23:05:12 GMT
+Date: Tue, 14 Mar 2000 23:05:12 GMT
+Organization: MIT Media Laboratory
+Message-Id: <FrFpGo.Ior@lugnet.com>
+References: <FrFIJ5.3no@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+the fact that the two LEDs come on and then go off suggests that you *are*
+successfully putting the hc11 into download mode.
+
+it also happens that the hc11 TxD pin is in what's called "wired OR mode"
+during bootstrap.  this means that it can only drive a low/0v state and
+requires a pullup resistor (resident on the HB) to generate the high state.
+
+so i would check the resistors involved in the serial line ckt -- most
+notable, resistor pack RP4.  this should be a pack of four discrete 1K
+resistors.  if you have a pack of 7 common-bussed resistors that would be
+problems.
+
+fred
+
+
+In lugnet.robotics.handyboard, Darin Greene writes:
+>
+>
+>I'm also at the point of trying to download to my partially assembled board
+>for the first time. I'm able to put the board in to download mode (both led's
+>come on for a short period of time then go off). When I start downloading the
+>green led on the interface blinks, but the led on the main board doesn't. I've
+>watched the voltage coming out of the 232 chip and seen it vary while the
+>download is happening, I've also watched the voltage on the Rx pin of the 6811
+>do the same thing. The Tx pin of the 6811 is always low during the download.
+>So I'm suspecting I' haven't managed to get the 6811 (an A1 I got from BG
+>Micro) in to download mode. I checked that at power on the two pins to put the
+>6811 in bootstrap mode are both low as the manual suggests. Now I'm stuck
+>and looking for suggestions on what else I can do to debug the problem.
+>
+>I've been using dl on my 166Mhz Win95 box from a dos prompt. I gather from
+>the archives that dl automatically takes care of the config registers?
+>
+>Any advice, suggestions, etc. would be appreciated. Thanks in advnace
+>
+>Darin
+

@@ -1,0 +1,79 @@
+Received: from wproxy.gmail.com (wproxy.gmail.com [64.233.184.205] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2EGOvt24002
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 11:24:57 -0500 (EST)
+Received: by wproxy.gmail.com with SMTP id 68so2220234wra
+        for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 08:24:53 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=gqD/1OdlniSLGGKZyEB6GX2esn5jRwsSDV3HyXNDqVidFOhIKjt4ZRT0z9GpBlBq1guD5RSzvZ+nOoAeZEpsezZexevY+35tkKSwymrtki7TPcW8GvRNj3OsMplvU7ngHkxFQ5sZK4xd07eXjUWn+SheibcPtGae/XuBCago+y8=
+Received: by 10.54.134.11 with SMTP id h11mr607675wrd;
+        Tue, 14 Mar 2006 08:24:52 -0800 (PST)
+Received: by 10.54.80.9 with HTTP; Tue, 14 Mar 2006 08:24:52 -0800 (PST)
+Message-ID: <6e1ca4560603140824yd10b2cfra6cb3c438a92d6bf@mail.gmail.com>
+Date: Tue, 14 Mar 2006 11:24:52 -0500
+From: "Chiu Wah Kelvin So" <kelvinso@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: Paper 14
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k2EGOvt24002
+
+	The first paper, "Predicting Internet Network Distance with
+Coordinates-Based Approaches," presents architecture to predict
+network distance between nodes by using network embedding. Their
+proposed system is called Global Network Positioning. In their system,
+it include two set of hosts (two-tier system), which include Landmarks
+and ordinary hosts. Landmarks are a small set of hosts who compute
+their own coordinate. Landmarks' coordinate will use as a reference
+for computing coordinate for other ordinary nodes. To compute the
+Landmarks' coordinate, Landmarks first collect all the pairwise RTT of
+Landmarks. Then, it minimizes the overall error of all the predicted
+distance with the measured RTT. Using the coordinate of the Landmarks,
+ordinary node sends a ping message to calculate the RTT to each of the
+landmark, and minimizes the overall error of all the predicted
+distance between the node and all Landmarks with the measured RTT to
+all the Landmarks. This system will exchange N^2 messages to compute
+the coordinate of the Landmarks, where N is the number of Landmarks.
+And each additional node will require N message to compute its own
+coordinate. In the paper, it compared GNP with IDMap and triangulated
+heuristic to show that GNP has a higher accuracy in predicting the
+network distance than existing approach. However, GNP requires
+Landmarks to be up all the time. Also, the choice of landmarks affects
+the GNP prediction of RTT.
+	The second paper, "Vivaldi: A Decentralized Network Coordinate
+System," presents a similar, but decentralized approach of GNP.
+Vivaldi simulates systems by placing spring between each of the
+pairwise nodes with the rest length set to the RTT. The potential
+energy of such a spring is proportional to the displacement of its
+rest length. And we want to minimize the energy over all springs (the
+error function). Each node simulates its own movement and computes its
+own coordinate in the system. Whenever a node communicates with other
+node, it measures the RTT and learns that node's current coordinates
+and the accuracy. Based on the information it receives, node updates
+its own coordinate. They show that the accuracy of Vivaldi is as good
+as the accuracy in GNP while Vivaldi is completely decentralized. They
+also provide some interesting coordinate space to simulate the
+accuracy of Vivaldi. However, this system assumes that all nodes are
+cooperative in reporting their information.
+	The third paper, "Meridian: A Lightweight Network Location Service
+without Virtual Coordinates," presents an architecture to select
+closest node to a target, minimal latencies to a given set of nodes,
+and select a set of nodes given latency constraint to a target.
+Instead of using network embedding, the author narrows the network
+coordinate position problem to a node selection problem. Meridian uses
+a loosely structured overlay network to maintain multi-resolution
+rings. Radius of each ring is exponentially farther. Nodes measure
+distance of nodes and places O(LogN) nodes into ring i where ri <
+distance < r(i+1). Each node periodically measures other nodes in the
+same ring. Then, meridian will only put the most k diverse nodes into
+the ring. Meridian nodes can locate the closest node to a target by
+looking at the node which is closer to the current nodes. At each
+step, the node greedily picks a closer node to the target. Since there
+are exponentially more nodes to pick from when it is closer to the
+Meridian nodes, it can have this zoom in effect. The experiments show
+that it is more accurate to select the closest node to target than the
+previous network embedding approach.
+

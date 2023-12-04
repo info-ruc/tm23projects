@@ -1,0 +1,76 @@
+Received: from europa.commercehub.com (europa.commercehub.com [12.107.130.25])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id OAA17000
+	for <tex-fonts@math.utah.edu>; Thu, 25 Apr 2002 14:09:57 -0600 (MDT)
+Received: from commercehub.com ([10.10.10.89])
+          by europa.commercehub.com (Lotus Domino Release 5.0.6)
+          with ESMTP id 2002042516092575:48873 ;
+          Thu, 25 Apr 2002 16:09:25 -0400 
+Message-ID: <3CC86273.A4E1619B@commercehub.com>
+Date: Thu, 25 Apr 2002 16:09:23 -0400
+From: Michael Malak <mmalak@commercehub.com>
+X-Mailer: Mozilla 4.73 [en] (WinNT; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: xander <xvw@warande0147.warande.uu.nl>
+CC: tex-fonts@sunshine.math.utah.edu
+Subject: Re: adjusting height of sans serif to match serif
+References: <1331667788.20020425172929@trinity.warande.net>
+X-MIMETrack: Itemize by SMTP Server on europa/Commercehub(Release 5.0.6 |December 14, 2000) at
+ 04/25/2002 04:09:25 PM,
+	Serialize by Router on europa/Commercehub(Release 5.0.6 |December 14, 2000) at
+ 04/25/2002 04:09:57 PM,
+	Serialize complete at 04/25/2002 04:09:57 PM
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+
+I'm going to ignore questions of design here, and assume that you have
+found serif and sans-serif fonts that would go well together if the sans
+were scaled down a bit.  It's up to you to choose wisely and use wisely.
+
+You can modify the .fd files in a nondestructive way.  Look at the files
+helvet.sty and ot1phv.fd in the directory texmf/tex/latex/psnfss.  The
+package helvet now takes an option [scaled=0.92], and defines \Hv@scale
+to be that scale factor.  (And [scaled] is equivalent to
+[scaled=0.95].)  Then the .fd files check to see if \Hv@scale is
+defined, and if it is, scale the font accordingly.  You could make your
+own package file for, say, Gill Sans (note that the name "gillsans" is
+already taken) and model it after helvet.sty, changing the names of
+macros that appear to refer to Helvetica.  Edit your .fd files to work
+like ot1phv.fd too.
+
+Then you would put into your main LaTeX file
+\usepackage{mycaslon}
+\usepackage[scaled=0.91]{mygill}
+
+but of course you would use fonts that matched.
+
+Remember, with great power comes great responsibility.
+
+Would an experienced voice care to suggest some families that work
+together but weren't designed with each other in mind?
+
+Mike
+
+xander wrote:
+> 
+> Hi all,
+> 
+> When I pick a serif font (e.g. caslon) and a sans serif font
+> (e.g. gill sans) the heights of both fonts differ.
+> 
+> Now, my original purpose was to create a nice-looking, easily readable
+> document but I end up with a document that looks like it came straight
+> out of kindergarten :) Especially when I put two words next to each other
+> typesetted in resp. serif and sans serif.
+> 
+> How do I scale down the sans serif font to match the size of the serif
+> font? Preferably not in the .fd file, since altering the serif font
+> would require me to modify the .fd font again.. so I'm looking for
+> something like a scale function in TeX I suppose?
+> 
+> Thanks in advance,
+> xander van wiggen
+> --
+>  xander van wiggen                     mailto:xvw@trinity.warande.net
+> If you were a booger, I'd pick you first.
+

@@ -1,0 +1,59 @@
+Received: from ra.cland.net (ra.cland.net [206.29.106.10])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id RAA11787
+	for <handyboard@media.mit.edu>; Tue, 25 Aug 1998 17:50:33 -0400 (EDT)
+Received: from mail.cland.net (as065.cland.net [206.29.103.82])
+	by ra.cland.net (8.8.5/8.8.5) with ESMTP id QAA08762;
+	Tue, 25 Aug 1998 16:42:26 -0500 (CDT)
+Message-Id: <35E32F65.8DA8564A@mail.cland.net>
+Date: Tue, 25 Aug 1998 16:40:53 -0500
+From: John Duff <jnduff@ra.cland.net>
+Reply-To: jnduff@cland.net
+Organization: Cox Health Systems
+X-Mailer: Mozilla 4.02 [en] (Win95; I)
+Mime-Version: 1.0
+To: Rick Moll <rickmoll@mvp.net>
+Cc: handyboard <handyboard@media.mit.edu>
+Subject: Re: interfacing V2X compass
+References: <35BE2F07.84F1DDF9@mvp.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Rick,
+I had the same problem. Also the compass would occassionally lock up and
+require a reset. I tied the reset pin to a digital out and added a routine
+to take all the necessary pins high and then cycle the reset pin. I reset on
+initialization and could call the routine later it the compass locks.  I
+have an assembler program that incorporates this. I use the V2X in slave
+mode. I'd be happy to send it to you if it would help
+
+John
+
+Rick Moll wrote:
+
+> HB Folks,
+>
+> I'm currently using the HB to interface to a Vector 2X compass.  I'm
+> using the compass in RAW slave mode, so it's different than the hardware
+> interface that's documented on the HB web site.  But I did notice that
+> the documented interface just left the ~RESET pin float high, so I
+> assumed that the compass could be trusted to power up reliably as long
+> as the interfaced pins are connected to i/o lines that boot up in a
+> high-impedance (as should all of the SPI lines on the 6811).  The V2X
+> documentation says that should work, and the interface documented on the
+> HB web site implied that it at least worked for someone.
+>
+> The problem I'm having is that most of the time this works fine; but
+> occasionally the V2X gets into some state where it will not power up and
+> work properly until I momentarily lower the ~RESET line (with a wire
+> jumper).
+>
+> Have other folks got the V2X to work reliably for them with the ~RESET
+> pin left unconnected???
+>
+> Thanks,
+>
+>     Rick
+
+
+
+

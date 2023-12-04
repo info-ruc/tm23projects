@@ -1,0 +1,151 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i7ULccFJ032292
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 30 Aug 2004 14:38:38 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 3EC6E8B19B4
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 30 Aug 2004 14:38:38 -0700 (MST)
+Received: from 666-devel.u.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id A10038B0D7D
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 30 Aug 2004 14:38:37 -0700 (MST)
+Message-Id: <5.1.0.14.2.20040830143618.00b15000@psy1.psych.arizona.edu>
+Date: Mon, 30 Aug 2004 14:38:32 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: facial expression task
+In-Reply-To: <s1333415.073@mailhost.rohcg.on.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Scramble should work with macros but seeing as you don't need it given 
+what you posted earlier on remove all the macro stuff, items 0 to 100 and 
+the ~c sequences.
+
+At 02:04 PM 8/30/2004 -0400, you wrote:
+>Thanks Jonathan.  I had actually tried to use the example, the only 
+>problem is that I can't seem to get the scramble to work with it.  Here's 
+>my new code minues the scramble.  It doesn't like the ~C switch I think:
+><ep> <nfb> F10 <id "keyboard">
+><zil> <zor> <vzk +1><vzk +2><vzk +3><vzk +4><vzk +5><vzk +6>
+><vzk +7><vzk +8><vzk +9><vzk +0>
+><umpr> <umnr> <mpr +1><mpr +2><mpr +3><mpr +4><mpr +5><mpr +6>
+><mpr +7><mpr +8><mpr +9><mpr +0> <eop>
+>
+>0 "Rating Example" <bu 1001>
+>mC#<mwc +1,-101, +2,-102, +3,-103, +4,-104, +5,-105, +6,-106,
+>+7,-107, +8,-108, +9,-109, +0,-110, cinr,-100>#;
+>
+>100 "No Response." <return>;
+>101 d2  <return>;
+>102 d2  <return>;
+>103 d2  <return>;
+>104 d2  <return>;
+>105 d2  <return>;
+>106 d2  <return>;
+>107 d2  <return>;
+>108 d2  <return>;
+>109 d2  <return>;
+>110 d2  <return>;
+>
+>+1001 * <bmp> "bartman" ~c c;
+>+1002 * <bmp> "burnssta" ~c c;
+>+1003 * <bmp> "groundsk" ~c c;
+>+1004 * <bmp> "homer3" ~c c;
+>+1005 * <bmp> "krustybg" ~c c;
+>+1006 * <bmp> "lgotmilk" ~c c;
+>+1007 * <bmp> "maggie-1" ~c c;
+>+1008 * <bmp> "marge2" ~c c;
+>+1009 * <bmp> "martin1"  ~c c;
+>+1010 * <bmp> "ooooohomer"~c c;
+>+1011 * <bmp> "brian" ~c c;
+>+1012 * <bmp> "chris"~c c;
+>+1013 * <bmp> "meg"~c c;
+>+1014 * <bmp> "peter6"~c c;
+>+1015 *  <bmp> "qhag"~c c;
+>+1016 * <bmp> "stewie"~c c;
+>+1017 * <bmp> "clev"~c c;
+>
+>0 "end" l;
+>
+>Thanks again
+>-Greg
+>
+> >>> jforster@psy1.psych.arizona.edu 08/30/04 11:39AM >>>
+>
+>    You probably want <zil> instead of <azk>.  Actually you probably want
+><zor> too.  I think there are rating task examples in the <zor> docs.
+>
+>At 09:28 AM 8/30/2004 -0400, you wrote:
+> >Good morning everyone,
+> >I am attempting to create a script for a facial expression task.  Faces
+> >are to appear on the screen and the subject must rate their
+> >emotion.  Generally there are 6 options.  The catch is this: We are not
+> >comparing the subject's answer to a predefined 'right' answer, rather we
+> >wish simply to compile the subjects' answers (along with their reaction
+> >time).  Here is the script, ignore the filenames:
+> >
+> ><N 17> <cr> <d 10> <s 17> <nfb> <azk> <dwc 000000000> <dbc 255255255>  <id
+> >"keyboard">  <vzk +f> <vzk +o> <vzk +a> <vzk +z>  <t 3000>
+> >$0 "Press spacebar to start";$
+> >$250 <ms% 500> /;$
+> >
+> >+1001 <umnr><umpr><mpr +f><mnr +o> <mnr +a> <mnr +z> * <bmp> "bartman" /!;
+> >+1002 <umnr><umpr><mpr +o><mnr +f> <mnr +a> <mnr +z> * <bmp> "burnssta" /!;
+> >+1003 <umnr><umpr><mpr +o><mnr +f> <mnr +a> <mnr +z> * <bmp> "groundsk" /!;
+> >+1004 <umnr><umpr><mpr +f><mnr +o> <mnr +a> <mnr +z>* <bmp> "homer3" /!;
+> >+1005 <umnr><umpr><mpr +o><mnr +f> <mnr +a> <mnr +z>* <bmp> "krustybg" /!;
+> >+1006 <umnr><umpr><mpr +f><mnr +o> <mnr +a> <mnr +z>* <bmp> "lgotmilk" /!;
+> >+1007 <umnr><umpr><mpr +f><mnr +o> <mnr +a> <mnr +z>* <bmp> "maggie-1" /!;
+> >+1008 <umnr><umpr><mpr +f><mnr +o> <mnr +a> <mnr +z>* <bmp> "marge2" /!;
+> >+1009 <umnr><umpr><mpr +o><mnr +f> <mnr +a> <mnr +z>* <bmp> "martin1" /!;
+> >+1010 <umnr><umpr><mpr +f><mnr +o> <mnr +a> <mnr +z>* <bmp> "ooooohomer" /!;
+> >+1011 <umnr> <umpr> <mpr +a> <mnr +f> <mnr +0> <mnr +z>* <bmp> "brian"/!;
+> >+1012 <umnr> <umpr> <mpr +a> <mnr +f> <mnr +0> <mnr +z>* <bmp> "chris"/!;
+> >+1013 <umnr> <umpr> <mpr +a> <mnr +f> <mnr +0> <mnr +z>* <bmp> "meg"/!;
+> >+1014 <umnr> <umpr> <mpr +a> <mnr +f> <mnr +0> <mnr +z>* <bmp> "peter6"/!;
+> >+1015 <umnr> <umpr> <mpr +z> <mnr +f> <mnr +0> <mnr +a>* <bmp> "qhag"/!;
+> >+1016 <umnr> <umpr> <mpr +a> <mnr +f> <mnr +0> <mnr +z>* <bmp> "stewie"/!;
+> >+1017 <umnr> <umpr> <mpr +z> <mnr +f> <mnr +0> <mnr +a>* <bmp> "clev"/!;
+> >$ 0 "The End, Thank you for taking part!"; $
+> >
+> >
+> >Thanks in advance,
+> >-Greg Cogan
+> >
+>
+>                                                 /"\
+>   -jonathan (j.c.f.)                            \ /
+>                                                  X
+>      ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+>
+>    The old believe everything: the middle-aged suspect
+>everything: the young know everything.
+>                                                    - Oscar Wilde,
+>                          'Phrases and Philosophies for the Use of
+>                                                       the Young',
+>                                                              1894
+>
+>
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+> 
+><http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread>http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Chaos reigns within.
+Reflect, repent, and reboot.
+Order shall return.
+
+
+

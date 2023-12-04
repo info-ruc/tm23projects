@@ -1,0 +1,49 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <2535>; Sun, 6 Mar 1994 23:41:47 -0500
+Received: from steroid.ecst.csuchico.edu ([132.241.1.33]) by psuvax1.cse.psu.edu with SMTP id <296050>; Sun, 6 Mar 1994 23:35:56 -0500
+Received: from localhost (jwjohn@localhost) by steroid.ecst.csuchico.edu (8.6.4/8.6.4) id UAA11857 for 9fans@cse.psu.edu; Sun, 6 Mar 1994 20:35:45 -0800
+From:	Jerry W Johnson <jwjohn@ecst.csuchico.edu>
+Message-Id: <199403070435.UAA11857@steroid.ecst.csuchico.edu>
+Subject: Lance Error arrgghhh!
+To:	9fans@cse.psu.edu
+Date:	Sun, 6 Mar 1994 23:35:45 -0500
+X-Mailer: ELM [version 2.4 PL23]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Length: 1513      
+
+Hi 9'ers,
+We've got two sparc2's that serve as our main fs and cpu/auth
+server (with various ipx's as cpuservers and terms and pc's as terms).
+I'm hoping there might be someone a little more hardware oriented who 
+might offer some insight. With increasing regularity (say four times in
+a day lately) the message "lance error #88c3" appears on the fs and
+essentially brings the whole system down. The equipment all responds,
+"connection timed out", and requires a reboot of everything!
+
+We've tracked the error to lance.c in /sys/src/fs/ss and have debugged
+it enough to say that the MERR bit is the culprit. According to "Ethernet/
+IEE 802.3 Family; 1992 World Network Data Book/Handbook", pg 1-22;
+
+MERR	MEMORY ERROR is set when the LANCE is the Bus Master and has not
+       		 _____
+	received READY within 25.6 us after asserting the address on the 
+	DAL lines.  When a memory error is detected, the receiver and 
+	transmitter are turned off and an interrupt is generated if NEA=1.
+	MERR is READ/CLEAR ONLY, and is set by the LANCE and cleared by
+	writing a "1" into the bit. Writing a "0" has not effect. It is
+		   _____ 
+	cleared by RESET or by setting the STOP bit.
+
+Has anyone had a similar problem?
+
+What might be possible solutions?
+
+Is the problem more likely to be hardware or software?
+
+Our best guess now would be to swap the fs and cpu server in the hopes
+that if indeed it's a bad lance on the fs, at least we wouldn't continue
+to lose the whole net. Comments? Suggestions?
+
+	TIA. Cheers, --Jerry
+

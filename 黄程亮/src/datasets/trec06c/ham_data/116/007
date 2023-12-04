@@ -1,0 +1,71 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1S6q0t29920
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 01:52:00 -0500 (EST)
+Received: from [192.168.0.103] (user-10mt73g.cable.mindspring.com [65.110.156.112])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1S6pxNm021187
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 01:52:00 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <2A9AB04A-1D20-4C5A-8949-3F28396F0449@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 10
+Date: Tue, 28 Feb 2006 01:54:50 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+SAMSARA
+
+
+A challenge of p2p network design is to ensure that users in the  
+system contribute to its welfare appropriately based on the benefit  
+they receive; freeriding is curbed.  Experience in the Gnutella &  
+Napster networks has shown users will often freeride given the  
+opportunity.  The basic principle behind Samsara is the use of  
+incompressible storage claims, essentially manufactured bits of data  
+for use in an "I'll store your data if you'll store mine" scheme.   
+Enhancements of the scheme allow forwarding of claims to balance  
+storage requirements across the network.  However, a node remains  
+responsible for claims it forwards, so forwarding is used as a last  
+resort.
+
+The authors implement the system on top of a Pastry network for  
+testing purposes.  Claims are generated using the sha1 hash of a  
+passphrase known only by the host node concatenated with an on disc  
+location.  Nodes periodically query nodes for whom they are storing  
+data for claims, if a response is invalid, that node is free to drop  
+the stored data.  A probabilistic punishment scheme is used to  
+forgive nodes for their transient failures.
+
+A 5000 node network is simulated, showing good performance from the  
+system.  However, there are some limitations.  The first is that  
+without claim forwarding, the global storage requirement for the  
+system is doubled.  Also, the scheme is only really appropriate for a  
+distributed file storage/replication scheme; pushing data.  An  
+adaptation for pull scenarios may be possible, but is not immediately  
+evident.
+
+
+SHARP:
+SHARP functions as a looser form of Samsara.  It is also based on the  
+use of resource claims, however resources are extended beyond pure  
+storage capacity and are transient.  Also, claims are broken up into  
+two parts, an advertise-able soft claim which can be redeemed for  
+hard lease on resources in the form of a virtual machine.  Asymmetric  
+cryptography is used to ensure that claims are not forged, allowing  
+nodes to punish one another for failing to honor claims.  Also,  
+claims are arbitrated by local authorities over nodes who function as  
+local certificate authorities, who detect conflicting claims for  
+resources in their local network and inform nodes redeeming claims.
+
+The system is tested on top of PlanetLab.  They find that  
+oversubscription (generating too many claims per available resources)  
+improves network resiliency against node failure by allowing nodes to  
+advertise their resources more aggressively.  Unfortunately, they do  
+not discuss the implementation of a reputation scheme to punish nodes  
+overselling their resources, and seem to use local authorities as  
+trusted brokers of claims between nodes.
+
+

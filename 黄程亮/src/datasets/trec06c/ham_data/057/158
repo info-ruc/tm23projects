@@ -1,0 +1,89 @@
+Received: from palrel1.hp.com (palrel1.hp.com [156.153.255.242])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA29334
+	for <handyboard@media.mit.edu>; Mon, 29 Nov 1999 14:06:28 -0500 (EST)
+From: bart_schrijver@agilent.com
+Received: from boi164.boi.hp.com (boi164.boi.hp.com [15.56.8.78])
+	by palrel1.hp.com (Postfix) with ESMTP
+	id EB72D1705; Mon, 29 Nov 1999 11:06:14 -0800 (PST)
+Received: from localhost (root@localhost)
+	by boi164.boi.hp.com (8.9.3 (PHNE_18979)/8.9.3 SMKit6.0.6 OpenMail) with SMTP id LAA19704;
+	Mon, 29 Nov 1999 11:06:14 -0800 (PST)
+X-Openmail-Hops: 1
+Date: Mon, 29 Nov 1999 11:06:10 -0800
+Message-Id: <H0000e110fcc83a5@MHS>
+In-Reply-To: <19991129170317.2431.rocketmail@web601.yahoomail.com>
+Subject: Re: servo program
+Mime-Version: 1.0
+To: dab8rs_85@yahoo.com
+Cc: handyboard@media.mit.edu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline; filename="servo"
+Content-Transfer-Encoding: 7bit
+
+     Dear ?:
+     
+     First off, your program contains an infinite loop; statement 
+     return(0); will never be reached. Also you told it that main does 
+     not return a value, yet you used e return in the end. This will 
+     generate a compiler error for sure.
+     
+     I belief the IC parser expects main to be defined as follows:
+     
+     int main()
+     
+     {
+     
+     /* code here */
+     }
+     
+     
+     
+     Second: You only need to execute the initialization statement 
+     init_expbd_servos(1); ones.
+     
+     Third: Your statements need to be terminated with a ; in order for 
+     the parser to recognize them as two individual statements.
+     
+     Fourth: I am not sure if setting the variable servo0 to 1000 is the 
+     correct way of controlling servo #0. But it might be.
+     
+     Rewrite your program as follows:
+     
+     int main()
+     {
+        init_expbd_servos(1);
+        servo0 = 1000;
+        return(0);
+     }
+     
+     Bart Schrijver.
+
+
+______________________________ Reply Separator _________________________________
+Subject: servo program
+Author:  Non-HP-dab8rs-85 (dab8rs_85@yahoo.com) at HP-PaloAlto,mimegw2
+Date:    11/29/99 9:03 AM
+
+
+Can anyone please write me a brief servo motor program 
+that will control two servos from the expansion board?
+     
+This the one I had to control one, but did not work:
+     
+void main(void)
+{
+    while(1)
+        {
+                init_expbd_servos(1) 
+                 servo0 = 1000
+        }
+     
+     return(0);
+}
+     
+__________________________________________________ 
+Do You Yahoo!?
+Thousands of Stores.  Millions of Products.  All in one place. 
+Yahoo! Shopping: http://shopping.yahoo.com
+
+

@@ -1,0 +1,167 @@
+Received: from donald.cybercomm.nl (donald.cybercomm.nl [194.235.113.5])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id HAA05914
+	for <handyboard@media.mit.edu>; Fri, 31 Jul 1998 07:19:59 -0400 (EDT)
+Received: from default (poort49-ip-x2.enertel.cybercomm.nl [194.235.118.49])
+	by donald.cybercomm.nl (8.8.6/8.8.6) with SMTP id KAA16069
+	for <handyboard@media.mit.edu>; Fri, 31 Jul 1998 10:24:02 -0100 (MET)
+Received: by localhost with Microsoft MAPI; Fri, 31 Jul 1998 13:33:59 +0200
+Message-Id: <01BDBC87.DFB17DC0.jaron@cybercomm.nl>
+From: Jaron Paludanus <jaron@cybercomm.nl>
+To: "HandyBoard (E-mail)" <handyboard@media.mit.edu>
+Subject: ir reflectance sensors found !!!
+Date: Fri, 31 Jul 1998 13:33:54 +0200
+X-Mailer: Microsoft Internet E-mail/MAPI - 8.0.0.4211
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Howdy,
+
+When browsing through the catalog of CONRAD ELECTRONICS (www.conrad.de) I 
+found an IR reflectance sensor with build in logic to measure distances 
+between 10 and 80 cm. I requested the datasheets and they arrived today; I 
+am gonna order article number 185329! The datasheets describe in some 
+detail the measuring process with examples of different materials, 
+situations and conversion formulas. Allas no circuitry examples but they 
+suggest it is standard (?).
+
+According to the specs, size, weight etc. it should be an ideal sensor for 
+a robot.
+Since I have not much experience I hope to get all your help to get this 
+going.
+I included some data, hoping to interest more people.
+
+Hope to hear from you.
+
+jaron
+
+--------------------------------------------------------------
+
+
+
+<here some of the datasheet, sorry; no scanner = no pics>
+
+
+
+The sensor itself measures about 40mm x 14 mm x 16mm and uses four pins to 
+connect to the world. (Vin / GND / Vo / Vcc)
+
+
+
+Operating Supply Voltage
+
+Symbol  Rating    Unit
+------  --------  -----
+Vcc     4.4 to 7  V
+
+
+
+Electro - Optical Characteristics (Ta=25 degrees C, Vcc=5V)
+
+Parameter                     Symbol   Conditions            Min.     Typ. 
+  Max.      Unit
+----------------------------  -------  ---------------       -------  ----- 
+ -----     -----
+Distance measuring range      delta L  -                     10       - 
+     80        cm
+Output terminal voltage       Voh      at high level         Vcc-0.3  - 
+     -         V
+                              Vol      at low level          -        - 
+     0.3       V
+Average supply current        Icc      during measuring      -        10 
+    -         mA
+Standby mode supply current   Iccoff   Vin=high(current=off) -        3 
+     8         uA
+Vin terminal current          Ivin     Vin=0V                -        -160 
+  -270      uA
+
+
+
+Measuring principal and features of this sensor
+
+
+Principal of triangulation
+
+Optical spot position on PSD shall be changed when reflective object is at 
+'A' point and at 'B' point.
+By processing this optical spot position electrically, the position 
+(distance) of the reflective object on straight line can be detected.
+
+
+Features of the GP2D02/05
+
+* Compact high performance distance measuring sensor with build-in PDS, 
+Infrared LED and signal processing circuit.
+* Little influence by collor and reflective ratio of the reflective object.
+* High accurracy measuring by sequential position detection and mean 
+processing data output.
+* GP2D02: 8 bit serial measured output which is possible to connect 
+directly with micro computer.
+* GP2D05: 1 bit (high/low) measured output. The measuring range can be 
+adjustable as threshold level at any distance by adjusting the built-in 
+volume.
+* Low current consumption at stand-by mode (Current consumption at stand-by 
+mode: TYP 3uA)
+
+
+Input signal
+
+Input should be current driving input in order to improve the measuring 
+accuracy.
+
+Circuit Example
+
+--------|
+        | Vin terminal
+        O-------------|
+        |             |
+        |             \
+        |              \ |          R 10k
+        |               \|          _______
+sensor  |               /|----------|_____|----------O input
+        |              / |
+--------|             /
+                      |
+                      |
+                      |
+                     ---
+                     ///
+
+
+
+Concrete application example of the GP2D02
+
+* Output conversion
+
+The relation between the output of the GP2D02: "D" and the distance to the 
+reflective object can be shown in the following:
+
+  D=b/(L1+a)+C
+
+However, actual deviation shall deviate mainly shifting the following 
+output curve (Distance characteristics) toward up and down direction.
+This is caused by the position tolerance between the detecting device (PSD) 
+and the front lens in assembly
+
+This deviation will be appeared as 'C' in (*1).
+Since 'a' and 'b' can be assumed as almost constant value. actual relation 
+between "D" and "L" shall be shown in the following:
+
+  D=1560/L1+0.5)+C
+
+* Output conversion method
+
+As shown in (*2), the output of the GP2D02: "D" is in proportion to 
+1/(L1+0.5) (at L1=10 to 80cm).
+The relation graph between output "D" of the sample which has output 
+characteristics shown in Fig.1 and 1/(L1+0.5) is shown in Fig.2.
+
+By getting "C" for each sample using (*2) the distance to the reflective 
+object: "L1" can be calculated by output value "D".
+
+...
+
+the datasheet continues ...
+
+...
+

@@ -1,0 +1,65 @@
+Received: from moutng.kundenserver.de (moutng.kundenserver.de [212.227.126.177])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id JAA22919
+	for <tex-fonts@math.utah.edu>; Wed, 24 Jul 2002 09:00:47 -0600 (MDT)
+Received: from [212.227.126.160] (helo=mrelayng0.kundenserver.de)
+	by moutng3.kundenserver.de with esmtp (Exim 3.35 #2)
+	id 17XNd7-00056M-00; Wed, 24 Jul 2002 17:00:45 +0200
+Received: from [163.32.144.189] (helo=orion.univie.ac.at)
+	by mrelayng0.kundenserver.de with asmtp (Exim 3.35 #2)
+	id 17XNd5-00079u-00; Wed, 24 Jul 2002 17:00:44 +0200
+Received: from localhost (localhost [127.0.0.1])
+	by orion.univie.ac.at (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id g6O6aAH09948;
+	Wed, 24 Jul 2002 08:36:10 +0200
+Date: Wed, 24 Jul 2002 08:36:10 +0200 (CEST)
+Message-Id: <20020724.083610.99467586.wl@gnu.org>
+To: bkph@ai.mit.edu
+Cc: wadams@atlis.com, tex-fonts@sunshine.math.utah.edu
+Subject: Re: OpenType support (for TeX)
+From: Werner LEMBERG <wl@gnu.org>
+In-Reply-To: <5.1.0.14.2.20020723175905.00a97868@mail.ai.mit.edu>
+References: <5.1.0.14.2.20020723172138.02796848@mail.ai.mit.edu>
+	<3D3DCF57.F31FF629@atlis.com>
+	<5.1.0.14.2.20020723175905.00a97868@mail.ai.mit.edu>
+X-Mailer: Mew version 3.0.55 on Emacs 21.3.50.1 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+
+> Plus what it the point? TeX already does kerning and ligatures.  In
+> fact, if TeX knows about the ligatures in the font (as it should
+> from the TFM) file it will already have made the replacements and no
+> new ones will be triggered in the font. So then it "just works" but
+> clearly there is then no benefit to OpenType, the OT font is used by
+> TeX just like any other font.
+
+Some features of OpenType are nevertheless useful even for TeX,
+e.g. vertical representation forms for CJK glyphs or small caps
+substitutions.  It is a fact of life that most fonts will come in the
+OpenType format today.  Adobe no longer produces Type1 fonts, only
+OTFs; so TeX and Omega *must* support this format in the near future.
+
+For many languages the 256 character limit is bad, so I won't discuss
+this since Omega can do that better even if you don't use any other
+feature of Omega.  What we need is a tool (or a suite of tools) which
+prepares OTF fonts for TeX, this is, extracting the various OpenType
+tables and converting them to something TeX can understand:
+
+  . Glyph substitution data (in the GSUB table) should be represented
+    as different fonts.
+
+  . Kerning data realized as GPOS table should be converted to
+    ordinary kerning.
+
+Some data is too sophisticated for TeX (which is a deficiency of TeX,
+not of OpenType) -- this should be converted into a set of Omega OTPs:
+
+  . Contextual glyph substition and positioning.
+
+  . Cursive connection data for languages like Urdu.
+
+  . Horizontal and vertical kerning at the same time.
+
+
+    Werner
+

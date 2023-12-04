@@ -1,0 +1,80 @@
+Received: from prima1.prima.com.ar (o200.prima.com.ar [200.16.140.108])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id KAA18095
+	for <handyboard@media.mit.edu>; Sun, 19 Jul 1998 10:46:32 -0400 (EDT)
+Received: from genesysnt (host142012.ciudad.com.ar [200.16.142.12])
+	by prima1.prima.com.ar (8.8.8/8.8.8) with SMTP id LAA02440;
+	Sun, 19 Jul 1998 11:47:36 -0200 (ARG)
+From: "=?iso-8859-1?Q?Germ=E1n_Gentile?=" <ggentile@cvtci.com.ar>
+To: "Ilya" <ilya@flight.uchicago.edu>, <handyboard@media.mit.edu>
+Subject: RE: SPI problems
+Date: Sun, 19 Jul 1998 11:46:24 -0300
+Message-Id: <004801bdb324$00450600$0200000a@genesysnt.genesys>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+In-Reply-To: <Pine.LNX.3.96.980716161407.19280A-100000@flight.uchicago.edu>
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.2106.4
+Importance: Normal
+
+Serial libraries are wwriten for Serial port,not for SPI port! Are you
+needing use the spi like a standard oitput port or like a SPI (synchronus
+serial port)???? Is the device spi compatiible? If yes, you need the portd
+to work like a SPI port. if not just use like a standard i/o port , and use
+the imagination ... :)
+german gentile
+
+> -----Original Message-----
+> From: Ilya [mailto:ilya@flight.uchicago.edu]
+> Sent: Jueves 16 de Julio de 1998 18:51
+> To: handyboard@media.mit.edu
+> Subject: SPI problems
+>
+>
+>
+>
+> I am trying to connect my Handyboard with a Motorola 68HC11A1FN chip
+> inside with a AD7858L- 12-bit ADC.
+>
+> In my IC code I first write to the DDRD (Port D Data Direction Register)
+> ($1009) and activate SCK(bit4), MOSI(bit3), MISO(bit2).
+> Then I write to SPCR (SPI Control Register  and set bits 7(SPIE), 6(SPE),
+> 4(MSTR), 2(CPHA), 1(SPR1).
+> Following I use serial_putchar() from the serialio.c library to initialize
+> the ADC... so far so good... no errors reported...
+> The ADC then is supposed to make a conversion and relay the data back to
+> the Handyboard via SPI. I use serial_getchar()
+>
+> v1 =(float)serial_getchar();
+>
+> and the Handyboard crashes.. at least the heart on the LCD stops
+> beating..
+> serialio.c is loaded on my handyboard! Was the serialio.c library written
+> for SPI?!?! If not then I guess I found my problem.. but if it is for SPI,
+> what am I doing wrong? Are my addresses correct?
+>
+> Can someone please tellme the right addresses for the following:
+> DDRD, SPCR SPSR, SPDR.
+>
+> I have read various Motorola documentations and have not came out with a
+> distinct answer for my HC11A1FN chip. I have also found contradicting
+> values for the HC11 family so I am completly lost! The program did not
+> work when I tried to manually receive/send data through SPI.
+>
+> Please help!
+>
+>
+> All of the requests will be kindly appreciated!
+>
+> Thanks in advance
+>
+> Ilya
+>
+>
+>
+>
+
+

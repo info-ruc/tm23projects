@@ -1,0 +1,81 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id PAA20410
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Dec 2000 15:38:51 -0700
+Received: by deimos.email.Arizona.EDU (5.1.046) id 3A35296D0004A90E for DMDX@psy1.psych.arizona.edu; Thu, 14 Dec 2000 15:38:50 -0700
+Message-ID: <3A35296E00002C91@deimos.email.Arizona.EDU>
+Date: Thu, 14 Dec 2000 15:38:49 -0700
+From: "Keolani Taitano" <ektaitan@email.arizona.edu>
+Subject: [DMDX] branching with 2 counters
+To: "DMDX listserv" <DMDX@psy1.psych.arizona.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+I am trying to track separate accuracies to 2 different questions (emotional
+valence induced by stimulus and content of stimulus)per item.
+I didn't find a way to track 2 separate accuracies per item
+and across items with the <bierGT N1,N2> command, so I tried to use the
+<set N1,N2> set counter and <deciw N1> command and set up a different counter
+for each type of accuracy I'm tracking. However, these counter commands
+seem to work only for looping on the same item and not for decrementing
+the count across a series of items, because I get the error:  "multiple
+pending operations per counter not allowed". I want to branch if accuracy
+to the first question about valence is below 75% and I want to emit the
+accuracy to the second question about stimulus content at the end of the
+block before branching. Is there a way to do this? Thanks.
+
+A piece of the item file:
+
+<ep> t2500 f.5 d180 <zil> <nfb> <df Arial> <dfs 26> <cr> <RecordClockOnTime>
+<mip 27> <vm 640,480,480,16,0> <wc 000255000> <ID Keyboard> <ID PIO12>
+<bgc 000000000> <eop>
+
+
+8881  <fd 60> "Ready?";
+8882 <set 1, 4> <set 2, 4> d60/;
+
+-1001  %20 g" E:\Data\crosshair.bmp"/%7 *"Set 1 Pleasant"/%60 "Pleasant
+     Unpleasant      Neutral?"/ <deciw 1>;
+
+-2001 %60 *"Face    No Face?"/ <deciw 2>;
+
++1002  <mpr +Bit4> %20 g"E:\Data\crosshair.bmp"/%7 *"Set 1 Neutral" /%60
+"Pleasant      Unpleasant      Neutral?"/ <deciw 1>;
+
++ 2002 %60 *"Face   No Face?"/ <deciw 2>;
+
+-1003  %20 g"E:\Data\crosshair.bmp"/%7 *"Set 1 Pleasant"/%60 "Pleasant
+    Unpleasant      Neutral?"/ <deciw 1>;
+
++ 2003 %60 *"Face   No Face?"/ <deciw 2>;
+
++1004  %20 g"E:\Data\crosshair.bmp"/%7 *"Set1 Negative" /%60 "Pleasant
+    Unpleasant      Neutral?"/ <deciw 1>
+
++ 2002 %60 *"Face   No Face?"/ <deciw 2> <emit 2> < cicLE 1, 2, -8881>;
+
+8883  <fd 60> "Ready?";
+8884 <set 1, 4> d60/;
+
+. . .
+
+
+
+
+
+
+Keolani Taitano, Ph.D.
+Postdoctoral Research Fellow
+Department of Psychiatry
+University of Arizona Health Sciences Center
+P.O. Box 245002
+Tucson, AZ 85724-5002
+
+voice: 520-235-9588
+fax: 253-369-3571
+
+
+

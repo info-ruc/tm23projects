@@ -1,0 +1,96 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0VFBN417158
+	for <egs@unix.cucs>; Tue, 31 Jan 2006 10:11:23 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.28]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 31 Jan 2006 10:11:23 -0500
+Received: from [128.253.211.203] ([128.253.211.203]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 31 Jan 2006 10:11:23 -0500
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <6D68D0E1-2D52-49E1-8E23-43E1DEBEBA31>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary
+From: "Ryan S. Peterson" <ryanp>
+Subject: PAPER 2
+Date: Tue, 31 Jan 2006 10:11:20 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-OriginalArrivalTime: 31 Jan 2006 15:11:23.0032 (UTC) FILETIME=[98EE4180:01C62678]
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=AWL,BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+Chord and Tapestry both introduce peer-to-peer distributed hash  
+tables, promoting efficiency and reliability.  Chord structures its  
+nodes in a ring by increasing key value, much like Pastry.  However,  
+unlike Pastry, Chord always hashes object keys to the key's  
+"successor" node, defined as the closest node from the key in the  
+clockwise direction around the ring.  While Chord and Pastry both  
+advertise O(log n) lookup time, their lookup algorithms and data  
+structures are quite different.  Each Chord node maintains a constant- 
+sized list of "fingers," or pointers that point successively farther  
+around the ring in the clockwise direction.  Finger i of node with  
+key n points to node the first node that succeeds key n + 2^(i-1) in  
+the ring, once again in the clockwise direction.  Thus, finger 1  
+always points to the next node, and the remaining fingers point  
+increasingly farther and farther away.  Therefore, like Pastry nodes,  
+each Chord node knows more nodes in its local area than nodes on the  
+other side of the ring.  Lookup in Chord proceeds by starting at some  
+arbitrary node and following the fingers around the ring, making  
+smaller jumps as the routing nears the target node.
+
+While Chord proves several time guarantees, it has more opportunity  
+to incur overhead than Pastry.  Since Chord always moves in the  
+clockwise direction, it will never find the shortest route to a  
+target node just to the left (counterclockwise direction) of the  
+start node.  Furthermore, Chord nodes do not maintain leaf sets, so  
+routing involves traversing the finger pointers until the exact node  
+is reached, whereas in Pastry, routing requires only one more hop as  
+soon as the routing has reached any "nearby" node.  Lastly in terms  
+of time, Chord does not use a proximity metric to take network  
+conditions into account when determining fingers or routing paths,  
+which could slow down the DHT dramatically if some of the nodes are  
+far away or are responding slowly.  Therefore, although Chord proves  
+time guarantees, its O(log n) lookup time has a higher coefficient  
+than Pastry's does.  In terms of space, Chord's join algorithm  
+implies that every node maintains a pointer for each digit of the  
+key, requiring nodes in small networks to maintain duplicate fingers  
+that point to the same nodes.  However, this may be optimized away if  
+space proved to be a problem.  In terms of stability, Chord, unlike  
+Pastry, does not provide any guarantees for preventing the ring from  
+splitting.  Since each Chord node only maintains its forward pointers  
+(and one backward pointer for assisting in joins and failures), it is  
+difficult to say how many failures would compromise the ring  
+structure.  As a final observation, Chord provides one primitive,  
+lookup, which identifies the home node for a given key, whereas  
+Pastry provides routing primitives.  In other words, Chord provides  
+the application with a pointer to the home node, which the  
+application could use to send a file directly to it.  This could  
+improve performance if the object being transferred is large (since  
+Pastry would route it from one node to another), but maybe slow  
+insert time down since it requires two separate phases: lookup then  
+insert.
+
+Tapestry presents a spanning-tree-like network structure that  
+contrasts with the ring structure of Chord and Pastry.  Each node is  
+both a root of its "object" tree--the trees for which that node is  
+the home node for the object in question--and a node in a multi-layer  
+spanning tree that enables matching more digits in the suffix of the  
+lookup key.  Because of Tapestry's tree structure, object lookup has  
+more similarities to overlay network routing than moving around a  
+ring.  The authors give examples of routing around crashed nodes,  
+much as routing would occur in an Internet overlay in the presence of  
+failure.  Because of this more unstructured approach, Tapestry  
+provides fewer guarantees, since a node failure affects the network  
+differently depending on its location in the spanning trees.   
+However, because Tapestry does traverse the spanning trees based on  
+the postfix of the lookup key, it still does provide a O(log n) upper  
+bound on lookups assuming the network is stable.  Overall, Tapestry  
+seems less principled, providing a structure that has many of the  
+same vulnerabilities as the Internet.  This might make lookups faster  
+in some instances, but makes it more difficult to reason about  
+performance since the structure is more loosely defined.
+
+Ryan
+

@@ -1,0 +1,95 @@
+Received: from bureau8.utcc.utoronto.ca (bureau8.utcc.utoronto.ca [128.100.132.18])
+	by psy1.psych.arizona.edu (8.12.4/8.12.4) with ESMTP id h27LwLdW001528
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 7 Mar 2003 14:58:21 -0700
+Received: from webmail5.ns.utoronto.ca ([128.100.132.37] EHLO webmail5.ns.utoronto.ca ident: IDENT-NOT-QUERIED [port 62375]) by bureau8.utcc.utoronto.ca with ESMTP id <237104-16409>; Fri, 7 Mar 2003 17:07:33 -0500
+Received: by webmail5.ns.utoronto.ca id <873018-18415>; Fri, 7 Mar 2003 17:07:09 -0500
+Received: from 128.100.214.17 ( [128.100.214.17])
+	as user roncerot@mailbox102.utcc.utoronto.ca by webmail.utoronto.ca with HTTP;
+	Fri,  7 Mar 2003 17:06:54 -0500
+Message-ID: <1047074814.3e6917fe530d2@webmail.utoronto.ca>
+Date: Fri,  7 Mar 2003 17:06:54 -0500
+From: tyler.roncero@utoronto.ca
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: RE: Not timing every line
+References: <000c01c2e4d5$bef21ba0$1d62c480@KIFXP>
+In-Reply-To: <000c01c2e4d5$bef21ba0$1d62c480@KIFXP>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Thank-you, that did work, but it's created a new problem. The item files now 
+look as follow:
+
+
+<n 128> <s 1> <d 0>  <id keyboard>, <cr> <mnr "+f"> <mpr "+j"> <vg 1> <clfb> 
+
+1 <umpr> <umr> <mpr “+Space”> *“One day at the mall”;
+1 “Michael was stopped by Jack”;
+1 “while”;
++1 <fd 13> " " / *“leaving the store.”;
++1 <umpr> <mpr “+j”> *“Michael was leaving the store?”;
+1 <t 600000> <umpr> <umr> <mpr "+Space"> "*NEXT*";
+
+9 <umpr> <umr> <mpr “+Space”> “One day outside the movie theatre”;
+9 “Jacob was harassed by Brian”;
+9 “while”;
++9 <fd 13> " " / c *“he stood in line.”;
++9 <umpr> <mpr “+j”> *“Jacob stood in line?”;
+9 <umpr> <umr> <mpr "+Space"> "*NEXT*";
+
+However, with <cr> in the header file, it does not wait for the subject to 
+respond before moving to the next item. We want this requirement to remain in 
+place. When I removed the <cr>, however, it froze on the first line. I am 
+unsure why it does not understand that pressing the spacebar should be 
+interpreted as a request to continue. In other words, what can I do to make it 
+read line by line rather than freezing, but still requiring the subject's 
+response to move on.
+
+Thank-you.
+
+
+
+
+
+
+Quoting Kenneth Forster <kforster@u.arizona.edu>:
+
+
+
+
+
+> -----Original Message-----
+> 
+> 
+> If you don't want any response to the item, then use an item number "0"
+> without any correct response indicator or time limit.  For example:
+> 
+> 0 <umpr> <umr> <mpr "+Space">  "Last Tuesday at 6 pm";
+> +147 "Leigh waited for Ted";
+> +147 "while";
+> 0 time
+> +147 <fd 13> " " / c* "eating dinner.";
+> +147 <umpr> <mpr "+j"> *"Leigh was eating dinner?";
+> TIME
+> 0 <umpr> <umr> <mpr "+Space"> c* "*NEXT*";
+> 
+> 	--k.i.f.
+> 
+> 
+> 
+> 
+> 
+> 
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+> 
+
+
+

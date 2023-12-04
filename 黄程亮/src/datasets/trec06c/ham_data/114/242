@@ -1,0 +1,70 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1GGnct18520
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 11:49:38 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1GGnbP4025950
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 11:49:38 -0500 (EST)
+Message-ID: <000301c63318$f95e3410$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 7
+Date: Thu, 16 Feb 2006 11:49:37 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+All of the systems we looked at today are different from what we have seen 
+before.  They discuss range queries: basically queries that specify a lower 
+bound and an upper bound on some attribute and expect to see everything in 
+the middle (well, not necessarily, you can specify different ranges, but the 
+idea is the same).
+
+Geopeer builds a Delaunay triangulation system such that two nodes are 
+neighbors if they are close in space.  Space here can be longitude and 
+latitude, therefore nodes are close in the system if they are close 
+geographically.  To keep latency down, long range contacts are also kept. 
+Each node is responsible for a region of points.  Overall GeoPeer seems like 
+a fragile system.  Since everything is based on geography, if part of the 
+system goes down or there is latency on the east coast then many queries 
+will be significantly slower.  In the end, GeoPeer gets between log and log 
+squared (in the total number of nodes)  performance, which doesn't seem 
+optimal.
+
+Mercury is a system that is built upon current ring-based DHTs.  The idea is 
+to have multiple logical rings that each represent one attribute.  Each node 
+is in one ring and has many pointers to its own ring (in a pre-specified 
+distribution) in order to achieve good performance, and pointers to random 
+other rings.  A node is put into the ring not through a hash function but 
+through a direct mapping to it.  This is clearly a downside since the load 
+balancing immediately suffers.  Because of this, the authors come up with a 
+scheme to load balance and keep the pointers in a correct distribution.  The 
+paper details how to get m+log squared routing performance out of their 
+system.  To retreive a specific range, a packet is routed to the node 
+corresponding to the lower bound and then sequentially traverses the rest of 
+the pointers in order to get at every intermediary node.  To help with 
+latency and flooding concerns, Mercury uses query selectivity to try to 
+search based on the most selective part of the query.  Mercury's worse than 
+P-Trees performance leaves the system lacking.  The only other major issue I 
+have with it is its poor scaling with multiple attributes.
+
+P-trees are a database inspired range queries system that build upon B+ 
+trees to acheive order log N performance.  Each node keeps the left most 
+path of its B+ tree, relying on other nodes in the system which collectively 
+maintain the tree.  This system, therefore, is a distributed tree instead of 
+a distributed hash table.  The system is order log N+m for routing 
+complexity and order log N space at each paper.  The system has a complex 
+stabilization protocol and in general seems pretty complex.  I would expect 
+an actual real-world implementation to be unstable, not nearly as trivial as 
+Gnutella or Pastry.  Furthermore, I didn't see any clue as to how much 
+overhead there was in maintaining the tree. 
+

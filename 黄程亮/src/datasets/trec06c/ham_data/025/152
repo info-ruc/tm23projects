@@ -1,0 +1,63 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id OAA06517
+	for <handyboard@media.mit.edu>; Fri, 30 Oct 1998 14:23:08 -0500 (EST)
+Received: from cs.umt.edu (mso2-74.montana.com [208.4.224.74])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id MAA27249
+	for <handyboard@media.mit.edu>; Fri, 30 Oct 1998 12:20:40 -0700 (MST)
+Message-Id: <363A11F2.18232129@cs.umt.edu>
+Date: Fri, 30 Oct 1998 12:22:26 -0700
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Sonar Sensor Problems
+References: <Pine.A41.3.96.981027215817.10936I-100000@ben09.unm.edu> <4.1.19981028104950.00a7fb90@nowhere.xxx.yyy>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Eric Noyau wrote:
+> Please more details!
+> 
+> What is your "custom dual sonar interface board"? From our previous email exchange on the list I was under the impression you were just thinking about it. And now you have the whole thing up and running!
+> 
+> So any caveat? Just sharing all the lines but the INIT one is working? Are you using D2 or D3 for the second sonar?
+
+The dual sonar interface board is simply a small (1.5" sq. or so)
+experimenter's PC board from Ripoff Shack with the six power diodes, the
+one resistor, and three header plugs soldered onto it.  One plug goes to
+the HB and the other two go to the sonar modules.  There's also a jumper
+to disconnect ECHO from the second module.  Because the wires were
+wimpy, I doubled up on the power and ground wires.
+
+I've had the one sonar working for a while now, but just recently I
+finished getting both sonars plugged in.  The part that works great is
+the header plug and ribbon cable part.  The part that doesn't work so
+great is the shared ECHO.  Either one works fine alone, but there is
+definite signal contention on the ECHO.
+
+I'm using PD2 for the second INIT, and the BINH is shared by both--no
+problem.  BTW, in order to use PD2 as a digital out, you need to do a
+bit_set( 0x1009, 0x3C ) in the initialization routine instead of the
+bit_set( 0x1009, 0x30 ) that's in Fred Martin's sonar.c.  I'm not sure
+why, but the FAQ said to use 0x3C, and it works.
+
+I think I might try using a couple of blocking diodes, like you
+suggested, to see if that clears up the ECHO signal contention problem,
+unless someone out there has a better idea.  I thought about using a
+chip with a single OR gate (if there is such a thing) or using PD3 to
+control a multiplexor, but those seem like overkill.  Any suggestions?
+
+I promise to post all the details on my web page when I get it all
+figured out.
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,            Idealism is fine, but as it approaches reality
+Will Bain,                                the cost becomes prohibitive.
+& Tatoosh                                     --William F. Buckley, Jr.
+

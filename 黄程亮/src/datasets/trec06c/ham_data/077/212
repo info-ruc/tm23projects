@@ -1,0 +1,55 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f8P6otq24802
+	for <egs@cs.cornell.edu>; Tue, 25 Sep 2001 02:50:55 -0400 (EDT)
+Received: from [10.1.1.101] (syr-66-24-16-64.twcny.rr.com [66.24.16.64])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id CAA09746
+	for <egs@cs.cornell.edu>; Tue, 25 Sep 2001 02:50:53 -0400 (EDT)
+Subject: 615 PAPER #10
+From: Walter Bell <wbell@CS.Cornell.EDU>
+To: egs@CS.Cornell.EDU
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Evolution-Format: text/plain
+X-Mailer: Evolution/0.13.99+cvs.2001.09.21.20.26 (Preview Release)
+Date: 25 Sep 2001 02:50:29 -0400
+Message-Id: <1001400653.11333.14.camel@brute>
+Mime-Version: 1.0
+
+10) Associativity-Based Routing for Ad-Hoc Mobile Networks
+
+In this paper, they author motivates that Ad-Hoc networks do not have
+hosts which move about randomly, and presents the idea that hosts
+undergo a period of stability between movements, and that said
+stability tends to last for a decent period of time. From this idea,
+they've created ABR (Associativity-Based Routing) which finds routing
+paths are selected by their likelihood of being long-lived and
+therefore more stable. By choosing paths that are unlikely to be
+broken, ABR lowers the amount of communication bandwidth used to
+repair routes that are broken by having less broken routes.
+
+Routes are found on demand like algorithms such as DSR, but unlike DSR
+all routes are computed from a source to a destination, and the
+destination picks a single route which is most likely to be long-lived
+based on the associtativity count of the hosts [A measure of how long
+a link between nodes has been active.]  From there routes are repaired
+at breakpoints via LQ local queries which attempt to repair the
+route. If a repair is not possible at the breakpoint, the LQ's bubble
+backwards towards the sender, trying to repair the route at each
+step. For local problems in the network, this scheme repairs routes
+cheaply, but it is easy to construct cases where this approach is very
+resource inefficient.
+
+They do an extensive performance evaluation using simulations to
+demonstrate the effectiveness of ABR, but tend to overwhelm the
+reader with details. It was difficult to pick out the important
+numbers from the large volume of data in the 7 pages of results. A
+more concise results section would have been more useful. 
+
+I thought the insight of finding long lived routes not only made sense
+but matches my ideas on how Ad-Hoc networks are used. Although there
+are some subset of nodes that are constantly in motion, most nodes are
+stable for some period of time, and those are the nodes that should be
+chosen for routing paths, as they are likely to remain stable.
+
+
+

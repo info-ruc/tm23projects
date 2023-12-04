@@ -1,0 +1,132 @@
+Received: from exchfe2.cs.cornell.edu (exchfe2.cs.cornell.edu [128.84.97.28])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h82FXxj26940
+	for <egs@unix.cucs>; Tue, 2 Sep 2003 11:34:00 -0400 (EDT)
+Received: from EXCHVS1.cs.cornell.edu ([128.84.97.23]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 2 Sep 2003 11:33:42 -0400
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6375.0
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Subject: 615 PAPER 1
+Date: Tue, 2 Sep 2003 11:33:42 -0400
+Message-ID: <40E631F174C41E4DBE52727E137AF9279061F9@EXCHVS1.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 PAPER 1
+Thread-Index: AcNxZ5cS1RQrcD21SNiOhJ87MIDFGQ==
+From: "Vidya Venkataraman" <vidya@cs.cornell.edu>
+To: <egs+615@cs.cornell.edu>
+X-OriginalArrivalTime: 02 Sep 2003 15:33:42.0817 (UTC) FILETIME=[9729B910:01C37167]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by sundial.cs.cornell.edu id h82FXxj26940
+
+                                                           Dynamic Source Routing (DSR) 
+Operation:
+    The paper describes a purely on-demand routing protocol for ad hoc wireless networks called the Dynamic Source 
+Routing protocol. The protocol does not employ periodic updates for the nodes to keep track of routes, hence it 
+saves on bandwidth and power. Route discovery process is initiated by the sender host when it needs to send 
+packets to another host. Accordingly the sender initiating a route broadcasts a Route Request packet which may be 
+received by nodes that are within the transmission range of the former. The Route Request packets contain 
+apart from the addresses of the sender and the destination, a route record in which the sequence of hops traversed
+by the Route Request packet is stored. A node that receives the Route Request packet drops it if the node had previously
+received a Route Request with the same source address and request ID or if the node's address is already 
+listed in the route record. Thus the route record is helpful in avoiding looping.
+  After this check, the node sees whether it is the target node of the route request packet. If it is, then it sends the route 
+obtained by the Route Request packet back to the sender node via a Route Reply packet. If the node is not the 
+destination node, it appends its own address to the route record and rebroadcasts the packet. The Route Reply is sent
+through the same route as the Route Request packet had traversed if the network contains bidirectional links.
+Otherwise the Route Reply is piggybacked on to a Route Request packet (targeted to the source node) and broadcast by the 
+destination node (this method has been adopted by the authors). Once the source node receives the Route Reply, 
+it starts sending data via the route found. 
+   Nodes maintain a route cache to keep track of active routes. The cache is helpful in enhancing the performance of the
+protocol. If there is a link failure along an established route, the host that detects it propagates a Route Error packet
+back to the source node (of the route). The intermediate nodes (in the path) and the source node delete their cache entries
+and the source node reinitiates route discovery (if needed). The authors also assume that the network works in a promiscous 
+mode. This means that the network layer of a node can view packets not addressed to them, without filtering at the lower
+layer. This mode is helpful in maintaining more route entries in the route cache and detecting shorter routes on the fly (the
+second optimization has however not been implemented by the authors). The authors have suggested some more methods in optimizing 
+the performance of the protocol.
+Comments:
+   The protocol works well in a small network and saves useful bandwidth and power by avoiding periodic exchanges. But it has 
+nothing new to offer except that it has been implemented on a wireless medium and some optimization schemes 
+have been employed. The simulations are not extensive. The protocol is tested only with varying mobility. 
+The protocol could have been tested with varying network load. The protocol will suffer from huge route discovery delays 
+if the network is large. The results also do not say anything about the performance of the protocol with respect to the number of calls 
+dropped and the average end-to-end delays incurred. 
+   There is one optimization called "the expanding ring" suggested by the authors which has not been implemented. This method 
+will increase the protocol overhead. The scheme could have rather not been mentioned by the authors! And there are some
+optimization methods which have not been implemented and just suggested. I hope they have been tested in subsequent works of 
+the authors. Many of the optimizations assume the existence of promiscous mode. This is a threat to the security of the systems and of the
+data being sent.
+ 
+                                                                                DSDV
+   This paper presents a distance vector method for ad hoc routing. This paper has implemented an approach which is a very common 
+routing method in wired networks. In this regard, the paper cannot boast of a novel approach.  
+Operation:
+   According to the protocol, routing is effected by the maintenance of routing tables (vectors) at each node. Each table
+entry denotes the preferred next hop node to each of the nodes in the network along with a metric (hop count in this case) that 
+denotes the (expected) cost of the route. These tables are maintained through periodic advertisements (or through trigerred updates) by 
+each nodes to its neighbours of its recent changes in the routing table (incremental) or of the entire table (full dump). Loops are avoided
+by using sequence numbers in each of the entries. Loops are potentially formed when there is a change in the next hop. 
+A routing table entry is updated by a node only if it receives an entry for the same destination node that has a sequence number 
+greater than the current sequence number or, if the received entry has a lower metric than that present in the current entry and the 
+same sequence number as the current entry. Looping is avoided in the first case because of the fact that the node can propagate sequence 
+numbers to its neighbours only after receiving it from the current next hop. Thus, the sequence number in the node's route entry is always 
+less than or equal to the next hop's route entry. Looping is avoided in the second case too since 
+in the presence of static or decreasing link weights, distance vector algorithms always maintain loop-free paths. All sequence numbers are 
+generated by the destination node except when there is a link breakage (an infinity metric is advertised to the neighbouring nodes by those
+which have detected the link failure).  
+   Whenever a node wishes to send data to another node, it simply refers to the routing entry corresponding to the latter and 
+sends the data to the preferred next hop. The paper has an illustration of the working of the protocol. The paper also suggests 
+methods to counter routing fluctuations during high mobility and in large networks. Accordingly two routing tables are maintained. 
+Newly altered routes are not advertised immediately until it is likely that they are stable. This is done through calculation of an average 
+settling time. 
+Comments:
+   The protocol, as said before, has the overhead of maintaining the routing information of the entire network through periodic broadcasts leading to
+a wastage of bandwidth and power. Each node may not have the necessity to maintain the routing information of all the nodes in the network. 
+Sometimes a node may not be involved in any data exchange at all but still is burdened to maintain its routing table. The paper does not present any 
+simulation work and hence the effectiveness of the network cannot be determined. The paper suggests a mechanism for effecting convergence which 
+is not optimal. This approach has not been clearly presented. 
+ 
+                                                                                 AODV
+    AODV is an on-demand routing protocol that also necessitates nodes to maintain active route information. But unlinke DSDV, the protocol 
+does not require elaborate periodic advertisements. Instead nodes dynamically maintain route information. Local connectivity is however 
+maintained through the exchange of Hello messages between neighbours. Hence we see that AODV is a blend of the distance vector and
+on-demand routing concepts.
+Operation:
+  Path discovery is initiated by the source node when it needs to send data to another node. A RREQ packet is broadcast by the sender node. 
+The RREQ packet contains two sequence numbers viz., the source sequence number and the destination sequence numbers. While the former 
+is used to maintain the level of freshness of the reverse route to the source, the latter specifies how fresh a route to the destination
+should be before it can be accepted by the source. When RREQ propagates through intermediate nodes, the reverse path is set up (similar to 
+the route record in DSR) and each node keeps track of it. A RREQ is rebroadcast by an intermediate node only if it has not received a 
+similar RREQ (detected by the <Sender_Address, Broadcast_id> pair) before and the destination sequence number in the RREQ is greater than that
+of the route entry maintained by that node. If the destination sequence number of the RREQ  is less than or equal to that of the route entry,
+then the destination node unicasts a RREP back through the reverse route (assuming the existence of bidirectional links).
+  If the RREQ reaches the destination, it sends back a RREP to the source node through the reverse path. As the RREP propagates back, each node
+sets up a forward pointer to the next hop. The RREP can be used by each node in the path to update its routing information. The first RREP that 
+a node receives for a particular source node is always propagated. If it receives further RREPs, it updates its routing information and propagates 
+the RREP only if it contains a greater destination sequence number than the previous RREP or the same destination sequence number with a smaller hop 
+count. It drops all other RREPs it receives. The source node starts data transmission as soon as it receives the first RREP and can later update 
+its routing information if it subsequently receives RREPs with better routes.
+  Each route table entry consists of the destination node, the next hop, the metric, destination sequence number and active neighbours of this route. 
+Thus the route table contains only active routes (decided by a timeout for each entry). The destination sequence number (similar to the one
+used with DSDV) is useful in preventing routing loops even in extreme conditions. In fact a proof has been presented in the paper that is much similar to the 
+one discussed above in  DSDV.
+  When there is a link failure, the node that detects it will send an unsolicited RREP back through the reverse route for the nodes in the route
+to update their routing information and for the source node to reinitiate path discovery (if necessary). The source node increments 
+the destination sequence number (and then initiates the path discovery) so as to build a new viable route. Local connectivity information is maintained 
+through periodic exchange of Hello messages between neighbours. These Hello messages are helpful in detecting link failures and in determining
+whether the links are bidirectional.
+Comments:
+   The protocol as mentioned before is a hybrid between distance vector and on-demand routing protocols. The simulation results presented here
+are more elaborate than those presented in the previous two papers. They test the quickness and the accuracy of the routing protocol.
+But the reasons for choosing certain values for traffic parameters have 
+not been mentioned. However the simulations do determine (near) optimal values for two timeouts used in the protocol. Since AODV has been 
+proposed after the DSR and the DSDV protocols, it would have been wise to compare it with the two protocols. The simulations show that
+as the network size increases, the session drop rate increases drastically (about 4% with 100 nodes to about 33% for 100 nodes!) 
+questioning the scalability of the protocol with respect to network size.
+  According to the paper, an intermediate node always propagates the first RREP for a given source node towards that source. The node could have seen 
+a better route between its sending of the RREQ packet (for the RREP that it had just received) and its receiving of the RREP packet. This point has
+either been overlooked or has not been mentioned in the paper. 
+

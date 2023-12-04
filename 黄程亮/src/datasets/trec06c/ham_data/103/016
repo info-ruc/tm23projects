@@ -1,0 +1,99 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j59Kgc5L023058
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 9 Jun 2005 13:42:38 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id B0FEAACB283
+	for <DMDX@psy1.psych.arizona.edu>; Thu,  9 Jun 2005 13:42:38 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 35ACBA9D6AB
+	for <DMDX@psy1.psych.arizona.edu>; Thu,  9 Jun 2005 13:42:38 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050609133756.00ba4c60@psy1.psych.arizona.edu>
+Date: Thu, 09 Jun 2005 13:42:36 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Timing with a USB gamepad
+In-Reply-To: <5.1.0.14.2.20050609083537.00ba4610@psy1.psych.arizona.edu>
+References: <fa430e5c05060907412f20e84e@mail.gmail.com>
+ <5.1.0.14.2.20050608133207.00ba4cd0@psy1.psych.arizona.edu>
+ <fa430e5c0506080711704b2eb7@mail.gmail.com>
+ <5.1.0.14.2.20050608080341.00ba4690@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050608133207.00ba4cd0@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 08:37 AM 6/9/2005 -0700, you wrote:
+
+>   I would hope it's SD would be below 1ms.  I'll know some time today as 
+> one of my techs will have brought in a USB game pad from her home.
+
+   Here's what I've added to the Input help after testing the gamepad:
+
+     It turns out that the above USB mouse times are bad not necessarily 
+because of the mouse per se but more because XP only polls USB devices at 
+125Hz.  There are various hacks around the internet that can change that 
+polling rate for gamers so I decided to revisit the USB issue and see if 
+the USB Mouserate Switcher has any effect.  Times are for testmode 8 on a 
+USB Logitech Trackman:
+
+XP SP2 P4 2.4 GHz, USB mouse, no rate modifications (qPIO12 still active, 
+oops) 8 bit video
+Positive Response Latency Mean: 1048.65, Standard Deviation: 6.74
+
+XP SP2 P4 2.4 GHz, USB mouse, no rate modifications (not much difference 
+with qPIO12 removed) 8 bit video
+Positive Response Latency Mean: 1048.65, Standard Deviation: 6.40
+
+XP SP2 P4 2.4 GHz, USB mouse, 1000Hz rate modifications 8 bit video
+Positive Response Latency Mean: 1048.70, Standard Deviation: 5.65
+
+XP SP2 P4 2.4 GHz, USB mouse, 1000Hz rate modifications 16 bit video
+Positive Response Latency Mean: 1048.64, Standard Deviation: 5.72
+
+     Fairly lackluster results had me suspecting that the 8 bit video mode 
+was the cause of the high variability but it would appear not to be the 
+case given the last 16 bit test.  The likely explanation is that there is a 
+large amount of software between DMDX and the actual mouse (for instance 
+all mice are aggregated as a single mouse) so I located a  Microsoft 
+SideWinder Plug & Play Game Pad and gave it a run through:
+
+XP SP2 P4 2.4 GHz, USB sidewinder gamepad, no rate modifications 16 bit video
+Positive Response Latency Mean: 1048.69, Standard Deviation: 2.61
+
+XP SP2 P4 2.4 GHz, USB sidewinder gamepad, 1000Hz rate modifications 16 bit 
+video
+Positive Response Latency Mean: 1048.67, Standard Deviation: 1.33
+
+     Here we can see some significant improvement percentage wise but the 
+raw device was already performing rather well to begin with.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+The first riddle I ever heard, one familiar to almost every Jewish
+child, was propounded to me by my father:
+	"What is it that hangs on the wall, is green, wet -- and
+whistles?"
+	I knit my brow and thought and thought, and in final perplexity
+gave up.
+	"A herring," said my father.
+	"A herring," I echoed.  "A herring doesn't hang on the wall!"
+	"So hang it there."
+	"But a herring isn't green!"  I protested.
+	"Paint it."
+	"But a herring isn't wet."
+	"If its just painted its still wet."
+	"But -- " I sputtered, summoning all my outrage, "-- a herring
+doesn't whistle!!"
+	"Right, " smiled my father.  "I just put that in to make it
+hard."
+
+                             -  Leo Rosten, "The Joys of Yiddish"
+
+
+

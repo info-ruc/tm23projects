@@ -1,0 +1,79 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iANIUJFJ009417
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 23 Nov 2004 11:30:19 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id BC1B2A06B38
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 23 Nov 2004 11:30:19 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 4DF869F374E
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 23 Nov 2004 11:30:19 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041123112044.00baed30@psy1.psych.arizona.edu>
+Date: Tue, 23 Nov 2004 11:30:17 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: RE: graphics not displaying
+In-Reply-To: <200411231754.iANHsRFJ009166@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20041123073345.00ba4640@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 12:55 PM 11/23/2004 -0500, you wrote:
+>Thanks JCF, I'll remove the recent DMDX and install the earlier one.
+>
+>In the mean time I have two questions (Doesn't everybody <grin>).
+>
+>1) I am using commercially available JPEG images (photographs). When I run
+>an experiment I am getting a degradation of the images; it looks like a grid
+>is bleeding into the image.
+
+   That's GDI scaling your images for you, none too sophisticated.  If you 
+need them scaled better than that either make the source images much larger 
+or do the scaling yourself with some program that re-samples the image and 
+thus does a better job than GDI does.  I like IrfanView myself, free and it 
+does a good job of scaling things.  http://www.irfanview.net/
+
+
+>2) I am trying to run a recognition experiment whereby I am presenting
+>target pictures to be test later. I want the script below to present each
+>Amusement Park picture for 250ms followed by 100ms ISI. When I run this
+>script, rather than get a 2000ms overall time, I get an overall time in the
+>area of 7000ms.
+>
+><n 5><s 5><azk><cr><fd 21><t 100>
+
+   T is in milliseconds, it's going to be a rare person that can react in 
+100ms.
+
+><vm desktop><dbc 0><nfb><dwc 000255000>
+>$
+>0 "Press SPACEBAR to start";
+>$
+>^001  *<jpeg 0.25,0.25,0.75,0.75> "Amusement Park 014"/;
+>^002 * <jpeg 0.25,0.25,0.75,0.75> "Amusement Park 027"/;
+>^003 * <jpeg 0.25,0.25,0.75,0.75> "Amusement Park 049"/;
+>^004 * <jpeg 0.25,0.25,0.75,0.75> "Amusement Park 061"/;
+>^005 * <jpeg 0.25,0.25,0.75,0.75> "Amusement Park 090"/;
+>$
+>0 "The End. Thank You.";
+>$
+>
+>Any tips will be greatly welcomed.
+
+   You want to use the <Delay> parameter to set your ISI, by default it's 
+something around 1/2 a second.  Which still doesn't explain your large 
+ISI.  It probably takes your machine eons to read those pictures, have a 
+look at the preparation times in the diagnostic window.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+One nice thing about egotists: they don't talk about other people.
+
+
+

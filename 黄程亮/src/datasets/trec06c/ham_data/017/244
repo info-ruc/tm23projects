@@ -1,0 +1,55 @@
+Received: from dub-img-6.compuserve.com (dub-img-6.compuserve.com [149.174.206.136])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id CAA15992
+	for <handyboard@media.mit.edu>; Thu, 4 Jun 1998 02:23:47 -0400 (EDT)
+Received: (from root@localhost)
+	by dub-img-6.compuserve.com (8.8.6/8.8.6/2.11) id CAA15159
+	for handyboard@media.mit.edu; Thu, 4 Jun 1998 02:23:17 -0400 (EDT)
+Date: Thu, 4 Jun 1998 02:22:38 -0400
+From: HECTOR NORIEGA <110060.2126@compuserve.com>
+Subject: A/D converter
+Sender: HECTOR NORIEGA <110060.2126@compuserve.com>
+To: Handyboard <handyboard@media.mit.edu>
+Message-Id: <199806040223_MC2-3F24-1041@compuserve.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+
+From: Hector Noriega,   3JUNE98
+Thanks Adam,(adam@programmer.net) The Speed of the
+A/D inproved by about 50 HZ, by getting rid of =
+
+float types, so now I can sample data at 290HZ only!.
+According to the Motorola "Pink Book" the A/D
+should be ready after 32 E clock cycles and
+the E clock is 2 MHZ, so the sampling should be =
+
+good for 58KHZ and the nyquest is 29KHZ.
+The new "IC" code is :
+****************Start of "IC" code************************
+
+/* To test Feedback Controller */
+   int  volt_out=3D128;          /*motor output of "0" */
+   int v_opt,disp; =
+
+void main()
+  {  =
+
+   while(1)
+    {      =
+
+  v_opt =3D atodconv(0);  /*start a2d subroutine;*/
+      v_opt =3D (v_opt <<8);      /* shift to get rid of one accumulator*=
+/
+      v_opt =3D (v_opt >>8);      /* shift right to read byte */
+      v_opt =3D (128 - v_opt);
+      volt_out =3D (v_opt + 128); /*scale volts to digital units.*/
+      poke(0x6fff,volt_out);     /* A/D correction to drive motor*/    =
+
+    }  /* end of while */
+    }  /* end of main program*/
+********************************end of "IC" code.
+Thank you for your support in advance.
+Hector Noriega; 110060.2126@compuserve.com
+
+

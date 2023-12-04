@@ -1,0 +1,54 @@
+Received: from imo27.mx.aol.com (imo27.mx.aol.com [198.81.17.71])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id BAA07729
+	for <handyboard@media.mit.edu>; Fri, 16 Apr 1999 01:15:26 -0400 (EDT)
+From: DjKOz97@aol.com
+Received: from DjKOz97@aol.com
+	by imo27.mx.aol.com (IMOv20.11) id yTDMa09990
+	 for <handyboard@media.mit.edu>; Fri, 16 Apr 1999 01:14:07 -0400 (EDT)
+Message-Id: <45641c65.2448211d@aol.com>
+Date: Fri, 16 Apr 1999 01:14:05 EDT
+Subject: Wireless communication with the Handyboard
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 4.0 for Windows 95 sub 246
+Reply-To: DjKOz97@aol.com
+
+Hello,
+
+I've been very busy trying to communicate with the Handyboard via a wireless 
+link ( HP Development kit form Linx Technologies). I have run into a slight 
+problem-
+The kit comes with 2 "development boards" - each contains a transmitter, 
+receiver, and an antenna. Linx provides software to establish a simplex 
+communication between 2 computers ( which means only one transmitter/ 
+receiver pair are used at a time).
+In order to communicate with the handyboard, I'll need ( I think ) at least a 
+two way half duplex transmission protocol. Here is the problem: In the 
+current set-up, all four Linx Tx/ Rx modules are enabled at the same time. 
+They all transmit at the same frequency, which causes a problem. Data sent to 
+the transmitter on "Board 1" is immediately picked up by the receiver on the 
+same board, having a loop- back effect.
+The problem can be solved by transmitting and receiving at two different 
+frequencies, which is not too difficult, considering that Linx provides a dip 
+switch to select between 8 different frequencies. Having explored this 
+solution, however, I keep getting the following message whenever I try to run 
+IC via the wireless link:
+Looking for prompt, received 255
+Synchronizing with Board....
+The number "received" varies with each successive synchronization attempt.
+So here is the question:
+On the Handyboard side: Is it possible to somehow monitor a pin on the 68HC11 
+to see whether it is transmitting or receiving? I plan to use this pin to 
+enable only one Tx/ Rx pair at a time. (The Linx Tx/ Rx modules have a power 
+down pin for this purpose).  
+On the PC side: Could I use the DTR, CTS, and RTS serial pins to perform the 
+same function?
+I am confident that the wireless link works in the simplex mode, since I was 
+able to transmit an analog audio signal from a Walkman to a Stereo! 
+Any thoughts on the matter would be highly appreciated.
+David Nagel
+New Jersey Institute of Technology.
+
+

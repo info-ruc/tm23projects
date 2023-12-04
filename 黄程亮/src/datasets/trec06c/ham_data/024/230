@@ -1,0 +1,97 @@
+Received: from hil-img-7.compuserve.com (hil-img-7.compuserve.com [149.174.177.137])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id CAA06193
+	for <handyboard@media.mit.edu>; Thu, 22 Oct 1998 02:08:27 -0400 (EDT)
+Received: (from root@localhost)
+	by hil-img-7.compuserve.com (8.8.6/8.8.6/2.14) id CAA22049
+	for handyboard@media.mit.edu; Thu, 22 Oct 1998 02:07:57 -0400 (EDT)
+Date: Thu, 22 Oct 1998 02:07:42 -0400
+From: HECTOR NORIEGA <110060.2126@compuserve.com>
+Subject: Read A/D converter
+Sender: HECTOR NORIEGA <110060.2126@compuserve.com>
+To: Handyboard <handyboard@media.mit.edu>
+Message-Id: <199810220207_MC2-5D7C-8026@compuserve.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+
+"HI" , I am trying to read the A/D converter but the program gets "Hung-U=
+p"
+on the line
+"ANALOOP", the CCF bit never sets. Please give me a hint. Here is the
+Assembly code.
+
+/* MAGLEV.ASM, Magnetic Levitation by Hector Noriega, 28JUNE1998.*/
+/*Handy Board */
+/* Program to read PE1, ADR2 of Analog to Digital and write =
+
+/* and write the byte to PORTC.
+BASE    EQU     $1000
+ADCTL   EQU     $30     ; A/D Control/status Register
+ADR1    EQU     $31     ; A/D Result Register 1
+ADR2    EQU     $32     ; A/D Result Register 2
+PIOC    EQU     $02     ; Parallel I/O Control register
+HPRIO   EQU     $3C     ; Highest Priority Interrupt and misc.
+OPTION  EQU     $39     ; system configuration Options
+
+ANALOG2     FCB $00
+                ORG     $8000   ;PCODE_ORIGIN, builds upwards
+                  FCB   0                   =
+
+                ORG     $C500   ;MAIN_CODE
+                  NOP
+                NOP
+                NOP
+                NOP
+                NOP
+                  LDS   #$FEFF ;ini. Stack Pointer to top of RAM,grows
+downwards
+/**********************A/D*************************************/
+           LDX   #BASE  =
+
+           LDAB  #$65     ;0110 0101 =
+
+           STAB  HPRIO,X  ;HPRIOtest SMOD & MDA bit(normal expanded mode)=
+
+           LDAB  #$00
+           STAB  PIOC,X   ;PIOC $1002
+/*INAD is a subroutine to read Analog channels *********/
+           BSR   STARTAD
+           BSR   INAD
+           LDAA  #$80      ; to make the output bypolar
+           ABA             ; add B to A
+           LDAB  #$FF      ; to set port "C"
+           STAB  $07,X     ;DDRC 1007 Set portc to output
+           STAA  $6FFF     ; L byte FF to PORTB,
+           BRA   LOOP1     ; H byte 6F to PORTC latch
+/*                         ; and data byte to PORTC*/ =
+
+/*                         ; turn on interrupts*/
+/*******************A/D subroutine*******************/         =
+
+STARTAD
+             PSHX
+             LDX   #BASE     ;point to registers
+             BSET  OPTION,X,$80  ;  ADPU=3Dto power up,set bit in mem.
+             BCLR  OPTION,X $40 ; CSEL =3D 0  to select clock =
+
+             LDX   #60    ;Delay >100us for E=3D3MHZ or less
+DLY100  =
+
+             DEX
+             BNE  DLY100
+             PULX
+             RTS
+INAD
+            LDX   #BASE
+            LDAB  #%00100001
+            STAB  ADCTL,X      ;start conversion
+                           /*  ;also clears CCF*/
+                           /*  ;wait for fist conversion done*/
+ANALOOP
+            LDAB  ADCTL,X  /* poll for analog conversion*/
+            ANDB   #$80
+            BEQ   ANALOOP
+                LDAB    ADR2,X          ; load B with result
+            RTS
+

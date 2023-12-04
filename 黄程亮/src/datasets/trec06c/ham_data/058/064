@@ -1,0 +1,127 @@
+Received: from parsifal.zhwin.ch (parsifal.zhwin.ch [160.85.128.4])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA07814
+	for <handyboard@media.mit.edu>; Thu, 9 Dec 1999 12:54:10 -0500 (EST)
+Received: from zhwin.ch (pchar.zhwin.ch [160.85.130.120]) by parsifal.zhwin.ch with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2448.0)
+	id YS2Z8TBH; Thu, 9 Dec 1999 18:58:55 +0100
+Message-Id: <384FECAD.B57E70E7@zhwin.ch>
+Date: Thu, 09 Dec 1999 18:53:49 +0100
+From: Thomas Hauri <Thomas.Hauri@zhwin.ch>
+X-Mailer: Mozilla 4.7 [en] (WinNT; I)
+X-Accept-Language: de-CH,de-DE,en
+Mime-Version: 1.0
+To: Jan Liphardt <JTLiphardt@lbl.gov>
+Cc: handyboard@media.mit.edu
+Subject: Re: Piezo Rate Gyro and HB
+References: <384D8374.52EA2BA6@lbl.gov>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi Jan
+
+good job. I've done exactly the same thing :)))) I only use some assembler code to measure the time. In fact I have
+some code, that lets you measure a frequency or a pulsewidth ranging from about 30 Hz to 30kHz.
+If anyone wants the code (i've supplied it many times to other people from ths list) just send me a mail.
+Unfortunately Fred hasn't put the code on the HB home page yet, maybe sometime he will :)))) (hi Fred)
+
+cu
+Tom
+
+
+
+Jan Liphardt wrote:
+
+> Hi,
+>
+> FYI, it is possible (and indeed pretty easy) to attach a small piezo
+> rate
+> gyro to the HB. I used the hitec GY-130 (availible for about 100$ from
+> Tower Hobbies). It modifies a PWM signal - the pulse width increases or
+> decreases depending on the rate of rotation around the gyro axis.
+>
+> I used one servo port on the extension board to provide the
+> PWM signal:
+>
+> init_expbd_servos(action) ;        /*initialize servos*/
+>
+> pos_servo_0 = 1500;                /* 0 to 3000 are valid */
+>
+> and measured the pulse width with TIC3:
+>
+> while(1)
+>  {
+>     temp = gyro_sample();
+>     if((temp < 5000) && (temp > 100)) {printf("gyro rate: %d\n",temp)}
+>     sleep(0.1);
+> }
+>
+> int gyro_sample() {
+>     int start_pulse;
+>     int end_pulse;
+>
+>     int TFLG1 = 0x1023;        /* Timer flags, 8-bit reg*/
+>     int TMSK1= 0x1022;        /* Timer Interrupt Masks, 8-bit reg*/
+>     int TCTL2 = 0x1021;        /* Timer control 2, 8-bit reg, interupt
+> edge*/
+>
+>     bit_set(TCTL2, 1);         /* at tctl2, */
+>     bit_clear(TCTL2, 2);       /* set tic3 for rising edge */
+>
+>     poke(TFLG1, 1);              /* clear tic3 flag */
+>
+>     while (!(peek(0x1000) & 0x1)) { /*do nothing*/; }
+>
+>    start_pulse = peekword(0x1014);   /* tic3 has time of echo */
+>
+>    bit_set(TCTL2, 2);           /*    at tctl2, */
+>    bit_clear(TCTL2, 1);         /*   set tic3 for falling edge */
+>    poke(TFLG1, 1);               /*   clear tic3 flag*/
+>
+>    while (peekword(0x1014) == start_pulse){ /*do nothing until 0x1014
+> actually changes*/; }
+>
+>    end_pulse = peekword(0x1014);   /* tic3 has time of echo */
+>
+>    if ((end_pulse <0)  && (start_pulse < 0 ))
+>             { return (end_pulse + (- start_pulse));}
+>
+>     if ((end_pulse > 0)   && (start_pulse > 0 ))
+>              { return(end_pulse - start_pulse); }
+>
+>     if ((end_pulse <0)   && (start_pulse > 0))
+>              {return( (32767 + end_pulse) + (32767 - start_pulse) );}
+>
+>     if ((end_pulse >0)   && (start_pulse < 0 ))
+>              {return ( (end_pulse) + (- start_pulse) ); }
+>
+> }
+>
+> Sorry about the terrible code - I've only had my HB since yesterday! It
+> does work,
+> though.
+>
+> Jan
+>
+> Jan Liphardt
+> Dept. of Physics
+> UC Berkeley
+> (510) 642 1440
+
+--
+Thomas Hauri
+
+ZHW Zuercher Hochschule Winterthur
+Zurich University of applied sciences
+
+IMS Institute of Mechatronic Systems
+
+Technikumstr.9 /PF
+CH-8401 Winterthur
+Switzerland
+
+Phone : +41 52 267 74 79
+Fax    :  +41 52 268 74 79
+Mail  :   Thomas.Hauri@zhwin.ch
+HP    :   http://www.zhwin.ch
+
+
+

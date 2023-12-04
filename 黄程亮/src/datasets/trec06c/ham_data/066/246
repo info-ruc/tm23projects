@@ -1,0 +1,92 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id KAA11717
+	for <handyboard@media.mit.edu>; Sun, 23 Apr 2000 10:50:02 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id KAA19791; Sun, 23 Apr 2000 10:50:03 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7767
+From: Jonathan Pennington <john@coastalgeology.org>
+X-Real-Life-Name: Jonathan Pennington
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: john@coastalgeology.org
+Subject: Servo function (new?)
+Posted-Date: Sun, 23 Apr 2000 15:03:39 GMT
+Date: Sun, 23 Apr 2000 15:03:39 GMT
+Organization: None
+Message-Id: <20000423110339.A10929@awod.com>
+References: <FtAtHr.6v0@lugnet.com> <3.0.1.32.20000420092221.006e0560@chi.devry.edu>
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0
+Precedence: list
+
+Hello all, here's a servo function that I worked up. It's really very
+simple, but I figured that someone else might want to use/hack it up.
+
+My problem was that I wanted to be able to set the servo
+(non-continuous) at *any* point in its travel easily. I decided to do
+it by percentage. This was because doing it by degrees meant that I'd
+have to calculate the total number of degrees that the servo had in
+the first place (since they're not exactly 180). I guess I'll still
+have to do that if I need a more precise function, but I don't right
+now.
+
+-------------cut here-------------------
+
+/* minimum and maximum travel values for my servos. I use conservative
+numbers because some can use 4600, but some squeal like hell at that
+value. You'll obviously want to change these. */
+
+int servo_0          = 500;
+int servo_100        = 4000;
+
+/* my micro servos have different values */
+
+int mc_servo_0       = 950;
+int mc_servo_100     = 4400;
+
+/* THe argument "servo" is for the model, I actually use 3-4 different
+ones, all with different values. If you only have one, take this an
+dthe if statement out. */
+
+int set_servo (int servo, int value) {
+  float p,point;
+  int range,min,max;
+  
+  /* Find out which kind of servo it is using model number */
+
+  if (servo == 3101) {          /* Futaba 3101 is a micro servo */
+    min = mc_servo_0;
+    max = mc_servo_100;
+  } else if (servo == 3003) {   /* Futaba 3003 is a regular servo */
+    min = servo_0;
+    max = servo_100;
+  }
+
+  /* Get total range of travel  */
+  
+  range = max-min;
+  
+  /* Calculate value as a percentage */
+
+  p = ((float) value) / 100.;
+
+  /* Find point of travel that is x percent of total. If you don't add
+  the minimum value, 100% will be equal to range, not max. 0% will be
+  way out of range on the low end.*/
+
+  point = p * ((float) range) + ((float) min);
+  return ((int) point);
+}
+-------------cut-------------------
+
+like I said, it's simple, but it might stop somone from reinventing
+the wheel, so to speak.
+
+-J 
+-- 
+Jonathan Pennington		| A computer without Windows
+john@coastalgeology.org		| is like a dog without bricks
+http://www.coastalgeology.org	| tied to its head.
+

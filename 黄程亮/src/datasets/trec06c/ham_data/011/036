@@ -1,0 +1,75 @@
+Received: from utrhcs.cs.utwente.nl (utrhcs.cs.utwente.nl [130.89.10.247])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id JAA29866
+	for <handyboard@media.mit.edu>; Fri, 13 Feb 1998 09:28:54 -0500 (EST)
+Received: from hypnos.cs.utwente.nl by utrhcs.cs.utwente.nl (SMI-8.6/csmajor-1.5-RBCS)
+	id PAA23561; Fri, 13 Feb 1998 15:28:48 +0100
+Received: from mekong by hypnos.cs.utwente.nl (SMI-8.6/csrelay-Sol1.4/RB)
+	id PAA08947; Fri, 13 Feb 1998 15:28:53 +0100
+Date: Fri, 13 Feb 1998 15:28:53 +0100
+From: veenjs@cs.utwente.nl (Jan-Sipke van der Veen)
+Message-Id: <199802131428.PAA08947@hypnos.cs.utwente.nl>
+To: handyboard@media.mit.edu
+Subject: Interrupt for serial data
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Md5: LRPjUhyxYAakfpGrqqfeUA==
+
+I've decided to write an interrupt routine for the handling of serial data on 
+the Handy Board. An example of an interrupt routine is given in the Handy Board 
+technical reference. This works like a charm. I've modified it to use the SCI 
+interrupt. The code is listed below.
+
+No interrupts seem te occur. The test is like this:
+
+* Start IC
+* load myfile.icb
+* load myfile.c  (* in main : *)
+  poke (0x3c, 1);
+  printf ("%d", foo);
+  int_init (0);
+  start_press ();
+  printf ("%d", foo);
+* Exit IC
+* reset Handy Board
+* it prints: 55
+* send a character to the Handy Board (in Borland Pascal)
+* press Start button
+* it prints: 55
+
+
+Can anyone see the mistake here?
+Hope I'm not too annoying with all my questions.
+
+Jan Sipke van der Veen
+
+
+
+#include "include\6811regs.asm"
+
+subroutine_int_init:
+#include "include\findx.asm"
+   LDD   SCIINT,X
+   STD   interrupt_code_exit+1
+   
+   LDD   #interrupt_code_start
+   STD   SCIINT,X
+   
+* Receive Enable (bit 2) +
+* Transmit Enable (bit 3) +
+* Receive Interrupt Enable (bit 5) = $2C
+   LDAA  #$2C
+   STAA  SCCR2,X
+   
+   RTS
+
+variable_foo:
+   FDB   55
+   
+interrupt_code_start:
+   LDD   #42
+   STD   variable_foo
+
+interrupt_code_exit:
+   JMP   $0000
+

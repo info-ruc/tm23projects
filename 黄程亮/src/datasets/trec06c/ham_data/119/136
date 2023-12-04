@@ -1,0 +1,28 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2S5INY09774
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 00:18:23 -0500 (EST)
+Received: from localhost (cpe-69-207-49-126.twcny.res.rr.com [69.207.49.126])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2S5IMIQ009688
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 00:18:23 -0500 (EST)
+Date: Tue, 28 Mar 2006 00:18:30 -0500
+From: Niranjan Sivakumar <ns253@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 16
+Message-Id: <20060328001830.a2199a09.ns253@cornell.edu>
+Organization: Cornell Law School
+X-Mailer: Sylpheed version 2.2.3 (GTK+ 2.8.13; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+The EigenTrust Algorithm for Reputation Management in P2P Networks
+A Robust Reputation System for P2P and Mobile Ad-hoc Networks
+
+EigenTrust is an attempt to create a self-policing, somewhat decentralized method of reputation management in a p2p network.  EigenTrust is based on nodes judging their peers based on direct interaction and aggregating local trust values from other peers.  A node can theoretically iterate over the entire network to obtain a view of other nodes' trust information, but the system is designed such that trust vectors of all peers will converge as the network expands.  Thus, it should not be necessary to crawl very far to obtain a reasonable view.  The system uses a concept of pre-trusted peers that are "known" to be trustworthy to combat inactive peers and malicious collectives.  The system is then run on top of DHT, such as CAN or Chord, to assign reputation managers for nodes in the network in order to avoid self-evaluation.  Multiple managers are assigned for nodes in order to limit the effect of misbehaving managers.
+
+A modified Bayesian approach to decentralized reputation management has is presented in the Robust Reputation System paper.  This system has two main ratings that are maintained about nodes, reputation and trust.  Reputation is the belief in whether a node is participating properly in a network.  Trust is whether or not a node is participating properly in the reputation system, i.e. whether the information it provides about other nodes is valid.  Nodes maintain first hand information about their interaction with nodes and share this with other nodes.  As nodes receive information from other nodes (and update first hand information), the node will only accept data if it is "close" to the reputation value that it has currently.  The modification to their Bayesian scheme facilitates reputation fading and redemption to mitigate nodes that capitalize on built up reputation and suddenly misbehave. 
+
+Both of these systems do not appear to have deployed outside of simulations.  The notion of pre-trusted peers, which is claimed to be beyond the scope of the paper, seems to present a major issue in EigenTrust.  It appears to be a very important part of their scheme, yet is not fleshed out.  This also detracts from the decentralization of the system as the pre-trusted peers will become targets.  The claimed anonymity is not described very well, and the mapping of nodes based on a unique, real-world identity to the DHT that assigns reputation managers seems to be problematic.  Identities also seem to be a major problem with the modified Bayesian approach, and is mentioned as being a work in progress.  
+

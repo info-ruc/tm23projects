@@ -1,0 +1,90 @@
+Received: from nef2.ens.fr (nef2.ens.fr [129.199.96.40])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5RIYD5L015238
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 27 Jun 2005 11:34:13 -0700
+Received: from biologie.ens.fr (biologie.ens.fr [129.199.16.22])
+          by nef2.ens.fr (8.13.2/1.01.28121999) with ESMTP id j5RIY7gq062042
+          for <DMDX@psy1.psych.arizona.edu>; Mon, 27 Jun 2005 20:34:07 +0200 (CEST)
+Received: from lscp23 (lscp23.ens.fr [129.199.22.53]) by biologie.ens.fr (8.12.11/jb-1.1)
+	id j5RIY5P7002119 for <DMDX@psy1.psych.arizona.edu>; Mon, 27 Jun 2005 20:34:06 +0200 (CEST)
+Message-ID: <007701c57b46$d308e5b0$3516c781@lscp23>
+From: "Sid Kouider" <sidk@lscp.ehess.fr>
+To: <DMDX@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20050627103006.00ba4c60@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Mixing audio signals
+Date: Mon, 27 Jun 2005 20:34:16 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Jonathan,
+
+> How does it not work?  It looks good to me.
+
+I've just tried the script on a different computer and found exactly the
+same problem.
+I used DMDX 3.1.2.6 on WIN XP and 98.
+I've also recorded the output signal to see what happens.
+
+The two first files on each channel (RIGHT_WORD and left_word1) strart ok
+and are perferctly synchronized.
+However, the 3 remaing files (left_word2...4) do not appear untill 400 ms
+after the offset of left_word1 (!) and are strangly srambled altogether
+(!!!).
+
+Something that might help. I seems to have to do with adding %0 to "svp
+start".
+If I delete the %0, I found that the files are showing a convenient and
+expected behavior. However, when doing that I loose synchrony of the first
+files, given that %0 avoid the concurent file from starting 1 tick later, as
+described in the audio input help.
+
+-Sid
+
+----- Original Message ----- 
+From: Jonathan C. Forster
+To: DMDX@psy1.psych.arizona.edu
+Sent: Monday, June 27, 2005 7:30 PM
+Subject: [DMDX] Re: Mixing audio signals
+
+Hi,
+I'm trying to construct an experiment in which two audio signals are mixed
+together and start simultaneously. One steam is made of a single long wav
+file, whereas the other one is made of 4 small wav files.
+For simplicity, one can imagine that one signal comes in the right ear and
+one comes in the left ear, similarly to dichotic listening experiments:
+
+R channel: RIGHT_WORD
+L channel: left_word1 --> left_word2 --> left_word3 --> left_word4
+
+I've followed the suggestion made on Mike Ford's page to use the "svp"
+keyword.
+While I've been able to have two files presented simultaneously (one on the
+right, one on the left), I've been unable to have the remaining files played
+SEQUENTIALY on the left channel.
+
+Here is a sample of the script:
+=1 <ms% 1000> / <svp start> %0 * <wav 1> "RIGHT_WORD" / <wav 0> "left_word1"
+/
+<wav 0> "left_word2" /  <wav 0> "left_word3" /  <wav 0> "left_word4";
+
+Any help or advice would be appreciated.
+Thanks,
+
+-Sid
+
+
+
+                                               /"\
+ -jonathan (j.c.f.)                            \ /
+                                                X
+    ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+
+  You must ask much to get a little.
+                                                     - Anonymous
+
+

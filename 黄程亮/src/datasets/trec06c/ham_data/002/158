@@ -1,0 +1,100 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Wed, 28 Dec 1994 13:33:44 MST
+Received: from noao.edu by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA27716; Wed, 28 Dec 1994 13:33:43 MST
+Received: from orpheus.gemini.edu by noao.edu (4.1/SAG-Noao.G96)
+	id AA16684; Wed, 28 Dec 94 13:33:42 MST; for icon-group@cs.arizona.edu
+Received: by orpheus.gemini.edu (5.0/SMI-SVR4-SAG03X)
+	id AA15462; Wed, 28 Dec 1994 13:33:16 +0700
+Message-Id: <9412282033.AA15462@orpheus.gemini.edu>
+From: swampler@noao.edu
+Date: Wed, 28 Dec 1994 13:33:14 GMT+447
+X-Mailer: Mail User's Shell (7.2.3 5/22/91)
+To: icon-group@cs.arizona.edu
+Subject: Re: Truth Tables...
+Content-Length: 2952
+
+I think I understand more of what the original problem was (maybe someone
+  could mail to me again)?  I like Jerry Nowlin's solution.  Here's a version
+  of it, recast to use strings instead of lists (because I like strings
+  more than lists - must be my SNOBOL4 background raising its head again).
+
+  I think it differs from Jerry's solution in the definition of XOR on
+  more than 2 values.  See the comment in my code on this point.  I am
+  curious as to how logicians define it.
+
+  -------
+      procedure main(args)
+         local n, t
+      
+         n := integer(args[1]) | 2
+      
+         every t := gen_truths(n) do {
+            every writes(format( !t |				  # values
+                                 "|" |			  # separator
+                                 s_and(t) | s_or(t) | s_xor(t)  # functions
+                               ))
+            write()
+            }
+      
+      end
+      
+      procedure format(s)
+         return center(s, 5)
+      end
+      
+      # Generate all permutations of a n-wide boolean variable set
+      procedure gen_truths(n)
+         if n > 0 then suspend ("F"|"T") || gen_truths(n-1)
+                  else return ""
+      end
+      
+      # AND of an arbitrary number of values
+      procedure s_and(t)
+         return if upto('F',t) then "F" else "T"
+      end
+      
+      # OR of an arbitrary number of values
+      procedure s_or(t)
+         return if upto('T',t) then "T" else "F"
+      end
+      
+      # XOR of an arbitrary number of values
+      #
+      # This raises an interesting point, just *what is* the definition
+      #   of 'xor' with more than 2 arguments?  This solution assumes
+      #   definition is 'exactly one TRUE', which is different than
+      #   an answer build up through iterative (or recursive) applications
+      #   of xor on two values at a time.  I chose this definition
+      #   because with the other, xor isn't associative.  Consider:
+      #
+      #   Case 1: XOR(v1,v2,v3) <- (v1 xor v2) xor v3
+      #   Case 2: XOR(v1,v2,v3) <- v1 xor (v2 xor v3)
+      #   Case 3: XOR(v1,v2,v3) <- s_xor(v1||v2||v3)    {used here}
+      #
+      #   with the call XOR(T,F,F)
+      #
+      #      Case 1: produces T
+      #      Case 2: produces F
+      #      Case 3: produces T
+      #
+      #   Cases 1 and 2 become stranger as the number of arguments increase.
+      #   One can produce a solution using Case 3 to mimic either Case 1 or
+      #   Case 2, anyway, e.g:
+      #
+      #       s_xor(s_xor(v1||v2)||v3)
+      #
+      #   What do real mathematicians use?   What happens in 'J'?
+      #
+      procedure s_xor(t)
+         return if i := upto('T',t) then {
+                   if upto('T',t,i+1) then "F" else "T"
+                   }
+                else "F"
+      end
+
+-- 
+Steve Wampler - swampler@gemini.edu [Gemini 8m Telescopes Project (under AURA)]
+--
+The Gods that were smiling when you were born are laughing now.
+			          -- found in a fortune cookie
+

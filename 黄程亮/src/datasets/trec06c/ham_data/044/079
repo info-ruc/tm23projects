@@ -1,0 +1,120 @@
+Received: from smtp5.jps.net (smtp5.jps.net [209.63.224.55])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id XAA30651
+	for <handyboard@media.mit.edu>; Thu, 13 May 1999 23:02:00 -0400 (EDT)
+Received: from iname.com (209-142-46-123.stk.jps.net [209.142.46.123])
+	by smtp5.jps.net (8.9.0/8.8.5) with ESMTP id EAA29534;
+	Fri, 14 May 1999 04:02:32 -0700 (PDT)
+Message-Id: <373B9220.49A5F74F@iname.com>
+Date: Thu, 13 May 1999 20:01:52 -0700
+From: Nick Taylor <ntaylor@iname.com>
+X-Mailer: Mozilla 4.5 [en] (Win98; U)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Cc: Andre Philippi <philippi@earthlink.net>
+Subject: Re: Servo Control Documentation Clarification...
+References: <199905140035.RAA02164@siberia.it.earthlink.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Andre:
+You're right about the HandyBoard & expansion board documentation not
+being correct in its servo entries.  I don't recall what values I found
+to work properly on the bare HB, but on the expansion board the default
+of 2540 comes close to centering the dozen or so servos that I've 
+tried.  The +/- 90 degree points are typically 1040 and 4040.  Since 
+I don't have a 'scope either I don't know what the actual pulse widths
+are ... but these same servos have typical ranges of 1050-1950 us 
+when used with a PIC.
+Hope this helps,
+ - - - Nick - - - 
+
+Andre Philippi wrote:
+> 
+> Hi,
+> 
+> While I was trying to produce .85, 1.35, and 1.85 millisecond pulses with the
+> Handy Board (with *and* without the expbd.), to control Team Novak's
+> (http://www.teamnovak.com/products/esc/super_r/super_ro.htm) "Super Rooster"
+> Electronic Speed Controller (ESC), I found the following discrepancies
+> regarding servo control documentation:
+> 
+> 1) First, in regards to servo control, according to
+> http://turbine.kuee.kyoto-u.ac.jp/staff/onat/servobasics.html, "The ON time of
+> the pulse indicates the angle to turn to; 1ms = 0 degrees, 2ms=max
+> degrees(about 120) and anything in between gives a proportional output angle.
+> 1.5ms is generally considered to be the "center". The 1~2ms limit is
+> manufacturers' recommendations; you can usually use a wider range around 1.5ms
+> for grater throw."
+> 
+> So I called Novak, and they gave me "Super Rooster's" limits as following:
+> 
+> 0.85 milliseconds - Maximum Reverse.
+> 1.35 milliseconds - "Neutral".
+> 1.85 milliseconds - Maximum Forward.
+> 
+> So far so good...but...
+> 
+> 2) According to the "Dual Servo Routine" for the HB
+> (http://el.www.media.mit.edu/groups/el/projects/handy-board/software/servo.html
+> ) we have the following:
+> 
+> a) Value Range: 400-4800 units...
+> 
+> b) Time Range: 0.2-2.4 milliseconds...
+> 
+> c) Default: 2560...
+> 
+> d) 1 Unit = 0.5 microseconds...
+> 
+> e) 3040 units = 1.52 milliseconds pulse length, "...which is just in the
+> middle of a typical servo's range...".
+> 
+> So, if 2a-2e are true, why wasn't the default set to be 3040 (instead of
+> 2560), which is supposed to be the middle of the servo's range ? What was the
+> purpose of setting the default above the middle of the range? And, is there a
+> way to change the default value ?
+> 
+> Also, if the middle of the range *on this routine* is really 3040
+> (1.52milliseconds)...; Will 3040 units, be the middle of the range for the
+> expbd servo routine too? I could not find the "middle of the range" (in units)
+> for the expbd servo routines... :(
+> 
+> 3) According to the Expansion Board servo documentation
+> (http://el.www.media.mit.edu/groups/el/projects/handy-board/hbexp30/software.ht
+> ml), we have the following:
+> 
+> a) Value Range: 0-3000
+> 
+> b) Default: 2540
+> 
+> So, if the range in this routine is 0-3000 units, why is the default 2540 ?
+> Why isn't it 1500 units ? How many milliseconds 2540 units correspond to ? Are
+> there any practical reason on why we would want to set the defaults so much
+> "higher" (longer) than the middle of the servo's range ? Why wasn't the middle
+> of the the range in units mapped to the middle of the range in milliseconds ?
+> 
+> How many *microseconds* do each unit correspond to, on the expbd servo control
+> routines ?
+> 
+> Is there a linear relationship between the unit range and the pulse length
+> range ?
+> 
+> The reason I'm asking all that, is so I can properly program the ESC,
+> hopefully making my car go a little slower (now is going tooooo fast...:)...
+> And since I don't have an O-Scope to measure the pulses coming out of the HB,
+> I had to ask all the above... :)
+> 
+> Thank you in advance,
+> 
+> Best Regards,
+> 
+> Andre Philippi.
+> 
+> =================================================================
+>  Andre Philippi - Applications Developer   | Phone: 626-296-5016
+>  philippi@corp.earthlink.net               | Fax:   626-296-5113
+>  Earthlink Network, Inc.                   | 3100 New York Drive
+>  http://www.earthlink.net                  | Pasadena, CA  91107
+> =================================================================
+

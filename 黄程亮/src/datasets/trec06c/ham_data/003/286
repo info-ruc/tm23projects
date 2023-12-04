@@ -1,0 +1,37 @@
+Received: from delbarton.org (www.delbarton.org [206.67.182.18]) by cse.psu.edu (8.8.5/8.7.3) with ESMTP id JAA07692 for <9fans@cse.psu.edu>; Sun, 2 Feb 1997 09:13:39 -0500 (EST)
+Received: (from rsc@localhost) by delbarton.org (8.7.4/8.7.3) id JAA09179 for 9fans@cse.psu.edu; Sun, 2 Feb 1997 09:16:21 -0500
+Date: Sun, 2 Feb 1997 09:16:21 -0500
+From: Russ Cox <rsc@delbarton.org>
+Message-Id: <199702021416.JAA09179@delbarton.org>
+To: 9fans@cse.psu.edu
+Subject: Re: grap troubles
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+I've had problems with grap garbling unicode
+inside the G1/G2 pair, but unicode outside the
+graph seems to be left alone.  Inside the
+G1/G1, unicode becomes a single 0xE2 for me.
+
+Input of 
+	term% cat /tmp/graph
+	♚
+	♘
+	♟
+	♝
+	♗
+	.G1
+	label left "white ♛"
+	label bot "black ♕"
+	1 2
+	3 4
+	5 6
+	7 8
+	.G2
+	term% 
+illustrates this nicely.  It is also telling that 
+running 'grap -d' on this file commits suicide.
+
+Anyone else with ideas?
+

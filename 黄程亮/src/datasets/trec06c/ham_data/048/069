@@ -1,0 +1,109 @@
+Received: from brownale.cisco.com (brownale.cisco.com [171.69.95.89])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA05929
+	for <handyboard@media.mit.edu>; Fri, 16 Jul 1999 16:46:10 -0400 (EDT)
+Received: from ghayward-nt (dhcp-71-130-204.cisco.com [171.71.130.204]) by brownale.cisco.com (8.8.4-Cisco.1/8.6.5) with SMTP id NAA21781; Fri, 16 Jul 1999 13:45:09 -0700 (PDT)
+Message-Id: <4.1.19990716133450.01ba4f10@brownale>
+X-Sender: ghayward@brownale
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Fri, 16 Jul 1999 13:38:56 -0500
+To: Chuck McManis <cmcmanis@mcmanis.com>,
+        Handyboard list <handyboard@media.mit.edu>
+From: Gregory Hayward <ghayward@cisco.com>
+Subject: Re: Yet another board
+In-Reply-To: <4.1.19990716122446.03dac100@mailhost.hq.freegate.com>
+References: <378F6D01.59C3F477@awod.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+Chuck,
+you may find this page of interest. UC Berkeley has put a 68HC11 with a Xilinx chip together for their natcar enter.A RC car race sponsored by national semiconductor.
+good luck!!
+Greg
+
+ At 12:56 PM 7/16/99 -0700, Chuck McManis wrote:
+>Hello Everyone,
+>
+>I've had something of a vision, and I don't think it was spoiled food :-)
+>And I'd like some feedback on it. Bear with me, it requires a bit of set up.
+>
+>After working with Handyboards, Miniboards, 6.270 Boards, BOTBoards and
+>other 68HC11 boards I find I enjoy their easy programability but always
+>seem to need some outside circuit to deal with a particular sensor, or other.
+>
+>Recently, on the advice of a friend, I purchased the "Xilinx Student
+>Edition V1.5" from Amazon.com ($90, anyone is a "student"):
+>http://www.amazon.com/exec/obidos/ASIN/0136716296/ref=ed_oe_p/002-5447280-30
+>80618
+>What this book is, is a students guide to learning about FPGAs (Field
+>Programmable Gate Arrays), using Xilinx software. It includes all of the
+>software necessary to design ten thousand gate equivalent FPGAs (XC4010XL
+>parts). The final chapter/example in the book is building an 8 bit
+>microprocessor in a single 5000 gate gate array!
+>
+>If you buy the book you get a coupon that lets you buy the XESS demoboard
+>with an XC4005 chip (used for all the tutorials in the book) for $109. So
+>for an investment of $200, you end up with everything you need to not only
+>learn how to design FPGAs, but to implement them as well. Not a bad deal at
+>all.
+>
+>The XESS demoboard manual is shown here:
+>	http://www.xess.com/FPGA/manual.html
+>
+>This board has an 8031 on it, 32K of SRAM, the Xilinx part, a parallel
+>port, VGA type connector, 7 segment LED, and wall-wart to 5V&3V power
+>supply. Its something like 2" by 4" in size. Both edges of the boards are
+>rows of pins the are connected to the FPGA so you can plug the whole board
+>into a solderless breadboard and use it that way, or strips of wire wrap
+>headers.
+>
+>The Xilinx part is RAM based, meaning that you download your circuit design
+>into it at powerup, or it can automatically read it from a serial EEPROM,
+>and then you start using it. All in all it is a very cool board, if only it
+>had a 68HC11 instead of an 8031 ...
+>
+>Flash back to my discussion with my FPGA expert friend who designed a 16
+>bit RISC machine in one of these FPGAs. He was explaining to me how he
+>loaded software into memory for his computer since there were no i/o
+>devices attached except for a serial port. He said,
+>
+>	"First, I download into the FPGA a serial UART and a DMA device
+>	which takes data from the serial port and deposits it into memory.
+>	Then I reset the board and download the CPU into the FPGA and the
+>	CPU starts executing the program out of memory."
+>
+>If that doesn't sound like Star Trek I don't know what does. 
+>
+>So one morning, I woke up from a dream. And in my dream I had a robot board
+>that had a 68HC11, some RAM, and the whole thing was hooked up to an FPGA
+>in a socket next to it. There was a dual motor driver on board with its
+>control pins hooked to the FPGA, the FPGA was connected to the 68HC11 bus
+>signals, there were additional "high current" I/O pins connected to the
+>FPGA as well as protected input pins. I had just finished downloading a PWM
+>circuit that attached to the motor controller pins and implemented an i/o
+>port in the 68HC11's address space. I then added a timer/interrupt circuit
+>that controlled a sonar unit and a another device that I could write out
+>servo positioning codes to and it would send out servo signals on the pins
+>I specified. Then I added a 38Khz clock circuit (dividing out the CPU
+>clock) that drove some IR LEDs that were being modulated and then monitored
+>by a digital phase locked loop circuit. I'd used up a thousand gates in the
+>FPGA and still had 4000 left so I implemented an additional serial port
+>that could drive three pins and had it's interrupts on the 68HC11 IRQ pin.
+>
+>The scary thing is, this dream is not only possible, it would probably cost
+>no more than a 20 - 30% premium over what a handyboard does today.
+>
+>So, I want to build this sucker (or have someone build it and I'll buy a
+>bunch!) I figure the board would have an EEPROM for the FPGA so that a
+>"standard" configuration could be loaded into it and sent with boards where
+>the user didn't want or need to pay $100 to get the Xilinx tools. Maybe we
+>could create a circuits library that could be downloaded into this board
+>like a software library.
+>
+>Comments? Feedback? Would you buy one if it was available? Even if the kit
+>cost $300? (rough guess based on a four layer board, F1 version of the
+>68HC11 and XC4005.)
+>
+>--Chuck
+> 
+
+

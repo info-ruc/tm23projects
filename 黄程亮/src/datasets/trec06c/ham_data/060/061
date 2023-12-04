@@ -1,0 +1,97 @@
+Received: from jcf (jcf.psych.Arizona.EDU [128.196.98.7])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id QAA06948;
+	Tue, 25 Jan 2000 16:53:25 -0700
+Message-Id: <3.0.6.32.20000125165327.0079cce0@psy1.psych.arizona.edu>
+Date: Tue, 25 Jan 2000 16:53:27 -0700
+To: Clay Fort <cfort@u.arizona.edu>
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DMDX timing
+Cc: DMDX@psy1.psych.arizona.edu
+In-Reply-To: <3.0.5.32.20000125154425.007bbd40@pop.u.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:44 PM 1/25/00 -0700, you wrote:
+
+  Clay, this kind of thing should go on the listserve.
+
+>Dear Jonathan,
+>
+>I had written to you in October about some difficulties I was having with
+>controlling the timing of presentation of bitmaps. When coding frame
+>durations in accordance with the refresh rate (16.691), programs were
+>running in excess of one minute long. I made adjustments to the frame
+>durations until the actual presentation rate (as documented by the .zil
+>file) was as required. The attached file, #008Scan1.rtf shows the coding
+>I've been using to achieve the desired timing. The Excel file,
+>DMDXoutput.xls, has a sheet giving a typical example of COT for this program.
+>
+>When I wrote to you about this problem, you made the following suggestion
+>(as I had been using a D parameter of 0):
+>
+> "You must still have a D parameter as the ISI is not guarenteed to be
+>anything other than longer than 48 ticks, just how much longer depends on
+>how much work DMDX must do to prepare the item.  You should determine what
+>delay you want between items and specify that as the value for the D
+>parameter.  And don't pick some really small value either, make it some
+>reasonable value like 48 ticks."
+>
+>I've now tried a test using <d 48> and coding my frame durations in
+>accordance with the refresh rate. Once again the program ran in excess of
+>one minute long. I've also attached that program (#008Scan1testA.rtf) for
+>your review. It's output file is also in the Excel file.
+>
+>Please excuse the length of the attached programs, but I thought it best to
+>include the complete code. If you could review these programs and their
+>output, at your convenience, I would greatly appreciate any suggestions you
+>have.
+
+  A a general rule it's also a good idea to use the extended parameter line
+convention otherwise DMDX won't parse the line as a parameter line if word
+actually puts a hard return in there:
+
+<ep> N202 <zil> <ContinuousRun> <t 1800> <defaultwritingcolor 255255255>
+<nofeedback> <defaultbackgroundcolor 0>  <defaultfont Times New Roman>
+<defaultfontsize 26> <id keyboard> <d 48> <RecordClockOnTime>
+<TimeCriticalFrame> <id PIO12>  <mip 27> <vm 640,480,480,16,0> </ep>
+
+>Attachment Converted: "G:\Attach\DMDXoutput.xls"
+
+  Sorry, I can't read .xls files.  A you complaining about a one minute
+variability or a one minute overall longer execution time?
+
+  My guess is that your error might be coming from the fact that the
+timeout for responses is less than the durartion of the display meaning
+that the item duration will be determined by something other than the
+display, for example:
+
+=4599 <fd 30> *g"d:\Iaps\4599.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+
+  Here you've got a display of 150 ticks over 1800ms which means that your
+refresh rate has to be over 12ms (or under 83Hz) in order for the display
+to be determining the duration of the item file, an 85Hz display would
+break it.  BTW,  I can't see why you've got "/,<fd 150>", it's not going to
+hurt but it should be "/ <fd 150>", or at least some fd thats a good deal
+bigger than the timeout.
+
+
+
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+"There are three principal ways to lose money: wine, women, and
+engineers.  While the first two are more pleasant, the third is by far
+the more certain."
+
+                                   -  Baron Rothschild, ca. 1800
+
+
+

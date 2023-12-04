@@ -1,0 +1,74 @@
+Received: from ar.aichi-u.ac.jp ([202.250.160.73])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id UAA17181
+	for <9fans@cse.psu.edu>; Mon, 21 Feb 2000 20:10:33 -0500 (EST)
+From: arisawa@ar.aichi-u.ac.jp
+Message-Id: <200002220110.UAA17181@cse.psu.edu>
+To: 9fans@cse.psu.edu
+Date: Tue, 22 Feb 2000 09:01:11 +0900
+Subject: [9fans] AMD cpu detection
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+Hello 9fans,
+
+I received a mail from Jim.
+His patch to:
+	/sys/src/9/pc/clock.c
+	/sys/src/fs/pc/8253.c
+fixed the problem with the CPU speed being unsteady.
+
+Thanks Jim.
+
+Kenji Arisawa
+E-mail: arisawa@aichi-u.ac.jp
+
+From: jmk@plan9.bell-labs.com
+Subject: Re: [9fans] Re: b.com from fd
+Date: Mon, 21 Feb 2000 11:45:30 -0500
+To: arisawa@aichi-u.ac.jp
+
+Here's something which might fix your problem with the CPU speed
+being unsteady. This code is from our current fileserver kernel and goes
+in 8253.c/clockinit:
+
+	...
+	/*
+	 *  set clock for 1/HZ seconds
+	 */
+	outb(Tmode, Load0|Square);
+	outb(T0cntr, (Freq/HZ));	/* low byte */
+	outb(T0cntr, (Freq/HZ)>>8);	/* high byte */
+
+	/*
+	 * Introduce a little delay to make sure the count is
+	 * latched and the timer is counting down; with a fast
+	 * enough processor this may not be the case.
+	 * The i8254 (which this probably is) has a read-back
+	 * command which can be used to make sure the counting
+	 * register has been written into the counting element.
+	 */
+	x = (Freq/HZ);
+	for(loops = 0; loops < 100000 && x >= (Freq/HZ); loops++){
+		outb(Tmode, Latch0);
+		x = inb(T0cntr);
+		x |= inb(T0cntr)<<8;
+	}
+
+	/* find biggest loop that doesn't wrap */
+	...
+
+I admit to not having tried this on a non-Intel processor. The delay is
+also necessary in the terminal/cpuserver kernels.
+If that fixes your problem, let me know and feel free to post the fix
+to 9fans.
+
+By the way, the x86amd[] table values for the Athlon are the same as
+for the K6:
+	{ 6,	1,	11,	"AMD-Athlon", },/* trial and error */
+	{ 6,	2,	11,	"AMD-Athlon", },/* trial and error */
+I have a 700MHz Athlon with an ASUS K7M motherboard; it's quite refreshing
+to see not a single Intel chip in the system.
+
+--jim
+

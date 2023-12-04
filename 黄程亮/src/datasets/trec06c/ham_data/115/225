@@ -1,0 +1,144 @@
+Received: from out4.smtp.messagingengine.com (out4.smtp.messagingengine.com [66.111.4.28])
+	by cs.utexas.edu (8.13.5/8.13.5) with ESMTP id k1OE2Bxr024686;
+	Fri, 24 Feb 2006 08:02:12 -0600 (CST)
+Received: from frontend1.internal (mysql-sessions.internal [10.202.2.149])
+	by frontend1.messagingengine.com (Postfix) with ESMTP id 1EC37D37B60;
+	Fri, 24 Feb 2006 09:02:10 -0500 (EST)
+Received: from frontend2.messagingengine.com ([10.202.2.151])
+  by frontend1.internal (MEProxy); Fri, 24 Feb 2006 09:02:10 -0500
+X-Sasl-enc: GIHUjIAvEfYjxsMrDvVEOMk72NB+SyM+Bau1GwPJeA9+ 1140789729
+Received: from BILLMARK-LT2 (adsl-71-145-210-199.dsl.austtx.sbcglobal.net [71.145.210.199])
+	by frontend2.messagingengine.com (Postfix) with ESMTP id 4B96E58A0CE;
+	Fri, 24 Feb 2006 09:02:09 -0500 (EST)
+Date: Fri, 24 Feb 2006 08:02:11 -0600 (Central Standard Time)
+From: billmark@cs.utexas.edu
+To: Sadia Sharif <sharif@cs.utexas.edu>
+cc: Jeff Diamond <jdiamond@cs.utexas.edu>, cs395t-mark@cs.utexas.edu
+Subject: Re: TCC brings up a very interesting point...
+In-Reply-To: <Pine.LNX.4.63.0602240147540.14281@anton.cs.utexas.edu>
+Message-ID: <Pine.WNT.4.60.0602240744510.888@BILLMARK-LT2>
+References: <43FE55C0.70709@cs.utexas.edu> <Pine.LNX.4.63.0602240147540.14281@anton.cs.utexas.edu>
+X-X-Sender: billmark@fastmail.fm@mail.messagingengine.com
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+
+Let's continue this discussion in class sometime.  But to frame the
+debate in everyone's mind, I'll mention a few points here.
+
+My opinion would be that:
+
+   - There is typically a tension between abstractions that hide details
+     and abstractions that expose details but allow maximum performance.
+     Contrast C++ with Lisp, for example.  Java falls somewhere in the
+     middle, but closer to C++ than to Lisp.
+
+   - This tension is fundamental, and will always exist.  Although the CS
+     community can and should strive to reduce the severity of it, we'd
+     be making a mistake to think that we can eliminate the tension.
+
+   - One result of this fundamental tension is that we typically want
+     multiple abstractions.  These can be exposed as either completely
+     different interfaces (C++ vs. Lisp, for example), or as different
+     ways of doing the same thing within a single interface
+     (using STL vs. manually defining your data layout, for example).
+
+In summary, the ideal interface for a 'novice' and/or
+'productivity-focused' programmer is likely *not* the same
+interface that  an 'expert', 'performance-oriented' programmer
+wants, at least if the expert programmer is willing to spend
+a lot of time on performance tuning.
+
+I don't think it's very useful to argue over which programming
+style is more important -- we need good solutions for both of them.
+
+What we should do is state our assumptions about which style of
+programmer we're targeting.
+
+I personally tend to focus a bit more on the 'performance-oriented'
+programmer.  One reason for this is that I think it is an 'easier'
+problem from a languages/tools point of view.  That is, if you
+can't provide good performance to the expert programmer, you have
+no hope of providing it to the novice programmer.  Similarly,
+once you understand how to provide good performance to the
+expert programmer, you are better positioned to ask where you
+could raise the level of abstraction without giving up too much
+of that performance.
+
+Bill
+
+On Fri, 24 Feb 2006, Sadia Sharif wrote:
+
+> I agree with you. But maybe it is a question of finding the right set of 
+> abstractions?
+> Today the debate is about the difficutly of writing parallel programs. A few 
+> decades ago
+> writing sequential programs was also the domain of the expert few.
+>
+> Quoting from BEFORE MEMORY WAS VIRTUAL by Peter J. Denning:
+> "If you write a matrix multiply algorithm straight from the definition in the
+> textbook, you will create a program with three nested loops covering six 
+> lines of text.
+> This program becomes much more complicated if you cannot fit the three 
+> matrices in
+> main memory at the same time: you have to decide which rows or columns of 
+> which
+> matrices you can accommodate in the space available, create a strategy for 
+> moving them
+> into main memory, and implement that strategy by inserting additional 
+> statements into
+> the program. You will come to several conclusions from the exercise: (1) 
+> devising an
+> overlay strategy is time consuming, in this example more than programming the 
+> guts of
+> the algorithm, (2) the overlay strategy depends on the amount of memory you 
+> assume is
+> available, and (3) the size of the program increases by a factor of two or 
+> three."
+>
+> Anybody could have written the code for matrix multiplication. But juggling 
+> the overlay structure
+> to find one that is as compact as possible while still being valid and 
+> reasonably efficient is a black art
+> requiring considerable trial and 
+> error.(http://www.iecc.com/linker/linker08.html)
+>
+> Virtual memory is a powerful abstraction because it simplifies the 
+> programmers job.
+> For efficiency he may still need to take into account the size of the cache.
+> However this is an optimization, not a necessity.
+>
+> According to Denning:
+> "... the driving force behind virtual memory has always been simplifying 
+> programs (and
+> programming) by insulating algorithms from the parameters of the memory 
+> configuration
+> and by allowing separately constructed objects to be shared, reused, and 
+> protected."
+>
+> The billion transistor machines of tomorrow should provide better performance 
+> for the code
+> written by the average programmer without requiring him to provide the 
+> equivalent of memory overlays.
+>
+>
+> On Thu, 23 Feb 2006, Jeff Diamond wrote:
+>
+>> When it comes to high performance, parallel code, maybe we *shouldn't* 
+>> want non-expert programmers to be able to write it.  If we make it seem 
+>> simple when it's really not, then everyone will try to write parallel 
+>> programs. Currently, if someone writes a poorly optimized program, my OS 
+>> will multitask it amoung the rest of my computer and only that program 
+>> will run slowly.  But if I launch even a tiny app (say a clock) that a 
+>> naive programmer wrote with TCC, now my entire computer can be brought 
+>> down by cache overflow.   (You definitely don't want a heart monitor 
+>> implemented in TCC.)
+>> 
+>> Seems like this is moving in the wrong direction along so many axis...
+>> I think an important rule of abstraction is "don't hide something that 
+>> matters".
+>> 
+>> 
+>> 
+>> 
+>
+

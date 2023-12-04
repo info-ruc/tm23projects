@@ -1,0 +1,85 @@
+Received: from mx1.magmacom.com (mx1.magmacom.com [206.191.0.217])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA23140
+	for <handyboard@media.mit.edu>; Fri, 9 Apr 1999 20:25:22 -0400 (EDT)
+Received: from mail2.magma.ca (mail2.magma.ca [206.191.0.218])
+	by mx1.magmacom.com (8.9.1a/8.9.1) with ESMTP id UAA07216;
+	Fri, 9 Apr 1999 20:25:21 -0400 (EDT)
+Received: from magmacom.com (port47.magma.ca [206.191.5.47])
+	by mail2.magma.ca (8.9.3/8.9.3) with ESMTP id UAA12092;
+	Fri, 9 Apr 1999 20:25:18 -0400 (EDT)
+Message-Id: <370E9A79.C98290EF@magmacom.com>
+Date: Fri, 09 Apr 1999 20:25:29 -0400
+From: "K.L.McKinnon" <klmckin@magmacom.com>
+X-Mailer: Mozilla 4.05 [en] (Win95; I)
+Mime-Version: 1.0
+To: MAR ERICSON <mar@cooper.edu>
+Cc: Gary Livick <glivick@pacbell.net>, Chuck McManis <cmcmanis@mcmanis.com>,
+        Ian Nieves <wired@cmu.edu>, handyboard@media.mit.edu
+Subject: Re: Increasing current output to motors on HandyBoard
+References: <Pine.SUN.3.90.990409110042.25593B-100000@magnum.cooper.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Haven't actually tried it, but I was thinking of the same sort of thing.
+Use a FET for PWM and a DPDT relay for direction.  practically speaking,
+if you only switched the relay when the FET was off, no power
+transition, etc....
+If your 'bot moves forward more than back than using a default state
+(N/C) for the forward motion, means current to the relay is only
+consummed during the reverse movement.
+A single FET with a relay s(w)hould prove to be quite a bit more space
+conservative and likely cost effective as well.
+Comments?
+
+K.L. McKinnon
+
+MAR ERICSON wrote:
+> 
+> I wonder if this would last since a relay is mechanical and I would
+> assume that it would wear with all that "switching".  Doe anyone have any
+> experience with this?
+> 
+> Thanks.
+> 
+> -----------
+> ericson mar
+> Robotics Consultant
+> mar@cooper.edu
+> (212)353-4356
+> 
+> Department of Mechanical Engineering
+> The Cooper Union for the Advancement of Science and Art
+> -------------------------------------------------------
+> 
+> On Thu, 8 Apr 1999, Gary Livick wrote:
+> 
+> > Another solution to this which is easier but more expensive is to use the
+> > output of the motor driver chip to drive solid state relays.  You need the
+> > relays that use 5 volts for control and that will switch DC.  The relays I use
+> > have flyback diodes in them, but I don't know that all do so a user would need
+> > to add them if they were not included.
+> >
+> > Four are needed.
+> >
+> > Gary Livick
+> >
+> >
+> > Chuck McManis wrote:
+> >
+> > > At 11:46 PM 4/8/99 -0400, Ian Nieves wrote:
+> > > > ...Is there
+> > > >some stacking that would allow more current to pass safely?  (I am
+> > > >looking for a relatively simple solution that can be implemented quickly
+> > > >and easily.)  Can i stack two TI sn754410ne on top of each other?
+> > >
+> > > Stacking the chips is doable but you will toast them when you get near
+> > > their current limit. An easier solution is to use the TI chips to drive
+> > > power transistors that are acting as voltage followers. This lets them take
+> > > the current. Alternatively you can pull the L293 chips out of the board and
+> > > wire the sockets up to some National LM18200 H-bridges that will handle
+> > > these motors at 12volts.
+> > >
+> > > --Chuck
+> >
+> >
+

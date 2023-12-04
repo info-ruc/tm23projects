@@ -1,0 +1,78 @@
+Received: from amiga.icu.net.ch (amiga.icu.net.ch [146.228.204.2]) by wuarchive.wustl.edu (8.6.9/8.6.9) with SMTP id JAA14578 for <umueller@wuarchive.wustl.edu>; Wed, 21 Dec 1994 09:44:37 -0600
+Received: by amiga.icu.net.ch id AA08060
+  (5.65c8/IDA-1.4.4 for umueller@wuarchive.wustl.edu); Wed, 21 Dec 1994 16:42:36 +0100
+Received: by amiga.icu.net.ch; Wed, 21 Dec 1994 16:42 GMT
+Received: from xs1.xs4all.nl by amiga.icu.net.ch with SMTP id AA02122
+  (5.65c8/IDA-1.4.4 for <umueller@amiga.icu.net.ch>); Sun, 4 Dec 1994 12:36:17 +0100
+Received: from aobh.xs4all.nl by xs1.xs4all.nl with UUCP id AA15534
+  (5.67b/IDA-1.5 for amiga.icu.net.ch!umueller); Sun, 4 Dec 1994 12:36:26 +0100
+Received: by aobh.xs4all.nl (V1.17-beta/Amiga)
+	  id <0dcd@aobh.xs4all.nl>; Sun, 4 Dec 94 10:40:46 CET
+Message-Id: <9412040940.0dcd@aobh.xs4all.nl>
+Date: Sun, 04 Dec 94 10:02:44  GMT+1
+Organization: Amiga Online Bs Heemstede, +31-23-282002/470739
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Gatesoftware: XEchoGate 1.3
+From: Maarten@aobh.xs4all.nl (Maarten Ter Mors)
+To: umueller@amiga.icu.net.ch
+Subject: Re: Aminet CD 4
+Sender: umueller@amiga.icu.net.ch
+Content-Type: text/plain; charset=iso-8859-1
+Content-Length: 1815
+Status: RO
+
+ UDM> Could you write a step by step explanation on how to user Aminet
+ UDM> CDROMS on the CD32? I would then mail it to the people who have
+ UDM> reported to me the same problem, and we could post it on csa.cd32 and
+ UDM> Aminet.
+
+Step 1.  Mount a RAD: recoverable RAM disk in the CD32.  My experience is that
+when you cet HighCyl to about 49, you are able to fit a usable Workbench on it
+and still use the CD32 to a useful extent.
+
+Step 2.  Copy the LIBS: and C: dirs straight from the Workbench-equipped CD you
+booted from.  The Commodore Demo CD is ideal, since it contains Workbench 3.1,
+whereas most others use 3.0.
+To save space, you could consider deleting some libraries you don't need
+anyway, like LIBS/rexx#?.  Also, you can probably do without C/Edit and a
+couple of others.
+
+Step 3.  Create the following directories on RAD: : S, Prefs,
+Prefs/Env-Archive, Prefs/Env-Archive/sys
+
+Step 4.  Copy the settings you want from ENVARC:sys/ to
+RAD:Prefs/Env-Archive/sys/  You can omit this step, but you'll be left with a
+very boring, standard Workbench, which is probably off-centre on your screen,
+which looks boring in blue and grey and has a whooping big mouse pointer.
+
+Step 5.  Make a small startup-sequence in RAD:S/, like :
+
+C:SetPatch <>NIL:
+
+C:MakeDir <>NIL: RAM:T RAM:Clipboards RAM:ENV RAM:ENV/Sys
+C:Copy <>NIL: ENVARC: RAM:ENV ALL NOREQ
+
+C:Assign <>NIL: ENV: RAM:ENV
+C:Assign <>NIL: T: RAM:T
+C:Assign <>NIL: CLIPS: RAM:Clipboards
+
+C:IPrefs
+C:LoadWB
+EndCLI <>NIL:
+
+
+Step 6.  Remove the bootable CD from the drive and reboot the CD32.  It should
+now boot from RAD: and leave you with a Workbench and about 1,2 MB RAM free. 
+If you insert the AmiNet CD now, it works.
+
+
+G'bye then,
+
+  /|/|       ___  /|/|
+ / / |aarten |er / / |ors      email: maarten.ter.mors@aobh.xs4all.nl
+
+
+
+-- Via Xenolink 1.90
+

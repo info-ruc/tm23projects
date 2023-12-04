@@ -1,0 +1,96 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k3PFJWHL018149
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 08:19:32 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 7DFCADED344
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 08:19:32 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.Arizona.EDU [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id ED6ABDED900
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 08:19:30 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060425081141.00ba4880@psy1.psych.arizona.edu>
+Date: Tue, 25 Apr 2006 08:19:29 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: CR timing intelligence check
+In-Reply-To: <444DFE14.7090801@lungall.gu.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 12:46 PM 4/25/2006 +0200, you wrote:
+>I realize that <CR> timing issues are documented, but nevertheless I
+>find myself with a nagging sense of insecurity that I am understanding
+>them correctly.
+>
+>Could someone please check my understanding of the timing of the
+>following item in a DMDX item file (which I have broken up here into
+>"lines" and simplified):
+>
+>
+>### Psuedo Item file snipplet ###
+><n 336>  <azk> <cr> <fd 1 > <id QPIO12> <dbc 000125255> <dwc 0> <vm 1024
+>768 768 16 60>  <dfs 20 > <nfb>
+>[line 1]  +23 <fd 223>  "+"  /
+>[line 2]  <fd 13>   "+" , <fd 13> "O" * <Timeout 2700 >  /
+>[line 3]  <fd 49 >  "+" /
+>[line 4]  <fd 106>, "+" , ">>>>>" ;
+>
+>
+>Intentions:
+>
+>Display a "+" for 223 ticks [line 1]
+>Display a "+" and superimposed "O" for 13 tics, start RT timer at
+>beginning of frame [line 2]
+>Display a "+" for 13 ticks [line 3]
+>Display a "+" and ">>>>>" for 106 ticks.  Advance to next frame (item)
+>on RT response or timeout
+
+   No, the first <fd 13> and the <fd 106> won't count for anything as the 
+comma frame delimiter will set that frames duration to 0 when it merges it 
+with the next one.  Frame durations of comma delimited sets of frames must 
+be in the last frame.
+
+
+
+>elapsed     frame             event
+>ticks       duration
+>-------------------------------------------------------
+>1           223               display line 1
+>224         1                 change frame
+>225         13                begin line 2, start timer
+>238         1                 change frame
+>239         49                display line 3
+>288         1                 change frame
+>289         13                display line 4
+
+   There is no one tick delay between frames.
+
+
+
+>Thank you,
+>
+>Derek
+>
+>
+>Note:  The strange construction of:   <fd 13>   "+" , <fd 13> "O"  from
+>line 2 was discussed in the archives several years ago
+>(psy1.psych.arizona.edu/cgi-bin/thread?message=660756).
+>I don't remember why I found it necessary to do it that way, but it
+>seemed necessary!
+
+   The comma frame delimiter is exactly equivalent to <fd 0> / 
+<NoErase>.  So your <fd 13> "+" , <fd 13> "O" is in actual fact <fd 13> "+" 
+<fd 0> / <NoErase> <fd 13> "O" and the last switch is the one that DMDX uses.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   An elephant is a mouse built to Mil-spec.
+
+
+

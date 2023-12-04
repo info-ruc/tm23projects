@@ -1,0 +1,154 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1L5ngt18040
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 00:49:42 -0500 (EST)
+Received: from [10.0.1.2] (cpe-69-207-41-159.twcny.res.rr.com [69.207.41.159])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1L5nfrI029687
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 00:49:42 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <D072F3FF-5BCE-48B1-B788-799E6568CDA4@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 8
+Date: Tue, 21 Feb 2006 00:52:27 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+THE SYBIL ATTACK
+
+In The Sybil Attack, Douceur suggests that in a distributed computing  
+environment, it is impossible (barring unrealistic assumptions about  
+network homogeneity) to keep newly entering nodes from presenting  
+multiple network identities.  These nodes can then defeat network  
+security measures which rely upon node wise redundancy in the  
+network, performing what is known as a Sybil Attack.
+
+The following general network model is formed:  There are a set of  
+entities, a broadcast communication cloud, and a pipe connecting each  
+entity to the cloud.  A subset of the entities are faulty or  
+compromised nodes, and the rest are correct, or honest.  Nodes may  
+have different computation resources, except that no node posses the  
+power do crack a public key session between two entities.  Douceur  
+suggests three methods of identifying an entity based on it's  
+resources: latency, storage resources, and computational resources.   
+He then gives four Lemmas regarding an entity's ability to claim  
+multiple identities.  The 1st two lemmas result from an overly  
+capable node dividing it's resources to act as multiple nodes.  If  
+verification for each identity is not simultaneous, the faulty node  
+can reuse it's resources to spoof an arbitrary number of identities.   
+Lemmas 3 & 4 hold If in the system allows indirect verification.   
+Lemma 3 states that if there exists enough faulty nodes to vouch for  
+an identity, that collection of faulty nodes can vouch for an  
+arbitrary number of false identities.  Lemma 4 essentially combines  
+Lemmas 2 & 3, allowing a single faulty node to vouch for an arbitrary  
+number of identities.
+
+These lemmas in general do not bode well for peer-to-peer networks in  
+general, however they are derived from a very simple network view,  
+and so it should be possible to overcome some of these limitations.   
+Primarily, it does not account for the use of any side channel  
+information to verify node identities.  For instance, in a sensor  
+network, where node transmission ranges do not extend across the  
+whole network, a single node cannot appear to exist at multiple  
+points within the network.  Thus, a node masquerading as many would  
+have to appear to be a cluster of nodes, suggesting that redundancy  
+could be spread across space rather than nodes, defeating the Sybil  
+Attack.
+
+
+DEFENDING AGAINST ECLIPSE ATTACKS ON OVERLAY NETWORKS
+
+The eclipse attack is a more general attack than the Sybil attack,  
+achieved by gaining control of the neighbor links of an overlay node  
+and interfering with that correct nodes communication with the rest  
+of the overlay network.  Primarily, the authors suggest nodes which  
+are attempting an eclipse attack will have high indegree as they try  
+to isolate correct nodes.  A simple solution is then to only connect  
+to nodes with a sufficiently low indegree.  This allows for another  
+attack whereby attacker nodes attempt to raise the indegree of  
+correct nodes.  This can be avoided by limiting the outdegree of  
+correct nodes.  The authors note that this simple criteria can be  
+applied to both structured and unstructured networks.
+
+Unstructured overlays are the mot vulnerable to eclipse attack, as  
+the flooding or random walk searches used by these overlays allow  
+messages to reach a large number of attacker nodes.  In structured  
+networks, many latency optimizations based on network heterogeneity  
+increase the network's susceptibility to eclipse attacks (e.g.  
+proximity neighbor selection, indegree proportional to node capacity).
+
+The authors propose the following method of validating a node's  
+reported indegree and outdegree, provided that the overlay already  
+can protect against Sybill attacks:  Each node keeps a list of all  
+known nodes linking to it, called a back pointer list.  Periodically  
+the node challenges its neighbors to produce their neighbor list.  If  
+a returned list is too large, or it does not contain the requesting  
+node, the requesting node will remove that node from its neighbor  
+list.  To validate outdegree, each node periodically challenges each  
+node on its back pointer list for its neighbor set.  If the  
+requesting node is not in the list, or the list is too large, the  
+offending node is removed.  In structured networks, it is required  
+that backpointers are spread across different prefixes or routing  
+table rows so that attackers cannot gain complete control of a  
+routing hop.  These requests are routed through anonymizer nodes to  
+to conceal the identity of the requester, so appropriate backpointer  
+lists cannot be forged.
+
+The system is simulated on top  of a Pastry implementation, and  
+reduces routing table infection by malicious nodes from ~%80 to %25  
+with perfectly accurate degree reports.  A separate test is performed  
+using the anonymizing scheme for backlist requests showing that it  
+reduces routing table infection.  Unfortunately these analyses do not  
+consider the load placed on the network from the additional messages  
+sent including anonymizations for node indegree and outdegree  
+verification, and no nodes join or leave the network during simulations.
+
+
+SECURE ROUTING FOR STRUCTURED PEER-TO-PEER OVERLAY NETWORKS
+
+The authors propose a method of securing peer-to-peer networks such  
+as Pastry, Tapestry, Chord, or others.  They describe a method of  
+providing a secure routing primitive, ensuring that a message will  
+eventually reach at least one root node responsible for that key,  
+thereby which overlay network security can be maintained.  To achieve  
+the secure routing primitive, three challenges must be addressed:   
+Secure nodeId assignment, securely maintaining routing tables, and  
+securely forwarding messages.
+
+To achieve sure nodeId assignment, the authors suggest the use of  
+public key cryptography and CAs to hand out nodeId's, and possibly  
+charge for nodeId's to make attacks costly.  If this is not  
+available, they suggest that nodes earn their id's through solving  
+cryptographic puzzles, although they acknowledge the limitations of  
+this solution.
+
+Secure nodeId assignment helps in the secure routing table problem  
+but is not sufficient for systems which use proximity routing, and is  
+not helpful in systems where it is difficult to detect malicious  
+network updates masquerading as node join/leave messages.  As a  
+solution, the authors suggest that in networks using proximity  
+routing, a backup routing table is maintained which does not use  
+proximity information and works only in the nodeId space.  When a  
+message fails to be routed, the system reverts to the backup table.
+
+Secure routing is achieved by a detection method for failed routes  
+and a rerouting scheme designed to overcome these failures.  Failure  
+detection is based upon the fact that most of the nodes in the system  
+are not compromised, and thus colluding nodes will produce lower than  
+expected set of replicas of a key.  However, the authors admit that  
+the detection scheme will fail, and so provide the rerouting  
+mechanism, essentially a multicast.
+
+Finally, the authors give some performance evaluation of their system  
+implemented on top of Pastry, and note the benefit of self-certifying  
+data for reduction in cost of the secure routing primitive.
+
+Although this system succeeds to some extend in securing the overlay  
+network, it does so building on secure assignment of nodeIds,  
+suggesting that only a centralized scheme providing CA's can achieve  
+this.  This limits the P2P aspect of the system.  Also, it solves  
+later challenges essentially with additional redundancy and network  
+overhead, rather than architectural changes to the underlying system.
+

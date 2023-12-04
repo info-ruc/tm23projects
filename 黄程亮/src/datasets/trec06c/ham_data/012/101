@@ -1,0 +1,81 @@
+Received: from tiger.gilbert.k12.ia.us (tiger.gilbert.k12.ia.us [207.165.59.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id XAA26559
+	for <handyboard@media.mit.edu>; Sun, 8 Mar 1998 23:12:35 -0500 (EST)
+Received: from localhost (shirkr@localhost)
+	by tiger.gilbert.k12.ia.us (8.8.5/8.8.5) with SMTP id XAA25455
+	for <handyboard@media.mit.edu>; Sun, 8 Mar 1998 23:46:04 -0600
+Date: Sun, 8 Mar 1998 23:46:04 -0600 (CST)
+From: Richard the Iowan <shirkr@tiger.gilbert.k12.ia.us>
+To: handyboard@media.mit.edu
+Subject: Various other questions
+Message-Id: <Pine.LNX.3.95.980308233513.25445A-100000@tiger.gilbert.k12.ia.us>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Since I only have like a month and a half to get my little robot running
+and Im kind of on shakey ground with the IR sensors, I wrote this failsafe
+program. Like ive said before, Im not too familiar with Interactive C
+and was wondering if you could take a quick glance over this code.
+Im not sure if this is the most efficient way to program in this
+navigational method or if i included multiple variables right of if i even
+can.  Ill explail it first since simpletext does silly things with the
+margins when i cut and paste...Its basically that you have 3 bump sensors
+on the front of the rover, 7(left) 8(middle) and 9(right.)
+Right and Left are like 5 inch long feelers.  Middle one is covering the
+blind spot and is wider...its basically on constant table leg watch.
+When it feels something it turns away or backs up.  
+
+ALso....whats the deal with how long a motor will run for?  I know you can
+designate what motor and how much power but can you tell the handyboard
+exactly how long it will go?  
+
+I utilized (or did my best too) the elif function. Yay!
+
+Heres the code...
+
+/* This is default touch navigation */
+void main( )
+{
+     while(1) {
+          if (digital(7) == 1) (digital(8) == 1) (digital(9) == 1)
+          {
+                 fd(1);
+                 fd(3);
+           } 
+          elif (digital(7) == 0) (digital(8) == 1) (digital(9) == 1)
+          { 
+                 fd(1);
+                  off(3);
+                  sleep(1.2);
+          }
+          else
+          {
+                 printf("TOUCHIE FEELIE!/n");
+          }
+           if (digital(7) == 1) (digital(8) == 1) (digital(9) == 0)
+           {  
+                 fd(3);
+                  off(1);
+                  msleep(500);
+           } 
+           elif (digital(7) == 0) (digital(8) == 1) (digital(9) == 0)
+           {
+                  bk(1);
+                  bk(3);
+                  sleep(1.2);
+            }
+           else
+            {
+                  printf("Crystal Ship./n");
+            }
+      }
+} 
+
+Richard Shirk					PO BOX 457
+rshirk@sfgate.com				GILBERT, IA 50105	
+(Ordinary Guy)						(515) 232-6520
+		 "Some people call me the Space Cowboy."
+
+			"C'est ici L'empire De La Mort"
+
+

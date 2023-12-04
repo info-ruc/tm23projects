@@ -1,0 +1,68 @@
+Received: from mailhost.dircon.co.uk (mailhost.dircon.co.uk [194.112.32.65])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id KAA08691
+	for <9fans@cse.psu.edu>; Mon, 5 Jul 1999 10:05:18 -0400 (EDT)
+Received: from cthulhu.dircon.co.uk (cthulhu.dircon.co.uk [194.112.45.202])
+	by mailhost.dircon.co.uk (8.9.1/8.8.7) with ESMTP id PAA28906
+	for <9fans@cse.psu.edu>; Mon, 5 Jul 1999 15:05:15 +0100 (BST)
+Received: (from digbyt@localhost)
+	by cthulhu.dircon.co.uk (8.8.5/8.8.5) id OAA17236
+	for 9fans@cse.psu.edu; Mon, 5 Jul 1999 14:23:28 +0100 (GMT/BST)
+Message-Id: <199907051323.OAA17236@cthulhu.dircon.co.uk>
+Subject: Re: [9fans] spawn() vs fork()
+To: 9fans@cse.psu.edu
+Date: Mon, 5 Jul 1999 14:23:27 +0100 (GMT/BST)
+In-Reply-To: <C12567A5.002B733A.00@mz02world.hq.dtr.gecalsthom.fr> from "steve.kilbane@ind.alstom.com" at Jul 5, 99 08:57:49 am
+From: Digby Tarvin <digbyt@acm.org>
+Reply-To: digbyt@acm.org (Digby Tarvin)
+X-Face:  &(//%&/WHJk7>_lW'@YYeED-qsdBV8&h3_Hpn/0.9_=}vTk</ul5CD1+9|
+	 8eB>}5u/2l=Mx&rX!\.i9X{(S@nk[we'a|IX#|?jmh`(j}a+\C5/><k{;ry[TI\%m
+	 ~tA/]g}]Y;[kvpeZ9lmiVgU^+5 'B|gP{h*Wt4Vl]+5-X'<&wu> %DpYTPd<7jF2V
+	 b[Z.TjttL[FMm_$Z$^#qd62A:T.qw7}0S\o.Or_|I 2t~t0D=eCU"S?ls%(Ro
+X-Pgp-Key-Fingerprint: 61 E7 39 FE 4A F4 CA F3  F5 5E BB 45 26 EC 36 3C
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+>
+>> That compromise meant that a fork() style of process creation
+>> was not possible (all pointers in the child's data segment would
+>> be pointing into the parents memory), so it uses a spawn() style
+>> of process creation.
+>
+>It's not impossible: the Atari ST port of Minix managed fork() on M68000. I
+>believe the solution was to swap data and stack segments during a context
+>switch. This meant that anything that forked a child and then talked to it for a
+>while would run like treacle. Since most processes followed a fork() with an
+>exec(), it wasn't so much of a problem. All very reminiscent of vfork().
+>
+>Implementation requirements aside, as Jean says, fork gives you an elegant way
+>of setting up I/O redirection. It also gives you an elegant way of determining
+>start-up context as a whole for the new process., including internal state.
+>
+True. I believe Whitesmiths did something similar with a non-mmu
+version of their Unix re-implementation.
+
+But OS-9 is intended as a real-time operating system with an ability
+to garnatee minimum task switch times. If you are
+unwilling to enable the MMU because of the small performance hit that
+produces, you certainly wouldn't want to start copying blocks of memory
+around as part of task switch overhead...
+
+I have, as a porting aid, implemented a fork() system call
+on OS9. But it is not semantically identical to Unix in that
+the data segment was shared between parent and child, and the
+data changed by the child would effect the data of the parent.
+Sort of a vfork() without the copy on write.
+But it worked for most fork()/exec() sequences that commonly appear
+in Unix source.
+
+Regards,
+DigbyT
+-- 
+Digby R. S. Tarvin                                              digbyt@acm.org
+http://www.cthulhu.dircon.co.uk
+

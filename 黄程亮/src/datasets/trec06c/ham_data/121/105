@@ -1,0 +1,92 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3BG7M212965
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 12:07:22 -0400 (EDT)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k3BG7Kvx023751
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 12:07:20 -0400 (EDT)
+Received: from 128.84.97.226
+        by webmail.cornell.edu with HTTP;
+        Tue, 11 Apr 2006 12:07:21 -0400 (EDT)
+Message-ID: <4088.128.84.97.226.1144771641.squirrel@webmail.cornell.edu>
+Date: Tue, 11 Apr 2006 12:07:21 -0400 (EDT)
+Subject: paper 18
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+SCRIBE
+
+a scalable application-level multicast infrastructure supporting a large
+number of groups with any number of members in a group. Scribe is built on
+the top of Pastry. Pastry is used to create and manage groups and build
+trees for efficient
+
+multicast distribution.
+
+each group has a unique group-id which is computed using the hash of the
+textual name concatenated with the creator's name.
+the scribe node with the nodeid closest to the group-id acts as the root
+of the multi-cast tree for the group. the authors also propose making the
+creator the root of the multicast tree which seems like a better idea -
+this prevents malicious nodes from overburdening other nodes by creating
+groups with group-id that are close to the nodeid of the correct node.
+
+when a scribe node joins, it uses the Pastry's join message along with the
+ group-id that it wishes to join. this message is routed using Pastry.
+a node is termed as a forwarder for a group if its routing table contains
+entries for that group. A node becomes a forwarder
+
+for a group when a node sends it a JOIN message for a particular group
+(which is not in its routing table and provided its routing table is
+free)\
+
+the root of a group is located using Pastry and also cached for subsequent
+use.
+
+multicast trees repair:
+parents send heartbeats to their children periodically. when a child
+detects failure of its parent it sends a JOIN message.
+
+root failures can be tolerated using replication and agreement protocols.
+
+
+
+DESIGN AND EVALUATION ...:SIENA
+
+the authors discuss the tradeoff between the maximizing the expressiveness
+in the selection mechanism and maintain scalability at the same time.
+
+the selection process is used to select clients while routing and
+delivering notifications.
+
+for a distributed system implementing a notification system, three
+critical design aspects are mentioned:
+1) interconnection topology between servers
+2) routing algorithm
+3) processing strategy -- so as to optimize message traffic
+
+the authors adopt a general graph for their interconnection topology based
+on performance issues with a hierarchal topology.
+
+besides the publish/subscribe interface, the authors also use an
+additional interface termed advertise which an object of interest uses to
+advertise notifications it publishes ( unsuscribe and unadvertise also
+exist)
+
+SIENA semantics are that of a best-effort service - it must not introduce
+unnecessary delays in processing but it neither prevents race conditions.
+a timestamp with each notification is used to deal with latency effects.
+
+the authors propose a hybrid architecture so as to increase efficiency by
+using different architectures at different points in the network.
+
+
+Patterns are matched using "Pattern Factoring" and "Pattern Delegation"
+mechanisms which break a compound subscription into components and forward
+the smaller elementary components.
+

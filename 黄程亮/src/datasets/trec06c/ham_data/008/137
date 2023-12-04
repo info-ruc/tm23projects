@@ -1,0 +1,89 @@
+Received: from mx1.cac.washington.edu (mx1.cac.washington.edu [140.142.32.1])
+          by groupfs.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id QAA25693 for <mailarch+pine-info@groupms.cac.washington.edu>; Tue, 20 Jan 1998 16:18:31 -0800 (PST)
+Received: from lists3.u.washington.edu (root@lists3.u.washington.edu [140.142.56.3])
+          by mx1.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id QAA16674; Tue, 20 Jan 1998 16:18:26 -0800
+Received: from host (lists.u.washington.edu [140.142.56.13])
+          by lists3.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with SMTP
+	  id QAA11346; Tue, 20 Jan 1998 16:13:29 -0800
+Received: from mx4.u.washington.edu (mx4.u.washington.edu [140.142.33.5])
+          by lists.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with ESMTP
+	  id QAA34394 for <pine-info@lists.u.washington.edu>; Tue, 20 Jan 1998 16:11:35 -0800
+Received: from sakaki.communique.net (sakaki.communique.net [204.27.65.7])
+          by mx4.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id QAA07571 for <pine-info@u.washington.edu>; Tue, 20 Jan 1998 16:11:32 -0800
+Received: from nodon.communique.net (ppp-204-27-123-130.co.communique.net [204.27.123.130])
+	by sakaki.communique.net (8.8.5/8.8.5) with SMTP id SAA03049
+	for <pine-info@u.washington.edu>; Tue, 20 Jan 1998 18:11:27 -0600 (CST)
+Message-Id: <01a301bd2600$c4ffdd00$c8a3070a@nodon.communique.net>
+Date: Tue, 20 Jan 1998 18:08:56 -0600
+Reply-To: "Don Allaire" <scp@COMMUNIQUE.NET>
+Sender: PINE-INFO-owner@u.washington.edu
+Precedence: bulk
+From: "Don Allaire" <scp@COMMUNIQUE.NET>
+To: "Pine Discussion Forum" <pine-info@u.washington.edu>
+Subject: Main Menu bar misalignment.
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-To: <pine-info@u.washington.edu>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.2106.4
+X-Listprocessor-Version: 8.1 beta -- ListProcessor(tm) by CREN
+
+Hello:
+
+This is again for the archives.
+
+Question:
+
+I am having a problem with the main menu highlighter bar displaying
+incorrectly with all versions of wyse50 emulating terminals, and emulation
+software.  The menu bar is wrapping the screen, therefore when one arrows up
+or down, the menu bar gets very unreadable or disappears.
+
+Answer:
+
+While scanning through various termcap databases on Wyse50 terminals, I
+found this helpful piece of info.  Apparently, wyse30 and wyse50 terminals
+have an inherent standout mode glitch which occasionally cause problems like
+the ones I experienced with the menu bar in Pine's main menu.
+
+These terminals support a "PROTECT" sequence on/off that has no
+ standout-glitch (xmc), while the regular "attribute" stuff enabled
+ with <ESC>G'some-character' gives a 1-space glitch.
+
+ All but the very old revision firmware on both terminals support a
+ visible PROTECT attribute that's selectable by the ol' SETUP menu.
+ (The older rev. terminals do support PROTECT attribute but only
+  have the options REGULAR and DIM)
+
+ Get into your terminal's SETUP menu, and down-key to the 5'th
+ menu (on a wyse 30; I think 3'rd or 4'th on a wyse 50) and
+ right-key over to the PROTECT item.
+ Change PROTECT to REVERSE or REVERSE/DIM, and go over to the next
+ item -- ATTRIBUTE and change it to LINE;  then save the changes.
+
+The next thing that you will need to do is change your termcap database so
+that it uses the proper escape sequences to turn on/off the protect sequence
+rather than the very-ugly \EG4 and \EG0.
+
+You do this by changing standout to \E), standend to \E(, and glitch to 0,
+which means
+changing the so, se, and sg fields to so=\E) se=\E(  sg#0
+
+I actually didn't have to change my terminals in my circumstance, as the
+terminal change had already been made.  However when I made the small change
+to the wy50 termcap entry, the menu bar started working like it was supposed
+to.
+
+
+The above information was presented in the termcap database comments, and
+written by steve@omni.com
+
+I hope that this helps someone else as it did myself.
+
+

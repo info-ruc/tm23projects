@@ -1,0 +1,111 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.8/8.12.4) with ESMTP id h2DDhkIA009468
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Mar 2003 06:43:46 -0700
+Received: from anybodyi.u.arizona.edu (uofa-dsl-95.dakotacom.arizona.edu [150.135.175.95])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h2DDqkvw006132
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Mar 2003 06:52:46 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030313062659.00b128e8@psy1.psych.arizona.edu>
+Date: Thu, 13 Mar 2003 06:52:40 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Time issues when displaying bmp and avi
+In-Reply-To: <5.1.0.14.2.20030313111224.01cc9d30@pophost.mrc-cbu.cam.ac.
+ uk>
+References: <5.1.0.14.2.20030312152103.00b13448@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20030312170506.01d0f748@pophost.mrc-cbu.cam.ac. uk>
+ <5.1.0.14.2.20030311214210.00b128e8@psy1.psych.arizona.edu>
+ <F85R9ydqsyWVLEFN03a0000065e@hotmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:26 AM 3/13/2003 +0000, you wrote:
+
+>Because the command line of rtf file *does not* have the <cr> option 
+>activated:
+>"<d 180> <zil> <rcot> <id "Keyboard"> <id pio12> <vm 1024, 768, 768, 16, 
+>0> <nfb> <t 200> <dbc 0> <dwc 255255255>"
+>So each time a film finishes the DMDX should stop there, waiting for the 
+>next scanner trigger (or keyboard input).
+
+   Ah, good point.
+
+>Even with an error of +/- 500 ms in the display of the film (what is a lot 
+>already,  film duration is 14000 ms) the next item can only be activated 
+>by the next scanner trigger (which happens at 17050 ms).
+>
+>Any Item:  Delay  +         film         + waiting next trigger
+>Time:     2400 ms + 14000ms (+/- 500 ms) + waiting next trigger
+>
+>With an error of -500 ms in the display of the film.
+>
+>Time: 15900 ms (the DmDX stops here, waiting for the next scanner trigger 
+>at 17050 ms,  the previous one was at 15550 ms)
+>
+>With an error of +500 ms in the display of the film.
+>
+>Time: 16900 ms (and again the DmDX stops here, waiting for the next 
+>scanner trigger at 17050 ms)
+>
+>Why is DMDX giving me a time of 16800(+/-)100 ms?
+
+   Probably because that's the time between pulses from the scanner.  The 
+only thing DMDX could be doing is taking too long to display the item and 
+thus missing a pulse and it's not doing that.  The only way it could be 
+going too fast is if there is an early trigger.  It's certainly not getting 
+continuous triggers because we'd see them in the zil file and all we see 
+there are the occasional -Bit0 as the trigger is released.
+
+>Thank you for your suggestion regarding the films, but question 2 refers 
+>to the time problem that is happening with the pictures. Any idea about 
+>what might be happening here? The code line was
+>
+>"+2 <fd 1050> <bmp>*"F"/;"
+>
+>1050 * 13.33 = 13997 ms
+>d 180        = 2400 ms
+>sum          = 16397 ms
+>
+>The DMDX should stop after displaying it, and again the next item should 
+>be trigger after 11 scanner triggers (17050 ms).
+>
+>Why is DMDX giving me a time of roughly 14900 ms?
+
+   Unless this has been done before I would try a simple item file along 
+the lines of:
+
+<d 180> <zil> <rcot> <id "Keyboard"> <id pio12> <vm 1024, 768, 768, 16, 0>
+<nfb> <t 200> <dbc 0> <dwc 255255255>
+0 "Waiting for the scanner.";
++1 * "1"/;
++2 * "2"/;
++3 * "3"/;
++4 * "4"/;
++5 * "5"/;
+
+   That way you can make sure the scanner is doing what you're thinking.  I 
+guess it's possible that your interface card is whacky, if you're using one 
+of the Keithly things running in some kind of emulation mode the sky's the 
+limit in my past experience with them.  It's possible that using <rcot> and 
+thus using a * with digital video is the cause of your problems.
+
+>****
+>Could all these problems be due to a bug in the DMDX version 2.6.04? (The 
+>machine that I am using has only this version installed, and I am not 
+>allowed to update it).
+>****
+
+   It'd be the first we've heard about it and given <rcot>'s constant use 
+over in the scanner here and abroad I'd be impressed if the error was in DMDX.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Experience is what you get when you were expecting something else.
+
+
+

@@ -1,0 +1,50 @@
+Received: from plan9.cs.su.oz.au (pestilence.plan9.cs.su.oz.au [129.78.96.36]) by cse.psu.edu (8.8.5/8.7.3) with SMTP id FAA24320 for <9fans@cse.psu.edu>; Mon, 10 Feb 1997 05:25:57 -0500 (EST)
+To: 9fans@cse.psu.edu, rsc@corona.research.att.com
+Subject: Re: pc audio buffer bug
+From: David Hogan <dhog@cs.su.oz.au>
+Date: Mon, 10 Feb 1997 20:52:49 +1100
+In-Reply-To: <199702092239.RAA19121@cse.psu.edu>
+Message-ID: <199702102052.121.out.bafeb@plan9.cs.su.oz.au>
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+> There is a small bug in the buffer handling
+> in the PC devaudio (Soundblaster) driver.
+> Basically, if you open /dev/audio for writing,
+> partially fill a buffer, and then close /dev/audio,
+> the buffer doesn't get played.  You notice this
+> with smallish sound files, because nothing gets
+> played at all when the sound file is less than one
+> buffer in size.
+
+I seem to recall that there was another bug.  I can't remember
+if I posted my fix for it or not.  The problem was that you could
+fill up several buffers, but still get no audio, because you hadn't
+filled enough buffers to start the dma going.
+
+It looks like Russ's patch comes close to fixing this bug as well
+(by virtue of the call to pokeaudio()).  But if the combined writes
+to /dev/audio are a multiple of Bufsize, then it won't be called,
+because audio.filling == 0.
+
+My fix to this second bug was to change the while loop in
+audioclose() to be
+
+	do
+		waitaudio();
+	while (audio.active);
+
+and change waitaudio() by adding the lines
+
+	if (audio.active == 0)
+		return;
+
+before the tsleep().
+
+I'm a bit concerned that I may have `done bad' -- my solution
+can result in redundant commands being sent to the 'blaster
+(``start! stop!'') if there's no outstanding data.  But it was, after
+all, a quick hack so I could get back to the more important
+work of playing with Csound :-)
+

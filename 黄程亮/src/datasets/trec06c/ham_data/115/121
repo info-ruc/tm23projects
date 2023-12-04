@@ -1,0 +1,119 @@
+Received: from nproxy.gmail.com (nproxy.gmail.com [64.233.182.202] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LIOXt22340
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 13:24:33 -0500 (EST)
+Received: by nproxy.gmail.com with SMTP id o25so843632nfa
+        for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 10:24:32 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=W5QpCWDK4Bbm8PeC/6kABeLhFWfSJTCvYyY1Lq4CVU5ybo2xz+FnKl7uAZ9w+WJtbZm9/WvEaUwDqgb5pJ2Tj5Elzs/EmZjMYWAUkKtCgf9ctSkYew7c0d/Ef8h2TTP3rJ2xUhd1vqskm8nohHEGZ7FSKbRIDSUt2hgRS0Et5Xw=
+Received: by 10.49.68.13 with SMTP id v13mr1566227nfk;
+        Tue, 21 Feb 2006 10:24:32 -0800 (PST)
+Received: by 10.48.217.10 with HTTP; Tue, 21 Feb 2006 10:24:32 -0800 (PST)
+Message-ID: <9302f1e20602211024s2d139ec5nf60961848e8c2449@mail.gmail.com>
+Date: Tue, 21 Feb 2006 13:24:32 -0500
+From: "Ymir Vigfusson" <ymir.vigfusson@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1LIOXt22340
+
+Paper 1: Secure routing for structured peer-to-peer overlay networks
+Paper 2: The Sybil attack?
+Paper 3: Defending Against Eclipse Attacks on Overlay Networks.
+
+In Paper 1 the authors address security issues in overlay networks,
+especially large-scale attacks when a fraction f (0 <= f < 1) of
+the nodes on the network may be faulty/malicious in coalitions
+of size of up c*f (where 1/N <= c <= f).
+The first issue they address is thwarting attacks directed at replica
+roots by a 'secure routing primitive' which ensures that when a
+legitimate node asks for content, all non-faulty replica roots are
+reached w.h.p. The paper then elaborates on how this primitive is to
+be accomplished, and discusses three problems that need to be solved.
+1) Securely assign nodeIDs to nodes: If an attacker could choose his
+   nodeID, or forge enough clones to control a large enough fraction of
+   the nodeID space (Sybil attack), she could take on the overlay
+   network (e.g. route traffic to her, partition the ring, etc.)
+   The authors mention the use of central certification of nodeIDs,
+   but this solution is awkward for a number of reasons - it relies on
+   central figures which counters the p2p paradigm, and their assumption
+   that malicious users usually only control a few IP addresses is based
+   only on faith. They then move on to the terrible idea of charging
+   users $20 for a nodeID, or binding actual identities to nodeIDs
+   (confiscating anonymity) and argue that this should prevent Sybil
+   attacks. Fortunately, the authors realize that these ideas are not
+   a solution, and conclude by listing other ideas, such as solving
+   crypto puzzles or computing particular SHA1 hashes, all of these
+   are based on the assumption that the attacker has very limited
+   resources to mount an attack.
+
+2) Securely maintain the routing tables: The authors argue that securely
+   assigning nodeIDs is necessary but not sufficient to thwart attacks
+   on the routing table maintenance protocol. Tapestry and Pastry use
+   overlay locality when constructing their rings, and are suspectible
+   to attacks where malicious users lie about their proximity. Also,
+   they are example of systems without strong contraints on the nodeIDs
+   in the routing tables, and are thus suspectible to attack. The
+   authors propose that a viable solution is to impose constraints on
+   the routing table, or by having an additional routing table with heavy
+   contraints (ala Chord).
+
+3) Securely forward messages: When 1) and 2) are in effect, an attacker
+   may still choose not to forward messages, and even when f is small,
+   this attack is effective. This is prevented by applying a failure test
+   to see if the messages was routed, and if not, use some redundant
+   route. The paper then spends some pages on describing how a statistical
+   failure test can be done efficiently, and conclude with a model where
+   that the probability of a false positive is about 12% (when ignoring
+   node suppression attacks). This section needs some more subsequent work.
+   Next, the paper describes how redundant routing can be done as they
+   address the problem of ensuring the routes are diverse. The describe
+   a technique called neighbour set anycast where "copies of a message are
+   sent towards the destination key until you reach a node that has the
+   key's root in its neighbour set. It then uses detailed knowledge that
+   such a node has about the portion of the identifier space around
+   the destination key to ensure that correct replica roots receive a
+   copy of the message." Redundant routing is then compared with iterative
+   routing where you iteratively look up the next hop in the routing table,
+   keeping track of where you went, until you find the root of the destinatio
+   key. It turns out that this is expensive. This section then concludes
+   with performance analysis of redundant routing.
+The article concludes with a description of self-certifying data (data
+whose integrity can be verified by the client) to minimize the overhead
+incurred by implementing the ideas above.
+
+Paper 2 discusses the Sybil attack in which a potentially malicious user
+forges multiple identities. The paper shows that for practical purposes,
+it is impossible to determine if identities are distinct in a distributed
+environment with no prior information available. The paper formalizes
+this by modelling a generic distributed environment. It then proceeds to
+show that for direct identity validation, a malicious user can counterfeit
+a constant number of multiple identities even when severely resource
+constrained, and that these identities must be verified simultaneously,
+otherwise the number is unbounded. Larger scale networks exacerbate this
+problem. For indirect validation (you accept entities that are accepted
+by already accepted entities), a sufficiently large set of malicious
+users can counterfeit an unbounded number of identities, and that
+all entities in the system need to perform identity validations concurrently,
+otherwise the each faulty entity can counterfeit a constant number of
+multiple entities. Again, this problem grows as the system size increases.
+The paper is brief, and does not go into full depth of the obstructive
+power that malicious entities can have.
+
+Paper 3 presents a so-called Eclipse attack which is a generalized
+version of the Sybil attack. Here, malicious users can also attack the
+routing table maintenance mechanism so that the number of nodes that the
+attacker has full control over grows with time as maintenance messages
+are infiltrated (this is what Paper 1 presented as one of the main
+security problems in p2p networks). The authors propose a mechanism
+called anonymous auditing (you don't know who is challenging you) that
+attempts to bound the degrees of the nodes. They conclude by showing that
+this line of defense is effective by providing some experimental results.
+The authors identify some weaknesses of their approach, namely that the
+ideal hacker mechanism need be identified, and that anonymous auditing
+needs to be evolved.
+

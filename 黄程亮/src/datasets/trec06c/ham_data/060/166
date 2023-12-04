@@ -1,0 +1,159 @@
+Received: from trifid.u.arizona.edu (trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id RAA19504
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 30 Jan 2000 17:31:07 -0700
+Received: from homebox (uofa-dsl-17.dakotacom.arizona.edu [150.135.175.17])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with SMTP id RAA19832
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 30 Jan 2000 17:31:07 -0700
+Message-Id: <3.0.1.32.20000130173036.00696524@psy1.psych.arizona.edu>
+Date: Sun, 30 Jan 2000 17:30:36 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: 
+In-Reply-To: <Pine.HPX.4.10.10001281101390.13188-100000@pavo.U.Arizona.E
+ DU>
+References: <3.0.1.32.20000127221607.00694b00@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:08 AM 1/28/00 -0700, you wrote:
+
+>That occurred to me, too, but each time I run a program, I check the
+>refresh rate, and it's always 16.69 (60Hz), which is what I've based my
+>frame durations on.
+
+  Ok, lets see what we get.  First item file has the following structure:
+
+N202 <zil> <ContinuousRun> <t 1800> <defaultwritingcolor 255255255> 0
+<nofeedback> <defaultbackgroundcolor 0>  <defaultfont Times New Roman>
+<defaultfontsize 26> <id keyboard> <d 0> <RecordClockOnTime>
+<TimeCriticalFrame> <id PIO12>  <mip 27> <vm 640,480,480,16,0> 
+
+! "Scan 1" 6000 ms, Instruction 3000 ms, IAPS 500 ms, PUN or IOU 2500 ms,
+88888 (Fixation) 6000 ms., Total = 861000 ms.;
+
+0 " Experiment Ready ";
+
+=99999 *< fd 355>  "Scan 1"/;
+
+!Set 6;
+!6 Pleas A; 
+=11111 *<fd 152>  "Pleasant,  Unpleasant, or Neither ?"/;
+=4660 <fd 28> *g"d:\Iaps\4660.bmp"/,<fd 129> g"d:\Iaps\PUN2.bmp"/;
+=1463 <fd 28> *g"d:\Iaps\1463.bmp"/,<fd 129> g"d:\Iaps\PUN2.bmp"/;
+=2391 <fd 28> *g"d:\Iaps\2391.bmp"/,<fd 129> g"d:\Iaps\PUN2.bmp"/;
+=7900 <fd 28> *g"d:\Iaps\7900.bmp"/,<fd 129> g"d:\Iaps\PUN2.bmp"/;
+=7390 <fd 28> *g"d:\Iaps\7390.bmp"/,<fd 129> g"d:\Iaps\PUN2.bmp"/;
+=4599 <fd 28> *g"d:\Iaps\4599.bmp"/,<fd 129> g"d:\Iaps\PUN2.bmp"/;
+=88888 <fd 58> *g"d:\Iaps\Crosshair.bmp "/, <fd 232> g"d:\Iaps\FixC.bmp"/,
+<fd 58> g"d:\Iaps\Crosshair.bmp "/;
+
+...23 more of them...
+
+!4 Mix Ext;
+=11111 *<fd 152>  " Indoors, Outdoors, or Not Sure ?"/;
+=5300 <fd 28> *g"d:\Iaps\5300.bmp"/,<fd 129> g"d:\Iaps\IOU2.bmp"/;
+=8120 <fd 28> *g"d:\Iaps\8120.bmp"/,<fd 129> g"d:\Iaps\IOU2.bmp"/;
+=7010 <fd 28> *g"d:\Iaps\7010.bmp"/,<fd 129> g"d:\Iaps\IOU2.bmp"/;
+=2692 <fd 28> *g"d:\Iaps\2692.bmp"/,<fd 129> g"d:\Iaps\IOU2.bmp"/;
+=2682 <fd 28> *g"d:\Iaps\2682.bmp"/,<fd 129> g"d:\Iaps\IOU2.bmp"/;
+=3210 <fd 28> *g"d:\Iaps\3210.bmp"/,<fd 129> g"d:\Iaps\IOU2.bmp"/;
+=counting <fd 58> *g"d:\Iaps\Crosshair.bmp "/, <fd 232>
+g"d:\Iaps\FixA.bmp"/, <fd 58> g"d:\Iaps\Crosshair.bmp "/;
+
+=9999 <fd 150>*"End Scan 1"/;
+
+
+
+  This one has a <d 0> in it so it's simply going to run as rapidly as
+possible so our timing figures are only going to be approximate.  Each of
+those frames is going to have at least one more tick per as DMDX can't
+assemble and schedule and start displaying a whole item in a tick.  So
+we've got:
+
+	355 + 1 +
+	( 152 + 1 +
+	( 28 + 129 + 1 ) * 6 +
+	58 + 232 + 58 + 1 ) * 25
+	+ 150 
+
+  Which makes at least 36756 frames, how much extra is unknown because of
+the that <d 0>.  Which makes 613.457 seconds as far as my calculator is
+concerned.  Unfortunately the listserver seems to barf on whatever your
+email message format is and I can't see what you calculated this one's
+duration to be but as near as I can tell 613 seconds wasn't a figure you
+listed.
+
+
+  The second item file has the structure:
+
+N202 <zil> <ContinuousRun> <t 1800> <defaultwritingcolor 255255255> 0
+<nofeedback> <defaultbackgroundcolor 0>  <defaultfont Times New Roman>
+<defaultfontsize 26> <id keyboard> <d 48> <RecordClockOnTime>
+<TimeCriticalFrame> <id PIO12> <mip 27> <vm 640,480,480,16,0> 
+
+! "Scan 1" 6000 ms, Instruction 3000 ms, IAPS 500 ms, PUN or IOU 2500 ms,
+88888 (Fixation) 6000 ms., Total = 861000 ms.;
+
+0 " Experiment Ready ";
+
+=99999 *< fd 360>  "Scan 1"/;
+
+!Set 6;
+!6 Pleas A; 
+=11111 *<fd 180>  "Pleasant,  Unpleasant, or Neither ?"/;
+=4660 <fd 30> *g"d:\Iaps\4660.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=1463 <fd 30> *g"d:\Iaps\1463.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=2391 <fd 30> *g"d:\Iaps\2391.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=7900 <fd 30> *g"d:\Iaps\7900.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=7390 <fd 30> *g"d:\Iaps\7390.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=4599 <fd 30> *g"d:\Iaps\4599.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=88888 <fd 360> *g"d:\Iaps\Crosshair.bmp"/;
+
+...24 more of them....
+
+!4 Mix Ext;
+=11111 *<fd 180>  " Indoors, Outdoors, or Not Sure ?"/;
+=5300 <fd 30> *g"d:\Iaps\5300.bmp"/,<fd 150> g"d:\Iaps\IOU2.bmp"/;
+=8120 <fd 30> *g"d:\Iaps\8120.bmp"/,<fd 150> g"d:\Iaps\IOU2.bmp"/;
+=7010 <fd 30> *g"d:\Iaps\7010.bmp"/,<fd 150> g"d:\Iaps\IOU2.bmp"/;
+=2692 <fd 30> *g"d:\Iaps\2692.bmp"/,<fd 150> g"d:\Iaps\IOU2.bmp"/;
+=2682 <fd 30> *g"d:\Iaps\2682.bmp"/,<fd 150> g"d:\Iaps\IOU2.bmp"/;
+=3210 <fd 30> *g"d:\Iaps\3210.bmp"/,<fd 150> g"d:\Iaps\IOU2.bmp"/;
+=88888 <fd 360> *g"d:\Iaps\Crosshair.bmp"/;
+
+=9999 <fd 150>*"End Scan 1"/;
+
+  This one should yeild much more consistant results as it has a <d 48> in
+it.  It should give the following:
+
+	360 + 48 +
+	( 180 + 48 +
+	( 30 + 150 + 48 ) * 6 +
+	360 + 48 ) * 26 +
+	150
+
+  I get 52662 frames for 878.928 seconds.  You indicate that this in fact
+takes 858 seconds which is an extra 8 ticks per item.  I haven't ever tried
+to double check the duration of a whole item file before so I have no idea
+where this comes from, I'll put it on the to be verified list.
+
+
+
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+  I haven't a particle of confidence in a man who has no
+redeeming petty vices.
+                                                    - Mark Twain
+                                     "Answers to Correspondents"
+
+
+

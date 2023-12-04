@@ -1,0 +1,102 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2G4v5t23453
+	for <egs+summary@cs.cornell.edu>; Wed, 15 Mar 2006 23:57:06 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2G4v5TK001741
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Wed, 15 Mar 2006 23:57:05 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060314234207.02ea8648@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Wed, 15 Mar 2006 23:09:07 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 15
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+
+
+         Crowds is a particularly simple and clean source-rewriting system, 
+without any cryptography at all. Crowds is designed to allow anonymous web 
+browsing, and to provide anonymity with respect to web servers, and 
+colluding Crowds nodes. In Crowds, there are no mixes. Nodes (called 
+jondos) simply forward requests through other nodes through persistent 
+routes (reminiscent of onion routes). The routes are chosen on a hop-by-hop 
+basis by the preceding node. Everything is sent in plaintext, so there is 
+no need for public key infrastructure, and no need for lengthy setup.
+         There is, however, no anonymity from a global passive observer, or 
+a passive observer able to monitor all traffic into or out of a given 
+node.  The success of crowds seems largely due to the fairly accommodating 
+threat model.
+
+
+P5:
+
+         It is possible to build a system that gains anonymity from 
+broadcast primitives.  In a source-rewriting system, attackers can always 
+try to trace streams back to endpoints. In a broadcast-based system, there 
+are many different and indistinguishable endpoints, foiling this attack. In 
+this way, broadcast systems promise greater anonymity.  The best example of 
+this sort of system is P5, which has been simulated but never implemented. 
+A P5 system consists of a logical tree, each of whose nodes is mapped to 
+some number of nodes. Nodes continually output encrypted traffic, which can 
+only be understood by a node with the appropriate private key. This traffic 
+is then broadcast to each relevant node; specifically, the root of the 
+tree, and the path through the hierarchy to the exact match node, and all 
+the children of the exact match mode.
+         Note that this broadcasting is presumably done by the P5 system, 
+at the application layer. P5, alas, seems to use inordinate bandwidth, and 
+as a result seems not to be usable in practice.
+
+
+DC-nets:
+
+         A radically different solution for anonymity is the "Dining 
+Cryptographer's" protocol, proposed by Chaum in 1988. In this protocol, 
+each node borders on some other nodes, with which it shares some stream of 
+random or pseudorandom key material. It then broadcasts the mod-2 sum of 
+its key material and the bit to transmit. Since each key is shared by 
+exactly two participants, the mod-2 sum of all bits transmitted in the 
+network is just the mod-2 sum of the data bits. In the absence of 
+collision, this allows a node to transmit data with unconditional 
+anonymity. Collisions are dealt with by treating the DC-net as a common 
+media, and using straightforward techniques such as ethernet's CSMA/CD. By 
+laying "trap" messages, protocol disrupters can be probabilistically 
+identified and removed from the network.
+         The DC system provides very strong anonymity guarantees, but with 
+a price.  The system provides k-anonymity, but the system moves at the pace 
+of the slowest member of the set, and the total throughput therefore falls 
+as k grows.  If k-anonymity is desired for large k and fairly high 
+performance, DC nets are not truly suitable.
+
+Herbivore:
+
+         It turns out that it is possible to make DC-nets scale., to an 
+extent. The only implemented system that actually uses DC-nets in a 
+scalable way is Herbivore, an anonymous filesharing system. Herbivore 
+clusters nodes into cliques, each of which has a location on a Pastry ring. 
+Each Herbivore clique runs the dining-cryptographer protocol separately. As 
+a result, anybody in the clique could have sent a given message. Messages 
+can also be sent from clique to clique, using individual nodes in each 
+clique as proxies. (This means, however, that the proxy in each clique, or 
+a global passive observer, knows which clique the message came from.) 
+Latency is masked by running the protocol many times in parallel.
+         Herbivore masks latency, it does not eliminate it.  This means 
+that it is only suitable for bulk transfer of data.  Herbivore is also 
+vulnerable to denial-of-service attacks.  While an attacker cannot "take 
+over" a clique, even one hostile member can paralyze it by joining, and 
+then transmitting slowly, or by talking out of turn.  If an attacker has a 
+suitably sized pool of solved cryptopuzzles, they may be able to keep up a 
+steady stream of joins, and use each joined node to block the clique for a 
+time.  In this way, an attacker is able to permanently block the system 
+(assuming that a struck node can reenter at some point in the future).
+
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

@@ -1,0 +1,124 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.4/8.12.4) with ESMTP id h1JFmZdW009136
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 19 Feb 2003 08:48:35 -0700
+Received: from anybodyi.u.arizona.edu (uofa-dsl-95.dakotacom.arizona.edu [150.135.175.95])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h1JFwtiT013442
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 19 Feb 2003 08:58:55 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030219084129.00b26638@psy1.psych.arizona.edu>
+Date: Wed, 19 Feb 2003 08:58:37 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Measurement Computing PCI DIO-24 - drivers
+  needed?
+In-Reply-To: <5.2.0.9.0.20030219114039.009efb40@post.psych.unimelb.edu.a
+ u>
+References: <3E525FE7.5070902@neuro.gu.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:45 AM 2/19/2003 +0100, you wrote:
+>Dear Jonathan
+>
+>         I'm extremely sorry to have sent attachments and buggered 
+> everything.  It's a while since I spoke to the list and I completely 
+> forgot about not sending attachments.  In your anger, I doubt whether you 
+> read my message.  Would you be prepared to forgive me and read the message now?
+>
+>         I'm trying to make a file with zillion responses.  I'm having 
+> great problems, and I promise I've tried very hard to test many 
+> alternatives.  One preliminary problem is that DM is telling me when the 
+> subject has stopped pressing the button as well as the onset time.  How 
+> do I suppress that?
+
+   You use <vzk> to validate the keys you want to record like it says in 
+the documentation.
+
+
+>         The main question is this.  Each trial has two parts, and I've 
+> tried to do each trial as one as well as to split it into two.  the 
+> subject has to give a binary decision first on an image, and then type 
+> the image's name.
+>
+>         I place BELOW my embarassingly incorrect file for your perusal.
+>
+>         At the moment, I've got an item presenting the image and then a 
+> second grouped item asking "mot?" for the name.  I don't care here if 
+> there are no times at all, I just want to know what name the subject 
+> wants to give the image.  My file at present has a clock on indicator in 
+> the second part, because leaving it out didn't seem to work at all.
+
+   You'll probably have to turn <ZillionTypedResponses> on and off through 
+the item file.  Hopefully a french KB won't screw it up too much.  You'll 
+probably have to tell DMDX the name of the enter key with 
+<ZillionEnterKeyName>.  Note that using <ztr> is going to validate the 
+normal typing keys but you'll need to add your response keys too.
+
+
+>         When I test out what I've done I can't get the image to go away 
+> when I respond.
+
+   Because you specify <nfb>, no feedback, no clearing of the screen.  You 
+might want to try <ClearFeedback>.  However feedback doesn't work well with 
+<zil> anyway unless you turn on <ZillionOneResponse>, but you'll want to 
+toggle that on and off too as typed responses are probably going to get 
+blasted by <zor>.  Also <ztr> is best if there's feedback so the subject 
+can see what they're typing.
+
+   So you'll need something like this:
+
+  <ep> <n 14> <clfb> <cr> <g 2> <s 2> <id “clavier”> <zil> <ztr> <vzk +maj 
+droit> <vzk +maj gauche> <vzk +espace> <mpr +maj droit> <mnr +maj gauche> 
+<mr +espace> <eop>
+
+-250 <zor 1> <ztr 0> %15 / <bmp> *  "cerise" ;
+=250 <zor 0> <ztr 1> %15 * “Mot?” ;
+
+
+>         Many thanks for your help.
+>
+>         Virginia
+>
+>  <ep> <n 14> <nfb> <cr> <g 2> <s 2> <id “clavier”> <zil> 
+> <zillionresponses> <mpr +maj droit> <mnr +maj gauche> <mr +espace> <eop>
+>
+>$0 "Items d'essai.  Quand prêt, appuyez sur la barre espace." ;
+>
+>-250 %15 / <bmp> *  "cerise" ;
+>=250  %15 * “Mot?” ;
+>+250 %15 / <bmp> *  "accordéo" ;
+>=250 %15 * “Mot?” ;
+>
+>0 "Items de test.  Quand prêt, appuyez sur la barre espace." ;
+>
+>+250 %15 / <bmp>  *  "avion" ;
+>=250 %15 * “Mot?” ; $
+>
+>-001 %15 / <bmp> *  "enclume" ;
+>=002 %15 * “Mot?” ;
+>+003 %15 / <bmp> *  "artichaut" ;
+>=004 %15 * “Mot?” ;
+>-005%15 / <bmp> * "crocodile" ;
+>=006 %15 * “Mot?” ;
+>+007 %15 / <bmp> * "abeille" ;
+>=008 %15 * “Mot?” ;
+>
+>$0 LB "Fin de cette partie, merci." ; $
+>
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+When a Banker jumps out of a window, jump after him -- that's where the
+money is.
+
+                                                   -  Robespierre
+
+
+
+

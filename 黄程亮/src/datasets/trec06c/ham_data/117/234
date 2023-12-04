@@ -1,0 +1,41 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2E94pt14687
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 04:04:51 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2E94okk028204
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 04:04:51 -0500 (EST)
+Message-ID: <2120651026.1142327089474.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 14 Mar 2006 04:04:49 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 14
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+Network distance (round-trip latency) predictions are beneficial to large-scale distributed (including peer-to-peer, either structured or unstructured) systems in node selections. The three papers to be discussed today present different, but all scalable, approaches to select nodes based on estimated network distances.
+
+GNP and Vivaldi are coordinate-based distance prediction systems. Meridian performs node selections without virtual coordinates but use direct measurements instead. Unlike GNP that involves centralized components, landmarks, in determining coordinates, Vivaldi computes coordinates on the basis of a simulation of springs that requires no fixed infrastructure.
+
+<Issues>
+* Constantly adjusting the coordinates to adapt underlying topology changes in Vivaldi implies significant overhead.
+* In the frameworks such as GNP that distances are estimated by two nodes' coordinates, it is possible that nodes lie their coordinates (so as to avoid being selected by other nodes, in peer-to-peer systems).
+
+<GNP>
+* This paper proposes a Global Netwotk Positioning (GNP) mechanism and compares it with two previous works, triangular heuristic and IDMap.
+* GNP models the Internet as a geometric space. It characterizes the position of any node by a point in this space. A set of servers, Landmarks, are deployed which compute their coordinates in a chosen geometric space. They serve as the reference and are disseminated to nodes who want to compute their coordinates. The network distance between any two nodes is predicted by the geometric distance between them.
+
+<Vivaldi>
+* Vivaldi computes coordinates for all nodes by minimizing the square error between round-trip latency and the coordinate distance. Nodes periodically re-compute their coordinates to adapt to changing network conditions.
+* Height-Vector Model: Different from previous works that use Euclidean or spherical models, Vivaldi proposes a height vector model: Each node has a positive height element in its coordinates. A node that finds itself too close (far away) to (from) nodes on all sides scales its height up (down) away from the Euclidean plane. A packet transmitted from one node to another has to travel the source node's height, the Euclidean space, and the destination node's height. The experimental results show that it performs better than above-mentioned models.
+ 
+<Meridian>
+* The Meridian framework consists of three mechanisms and can be used to address three location-related problems in distributed systems.
+(1) Each node keeps track of a fixed number of other nodes and organizes them into concentric non-overlapping rings of exponentially increasing radii.
+(2) Each node periodically reassesses and replaces ring members with alternatives that provide greater geographical diversity (which is quantified through the hyper-volume of the k-polytope formed by the nodes according to their coordinates).
+(3) Each node discovers and maintains a small set of pointers to a diverse set of nodes by a gossip protocol.
+(a) Based on its loosely-structured overlay, Meridian locates the closest node by performing a multi-hop search very similar with Chord or Pastry where each hop reduces exponentially the distance to the targeted reference point.
+(b) Extending the previous protocol, Meridian finds a node that offers minimal latencies to a given set of nodes by using the average d computed by each node.
+(c) To find a set of nodes in a region whose boundaries are defined by latency constraints, Meridian performs a multi-constraint query and includes the share area of each elected node in the solution space.
+

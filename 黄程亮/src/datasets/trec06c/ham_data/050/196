@@ -1,0 +1,35 @@
+Received: from plan9.bell-labs.com (plan9.bell-labs.com [204.178.31.2])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id OAA08394
+	for <9fans@cse.psu.edu>; Thu, 26 Aug 1999 14:20:40 -0400 (EDT)
+Message-Id: <199908261820.OAA08394@cse.psu.edu>
+From: "Russ Cox" <rsc@plan9.bell-labs.com>
+Date: Thu, 26 Aug 1999 14:20:12 -0400
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] minor glitch with free carets
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+	i just got bitten by this...
+
+	% echo a'b'
+	ab
+	% echo fn
+	fn
+	% echo fn'b'
+	fn b
+	% 
+
+A fix is to change the word: production in /sys/src/cmd/rc/syn.y from
+	word:	keyword			{$1->type=WORD;}
+to
+	word:	keyword			{lastword=1; $1->type=WORD;}
+
+And you'll have to add "int lastword;" to rc.h
+so that lex.c's lastword is visible.
+
+Russ
+

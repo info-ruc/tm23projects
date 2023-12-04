@@ -1,0 +1,212 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f2MNvIo06099;
+	Thu, 22 Mar 2001 15:57:18 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.10) with SMTP id SAA27468;
+	Thu, 22 Mar 2001 18:26:04 -0500 (EST)
+Date: Thu, 22 Mar 2001 18:26:04 -0500 (EST)
+Received: by canaveral.red.cert.org; Thu, 22 Mar 2001 18:21:09 -0500
+Message-Id: <CA-2001-04.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+Subject: CERT Advisory CA-2001-04
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 4bceb49c96cb416035666817e782f94f
+Status: RO
+X-Status: $$$$
+X-UID: 0000000005
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-04 Unauthentic "Microsoft Corporation" Certificates
+
+   Original release date: March 22, 2001
+   Last revised: March 22, 2001
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   Systems whose users run code signed by Microsoft Corporation.
+
+Overview
+
+   On January 29 and 30, 2001, VeriSign, Inc. issued two certificates to
+   an individual fraudulently claiming to be an employee of Microsoft
+   Corporation. Any code signed by these certificates will appear to be
+   legitimately signed by Microsoft when, in fact, it is not. Although
+   users who try to run code signed with these certificates will
+   generally be presented with a warning dialog, there will not be any
+   obvious reason to believe that the certificate is not authentic.
+
+I. Description
+
+   Microsoft released a security bulletin on March 22, 2001, describing
+   two certificates issued by VeriSign to an individual fraudulently
+   claiming to be an employee of Microsoft. The full text of Microsoft's
+   security bulletin is available from their web site at
+
+       http://www.microsoft.com/technet/security/bulletin/MS01-017.asp
+
+   Additional information about this issue is also available from
+   VeriSign's web site:
+
+       http://www.verisign.com/developer/notice/authenticode/index.html
+
+   This issue presents a security risk because even a reasonably cautious
+   user could be deceived into trusting the bogus certificates, since
+   they appear to be from Microsoft. Once accepted, these certificates
+   may allow an attacker to execute malicious code on the user's system.
+
+   This problem is the result of a failure by the certificate authority
+   to correctly authenticate the recipient of a certificate. Verisign has
+   taken the appropriate action by revoking the certificates in question.
+   However, this in itself is insufficient to prevent the malicious use
+   of these certificates until a patch has been installed, because
+   Internet Explorer does not check for such revocations automatically.
+
+II. Impact
+
+   Anyone with the private portions of the certificates can sign code
+   such that it appears to have originated from Microsoft Corporation. If
+   the user approves the execution of code signed by one of the bogus
+   certificates, it can take any action on the system with the privileges
+   of the user who approved the execution. The fake certificates can only
+   be used for Authenticode signing.
+
+III. Solution
+
+Check "Microsoft Corporation" Certificates
+
+   You can identify the fake certificates by checking the validity dates
+   and serial numbers of the certificates. When prompted to authorize the
+   execution of code signed by "Microsoft Corporation", press the "More
+   Info" button to obtain additional information about the certificate
+   used to sign the code.
+
+   The fake certificates have the following description:
+
+          Issued to: Microsoft Corporation
+          Issued by: VeriSign Commercial Software Publishers CA
+          Valid from 1/29/2001 to 1/30/2002
+          Serial number is 1B51 90F7 3724 399C 9254 CD42 4637 996A
+
+          Issued to: Microsoft Corporation
+          Issued by: VeriSign Commercial Software Publishers CA
+          Valid from 1/30/2001 to 1/31/2002
+          Serial number is 750E 40FF 97F0 47ED F556 C708 4EB1 ABFD
+
+   No legitimate certificates were issued to Microsoft between January 29
+   and 30, 2001. Certificates with these initial validity dates or serial
+   numbers should not be authorized to execute code.
+
+   The certificate revocation list for the fake certificates can be found
+   at
+
+          http://crl.verisign.com/Class3SoftwarePublishers.crl
+
+Apply a Patch from Your Vendor
+
+   While there do not appear to be any patches available at this time
+   that directly address this issue, Microsoft is working on producing
+   patches that will ensure the invalid certificates are not used.
+
+Appendix A. - Vendor Information
+
+Microsoft Corporation
+
+   Microsoft has published a security bulletin describing this issue at
+
+          http://www.microsoft.com/technet/security/bulletin/MS01-017.asp
+
+Netscape
+
+   Netscape takes all security and privacy issues very seriously. The
+   Netscape browser does not allow the execution of ActiveX controls,
+   signed or unsigned, and therefore Netscape users are not vulnerable to
+   exploits which rely on signed ActiveX. In the unlikely event that
+   Netscape users are presented with signed content from Microsoft
+   requesting enhanced privileges, Netscape users can protect themselves
+   by denying permission to any such request.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-04.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-20:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+March 22, 2001: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP for Personal Privacy 5.0
+Charset: noconv
+
+iQCVAwUBOrqFRQYcfu8gsZJZAQHmXwQAnv3ZVVEmHT2FtU65E9cqo9YIhqGmJoGw
+cEGD3p8I/gF4hYRWXu0TQiohj/tG3/E1ensFcO9fGOREESNbkNErMIpp5c3d0e8Y
+ruYPTwD8H+ZcBwgg1MiBzeQG9CgJI8Br/eil3xjKEu+f62I9A3Gn4kast/TitTXV
+2adcgOHQ/5g=
+=Kr9o
+-----END PGP SIGNATURE-----
+

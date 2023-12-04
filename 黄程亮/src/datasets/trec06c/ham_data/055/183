@@ -1,0 +1,38 @@
+Received: from freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id MAA13817
+	for <handyboard@media.mit.edu>; Tue, 2 Nov 1999 12:19:44 -0500 (EST)
+Received: (qmail+freegate 11364 invoked by alias); 2 Nov 1999 17:19:12 -0000
+Received: from ws16-n0.hq.freegate.com (HELO drpepper) (208.226.86.144)
+  by hq.freegate.com with SMTP; 2 Nov 1999 17:19:12 -0000
+Message-Id: <4.1.19991102091555.04193f00@mailhost.hq.freegate.com>
+X-Sender: cmcmanis@mcmanis.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Tue, 02 Nov 1999 09:18:40 -0800
+To: "Bruce Moore" <bamoore@bloomington.in.us>, <handyboard@media.mit.edu>
+From: Chuck McManis <cmcmanis@mcmanis.com>
+Subject: Re: Time available during 1 kHz system interrupt?
+In-Reply-To: <199911021248.HAA05727@kirkwood.hoosier.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 07:47 AM 11/2/99 -0500, Bruce Moore wrote:
+>Interesting discussion but it raises a few more questions.
+>
+>Are there any (bad) side effects when user code that is inserted in the ISR
+>takes longer to execute than the 1 msec interrupt cycle.  
+
+Mostly PWM will get jerkier. If you sit to long in there and the motors
+happen to be 'on' then you can go faster than you would like :-)
+
+You also "lose time" in the sense that msleep is no longer accurate so
+there are issues with tasks that are waiting a set number of milleseconds
+to execute. 
+
+In general, if you are taking too much time in the ISR then either:
+	1) You need a faster processor
+	2) You need to re-evalutate what you need to do at
+	   "interrupt time" vs "user time"
+
+--Chuck
+
+

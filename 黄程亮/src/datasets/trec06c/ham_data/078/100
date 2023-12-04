@@ -1,0 +1,196 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id f9Q56dY22479;
+	Thu, 25 Oct 2001 22:06:39 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id WAA29887;
+	Thu, 25 Oct 2001 22:26:13 -0400 (EDT)
+Date: Thu, 25 Oct 2001 22:26:13 -0400 (EDT)
+Received: by canaveral.red.cert.org; Thu, 25 Oct 2001 22:20:55 -0400
+Message-Id: <CA-2001-29.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-29 Oracle9iAS Web Cache vulnerable to buffer overflow
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 7df7774b47fd3d6fa43159c17af1dd46
+Status: RO
+X-Status: $$$$
+X-UID: 0000000025
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-29 Oracle9iAS Web Cache vulnerable to buffer overflow
+
+   Original release date: October 25, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   Systems running:
+
+     * Oracle9iAS Web Cache
+
+Overview
+
+   A remotely exploitable buffer overflow in the Oracle9iAS Web Cache
+   allows intruders to execute arbitrary code or disrupt the normal
+   operation of Web Cache.
+
+I. Description
+
+   Defcom Labs has discovered a remotely exploitable buffer overflow
+   vulnerability in the Oracle9iAS Web Cache (on all platforms) that
+   allows intruders to either execute arbitrary code with the
+   privileges of the Web Cache process, or disrupt the normal
+   operation of Web Cache.  The Oracle9iAS Web Cache provides four web
+   services that are all vulnerable and enabled by default when the
+   software is installed.  For more information about these web
+   services, please see the Oracle9iAS Web Cache Administration and
+   Deployment Guide (registration required).  These services and the
+   associated ports they listen on are listed below:
+
+     * 1100/tcp (incoming web cache proxy)
+     * 4000/tcp (administrative interface)
+     * 4001/tcp (web XML invalidation port)
+     * 4002/tcp (statistics port)
+
+   Additional information regarding this vulnerability is available at
+
+     http://otn.oracle.com/deploy/security/pdf/webcache.pdf
+     http://www.securityfocus.com/archive/1/3BCEE434.F597D815@defcom.com
+
+II. Impact
+
+   An intruder can execute arbitrary code with the privileges of the
+   web cache process or disrupt the normal operation of Web Cache.
+   Additionally, an intruder might be able to intercept and/or modify
+   sensitive data such as credentials and other types of sensitive
+   information passing through the host running Web Cache. Finally, an
+   intruder may be able to gain access to other systems by using Web
+   Cache as an entry point into the network or by leveraging an
+   existing trust relationship between Web Cache and another system.
+
+III. Solution
+
+   Install a patch from Oracle. More information is available in
+   Appendix A.
+
+Appendix A. - Vendor Information
+
+   This appendix contains information provided by vendors for this
+   advisory.  When vendors report new information to the CERT/CC, we
+   update this section and note the changes in our revision
+   history. If a particular vendor is not listed below, we have not
+   received their comments.
+
+Oracle
+
+  Please see http://otn.oracle.com/deploy/security/pdf/webcache.pdf
+
+Appendix B. - References
+
+  1. http://otn.oracle.com/deploy/security/pdf/webcache.pdf
+  2. http://www.kb.cert.org/vuls/id/649979
+  3. http://www.securityfocus.com/archive/1/3BCEE434.F597D815@defcom.com
+     _________________________________________________________________
+     _________________________________________________________________
+
+   The CERT Coordination Center thanks Defcom Security, who discovered
+   this vulnerability and published the information in their advisory.
+   Additionally, we thank Oracle, who published an advisory on this
+   issue.
+   _________________________________________________________________
+
+   Author: Ian A. Finlay.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-29.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC personnel answer the hotline 08:00-17:00 EST(GMT-5) /
+   EDT(GMT-4) Monday through Friday; they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by
+   email.  Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of
+   your message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+
+   Any material furnished by Carnegie Mellon University and the
+   Software Engineering Institute is furnished on an "as is"
+   basis. Carnegie Mellon University makes no warranties of any kind,
+   either expressed or implied as to any matter including, but not
+   limited to, warranty of fitness for a particular purpose or
+   merchantability, exclusivity or results obtained from use of the
+   material. Carnegie Mellon University does not make any warranty of
+   any kind with respect to freedom from patent, trademark, or
+   copyright infringement.
+   _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+
+   October 25, 2001:  initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBO9jGraCVPMXQI2HJAQFVnQP/V53ZIsohPcXiF6pcvUl5zjpRccWtJRkl
+StUdAbz9aiT7TcuhPcAtOkpOaWMPiDOFGR8Fu8MpVehS8VFEGzDJ0quKgf6LRRjx
+8Ni5klqhORJ/+3Z/Pf0c+yHhMlDRV3SFPpnMLaPifBwXDmzgqJRTsL3dRb7fsigR
+aljIl/lGOHY=
+=yqti
+-----END PGP SIGNATURE-----
+

@@ -1,0 +1,49 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id EAA22844
+	for <handyboard@media.mit.edu>; Thu, 6 Apr 2000 04:44:36 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id EAA03375; Thu, 6 Apr 2000 04:32:02 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7716
+From: "Roger Hamlett" <roger@ttelmah.demon.co.uk>
+X-Real-Life-Name: Roger Hamlett
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: Motor Drivers
+Posted-Date: Thu, 6 Apr 2000 08:31:07 GMT
+Date: Thu, 6 Apr 2000 08:31:07 GMT
+Organization: Ttelmah Ltd - Essex UK
+Message-Id: <FsL6Bv.2Hs@lugnet.com>
+References: <C7B6CD342974D2118B4F00805F6557E303F8C01C@corp-exc2.ctron.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+In lugnet.robotics.handyboard, "Barrus, Brad" <bbarrus@cabletron.com> writes:
+>I am trying to run a light with the motor outputs on the handy board. I
+>looked up the spec on the L293D and it claims to be capable of 600mA
+>constant and 1.2A peak. The miniature light I am using draws about 300mA.
+>When the light comes on the handy board just dies (looks like too much
+>current is being drawn). Any one have a similar experience? Know how to fix
+>it?
+>Thanks Brad
+As others have said, the system should be able to drive this. However there
+are some obvious 'thoughts':
+1) A light that draws 300mA when running, will _momentarily_ draw a much
+higher value when the bulb is cold. The actual ratio between the 'running',
+and 'cold' currents, depends on the type of bulb, and the resistances of the
+wires and batteries. It is possible that your bulb is just drawing a little
+too much in this state. In projection bulbs (a lot larger), it is common
+practice to have a thermistor wired in series with the bulb, to reduce the
+'shock' on the filament as the bulb starts, and to keep this current below the
+fuse rating. You could try the simple experiment of putting something like a
+3.9ohm resistor in series with the bulb. This should keep the initial current
+low enough, and when the bulb is running only 'lose' about 1v.
+2) Though the drivers can handle this load, can your power supply?. If you
+have a 'old' battery pack that is showing a high internal resistance, it may
+simply be that the supply droops so badly when the load is drawn, that the HB
+resets.
+
+Good Luck
+

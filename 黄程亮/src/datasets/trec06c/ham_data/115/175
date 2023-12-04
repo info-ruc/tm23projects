@@ -1,0 +1,35 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1N59Ft27737
+	for <egs+summary@cs.cornell.edu>; Thu, 23 Feb 2006 00:09:15 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1N59ET3018450
+	for <egs+summary@cs.cornell.edu>; Thu, 23 Feb 2006 00:09:15 -0500 (EST)
+Message-ID: <544606907.1140671353535.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 23 Feb 2006 00:09:13 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 9
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1N59Ft27737
+
+The two papers measure the characteristics of Napster and Gnutella and the workload of Kazaa, respectively. Measurement on the characteristics of nodes is important in delegating responsibilities across them in the peer-to-peer system. Measurement on the forces that drive workload in peer-to-peer systems, mostly multimedia, helps understand the future of multimedia workload.
+
+[Comments] As the paper observes a large fraction of server-like and client-like behaviors in Napster and Gnutella, a large-scale system may be classified into classes of peer-to-peer systems accordingly to the peers' resource, and peers may be required to provide a certain amount of uploads before they can download others’ shared files, to make it a real and fair peer-to-peer system.
+
+<Measurement on Napster and Gnutella>
+* Current proposed peer-to-peer routing protocols assume that nodes participating in the system behave equally (having the same resource…) and are willing to cooperate. This paper presents a measurement study over nodes in the system and shows that there is significant heterogeneity and lack of cooperation across them.
+* Measurements are performed on Napster and Gnutella in this paper. They periodically crawl the systems to gather peer population snapshots and measure properties about them. These snapshots are crawled by issuing queries to central servers in Napster and by exploiting the ping/pong messages in Gnutella. The metadata of peers from the responses are kept in a list. Characteristics such latency, lifetime and bandwidth are measured for each snapshot.
+* In latency measurement, they use TCP to discriminate against flows and large round-trip time. The latency, however, is dependent on the location of host from which it is measured. For lifetime, they measure IP-level uptime as well as application-level uptime. Finally, they use bottleneck link bandwidth as an approximation to available bandwidth because bandwidth may fluctuate significantly. As the bottleneck generally equal to capacity of the slowest hop, it’s a physical property that remains constant over time.
+* The results show (1) peers tend to have higher downstream than upstream bandwidth; (2) there are three classes of latencies a peer interacts with: same part of a continent, opposite part of a continent and trans-oceanic peers; (3) on average, Napster peers have longer uptime than Gnutella peers; (4) there are free-riders (nodes having little or no shared data but always download files) in both systems and this is more significant in Gnutella where 7% peers offer more files than all of the other peers; (5) Napster peers have an incentive to report a small bandwidth than the true value; (6) though having no central servers, Gnutella is vulnerable to attacks that are directed to best-connected, popular and high degree nodes.
+* The heterogeneity on latency, bandwidth and availability implies that a peer-to-peer system should delegate responsibilities (storing replicas or popular data) across the nodes based on their characteristics. The dishonest report of nodes implies that a peer-to-peer system should have built-in incentives for them to be honest or directly measure the information.
+
+<Measurement on Kazaa>
+* This paper explores the forces that drive current peer-to-peer file-sharing workload and implications for their future.
+* Peer-to-peer file-sharing system differs from web content distribution in its data type, multimedia files. The large size and immutability of these data have effects both on user behavior and on object dynamics:
+(1) Many of these data are fetched at most once per client. This paper shows that such kind of behavior causes the Kazaa population distribution to deviate substantially from Zipf curve. They compare Kazaa with other non-Zipf workload such as web with proxy caching or media streaming and use a model to explore that the non-Zipf behavior in Kazaa is best explained by the fetch-at-most-once behavior of clients.
+(2) Popularity of the objects is often short-lived, popular objects tend to be recently born and many requests are for old objects. Along with the analysis in their model and other properties presented in this paper, such as: Kazaa is a batch-mode delivery system where users are more patient, while web is an interactive system where users are sensitive to page-fetch latency; and new clients generate most load in Kazaa while older clients consume fewer bytes as they age, they conclude that, unlike the web system whose workload is driven by document changes, the primary forces in Kazaa are creation of new objects and addition of new clients.
+* This paper finally demonstrates an untapped locality existing in Kazaa workload and presents a locality-aware mechanism, implemented by either centralized or decentralized nodes that redirect to caches from local peers, for reducing external downloads. Its concern is the availability of the content, since the redirectors have no control over the peers.
+

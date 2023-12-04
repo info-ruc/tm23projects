@@ -1,0 +1,95 @@
+Received: from caldo.demon.co.uk (caldo.demon.co.uk [194.222.207.148])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id GAA21534
+	for <9fans@cs.psu.edu>; Thu, 26 Nov 1998 06:38:40 -0500 (EST)
+From: forsyth@caldo.demon.co.uk
+Message-Id: <199811261138.GAA21534@cse.psu.edu>
+To: 9fans@cse.psu.edu
+Date: Thu, 26 Nov 1998 11:40:43 GMT
+Subject: [9fans] dial M for Minimalism
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+as a doctor, i am often asked ``why doesn't Plan 9 (or Inferno) use
+the `standard' socket calls?''
+
+the source of tcpblast.c was recently posted to this list.
+it makes a tcp/ip call to a given machine.
+the bits that do so are shown below (i have completed
+the code that looks up the service name):
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+
+	...
+
+struct sockaddr_in sock_in;
+struct servent *sp;
+struct hostent *host;
+
+	...
+ memset(&sock_in, 0, sizeof (sock_in));
+ sock_in.sin_family = AF_INET;
+ f = socket(AF_INET, SOCK_STREAM, 0);
+ if (f < 0) {
+  perror("tcpblast: socket");
+  exit(3);
+ }
+ if (bind(f, (struct sockaddr*) &sock_in, sizeof (sock_in)) < 0) {
+  perror("tcpblast: bind");
+  exit(1);
+ }
+
+ host = gethostbyname(argv[1]);
+ if (host) {
+  sock_in.sin_family = host->h_addrtype;
+  memmove(&sock_in.sin_addr, host->h_addr, host->h_length);
+ } else {
+  sock_in.sin_family = AF_INET;
+  sock_in.sin_addr.s_addr = inet_addr(argv[1]);
+  if (sock_in.sin_addr.s_addr == -1) {
+   fprintf(stderr, "tcpblast: %s unknown host\n", argv[1]);
+   exit(1);
+  }
+ }
+ sp = getservbyname("discard", "tcp");
+ if (sp)
+   sock_in.sin_port = sp->s_port;
+ else
+   sock_in.sin_port = htons(9);
+
+ if (connect(f, (struct sockaddr*) &sock_in, sizeof(sock_in)) <0)
+ {
+  perror("tcpblast connect:");
+  exit(1);
+ }
+
+by contrast, in my variant for Plan 9, i wrote:
+
+#include <u.h>
+#include <libc.h>
+
+	...
+
+	fd = dial(netmkaddr(argv[0], "tcp", "discard"), nil, nil, nil);
+	if(fd < 0){
+		fprint(2, "tcpbuzz: can't dial %s: %r\n", argv[0]);
+		exits("dial");
+	}
+
+the nil, nil, nil looks and sounds like a Eurovision Song Contest
+score, which is perhaps a blemish.  (each nil represents a default
+that more specialised applications can set to access such things as
+port number assignment and the connection's control and status files.
+Inferno's dial interface is simpler still, partly because of the use
+of Limbo tuples.)  apart from that, the incantation is straightforward
+and easy to write.  because the interface and underlying
+infrastructure provides a good degree of abstraction, it also works
+without change for all suitable network types and protocols; it isn't
+limited to TCP/IP or IP networks.  the connection service and name
+space together sort out the details; that the network files live in
+the per-process name space also enables the same code to dial through
+an imported gateway.
+

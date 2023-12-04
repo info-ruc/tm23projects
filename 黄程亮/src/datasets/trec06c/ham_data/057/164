@@ -1,0 +1,108 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA22193
+	for <handyboard@media.mit.edu>; Mon, 29 Nov 1999 16:47:05 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id QAA27022; Mon, 29 Nov 1999 16:47:05 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7151
+From: "Barry Brouillette" <breeyet@aol.com>
+X-Real-Life-Name: Barry Brouillette
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: evaluate inverse cosine, sine in IC
+Posted-Date: Mon, 29 Nov 1999 21:46:30 GMT
+Date: Mon, 29 Nov 1999 21:46:30 GMT
+Organization: none
+Message-Id: <FLzB5I.KM3@lugnet.com>
+References: <2088964038.942686801@HPMENT33.ME.CMU.EDU><3830A216.6F10698D@cs.umt.edu> <3842C9A4.9825A1FB@pacbell.net> <002401bf3aa7$ab8f2de0$0500a8c0@vuurplaat.nl>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Another technique for finding trig functions and their inverses  used by both
+HP and TI in their calculators is the CORDIC algrorithm.  A description of the
+technique with lots of references can be found at:
+http://www.ti.com/calc/docs/faq/83faq086.htm
+
+Barry
+
+
+In lugnet.robotics.handyboard, "Jeroen van der Vegt"
+<A.J.vanderVegt@ITS.TUDelft.nl> writes:
+>Taylor series should converge quite rapidly. After 2 or 3 terms, the error
+>is usually neglectable (depending or your demands, of course: this should be
+>fine for up to a few decimals)
+>
+>For those not familiar with the Taylor expansion, I've added a small picture
+>containing the formula.
+>
+>
+>----- Original Message -----
+>From: Gary Livick <glivick@pacbell.net>
+>To: Will <nepenthe@montana.com>
+>Cc: Handyboard Mailing List <handyboard@media.mit.edu>
+>Sent: Monday, November 29, 1999 7:44 PM
+>Subject: Re: evaluate inverse cosine, sine in IC
+>
+>
+>> I've been trying to do this as well.  The problem I have found is that the
+>Taylor series expansion needs to be developed near the solution to get
+>accurate results.
+>>
+>> Some may wonder why finding the arcsine of a number might be of interest.
+>If one has a robot that is sitting at some angle to a wall, and by using a
+>ranging device of some kind (SONAR, IR ranging) mounted on a servo is able
+>to get two ranges to the wall, the first at one angle from the robot and the
+>second at a different angle from
+>> the robot, then the angle of the robot axis to the wall can be determined.
+>In dead reckoning navigation, it is often necessary to update robot position
+>from known landmarks.
+>>
+>> To do this calculation, the "law of cosines" is first used, and the
+>interim results are then used in the "law of sines" to get the angle.
+>Arcsine is needed in the last calculation.
+>>
+>> One could generate a lookup table to go into in memory to find the angle,
+>but what a waste of space.  It would be nice if Motorola had a freeware math
+>function of arcsine, but they appear not to.  After days of head scratching,
+>I have yet to turn up a simple algorithm to calculate arcsine from a random
+>argument.  Any math majors out
+>> there with nothing to do?
+>>
+>> Thanks for any help,
+>>
+>> Gary Livick
+>>
+>>
+>>
+>> Will wrote:
+>>
+>> > bedirhan wrote:
+>> > >
+>> > > Hi, is there a way to evaluate inverse cosine and sine using IC? Thx
+>> >
+>> > The most efficient way to do it is to use Taylor Series approximations
+>of the functions.  Decide how much precision you need, and then write
+>functions that evaluate the first few terms in the appropriate series.
+>> >
+>> > Usually, a series will converge quite rapidly, and only half a dozen or
+>so terms are needed.  For example, if the sixth term in the series is on the
+>order of 1.0E-6, then you're getting close to the limit of single-precision
+>arithmetic anyway (and certainly close enough for horse shoes, hand
+>grenades, and tactical nuclear weapons).
+>> >
+>> > -- Will
+>>
+>
+>
+>--
+>MIME ATTACHMENTS DISCARDED:
+>
+>1.  Content-Type: image/gif;
+>	    name="ASINACOS.GIF"
+>    Content-Transfer-Encoding: base64
+>    Content-Disposition: attachment;
+>	    filename="ASINACOS.GIF"
+>    Content-Length: 4881
+

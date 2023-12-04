@@ -1,0 +1,53 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8O3C7h13691
+	for <egs@cs.cornell.edu>; Mon, 23 Sep 2002 23:12:07 -0400 (EDT)
+Received: from sanya (r105361.resnet.cornell.edu [128.253.240.52])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with SMTP id XAA10227
+	for <egs@cs.cornell.edu>; Mon, 23 Sep 2002 23:12:06 -0400 (EDT)
+Message-ID: <000901c26378$30c69060$34f0fd80@sanya>
+From: "Aleksandr Gilshteyn" <ag75@cornell.edu>
+To: <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 19
+Date: Mon, 23 Sep 2002 23:12:18 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+
+In this paper the authors present us with CEDAR, a routing algorithm for QoS
+routing in ad hoc networks. The goal is to provide routes that are very
+likely to satisfy the bandwidth requirement of a route. In order to do this,
+CEDAR tries to compute unicast routes that satisfy a minimum bandwidth
+requirement from the source to the destination. This minimum bandwidth is
+supposed to be supplied by the application requesting a connection, which
+might be a problem if you want applications that were not designed
+specifically for this algorithm to work with it.
+
+Some of the assumptions that the authors make are that the paths are
+bidirectional and that the MAC/link layer can estimate the available link
+bandwidth. These might or might not be reasonable depending on the network.
+The authors use a simple constant time algorithm to calculate the minimum
+dominating set of the core. While it generates good approximations for MDS
+in the average case, the authors neglect to mention what happens in the
+worst case. The algorithm deals well with link failures that occur very
+close to the source or destination, but it fails to react fast enough if the
+failure is somewhere in the middle and a large number of packets can be
+lost. It would be interesting to see how much power the core nodes have to
+spend compared to non-core nodes, if the difference is very big then it
+would be a problem.
+
+Despite its shortcomings, the algorithm does have a lot of positives. The
+routing computation is performed by core nodes only using only local state,
+which makes it efficient and scalable. The algorithm also tries to propogate
+only stable high-bandwidth link-state throughout the core, and keep
+low-bandwidth and unstable link-state local, which is good for avoiding
+bottlenecks. Also, the core path provides a simple backup route if the QoS
+route is not available, which makes the algorithm more reliable. Finally,
+the authors made an implementation of their algorithm, which is more than
+what most others have done. Of course, it would be nice to see any kind of
+results derived from that implementation.
+

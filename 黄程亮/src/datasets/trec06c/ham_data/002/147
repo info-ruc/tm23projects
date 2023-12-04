@@ -1,0 +1,58 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Sun, 25 Dec 1994 04:30:18 MST
+Received: from agate.Berkeley.EDU by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA00527; Sun, 25 Dec 1994 04:30:16 MST
+Received: by agate.berkeley.edu (8.6.8.1/1.33)
+	id DAA11618; Sun, 25 Dec 1994 03:00:05 -0800
+Received: from GATEWAY by agate with netnews
+	for icon-group@cs.arizona.edu (icon-group-l@cs.arizona.edu)
+To: icon-group-l@cs.arizona.edu
+Date: 25 Dec 1994 05:56:46 -0500
+From: MENGARINI@news1.delphi.com (MENGARINI@DELPHI.COM)
+Message-Id: <3djj5e$7pd@news2.delphi.com>
+Organization: Delphi Internet Services Corporation
+Sender: icon-group-request@cs.arizona.edu
+Subject: DeMorgan's Law doesn't work
+
+I needed to find the first filename of the form "w[0-9][0-9]" that was
+not in use in either of 2 directories.  This code
+   (  nn := (0 to 9) || (0 to 9)
+   ,  not exists( downloadDir || "w" || nn )
+   ,  not exists( targetDir   || "w" || nn )
+   )|stop( "No names of the form w[0-9][0-9] were unused." )
+works, but the separation of the 2 "not exists" calls is reminiscent
+of Algol-family languages' need to code things like
+   if importantNumber = 1 | importantNumber = 2
+where Snobol-family languages could just test whether
+   importantNumber = 1 | 2
+Analogously, Icon should be able to factor out the 2 "not exists" calls.
+
+But this
+   (  nn := (0 to 9) || (0 to 9)
+   ,  not exists( (downloadDir|targetDir) || "w" || nn )
+   )|stop( "No names of the form w[0-9][0-9] were unused." )
+doesn't work because DeMorgan's Law doesn't work:
+if downloadDir || "w" || nn doesn't exist, exists() fails, not exists()
+succeeds, & the expression succeeds, without ever testing whether
+targetDir || "w" || nn exists.
+
+So far, this
+   (every nn := (0 to 9) || (0 to 9) do {
+      (exists( (downloadDir|targetDir) || "\\w" || nn ), next) | break
+   })|stop( "No names of the form w[0-9][0-9] were unused." )
+is the best I can do, but I dislike it because it makes use of a very
+obscure aspect of break; Griswold & Griswold 1990 p19 doesn't even mention
+it, altho it's in Appendix C on p285. (BTW, p19 seems to imply incorrectly
+that break only works with while & until, even tho every was introduced on
+p16; & Appendix C doesn't clarify this.)
+
+Can anybody suggest a more elegant expression?
+
+Can anybody suggest a language extension that would help?
+
+            "Software is neither science nor engineering.
+             It's really an obscure form of poetry."
+                  --Dirk Zoller
+
+Will Mengarini  <mengarini@delphi.com>  Hey, at least it's not AOL
+
+

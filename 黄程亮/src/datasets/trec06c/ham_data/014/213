@@ -1,0 +1,56 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id IAA00097
+	for <handyboard@media.mit.edu>; Mon, 13 Apr 1998 08:15:37 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id IAA08064;
+	Mon, 13 Apr 1998 08:15:34 -0400 (EDT)
+Message-Id: <199804131215.IAA08064@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: alfk@eikon.e-technik.tu-muenchen.de
+Cc: handyboard@media.mit.edu
+Subject: Re: 16 digital outputs as Fred suggested 
+In-Reply-To: Your message of "Sun, 12 Apr 1998 13:13:54 +0200."
+             <3530A1F2.16FB@eikon.e-technik.tu-muenchen.de> 
+Date: Mon, 13 Apr 1998 08:15:34 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+1.  please read the Appendix B documentation in
+
+http://lcs.www.media.mit.edu/groups/el/projects/handy-board/techdocs/
+
+which explains this in more detail than the FAQ.
+
+2.  you must the even-numbered Yx signals for output latches.  Since
+Y6 is taken (by the on-board latch for the motor drivers), you're left
+with Y0, Y2, and Y4.
+
+3.  To set the bits in a latch connected to Y0, all you do is write a
+byte anywhere in the 0x4??? memory range; e.g., "poke(0x4000, 0x55)"
+sets every other bit.  That's all there is to it.
+
+Fred
+
+In your message you said:
+> Hi guys,
+> I needed 16 digital outputs for my handyboard, so I put up a very simple
+> expansion board the way Fred suggested in his handboard FAQ: I connected
+> two more hc374 with their d-inputs to LCD-display's data bus (d0 - d7).
+> Then I connected the first hc374's clock to y4 and the second one's to
+> y5. Really simple, indeed. Now I would like to use those outputs with
+> Interactive C.
+> I figured, if I want to set output 0 to 6 low and output 7 high then I
+> have to put 0+0+0+0+0+0+0+2^7=128 on the bus. Then I have to pulse y4
+> low
+> for a short time for hc374 to put the bus word through to its Q outputs. 
+> In HB Technical Reference (chapter 11 Pin out Detail), Brian Schmalz
+> suggests to pulse y4 low for 1 cycle by the command WRITE 0x6000  
+> So that's all I know.
+> Now my question:
+> Could you tell me the IC code to operate those outputs using IC?
+> I hope, somebody out there has solved this problem before.
+> Alf 
+> (the only German Handyboard user?)
+> 
+> 
+

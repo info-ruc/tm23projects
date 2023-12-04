@@ -1,0 +1,67 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA26818
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 16 Feb 2000 09:14:37 -0700
+Received: from homebox (uofa-dsl-17.dakotacom.arizona.edu [150.135.175.17])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with SMTP id JAA08306;
+	Wed, 16 Feb 2000 09:14:36 -0700
+Message-Id: <3.0.1.32.20000216091438.0079d560@psy1.psych.arizona.edu>
+Date: Wed, 16 Feb 2000 09:14:38 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Dual Monitors and TimeDX
+Cc: jforster@u.arizona.edu
+In-Reply-To: <v04220843b4d02652f4f4@[192.18.195.75]>
+References: <3.0.1.32.20000215095552.007a6a60@psy1.psych.arizona.edu>
+ <3.0.1.32.20000215095552.007a6a60@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 10:07 AM 2/16/00 +0000, you wrote:
+
+>Hi jonathon,
+>   the problem we came across was that on running  timedx for the 
+>first time you get a choice of video drivers, the selected item being 
+>2 which is the external [but not activated] monitor. Subsequently 
+>running timedx produced an error. Fixing an external monitor and 
+>activating this allowed the video driver to be reset but in the field 
+>an experimenter may not have this luxury.
+>
+>Our problem was due to user error [mine while setting up the machine] 
+>but it would be nice if there was an escape route!
+
+  Oh, I see.  Yes, a command line switch to force the selection of the
+primary video and sound card drivers probably isn't a bad thing.  Usually
+those displays aren't enumerated unless they are attached to the machine,
+I'm betting all games that allow you to choose which display driver you
+want to use are going to fail in the same fashion if you choose the last
+display driver there.  I might also change TimeDX to pick the first driver
+in the list by default as it appears to be safer than the last driver these
+days (I don't think it was when I wrote TimeDX).
+
+  For reference if this problem should crop up again run REGEDIT at the
+Start / Run prompt, find the key TimeDX (HKEY_LOCAL_MACHINE \ Software \
+TimeDX) and delete the whole thing if this problem should occur again.  You
+will have to re-enter all TimeDX parameters again but it's the failsafe way
+to reset TimeDX.  Should you wish to only reset the display driver you
+could just delete the HKEY_LOCAL_MACHINE \ Software \ TimeDX \ Video_Driver
+key instead, TimeDX should just prompt you for a new display driver.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+"On two occasions I have been asked [by members of Parliament!], 'Pray,
+Mr.  Babbage, if you put into the machine wrong figures, will the right
+answers come out?'  I am not able rightly to apprehend the kind of
+confusion of ideas that could provoke such a question."
+
+                                              -  Charles Babbage
+
+
+

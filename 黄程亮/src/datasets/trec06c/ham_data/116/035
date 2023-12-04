@@ -1,0 +1,105 @@
+Received: from smtpout.mac.com (smtpout.mac.com [17.250.248.73] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1SHvPt04158
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 12:57:25 -0500 (EST)
+Received: from mac.com (smtpin02-en2 [10.13.10.147])
+	by smtpout.mac.com (Xserve/8.12.11/smtpout16/MantshX 4.0) with ESMTP id k1SHvOBJ012388
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 09:57:24 -0800 (PST)
+Received: from [128.84.98.36] (dhcp98-36.cs.cornell.edu [128.84.98.36])
+	(authenticated bits=0)
+	by mac.com (Xserve/smtpin02/MantshX 4.0) with ESMTP id k1SHvM5f023880
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 09:57:24 -0800 (PST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <F6904FDF-7EA5-4FE4-B93A-1A684EFAD589@mac.com>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Oliver Kennedy <xthemage@mac.com>
+Subject: PAPER 10
+Date: Tue, 28 Feb 2006 12:57:41 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+Most P2P applications we've studied up to this point involve hosts  
+contributing resources to the system, and generally assume that hosts  
+will contribute as much as they consume.  This assumption cannot be  
+held in many cases.  This week's papers explore ways of ensuring  
+fairness in P2P exchanges.  Note that few P2P systems directly  
+exchange data; node 1 may provide resources to node 2 while node 2  
+provides resources to 3 and 4.  The assumption is that if each node  
+contributes as much as it uses, the system remains stable.
+
+Karma is one approach to this problem.  Using a typical ring-based  
+DHT, Karma maps each node to a set of "bank nodes."  A node joining  
+the system obtains a certain amount of karma.  Every time a  
+transaction is performed, the consumer provides the producer with a  
+signed receipt.  The consumer's account is charged, and the  
+producer's account is credited.  In order to combat inflation or  
+deflation, all balances are normalized over the entire system  
+periodically (over a large period).  This scheme suffers from several  
+major problems.  Firstly, a client may repeatedly create accounts  
+(the Sybil attack the paper mentions).  Since each host is given some  
+initial karma, a host may use multiple host creations to boost its  
+balance.  The proposal to use cryptographic puzzles to limit the rate  
+of entry is weak, as processor time may not be the limiting  
+resource.  Regardless of implementation, this scheme is also weak to  
+either malicious consumers or malicious providers.  Karma has no  
+notion of simultaneous trade, so ultimately the consumer will need to  
+trust the producer (or visa versa).  This single point of trust  
+allows a malicious host to cheat another out of karma or services.
+
+Samsara takes a slightly different approach.  Rather than trying to  
+force a capitalistic model onto a system which doesn't support it,  
+Samsara ensures that it is in each host's best interest to be fair.   
+In this system, hosts exchange blocks of data between themselves (to  
+build a distributed backup service in their example).  They  
+periodically check to see if the hosts are storing the data  
+appropriately.  Because one host may wish to send blocks to another  
+host which does not need the favor returned, the second host instead  
+sends back a "claim" block.  This block is deterministically  
+generated in secure manner so that it takes up no space on the second  
+host, but requires the first host to store it.  Samsara notes that in  
+a fair P2P network, service dependency rings are established.  Host A  
+serves B who serves C who serves D who serves A.  It makes use of  
+this by allowing a host to transfer a claim to a host that it  
+provides a service for.  In this example, B stores a claim for A, but  
+it may transfer the claim to C.  When A asks B to verify that it  
+still holds the claim, B forwards the request to C.  This makes B  
+reliant on C, but C is already reliant on B for service.  If one of  
+the periodic validations fail, the host stops providing service with  
+some probability.  Since each host stores multiple replicas of their  
+data, transient errors only provide a minor disruption.  Consistent  
+leeches on the other hand will not be able to obtain service for any  
+extended time period.  Samsara has two major failures.  Firstly, it  
+is intricately tied to persistent storage as the measure of service.   
+No clear mapping exists to allow Samsara to mediate processor or  
+network load.  Secondly, they note that the periodic verification  
+takes up a non-negligible amount of network bandwidth.  They dismiss  
+this by verifying on the day-week scale.  This approach may not scale  
+well to a large distributed service such as gnutella where sessions  
+take place over less than an hour.
+
+Sharp is a midpoint between these two ideas.  Servers (or more  
+generally agents functioning on behalf of servers) create a form of  
+currency via signed promises to devote resources over a specified  
+time period.  These promises can be exchanged as currency, subdivided  
+and redistributed.  Duplicates can also be made, since the promises  
+are probabilistic in nature.  These probabilistic promises are  
+exchanged at the source of the service for hard guarantees of service  
+or a failure message along with a complete chain of promises that  
+identify a single entity as the culprit.  Sharp builds in a little  
+bit of overbooking to ensure that loads are kept up in the case of  
+client failure, but excessive amounts of overbooking can easily be  
+traced and the culprits dealt with.  Sharp's main flaw is that it  
+requires that each identity be traceable back to a real world  
+entity.  Failing that, it is extremely vulnerable to Sybil attacks.   
+Moreover, while ticket falsification may be traced to a particular  
+identity, the model assumes secure service providers, and thus the  
+model maps poorly to a more generic one such as gnutella; a malicious  
+service provider can make itself indistinguishable from a faulty one.
+
+
+-Oliver Kennedy
+
+Cogito cogito ergo cogito sum --
+"I think that I think, therefore I think that I am."
+                 -- Ambrose Bierce, "The Devil's Dictionary"
+

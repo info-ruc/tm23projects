@@ -1,0 +1,100 @@
+Received: from celestial.berkeley.edu (celestial [128.32.92.243])
+	by astron.Berkeley.EDU (8.11.4/8.11.4) with ESMTP id h5UJj5428580;
+	Mon, 30 Jun 2003 12:45:05 -0700 (PDT)
+Received: from localhost (colby@localhost)
+	by celestial.berkeley.edu (8.11.4/8.11.4) with ESMTP id h5UJj6X12256;
+	Mon, 30 Jun 2003 12:45:06 -0700
+X-Authentication-Warning: celestial.berkeley.edu: colby owned process doing -bs
+Date: Mon, 30 Jun 2003 12:45:05 -0700 (PDT)
+From: James Colby Kraybill <colby@astro.berkeley.edu>
+To: zwebster@csusb.edu
+cc: linuxusers@astron.Berkeley.EDU
+Subject: Re: ssh DISPLAY
+In-Reply-To: <3f03903efb8f.3efb8f3f0390@csusb.edu>
+Message-ID: <Pine.LNX.4.44.0306301215580.1547-100000@celestial.berkeley.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 1747
+Status: RO
+X-Status: $$$$
+X-UID: 0000000070
+
+
+
+To manually set your DISPLAY environment variable, you should
+do the following:
+
+local % ssh remote
+
+remote % w zodiac
+(look for your IP)
+
+(for [t]csh)
+remote % setenv DISPLAY IP:0.0
+(for [k,ba]sh)
+remote % DISPLAY=IP:0.0;export DISPLAY
+
+then:
+
+local % xhost +remote
+
+then:
+
+remote: xclock
+
+You should have a nice new xclock window appear on the local
+display.
+
+- Colby
+
+---------------------------------------------------------------------
+James Colby Kraybill                       Radio Astronomy Laboratory
+colby@astro.berkeley.edu           University of California, Berkeley
+
+
+
+
+On Mon, 30 Jun 2003 zwebster@csusb.edu wrote:
+
+> Hi again linux users.
+>
+> First off, thanks to all who have already provided a
+> wealth of suggestions to keep me busy all morning.
+>
+> But, I am still stuck.
+>
+> Here is the question:
+>
+> What should I manually set the display to when i
+> remotely log in using ssh. I am logging in from a
+> machine without a name (only an IP address).  For
+> instance, if I log in to the console, the DISPLAY is
+> :0.0 or localhost:0.0.
+>
+> What can I specify to manually identify the DISPLAY
+> environment when I do a ssh login to another machine?
+>
+> (no, none of the fixes suggested so far make the ssh
+> decide what the display is for itself! manually
+> specifying it will work though, at least when i log
+> in to the same machine).
+>
+> The error message is:
+> xterm Xt error: Can't open display:
+> when no DISPLAY set.
+> > setenv DISPLAY :0.0
+> makes windows pop up for ssh2 localhost
+>
+> logging in to remote machine with
+> > ssh2 remote
+> > setenv DISPLAY 139.myip.xxx.xxx:0.0
+> > xterm &
+> yields following error message
+>
+> xterm Xt error: Can't open display: 139.myipxxx.xxx:0.0
+>
+> Any more help out there?
+> zo
+>
+
+

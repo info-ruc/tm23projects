@@ -1,0 +1,82 @@
+Received: from sumter.awod.com (sumter.awod.com [198.81.225.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA20633
+	for <handyboard@media.mit.edu>; Sun, 24 Oct 1999 11:45:36 -0400 (EDT)
+Received: from awod.com (john@wa0201.tnt1.awod.com [208.140.98.201])
+	by sumter.awod.com (8.8.7/8.8.8) with ESMTP id LAA11949
+	for <handyboard@media.mit.edu>; Sun, 24 Oct 1999 11:45:34 -0400 (EDT)
+	(envelope-from jwp@awod.com)
+Sender: john@sumter.awod.com
+Message-Id: <38132C8B.AD7593FB@awod.com>
+Date: Sun, 24 Oct 1999 11:58:03 -0400
+From: Jonathan Pennington <jwp@awod.com>
+Organization: Gizmonics Institute
+X-Mailer: Mozilla 4.61 [en] (X11; I; Linux 2.2.12 i686)
+X-Accept-Language: en, fr-FR, zh
+Mime-Version: 1.0
+To: Handyboard list <handyboard@media.mit.edu>
+Subject: reading sensor input?
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+I've got a strange problem that probably has an easy solution, but I've
+been trying to hard to figure it out and am afraid that now I'm missing
+the obvious.
+
+I brushed the dust off my Handy Board to build a robot for my middles
+school robotics program. Batteries take and hold a charge, downloads are
+ok, motors seem fine with PWM or without, but I can't seem to read
+inputs.
+
+Symptoms:
+
+I connected photoresistors (Ratshack type) to analog inputs 0-4 (as per
+the manual) and tried to read them photovore fashion, only when the bot
+was turned on, nothing changed. Checked the program, it was fine. Then I
+disconnected the sensors, rebooted and tried to read the ports, all read
+255, digital read 0. So I reconnected the sensors and covered them, all
+read 255, covered or not. so I tried to read the frob_knob() and it came
+back 255, regardless of its position, it's 255.
+
+Then (wierd part), after the borad was off for a while, I turned in on
+with a photoresistor attached to digital(8), just to see if I could make
+it go high. Of course, it stayed low, but I checked analog(1) and it
+read 0! quick, hookup the photoresistor and read it in full light, 255!
+Cover it, read it...255. What? Then, after that, all analog inputs read
+255, and frob_knob still stays at 255.
+
+Problem?
+
+I'm worried that I screwed up the photoresistor hookup. Note the ASCII
+art representation of the input layout below:
+
+
+HC11 chip
+
+|---|---|	INPUTS
+|   |   |	<-- top row
+|---|---|
+    		<-- space
+|---|---|
+|   |   |	<-- middle row
+|---|---|
+|   |   |	<-- bottom row
+|---|---|
+
+Front of Board
+
+Pretend that this is analogs 0 and 1. This position would put the IR
+input directly to the right, and the rest off the page. My original
+scheme had one leg of the light sensor in the bottom row (gnd?) and one
+in the top row (input?). I tried it this way to back sure it didn't work
+and was confirmed. then I attached a +5v (from board) to the middle row
+and tried it. nothing happened. This *is* the correct scheme, is it not?
+
+Jonathan... praying I didn't fry that by shorting the middle row.
+-- 
+___________________________________________________________________________
+Jonathan Pennington		|	-Wannabe Geologist/Anthropologist
+Charleston, SC			|	-Linux User and Advocate
+Email at jwp(at)awod.com	|	83 V45 Magna "The Lighter Side"
+root@localhost (Spambot food)	|	71 Triumph TR6C "Money Pit"
+----------------------------------------------------------------------------
+

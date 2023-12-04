@@ -1,0 +1,52 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id QAA29827
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 13 Nov 2000 16:09:37 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.20) by deimos.email.Arizona.EDU (5.1.046)
+        id 39F9F7780013D9EF for DMDX@psy1.psych.arizona.edu; Mon, 13 Nov 2000 16:09:35 -0700
+Message-Id: <5.0.0.25.2.20001113160421.009df980@psy1.psych.arizona.edu>
+Date: Mon, 13 Nov 2000 16:09:34 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: PIO12 Inputs
+In-Reply-To: <3A106CD0.4814BE88@math.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:36 PM 11/13/00 -0700, you wrote:
+>I was looking at the schematic in the TimeDX help file on how to
+>set up a PIO12 input.  I would like to set up a 3 button mouse so
+>that Button-1 is Neg-response, Button 2 is Pos-repsonse and
+>Button-3 is VOX.  Coming out of the mouse I have 4 wires
+>(W1,W2,W3,W4). W1-W3 is for each button.  When a button1 is
+>pushed it closes a circuit between W1 and W4.  Likewise for
+>button 2 and 3.  As I understand the schematic, I want W1 to
+>connect W1 to pin 36 (neg-response) W2 to pin 35 (pos-response)
+>and W3 to pin 33 (VOX).  Where do I connect W4?  I think it
+>should be pin 18 (+5v), but in the schematic it looks like you
+>have a connection to pin 19 (ground) which I don't understand.
+
+
+   You want W4 to go to ground, but you also want "pullup" resistors on W1, 
+W2, and W3.  These pullups are typically 1Kohm, one end goes to the switch 
+and the other goes to +5V.  That way when the switch is not closed (the 
+"normal" state for NO switches as opposed to NC, normally closed switches) 
+the voltage at the input is +5V, a logic 1, inactive as we use negative 
+logic.  When the switch closes the switch sinks all of the current and the 
+input voltage is 0V, logic 0 and active to DMDX.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Dimensions will always be expressed in the least usable term.
+Velocity, for example, will be expressed in furlongs per fortnight.
+
+
+

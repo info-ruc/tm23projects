@@ -1,0 +1,76 @@
+Received: from imx2.tcd.ie (imx2.tcd.ie [134.226.1.156])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j7FCfM5L014491
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Aug 2005 05:41:22 -0700
+Received: from Vams.imx2 (imx2.tcd.ie [134.226.1.156])
+	by imx2.tcd.ie (Postfix) with SMTP id 8190F68186
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Aug 2005 13:41:16 +0100 (IST)
+Received: from imx2.tcd.ie ([134.226.1.156])
+	by imx2.tcd.ie ([134.226.1.156])
+	with SMTP (gateway) id A03B2C7EA6D; Mon, 15 Aug 2005 13:41:16 +0100
+Received: from PSY169071 (psy169071.psy.tcd.ie [134.226.169.71])
+	by imx2.tcd.ie (Postfix) with ESMTP id 48C2368186
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Aug 2005 13:41:16 +0100 (IST)
+From: "Andy" <woodsat@tcd.ie>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: RE: Displaying the last frame for 3s or until response
+Date: Mon, 15 Aug 2005 13:40:37 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <000601c5a18a$2e189950$6501a8c0@DELL>
+Message-Id: <20050815124116.48C2368186@imx2.tcd.ie>
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Sorry, I don't think I made my problem that clear.  
+
+I'm designing an experiment where the participant sees a picture and must
+make a response to it.  The picture will either remain on the screen for 3
+seconds, or will be removed from the screen if a response is made before
+those 3 seconds are up.  There is no time limit however for the participant
+to respond to a given picture (hence <ntl>) once that picture is removed
+from view. 
+
+Unfortunately adding a blank frame to the end of the item will ensure that
+the picture lasts for the entire duration to which it was set (in my case,
+the default frame duration). If the participant responds before this time is
+up, the picture will not immediately disappear as needed. 
+
+I've played with the abort function, <t 4000> (note the 1000ms for
+displaying the "CROSS" bmp), <clfb> and am now stuck for ideas! The only way
+I can think of around this problem is to create static video files of my
+pictures that last for 3 seconds and use this in conjunction with the abort
+function. 
+
+Thanks, Andy. 
+ 
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of Matthew Finkbeiner
+Sent: 15 August 2005 12:12
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] RE: Displaying the last frame for 3s or until response
+
+I think all you need to do is add another (blank) frame after the picture,
+like this:
+
+=1 <ms% 1000> <bmp> "CROSS" / <bmp> <x 0.5><y 0.5>* "ALAF263_f2m_btm" / ; 
+
+Also, if you want three seconds, you probably want <t 3000> in the header
+
+hope that helps
+
+Matthew
+
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+

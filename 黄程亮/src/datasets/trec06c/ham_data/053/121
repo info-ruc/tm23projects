@@ -1,0 +1,57 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA30152
+	for <handyboard@media.mit.edu>; Thu, 30 Sep 1999 16:50:01 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id QAA26089; Thu, 30 Sep 1999 16:50:01 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:6834
+From: "Jens Graf" <JensGraf@gmx.de>
+X-Real-Life-Name: Jens Graf
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: "Jens Graf" <JensGraf@gmx.de>
+Subject: no way to load an icb file !?!?!?
+Posted-Date: Thu, 30 Sep 1999 20:47:37 GMT
+Date: Thu, 30 Sep 1999 20:47:37 GMT
+Organization: None
+Message-Id: <000701bf0b85$46b0a1c0$3be09e3e@graf>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+Hi all,
+
+IC does'nt load my *.icb file. Why?
+I wrote this code in a *.asm file:
+
+
+TFLG1 EQU $1023
+ORG MAIN_START
+
+subroutine_initialize_module:
+  ldd #IC3_interrupt_handler
+  std $FFEA
+  cli
+  rts
+
+variable_right_clicks:
+  fdb 0
+
+IC3_interrupt_handler:
+  ldd variable_right_clicks
+  addd #1
+  std variable_right_clicks
+  ldaa #%00000001
+  staa TFLG1
+  rti
+
+Then I assembled this file with as11_ic.
+At loading the file, the message was displayed:
+
+Fatal internal error:
+Illegal line in s19 file.
+
+What's wrong?
+

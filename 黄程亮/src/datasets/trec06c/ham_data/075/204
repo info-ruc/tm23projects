@@ -1,0 +1,119 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.1/8.11.1) with ESMTP id f1SBvPh25828
+	for <ggilfoyl@facstaff.richmond.edu>; Wed, 28 Feb 2001 06:57:25 -0500 (EST)
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.2/8.11.2) with SMTP id f1SBv6O16095
+	for <ggilfoyl@richmond.edu>; Wed, 28 Feb 2001 06:57:07 -0500 (EST)
+Received: from ccs4.jlab.org ([129.57.34.184])
+ by penny.richmond.edu (NAVIEG 2.1 bld 63) with SMTP id M2001022806585819821
+ for <ggilfoyl@richmond.edu>; Wed, 28 Feb 2001 06:58:58 -0500
+Received: (from ccpr@localhost)
+	by ccs4.jlab.org (8.11.0/8.11.0) id f1SBv2c15431;
+	Wed, 28 Feb 2001 06:57:02 -0500 (EST)
+Date: Wed, 28 Feb 2001 06:57:02 -0500 (EST)
+Message-Id: <200102281157.f1SBv2c15431@ccs4.jlab.org>
+To: ggilfoyl@richmond.edu, kowalski@jlab.org
+CC: kowalski@jlab.org, ccollins@jlab.org, wells@jlab.org, hartman@jlab.org,
+   sstevens@jlab.org, philpott@jlab.org, kelvin@jlab.org, wise@jlab.org
+From: ccpr_reply@jlab.org
+Subject: Subject: CCPR 6772 [TTS #7207 Update - JLab<->U of Richmond Packet Losses]
+ 
+Status:  O
+X-Mozilla-Status: 9001
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300000985
+
+The following is a reply to CCPR report from philpott@jlab.org
+
+
+ This is a multi-part message in MIME format.
+ --------------E36979BAF0878548D5B8664D
+ Content-Type: text/plain; charset=us-ascii
+ Content-Transfer-Encoding: 7bit
+ 
+  
+ --------------E36979BAF0878548D5B8664D
+ Content-Type: message/rfc822
+ Content-Transfer-Encoding: 7bit
+ Content-Disposition: inline
+ 
+ Received: from jlab1.jlab.org (jlab1.jlab.org [192.70.245.101])
+ 	by ccs4.jlab.org (8.11.0/8.11.0) with ESMTP id f1RN0PI08602
+ 	for <Sandy.Philpott@jlab.org>; Tue, 27 Feb 2001 18:00:25 -0500 (EST)
+ Received: from mail1.es.net (mail1.es.net [198.128.3.181])
+ 	by jlab1.jlab.org (8.9.3/8.9.3) with SMTP id SAA24431
+ 	for <Sandy.Philpott@jlab.org>; Tue, 27 Feb 2001 18:00:24 -0500 (EST)
+ Received: from bluez.es.net (es.net) [198.129.224.36] 
+ 	by mail1.es.net with esmtp (Exim 1.81 #2)
+ 	id 14Xt6U-0007Mt-00; Tue, 27 Feb 2001 15:00:22 -0800
+ Message-ID: <3A9C31BB.CE1742D4@es.net>
+ Date: Tue, 27 Feb 2001 15:01:15 -0800
+ From: John Paul Jones <jpj@es.net>
+ Organization: Lawrence Berkeley National Laboratory / ESnet
+ X-Mailer: Mozilla 4.73 [en] (WinNT; U)
+ X-Accept-Language: en
+ MIME-Version: 1.0
+ To: John Lawson <lawsonj@vt.edu>
+ CC: Sandy Philpott <Sandy.Philpott@jlab.org>, chiles@vt.edu,
+    "trouble@es.net" <trouble@es.net>, hector@vt.edu
+ Subject: Re: TTS #7207 Update - JLab<->U of Richmond Packet Losses
+ References: <2.2.32.20010227214819.008cddec@locust.cns.vt.edu>
+ Content-Type: text/plain; charset=us-ascii
+ Content-Transfer-Encoding: 7bit
+ 
+ Hi John,
+ 
+         Although there are still some packet losses, this looks much more
+ reasonable.  Your fix seems to have done the trick!  We'll verify that our end user
+ sees this as well & continue to monitor for 24 hours before closing our ticket.
+ Thanks, John.
+ ___________________________________________________________________________
+ cebaf-rt1#trace psc1.richmond.edu
+ Tracing the route to psc1.richmond.edu (141.166.222.211)
+   1 dchub-jlab.es.net (134.55.208.81) 20 msec 28 msec 20 msec
+   2 dcconn-dchub.es.net (134.55.208.174) 236 msec 240 msec 212 msec
+   3 nvirginia-dcconn.es.net (198.124.254.26) 44 msec 44 msec 44 msec
+   4 204.95.121.185 [AS 7066] 48 msec 48 msec 48 msec
+   5 65.162.91.18 [AS 1239] 48 msec 52 msec 56 msec
+   6 checkov.richmond.edu (141.166.32.37) [AS 7066] 52 msec 52 msec 52 msec
+   7 BB-M1FW.richmond.edu (141.166.192.2) [AS 7066] 56 msec 56 msec 60 msec
+   8 BB1-F1M1.richmond.edu (141.166.32.21) [AS 7066] 64 msec 52 msec
+     BB2-F1M1.richmond.edu (141.166.32.25) [AS 7066] 56 msec
+   9 psc1.richmond.edu (141.166.222.211) [AS 7066] 52 msec 56 msec 56 msec
+ 
+ cebaf-rt1#ping psc1.richmond.edu
+ Sending 1000, 100-byte ICMP Echos to 141.166.222.211, timeout is 2 seconds:
+ Success rate is 97 percent (978/1000), round-trip min/avg/max = 48/56/256 ms
+ ___________________________________________________________________________
+ 
+ John Lawson wrote:
+ 
+ > Folks,
+ > Has this improved any at all. We found a configuration problem with the
+ > IBGP peering between the GSR and 7507.
+ >
+ > John
+ >
+ > At 01:54 PM 2/26/01 -0800, John Paul Jones wrote:
+ > >Hi
+ 
+ Sandy, excepting the 3% packet loss that may be congestion at the University of
+ Richmond end, does the problem look OK from your end now?  Please let me know by
+ replying to trouble@es.net referencing our ticket TTS #7207.  Thanks, John.
+ 
+ ESnet Operations, please update TTS #7207.  Thanks, John.
+ ___________________________________________________________________________
+ John Paul Jones                                 E-Mail:          jpj@es.net
+ Lawrence Berkeley National Laboratory           ISU Voice:   (208) 282-5196
+ Energy Sciences Network - ESnet                 LBNL Cell:   (510) 604-7434
+ Network Technical Service Group                 Pager:    page-jones@es.net
+ To view an open trouble ticket:        finger <ticket-number>@ticket.es.net
+ ESnet   -   Connecting people, information and resources. http://www.es.net
+ ___________________________________________________________________________
+ 
+ 
+ 
+ --------------E36979BAF0878548D5B8664D--
+ 
+ 
+

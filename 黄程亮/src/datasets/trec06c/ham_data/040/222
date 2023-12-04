@@ -1,0 +1,97 @@
+Received: from Legato.COM (test8.legato.com [137.69.200.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA18834
+	for <Handyboard@media.mit.edu>; Fri, 2 Apr 1999 13:55:12 -0500 (EST)
+Received: from mail.Legato.COM (mail-net4.legato.com [137.69.4.197])
+	by Legato.COM (8.9.1/8.9.1) with ESMTP id KAA20782;
+	Fri, 2 Apr 1999 10:53:38 -0800 (PST)
+Received: from Legato.COM (ducati [137.69.4.216])
+	by mail.Legato.COM (8.8.8+Sun/8.8.8) with ESMTP id KAA07613;
+	Fri, 2 Apr 1999 10:53:52 -0800 (PST)
+Message-Id: <199904021853.KAA07613@mail.Legato.COM>
+To: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+Cc: Handyboard List <Handyboard@media.mit.edu>, Curt Mills <BowHunt@iname.com>,
+        khearn@Legato.COM
+Subject: Re: GCC 2.8.1 for HC11 
+In-Reply-To: Your message of "Fri, 02 Apr 1999 09:13:38 PST."
+             <Pine.WNT.3.96.990402085959.90W-100000@wapiti.tc.fluke.com> 
+Date: Fri, 02 Apr 1999 10:54:57 -0800
+From: Keith Hearn <khearn@Legato.COM>
+
+
+Curt,
+
+I can't help test with a miniboard, since I just have a handyboard 
+  ("just" have a handyboard?). But I'd be willing to give any help I 
+  can with the handyboard libs. I'm also a willing guinea pig for 
+  trying out your gcc-2.8.1 patch and README. 
+
+You mention that you're having problems getting gcc to build so that
+  it installs with a different name or in a different location. Did
+  you try using the --prefix=<path> option when you ran configure?
+  That's the usual way to get gcc to build so it installs in a
+  particular place. I think there is also a configure option to set 
+  a suffix that will go on the binaries so you can have multiple 
+  versions called, e.g., gcc-2,7,2, gcc-2.8.1, etc. 
+
+Hmmm, I just took a quick look through the INSTALL file from gcc-2.8.1
+  and didn't find mention of how to get things to be named
+  differently, but it does mention the --prefix option. That ought to
+  be sufficient.
+
+If you'll let me have a copy of your patches, I'll try building them
+  and see what I can come up with.
+
+As for copyright, I'm not familiar with adding to GNU software, but
+  I've just done some reading on perl modules.  The recommendation 
+  for what to say in perl modules is this:
+
+  Copyright (c) 1997 Your Name. All rights reserved. This program is
+  free software; you can redistribute it and/or modify it under the 
+  same terms as Perl itself. 
+
+I suspect that essentially the same thing, only changing "perl" to gcc
+  would be about the best way to go, unless you're hoping to make a
+  profit on it. In that case you need to see a lawyer familiar with 
+  such things. Oh yeah, change "1997" to "1999", too. :)
+
+  Keith Hearn
+  khearn@legato.com
+  (408) 263-2701 (home)
+  (650) 842-9378 (work)
+
+
+In message <Pine.WNT.3.96.990402085959.90W-100000@wapiti.tc.fluke.com>, "Curt M
+ills, WE7U" writes:
+> 
+> The HC11 back end for gcc-2.8.1 is working on Red Hat Linux 5.2 (and
+> probably most other Unix hosts), and last night I made the cross-assembler
+> and cross-linker work with it properly.  It compiled/assembled the GCC
+> Miniboard library last night without a hitch, creating the ".a" file.
+> 
+> I've generated a patch file to gcc-2.8.1 that puts the proper code into
+> the source tree, and generated a README that explains how to set it all
+> up.  I haven't had the time to put in the proper copyright notices and
+> such (probably GPL) for my changes, so I haven't posted it yet.
+> 
+> One thing that I haven't figured out how to do the "make install"  part of
+> the GCC build and have it install into it's own directory tree.  Following
+> the Coactive Aesthetics docs on how to do it didn't work for me with the
+> newer compiler.  It works great to install it in the default location
+> though, and then you can select which compiler to run using command line
+> arguments to GCC or environment variables (the native GCC is the default). 
+> 
+> Is there anyone interested in testing out the Unix-flavor GCC/HC11
+> compiler and letting me know how it works for the Miniboard?  I want
+> confirmation that everything works before I start on the Handyboard
+> libraries.  My Miniboard is still without a CPU at this point. 
+> 
+> I believe that all the pieces (libraries and crt0.S file) to get running
+> on the Miniboard or the Rug Warrior are readily available.  It's the
+> Handyboard libraries that are lacking yet. 
+> 
+> Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+> Senior Methods Engineer/SysAdmin
+> "Lotto:    A tax on people who are bad at math." -- unknown
+> "Windows:  Microsoft's tax on computer illiterates." -- WE7U
+> 
+

@@ -1,0 +1,72 @@
+Received: from mx2.cac.washington.edu (mx2.cac.washington.edu [140.142.33.1])
+          by groupfs.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id LAA03633 for <mailarch+pine-info@groupms.cac.washington.edu>; Thu, 22 Jan 1998 11:37:31 -0800 (PST)
+Received: from lists.u.washington.edu (root@lists.u.washington.edu [140.142.56.13])
+          by mx2.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id LAA13144; Thu, 22 Jan 1998 11:37:27 -0800
+Received: from host (server@lists.u.washington.edu [140.142.56.13])
+          by lists.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with SMTP
+	  id LAA13912; Thu, 22 Jan 1998 11:33:32 -0800
+Received: from mxu2.u.washington.edu (mxu2.u.washington.edu [140.142.32.9])
+          by lists.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with ESMTP
+	  id LAA51054 for <pine-info@lists.u.washington.edu>; Thu, 22 Jan 1998 11:32:18 -0800
+Received: from mailhost2.cac.washington.edu (mailhost2.cac.washington.edu [140.142.33.2])
+          by mxu2.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id LAA31163 for <pine-info@u.washington.edu>; Thu, 22 Jan 1998 11:32:18 -0800
+Received: from tegdesk_ndc (D-140-142-110-126.dhcp2.washington.edu [140.142.110.126])
+          by mailhost2.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.11) with SMTP
+	  id LAA14993 for <pine-info@u.washington.edu>; Thu, 22 Jan 1998 11:32:15 -0800
+Message-Id: <Pine.WNT.4.00.9801221122490.253-100000@tegdesk_ndc>
+Date: Thu, 22 Jan 1998 11:32:14 -0800 (Pacific Standard Time)
+Sender: PINE-INFO-owner@u.washington.edu
+Precedence: bulk
+From: Terry Gray <gray@cac.washington.edu>
+To: "Pine Discussion Forum" <pine-info@u.washington.edu>
+Subject: Re: Pine imap and folders
+In-Reply-To: <Pine.LNX.3.96.980122092755.2736E-100000@ashawna.eni.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-To: Pine Discussion Forum <pine-info@u.washington.edu>
+X-X-Sender: gray@shivams.cac.washington.edu
+X-Listprocessor-Version: 8.1 beta -- ListProcessor(tm) by CREN
+
+
+On Wed, 21 Jan 1998, Rick Gaine wrote:
+
+> I know that Pine has the ability to allow for remote mail checking via
+> imap by changing the inbox path  to {server}INBOX.  My question is, can
+> you set up pine to allow you to check remote servers by selecting another
+> folder?  I see this as a useful feature.  If this does exist, how do I do
+> it?
+
+In addition to previous responses regarding Pine folder collections, you
+might also want to consider defining multiple *incoming* folders, so that
+it is easy to check for new mail in them simply by using the TAB command
+to automatically cycle through them from the INDEX screen.  (Pine will 
+stop and open the folder only if there are new/interesting messages
+in it.)
+
+To do this, first, set the "enable-incoming-folders" feature, then use the
+ADD dialog in the folder collection screen, OR edit your pinerc to have
+something like:
+
+incoming-folders=STATUS {shivams.cac.washington.edu}status,
+	IMAP {shivams.cac.washington.edu}imap,
+	ACAP {shivams.cac.washington.edu/user=gray}acap,
+	PINE-INFO {shivams.cac.washington.edu:145}pine-info,
+	SMIME {shivams.cac.washington.edu:145/user=gray}smime,
+	CompMailPine {shivams.cac:145}{news.u.washington.edu/nntp}#news.comp.mail.pine,
+
+Note that in my case above, I have different kinds of messages vectored
+into different folders on the same server; that's done by a delivery
+filtering too (e.g. procmail), but you might have different kinds
+of messages going to different servers... 
+
+Also note that the last line above assumes the latest UW IMAP server,
+which will proxy between an IMAP client and an NNTP server.  That won't
+work with earlier UW IMAP servers.
+
+-teg
+
+
+

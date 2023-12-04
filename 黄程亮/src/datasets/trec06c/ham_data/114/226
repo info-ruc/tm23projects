@@ -1,0 +1,75 @@
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1G8Zht21248
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 03:35:43 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id 1B74C53256; Thu, 16 Feb 2006 00:35:37 -0800 (PST)
+Date: Thu, 16 Feb 2006 00:35:36 -0800
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 7
+Message-ID: <20060216083536.GA10232@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+
+For this Thursday, the papers focus on p2p networks which can 
+handle range queries, such as "All the objects with a value 
+between 7 and 16".  So far, the networks we've looked have 
+generally used a hash function to assign a key to each object.  
+This makes range queries expensive, since the hash function will 
+scatter similar objects across the network, resulting in a lot 
+of network traffic.
+
+The first system, GeoPeer, is actually designed to be a system 
+which can support location-aware services.  In many ways, this 
+is a specialized version or range queries, where you have two 
+variables, latitude and longitude.  In this system, the basic 
+routing structure is a planar Delaunay triangulation, with 
+long-range links to reduce distances.  This gives O(1) 
+connections from each node, and the experimental results suggest 
+that routing a message through the network is O(log N) to 
+O(log^2 N).  Load balancing is managed to some extent by 
+duplicating heavily used long range links to share the workload.
+
+One area which might be a problem is the process of re-building 
+the Delaunay structure after a node fails.  The amount of work 
+needed to fix the structure could become too expensive in a 
+network with high churn. 
+
+The second system, P-Trees, are somewhat more complicated.  The 
+search key values put into a ring structure, with the highest 
+value wrapping around to the lowest.  Then, each node stores a 
+partial B+-tree, the root-to-leaf path of its search key.  This 
+results in O(log N) search when the system is in a consistent 
+state, and only requires O(d*log N) storage at each node.  In 
+order to maintain the network, nodes periodically ping each 
+other to see who is still alive.  Also, a Stabilization Process 
+is run periodically to fix the tree structure at a given node.
+
+One potential problem here is that when the network is in an 
+unstable state because of nodes joining and leaving, query 
+messages take much longer.  If network churn gets too high, 
+then many queries will take longer, and potentially need to be 
+resent, further slowing the already stressed network.
+
+The third system is Mercury, which supports multiple attributes 
+and uses a ring-based topology, with one ring hub for each 
+attribute.  It cannot use a hash function to distribute the 
+objects, so instead it just stores the objects in order, and 
+runs a load balancing algorithm to prevent nodes from being 
+overloaded.  The message routing algorithm provides O(log^2 
+(N/k)), where k is the number of links each node has to other 
+nodes.  The authors also show how Mercury can be used to create 
+a publish/subscribe system.
+
+The load balancing algorithm which they propose is that nodes 
+which are heavily loaded find nodes with a light load, and ask 
+them to move to take some of the load off the heavily loaded 
+node.  If the network is experiencing heavy enough churn, then 
+nodes will constantly be moving to balance the load, which will 
+only increase the churn on the network.
+
+
+-- Victoria Krafft
+

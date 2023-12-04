@@ -1,0 +1,88 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA12107
+	for <handyboard@media.mit.edu>; Wed, 13 Oct 1999 11:54:02 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id LAA07833; Wed, 13 Oct 1999 11:54:01 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:6889
+From: "said berriah" <berriah@gel.usherb.ca>
+X-Real-Life-Name: Said Berriah
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: PWM on tic3
+Posted-Date: Wed, 13 Oct 1999 15:53:27 GMT
+Date: Wed, 13 Oct 1999 15:53:27 GMT
+Organization: universite de Sherbrooke
+Message-Id: <FJJtH3.5w1@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Hi,
+
+I want to get the width of a PWM on TIC3 Channel, I wrote an .asm but it
+doesn't work, I don't know what's wrong?
+
+I need your help.
+
+Thanks in advance.
+
+Said.
+
+Here is the .asm program:
+
+
+#include "c:\pcode\include\6811regs.asm"
+* program equates
+
+* variables
+
+        ORG     MAIN_START
+
+variable_width3     FDB     0
+
+variable_frst3      FDB     0
+
+subroutine_initialize_module:
+
+#include "c:\pcode\include\ldxibase.asm"
+* X now has base pointer to interrupt vectors ($FF00 or $BF00)
+
+        LDD     #ic3Int
+        STD     TIC3INT,X
+
+        LDX     #BASE
+
+
+	  BSET	TCTL2,X %00000001	/* Interrupts TIC3,TIC2 rising edge*/
+	  BSET	TFLG1,X %00000001	/* Clear IC3,IC2 Flags */
+	  BSET	TMSK1,X %00000001	/* Clear Mask For Interrupt */
+
+
+        RTS
+
+
+
+
+
+ic3Int:
+
+	BRSET TCTL2,X %00000001 second
+	BSET  TCTL2,X %00000001
+	LDD TIC3,X
+	SUBD variable_frst3
+	STD  variable_width3
+	LDX	#BASE
+	BSET	TFLG1,X %00000001
+	RTI
+
+second
+	BSET TCTL2,X %00000010
+	LDD TIC3,X
+	STD variable_frst3
+
+	LDX	#BASE
+	BSET	TFLG1,X %00000001
+	RTI
+

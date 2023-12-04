@@ -1,0 +1,155 @@
+Received: from smtp6.jps.net (smtp6.jps.net [209.63.224.103])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id RAA30881
+	for <handyboard@media.mit.edu>; Sat, 28 Aug 1999 17:50:10 -0400 (EDT)
+Received: from iname.com (209-142-38-150.stk.jps.net [209.142.38.150])
+	by smtp6.jps.net (8.9.3/8.9.0) with ESMTP id OAA01594;
+	Sat, 28 Aug 1999 14:50:06 -0700 (PDT)
+Message-Id: <37C8598C.BDF85487@iname.com>
+Date: Sat, 28 Aug 1999 14:50:04 -0700
+From: Nick Taylor <ntaylor@iname.com>
+X-Mailer: Mozilla 4.6 [en] (Win98; U)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Cc: Jose Luis <hal9000@cvtci.com.ar>
+Subject: Re: Problems with analog ports 24-27
+References: <004501bef0ff$a9b39d40$b147a8c0@default> <37C7655F.8061D4D5@iname.com> <37C78BC8.8928F91E@iname.com> <004501bef15c$622304e0$9047a8c0@default> <37C7F127.23D302E0@iname.com> <000001bef177$eef3a620$0e1920c8@default>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Mime-Autoconverted: from 8bit to quoted-printable by aleve.media.mit.edu id RAA30881
+
+Hi Jos=E9 Luis,
+      Not loading explego.icb has another benefit for you ... the
+CPU is relieved of polling the LEGO inputs 250 times per second.
+A nice reduction in overhead.
+ - Nick -
+
+Jose Luis wrote:
+>=20
+> Hi Nick,
+>=20
+>             At this moment I have no use for the lego inputs, so I will=
+ no
+> longer load the explego.icb to avoid the problem. Thank You for all you=
+r
+> help..
+>=20
+>             Jos=E9 Luis
+>=20
+> ----- Original Message -----
+> From: Nick Taylor <ntaylor@iname.com>
+> To: <handyboard@media.mit.edu>
+> Cc: <hal9000@cvtci.com.ar>
+> Sent: Saturday, August 28, 1999 11:24 AM
+> Subject: Problems with analog ports 24-27
+>=20
+> > Hello Jos=E9 Luis,
+> >
+> > It looks as though we must sacrifice analog ports 24-27 to be able to
+> > use the LEGO inputs.  I frequently use the LEGO ports, but have never
+> > needed to use analog 24-27, so it's an easy choice for me.  Maybe
+> > someone in the group has a fix for this.
+> >
+> > Have fun,
+> >  - Nick -
+> >
+> > Jose Luis wrote:
+> > >
+> > > Hi Nick,
+> > >
+> > > Thank You for your help, I have unloaded the explego.icb and no mor=
+e
+> > > problems. Now I will continue to see if I can put at work the LM35 =
+temp
+> > > sensor, is supposed that it must work on the Exp-Board analogs, but=
+ I
+> have
+> > > not luck yet , I have the same results that in the HB analogs. Than=
+k You
+> > > Again.
+> > >
+> > >                         Jos=E9 Luis
+> > >
+> > > ----- Original Message -----
+> > > From: Nick Taylor <ntaylor@iname.com>
+> > > To: <hal9000@cvtci.com.ar>
+> > > Cc: <fredm@media.mit.edu>
+> > > Sent: Saturday, August 28, 1999 4:12 AM
+> > > Subject: Re: exp. board analogs
+> > >
+> > > > Hi Jos=E9 Luis,
+> > > >
+> > > > I put the 'scope on the problem ... and here's what I found:
+> > > >
+> > > > Analogs 24-27 have a 1ms pulse at 250Hz which is a feedthrough fr=
+om
+> > > > the LEGO ports which share the same analog line on the HandyBoard.
+> > > >
+> > > > There is also an erratic 1ms or less pulse which appears only on
+> > > > the 24-27 ports that are being sampled by the software.  It is
+> > > > when these pulses appear that the analog reading goes to 255.
+> > > >
+> > > > The LEGO ports operate properly and don't seem to be affected
+> > > > by the stray sampling pulses.
+> > > >
+> > > > When explego.icb is unloaded the instability goes away.
+> > > >
+> > > > I think we need Dr. Martin's help on this.
+> > > >
+> > > >  - Nick -
+> > > >
+> > > > Nick Taylor wrote:
+> > > > >
+> > > > > Hello Jos=E9 Luis,
+> > > > >
+> > > > > I tried your test code and had the same results.  Next I connec=
+ted
+> > > > > the analog ports to the wiper of a 10k pot going from ground to=
+ +5V.
+> > > > > The readings were stable on ports 16-23, but 24-27 jumped betwe=
+en
+> > > > > the appropriate reading and 255.  This was done on an older HB =
+and
+> > > > > exp-board.  I next tried it on my HB and exp-board that arrived=
+ just
+> > > > > today from Gleason Research and had exactly the same results.  =
+At
+> > > > > this point I haven't done any further testing ... but will in t=
+he
+> > > > > morning.
+> > > > >
+> > > > >  - Nick -
+> > > > >
+> > > > > Jose Luis wrote:
+> > > > > >
+> > > > > > I am having some problems reading Exp-Board analog port, port=
+s 16
+> to
+> > > 23
+> > > > > > seems OK, but ports 24 to 27 (I have not tested the lego port=
+s
+> yet)
+> > > give me
+> > > > > > variable readings, to make a probe i have used this simple co=
+de:
+> > > > > >
+> > > > > > void main(void)
+> > > > > > {
+> > > > > > while(1){
+> > > > > > printf("\n20: %d 24: %d",analog(20),analog(24));
+> > > > > > sleep(0.4);
+> > > > > > }
+> > > > > > }
+> > > > > >
+> > > > > > and i have a static reading of 252 for port 20, and for the p=
+ort
+> 24 I
+> > > have a
+> > > > > > variable reading, going from 251 to 255.
+> > > > > >
+> > > > > > Someone can help?.
+> > > > > >
+> > > > > >                     Thank You
+> > > > > >
+> > > > > >                                         Jos=E9 Luis
+

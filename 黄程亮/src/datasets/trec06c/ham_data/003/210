@@ -1,0 +1,33 @@
+Received: by colossus.cse.psu.edu id <78361>; Wed, 12 Jun 1996 14:03:30 -0400
+Received: from plan9.cs.york.ac.uk ([144.32.33.120]) by colossus.cse.psu.edu with SMTP id <78368>; Wed, 12 Jun 1996 14:02:41 -0400
+From:	forsyth@plan9.cs.york.ac.uk
+To:	9fans@cs.psu.edu
+Date:	Wed, 12 Jun 1996 08:53:05 -0400
+subject: bug in aux/listen
+Message-Id: <96Jun12.140241edt.78368@colossus.cse.psu.edu>
+Sender: owner-9fans
+Precedence: bulk
+Reply-To: 9fans
+
+aux/listen does an rfork sharing memory to create the listener for
+each service.  that also ensures that
+	Subsequent forks by the parent will then
+	propagate the shared data and bss between children.
+	[rfork(2)]
+aux/listen later forks a process to handle each incoming call.
+that doesn't specify RFMEM, but is still sharing memory.
+perhaps that was expected, but in any case, the later becomenone()
+calls newns, which uses bio to read /lib/namespace, and malloc
+is called, but the libc.h version doesn't expect to share memory;
+mayhem ensues. there are safe versions of malloc (for instance in /sys/src/cmd/ndb), or
+one could rewrite listen in Alef, but for now it seems easier just
+to be a bit less efficient.  listen doesn't seem to rely on sharing memory.
+
+forse% diff $home/cd/cmd/aux/listen.c /sys/src/cmd/aux/listen.c
+100c100
+< 		switch(rfork(RFFDG|RFPROC|RFMEM)){
+---
+> 		switch(rfork(RFFDG|RFPROC)){ /* had RFMEM */
+
+
+

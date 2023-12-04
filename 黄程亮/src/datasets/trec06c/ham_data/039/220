@@ -1,0 +1,98 @@
+Received: from mercury.earthlink.net (mercury.earthlink.net [207.217.91.200])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id TAA14872
+	for <handyboard@media.mit.edu>; Fri, 19 Mar 1999 19:57:01 -0500 (EST)
+Received: from siberia (siberia.it.earthlink.net [207.217.88.20])
+	by mercury.earthlink.net (8.8.5/8.8.5) with SMTP id QAA01913;
+	Fri, 19 Mar 1999 16:56:55 -0800 (PST)
+Sender: philippi@mercury.earthlink.net
+Message-Id: <36F2F120.4ECE@earthlink.net>
+Date: Fri, 19 Mar 1999 16:51:44 -0800
+From: Andre Philippi <philippi@earthlink.net>
+Organization: Earthlink Network, Inc.
+X-Mailer: Mozilla 3.01 (X11; I; SunOS 5.4 sun4m)
+Mime-Version: 1.0
+Newsgroups: comp.lang.tcl,comp.robotics.misc
+To: philippi@earthlink.net
+Cc: Scott Redman <redman@scriptics.com>, support@scriptics.com,
+        info@seetron.com, handyboard@media.mit.edu, stamps@parallaxinc.com,
+        dave@jetcafe.org
+Subject: Help with Serial Ports, Please !!!
+References: <36D9912C.653F41B6@preferred.com> <36e5ded2$0$222@nntp1.ba.best.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hello,
+
+I'm trying to port some working Qbasic code to Tcl8.08 (NT4.0),
+so I can embed it into the tcl-httpd, and make a robotic application
+controllable from the web (with the Tcl plug-in), but I'm having a hard
+time configuring the serial port under Tcl...
+
+Could you help me, please? 
+
+The Qbasic and the Tcl code are verty short, and follow bellow...
+
+To help debugging, I have an "RS-232 Mini-Tester" (from Radio Shack)
+attached to the serial port, so I can see (some) of what's going on...
+On the tester, there are several LEDs that can become red, green, or
+clear (off)... The Mini-Tester has LEDs for: TD,RTS,DSR,CD,RD,CTS and
+DTR.
+
+Under the QBASIC code below; on standby; the TD led is red,
+the RTS and DTR leds are green, and the others are clear...
+When the Qbasic program runs, RTS flashes from green to red (for
+a second), then back to green; every other led remain the same, 
+and then the servo moves perfectly fine :)
+
+Under the Tcl code below; on standby;  the TD, RTS and DTR leds
+are red, and all of the other leds are clear...
+When the Tcl code runs, the TD, RTS and DTR leds flash from
+red to green (for a second), then back to red; every other led
+remains the same, and nothing happens with the servo, meaning
+failure... :(
+
+Does anyone here know what is going on? 
+
+I suspect it has something to do with the CD0,CS0,DS0 and OP0
+arguments of the OPEN statement on the Qbasic code, because
+I removed the above mentioned arguments from the Qbasic code, 
+and the program didn't work anymore... But I neither know what
+those arguments do, nor how to port them to Tcl...
+
+Any help would be appreciated,
+
+Thank you in advance,
+
+Andre Philippi.
+
+#-------------------- serial.tcl --------------------#
+
+set device	{COM2}
+set sync	{255}
+set servo	{0}
+set position	{0}
+
+set fd [open $device {WRONLY}]
+fconfigure $fd -mode 9600,N,8,1 -buffering none
+
+puts -nonewline $fd [format {%c} $sync]
+puts -nonewline $fd [format {%c} $servo]
+puts -nonewline $fd [format {%c} $position]
+
+#----------------------------------------------------#
+
+
+#-------------------- serial.bas --------------------#
+
+sync = 255
+servo = 0
+position = 0
+
+OPEN "com2:9600,N,8,1,CD0,CS0,DS0,OP0" FOR OUTPUT AS #1
+
+PRINT #1, CHR$(sync);
+PRINT #1, CHR$(servo);
+PRINT #1, CHR$(position);
+
+#----------------------------------------------------#
+

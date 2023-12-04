@@ -1,0 +1,96 @@
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2U2slY27690
+	for <egs+summary@cs.cornell.edu>; Wed, 29 Mar 2006 21:54:47 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id D01C65325F; Wed, 29 Mar 2006 18:54:40 -0800 (PST)
+Date: Wed, 29 Mar 2006 18:54:40 -0800
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 17
+Message-ID: <20060330025440.GA28672@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+
+These three papers all examine the problem of distributing data from
+one node to many nodes, while trying to maximize the speed that data
+is distributed at.  The naive solution to this is simply to have the
+source send the data to each receiver, but this is horribly
+inefficient.  Many packets containing the exact same data will travel
+over the same links.  For some time, there have been proposals to set
+up IP multicasting, where this functionality - sending from one node to
+many nodes - would be built into the Internet.  However, this approach
+has several problems, and is unlikely that IP multicast will be
+running on the entire Internet in the near future.  As a result, a
+variety of systems for creating overlay networks have been developed.
+The basic forms for these are distribution trees, where the nodes
+assemble in a tree with the data source at the root, and distribution
+meshes, where nodes assemble into a mesh, and then create a tree on
+top of that.
+
+Bullet is a system which extends the concept of a distribution tree,
+creating a distribution mesh.  It starts off with a tree architecture,
+but extends this by having nodes obtain some of their data from points
+in the tree other than their immediate parent, depending on available
+bandwidth.  To accomplish this, the data to be broadcast is broken up
+into disjoint sets.  The root node sends some of these sets to each of
+its children, and they do the same for their children.  A node then
+obtains the missing sets from other points in the tree.  To find
+locations which have those missing sets, Bullet uses RanSub, a
+scalable scheme which provides nodes in a tree with information about
+random subsets of participating nodes. Experimental data shows that
+Bullet performs at least as well as the optimal tree distribution
+system, and may achieve up to a 100% performance increase on highly
+constrained networks.  Because a node obtains data from multiple peers
+as well as its direct parent, the failure of a single node does not
+cause a temporary outage for all of its children.
+
+SplitStream tries to distribute the workload among all nodes in the
+network evenly, unlike tree-based multicast protocols.  SplitStream
+does this by splitting the data stream up into k stripes, similar to
+the disjoint sets in Bullet, although the stripes can overlap to allow
+for error correction, or the loss of a single stripe.  Each of these
+stripes is multicast to all the nodes in the network, using a normal
+tree-based multicast structure.  Each node in the network will be an
+interior node in one of these trees, and a leaf node in all the
+others.  This approach splits the load for ingoing and outgoing
+bandwidth evenly among all the nodes in the network.  However, it
+requires the construction of several multicast trees, which
+SplitStream accomplishes using Scribe.  All the nodes share the
+underlying Pastry network, and a separate Scribe tree is constructed
+for each of the k stripes.  Setting k=2^b, and using some other
+features of Scribe and Pastry, allows for efficient construction of
+multiple trees.  Because it places an even load on each node in the
+network, performance in SplitStream may suffer if a reasonable portion
+of the network has a slow network connection.  The Pastry network
+underneath Scribe may also slow SplitStream down, since it does not
+minimize link latency, or maximize link bandwidth.
+
+BitTorrent focuses exclusively on file downloads, while Bullet and
+SplitStream provided a more general multicast framework.  Each file
+distributed through BitTorrent is broken up into fixed-size chunks,
+and requires a tracker.  That tracker keeps a list of which BitTorrent
+clients have downloaded some or all of the file, and which pieces they
+have.  Clients who wish to obtain the file download all the chunks
+they don't have from anyone who already has them.  In order to prevent
+this from overloading the network, and in an attempt to avoid the free
+rider problem, BitTorrent clients which are still in the process of
+downloading a file only upload to a couple of their peers; those peers
+which are providing the best current download rates are preferred.
+
+All three of these networks improve their performance by splitting the
+data to be transmitted into multiple fragments.  By offloading a
+relatively small portion of the work to a central tracker, BitTorrent
+does not need to create an overlay network, which will eliminate some
+overhead.  However, attempts to use BitTorrent for real-time streaming
+applications, such as TV broadcasts or conferencing, would have some
+problems.  BitTorrent assumes that the data to be passed around is
+stored on the computer, and can be re-uploaded at any point in time.
+In addition, the lack of a well-defined overlay networks makes it
+difficult broadcast data to everyone who wishes to have it in a timely
+fashion, since nodes are constantly choking each other off, and
+switching the source of their data.
+
+-- Victoria Krafft
+

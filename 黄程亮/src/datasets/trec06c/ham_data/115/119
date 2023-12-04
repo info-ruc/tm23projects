@@ -1,0 +1,84 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LHwet13333
+	for <egs@unix.cucs>; Tue, 21 Feb 2006 12:58:40 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.28]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 21 Feb 2006 12:58:40 -0500
+Received: from [128.84.223.148] ([128.84.223.148]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 21 Feb 2006 12:58:40 -0500
+Message-ID: <43FB54CC.9090702@cs.cornell.edu>
+Date: Tue, 21 Feb 2006 12:58:36 -0500
+From: Tudor Marian <tudorm@cs.cornell.edu>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 8
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 21 Feb 2006 17:58:40.0162 (UTC) FILETIME=[72338020:01C63710]
+
+<The Sybil Attack>
+
+The paper presents a type of attack (Sybil) upon large p2p systems, and 
+argues that in the absence of a centralized authority this type of 
+attacks are always possible. A Sybil attack unfolds when some entity is 
+capable of forging multiple identities, thus the rest of the peers are 
+oblivious to the fact that a single entity is chosen instead of multiple 
+distinct identities during the protocol. Such attacks are always 
+possible since an entity can use all its available resources in 
+projecting the image of several valid identities, and thus "convince" 
+other entities. Moreover, if entities are not validated simultaneously, 
+a large number of distinct identities can be presented, and thus the 
+malicious node may grow its identity numbers indefinitely. Without a 
+central identification authority, p2p systems are vulnerable to such 
+attacks, therefore we see a tradeoff between scale and security on one 
+side and heterogeneity and security on the other size - the latter is 
+due to the fact that if all entities have virtually identical resources 
+Sybil attacks are less disruptive.
+
+<Defending against Eclipse attacks in overlay networks>
+
+The paper discusses and proposes a solution to the Eclipse attacks on 
+overlay networks. More general then the Sybil ones, the Eclipse attack 
+is initiated by some attacker that controls a significant fraction of 
+the nodes in the neighborhood of correct nodes, thus "eclipsing" the 
+correct ones and preventing them to take part in the protocol. The 
+defense against such an attack proposed by the authors consists of 
+limiting the indegree and outdegree of the nodes. The reason behind this 
+is that attacker nodes have a larger indegree since more nodes connect 
+to the faulty ones as opposed to the eclipsed ones. Secondly, imposing 
+just an indegree limit brings upon the possibility of a different 
+attack, namely malicious nodes may consume all the incoming slots of 
+correct nodes, therefore the limit must be imposed on the outdegree as 
+well. The bounds are enforced by an auditing scheme, when the challenger 
+is anonymous, thus forcing the challenged to respond correctly.
+
+The downfall is that in structured networks an attacker can "guess" with 
+high accuracy where the challenge originated from, therefore the 
+auditing might be unsuccessful.
+
+<Secure routing for structured peer-to-peer overlay networks>
+
+The paper considers the general problem of security and how one can 
+address it in the context of p2p overlays. First they abstract out the 
+overlay networks and their properties such that there is no particular 
+system they have in mind, even though their implementation was done on 
+Pastry. They describe a series of attacks that can be performed and 
+identify secure routing as the main building blocks that secure overlays 
+can take advantage of. Secure routing is split into three subproblems: 
+secure node ID assignment, secure routing table maintenance, and secure 
+message forwarding. Secure node ID assignment requires the existence of 
+a centralized CA (as we have seen proved by the first paper). Secure 
+routing table maintenance is achieved by imposing stringent constrains 
+on the routing table entries, and the fact that nodeID's have been 
+assigned securely. Secure forwarding is a 2-phase operation, first a 
+fault is detected - by means of a timeout or a failure test upon the 
+replica roots, and second, if there was a failure then the message is 
+resent but on multiple paths, hoping they are disjoint and thus at least 
+one reaching the destination with high probability.
+
+The experimental evaluation did not include the resource cost of the 
+secure methods.
+
+Tudor
+
+

@@ -1,0 +1,99 @@
+Received: from smtp1.erols.com (smtp1.erols.com [207.172.3.234])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id RAA00333
+	for <handyboard@media.mit.edu>; Wed, 2 Dec 1998 17:19:17 -0500 (EST)
+Received: from hp-customer (207-172-43-152.s152.tnt22.brd.erols.com [207.172.43.152])
+	by smtp1.erols.com (8.8.8/8.8.5) with SMTP id RAA18017;
+	Wed, 2 Dec 1998 17:18:44 -0500 (EST)
+Message-Id: <3665BC76.10C9@mindless.com>
+Date: Wed, 02 Dec 1998 17:17:26 -0500
+From: Chris Johnson <chrisj@mindless.com>
+Reply-To: chrisj@mindless.com
+X-Mailer: Mozilla 3.01 (Win95; I)
+Mime-Version: 1.0
+To: Shiva Sinha <sinha@wam.umd.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: motor code questions
+References: <Pine.GSO.3.95q.981202093535.10432A-100000@rac8.wam.umd.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+The handy board is so user-friendly you dont have to go to all that
+trouble. you control the motor ports using the HB library functions fd,
+bk, off, alloff, and motor. fd(int m) and bk(int m) simply turn the
+specified motor on (forward or reverse) at full power.  off(int m)
+obviously turns motor port m off.  alloff() turns them all off (!) and
+the motor(int m, int p) turns motor m on at power level p, where p is
+between -100 (full reverse, and 100, full forward); however there are
+only 8 real power steps.  because the HB library has already defined
+functions to use those ports, your code probably interferes with them. 
+i based my first hb robot on the code from the same book, simply taling
+out all those functions that the HB already includes in the library.
+
+hope that makes things simpler.
+
+-Chris Johnson
+Shiva Sinha wrote:
+> 
+> Hi,
+> 
+> I got my Handyboard up and going and was trying the following code for
+> driving my motors. (Figure I would try known code before forking out on my
+> own). The code I got from the 'Inspiration to implemntation' book. Anyways
+> it does not seem to drive the motors (no LEDs lighting), and I was
+> wondering if any one knows of any problems with the code. I've looked it
+> over and it seems pretty reasonable.
+> 
+> Thanks in advance,
+> Shiva Sinha
+> ----------------------------------------------
+> int write_port (int port, int value, int mask)
+> { poke(port,(value & mask) | (peek(port) & ~mask)); }
+> 
+> void motor_cmd(int l_ena, int l_dir, int r_ena, int r_dir)  {
+> write_port(port_a, (l_ena & m_mask_l) | (r_ena & m_mask_r), m_mask);
+>    write_port(port_d, (l_dir & m_mask_l) | (r_dir & m_mask_r), m_mask);  }
+> 
+> void move(int operation)  {
+>       if (operation == STOP)
+>          motor_cmd(off_,0,off_,0);
+>       else if (operation == FORWARD)
+>          motor_cmd(on,fwd,on,fwd);
+>       else if (operation == BACKWARD)
+>          motor_cmd(on,bkw,on,bkw);
+>       else if (operation == LEFT_TURN)
+>          motor_cmd(on,bkw,on,fwd);
+>       else if (operation == RIGHT_TURN)
+>          motor_cmd(on,fwd,on,bkw);
+> }
+
+-- 
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: PGP for Personal Privacy 5.0
+
+mQGiBDR/OMoRBADeAqHm3gnMduYuUW2nFQGomhAl9+pYsPB9DSjMN2wF2M1aG5U9
+gTGiMx7WcAMa6nU3G/mw9f8EHxUJ/fpIkDUuYB4v9utCoLLScDaww5iUAFa4yMvd
+tdItU4FIWdrCfiV0FlbWUylLjgKt3ikmsN/AaTpZzVwJoh+BX8YQNJQUbwCg//kZ
+xS2gSwQ1WZ/AO7vHx3Vfn4ED/iE2RuYvl5mqZBOGX3AcLr2HNYQYC2kHghYbik7T
+84GoWrtFNYshj9DyhIkJjOUJqcFHAlZidXUStonuJst3R9Ch+6aaM4+3Os8/NmI7
+/nHyxwtBIoh5w0MWqf1HdTIn8qAJQtr0scnFQ4AgglVAfVjULIQuKhNHZongVx4V
+KQfMA/9m+Kd094nbfODjw2odMCO49+Vbw81XwHw09PGeP5BKuwuhQ5hOQ1Wb2acP
++6I1kp4wsa76oDGDstELG7srubJUeDCJlCS1nj8Sfjt3HfxG/8XAC/rE6O21xB/o
+3kisKOGD3048SR2kgnyF/3H+LeQT0W5w9r+yfo+ouKyXLTCArLQjQ2hyaXMgSm9o
+bnNvbiA8Y2hyaXNqQG1pbmRsZXNzLmNvbT6JAEsEEBECAAsFAjR/OMoECwMBAgAK
+CRDuxvTDCzVNzWHzAJ4yE3SsVevv4L5scUsTebt2fCoIOgCgszvlEQo3ldx99uWC
+GC77VfYGjX+5Ag0ENH84yxAIAPZCV7cIfwgXcqK61qlC8wXo+VMROU+28W65Szgg
+2gGnVqMU6Y9AVfPQB8bLQ6mUrfdMZIZJ+AyDvWXpF9Sh01D49Vlf3HZSTz09jdvO
+meFXklnN/biudE/F/Ha8g8VHMGHOfMlm/xX5u/2RXscBqtNbno2gpXI61Brwv0YA
+WCvl9Ij9WE5J280gtJ3kkQc2azNsOA1FHQ98iLMcfFstjvbzySPAQ/ClWxiNjrtV
+jLhdONM0/XwXV0OjHRhs3jMhLLUq/zzhsSlAGBGNfISnCnLWhsQDGcgHKXrKlQzZ
+lp+r0ApQmwJG0wg9ZqRdQZ+cfL2JSyIZJrqrol7DVekyCzsAAgIIANpJiJRBxPGs
+bayiJsz46ruKs/mNUX1Ol4RqoAjVPXNmXo0bfaZffFAa/1f7Ds3yY40AWXHrdeZW
+us82amdKhQ0IUnmV0uJwDCqeEqBVysQ+iAyKQJdZfMKjVAe9lxyw+8FFlpCLYLyi
+LC8T8ktRq90BfrRvBp84c0wpvIGvZzUfp3fTwhRUhS4qYyV9rXosjwK5tLDfMDue
+t5ND1qa1MivuMtUDtPVrjhJMIuN6NR6A3MVNDQpFuGRydzLi1q41XDb0TkSYrJvV
+zeB/dIXfAJXqCHNLPvqZ4E9peL8Ao6dlQB9JhYW11tIlm8fEHhUdKIe10SIQWg8L
+UrqBqjnkl02JAD8DBRg0fzjL7sb0wws1Tc0RAq6YAJ9rA24deVqquBOPJjO+7csg
+EbtyggCgoXnQvI1x2tM/LRgt98+YeKKqeR0=
+=xN4/
+-----END PGP PUBLIC KEY BLOCK-----
+

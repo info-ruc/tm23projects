@@ -1,0 +1,116 @@
+Received: by cheltenham.cs.arizona.edu; Mon, 19 Dec 1994 14:08:59 MST
+Date: Mon, 19 Dec 1994 14:08:33 +0700
+From: swampler@noao.edu
+Message-Id: <9412192108.AA04964@orpheus.gemini.edu>
+Subject: Re: Backtracking in Icon
+To: icon-group@cs.arizona.edu
+Content-Length: 4346
+Errors-To: icon-group-errors@cs.arizona.edu
+
+Brandon Allbery wrote:
+
+>> 
+>> I think the problem with general use of backtracking is that, while
+>> convenient, it's less efficient than improved algorithms are for any given
+>> task.  (Compare recursive vs. nonrecursive algorithms as another example.)
+>> Nevertheless, when it's needed (no readily available non-backtracking
+>> algorithm available in a timely fashion) backtracking is very useful.
+>> 
+
+Undoubtably true.  However, if the speed of execution isn't particularly
+important (for example, if the program is interactive and likely to
+be dominated by the 'idle user loop'...), then backtracking solutions
+can be easy to implement *if* one is thinking that way.
+
+The following code fragment is one that Ehud mentioned as an example of
+backtracking.  The original author is Dan Higdon (are you out there, Dan?),
+way back in '88.  I just added some additional features needed by the
+university I was at during that period.
+
+It's the heart of a course scheduling application to let students work
+out schedules that suit their needs in an environment where there might
+be 10's and 100's of sections of some courses.
+
+The algorithm is a bit daunting if you're not used to (1) Icon, (2) backtracking
+and (3) combining recursion with backtracking, but I think it's pretty
+straightforward given those constraints.  It takes out a class, schedules
+the remaining classes (that's the recursion), then tries to find a section
+of the 'deleted' class that fits in the student's schedule and meets a
+series of constraints {for example, the campus is 1.5 miles long, north to
+south (with a green belt in the middle), so the routine nonConflicting()
+includes a check for how much time there is between classes at opposite
+ends of campus.  It also checks to see if there is room in the class, etc.
+
+If the class cannot be scheduled or the schedule is rejected by the student
+running the program, then the algorithm backtracks to try another section
+of the previous class.  (and so on...)  Oh yes, for classes with required
+labs, it automatically adds those to the schedule as well.
+
+Enough of that, here's the heart of the algorithm:
+
+--------------------------------------------------------------------------------
+# In order to preserve the backtracking idea, schedule is
+# a generator which generates the possible schedules at
+# that level of recursion.
+#
+# clist is a list of class names
+#
+# The algorithm is as follows:
+# If clist is null, fail
+# otherwise,
+#    Generate every remaining schedule and do the following with each:
+#       get the class name
+#       Generate every non-null and unconflicting time for each class and
+#          insert it into the set
+#          suspend this schedule, then delete the entry
+#
+procedure schedule (cs)
+   local t, schedl, class, tlab
+ 
+   if *cs = 0 then return cs    # end the recursion, the set of classes is done
+ 
+   delete(cs,class := ?cs)	# randomly pick out a class...
+                                #   then schedule all the others
+				#    before fitting this one in.
+   every schedl := schedule(cs) &
+         freespace(t := !classdb[class]) & 
+         nonConflicting(t, schedl) &
+         (/t.lab | nonConflicting(tlab <- !\t.lab,schedl))
+      do {                     # Got it!  Put it (and lab) into schedule
+         suspend set([t, \tlab] | [t])\1 ++ schedl
+         }
+end
+-------------------------------------------------------------------------------
+
+If you've lasted this long, give the program a try...telnet to
+
+    pine.cse.nau.edu
+
+and login in as 'sch'. You'll need an ANSI compatible terminal
+to see the schedules themselves. 
+
+Try the command 'help', then (say) 'help new'.
+You can get a list of classes in a department by using the 'courses'
+command, e.g.
+
+    courses cse
+
+will list all the courses offered by the Computer Science and Engineering
+department.
+
+    courses cse4
+
+will list all the 400-level (senior) courses.  (So Icon devotees will
+immediately infer that match() is used to look up courses, and yes,
+
+    courses ""
+
+will list every course offered at the university (I hope you have a *fast*
+connection!.)  Do the school a favor and don't print out any schedules!
+
+--
+Steve Wampler - swampler@gemini.edu [Gemini 8m Telescopes Project (under AURA)]
+--
+The Gods that were smiling when you were born are laughing now.
+			          -- found in a fortune cookie
+

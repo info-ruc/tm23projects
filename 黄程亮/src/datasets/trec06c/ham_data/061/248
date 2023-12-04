@@ -1,0 +1,36 @@
+Received: from ar.aichi-u.ac.jp ([202.250.160.73])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id FAA24598
+	for <9fans@cse.psu.edu>; Mon, 21 Feb 2000 05:14:21 -0500 (EST)
+From: arisawa@ar.aichi-u.ac.jp
+Message-Id: <200002211014.FAA24598@cse.psu.edu>
+To: 9fans@cse.psu.edu
+Date: Mon, 21 Feb 2000 18:05:04 +0900
+Subject: [9fans] Re: b.com from fd
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+Thank you, Russ and Nigel,
+
+boot.exe works fine. 
+It can surely load 9pc*.
+
+My goal is to construct 9fs on the PC with K6-2/350.
+9pcfs does not recognize dos on FD.
+
+I first tried to adjust my clock and replaced the data:
+	{ 5,	8,	23,	"AMD-K6 3D", },	/* guesswork */
+	{ 5,	9,	23,	"AMD-K6 3D+", },/* guesswork */
+in /sys/src/9/pc/clock.c and /sys/src/fs/pc/8253.c
+by
+	{ 5,	8,	11,	"AMD-K6 3D", },	/* guesswork */
+	{ 5,	9,	11,	"AMD-K6 3D+", },/* guesswork */
+
+It seems that the values work fine for 9pc and 9pcdisk, and
+probably for other 9pccpu*.
+However the CPU speed value shown by 9fs is unsteady.
+It shows: 20MHz or other values.
+
+Kenji Arisawa
+E-mail: arisawa@aichi-u.ac.jp
+

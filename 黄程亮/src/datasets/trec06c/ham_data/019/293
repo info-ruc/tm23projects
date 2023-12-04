@@ -1,0 +1,100 @@
+Received: from alpha.delta.edu (alpha.delta.edu [161.133.129.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id SAA19060
+	for <handyboard@media.mit.edu>; Tue, 7 Jul 1998 18:18:18 -0400 (EDT)
+Received: from pm144-04.dialip.mich.net by alpha.delta.edu; (5.65v3.0/1.1.8.2/06Jan97-0932AM)
+	id AA14295; Tue, 7 Jul 1998 18:22:16 -0400
+Received: from kott.my.domain (dakott@kott.my.domain [192.168.0.1])
+	by kott.my.domain (8.8.8/8.8.5) with SMTP id JAA00340;
+	Sat, 4 Jul 1998 09:16:00 -0400 (EDT)
+Date: Sat, 4 Jul 1998 09:15:59 -0400 (EDT)
+From: David Kott <dakott@alpha.delta.edu>
+Sender: dakott@kott.my.domain
+To: Terry Garthright <669@worldnet.att.net>
+Cc: handyboard@media.mit.edu
+Subject: Re: check_sensors.c
+In-Reply-To: <000b01bda6a0$da300440$74d1410c@840141024worldnet.att.net>
+Message-Id: <Pine.BSF.3.96.980704090246.241A-100000@kott.my.domain>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Fri, 3 Jul 1998, Terry Garthright wrote:
+
+> 
+> /* GLOBALS*/
+> 
+> int num_sensors =6 /* put the number of analog sensor inputs you want*/
+
+All C declarations must be terminated with a semicolon.  Try :
+
+int num_sensors = 6;
+                   ^
+
+> 
+> void main()
+> 
+> {
+> 
+> int sensors[num_sensors];
+> 
+> int counter;
+> 
+> while
+> 
+
+is this legal syntax for "while"?  Try:
+
+while (1) 
+
+> {
+> 
+> counter = 0;
+> 
+> while (counter < num_sensors)
+> 
+> {
+> 
+> sensors[counter] = analog(counter);
+> 
+> printf("%d",sensors [counter] );
+> 
+> counter++;
+> 
+> }
+> 
+> printf("/n");
+> 
+> sleep(.5);
+> 
+> }
+> 
+> }
+> 
+> 
+
+If you just wanted to print out the analog sensor value, do you really
+want to dump them into an array?  
+
+void main() {
+int iIndex;
+
+   while (1) {
+     for (iIndex=0; iIndex <= 6 ; iIndex++) { 
+        printf("%d",analog(iIndex));
+     }
+  printf("\n");
+  msleep(500L);
+} 
+
+
+I think my IC skills are a bit rusty;  there may be errors in my
+implementation.
+
+								-d
+The box said "Requires Windows 95/NT or better"...
+                                                 So I got Unix.
+
+Free the Source.  Free your Computer... http://www.FreeBSD.org
+                                          http://www.NetBSD.org
+                                            http://www.OpenBSD.org
+
+

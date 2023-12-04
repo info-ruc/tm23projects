@@ -1,0 +1,243 @@
+Received: from smtp-relay-3.sea.adobe.com (smtp-relay-3.adobe.com [192.150.22.10])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id QAA10336
+	for <tex-fonts@math.utah.edu>; Tue, 11 Jun 2002 16:43:51 -0600 (MDT)
+Received: from inner-relay-3.corp.adobe.com (inner-relay-3 [153.32.251.51])
+	by smtp-relay-3.sea.adobe.com (8.12.3/8.12.3) with ESMTP id g5BMgW9C016274
+	for <tex-fonts@math.utah.edu>; Tue, 11 Jun 2002 15:42:32 -0700 (PDT)
+Received: from mailsj-v1.corp.adobe.com (mailsj-dev.corp.adobe.com [153.32.1.192])
+	by inner-relay-3.corp.adobe.com (8.12.3/8.12.3) with ESMTP id g5BMeQQG001143
+	for <tex-fonts@math.utah.edu>; Tue, 11 Jun 2002 15:40:27 -0700 (PDT)
+Received: from adobe.com ([153.32.56.102]) by
+          mailsj-v1.corp.adobe.com (Netscape Messaging Server 4.15 v1 Jul
+          11 2001 16:32:57) with ESMTP id GXKCG700.BWX; Tue, 11 Jun 2002
+          15:43:19 -0700 
+Message-ID: <3D067DAE.50505@adobe.com>
+Date: Tue, 11 Jun 2002 15:46:06 -0700
+From: Eric Muller <emuller@adobe.com>
+Organization: Adobe Systems Incorporated
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.4) Gecko/20011128 Netscape6/6.2.1
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: "Berthold K.P. Horn" <bkph@ai.mit.edu>
+CC: "James H. Cloos Jr." <cloos@jhcloos.com>,
+        Markus Kuhn <Markus.Kuhn@cl.cam.ac.uk>, fonts@xfree86.org,
+        rbs@maths.uq.edu.au, Barbara Beeton <bnb@ams.org>,
+        tex-fonts@sunshine.math.utah.edu
+Subject: Re: [Fonts]Re: Adobe Glyph Names <-> Unicode 3.2 (was: Xft and  MathML)
+References: <E17Fcal-0006yH-00@wisbech.cl.cam.ac.uk> <E17Fcal-0006yH-00@wisbech.cl.cam.ac.uk> <5.1.0.14.2.20020608151402.01d1a810@mail.ai.mit.edu>
+Content-Type: multipart/alternative;
+ boundary="------------070803060900080907040809"
+
+
+--------------070803060900080907040809
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+I am not too sure how this fits in the current discussion, but here are 
+my goals for a revision of the "Unicode and glyph names" document:
+
+    * the current naming convention does not support the mapping to
+      (sequences of characters containing) supplemental characters (i.e.
+      outside the BMP). 
+    * the current document contains all sort of information beyond the
+      original goal, which was simply to provide a function from glyph
+      names to character strings. I want to come back and stick to the
+      original goal.
+    * the PUA usage implied by the naming convention is a major disaster
+      for two reasons: first, this was mostly an attempt to encode
+      glyphs (by opposition to characters), and second, this PUA usage
+      needs to be understood by far too many parties for that to happen.
+      I want to deprecate it.
+
+So the final document will be along these lines:
+
+    This document presents a algorithm to convert from glyph names to
+    sequences of Unicode characters. [more or less the current sentences
+    that explain how this is useful for e.g. ATM, a Type 1 to OpenType
+    converter.]
+
+    The algorithm is as follow:
+
+       1. drop everything after the first "."
+       2. split on "_"
+       3. convert each fragment produced by 2 to a string like this:
+             1. if the fragment is in the left column of the AGL table,
+                use the string in the right column
+             2. else, if the fragment is of the form "uni[0-9AF]*" and
+                the number of hex digits is a multiple of four,
+                interpret each group of four digits as a Unicode scalar
+                value
+             3. else, if the fragment is of the form "u[0-9A-F]*" and
+                the number of hex digits is 4, 5 or 6, interpret those
+                digits as a Unicode scalar value
+             4. else produce the empty string
+       4. concatenate the strings obtained by converting each fragment
+
+
+The revised AGL table will be a combination of the current AGL table and 
+the PUA usage we give. As a sample, it will look like:
+
+name
+sequence
+A
+U+0041
+Asmall
+U+0061
+
+...
+...
+
+
+The first entry is because the current AGL says so. The second entry is 
+because the current AGL says "Asmall -> U+F761" and the PUA usage says 
+that U+F761 decomposes to "<sc> 0061".
+
+What I am still trying to figure out is the extent of the list (i.e. 
+what names will be in it). The first observation is that the current AGL 
+names should all be there. The second observation is that given the 
+uni<code> and u<code> mechanisms, and given the huge cost and delay in 
+having the list propagated to all the implementations of the algorithm 
+(as Berthold noted), the best is to freeze the list forever after the 
+next publication. In the end, I think the best is to add to the current 
+AGL list a set of widely accepted names, e.g. those that Apple use in 
+the fonts they ship, and may be those found in common math fonts; the 
+tricky part is to determine when it's better to reissue a font with more 
+useful names, and when it's better to augment the list. There is one 
+more question about the new AGL list I have not yet figured out: should 
+it include "uniF761" (and map it to U+0061) or should we let that name 
+be handled by step 3.2 of the algorithm (and map it to U+F761).
+
+
+
+Independent of the "Unicode and glyph names" document is the set of 
+mappings published at 
+http://www.unicode.org/Public/MAPPINGS/VENDORS/ADOBE. The first thing to 
+realize is that Adobe is not the source of those mappings. I believe 
+they have originally been created by Next, for use in Display PostScript 
+applications. I may  deal with those after I am done with the "Unicode 
+and glyph names" document.
+
+Eric.
+
+
+
+
+
+--------------070803060900080907040809
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<html>
+<head>
+</head>
+<body>
+I am not too sure how this fits in the current discussion, but here are my
+goals for a revision of the "Unicode and glyph names" document:<br>
+<ul>
+  <li>the current naming convention does not support the mapping to (sequences
+of characters containing) supplemental characters (i.e. outside the BMP).&nbsp;</li>
+  <li>the current document contains all sort of information beyond the original
+goal, which was simply to provide a function from glyph names to character
+strings. I want to come back and stick to the original goal.</li>
+  <li>the PUA usage implied by the naming convention is a major disaster
+for two reasons: first, this was mostly an attempt to encode glyphs (by opposition
+to characters), and second, this PUA usage needs to be understood by far
+too many parties for that to happen. I want to deprecate it.</li>
+</ul>
+So the final document will be along these lines:<br>
+<blockquote>This document presents a algorithm to convert from glyph names
+to sequences of Unicode characters. [more or less the current sentences that
+explain how this is useful for e.g. ATM, a Type 1 to OpenType converter.]<br>
+  <br>
+The algorithm is as follow:<br>
+  <ol>
+    <li>drop everything after the first "."</li>
+    <li>split on "_"</li>
+    <li>convert each fragment produced by 2 to a string like this:</li>
+    <ol>
+      <li>if the fragment is in the left column of the AGL table, use the
+string in the right column</li>
+      <li>else, if the fragment is of the form "uni[0-9AF]*" and the number
+of hex digits is a multiple of four, interpret each group of four digits
+as a Unicode scalar value</li>
+      <li>else, if the fragment is of the form "u[0-9A-F]*" and the number
+of hex digits is 4, 5 or 6, interpret those digits as a Unicode scalar value</li>
+      <li>else produce the empty string</li>
+    </ol>
+    <li>concatenate the strings obtained by converting each fragment<br>
+    </li>
+  </ol>
+  <br>
+  </blockquote>
+The revised AGL table will be a combination of the current AGL table and
+the PUA usage we give. As a sample, it will look like:<br>
+  <br>
+  <table cellpadding="2" cellspacing="0" border="1" align="Center">
+    <tbody>
+      <tr>
+        <td valign="Top">name<br>
+        </td>
+        <td valign="Top">sequence<br>
+        </td>
+      </tr>
+      <tr>
+        <td valign="Top">A<br>
+        </td>
+        <td valign="Top">U+0041<br>
+        </td>
+      </tr>
+      <tr>
+        <td valign="Top">Asmall</td>
+        <td valign="Top">
+        <div align="Center">U+0061<br>
+        </div>
+        </td>
+      </tr>
+      <tr>
+        <td valign="Top">...<br>
+        </td>
+        <td valign="Top">...<br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+The first entry is because the current AGL says so. The second entry is because
+the current AGL says "Asmall -&gt; U+F761" and the PUA usage says that U+F761
+decomposes to "&lt;sc&gt; 0061".<br>
+  <br>
+What I am still trying to figure out is the extent of the list (i.e. what
+names will be in it). The first observation is that the current AGL names
+should all be there. The second observation is that given the uni&lt;code&gt;
+and u&lt;code&gt; mechanisms, and given the huge cost and delay in having
+the list propagated to all the implementations of the algorithm (as Berthold
+noted), the best is to freeze the list forever after the next publication.
+In the end, I think the best is to add to the current AGL list a set of widely
+accepted names, e.g. those that Apple use in the fonts they ship, and may
+be those found in common math fonts; the tricky part is to determine when
+it's better to reissue a font with more useful names, and when it's better
+to augment the list. There is one more question about the new AGL list I
+have not yet figured out: should it include "uniF761" (and map it to U+0061)
+or should we let that name be handled by step 3.2 of the algorithm (and map
+it to U+F761). <br>
+  <br>
+  <br>
+  <br>
+Independent of the "Unicode and glyph names" document is the set of mappings
+published at <a class="moz-txt-link-freetext" href="http://www.unicode.org/Public/MAPPINGS/VENDORS/ADOBE">http://www.unicode.org/Public/MAPPINGS/VENDORS/ADOBE</a>. The first
+thing to realize is that Adobe is <i>not</i> the source of those mappings.
+I believe they have originally been created by Next, for use in Display PostScript
+applications. I <i>may </i>&nbsp;deal with those after I am done with the "Unicode
+and glyph names" document.<br>
+  <br>
+Eric.<br>
+  <br>
+  <br>
+  <br>
+  <br>
+  </body>
+  </html>
+
+--------------070803060900080907040809--
+
+

@@ -1,0 +1,80 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.13.6/8.13.6) with ESMTP id k41M1rk7019401
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 1 May 2006 17:01:55 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.36) with SMTP id k41M1r73013257;
+	Mon, 1 May 2006 17:01:53 -0500 (CDT)
+Received: from ironhorse.mail.utexas.edu (ironhorse.mail.utexas.edu [128.83.32.58])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.36) with ESMTP id k41M1kX0013247
+	for <cs352-swk@lists.cc.utexas.edu>; Mon, 1 May 2006 17:01:46 -0500 (CDT)
+Received: from mail.cs.utexas.edu ([128.83.139.10])
+  by ironhorse.mail.utexas.edu with ESMTP; 01 May 2006 17:01:47 -0500
+X-IronPort-MID: 26863786
+X-SBRS: 5.5
+X-BrightmailFiltered: true
+X-Brightmail-Tracker: AAAAAQAAA+k=
+X-IronPort-AV: i="4.04,169,1144040400"; 
+   d="scan'208"; a="26863786:sNHT400454028"
+Received: from [128.83.141.72] (snipe.csres.utexas.edu [128.83.141.72])
+	(authenticated bits=0)
+	by mail.cs.utexas.edu (8.13.6/8.13.6) with ESMTP id k41M1iTh008091
+	for <cs352-swk@lists.cc.utexas.edu>; Mon, 1 May 2006 17:01:45 -0500 (CDT)
+Mime-Version: 1.0 (Apple Message framework v623)
+Content-Transfer-Encoding: 7bit
+Message-Id: <2bdcfd32aae2186a127b361f01b180fd@cs.utexas.edu>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+To: cs352-swk@lists.cc.utexas.edu
+From: Steve Keckler <skeckler@cs.utexas.edu>
+Subject: memory initialization for project
+Date: Mon, 1 May 2006 17:01:52 -0500
+X-Mailer: Apple Mail (2.623)
+Reply-To: skeckler@cs.utexas.edu
+Sender: owner-cs352-swk@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+CS352-ers,
+
+Apparently there is still some confusion on how to initialize memory at 
+the beginning of simulation: "Initialize each word (of memory) to its  
+address" in project handout #1.
+
+Comments:
+
+1) Recall that memory is byte addressable but accessed on word 
+boundaries.
+2) Do not initialize each byte of memory to its address, but instead 
+each word to its address.
+
+If you consider memory as an array 4 bytes wide (one word) and 1 Meg 
+long (4MB total), you would end up with the following after 
+initialization:
+
+Memory address    Initial Data
+----------------------------------------
+0x00000000        0x00000000
+0x00000004        0x00000004
+0x00000008        0x00000008
+0x0000000c        0x0000000c
+0x00000010        0x00000000
+0x00000014        0x00000004
+0x00000018        0x00000008
+0x0000001c        0x0000000c
+0x00000020        0x00000020
+0x00000024        0x00000024
+0x00000028        0x00000028
+0x0000002c        0x0000002c
+...
+
+SK
+
+Steve Keckler                                        Computer 
+Architecture and Technology Lab
+Associate Professor                             Tel:    (512) 471-9763
+Department of Computer Sciences   Dept:   (512) 471-7316
+1 University Station C0500                 Fax:    (512) 232-1413
+The University of Texas at Austin      E-mail:  skeckler@cs.utexas.edu
+Austin, TX 78712-0233                        
+http://www.cs.utexas.edu/users/skeckler
+
+

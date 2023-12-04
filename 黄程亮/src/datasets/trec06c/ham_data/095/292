@@ -1,0 +1,181 @@
+Received: from interval.louisiana.edu (localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id i8CKRNTk017440
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Sun, 12 Sep 2004 15:27:23 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id i8CKRMn5017439
+	for reliable_computing-outgoing; Sun, 12 Sep 2004 15:27:22 -0500 (CDT)
+Received: from fe6.cox-internet.com (fe6.cox-internet.com [66.76.2.51])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id i8CKRD1Q017435
+	for <reliable_computing@interval.louisiana.edu>; Sun, 12 Sep 2004 15:27:20 -0500 (CDT)
+Received: from Inspiron-8200 ([68.226.133.93]) by fe6.cox-internet.com
+          (InterMail vK.4.04.00.00 201-232-137 license 2c0225210a073aa8d80c3b96b8e7ebaa)
+          with SMTP id <20040912202708.YNJQ355.fe6@Inspiron-8200>;
+          Sun, 12 Sep 2004 15:27:08 -0500
+Message-Id: <2.2.32.20040912202746.00992558@pop.louisiana.edu>
+X-Sender: rbk5287@pop.louisiana.edu
+X-Mailer: Windows Eudora Pro Version 2.2 (32)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Sun, 12 Sep 2004 15:27:46 -0500
+To: "Daniel H. Fylstra" <dfylstra@frontsys.com>, "Martin Berz" <berz@msu.edu>,
+        <reliable_computing@interval.louisiana.edu>,
+        "Rosa, Andrea" <A.Rosa@napier.ac.uk>
+From: "R. Baker Kearfott" <rbk@louisiana.edu>
+Subject: RE: intervals for integer programs
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+Dan,
+
+Yes, indeed.  I do not yet claim to efficiently solve MINLP's in a 
+validated way, but there are many previously-employed techniques that
+seem amenable to validation.  I, too, must go into "understand"
+mode before I can do a good job in "software construct mode." :-)
+
+Best regards,
+
+Baker
+
+At 11:03 AM 9/12/2004 -0700, Daniel H. Fylstra wrote:
+>Dear Martin,
+>
+>Sure, but let me also say that this general discussion of the use of interval
+>branch & bound methods to solve problems with integer variables is very
+>useful to me, and I suspect to others on the list.  It's no secret that there
+>are a lot more people solving LP/MIP problems, and probably MINLP problems
+>(as they're usually called) than people solving global optimization problems
+>with interval branch & bound methods.  Having read much of the literature on
+>both sides (OR/MS integer programming methods and interval methods), I'd say 
+>that there are still many contributions that each side could make to the other.
+>
+>Dan Fylstra
+>Frontline Systems Inc.
+>
+>
+>> -----Original Message-----
+>> From: owner-reliable_computing@interval.louisiana.edu
+>> [mailto:owner-reliable_computing@interval.louisiana.edu]On Behalf Of
+>> Martin Berz
+>> Sent: Saturday, September 11, 2004 8:56 PM
+>> To: reliable_computing@interval.louisiana.edu; Rosa, Andrea
+>> Subject: RE: intervals for integer programs
+>> 
+>> 
+>> Dear all,
+>> 
+>> this discussion seems to be getting a little hypothetical. It appears it may
+>> be a good idea if Andrea would supply a representative test problem, and then
+>> Baker can apply Globsol to it, while Neumaier can apply whatever other
+tool he
+>> sees fit. Then we compare the results (which better agree), and more
+>> importantly, the performance - because in the end, for Andrea that's all that
+>> counts.
+>> 
+>> Martin
+>> 
+>> > -----Original Message-----
+>> > From: owner-reliable_computing@interval.louisiana.edu
+>> > [mailto:owner-reliable_computing@interval.louisiana.edu]On Behalf Of
+>> > arnold.neumaier@univie.ac.at
+>> > Sent: Saturday, September 11, 2004 7:16 PM
+>> > To: reliable_computing@interval.louisiana.edu
+>> > Subject: Re: intervals for integer programs
+>> >
+>> >
+>> > "R. Baker Kearfott" <rbk@louisiana.edu> wrote:
+>> >
+>> > > Nonetheless, the technique DOES allow you to treat the integers
+>> > > as continuous variables without losing optima.
+>> >
+>> > Yes, this does not contradict what I said; see below.
+>> >
+>> >
+>> > > Second, some global optimization programs are touted as
+>> > > being able to efficiently ignore large numbers of local optima.
+>> >
+>> > Yes. That why the sine approach works.
+>> >
+>> > I only claimed that it is inefficient, compared to treating
+>> > the integers as integer variables, and proceeding as in my first
+>> > mail in this thread. In addition, one needs of course suitable
+>> > techniques for integer rounding, as in mixed integer linear
+>> > programming.
+>> >
+>> >
+>> > > Third, it is presently unclear to me what you mean about
+>> > > "generates a local extremum at each critical point."
+>> >
+>> > I did not say that, but
+>> > ''it generates a local extremum at every feasible integer point''
+>> >
+>> > The precise statement underlying this remark is that if you
+>> > fix all integer variables at some feasible integer values
+>> > and locally minimize the objective in the remaining variables,
+>> > the resulting point will be a local mimimizer of the sine-constrained
+>> > program.
+>> >
+>> > In particular, if all variables are integers then _any_ feasible
+>> > point satisfies the first order conditions for the sine version.
+>> > In that case, all work done in an interval Newton method is wasted.
+>> >
+>> >
+>> > > What is your objective?  Are you using a penalty method?
+>> >
+>> > No. Constrained optimization problems also may have several
+>> > local minima. One can pass the sine version to any global solver
+>> > for constrained problems, and my remarks apply no matter what
+>> > methods the solver uses. In each case, modifying the solver
+>> > directly will gain efficiency.
+>> >
+>> > Essentially, my remark boils down to saying that the sine-trick
+>> > is just a waste of many transcendental function evaluations
+>> > (sines and cosines in function and gradient evaluatiosn,
+>> > arc sines in constraint propagation).
+>> >
+>> > It buys nothing but the ability to use black box continuous
+>> > global solvers, at the expense of introducing inefficiency
+>> > at various places (overhead in function and gradient evaluation,
+>> > optimality conditions, and constraint propagation).
+>> >
+>> > Apart from that, it should not have a negative effect on the
+>> > number of boxes in the b&b process, at least if the global
+>> > solver is well-written.
+>> >
+>> >
+>> > Arnold Neumaier
+>> >
+>> >
+>> > > >> When the variables xi must be integers, Hansen proposes
+>> > > >> (in "Global Optimization Using Interval Analysis", pg 214)
+>> > > >> to solve a constrained problem by adding constraints like
+>> > > >> sin (pi*xi)=0
+>> > > >
+>> > > >This is a simple way of posing the problem to a package that handles
+>> > > >only continuous problems. But it is quite inefficient since
+>> > > >it generates a local extremum at every feasible integer point,
+>> > > >and thus makes the problem unnecessarily difficult.
+>> > > >
+>> > > >Even linear mixed integer problems, which can generally be solved
+>> > > >quite efficiently using branch and cut with an LP-solver,
+>> > > >will become nonlinear!
+>> >
+>> 
+>> 
+>> 
+>> 
+>> 
+>> 
+>
+>
+
+---------------------------------------------------------------
+R. Baker Kearfott,    rbk@louisiana.edu   (337) 482-5346 (fax)
+(337) 482-5270 (work)                     (337) 993-1827 (home)
+URL: http://interval.louisiana.edu/kearfott.html
+Department of Mathematics, University of Louisiana at Lafayette
+(Room 217 Maxim D. Doucet Hall, 1403 Johnston Street)
+Box 4-1010, Lafayette, LA 70504-1010, USA
+---------------------------------------------------------------
+
+
+

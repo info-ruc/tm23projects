@@ -1,0 +1,59 @@
+Received: from jcf (jcf.Psych.Arizona.EDU [128.196.98.7])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id QAA30967
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 28 Jun 1999 16:13:03 -0700
+Message-Id: <3.0.1.32.19990628162101.006898e8@psy1.psych.arizona.edu>
+Date: Mon, 28 Jun 1999 16:21:01 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] 1.1.04
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+  Sorry for that post about DDS2:Blt() failing, that was supposed to go the
+DirectX list...
+
+  I have released 1.1.04 that includes the following:
+
+	The DigitalVOX input device no longer stops the capture buffer immediatly
+after a response is detected.  You can use it by itself (no need to include
+the RecordVocal device as well) now but it will always leave the capture
+buffer running for the response time limit (like RecordVocal) meaning DMDX
+won't go on the the next item or respond to a request until the response
+time limit is reached.  It'll stay that way until I dramatically re-design
+the code, you may want to pick a smaller response time limit if the ISI
+starts being a problem.
+	Fixed missing quotes making scramble report a missing $.
+	DMDX always clears the backbuffers on abort/save dialog.  Stops multimon
+screens leaving something from n frames ago on the screen when job is stopped.
+	S3 ViRGE PCI 325 (not the DX/GX) video card feedback clearing problem
+kludged.  The machines in Ken's lab could somehow not display the frame
+that cleared the feedback message, instead whatever was in the video memory
+buffer from n frames ago (like 13 frames ago on a 4M video card) would be
+left on the screen.  I have made the generation of both those messages (the
+feedback and it's erasure) grab the critical section that stops the display
+queue from being manipulated and this seems to fix the problem.  My guess
+is that the flip of the first frame was somehow cancelling the blit of the
+erasure, like I say somehow because there are much more rigorous tests that
+those machines pass (like twenty 1 tick frames right after each other where
+at least 7 frames are being blitted while other frames are being flipped).
+Once again, the error was only seen with those S3 chips, the S3 DX/GX
+version I have doesn't display the error, but it's also in a 300MHz K6
+machine, it could still be CPU speed dependant.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+"... all the modern inconveniences ..."
+
+                                                   -  Mark Twain
+
+
+

@@ -1,0 +1,47 @@
+Received: from mel.alcatel.fr (mel.alcatel.fr [212.208.74.132])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id EAA05582
+	for <9fans@cse.psu.edu>; Mon, 5 Jul 1999 04:00:37 -0400 (EDT)
+From: steve.kilbane@ind.alstom.com
+Received: from aifhs2.alcatel.fr (mailhub.alcatel.fr [155.132.180.80])
+        by mel.alcatel.fr (ALCANET/SMTP) with ESMTP id IAA00372
+        for <9fans@cse.psu.edu>; Mon, 5 Jul 1999 08:57:20 +0200
+Received: from netserv3.dtr.gecalsthom.com (netserv3.dtr.gecalsthom.fr [159.217.147.52])
+        by aifhs2.alcatel.fr (ALCANET/SMTP2) with ESMTP id JAA29812
+        for <9fans@cse.psu.edu>; Mon, 5 Jul 1999 09:54:31 +0200 (MET DST)
+Received: from mz02world.hq.dtr.gecalsthom.fr (mz02world.dtr.gecalsthom.fr [159.217.142.45]) by netserv3.dtr.gecalsthom.com (8.8.3/8.8.3) with SMTP id JAA06869 for <9fans@cse.psu.edu>; Mon, 5 Jul 1999 09:57:52 -0500
+Received: by mz02world.hq.dtr.gecalsthom.fr(Lotus SMTP MTA v4.6.3 (778.2 1-4-1999))  id C12567A5.002B758B ; Mon, 5 Jul 1999 09:54:41 +0200
+X-Lotus-FromDomain: GA
+To: 9fans@cse.psu.edu
+Message-ID: <C12567A5.002B733A.00@mz02world.hq.dtr.gecalsthom.fr>
+Date: Mon, 5 Jul 1999 08:57:49 +0100
+Subject: Re: [9fans] spawn() vs fork()
+Mime-Version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+
+
+On 03/07/99 16:22:21 Digby Tarvin  wrote:
+
+> That compromise meant that a fork() style of process creation
+> was not possible (all pointers in the child's data segment would
+> be pointing into the parents memory), so it uses a spawn() style
+> of process creation.
+
+It's not impossible: the Atari ST port of Minix managed fork() on M68000. I
+believe the solution was to swap data and stack segments during a context
+switch. This meant that anything that forked a child and then talked to it for a
+while would run like treacle. Since most processes followed a fork() with an
+exec(), it wasn't so much of a problem. All very reminiscent of vfork().
+
+Implementation requirements aside, as Jean says, fork gives you an elegant way
+of setting up I/O redirection. It also gives you an elegant way of determining
+start-up context as a whole for the new process., including internal state.
+
+steve
+
+
+

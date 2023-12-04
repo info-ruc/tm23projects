@@ -1,0 +1,96 @@
+Received: from harpo.htc.honeywell.com (harpo.htc.honeywell.com [129.235.16.21])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id CAA30784;
+	Mon, 5 Jan 1998 02:02:23 -0500 (EST)
+Received: from [129.235.69.102] (remote2.htc.honeywell.com [129.235.69.102])
+	by harpo.htc.honeywell.com (8.8.8/8.8.5) with ESMTP id BAA22430;
+	Mon, 5 Jan 1998 01:00:25 -0600 (CST)
+X-Sender: bschmalz@pophost.htc.honeywell.com
+Message-Id: <v03102800b0d634f25f75@[129.235.69.104]>
+In-Reply-To: <199712312227.QAA03595@augusta.netperceptions.com>
+References: <01bd1636$dceff3c0$1d1820c8@gerpc> (ggentile@cvtci.com.ar)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Mon, 5 Jan 1998 00:59:58 -0600
+To: Mot-68HC11-Apps@freeware.mcu.motsps.com, ggentile@cvtci.com.ar
+From: Brian Schmalz <Brian.Schmalz@corp.honeywell.com>
+Subject: Re: Digital outputs.
+Cc: cmcmanis@FreeGate.net, fredm@media.mit.edu, handyboard@media.mit.edu,
+        Mot-68HC11-Apps@freeware.mcu.motsps.com, robot-board@cmf.nrl.navy.mil
+
+At 4:27 PM -0600 12/31/97, Tom Brusehaver wrote:
+> Message sent by Tom Brusehaver <tomb@augusta.netperceptions.com>
+> to the mot-68hc11-apps Mailing List.
+>
+>>>>>> "G" == =?iso-8859-1?Q?Germ=E1n Gentile?= <iso-8859-1> writes:
+>
+> G> Wich are the options to have 3 digital outputs in the handyboard?
+> G> No matter if i have to do little modifications to the Hardware.  I
+> G> already know how to conect the keypad if you can tell me how
+> G> obtain 3 outputs..  :)
+
+>The SPI port is sitting there.  I think you can get at 3 outputs from
+>those pins (SD/RD/CLK).
+>
+>You'll have to do peeks and pokes to access these bits.  Even setting
+>the data direction registers to get outputs.
+
+Here is an Interactive C file to do just that. Seems to work well in the
+10 minues of testing I've just done. :) Let me know if anyone has problems
+with this:
+
+*Brian Schmalz
+
+/* Function to enable SPI port as digital I/O  */
+/* First you must DisableSPI(), then you can   */
+/* WritePortD(). If you need to use SPI again, */
+/* use EnableSPI(). To read from port D, use   */
+/* ReadPortD().                                */
+
+#define D_ALL_OUT 0b00111100
+#define D_ALL_IN  0b00000000
+
+/* Set bits in dir to set direction of I/O on port D           */
+/* A 1 in bits 5 through 2 will enable that bit in             */
+/* port D as output. Others will be inputs. Does not           */
+/* affect bits 0 and 1 (TxD and RxD)                           */
+/* Use
+  DisableSPI(D_ALL_OUT); or
+  DisableSPI(D_ALL_IN); or your own variation.                 */
+/* Pins on SPI port for Handy Board map to bits in             */
+/* WritePortD() like this: (looking at HB with LCD at top      */
+  V  G
+  2  5
+  3  4
+  X  X
+
+  So to turn on the pins on the right and turn off pins on the */
+/* left, use WritePortD(0x00110000);                           */
+
+void DisableSPI(int dir) {
+    int x;
+    bit_clear(0x1028, 0b01000000);
+    x = peek(0x1009);
+    x = (x & 0b00000011) | (dir & 0b00111100);
+    poke(0x1009, x);
+}
+
+void EnableSPI(void) {
+    int x;
+    x = peek(0x1009);
+    x = (x & 0b00000011);
+    poke(0x1009, x);
+}
+
+void WritePortD(int val) {
+    int x;
+    x = peek(0x1008);
+    x = (x & 0b00000011) | (val & 0b00111100);
+    poke(0x1008, x);
+}
+
+int ReadPortD(void) {
+    return(peek(0x1008) & 0b00111100);
+}
+
+
+

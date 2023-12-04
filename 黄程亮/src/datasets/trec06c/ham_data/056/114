@@ -1,0 +1,81 @@
+Received: from news.rdc1.tx.home.com (ioracle@ha2.rdc1.tx.home.com [24.4.0.67])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA23488
+	for <handyboard@media.mit.edu>; Sat, 13 Nov 1999 14:37:01 -0500 (EST)
+Received: from cx624894-a.meta1.la.home.com ([24.6.20.194])
+          by news.rdc1.tx.home.com (InterMail v4.01.01.00 201-229-111)
+          with SMTP
+          id <19991113193700.EDKS8837.news.rdc1.tx.home.com@cx624894-a.meta1.la.home.com>;
+          Sat, 13 Nov 1999 11:37:00 -0800
+Message-Id: <002901bf2e0e$c337d820$c2140618@cx624894-a.meta1.la.home.com>
+From: "Terry Gathright" <terrygathright@home.com>
+To: <handyboard@media.mit.edu>, "John Bachman" <bachman@anatek.mv.com>
+Subject: Re: IC trouble - function definition - understand now, Thanks
+Date: Sat, 13 Nov 1999 13:39:12 -0600
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+
+Sorry,
+Forgot to enclose the code. what is wrong here?
+
+
+
+long time;
+
+
+void
+phony()
+{ 
+while (digital(2) == 1) {
+time = mseconds();
+printf("%d\n", mseconds());
+}
+if (mseconds () >1413 ) fd(1);
+else bk(1);
+
+}
+
+
+void 
+start()
+{
+phony();
+}
+
+
+void main()
+{
+while(1)
+start();
+}
+-----Original Message-----
+From: John Bachman <bachman@anatek.mv.com>
+To: handyboard@media.mit.edu <handyboard@media.mit.edu>
+Date: Saturday, November 13, 1999 12:48 PM
+Subject: Re: IC trouble - function definition - understand now, Thanks
+
+
+>Rich got it.  Nested functions was the problem.  I don't recall seeing that discussed in the IC manual and I think it is OK in C.
+>
+>Nonetheless, thanks to all for helping this hapless programmer.
+>
+>John
+>>
+>> You have the definition of phony() nested inside the definition
+>>of start().  I don't know what ANSI C and/or C++ let you do, but this is
+>>invalid IC.  
+>> *Rich*
+>>-- 
+>>Richard F. Drushel, Ph.D.            | "Aplysia californica" is your taxonomic
+>>Department of Biology, Slug Division | nomenclature.  /  A slug, by any other
+>>Case Western Reserve University      | name, is still a slug by nature.
+>>Cleveland, Ohio  44106-7080  U.S.A.  |     -- apologies to Data, "Ode to Spot"
+>
+
+
+

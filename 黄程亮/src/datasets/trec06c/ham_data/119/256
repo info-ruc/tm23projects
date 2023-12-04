@@ -1,0 +1,27 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2UHJvY24150
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 12:19:57 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2UHJtTX008473;
+	Thu, 30 Mar 2006 12:19:55 -0500 (EST)
+Message-ID: <1015850739.1143739194341.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 30 Mar 2006 12:19:55 -0500 (EST)
+From: Gopal Parameswaran <gp72@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 17
+Cc: gp72@cornell.edu
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k2UHJvY24150
+
+Bittorrent
+The Bittorrent system is a peer-to-peer network that uses an economic mechanism based on the upload rate from the peer for downloading since real deployments experience high churn rates and this helps to correct the problems of fairness where peers disconnect after downloading their file. A Bittorrent is started with a user deploying a torrent file containing information about the file, its length, name, and hashing information and the url of a tracker that help downloaders find each other using a simple protocol layered on top of HTTP in which the downloader sends the information that specifies which file is being downloaded and the port it is listening on and the tracker responds with A list of contact information for peers which are downloading the same file and can be further used as a source for downloading the different portions of the file. Once the downloaders have this information they contact each other and download from each other. This method of peers to find other peers is done based on random graphs, which has good inherent robustness properties. Bittorrent cuts files into smaller pieces of fixed size of around a quarter mega byte and the SHA1 hash of all the pieces are included in the torrent file so that peers can report if they have a particular piece of the file or not after checking the hash of the pieces that they have. Bit torrent further breaks down the pieces into sub-pieces of typically 16 Kilo bytes and typically keeps five sub-pieces in the pipeline for transmission based on a value based on the threshold that would saturate the connection bandwidth. Bit torrent prevents choking by using a Pareto efficiency algorithm that that does local optimization by uploading to peers which upload to them, with the goal of at any time of having several connections which are actively transferring in both directions.
+
+Bullet
+This paper addresses bandwidth maximization in peer to peer networks and is a scalable distributed algorithm that enable nodes spread across a peer to peer network organize itself into an overlay mesh that would maximize bandwidth. It also helps nodes in recovering missing items and reduces the need to do expensive bandwidth probing in relation to a tree-based solution. It is based on spreading the uniform random subsets of a global state to all the nodes of the overlay tree as it changes over time called Ransub which works by using two types of messages called collect and distribute messages. The collect messages propagate up the tree and leaves the state information gathered from the underlying nodes at that node and the distribute message then traverses down from the root spreading uniform random subsets to all the underlying nodes. Bullet extends it by layering a mesh on the underlying overlay tree for Ransub. 
+
+SplitStream
+SplitStream addresses the problem of application level multicast in peer to peer networks where a relatively small number of interior nodes carry the load of forwarding multicast messages by striping the content across a forest of interior-node-disjoint multicast trees that distributes the forwarding load among all participating peers. SplitStream thus distributes the forwarding load among all peers and can accommodate peers with different bandwidth capacities while imposing low overhead for forest construction and maintenance. SplitStream achieves this by splitting the multicast stream into multiple stripes, and using separate multicast trees to distribute each stripe. Split Stream only provided a generic infrastructure for high bandwidth content distribution and it would be the application that uses the framework that decides on how the content is to be divided into the stripes.
+

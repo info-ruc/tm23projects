@@ -1,0 +1,48 @@
+Received: from mail.xnet.com (quake.xnet.com [198.147.221.67])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id KAA18575
+	for <handyboard@media.mit.edu>; Tue, 29 Feb 2000 10:01:33 -0500 (EST)
+Received: from hurricane.xnet.com (typhoon.xnet.com [198.147.221.66]) by mail.xnet.com (8.9.3+Sun/XNet-3.0R) with ESMTP id JAA14879; Tue, 29 Feb 2000 09:01:32 -0600 (CST)
+Received: by hurricane.xnet.com (Postfix, from userid 4928)
+	id 0F5015ED69; Tue, 29 Feb 2000 09:01:31 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by hurricane.xnet.com (Postfix) with ESMTP
+	id E46B55B1F6; Tue, 29 Feb 2000 09:01:31 -0600 (CST)
+Date: Tue, 29 Feb 2000 09:01:31 -0600 (CST)
+From: James Munro <jimmn@xnet.com>
+To: Way Lam <way@polyu.hknet.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: Exp. board Servo
+In-Reply-To: <Fqp3AD.AK@lugnet.com>
+Message-Id: <Pine.GSO.4.10.10002290848050.9124-100000@typhoon.xnet.com>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+> >From the "Expansion board software" homepage, it said that servo0=(value) is
+> used to control the servo, may i ask how can i convert this value to "degree" ?
+> i.e. if i want to turn the servo to 0 deg, 30 deg, 60 deg...etc.. what value
+> should I input ?? Thanks for your help...
+ 
+Well, since it seems these values often vary from servo to servo I usually
+set them by using the knob function and scaling it down so I can visually
+see the numbers I'm putting into it and the result on the servo; turning
+it until it chatters one way and then the others and keeping track of the
+numbers.
+ 
+For example make it read
+ 
+while(1){
+ servo1=(knob() * 11)//approx. to scale to ~3000 which it says is the max
+value
+} 
+you can send this value to the screen with printf() and it's pretty easy
+   
+This may at least give you some idea of what values you need in there. The
+knob() is great for figuring out all kinds of things like this.  When you
+aren't sure of the values your getting back.
+ 
+Good luck,
+ 
+-Jim Munro
+<jimmn@xnet.com>
+
+

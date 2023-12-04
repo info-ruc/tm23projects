@@ -1,0 +1,74 @@
+Received: from db.stanford.edu (Amberjack.Stanford.EDU [171.64.75.94])
+	by DB.Stanford.EDU (8.8.8/8.8.8) with ESMTP id KAA10334
+	for <beringer@db.stanford.edu>; Tue, 10 Nov 1998 10:22:10 -0800
+Sender: beringer@DB.Stanford.EDU
+Message-ID: <3648844C.DFC74E68@db.stanford.edu>
+Date: Tue, 10 Nov 1998 10:22:05 -0800
+From: Dorothea Beringer <beringer@DB.Stanford.EDU>
+X-Mailer: Mozilla 4.05 [en] (X11; I; SunOS 5.6 sun4u)
+MIME-Version: 1.0
+To: beringer@DB.Stanford.EDU
+Subject: Memo: architecture for scheduling
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mozilla-Status: 8001
+
+Points to be considered when discussing CHAIMS architecture for
+scheduling
+===================================================+===============
+
+1 Integrating Java and C++
+This has proven to be very cumbersome. Though it is feasable, the
+limited possibilities for debugging, the time-consuming programming of
+JNI-interfaces, and akward way how data-structures have to be copied
+over element by element, all that multiplies the amount of time spent
+programming. Also our current ASN.1-libraries are simply not
+Java-compliant (linking problem, run-time errors), though we can make it
+work with lots of hacks and lots of additional time.
+==> either Java with RMI (or sockets, or pure JAVA ORB), or C++ with
+TCL/TK with sockets (or Orbix)
+
+2 Several ORBs
+Proved not to be easy: doubles the learning curve as each ORB has its
+specialities; integration on client side is not trivial (conflicts in
+names and IDLs...)
+
+3 ASN.1
+The concept of gentypes is elegant, yet the ASN.1 libraries have proved
+to make problems again and again. Adn they should not be used together
+with Java, as this results in a nearly unmaintainable mess, and makes it
+difficult to make any changes. Furthermore: the support for and the
+knowledge about ASN.1 seems to be diminishing, everything is now about
+XML. ==> replacing ASN.1 either by a simple string model, or by XML.
+
+4 Knowledge
+Do we want to study scheduling, or do we want to study integration of
+tools and systems? So far, we have primarily done the second, though it
+was not the goal. Yet it has proved so cumbersome, that all energy went
+in there, and it took as at least 3 to 4 times as long as building a
+similar infrastructure with just one technology (e.g. only Java and RMI,
+or only C++ and one ORB and strings for name-value lists). Question:
+what do we want to prove (integration or concepts of scheduling)? is it
+a prototype for concepts that just incorporates the features needed by
+the case studies (arrays of strings instead of ASN.1 would have been
+enough), or do we build a system that cares for all cases and details
+not yet essential?
+
+5 Alternative architecture (as proposed by me June 98)
+This architecture would allow to have the CHAIMS system in just one
+language, and to have wrappers that have bridges for various kinds of
+legacy systems (i.e., if we would choose Java and RMI: there is one
+wrapper written in JAVA and managing all the tables etc, and only the
+component that calls the legacy methods would be different for different
+kinds of legacy systems). As noted already there, if somebody makes a
+native CHAIMS megamodule, he can just as well do it in the language and
+protocol we choose for the system. Otherwise, he can use the wrappers.
+==> maintaining and changing and knowing just one wrapper.
+
+
+
+-- 
+Dorothea Beringer   Stanford University   beringer@db.stanford.edu 
+          http://www-db.stanford.edu/people/beringer.html
+--
+

@@ -1,0 +1,69 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id NAA24240
+	for <handyboard@media.mit.edu>; Thu, 13 Jul 2000 13:08:03 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id NAA02157; Thu, 13 Jul 2000 13:08:03 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7952
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Real-Life-Name: Fred G. Martin
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: "Fred G. Martin" <fredm@media.mit.edu>
+Subject: Re: IR (formally 6.8nF cap)
+Posted-Date: Thu, 13 Jul 2000 17:07:13 GMT
+Date: Thu, 13 Jul 2000 17:07:13 GMT
+Organization: None
+Message-Id: <200007131707.NAA14460@ml.media.mit.edu>
+References: <396DEF34.F0498374@uk.airsysatm.thomson-csf.com>
+Precedence: list
+
+there's not really a big diff in the performance of the ir sensors
+given 38 or 40 khz.  so either is fine, +/- a few khz just doesn't
+really matter, you have to detune 10 khz or so for it to matter.
+
+there is an issue whereby there are two different varieties of hc132
+chips, and depending on which kind you have, you need a very different
+R value (or C, but R is easier to change).
+
+here's more info:
+
+  *** re: R4's value.  Depending on the variety of the manufacture of
+  the HC132 chip, R4 should be either 3.83K (Digikey 3.83KXBK-ND) or
+  6.81K (Digikey 6.81KXBK-ND).  To test this, type "bit_set(0x1000,
+  0x40);" from the IC command line, and when the IR output circuit is
+  active (as evidenced by the IR OUT LED9 being on), measure the
+  frequency at pin 3 of the HC132.  It should be 38 to 40 kHz.  Use the
+  6.81K resistor to lower the frequency if it's too high; use the 3.83K
+  resistor to raise it if it's too low.
+
+this info is avail in the latest parts list, at:
+
+  http://el.www.media.mit.edu/projects/handy-board/hardware/partlist.html
+
+fred
+
+
+In your message you said:
+> I have asked for confirmation as to which frequency (38 or 40 KHz) is
+> correct. As my current components should give me a frequency of 39KHz
+> (1/3.883KOhm*6.6nF) I should be able to use either with out to much
+> problem. I am thinking of using the output circuitry for the IR LED
+> driver in conjunction with my hacked IR sensors which are rated for
+> 40KHz so that I don't need to add extra circuitry. I am thinking of
+> having the extra LEDs either chained in a serial or parallel
+> configuration with the intended output LED (or maybe just replace it,
+> however the LEDs for the sensors should realy be collimated for
+> accuracy) and mounted with the associated sensor. Using the correct
+> memory location I will turn the IR output on to produce the 39KHz
+> carrier signal which the sensors should be able to use for distance
+> measurement. Take the reading from the sensors (possibly multiplexing
+> the values or maybe just feeding them into the analogue inputs) then
+> turning the output off. Does this sound like a possible use ?.
+> 
+> Thanks in advance for any help.
+> 
+> John Hatton
+> 
+

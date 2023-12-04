@@ -1,0 +1,51 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id MAA29873
+	for <Handyboard@media.mit.edu>; Fri, 2 Apr 1999 12:13:43 -0500 (EST)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Fri, 02 Apr 1999 09:13:39 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id JAA22595;
+	Fri, 2 Apr 1999 09:13:39 -0800 (PST)
+Date: Fri, 2 Apr 1999 09:13:38 -0800 (Pacific Standard Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Handyboard List <Handyboard@media.mit.edu>
+Cc: Curt Mills <BowHunt@iname.com>, Curt Mills <hacker@tc.fluke.com>
+Subject: Re: GCC 2.8.1 for HC11
+In-Reply-To: <Pine.WNT.3.96.990329120114.107E-100000@wapiti.tc.fluke.com>
+Message-Id: <Pine.WNT.3.96.990402085959.90W-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+The HC11 back end for gcc-2.8.1 is working on Red Hat Linux 5.2 (and
+probably most other Unix hosts), and last night I made the cross-assembler
+and cross-linker work with it properly.  It compiled/assembled the GCC
+Miniboard library last night without a hitch, creating the ".a" file.
+
+I've generated a patch file to gcc-2.8.1 that puts the proper code into
+the source tree, and generated a README that explains how to set it all
+up.  I haven't had the time to put in the proper copyright notices and
+such (probably GPL) for my changes, so I haven't posted it yet.
+
+One thing that I haven't figured out how to do the "make install"  part of
+the GCC build and have it install into it's own directory tree.  Following
+the Coactive Aesthetics docs on how to do it didn't work for me with the
+newer compiler.  It works great to install it in the default location
+though, and then you can select which compiler to run using command line
+arguments to GCC or environment variables (the native GCC is the default). 
+
+Is there anyone interested in testing out the Unix-flavor GCC/HC11
+compiler and letting me know how it works for the Miniboard?  I want
+confirmation that everything works before I start on the Handyboard
+libraries.  My Miniboard is still without a CPU at this point. 
+
+I believe that all the pieces (libraries and crt0.S file) to get running
+on the Miniboard or the Rug Warrior are readily available.  It's the
+Handyboard libraries that are lacking yet. 
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

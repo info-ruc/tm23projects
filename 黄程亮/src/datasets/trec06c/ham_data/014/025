@@ -1,0 +1,65 @@
+Received: from pop.styria.com (root@[195.12.208.100])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA19639
+	for <handyboard@media.mit.edu>; Fri, 3 Apr 1998 09:40:45 -0500 (EST)
+Received: from styria.com ([192.168.109.42])
+	by pop.styria.com (8.8.8/8.8.7) with ESMTP id QAA22462
+	for <handyboard@media.mit.edu>; Fri, 3 Apr 1998 16:40:39 +0200
+Message-Id: <3524F4E3.A549059@styria.com>
+Date: Fri, 03 Apr 1998 16:40:35 +0100
+From: "E. Baeck" <erwin.baeck@styria.com>
+X-Mailer: Mozilla 4.03 [en] (Win95; I)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Problems with CONFIG of 68HC811E2
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi to all !
+
+Here a very interesting info for all, they have problems with the CONFIG
+of the "E2" (included myself). I found this at the motorola site
+http://www.mcu.motsps.com/lit/faq/as-79.htm. Here the text:
+
+AS-79
+APPLICATION SNAPSHOT
+
+PROBLEMS PROGRAMMING THE CONFIG REGISTER OF THE MC68HC811E2 ON THE
+MC68HC11EVM
+by Janet M. Snyder
+
+INTRODUCTION
+
+Special considerations exist when programming the CONFIG register of the
+MC68HC811E2 on the MC68HC11EVM, hereafter referred to as the EVM board.
+The procedure is the same as for any other part, and the programming
+will take place, but it may not show up as having changedvalues.
+
+GENERAL INFORMATION
+
+The monitor of the EVM board must be revision 2.5 or later. Earlier
+versions of the monitor kept the chip in bootstrap mode during a read of
+the CONFIG register. Versions 2.5 and later solved this problem by
+reading the CONFIG register in special test mode. For reference, the
+currentrevision of the monitor in the EVM board is revision 3.0.
+
+The problem manifested itself in these earlier versions of the monitor
+by showing that the contents of the CONFIG register had not changed
+after programming and performing a reset. It was due to the fact that in
+bootstrap mode, the value of the MC68HC811E2 forces some bits to ones,
+no matter what the value that was just programmed into it. It actually
+programmed correctly, but there was no way to see it. The bits that are
+forced to ones in bootstrap mode are 0 (EEON), 1 (nothing), and 4, 5, 6,
+and 7 (EE0, EE1, EE2, and EE3 respectively). For applications where the
+security option was not included, bit 3 would also always show as a one,
+and if the COP timeout was not used, that bit (bit 2)would also be a
+one. So, a common scenario of the failure would be an application where
+the designer wished to reprogram the CONFIG register to turn off the
+EEPROM, but no matter how many times the bit was attempted to be
+programmed to a zero and then reset, the CONFIG register would always
+read $FF.
+
+Greetings to all from Austria
+
+Erwin
+
+

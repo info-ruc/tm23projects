@@ -1,0 +1,68 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2E6CJt27893
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 01:12:19 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2E6CI1o008741
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 01:12:18 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060313225334.02f30bc0@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Tue, 14 Mar 2006 01:06:53 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 14
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+         In building distributed systems, it's often useful to have an 
+estimate of the round-trip-time to a given host.  This can generally be 
+obtained by pinging, but it would commonly be desirable to measure it 
+without first pinging.  In particular, the network load from this approach 
+rises proportional to the number of hosts.  Much better to infer this 
+distance.  An easy way to do this, used by GNP, is to measuring distances 
+to a small number of landmarks, and then applying Euclidean distance 
+metrics.  The GNP analysis shows that this method is inexact, but still 
+gives usable results.
+         GNP is a centralized algorithm, with all the scaleability issues 
+that implies.  Nodes do not always respond consistently, and link RTT 
+depends on traffic as well as distance, so measurements will vary over 
+time.  GNP does not take this into account.  Lastly, internet routes do not 
+obey the triangle inequality, so attempts to map network distance cleanly 
+to Euclidean space are ultimately impossible.
+         Vivaldi attempts to minimize the global deviation from Euclidean 
+space, in a fully distributed way.  The Vivaldi designers use two important 
+tricks: First, they add a misleadingly-named 'height', which is in fact an 
+extra distance added to every node.  This simulates the processing time for 
+packets at the host, and on the local link.  They also have nodes adjust 
+their position based on spring forces to nearby nodes.
+         The vivaldi system works fairly well, but the authors seem not to 
+have fully used the spring analogy.  Mass-spring meshes are vulnerable to 
+oscillation, particularly given that vivaldi essentially uses euler's 
+method.  Using the physics model more consistently--for instance, having 
+meaningful 'masses', dependent perhaps on time connected to the 
+system--might have made the system more effective.  It would be nice to 
+test the system on a 'live' network, rather than static data.
+
+         Meridian attempts to solve a somewhat different problem.  Rather 
+than giving nodes a well defined 'address', Meridian is a peer-to-peer 
+substrate designed for network-location queries.  Each node keeps track of 
+a number of concentric rings, defined by network distance.  Each ring 
+consists of a number of other nodes, chosen to be spread out (not near 
+each-other).  Gossip and periodic polling are used to keep the rings up to 
+date.
+         Meridian is more accurate than Vivaldi or GNP, but it supplies 
+less data--it might be useful to know the true network distance to a given 
+node, without measuring it.  Meridian does not allow this. The actual 
+distance distribution of nodes in the internet is nontrivial; there is no 
+reason to assume a priori that equal sized rings are optimal.
+
+
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone 
+

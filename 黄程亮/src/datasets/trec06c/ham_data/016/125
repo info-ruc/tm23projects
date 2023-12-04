@@ -1,0 +1,54 @@
+Received: from gaws05.sd.gat.com (gaws05.sd.gat.com [141.248.128.105])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id UAA20392
+	for <handyboard@media.mit.edu>; Tue, 5 May 1998 20:24:47 -0400 (EDT)
+Received: from p182211 (p182211.sd.gat.com) by gat.com (PMDF V5.1-10 #29894)
+ with SMTP id <0ESI00BI4EHAYK@gat.com> for handyboard@media.mit.edu; Tue,
+ 5 May 1998 17:24:46 -0700 (PDT)
+Date: Tue, 05 May 1998 17:24:44 -0700
+From: smithg@gat.com (Gordon Smith)
+Subject: 256 Motor Power Resolution
+X-Sender: smithg@mail.sd.gat.com
+To: handyboard@media.mit.edu
+Message-Id: <0ESI00BI5EHAYK@gat.com>
+Mime-Version: 1.0
+X-Mailer: Windows Eudora Version 1.4.4
+Content-Type: text/plain; charset="us-ascii"
+
+Hi All,
+   Has anyone noticed that if you slightly modify Julian Skidmore's LIB_HB.C
+code that one can get 256 motor power levels rather than 100? I took the
+following code in LIB_HB.C:
+
+void motor(int m, int speed)
+{
+  if (speed>100) speed=100;
+  if (speed<-100) speed=-100;
+  if (speed >= 0)
+    _set_motor(m, 0, (255*speed)/100);
+  else
+    _set_motor(m, 1, (-255*speed)/100);
+}
+
+
+And then changed the code to the following:
+
+
+void motor(int m, int speed)
+{
+  if (speed>255) speed=255;
+  if (speed<-255) speed=-255;
+  if (speed >= 0)
+    _set_motor(m, 0, speed);
+  else
+    _set_motor(m, 1,(-1*speed));
+}
+
+I can now get 256 power levels rather than the previous 100. I have
+tested it (but not extensively) and it seems to work OK. Any comments on
+this would be appreciated. 
+
+Gordon Smith II
+Test Engineer
+General Atomics Aeronautical Systems
+
+

@@ -1,0 +1,30 @@
+Received: from delbarton.org (www.delbarton.org [206.67.182.18]) by cse.psu.edu (8.8.5/8.7.3) with ESMTP id BAA04748 for <9fans@cse.psu.edu>; Sun, 2 Feb 1997 01:20:25 -0500 (EST)
+Received: (from rsc@localhost) by delbarton.org (8.7.4/8.7.3) id BAA07906 for 9fans@cse.psu.edu; Sun, 2 Feb 1997 01:23:02 -0500
+Date: Sun, 2 Feb 1997 01:23:02 -0500
+From: Russ Cox <rsc@delbarton.org>
+Message-Id: <199702020623.BAA07906@delbarton.org>
+To: 9fans@cse.psu.edu
+Subject: rc children bug
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+
+before i go hacking at the source, has anyone
+come across and fixed the fact that rc seems to
+reap its children from a <{} inside a for loop
+only after the for loop is done?
+
+example:
+	term% for (i in `{seq 1 100}) { 
+		echo -n $i... ; diff <{cat /adm/users} <{cat /adm/users}
+	}
+	1...2...3...4...5...6...7...8...9...10...
+	11...12...13...14...15...16...17...18...19...20...
+	21...22...23...24...25...26...27...28...29...30...
+	31...32...33...34...35...36...37...38...39...40...
+	41...42...43...44...45...46...47...rc: can't get pipe
+	term% 
+
+russ
+

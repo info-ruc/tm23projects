@@ -1,0 +1,210 @@
+Received: from mta2.snfc21.pbi.net (mta2.snfc21.pbi.net [206.13.28.123])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA07573
+	for <handyboard@media.mit.edu>; Fri, 30 Jul 1999 12:08:01 -0400 (EDT)
+Received: from pacbell.net (adsl-206-170-238-215.dsl.lsan03.pacbell.net [206.170.238.215])
+	by mta2.snfc21.pbi.net (8.9.3/8.9.3) with ESMTP id JAA12033;
+	Fri, 30 Jul 1999 09:07:51 -0700 (PDT)
+Message-Id: <37A1CEC7.6A4E11D5@pacbell.net>
+Date: Fri, 30 Jul 1999 09:11:53 -0700
+From: Gary Livick <glivick@pacbell.net>
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Mime-Version: 1.0
+To: "Landahl, Bill" <Bill.Landahl@morganite.com>
+Cc: HandyBoard <handyboard@media.mit.edu>
+Subject: Re: Millisecond timing
+References: <25FB1DBA323DD311ACB400508B122D93049713@NTMAIL>
+Content-Type: multipart/alternative;
+ boundary="------------18D9DF3EFF297993C367FD3C"
+
+
+--------------18D9DF3EFF297993C367FD3C
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+
+The clock speed on the Handy Board runs at 2 Mhz, which is plenty fast
+enough for most things IF you run the right code.  IC, used in its C
+implementation is too slow to catch anything at 1 ms reliably.  However,
+there are a few simple work arounds.  You can use one of the input
+capture ports, which are hardware implementations that run outside the
+processor, to generate an interrupt when you get a pulse you want to
+catch.  The interrupt will need to be written as an assembly file, and
+run as a .icb file.  Using this method, I've been able to time things
+that are 100 microseconds wide.
+
+Another way is to write in assembly to begin with, and load the code
+using PCbug or some other software device.  That should be much faster
+yet, and in fact by using the tables in one of the Motorolla manuals,
+you can actually add up the execution times of each step in your
+assembly routine and know the exact timing.
+
+The bottom line, and the answer to your question, is you can't get there
+with IC directly as it executes too slowly.  The problem is not with the
+Handy Board, it is with the fact that IC is interpreted by a runtime
+software package that lives in ram called the Pcode interpreter.  It
+works great for most things, and allows workarounds for things that are
+to fast to be handled directly.
+
+Hope this isn't too much info.....
+
+Best regards,
+
+Gary Livick
+
+
+
+
+
+"Landahl, Bill" wrote:
+
+>
+>
+>         I recently bought a Handy Board to use in acquiring time
+> measurements varying by one millisecond.  The Handy Board has a clock
+> speed of 2kHz, therefore it should be able to measure down to one half
+> millisecond.
+>
+>         What I have found however is that the smallest time I am
+> measuring is 3 millieseconds.  Ther is no code running except for the
+> time acquisition code.  My question is, Will it be possible for me to
+> get the one millisecond time accuracy I want?  Should I be using
+> system interupts instead of just reading system time?  If so, how do I
+> do that?
+>
+> Below is the code  I am running for the time acquisition.
+>
+> int x;
+> int y;
+> float p;
+> float n;
+> float z;
+> void main (void)
+> {
+>    while(1) {
+>
+>       if (digital(10)){              /* capture leading edge*/
+>          while (x < 1){
+>             n = seconds();
+>             x++;
+>          }
+>       }
+>       if (digital(11)){               /*capture leading edge*/
+>          while (y < 1){
+>             p = seconds();
+>             y++;
+>          }
+>       z = p - n;                   /*floating point math- after data
+> acquired*/
+>       printf("\nTime= %f",z);
+>       }
+>
+>       if (start_button()){
+>          x=0;
+>          y=0;
+>          reset_system_time();
+>       }
+>    }
+> }
+
+
+
+
+--------------18D9DF3EFF297993C367FD3C
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+The clock speed on the Handy Board runs at 2 Mhz, which is plenty fast
+enough for most things IF you run the right code.&nbsp; IC, used in its
+C implementation is too slow to catch anything at 1 ms reliably.&nbsp;
+However, there are a few simple work arounds.&nbsp; You can use one of
+the input capture ports, which are hardware implementations that run outside
+the processor, to generate an interrupt when you get a pulse you want to
+catch.&nbsp; The interrupt will need to be written as an assembly file,
+and run as a .icb file.&nbsp; Using this method, I've been able to time
+things that are 100 microseconds wide.
+<p>Another way is to write in assembly to begin with, and load the code
+using PCbug or some other software device.&nbsp; That should be much faster
+yet, and in fact by using the tables in one of the Motorolla manuals, you
+can actually add up the execution times of each step in your assembly routine
+and know the exact timing.
+<p>The bottom line, and the answer to your question, is you can't get there
+with IC directly as it executes too slowly.&nbsp; The problem is not with
+the Handy Board, it is with the fact that IC is interpreted by a runtime
+software package that lives in ram called the Pcode interpreter.&nbsp;
+It works great for most things, and allows workarounds for things that
+are to fast to be handled directly.
+<p>Hope this isn't too much info.....
+<p>Best regards,
+<p>Gary Livick
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p>"Landahl, Bill" wrote:
+<blockquote TYPE=CITE>&nbsp;
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font face="Arial"><font size=-1>I
+recently bought a Handy Board to use in acquiring time measurements varying
+by one millisecond.&nbsp; The Handy Board has a clock speed of 2kHz, therefore
+it should be able to measure down to one half millisecond.</font></font>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font face="Arial"><font size=-1>What
+I have found however is that the smallest time I am measuring is 3 millieseconds.&nbsp;
+Ther is no code running except for the time acquisition code.&nbsp; My
+question is, Will it be possible for me to get the one millisecond time
+accuracy I want?&nbsp; Should I be using system interupts instead of just
+reading system time?&nbsp; If so, how do I do that?</font></font>
+<p><font face="Arial"><font size=-1>Below is the code&nbsp; I am running
+for the time acquisition.</font></font>
+<p><font face="Arial"><font size=-1>int x;</font></font>
+<br><font face="Arial"><font size=-1>int y;</font></font>
+<br><font face="Arial"><font size=-1>float p;</font></font>
+<br><font face="Arial"><font size=-1>float n;</font></font>
+<br><font face="Arial"><font size=-1>float z;</font></font>
+<br><font face="Arial"><font size=-1>void main (void)</font></font>
+<br><font face="Arial"><font size=-1>{</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp; while(1) {</font></font>
+<p><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (digital(10)){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* capture leading edge*/</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+while (x &lt; 1){</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+n = seconds();</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+x++;</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(digital(11)){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/*capture leading edge*/</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+while (y &lt; 1){</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p = seconds();</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+y++;</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z =
+p - n;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/*floating point math- after data acquired*/</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf("\nTime=
+%f",z);</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</font></font>
+<p><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (start_button()){</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+x=0;</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+y=0;</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+reset_system_time();</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</font></font>
+<br><font face="Arial"><font size=-1>&nbsp;&nbsp; }</font></font>
+<br><font face="Arial"><font size=-1>}</font></font></blockquote>
+
+<br>&nbsp;
+<br>&nbsp;</html>
+
+--------------18D9DF3EFF297993C367FD3C--
+
+

@@ -1,0 +1,26 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3019>; Tue, 19 Apr 1994 14:29:07 -0400
+Received: from plan9.research.att.com ([192.20.225.252]) by psuvax1.cse.psu.edu with SMTP id <293742>; Tue, 19 Apr 1994 13:31:32 -0400
+From:	rob@plan9.research.att.com
+To:	9fans@cse.psu.edu
+Date:	Tue, 19 Apr 1994 13:17:36 -0400
+Subject: Re: Why compile.c ?
+Message-Id: <94Apr19.133132edt.293742@psuvax1.cse.psu.edu>
+
+Why?  Why do by hand what a machine can do just
+as well or better?
+
+The SPARC MMU is inexcusably badly designed.
+To make a single kernel that supports all variants
+one must either write oodles of ugly assembly code,
+with loops that must be unrolled for speed, or generate
+code at boot-time tailored to the machine at hand.
+We chose the latter approach because it's really
+less code to maintain.  I wrote the compiler in just
+a couple of hours one afternoon.  It's very easy stuff.
+
+Since some of the code must be generated - for
+example, cache line sizes vary from model to model -
+what the hell?  Why not generate it all?  Easy, and
+susceptible to adaptation as SUN's creative minds
+continue to design hardware.
+

@@ -1,0 +1,266 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.8/8.12.3) with ESMTP id h2QKAbVk363115;
+	Wed, 26 Mar 2003 12:10:37 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id h2QGgjN22519;
+	Wed, 26 Mar 2003 11:42:45 -0500
+Date: Wed, 26 Mar 2003 11:42:45 -0500
+Message-Id: <CA-2003-11.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2003-11 Multiple Vulnerabilities in Lotus Notes and Domino
+Precedence: bulk
+Status: RO
+X-Status: $$$$
+X-UID: 0000000080
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-11 Multiple Vulnerabilities in Lotus Notes and Domino
+
+   Original release date: March 26, 2003
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Lotus Notes and Domino versions prior to 5.0.12 and 6.0 Gold
+     * VU#571297 affects 5.0.12, 6.0.1 and prior versions.
+
+Overview
+
+   Multiple  vulnerabilities  have  been  reported  to affect Lotus Notes
+   clients  and Domino servers. Multiple reporters, the close timing, and
+   some ambiguity caused confusion about what releases are vulnerable. We
+   are  issuing  this  advisory  to  help  clarify  the  details  of  the
+   vulnerabilities,  the  versions affected, and the patches that resolve
+   these issues.
+
+I. Description
+
+   In  February  2003, NGS Software released several advisories detailing
+   vulnerabilities  affecting  Lotus  Notes  and  Domino.  The  following
+   vulnerabilities  reported  by  NGS  Software  affect versions of Lotus
+   Domino prior to 5.0.12 and 6.0:
+
+     VU#206361   -  Lotus  iNotes  vulnerable  to  buffer  overflow  via
+     PresetFields FolderName field
+     Lotus Technical Documentation: KSPR5HUQ59
+     NGS Software's Advisory: NISR17022003b
+
+     VU#355169 - Lotus Domino Web Server vulnerable to denial of service
+     via incomplete POST request
+     Lotus Technical Documentation: KSPR5HTQHS
+     NGS Software's Advisory: NISR17022003d
+
+     VU#542873   -  Lotus  iNotes  vulnerable  to  buffer  overflow  via
+     PresetFields s_ViewName field
+     Lotus Technical Documentation: KSPR5HUPEK
+     NGS Software's Advisory: NISR17022003b
+
+     VU#772817  -  Lotus Domino Web Server vulnerable to buffer overflow
+     via  non-existent  "h_SetReturnURL"  parameter  with an overly long
+     "Host Header" field
+     Lotus Technical Documentation: KSPR5HTLW6
+     NGS Software's Advisory: NISR17022003a
+
+   The  following vulnerability reported by NGS Software affects versions
+   of Lotus Domino up to and including 5.0.12 and 6.0.1:
+
+     VU#571297  -  Lotus  Notes  and  Domino  COM Object Control Handler
+     contains buffer overflow
+     Lotus Technical Documentation: SWG21104543
+     NGS Software's Advisory: NISR17022003e
+
+   VU#571297  was  originally  reported  as  a vulnerability in an iNotes
+   ActiveX  control.  The  vulnerable  code  is not specific to iNotes or
+   ActiveX.  The  iNotes  ActiveX  control  was  an attack vector for the
+   vulnerability and is not the affected code base. Because this issue is
+   not  specific  to  ActiveX,  Lotus  Notes  clients  and Domino Servers
+   running on platforms other than Microsoft Windows may be affected.
+
+   In March 2003, Rapid7, Inc. released several advisories. The following
+   vulnerabilities,  reported  by  Rapid7, Inc., affect versions of Lotus
+   Domino prior to 5.0.12:
+
+     VU#433489 - Lotus Domino Server susceptible to a pre-authentication
+     buffer overflow during Notes authentication
+     Lotus Technical Documentation: DBAR5CJJJS
+     Rapid7, Inc.'s Advisory: R7-0010
+
+     VU#411489  -  Lotus Domino Web Retriever contains a buffer overflow
+     vulnerability
+     Lotus Technical Documentation: KSPR5DFJTR
+     Rapid7, Inc.'s Advisory: R7-0011
+
+   Rapid7,  Inc.  also  discovered that Lotus Domino pre-release and beta
+   versions of 6.0 were also affected by the following vulnerability:
+
+     VU#583184  -  Lotus  Domino  R5  Server  Family  contains  multiple
+     vulnerabilities in LDAP handling code
+     Lotus Technical Documentation: DWUU4W6NC8
+     Rapid7, Inc.'s Advisory: R7-0012
+
+   VU#583184  was  a  regression  of  the  PROTOS  LDAP  Test-Suite  from
+   CA-2001-18 and was originally fixed in 5.0.7a.
+
+II. Impact
+
+   The  impact  of  these vulnerabilities range from denial of service to
+   data  corruption  and  the  potential  to  execute arbitrary code. For
+   details  about  the impact of a specific vulnerability, please see the
+   related vulnerability note.
+
+III. Solution
+
+ Upgrade
+
+   Most  of  these  vulnerabilities  are  resolved in versions 5.0.12 and
+   6.0.1 of Lotus Domino.
+
+   Only  VU#571297,  "Lotus  Notes  and Domino COM Object Control Handler
+   contains  buffer  overflow,"  is  not  resolved  in  5.0.12, or 6.0.1.
+   Critical  Fix  1  for 6.0.1 was released on March 18, 2003, to resolve
+   this issue for both the Notes client and Domino server.
+
+ Apply a patch
+
+   Patches  are  available  for  some  vulnerabilities.  Please  view the
+   individual vulnerability notes for specific patch information.
+
+ Block access from outside the network perimeter
+
+   Lotus  Domino  servers  listen  on  port  1352/TCP.  Notes may also be
+   configured  to  listen  on  other ports, such as NETBIOS, SPX, or XPC.
+   Blocking  access  to  these  ports  from machines outside your trusted
+   network  perimeter  may help mitigate successful exploitation of these
+   vulnerabilities.
+
+Appendix A - References
+
+     1. http://www.kb.cert.org/vuls/id/571297
+     2. http://www.kb.cert.org/vuls/id/206361
+     3. http://www.ibm.com/Search?v=11</=en&cc=us&q=KSPR5HUQ59
+     4. http://www.nextgenss.com/advisories/lotus-inotesoflow.txt
+     5. http://www.kb.cert.org/vuls/id/355169
+     6. http://www.ibm.com/Search?v=11</=en&cc=us&q=KSPR5HTQHS
+     7. http://www.nextgenss.com/advisories/lotus-60dos.txt
+     8. http://www.kb.cert.org/vuls/id/542873
+     9. http://www.ibm.com/Search?v=11</=en&cc=us&q=KSPR5HUPEK
+     10. http://www.nextgenss.com/advisories/lotus-inotesoflow.txt
+     11. http://www.kb.cert.org/vuls/id/772817
+     12. http://www.ibm.com/Search?v=11</=en&cc=us&q=KSPR5HTLW6
+     13. http://www.nextgenss.com/advisories/lotus-hostlocbo.txt
+     14. http://www.kb.cert.org/vuls/id/571297
+     15. http://www.ibm.com/Search?v=11</=en&cc=us&q=swg21104543
+     16. http://www.nextgenss.com/advisories/lotus-inotesclientaxbo.txt
+     17. http://www.kb.cert.org/vuls/id/433489
+     18. http://www.ibm.com/Search?v=11</=en&cc=us&q=DBAR5CJJJS
+     19. http://www.rapid7.com/advisories/R7-0010.html
+     20. http://www.kb.cert.org/vuls/id/411489
+     21. http://www.ibm.com/Search?v=11</=en&cc=us&q=KSPR5DFJTR
+     22. http://www.rapid7.com/advisories/R7-0011.html
+     23. http://www.kb.cert.org/vuls/id/583184
+     24. http://www.ibm.com/Search?v=11</=en&cc=us&q=DWUU4W6NC8
+     25. http://www.rapid7.com/advisories/R7-0012.html
+     26. http://www.kb.cert.org/vuls/id/583184
+     27. http://www.ee.oulu.fi/research/ouspg/protos/testing/c06/ldapv3/
+     28. http://www.cert.org/advisories/CA-2001-18.html
+     29. http://www.kb.cert.org/vuls/id/571297
+     30. http://www-10.lotus.com/ldd/r5fixlist.nsf/80bff5d07b4be477052569ce0
+         0710588/8bc951d3ff1e578385256ce10052a78a?OpenDocument
+   _________________________________________________________________
+
+   Our  thanks  to  NGS  Software  and  Rapid7,  Inc. for discovering and
+   reporting  on  these vulnerabilities. We also thank the Lotus Security
+   Team for aiding in the resolution and clarification of these issues.
+   _________________________________________________________________
+
+   Feedback  on  this  document  can  be directed to the author, 
+   Jason A. Rafail.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2003-11.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2003 Carnegie Mellon University.
+
+   Revision History
+         Mar 26, 2003:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPoHV6GjtSoHZUTs5AQHRowQAqTsPoDgziMnlUsSw5IpRjK64Zzwjid6c
+e6DsWsBo3LhzPTd7jMTHHVhEBYeqf9uqrX7OEvYbeH81wCHAf/U7WK/nEw0godrj
+HBPVXV3V0WyiX39u3dH+E0xjuT/9Ij9dRmgKh/nTkSu4a2HeNOJJgUmReG72H7xg
+dBncDSyQ62M=
+=zLwf
+-----END PGP SIGNATURE-----
+

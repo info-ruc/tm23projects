@@ -1,0 +1,77 @@
+Received: from mtiwmhc07.worldnet.att.net (mtiwmhc07.worldnet.att.net [204.127.131.42])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id XAA01515
+	for <handyboard@media.mit.edu>; Tue, 16 Feb 1999 23:23:58 -0500 (EST)
+Received: from star-fury ([12.78.245.20]) by mtiwmhc07.worldnet.att.net
+          (InterMail v03.02.07 118 124) with SMTP
+          id <19990217042348.BMHJ20989@star-fury>
+          for <handyboard@media.mit.edu>; Wed, 17 Feb 1999 04:23:48 +0000
+Received: by localhost with Microsoft MAPI; Tue, 16 Feb 1999 23:16:12 -0500
+Message-Id: <01BE5A02.58004640.eacmen@postoffice.worldnet.att.net>
+From: Peter Eacmen <eacmen@postoffice.worldnet.att.net>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Easy communication between HBs
+Date: Tue, 16 Feb 1999 23:16:02 -0500
+X-Mailer: Microsoft Internet E-mail/MAPI - 8.0.0.4211
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+After struggling with it for many hours I found an alternative to Randy's 
+serialio.c serial communication which I couldn't get working.  So I used 
+the Pa7_9600 Baud Serial output from unknown origin (Fred?)
+(http://el.www.media.mit.edu/groups/el/projects/handy-board/software/ser  
+ial.html).
+I cut a standard RJ11 cable and soldered the Rx line(yellow) and the 
+ground(red) to the ends of a length 4 header.  The header goes into the 
+transmitting HB and the RJ11 connector goes into the RJ11 jack on the 
+recieving HB.  On the transmitting HB the header goes to digital input 9 
+with the yellow end up towards the LCD.
+If you have questions post to mailing list I might be able to help.
+
+Here's some sample code:
+
+Transmitting HB:
+/* sertest.c: tests pa7_9600() serial output routine */
+void main() {
+	int i;
+	while (1) {
+		for (i= 'A'; i<='z'; i++) {
+			pa7_9600(i);
+			printf("%c\n", i);
+			msleep(100L);
+		}
+		pa7_9600(13);  /* send carriage return */
+		pa7_9600(10);  /* send line feed */
+	}
+}	
+
+
+
+
+Recieving HB:
+void disable_pcode_serial()     /* disable board handshaking with IC   */
+                                /* on the host computer, allowing user */
+                                /* programs to receive serial data     */
+{
+    poke(0x3c, 1);
+}
+int serial_getchar()            /* read a serial character.  Note:  the */
+                                /* program hangs until a character is   */
+                                /* received!  There is no timeout!      */
+{
+    while (!(peek(0x102e) & 0x20));     /* wait until a character arrives 
+*/
+    return (peek(0x102f));              /* return it as an int */
+}
+
+void main()
+{
+int x=0;
+disable_pcode_serial();
+
+while(1)
+{
+	printf("\n%c",serial_getchar());
+}
+}
+

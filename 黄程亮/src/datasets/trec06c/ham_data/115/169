@@ -1,0 +1,223 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.193] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1MM3mt09150
+	for <egs+summary@cs.cornell.edu>; Wed, 22 Feb 2006 17:03:49 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id f1so1534574nzc
+        for <egs+summary@cs.cornell.edu>; Wed, 22 Feb 2006 14:03:48 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=CfeXYnChJd02PoO9xmjHvmoSypWq9zqd0f7uP2mw8dzB8eOchaHwHGDMM+yKX9FyJfryZxxbnTWEjwe9VA9XGIahht3wVwBl+Jt0uLIyoZzOY5Lq+5hhkxH8emA/rY9A07a76Np9lEQK/r12ysC5IkjZs/17oIWcBEvLNnlrZ2M=
+Received: by 10.36.157.19 with SMTP id f19mr5561218nze;
+        Wed, 22 Feb 2006 14:03:48 -0800 (PST)
+Received: by 10.36.146.8 with HTTP; Wed, 22 Feb 2006 14:03:48 -0800 (PST)
+Message-ID: <9aa7a97d0602221403u232e9eg8d6eefe9391f5579@mail.gmail.com>
+Date: Wed, 22 Feb 2006 17:03:48 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 9
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_24139_3983403.1140645828280"
+
+------=_Part_24139_3983403.1140645828280
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+    _A_Measurement_Study_of_Peer-to-Peer_File_Sharing_Systems_
+    Stefan Saroiu, P. Krishna Gummadi, Steven D. Gribble
+
+    This is an almost psychological study on the profiles of users of
+Napster and Gnutella, and of their habits and capabilities. It includes
+readings on bottleneck bandwidth between the various hosts and the internet
+at large, how often hosts connect and disconnect forom the system, how many
+hosts share and download, how much they cooperate, and the correlations
+between these various behavior. The end result of this study is that there
+is significant heterogeneity and lack of cooperation across peers
+participating in these systems, (conjecture:) most likely due to the lack o=
+f
+reward structure in place to induce cooperation. It is humorous that the
+authors feel that four days of Napster activity, and eight of Gnutella, is
+sufficient to draw conclusions about the systems: they claim that the main
+users of these systems are edge computers on the internet; the problem is
+that for such uncoordinated beings, time-of-year can have vastly important
+impact. For instance, the period during which they observed the systems is
+during Cornell's end-of-year, final, and graduation period; user activity i=
+s
+likely to be anything other than normal for college students!
+    Another odd result (under their Napster study) is that they discover
+that high speed connections to the internet users constitute both more of
+the peers and more than 3 times more of the upload traffic than modem, low
+speed connecting clients. They do not seem to draw the same result from thi=
+s
+as I do, which is that some do choose to identify themselves as possessing =
+a
+high speed; they get more downloads and many more uploads, and behave in al=
+l
+ways slightly utopian. On the down side, there are a large number of
+unknown-speed hosts; it is to these that the author's desire for a better
+reward structure exists.
+    They suggest that to solve the client's deliberate misrepresenting of
+connection capability, that the software automatically configure itself;
+this is a stopgap measure, but morally reprehensible. Not only does it not
+solve the problem (if you rely on these values, it is in the interest of th=
+e
+community to hack together a version of the client which will underreport)
+and make the user suspicious of what their computer is doing against them,
+it is in some senses a breach of confidence. Moreover, it's out of the scop=
+e
+of this paper: better phrasing would be to simply issue a call-to-arms for =
+a
+solution, without suggesting a software, versus protocol, solution.
+
+
+ _Measurement,_Modeling,_and_Analysis_of_a_Peer-to-Peer_File-Sharing_Worklo=
+ad_
+    Krishna P. Gummadi, Richard J. Dunn, Stefan Saroiu, Steven D. Gribble,
+Henry M. Levy, and John Zahorjan
+
+    Using a much larger trace of Kazaa traffic, this paper analyzes various
+file-sharing behavioral hypotheses. Among these are a debunking of the
+traditional view of Zipf-like distribution for content (due to specific
+filesharing characteristics), and the implications of this datum. Among the
+implications are optimizations for using the currently untapped locality of
+operations to improve the Kazaa workload, with quantified bandwidth savings=
+.
+Fortunately, this paper avoids some of the problems of the previous one, in
+that the data-gathering period was much longer, although for a much more
+constrained population, and thus took into account human behavioral pattern=
+s
+(as they determined that a large amount of their campus traffic was P2P
+related, studies during the summer will ignore that traffic!).
+    One thing that was not considered was the amount of data transferred
+over Kazaa; text, portable document format, and executable. The reason that
+this is relevant is that these formats are somewhat mutable, and might tend
+to combat the non-Zipf nature of Kazaa files; essentially, they form groups
+and aggregate their downloads for a general popularity metric. Similarly,
+the odd behavior surrounding new object arrival -- that new popular object
+crystallize load and thus lead to better network load behavior -- ignores
+the actual behaviors of users, who will seeks odd/archaic files regardless
+of the general opinion of them. In my experience, of course. The other odd
+news from this paper is bad news for consistent hashing schemes: to utilize
+locality-aware request routing, it is beneficial for clients to be aware of
+files that are within some internet-relevant domain -- perhaps on the same
+subnet, etc. However, under the ring based systems that we've studied, the
+nodeID of hosts (of objects) are some sort of hash of, say, the IP address
+-- and thus likely to be completely disassociated from the ID of the object=
+!
+This is not an insurmountable obstacle -- with sufficient indirection,
+nothing is insurmountable -- but it is a cause for a pause to think.
+    Finally, there is little incentive for peers to use some sort of
+locality aware caching scheme. This improves performance on a global sense,
+but requires admitting that one is "officially" hosting a file; a better wa=
+y
+would be for the protocol to build some sense of this into itself through
+some sort of anonymity routine. This is not a well thought out concept, but
+the problem is simple: their specific implementation of the locality
+heuristic relied on perfect global knowledge in a central location.
+
+------=_Part_24139_3983403.1140645828280
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+&nbsp;&nbsp; &nbsp;_A_Measurement_Study_of_Peer-to-Peer_File_Sharing_System=
+s_<br>
+&nbsp;&nbsp; &nbsp;Stefan Saroiu, P. Krishna Gummadi, Steven D. Gribble<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;This is an almost psychological study on the
+profiles of users of Napster and Gnutella, and of their habits and
+capabilities. It includes readings on bottleneck bandwidth between the
+various hosts and the internet at large, how often hosts connect and
+disconnect forom the system, how many hosts share and download, how
+much they cooperate, and the correlations between these various
+behavior. The end result of this study is that there is significant
+heterogeneity and lack of cooperation across peers participating in
+these systems, (conjecture:) most likely due to the lack of reward
+structure in place to induce cooperation. It is humorous that the
+authors feel that four days of Napster activity, and eight of Gnutella,
+is sufficient to draw conclusions about the systems: they claim that
+the main users of these systems are edge computers on the internet; the
+problem is that for such uncoordinated beings, time-of-year can have
+vastly important impact. For instance, the period during which they
+observed the systems is during Cornell's end-of-year, final, and
+graduation period; user activity is likely to be anything other than
+normal for college students! <br>
+&nbsp;&nbsp; &nbsp;Another odd result (under their Napster study) is
+that they discover that high speed connections to the internet users
+constitute both more of the peers and more than 3 times more of the
+upload traffic than modem, low speed connecting clients. They do not
+seem to draw the same result from this as I do, which is that some do
+choose to identify themselves as possessing a high speed; they get more
+downloads and many more uploads, and behave in all ways slightly
+utopian. On the down side, there are a large number of unknown-speed
+hosts; it is to these that the author's desire for a better reward
+structure exists.<br>
+&nbsp;&nbsp; &nbsp;They suggest that to solve the client's deliberate
+misrepresenting of connection capability, that the software
+automatically configure itself; this is a stopgap measure, but morally
+reprehensible. Not only does it not solve the problem (if you rely on
+these values, it is in the interest of the community to hack together a
+version of the client which will underreport) and make the user
+suspicious of what their computer is doing against them, it is in some
+senses a breach of confidence. Moreover, it's out of the scope of this
+paper: better phrasing would be to simply issue a call-to-arms for a
+solution, without suggesting a software, versus protocol, solution.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;_Measurement,_Modeling,_and_Analysis_=
+of_a_Peer-to-Peer_File-Sharing_Workload_<br>
+&nbsp;&nbsp; &nbsp;Krishna P. Gummadi, Richard J. Dunn, Stefan Saroiu, Stev=
+en D. Gribble, Henry M. Levy, and John Zahorjan<br>
+<br>
+&nbsp;&nbsp; &nbsp;Using a much larger trace of Kazaa traffic, this
+paper analyzes various file-sharing behavioral hypotheses. Among these
+are a debunking of the traditional view of Zipf-like distribution for
+content (due to specific filesharing characteristics), and the
+implications of this datum. Among the implications are optimizations
+for using the currently untapped locality of operations to improve the
+Kazaa workload, with quantified bandwidth savings. Fortunately, this
+paper avoids some of the problems of the previous one, in that the
+data-gathering period was much longer, although for a much more
+constrained population, and thus took into account human behavioral
+patterns (as they determined that a large amount of their campus
+traffic was P2P related, studies during the summer will ignore that
+traffic!).<br>
+&nbsp;&nbsp; &nbsp;One thing that was not considered was the amount of
+data transferred over Kazaa; text, portable document format, and
+executable. The reason that this is relevant is that these formats are
+somewhat mutable, and might tend to combat the non-Zipf nature of Kazaa
+files; essentially, they form groups and aggregate their downloads for
+a general popularity metric. Similarly, the odd behavior surrounding
+new object arrival -- that new popular object crystallize load and thus
+lead to better network load behavior -- ignores the actual behaviors of
+users, who will seeks odd/archaic files regardless of the general
+opinion of them. In my experience, of course. The other odd news from
+this paper is bad news for consistent hashing schemes: to utilize
+locality-aware request routing, it is beneficial for clients to be
+aware of files that are within some internet-relevant domain -- perhaps
+on the same subnet, etc. However, under the ring based systems that
+we've studied, the nodeID of hosts (of objects) are some sort of hash
+of, say, the IP address -- and thus likely to be completely
+disassociated from the ID of the object! This is not an insurmountable
+obstacle -- with sufficient indirection, nothing is insurmountable --
+but it is a cause for a pause to think.<br>
+&nbsp;&nbsp; &nbsp;Finally, there is little incentive for peers to use
+some sort of locality aware caching scheme. This improves performance
+on a global sense, but requires admitting that one is &quot;officially&quot=
+;
+hosting a file; a better way would be for the protocol to build some
+sense of this into itself through some sort of anonymity routine. This
+is not a well thought out concept, but the problem is simple: their
+specific implementation of the locality heuristic relied on perfect
+global knowledge in a central location.
+
+------=_Part_24139_3983403.1140645828280--
+

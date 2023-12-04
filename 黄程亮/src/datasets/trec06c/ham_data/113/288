@@ -1,0 +1,90 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k191Hwt08132
+	for <egs+summary>; Wed, 8 Feb 2006 20:17:58 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k191Hv1b006616
+	for <egs+summary>; Wed, 8 Feb 2006 20:17:57 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Wed, 8 Feb 2006 20:17:57 -0500 (EST)
+Message-ID: <1716.128.84.98.90.1139447877.squirrel@webmail.cornell.edu>
+Date: Wed, 8 Feb 2006 20:17:57 -0500 (EST)
+Subject: paper 6 - O(1)
+From: "Abhishek Santosh Gupta" <asg46>
+To: egs+summary
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+ONE HOP LOOKUPS
+
+
+
+BASIC STRUCTURE:
+
+every node randomly chooses a 128-bit node identifier resulting in the
+formation of a ring.
+the ring is divided into k contiguous intervals called slices. each slice
+has a slice leader which is dynamically chosen as the successor of the
+mid-point of the slice identifier space.
+
+each slice is subdivided into u equal units. Each unit has a unit leader
+which is dynamically chosen as the successor of the mid-point of the slice
+identifier space.
+
+
+NODE STATE : each node stores O(n) state. using odinary pinging mechansims
+"keep alive" messages would  consume considerable bandwidth- however the
+above structure helps to reduce this b/w consumption.
+
+this results in O(1) lookup for most queries ( f is defined fraction). A
+query fails in its first attempt only if the notification due to
+membership change does not reach the querying node before the
+query.
+
+
+
+INFORMATION FLOW:
+1) whenever a node detects a change in membership(due to failed successor
+or new node) it sends a message to its slice leader
+2) the slice leader collects all such messages aggregates them for tbig
+before sending to other slice leaders
+(note that communication between different slice leaders is not synchronized)
+3) each slice leader aggreates the messages that it recieves for twait and
+then dispatches the aggregate message to
+unit leaders.
+4) information now flows within each unit such that if flows always away
+from the unit leader to the end of the unit.
+
+CHOOSING VALUES:
+the authors represent all variables in the form of 2 independent variables
+k and u and optimise the amount of b/w required for this entire
+information flow process stated above.
+
+
+leaders require more bandwidth than an odinary node. the authors suggest
+that some nodes could be classified as "super nodes" provided they satisfy
+required bandwidth criteria which seems pretty reasonable.
+
+POTENTIAL FLAWS:
+
+The authors mention that when a slice or unit leader fails, its successor
+detects this failure and becomes the new leader. It will also communicate
+with remaining nodes for missed events.
+However, the authors do not discuss as to what protocol should be carried
+out if a slice leader fails just before twait i.e. it has aggregated a set
+of messages (to which it has also sent ack) - these messages would be lost
+unless the sending node buffers the message even after receiving the
+acknowledgement.
+
+a similar situation also arises if a slice leader fails before tbig.
+in both cases, buffering should be sufficient, however increasing the
+lookup time for a certain set of queries.
+note that the interval at which the buffer can be reused is at the max
+total information flow cycle time (ttot)
+
+
+

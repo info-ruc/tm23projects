@@ -1,0 +1,59 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9C2Ctb0000355
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Tue, 11 Oct 2005 21:12:55 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.4/Submit) id j9C2Ctvk000354
+	for reliable_computing-outgoing; Tue, 11 Oct 2005 21:12:55 -0500 (CDT)
+Received: from its-exsmtp1.marqnet.mu.edu (email.marquette.edu [134.48.20.169])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9C2Ch8F000350
+	for <reliable_computing@interval.louisiana.edu>; Tue, 11 Oct 2005 21:12:52 -0500 (CDT)
+Received: from its-exfe2.marqnet.mu.edu ([134.48.20.167]) by its-exsmtp1.marqnet.mu.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 11 Oct 2005 21:12:07 -0500
+Received: from [192.168.1.101] ([65.29.133.38] RDNS failed) by its-exfe2.marqnet.mu.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 11 Oct 2005 21:12:06 -0500
+User-Agent: Microsoft-Entourage/10.1.4.030702.0
+Date: Tue, 11 Oct 2005 21:12:48 -0500
+Subject: Re: How can I evaluate interval initial value problem solver?
+From: George Corliss <George.Corliss@marquette.edu>
+To: <gfdong@sjtu.edu.cn>, <reliable_computing@interval.louisiana.edu>
+Message-ID: <BF71DB50.1D03B%George.Corliss@Marquette.edu>
+In-Reply-To: <20051011090651.AEB3A10CDA04@sjtu.edu.cn>
+Mime-version: 1.0
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+X-OriginalArrivalTime: 12 Oct 2005 02:12:07.0080 (UTC) FILETIME=[585BEA80:01C5CED2]
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+> for example
+> y\'=f(y,t)  the initial condition is y0=[a,b] ,t=0 to tend
+> 
+> is the width of interval y(tend) an index to evaluate the solver??
+I'm not sure exactly what you are asking.  Are you asking about how to
+compare the quality of two interval solvers?  If so, comparing the width of
+the interval y(tend) is one measure.  A more comprehensive measure would be
+some norm of width of the interval y(t) for t in [0, tend].  You could also
+compare the widths of the defects y'(t) - f(t,y).
+
+If you do any of those, you should be careful of concluding too much.  You
+will only have compared the tightness performance of the two methods on that
+problem.  The tightness performance on another problem might be quite
+different.
+
+If what you want is an evaluation of the quality of a single interval
+solver, you probably want some measure of the EXCESS width, although
+authorities differ on the most appropriate way to express excess width,
+especially in dimensions greater than one.
+
+Dr. George F. Corliss
+Electrical and Computer Engineering
+Marquette University
+PO Box 1881 
+1515 W. Wisconsin Ave.
+Milwaukee WI 53201-1881 USA
+414-288-6599; Fax: 288-5579; Dept. 288-6280
+Office: Haggerty Engineering 296
+George.Corliss@Marquette.edu
+
+
+

@@ -1,0 +1,39 @@
+Received: from plan9.bell-labs.com (plan9.bell-labs.com [204.178.31.2]) by cse.psu.edu (8.8.8/8.7.3) with SMTP id IAA06950 for <9fans@cse.psu.edu>; Wed, 20 May 1998 08:51:24 -0400 (EDT)
+Message-Id: <199805201251.IAA06950@cse.psu.edu>
+Date: Wed, 20 May 1998 08:45:52 -0400
+To: 9fans@cse.psu.edu
+From: "Russ Cox" <rsc@plan9.bell-labs.com>
+Subject: re: [9fans] u9fs and _conform.map
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+I had a similar problem a couple months ago and solved
+it with disk space.  I copied the entire CD onto a Unix
+disk and then did something approximately:
+
+	cat _conform.map | sed 's/^F/f/g;s/^D/d/g' | sort > $HOME/conform.map
+
+	% cat $HOME/fix
+	#!/bin/sh
+
+	for i in *	
+	do
+		if test -d $i
+			(cd $i; $HOME/fix)
+	done
+
+	for i in d00* f00*
+	do
+		x=`look $i $HOME/conform.map`
+		mv $i $x
+	done
+	% cd $HOME/plan9cd
+	% $HOME/fix
+
+which worked pretty well.  A warning: I just
+typed that shell script on the fly while writing this
+message.  I can't find the one I used when I did it,
+but that conveys the basic gist.
+
+

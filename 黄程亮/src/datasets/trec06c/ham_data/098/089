@@ -1,0 +1,90 @@
+Received: from smtp6.wiscmail.wisc.edu (fafner.doit.wisc.edu [144.92.197.155])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iBGHc8FJ009129
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Dec 2004 10:38:08 -0700
+Received: from avs-daemon.smtp6.wiscmail.wisc.edu by smtp6.wiscmail.wisc.edu
+ (iPlanet Messaging Server 5.2 Patch 2 (built Jul 14 2004))
+ id <0I8T00G0VSZD6M@smtp6.wiscmail.wisc.edu> for DMDX@psy1.psych.arizona.edu;
+ Thu, 16 Dec 2004 11:38:01 -0600 (CST)
+Received: from wiscmail.wisc.edu (sneezy [144.92.197.154])
+ by smtp6.wiscmail.wisc.edu
+ (iPlanet Messaging Server 5.2 Patch 2 (built Jul 14 2004))
+ with ESMTP id <0I8T00EW4SZCV0@smtp6.wiscmail.wisc.edu> for
+ DMDX@psy1.psych.arizona.edu; Thu, 16 Dec 2004 11:38:00 -0600 (CST)
+Received: from [144.92.197.219] (Forwarded-For: [144.92.195.187])
+ by mailst3.doit.wisc.edu (mshttpd); Thu, 16 Dec 2004 11:38:01 -0600
+Date: Thu, 16 Dec 2004 11:38:01 -0600
+From: JOHN J CURTIN <jjcurtin@facstaff.wisc.edu>
+Subject: [DMDX] PIO output issue
+To: DMDX@psy1.psych.arizona.edu
+Message-id: <54183d546112.54611254183d@wiscmail.wisc.edu>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7BIT
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi Jonathan,
+We have had continued infrequent problems using DMDX to send triggers 
+(event codes) with the Computerboards/Measurement Computing PIO card 
+to 
+amplifiers (Neuroscan synamps) that are monitoring participant's 
+physiology.  Periodically, triggers recorded by the synamps are 
+incorrect.  I've been working with an engineer here and he believes he 
+has identified the source of the problem.  Here is what he says....
+
+;;;;;;;;;;;;;;;;;;;
+New and interesting info about DMDX and SYNAMPS trigger ports.
+
+The 3 erroneous values  out of 1000 received by SYNAMPS are also 
+occurring on your systems on the first floor.  I've pretty well 
+characterized the behavior, and I think I know what is going on.
+
+It starts with DMDX and the I/O card.  DMDX is writing to port C one 
+nibble at a time, not a whole byte.  First it writes the lower 4 bits, 
+then it writes the higher 4 bits, 4 microseconds later.
+
+It appears that the synamps does _not_ watch the 
+trigger port continuously and wait for a change and log it.  I believe 
+it samples the trigger port at the same rate that it samples the A/D 
+converter and when it sees something other than 255 at the sample 
+time, it logs it, then waits for it to go back to 255 and starts 
+looking again for change - at the sampling rate.
+
+The sampling rate clock is running asynchronously to the trigger port 
+pulses, so every now and then (approx 3 out of 1000) the trigger port 
+is 
+sampled during that 4 us. when half of the byte at port C is correct 
+and the other half is all ones, leading to the bad trigger values that 
+Jeremy 
+is reporting.
+
+Port C has the ability to be written as a complete byte but it appears 
+that either the DMDX author or the card manufacturer drivers chose not 
+to use it that way.  I would lean towards it being a DMDX problem.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+Is he correct that DMDX writes to  port C in two sets of 4 bits rather 
+than the full byte?  If so, I agree with him that this could be the 
+source of our trigger problem with the synamps.  In fact, the specific 
+trigger errors are all consistent with his assessment.
+
+If he is correct, is it possible to have new PIO devices that write 
+the full byte to Port C rather than two successive nibbles?  I have 
+sponsored changes in the past but if needed would be willing to 
+sponsor another if you are willing to make such a change.
+
+Thanks John
+
+John J. Curtin, Ph.D.
+Assistant Professor of Psychology
+University of Wisconsin
+1202 West Johnson St.
+Madison, WI 53706
+
+Email: jjcurtin@wisc.edu
+Office: 608-262-0387
+Lab: 608-262-5621
+Cell: 608-217-6221
+Fax: 608-262-4029
+

@@ -1,0 +1,76 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id WAA06942
+	for <handyboard@media.mit.edu>; Wed, 5 Apr 2000 22:12:28 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id WAA06330; Wed, 5 Apr 2000 22:12:27 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7714
+From: "Tommy Thammavongsa" <tthammav@yahoo.com>
+X-Real-Life-Name: Tommy Thammavongsa
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Output to file option for IC?
+Posted-Date: Thu, 6 Apr 2000 02:11:55 GMT
+Date: Thu, 6 Apr 2000 02:11:55 GMT
+Organization: none
+Message-Id: <FsKorv.4rL@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+It would be cool if IC can output results to a file.  well, since it can't
+does anyone have code available for borland c++ which will receive data over
+the serial port?  I found some code from earlier posts, but can't seem to find
+one that works.
+
+I think this came the closest.  I never get "98" back and connection between
+IC and the board was lost every time I tried to read the data.
+
+ANY HELP IS APPRECITED... THANKS!
+
+Here's the code:
+--------------------------------------------------------------
+HB side:
+void iotest(void)
+{
+  disable_pcode_serial();
+  serial_putchar(98);
+  reenable_pcode_serial();
+}
+
+--------------------------------------------------------------
+Borland C++ code:
+
+#include <stdio.h>
+#include <dos.h>
+#include <string.h>
+#include <ctype.h>
+
+#define PORT1 0x3F8 /* com1 */
+
+
+void initialize_comport(void)
+{
+  outportb(PORT1+1,0); /* turn off interrupts */
+  outportb(PORT1+3,0x80); /* set DLAB on */
+  outportb(PORT1+0,0x0C); /* set baud rate - divisor latch low byte */
+                                                /* 0x01 = 115,200 BPS */
+                                                /* 0x02 = 56,700 BPS */
+                                                /* 0x03 = 38,400 BPS */
+                                                /* 0x06 = 19,200 BPS */
+                                                /* 0x0C = 9,600 BPS */
+                                                /* 0x18 = 4,800 BPS */
+                                                /* 0x30 = 2,400 BPS */
+  outportb(PORT1+1,0x00); /* set baud rate - divisor latch high byte */
+  outportb(PORT1+3,0x03); /* 8 bits, no parity, 1 stop bit */
+  outportb(PORT1+2,0xC7); /* FIFO control register */
+  outportb(PORT1+4,0x0B); /* turn on DTR, RTS, and OUT2 */
+}
+
+void main()
+{
+  initialize_comport();
+  printf("%d",inportb( PORT1 ));
+}
+

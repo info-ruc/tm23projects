@@ -1,0 +1,144 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id h02G3iZ28789
+	for <ggilfoyl@facstaff.richmond.edu>; Thu, 2 Jan 2003 11:03:44 -0500
+Received: from monty.richmond.edu (monty.richmond.edu [141.166.188.13])
+	by argyle.richmond.edu (8.11.6/8.11.6) with ESMTP id h02G2TW27687
+	for <ggilfoyl@richmond.edu>; Thu, 2 Jan 2003 11:02:29 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by monty.richmond.edu (8.11.6/8.11.6) with SMTP id h02G6aV24975
+	for <ggilfoyl@richmond.edu>; Thu, 2 Jan 2003 11:06:36 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2003010211021409774
+ for <ggilfoyl@richmond.edu>; Thu, 02 Jan 2003 11:02:14 -0500
+Received: from zax.linuxlabs.com (zax.linuxlabs.com [216.162.42.14])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id h02G2Eq26173
+	for <ggilfoyl@richmond.edu>; Thu, 2 Jan 2003 11:02:14 -0500
+Received: (from www-data@localhost)
+	by zax.linuxlabs.com (8.11.1/8.11.1/Debian 8.11.0-6) id h02G2D824711;
+	Thu, 2 Jan 2003 11:02:13 -0500
+To: ggilfoyl@richmond.edu, gilfoyle <ggilfoyl@mindspring.com>
+Subject: Re: even more questions about the Richmond cluster
+Message-ID: <1041523333.3e146285a2a2d@zax.linuxlabs.com>
+Date: Thu, 02 Jan 2003 11:02:13 -0500 (EST)
+From: Steven James <pyro@linuxlabs.com>
+Cc: steven james <pyro@linuxlabs.com>
+References: <3E146ECE.CEAD2D4E@mindspring.com>
+In-Reply-To: <3E146ECE.CEAD2D4E@mindspring.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: IMP/PHP IMAP webmail program 2.2.3
+X-Originating-IP: 67.30.249.74
+X-MailScanner: Found to be clean
+X-MailScanner-SpamCheck: not spam, SpamAssassin (score=-1, required 5,
+	IN_REP_TO, REFERENCES, SPAM_PHRASE_00_01, USER_AGENT)
+Status:   
+X-Mozilla-Status: 8013
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004757
+
+Greetings,
+
+Just for variety, I'll answer the questions from easy to hard order :-)
+
+/var/spool/mqueue filling:
+var/spool/mqueue is where outgoing mail goes for sendmail to process (even if
+it's going from and to a local user). 
+
+Currently, sendmail isn't running on pscm1, so the mail piles up in mqueue
+rather than being delivered to user mailbox files in /var/spool/mail.
+
+/var/spool/at is where the batch system holds job output until completion. Upon
+completion, it will mail the output to the job's owner.
+
+Probably, sendmail should be running on the master.
+
+To avoid overfilling /var, /var/spool can either be symlinked to a larger volume
+(/usr or to one of the RAID volumes) or have your batch scripts redirect the
+output to a scratch file and then move (or bpcp) it to the user's home directory
+when the run is complete.
+
+I am currently tracking down a bug in the batch queue that pushes jobs off to
+the b queue and leaves them there when they can't be immediatly dispatched. I
+believe there is a workaround for that, I'll dig that up and send it to you. The
+ultimate solution will be an update to the at rpm.
+
+Changing the loadaverage threshold won't do anything here. The bproc mods to the
+batch queue system use a 'slot allocation' rather than loadavg. The slot
+allocator assumes that the best allocation is 1 job per CPU on a compute node.
+
+That is done for three reasons. First, that's generally a better allocation for
+any scientific computation while loadavg is better suited for general purpose
+servers. Second, loadavg is more expensive to compute in that it will generate
+extra net traffic and disrupt the cache and take extra locks on the compute
+nodes (which will hurt performance). Compute jobs often have bursts of I/O where
+the job will sleep waiting, followed by long periods of pure computation. That
+can cause a brief dip in apparent loadavg and lead to bad allocations.
+
+G'day,
+sjames
+
+Quoting gilfoyle <ggilfoyl@mindspring.com>:
+
+> Hi Steven,
+> 
+>    Happy New Year and yet another question about the Richmond cluster. 
+> I have been experimenting with different ways of running the cluster 
+> and I have run into a problem with the batch system. I'm submitting 
+> jobs in two different ways; one uses the beomap command to allocate 
+> slave nodes and the other just picks the slave nodes `by hand'. I'm 
+> using this second method because the limiting factor now is the 
+> ability to transfer the data files to the slave nodes. I was thinking 
+> that I could transfer the data on the first pass and leave it there 
+> for later passes to speed things up. The problem now is that after 
+> many jobs are submitted (from 60-100 of so) the remaining jobs get 
+> sent to the `b' batch queue and never run. This has happened even when 
+> the /var/spool area is not full. My thoughts are the following.
+> 
+> 1. Can we reset the average cpu load with the 'atd -l' command? I've 
+> tried this and it seems to have little effect.
+> 
+> 2. Can we restart the jobs in the queue? Now they just sit there and 
+> never get started.
+> 
+> 3. In some of the recent analysis runs, the /var/spool/mqueue area has 
+> filled up and hung things up. Before it was the /var/spool/at or 
+> /var/spool/mail areas. Do you have any idea what would cause that? 
+> Should we make a link for /var/spool/mqueue to one of RAID disks so 
+> there is plenty of space?
+> 
+> Let me know what you think?
+> 
+> Thanks-in-advance,
+> 
+> jerry
+> 
+> -- 
+> Dr. Gerard P. Gilfoyle
+> Physics Department                e-mail: ggilfoyl@richmond.edu
+> University of Richmond, VA 23173  phone:  804-289-8255
+> USA                               fax:    804-289-8482
+> 
+
+
+
+----------------------------steven james, director of research, linux labs
+
+LinuxBIOS Cluster Solutions                   230 peachtree st nw ste 2705
+
+High-Speed Colocation, Hosting,                        atlanta.ga.us 30303
+
+Linux Hardware, Development & Support             http://www.linuxlabs.com
+
+* Visit us at SuperComputing 2002, Booth 1441 *   office/fax 404.577.7747/3
+
+--------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

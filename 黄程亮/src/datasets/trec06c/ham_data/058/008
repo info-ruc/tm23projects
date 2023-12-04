@@ -1,0 +1,155 @@
+Received: from sirius.mrc-cbu.cam.ac.uk (0@sirius.mrc-cbu.cam.ac.uk [192.153.213.178])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id IAA03673
+	for <dmdx@psy1.psych.arizona.edu>; Mon, 6 Dec 1999 08:51:43 -0700
+Received: from pc111 by sirius.mrc-cbu.cam.ac.uk
+	  with Sendmail (8.8.8/V3080601); Mon, 6 Dec 1999 15:51:32 GMT
+Message-Id: <3.0.5.32.19991206155215.008a39c0@pophost.mrc-cbu.cam.ac.uk>
+Date: Mon, 06 Dec 1999 15:52:15 +0000
+To: DMDX@psy1.psych.arizona.edu
+From: Matt Davis <matt.davis@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Scrambling without changing the block order
+Cc: russell.epstein@mrc-cbu.cam.ac.uk
+In-Reply-To: <3.0.5.32.19991206124903.008d24c0@pophost.mrc-cbu.cam.ac.uk
+ >
+References: <3.0.5.32.19991206121424.008eccc0@pophost.mrc-cbu.cam.ac.uk >
+Mime-Version: 1.0
+Content-Type: text/enriched; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+We would like to use DMDX to run an experiment in which items within a
+block are presented in random order, but the blocks of items are
+presented in a fixed order - always the same for each subject. However,
+the standard scrambling option re-orders the blocks (as well as
+re-ordering the items).
+
+
+Apparently there was a way to disable the block re-ordering part of the
+scrambling code in DMASTR. We found the following in the manual:
+
+
+--------
+
+A backslash essentially divides the item file into two or more separate
+files. Once a backslash is encountered, all the preceding material is
+scrambled
+
+and output, and then the material after the initial backslash is treated
+as a new input. 
+
+
+The implication of this option is that one can define segments to be
+scrambled in the normal way, except that the segments retain a fixed
+serial order relative to each other. So for example, if you had an
+experiment with two different tasks, and it was important to make sure
+that all the items for one task were presented before all the items on
+the second task, then a backslash separating the two phases of the
+experiment is required. If this option is not used, then you will find
+that items from the second phase will appear in the first, and vice
+versa. 
+
+--------
+
+
+which sounds like what we need to use. But wherever I try and put a
+backslash into a DMDX file I get an error on the item after the backslash
+and scrambling still seems to pick from either of the blocks.
+
+
+Is the backslash included in DMDX V1.1.11? If so, what's the syntax that
+we need to use to get this working?
+
+
+I've attached a short sample script underneath.
+
+
+Many thanks,
+
+
+Matt
+
+
+
+---------sample script---------------
+
+
+<fontfamily><param>Times New Roman</param><bigger>N16 <<s 8> <<azk> <<cr>
+<<nfb> f38 <<t 2000> <<id "keyboard"> <<vm 800,600,600,8,0>
+
+ $ 
+
+ 0 "Press SPACEBAR to start"; 
+
+ 250 <<ms% 500> /;
+
+ $ 
+
+ +1 *  "rabies"  /; 
+
+ +2 *  "ash" /; 
+
+ +3 *  "bacon" /; 
+
+ +4 *  "game" /; 
+
+ -5 *  "graddle" /; 
+
+ -6 *  "lunce" /; 
+
+ -7 *  "brantly" /; 
+
+ -8 *  "skelve" /; 
+
+ $ 
+
+ 0 <<Bell> <<ln -2> "Have a Break", <<ln 2> "Press SPACEBAR to restart"; 
+
+ 250 <<ms% 500> /;
+
+ $
+
+ \
+
+ +9 *  "faked" /; 
+
+ +10 *  "stale" /; 
+
+ +11 *  "hedge" /; 
+
+ +12 *  "believe" /; 
+
+ -13 *  "smarkle" /; 
+
+ -14 *  "indrastal" /; 
+
+ +15 *  "snoths" /; 
+
+ -16 *  "embrint" /; 
+
+ $ 
+
+ 0 "The End.  Thank You."; 
+
+ $
+
+</bigger></fontfamily>
+
+****************************************************
+
+ Matt Davis
+
+ MRC Cognition and Brain Sciences Unit
+
+ 15 Chaucer Road, Cambridge, CB2 2EF
+
+
+ email: matt.davis@mrc-cbu.cam.ac.uk
+
+   tel: 01223 355 294 (#621)
+
+   Fax: 01223 359 062
+
+
+****************************************************
+

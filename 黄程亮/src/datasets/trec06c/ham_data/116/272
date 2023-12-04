@@ -1,0 +1,47 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k27GQBt26265
+	for <egs@cs.cornell.edu>; Tue, 7 Mar 2006 11:26:11 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k27GQ9Ak026021
+	for <egs@cs.cornell.edu>; Tue, 7 Mar 2006 11:26:10 -0500 (EST)
+Received: from 128.84.153.218
+        by webmail.cornell.edu with HTTP;
+        Tue, 7 Mar 2006 11:26:10 -0500 (EST)
+Message-ID: <1150.128.84.153.218.1141748770.squirrel@webmail.cornell.edu>
+Date: Tue, 7 Mar 2006 11:26:10 -0500 (EST)
+Subject: paper 12
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Both PAST and CFS are highly similar in many ways. Both are layered on top
+of a ring-topology (Pastry and Chord respectively), replicate files on the
+k closest or next nodes, and perform reactive path caching. The
+differences they have are slight and both could easily have been extended
+to include the additional of others: CFS will automatically split files
+into blocks that are stored separately while PAST leaves that up to the
+supplier, and PAST supports replica and file diversion through pointers
+and choosing different random salts. PAST also sets a criteria by which
+nodes can choose to reject pushed replica or primary file storage requests
+based on the size of the file and available space left on the node.
+
+PAST and CFS have complementary problems with regards to file size issues.
+In CFS, a large file is fragmented and stored as numerous blocks that can
+end up on many different nodes. This causes a linear increase in the
+number of lookups and hops required to reassemble the file. In PAST,
+finding a node that would accept such a large file would be the issue,
+though even then, the supplier could opt to fragment the file and store
+arbitrarily smaller blocks independently. PAST could, however, require
+more hops to figure out a suitable block size for the file as it waits for
+insert rejections before retrying at smaller sizes. Neither PAST or CFS
+really present anything in the way of how file server network systems are
+utilized in the real world, so it's hard to judge the effect of this. PAST
+does conduct an experiment on a trace of web proxies, but the utilization
+of web proxies and a NFS would likely be extremely different based on
+usage and the average size of files stored.
+

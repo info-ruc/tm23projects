@@ -1,0 +1,140 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with ESMTP id FAA07010
+	for <handyboard@media.mit.edu>; Thu, 20 Jan 2000 05:17:01 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id FAA29822; Thu, 20 Jan 2000 05:17:02 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7329
+From: "Kah Mun" <lowk@union.edu>
+X-Real-Life-Name: Kah Mun
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Shaft encoder
+Posted-Date: Thu, 20 Jan 2000 10:16:04 GMT
+Date: Thu, 20 Jan 2000 10:16:04 GMT
+Organization: none
+Message-Id: <FoMpus.MMC@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+
+I'm using a slot sensor (break beam) as part of my shaft encoding. the slot
+sensor is reading the number of breaks when the 6 spokes (attached to the
+shaft) spins. i'm using the Sencdr1.icb file to do drive the shaft encoder.
+i notice that there isn't a great change in the velocity calculated by the the
+shaft encoder & driver. what's the problem??
+
+here's the code for the driver:
+
+* handy board shaft encoders
+* simple (non-quadrature) encoder
+*   with hysteresis on counting transitions
+* samples at 250 Hz. rate
+
+* operates off of system interrupt
+
+*  Fred Martin
+*  22 Apr 1996
+
+* 6811 registers
+BASE	EQU	$1000
+ADCTL	EQU	$1030	; A/D Control/status Register
+ADR1	EQU	$1031	; A/D Result Register 1
+TOC4INT	EQU	$E2	; Timer Output Compare 4
+
+ANLGPORT EQU	1
+
+* zero-page global variables
+system_time_hi	EQU	$12
+system_time_lo	EQU	$14
+
+	ORG	MAIN_START
+
+* low and high thresholds for counting pulses
+variable_encoder1_low_threshold:		FDB	50
+variable_encoder1_high_threshold:		FDB	200
+
+* tick and velocity counts
+variable_encoder1_counts:			FDB	0
+variable_encoder1_velocity:			FDB	0
+
+* internal variables
+encoder_state:					FCB	0
+last_counts:					FDB	0
+
+
+* install module into 1 kHz IC system interrupt on TOC4
+subroutine_initialize_module:
+	LDX	#$BF00			; pointer to interrupt base
+* install ourselves onto system interrupt
+* get current vector; poke such that when we finish, we go there
+	LDD	TOC4INT,X		; SystemInt on TOC4
+	STD	interrupt_code_exit+1
+
+* install ourself as new vector
+	LDD	#interrupt_code_start
+	STD	TOC4INT,X
+
+* reset encoder variables
+	LDD	#0
+	STAA	encoder_state
+	STD	variable_encoder1_counts
+	STD	variable_encoder1_velocity
+	STD	last_counts
+
+	RTS
+
+
+* encoder interrupt code:
+*	check for transition every 4th time called (250 Hz)
+* 	calculate velocities at about 16 Hertz (exactly:  1000 / 64 Hz.)
+interrupt_code_start:
+	LDAA	system_time_lo+1	; lowest byte
+	ANDA	#%00000011
+	BNE	interrupt_code_exit
+
+	LDX	#BASE
+
+* get analog reading
+	LDAA	#ANLGPORT
+	STAA	ADCTL,X
+	BRCLR	ADCTL,X $80 *
+	LDAA	ADR1,X
+
+	TST	encoder_state
+* if zero, look for rising edge
+	BNE	test_falling
+	CMPA	variable_encoder1_high_threshold+1
+	BLO	encdr_done
+* got it! increment
+got_click:
+	LDY	variable_encoder1_counts
+	INY
+	STY	variable_encoder1_counts
+	LDAA	encoder_state
+	EORA	#$FF
+	STAA	encoder_state
+
+	BRA	encdr_done
+test_falling:
+	CMPA	variable_encoder1_low_threshold+1
+	BLO	got_click
+
+encdr_done:
+* calc velocities every 64 calls
+	LDAA	system_time_lo+1	; lowest byte
+	ANDA	#%001111111
+	BNE	interrupt_code_exit
+
+* velocities are ticks since last interrupt
+	LDD	variable_encoder1_counts
+	SUBD	last_counts
+	STD	variable_encoder1_velocity
+	LDD	variable_encoder1_counts
+	STD	last_counts
+
+interrupt_code_exit:
+	JMP	$0000		/* this value poked in by init routine */
+

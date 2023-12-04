@@ -1,0 +1,51 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <2563>; Tue, 2 Nov 1993 01:05:50 -0500
+Received: from skinner.cs.uoregon.edu ([128.223.4.13]) by psuvax1.cse.psu.edu with SMTP id <291779>; Tue, 2 Nov 1993 00:51:38 -0500
+Received: from majestix.cs.uoregon.edu by skinner.cs.uoregon.edu with SMTP id AA08523
+  (5.65/IDA-1.4.2 for 9fans@cse.psu.edu); Mon, 1 Nov 93 21:51:22 -0800
+Received: from localhost.cs.uoregon.edu by majestix.cs.uoregon.edu
+	(4.1/UofO CS 27-Mar-91) id AA14349; Mon, 1 Nov 93 21:51:20 PST
+Message-Id: <9311020551.AA14349@majestix.cs.uoregon.edu>
+To:	quanstro@epsilon.eecs.nwu.edu (Erik Quanstrom)
+Cc:	9fans@cse.psu.edu
+Subject: Re: standalone plan9 
+Date:	Tue, 2 Nov 1993 00:51:19 -0500
+From:	mike@majestix.cs.uoregon.edu
+
+>i know that rob et. al. were spotted at a recent usenix
+>conference sporting [34]86 laptops (or so i've heard).
+>so i'd like to know 
+>o is this included on the cd?
+
+Yes.
+
+>o is anybody using this
+
+Yes; I have it running on a 486 box.
+
+>o this implies that the laptop is running the 
+>  fileserver, cpuserver and terminal software.
+
+No.  It is just running the terminal software.  The "file
+server" in this case is just an ordinary user level process
+that speaks 9P to the kernel and maintains a file system on
+a raw disk partition.  It's slow, and according to the
+documentation, susceptible to crashes, although I haven't
+had any (yet).
+
+There is no need for a cpu server to run Plan 9, unless you
+want to run daemons that accept calls from the outside world,
+for instance for mail delivery or remote logins.  There is
+no real difference between a terminal and a cpu server; a
+cpu server is essentially the same kernel with a different
+startup script that starts various daemons.
+
+The file server is a radically different kernel and cannot
+coexist on the same machine with the terminal or cpu kernels.
+However, you don't need to use the standard file server.
+
+>Is this
+>  possible to pull off on a sun or sgi?
+
+Of course.  However, it is not supported in the system as
+distributed; you have to do a bit of work...
+

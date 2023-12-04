@@ -1,0 +1,67 @@
+Received: from smtp2.usadatanet.net (smtp2.usadatanet.net [208.48.41.42])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8O2UEh05190
+	for <egs@cs.cornell.edu>; Mon, 23 Sep 2002 22:30:14 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by smtp2.usadatanet.net (Postfix) with ESMTP id 6521962F78
+	for <egs@cs.cornell.edu>; Mon, 23 Sep 2002 22:29:54 -0400 (EDT)
+Received: from mail.usadatanet.net (mail.usadatanet.net [208.48.41.252])
+	by smtp2.usadatanet.net (Postfix) with ESMTP id 6763262F15
+	for <egs@cs.cornell.edu>; Mon, 23 Sep 2002 22:29:49 -0400 (EDT)
+Received: from home.cs.cornell.edu (unverified [208.178.3.58]) by mail.usadatanet.net
+ (Vircom SMTPRS 5.1.202) with ESMTP id <B0049766365@mail.usadatanet.net> for <egs@cs.cornell.edu>;
+ Mon, 23 Sep 2002 22:21:42 -0400
+Message-Id: <5.1.1.6.0.20020923212102.00a823b0@mail.flashmail.com>
+X-Sender:  (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Version 5.1.1
+Date: Mon, 23 Sep 2002 21:53:35 -0400
+To: egs@CS.Cornell.EDU
+From: Kevin Walsh <kwalsh@CS.Cornell.EDU>
+Subject: 615 PAPER 19
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+X-Virus-Scanned: by amavisd-new amavisd-new-20020630
+X-Razor-id: c26527149d3df8527e81e1ae8359a1b70497db34
+
+CEDAR: a Core-Extraction Distributed Ad hoc Routing algorithm
+
+The paper has as a goal to design and present a QoS routing algorithm for 
+ad hoc networks. But, I believe, it falls far short of its goals: the 
+design seems lacking, the presentation poor, and the "ad hoc network" part 
+appears to be an afterthought. On the bright side, I do see some 
+contributions. Among them:
+- Traditional broadcast is replaced with unicast along a tree structure. 
+Unicast is an order of magnitude more reliable than broadcast in mobile 
+networks, so it is probably the case that their approach is not only more 
+efficient and perhaps faster, but more reliable as well.
+- Routing updates are classified as either "increases" or "decreases". Each 
+type of message is flooded (using the multicast tree) to the netowork at a 
+different rate, so that "decrease" messages can overtake prior "increase" 
+messages.
+- An attempt is made to spread routing information a distance proportional 
+to the usefulness of the information: better links are advertised further.
+
+Aside from the numerous and typical complaints ("updations" is not really a 
+word, poor evaluation, less than thorough simulation, etc.) are some 
+serious ones:
+- They appear to use a reservation system, but this is not presented or 
+even mentioned.
+- The simulation is poorly presented, and as it stands seems downright 
+bizarre. Why is average node degree always a whole number? Why no mobility 
+in the evaluation? Is there a reason for using a square transmission range? 
+And is there really no transmission model, congestion, or collisions, or 
+was that just left unmentioned?
+- The results, presented in table format, are meaningless to me (perhaps I 
+did not invest the time to understand them properly, though).
+- As in another paper, the authors attempt to redefine "minimum" to be 
+"what we implemented", when in fact they present no compelling reasons or 
+evidence that their routes will be even close to minimal in realistic 
+settings. Also, a "shortest path" is not defined as the path taken by the 
+fastest message delivery.
+- In my view, the most glaring and problematic assumption is buried in 
+section V, subsection B: "The bandwidth that can be provided on a path is 
+the minimum of the individual available link bandwidths on the path." In a 
+shared medium, is this really the case? In a path A-B-C where both links 
+are 10mbit, the A-C path will have only 5mbit available, since B must 
+transmit each message twice. Worse, assuming bidirectional flow, it might 
+have as little as 2.5mbit in each direction.
+

@@ -1,0 +1,99 @@
+Received: from mailhost.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [192.153.213.178])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id HAA27036
+	for <dmdx@psy1.psych.arizona.edu>; Mon, 4 Sep 2000 07:22:41 -0700
+Received: from pc111 by mailhost.mrc-cbu.cam.ac.uk
+	  with Sendmail (8.9.3/V3080601); Mon, 4 Sep 2000 15:22:37 +0100 (BST)
+Message-Id: <3.0.5.32.20000904151942.00a23d00@pophost.mrc-cbu.cam.ac.uk>
+Date: Mon, 04 Sep 2000 15:19:42 +0100
+To: DMDX@psy1.psych.arizona.edu
+From: Matt Davis <matt.davis@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Re: algorithms
+Cc: matthew.brett@mrc-cbu.cam.ac.uk, ian.nimmo-smith@mrc-cbu.cam.ac.uk
+In-Reply-To: <4.3.2.7.2.20000901205453.00a96c80@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 21:12 01/09/00 -0700, Jonathan Forster wrote:
+>
+>   Any math wizard out there know of someone's algorithm to determine the 
+>frequency of a signal given the times of a number of not necessarily 
+>consecutive samples?  
+
+Here's a reply from one of our resident wizards. 
+
+Hope this helps.
+
+Matt
+
+-----------------------
+
+Dear DMDXers
+
+There is a 'circle wrapping' technique which works well with this kind 
+of problem which has been described as a form of 'hunting for quanta'.
+
+Suppose there are K events. Let t(i) be the time at which event i 
+occurs (i = 1, ..., K). We assume that the events are a subset of an 
+isochronous spaced sequence which occur at times {c+d, c+2d, c+3d, ...} 
+for some constants c (phase offset) and d (base period). So t(i) = c + 
+n(i).d + error for some sequence of integers {n(1), n(2), n(3), ..., 
+n(K)}.
+
+Imagine a long piece of thread with knots at the points t(i). Wrap the 
+thread round a reel with circumference D and see whether the knots tend 
+to collect at one place. If they do then D is probably equal to d or a 
+submultiple d/N. Try values of D until a good fit is achieved. We use 
+2-dimensional vector addition to see how lumped-together the knots are.
+
+Mathematically, let
+
+C(D) = Sum[ cos(2 Pi t(i) / D), i = 1, ..., K ]
+
+S(D) = Sum[ sin(2 Pi t(i) / D), i = 1, ..., K ]
+
+Q(D) = Sqrt( C(D)^2 + S(D)^2 )
+
+(C(D), S(D)) is the vector sum of the positions of the knots, and Q(D) 
+is its squared length. If Q(D) is close to K^2 then we are in business.
+
+Look for large spikes in Q(D) as a function of D. A bit of care has to 
+be taken because Q(D) has more spikes (prominent local minima) at 
+submultiples d/n of d (harmonics of the fundamental frequency). In fact 
+the minimising value of D is m.d where m is the greatest common divisor 
+of the n(i). and thus will locate a subharmonic if the interevent 
+sequence doesn't adequate reflect the fundamental base period.
+
+If there are more sequences of events with the same base period but 
+possibly different phase offsets c, just add together the separate Q(D) 
+values for each sequence and look for spikes of the combined Q value.
+
+This algorithm is based on ideas for 'directional' or 'circular' 
+statistics for which a good source is the book 'Directional statistics' 
+by Kanti V. Mardia and Peter E. Jupp [New ed.] Chichester: Wiley, 2000. 
+I've seen it used for various problems ranging from the 'megalithic 
+yard' to the weights of loaded coal lorries. I've used it successfully 
+myself to analyse, inter alia, tapping/drumming data.
+
+If it's any use I can supply copies of some Matlab code written by my 
+colleague Matthew Brett which implement this technique.
+
+Ian Nimmo-Smith
+MRC Cognition and Brain Sciences Unit
+Cambridge
+
+
+
+****************************************************
+ Dr Matt Davis
+ MRC Cognition and Brain Sciences Unit
+ 15 Chaucer Road, Cambridge, CB2 2EF
+
+ email: matt.davis@mrc-cbu.cam.ac.uk
+   tel: 01223 355 294 (#621)
+   Fax: 01223 359 062
+
+****************************************************
+

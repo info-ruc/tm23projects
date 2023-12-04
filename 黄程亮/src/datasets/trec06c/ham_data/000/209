@@ -1,0 +1,50 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <2516>; Thu, 21 Oct 1993 23:19:45 -0400
+Received: from lore.plan9.cs.su.oz.au ([129.78.96.2]) by psuvax1.cse.psu.edu with SMTP id <294437>; Thu, 21 Oct 1993 23:12:35 -0400
+Date:	Thu, 21 Oct 1993 23:12:11 -0400
+From:	David Hogan <dhog@cs.su.oz.au>
+To:	9fans@cse.psu.edu
+Subject: Re: wayward mail
+Message-Id: <93Oct21.231235edt.294437@psuvax1.cse.psu.edu>
+
+> From:	Scott Schwartz <schwartz@groucho.cse.psu.edu>
+> 
+> | not quite... upas uses the SMTP information, not the message contents,
+> | as i think it should.
+> 
+> Well, ok, but the local postmasters tell me that the internet
+> conventions are otherwise.
+
+Indeed they are.  On the internet, all mail messages are supposed
+to be formatted according to rfc-822, with the headers indicating
+who the actual sender and recipient(s) are.  The SMTP information
+(aka envelope) is part of the delivery mechanism, usually derived
+from those headers, but not necessarily equivalent to them.  In
+particular, when a mailing list expander receives some mail, say to
+9fans@cse.psu.edu, it sends out an essentially identical piece of
+mail (same rfc-822 From and To headers) but with a different SMTP
+envelope: the envelope sender becomes an alias for the maintainer
+of the list (9fans-request@cse.psu.edu), and the recipients are
+the members of the list.  This is good, because bounces go back
+to the list maintainer (who is most likely to be able to do
+something about them) but replies go to the list and/or the original
+sender, depending on the behaviour of the user agent (and the user
+driving it).  The difference between the rfc-822 headers and the
+envelope is also used to ensure that a bounce doesn't generate
+another bounce, which could lead to loops, by having the mail software
+use a null envelope sender when it sends the bounce message.
+
+I understand that at Bell Labs the mail conventions are quite
+different (and in fact much simpler).  The contents of a mail
+message are unformatted (ie no rfc-822 or anything) and are
+deposited in your mailbox with a single From line prepended,
+which will be the SMTP envelope sender if the mail arrived via SMTP.
+The mail user agent (upas/edmail) replies to the address in the From
+line (it doesn't have much choice :-).
+
+Unfortunately, these two sets of mail conventions aren't always
+compatible, and in particular they break down when internet
+mailing lists are involved.  I have to say that I prefer rfc-822,
+since (amongst other things) it lets you know who the _other_
+recipients of the message were (assuming the sender wanted you
+to know this :-)
+

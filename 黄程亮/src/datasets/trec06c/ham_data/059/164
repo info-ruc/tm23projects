@@ -1,0 +1,82 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with ESMTP id RAA17671
+	for <handyboard@media.mit.edu>; Fri, 14 Jan 2000 17:09:02 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id RAA17776; Fri, 14 Jan 2000 17:09:02 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7312
+From: "Barry Brouillette" <breeyet@aol.com>
+X-Real-Life-Name: Barry Brouillette
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: GP2D02 conversion
+Posted-Date: Fri, 14 Jan 2000 22:08:15 GMT
+Date: Fri, 14 Jan 2000 22:08:15 GMT
+Organization: none
+Message-Id: <FoCItr.D9q@lugnet.com>
+References: <001701bf5e09$e14d0120$171225d8@jmm> <FoAuJ1.G2v@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+In lugnet.robotics.handyboard, Ben Jackson writes:
+>In lugnet.robotics.handyboard, Jean-Michel Mongeau writes:
+>>Does anyone how I could create a lookup table or an algorithm to convert the
+>>output of the Sharp GP2D02 (0 to 255 = byte) to values between 10 and 80 cm,
+>>which is the reading capability of the IR?
+>
+>You mean like value = 10 + ((70 * b) / 256) ?
+>
+>--Ben
+
+Actually, the GP2DO2's output is not at all linear.  Plotting the output
+against the actual distance will show an exponential curve.  Each one is
+slightly different so what I do is to make up a little table in Excel like:
+
+0,0
+70,10
+116,15
+142,20
+155,25
+163,30
+169,35
+176,40
+180,45
+
+Cells A1 and B1 are the constants in the equation Dist = A*B^reading.
+
+The data from actual measurements starts in row 2, where the first column is
+the reading and the second column is the actual distance measured in
+centimeters.  Then I put in a third column (C) that has an exponential equation
+of the form +$A$1*($B$1^(A2/10))and a fourth column (D) that subtracts the
+actual reading from the calculated one:
++ABS(B2-C2)
+and finally, at the bottom of the fourth column I have a single cell which sums
+up these error values:
++SUM(D2..D9)
+
+Use the Excel solver to calculate the optimal value in cells A1 and B1 which
+will minimize the value in the summed error cell.
+
+Once you have these two values you can use them in an IC program like the one
+shown below. The variable GP2D02_15 is an integer set by the assembly code.
+The constants in the equation are ones that I had Excel calculate for my
+GP2D02.  In my experience, most of them will have at least slightly different
+values.
+
+
+float distance;
+
+while(1)
+ {
+   f = 1.55931 * (1.018606 ^ (float) GP2D02_15);
+   printf ("distance is %f\n",f);
+   msleep(200L);
+ }
+
+If the spreadsheet description wasn't clear enough, email me and I'll copy the
+actual spreadsheet for you.
+
+Barry
+

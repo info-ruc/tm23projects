@@ -1,0 +1,175 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g4U1GhdD006828;
+	Wed, 29 May 2002 18:16:43 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id SAA29922;
+	Wed, 29 May 2002 18:35:12 -0400 (EDT)
+Date: Wed, 29 May 2002 18:35:12 -0400 (EDT)
+Received: by canaveral.red.cert.org; Wed, 29 May 2002 18:29:28 -0400
+Message-Id: <CA-2002-14.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-14 Buffer overflow in Macromedia JRun
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 300
+Status: RO
+X-Status: $$$$
+X-UID: 0000000050
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-14 Buffer overflow in Macromedia JRun
+
+   Original release date: May 29, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Windows  NT4  or  Windows  2000  running  IIS  versions 4 or 5 and
+       Macromedia JRun 3.0 or 3.1
+
+Overview
+
+   A remotely exploitable buffer overflow exists in Macromedia's JRun 3.0
+   and 3.1.
+
+I. Description
+
+   JRun  is  an  application  server  that  works  with  most popular web
+   servers,  such  as  Apache  and  Internet  Information  Server  (IIS).
+   According to Macromedia, JRun is deployed at over 10,000 organizations
+   worldwide.
+
+   As   reported  in  the  Next  Generation  Security  Software  Advisory
+   (#NISR29052002),  a remotely exploitable buffer overflow exists in the
+   ISAPI  filter/application. Specifically, the buffer overflow exists in
+   the portion of code that handles the host header field. If an attacker
+   sends  a  specially  crafted request to the application server, he can
+   overwrite a return address on the stack. Because the vulnerable DLL is
+   running in the address space of the web server process, code submitted
+   by the attacker will be run with SYSTEM privileges.
+
+II. Impact
+
+   A  remote attacker can execute arbitrary code on the vulnerable target
+   with SYSTEM privileges.
+
+III. Solution
+
+   Apply a patch from Macromedia or upgrade to JRun 4. The patch is
+   available from:
+
+http://www.macromedia.com/v1/Handlers/index.cfm?ID=22273&Method=Full#download
+
+   JRun 4 is available at:
+
+http://www.macromedia.com/software/jrun/
+
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory. Additional information can be found in VU#703835.
+
+  Macromedia Inc.
+
+     Macromedia  has  confirmed that this is a problem in older versions
+     of  JRun  3.0  and  3.1  and is soon to publish a security bulletin
+     regarding  this.   Visit  the  Macromedia  security  zone  site  at
+     http://www.macromedia.com/security for more information.
+   _________________________________________________________________
+
+   This   vulnerability  was  discovered  by  David  Litchfield  of  Next
+   Generation Security Software.
+   _________________________________________________________________
+
+   Author: Ian A. Finlay
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-14.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+   
+   May 29, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPPVQSqCVPMXQI2HJAQGVHgP/U5zIg4973uYvBmeM4X06vfkHbRFG7YM8
+nwnnqneHG/xPkytz3LpjfbbBtmdXWJmfJK64J/R9vGu84Cbp3NR2MvDPQ6J3c+7+
+v6/uaemXWZZdbpxtLTULWqCsy+Fkp6XpOekvImEek1A9jKxVnH2lB42OwW28pmap
+RYbu1k04txk=
+=RYRj
+-----END PGP SIGNATURE-----
+

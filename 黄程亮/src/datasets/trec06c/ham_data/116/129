@@ -1,0 +1,43 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k22GrCt21295
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:53:12 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k22GrA2A017043
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:53:11 -0500 (EST)
+Message-ID: <1153761301.1141318390248.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 2 Mar 2006 11:53:10 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 11
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+Current DNS confronts a lot of problems, many of which can be solved with the properties of fault tolerance and load balance in peer-to-peer systems. Among the two works to be discussed today, DDNS concludes that a naive application on top of DHT is inadequate to provide name service due to its high latency, while CoDoNS solves this problem by its proactive caching layer: Beehive, and provides fast update propagation in addition.
+
+Problems of current DNS:
+* About 80% domains set up only two or one name server, and 32% name servers are connected to Internet through a single gateway or router. They can be disabled by small-scale attacks. Name servers on top levels of the hierarchy and those for popular domains are easily subject to denial of service attacks.
+* Its hierarchical structure implies more loads on servers at higher levels than lower levels. 
+* 35% of DNS queries never receive an answer or a negative answer. Many of them are caused by configuration errors.
+* 40% DNS records have TTLs of one day or more. Cache coherency can't be guaranteed and unanticipated changes can't be fast disseminated.
+
+Serving DNS provides better load balance since the concept of root servers is eliminated. Due to its nature of decentralization, attackers have to take down a set of servers to make the records unavailable. Each name owner is responsible for the correctness of its records. No sub-domain delegation is needed.
+
+One important feature to support DNS using DHT is the "separation of name resolution from verification in DNS" (DNSSEC). It enables the exploration of alternative storage and lookup systems for DNS records.
+
+<DDNS>
+* DDNS is designed on top of Chord. All the properties of DHT remaining the same, the only shortcoming of DDNS compared with DNS is its lookup latency.
+
+<CoDoNS>
+* CoDoNS achieves low lookup latency by its proactive caching layer, Beehive. Other contributions of CoDoNS include its remarkable resilience to denial of service attacks and quick propagation of record updates.
+* The implementation of CoDoNS provides an incremental deployment path. It can serve as a supplement as well as a complete replacement for the legacy DNS.
+* A client sends a query to its local CoDoNS server. The CoDoNS server replies immediately if it has a cached copy of the record. Otherwise, it routes the message within the system according to Pastry's protocol. The routing terminates either at a node that has a cached copy or at the home node of the record. If the home node has no this record, it retrieves it from the legacy DNS and respond to the CoDoNS server which replies to the client. In the background, CoDoNS proactively replicates records according to their measured popularity.
+* Direct caching and negative caching are supported in CoDoNS.
+* CoDoNS is particularly resilient to denial of service attacks because (1) hotspots have more replicas in Beehive's replication framework; (2) Beehive quickly detects changes of access to records and spreads replicas among more nodes in the occurrence of denial of service attacks.
+* Selection of a suitable TTL value is a dilemma in DNS. Long TTL makes it difficult to maintain cache consistency. Short TTL decreases the cache hit ratio and increases the lookup overhead. In CoDoNS, the home node stores the record according to the TTL specified by DNS. Once expired, it re-fetches the record from DNS and propagates if the record is updated. The analytical model of Beehive is applicable to DNS workload since it follows a Zipf-like distribution.
+* The experimental results show that the median lookup latency of CoDoNS is lower than that of the legacy DNS. Besides, 98% of the replicas are updated within one second even for level-0 records in CoDoNS. Relocation of services can therefore be disseminated quickly.
+
+<Issues>
+One feature of DNS that can't be replaced so far is the "dynamic name resolution". The name server prompts different mapping according to the status (loads or failures) of its application servers or to route clients to nearby servers. CoDoNS forwards queries to the domain name that implements this feature to its legacy DNS server.
+

@@ -1,0 +1,43 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i82MvFFJ006694
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 2 Sep 2004 15:57:15 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 786778E6ADE
+	for <DMDX@psy1.psych.arizona.edu>; Thu,  2 Sep 2004 15:57:12 -0700 (MST)
+Received: from 666-devel.u.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 9D0D08E8902
+	for <DMDX@psy1.psych.arizona.edu>; Thu,  2 Sep 2004 15:56:46 -0700 (MST)
+Message-Id: <5.1.0.14.2.20040902153650.00b14f50@psy1.psych.arizona.edu>
+Date: Thu, 02 Sep 2004 15:56:45 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] ANALYZE 2.03
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   ANALYZE 2.03 fixes an error where if there were no data points in a 
+condition it didn't explicitly set the avg, sum, and sd to zero in the data 
+rejection code.  If there were data points they were zeroed prior to 
+summing and so forth but because the code has to avoid the divide by zero 
+that would result with no data points it just skipped that whole block of 
+code.  At the start of a subjects calculations this would leave zero in the 
+variables otherwise the average and sd will have come from the prior 
+condition.  Not sure where the value 2 came from in the recent post but 
+it's gone now that the data rejection code is making the right decisions 
+when there are no data points.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Wright's First Law of Quality:
+Quality is inversely proportional to the time left for
+completion of the project.
+
+
+

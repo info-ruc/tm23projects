@@ -1,0 +1,53 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.4/8.12.4) with ESMTP id h0G1YqMS001429
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 15 Jan 2003 18:34:52 -0700
+Received: from anybodyi.u.arizona.edu (uofa-dsl-161.dakotacom.arizona.edu [150.135.175.161])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h0G1RNoV026742
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 15 Jan 2003 18:27:24 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030115182237.00b33338@psy1.psych.arizona.edu>
+Date: Wed, 15 Jan 2003 18:27:18 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: digital voice recording
+In-Reply-To: <4.1.20030115183355.00a22da0@pop.kent.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 06:46 PM 1/15/2003 -0500, you wrote:
+>Hi,
+>
+>I'm having a problem with DMDX recording the RT's of voice responses (for 
+>emotional stroop task) in the .azk files.  The mic is connected directly 
+>to sound card.  Using test vox, you see voice responses triggering 
+>properly, so you'd expect them to record RTs.  Thus, I don't suspect any 
+>problems with hardware.  However, the .azk file outputs only the delay 
+>time (2000 ms) for all trials, suggesting that somehow DMDX is not 
+>detecting triggers.  Anybody encounter this or know of any information to 
+>trouble shoot this problem?  I checked in the list serve but could not 
+>find any info.  Any help would be greatly appreciated.
+
+
+   Your problem isn't jogging my memory but you should probably make sure 
+you're using the latest version of DMDX, that code underwent multiple 
+recent upheavals to deal with broken sound card drivers.  You might try 
+initializing the DigitalVOX before the RecordVocal device, you might try 
+just the DigitalVOX without the RecordVocal device (! is handy for that 
+sort of thing, you can just momentarily turn a keyword into a comment, <!id 
+RecordVocal> for instance).  You might try passing RecordVocal a parameter 
+and not run it in legacy mode, for instance <id RecordVocal 500> will 
+record until 500ms past the VOX trigger.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Barth's Distinction:
+	There are two types of people: those who divide people into two
+types, and those who don't.
+
+
+

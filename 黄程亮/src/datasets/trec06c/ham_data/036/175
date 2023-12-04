@@ -1,0 +1,60 @@
+Received: from icarus.idirect.com (icarus.idirect.com [207.136.80.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id SAA10661
+	for <handyboard@media.mit.edu>; Fri, 19 Feb 1999 18:37:45 -0500 (EST)
+Received: from terminus.idirect.com (terminus.idirect.com [207.136.80.70])
+	by icarus.idirect.com (8.9.3/8.9.3) with ESMTP id SAA01122
+	for <handyboard@media.mit.edu>; Fri, 19 Feb 1999 18:37:44 -0500 (EST)
+Received: from ts7-4ot-21.idirect.com (ts7-4ot-21.idirect.com [209.161.240.164])
+	by terminus.idirect.com (8.9.3/8.9.3) with SMTP id SAA22466
+	for <handyboard@media.mit.edu>; Fri, 19 Feb 1999 18:37:42 -0500 (EST)
+X-Authentication-Warning: terminus.idirect.com: ts7-4ot-21.idirect.com [209.161.240.164] didn't use HELO protocol
+Message-Id: <3.0.6.32.19990219183703.007ae8b0@idirect.com>
+X-Sender: orthner@idirect.com
+X-Mailer: QUALCOMM Windows Eudora Light Version 3.0.6 (32)
+Date: Fri, 19 Feb 1999 18:37:03 -0500
+To: <handyboard@media.mit.edu>
+From: Duncan Orthner <orthner@idirect.com>
+Subject: Re: Type conversion.
+In-Reply-To: <19990219213319.IBPM27502.fep03-svc@casa>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 10:25 PM 2/19/99 +0100, you wrote:
+
+>My answere are , how can i convert a integer number to a floating point
+>number?
+
+ Hi, what you want to do is called type casting,ie. you must explicitly
+specify the type. I've included some sample code that uses it. Because the
+beeper function expects a float but the knob function returns an integer,
+you have to modify the value to a float.
+ 
+ie.
+/*
+    adjusts the frequency of the buzzer with the knob
+*/
+
+void main()
+{
+float h=0.0;
+while(1){
+printf("Press start to  adjust pitch...\n");
+start_press();
+printf("Stop to quit\n");
+   while(1) {        
+         h=(20.0*(float) knob());                   <--see here
+         if (h<20.0){
+               h=20.0;
+               }
+         set_beeper_pitch(h);
+         beeper_on();
+         if (stop_button()) {
+            beep();
+            break;
+         }
+   }
+}
+}
+
+Hope this helps, Duncan
+

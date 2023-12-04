@@ -1,0 +1,164 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j5D0nwqT002938
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Sun, 12 Jun 2005 19:49:58 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id j5D0nwxi002937
+	for reliable_computing-outgoing; Sun, 12 Jun 2005 19:49:58 -0500 (CDT)
+Received: from smtpauth07.mail.atl.earthlink.net (smtpauth07.mail.atl.earthlink.net [209.86.89.67])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j5D0nnjQ002933
+	for <reliable_computing@interval.louisiana.edu>; Sun, 12 Jun 2005 19:49:55 -0500 (CDT)
+Received: from [68.166.211.251] (helo=[192.168.1.101])
+	by smtpauth07.mail.atl.earthlink.net with asmtp (Exim 4.34)
+	id 1Dhd98-00068i-Jz; Sun, 12 Jun 2005 20:49:46 -0400
+Message-ID: <42ACD828.2050608@mindspring.com>
+Date: Sun, 12 Jun 2005 18:49:44 -0600
+From: Alan Eliasen <eliasen@mindspring.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.7) Gecko/20050414
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: George Corliss <George.Corliss@Marquette.edu>
+CC: reliable_computing@interval.louisiana.edu
+Subject: Re: Arctan2
+References: <BED225C6.18BA4%George.Corliss@Marquette.edu>
+In-Reply-To: <BED225C6.18BA4%George.Corliss@Marquette.edu>
+X-Enigmail-Version: 0.92.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-ELNK-Trace: b37d7a0c977428ea9649176a89d694c0f43c108795ac45070cfca7b3b38328ab065b60adbf3ac0b2350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c
+X-Originating-IP: 68.166.211.251
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+
+George Corliss wrote:
+> I'm guessing your description might nor be exactly what you meant.  For
+> example, Fortran defines ATAN2(Y,X) as the principle argument of the complex
+> number X + iY, expressed in radians in the range -pi < ATAN2(Y,X) <= pi.
+> The values of X and Y must not both be zero [Metcalf & Reid, 1990, p. 160].
+> 
+> [Does anyone know why (Y, X), not (X, Y)?]
+
+   atan2[a,b] is one of those cases (like the modulus operator) where
+there are competing definitions that can both be considered equally
+valid.  You always gotta look at your programming language's particular
+definition to be safe.   Is it defined as a/b or b/a?  Mathematica
+defines it as b/a, Java and Fortran and Frink as a/b.  (No comments
+about Java not being an authoritative platform for mathematics, please. :) )
+
+   I've re-checked my original statement and I do think it's what I
+meant.  (It essentially matches Fortran's definition.)  I want
+arctan[x,y] to essentially return arctan[x/y] but corrected for
+quadrant.  To be more specific, when x>0, I want arctan[x/y] and
+arctan[x,y] to return the same value (in the range -pi/2, pi/2).
+
+  As a graph is worth a thousand words, here is what I intend:
+  http://futureboy.us/temp/arctan.gif
+
+   I prefer to use this convention because it allows arctan[x/y] to be
+trivially rewritten as arctan[x,y].
+
+> The problem is exemplified by
+>    arctan( [-0.1, 0.1], [-1.1, -0.9] )?
+
+   Yes.  That interval goes across the boundary from quadrant III to
+quadrant IV.
+
+> [-pi, pi], according to the set definition
+>    { arctan(y,x) | x in X, y in Y }.
+
+   I agree that's the most obvious answer given conventions for the
+range of arctan, but I'd argue that that jump in range could be
+considered somewhat arbitrary.  If you look at the graph, you can see
+that we could consider arctan to map out a sort of helix, continually
+descending as we go counter-clockwise around the origin (as seen from
+the "top")  Rather than forcing that particular (somewhat arbitrary)
+discontinuity, we could theoretically continue the helix downward and
+map the points in quadrant IV to something less than -pi, and maintain
+continuity between quadrants III and IV.  It diverges from the usual
+range produced by the arctan function, but has the benefits of being
+mathematically meaningful, continuous, and monotonic.
+
+   Does anyone know of interval arithmetic implementations that apply
+this somewhat non-standard convention?
+
+> More problematic is arctan( [-0.1, 0.1], [-0.1, 0.1] ).  Your alternatives
+> are probably
+>    1. NaN, or exception in some sense
+>    2. [-pi, pi], in the sense of csets (containment sets)
+>
+> John Pryce or Bill Walster might wish to chime in, but the idea as I
+> understand it, is that you should consider the set of limit points as x--> 0
+> and y --> 0.
+
+   I think I'd likely bunt and use the limit [-pi,pi] when considering
+an interval surrounding the origin.  The limiting case is well-behaved,
+so I probably wouldn't return an exception.
+
+   After I wrote the above, I just found a paper on this topic by Walster:
+http://developers.sun.com/tools/cc/articles/int_angles/interval-angles.pdf
+I don't know why it didn't turn up in my searches earlier.  I must have
+only searched for "arctan" and "atan" and not "atan2".
+
+   This paper happens to propose several different alternatives,
+including ones that seem to follow the spiral around as I've proposed
+above and extending the range to, say, -5/4 pi when going between
+quadrants III and IV.
+
+   Does anyone have strong feelings on making an arctan implementation
+work this way--that is, returning something beyond [-pi, pi]?  It seems
+quite a bit more elegant and gives tighter interval bounds to do so.
+
+> If you are doing a greenfields implementation of interval arithmetic, I
+> encourage you to give serious consideration to their cset concept.
+
+   Oh, my implementation is green as green can be.  :)  I'm already
+quite a ways along into my implementation, but I always appreciate ways
+to make my system more elegant.  Thanks very much for your comments!
+
+-- 
+  Alan Eliasen                 |  "It is not enough to do your best;
+  eliasen@mindspring.com       |   you must know what to do and THEN
+  http://futureboy.homeip.net/ |   do your best."  -- W. Edwards Deming
+
+
+> Advantages include: Exception-free execution, more consistent
+> interpretations of problematic cases, possible compiler optimizations.
+> Disadvantages include: Results in some cases surprise you, automatic
+> verification of continuity requires special handling.
+> 
+> Dr. George F. Corliss
+> Electrical and Computer Engineering
+> Marquette University
+> PO Box 1881 
+> 1515 W. Wisconsin Ave.
+> Milwaukee WI 53201-1881 USA
+> 414-288-6599; Fax: 288-5579; Dept. 288-6280
+> Office: Haggerty Engineering 296
+> George.Corliss@Marquette.edu
+> 
+> 
+> 
+> 
+> 
+>> I'm implementing interval arithmetic in my programming language "Frink":
+>>
+>> http://futureboy.us/frinkdocs/
+>>
+>> and I'm attempting to implement the two-argument version of
+>>arctan[x,y], but I'm encountering a few difficulties in dealing with
+>>discontinuities and would like some suggestions.
+>>
+>> If we define arctan[x,y] to return arctan[x/y], but corrected for
+>>quadrant, we get a discontinuity when going from quadrant III to
+>>quadrant IV where the value jumps from -pi to +pi along the line at x=0
+>>where y goes from 0 to -infinity.
+>>
+>> Does anyone have an elegant method or redefinition to overcome this
+>>discontinuity?
+> 
+> 
+> 
+
+
+
+

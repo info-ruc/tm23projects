@@ -1,0 +1,347 @@
+Received: from islander.whidbey.net (root@islander.whidbey.net [204.57.140.1]) by spam.ecst.csuchico.edu (8.7.3/8.7.3) with ESMTP id VAA01554 for <dranch@ecst.csuchico.edu>; Thu, 28 Mar 1996 21:42:15 -0800 (PST)
+Received: from difilippo (asn30.whidbey.net [204.57.140.100]) by islander.whidbey.net (8.7.5/8.7.3) with SMTP id VAA25473 for <dranch@ecst.csuchico.edu>; Thu, 28 Mar 1996 21:37:49 -0800 (PST)
+Message-Id: <2.2.32.19960329054207.0067ad2c@whidbey.net>
+X-Sender: difilipp@whidbey.net
+X-Mailer: Windows Eudora Pro Version 2.2 (32)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Thu, 28 Mar 1996 21:42:07 -0800
+To: "David A. Ranch" <dranch@ecst.csuchico.edu>
+From: John and Nellena Difilippo <difilipp@whidbey.net>
+Subject: Re: Setting for AMD 5x86-133 & GX4 : I've got the processor
+  now! (fwd)
+Status: RO
+X-Status: 
+
+Correction to JP29
+
+
+GX4 rev 2.0   Award 4.50G version 0306
+Promise EIDE 2300 Plus controller
+Diamond Stealth 64 Video series 2000 (2 Meg Dram)
+16 Meg Ram (70 nsec)
+
+
+	The settings I came up with are based on the AMD Enhanced 120's.  The cpu's
+pin assignments are basically the same, the only difference seems to be what
+the the state of the input does to the chip.  (clock multiplication and
+cache settings).  I'm confident I've enabled L1 write back cache.  These
+settings are still preliminary as I'm still waiting for the latest bios, but
+at present I'm running overclocked at 160Mhz and this $70 dollar chip is
+outperforming the $270 Pentium Overdrive 83 Mhz chip in every category
+including CPU 16 and 32 mark. (using winbench 96).   I'm not sure it will
+last at 160Mhz, but the replacement of it won't be that expensive if it does
+give in.  I know the next one will always work at 133Mhz.  If these settings
+can be changed, I'm welcome to suggestions as I don't claim to have all of
+the answers.  They are proven on my system.
+
+Bios settings:
+
+Auto Config       Disabled                             
+Fast Reset Emul   Enabled
+AT Bus Clock      1/4 CLKIN(1/5 for 160 Mhz)  
+DRAM Speed        Fastest                     
+DRAM Write WS     0WS                         
+DRAM Write CAS    1T
+
+DRAM Write Burst  Enabled
+Slow Refresh      Disabled
+Hidden Refresh    Enabled
+
+L2 Cache Scheme      Write Back
+L1 Cache Scheme      Write Back
+Cache Burst Read     1T
+Cache Write Cycle    2T
+Video Shadow         Non-cache
+Memory Hole          Disabled
+Fast Reset Latency   2 usec
+Latch Local Bus      T2
+Local Bus Ready      Transparent for 133Mhz
+                     Sychronize for 160Mhz
+Jumper Settings:
+
+JP5      1+2 short
+JP6      1+2 short
+JP11     2+3 short
+JP16     1+2, 4+5 short
+JP17     1+2, 5+6 short
+JP18     1+2 short
+JP19     2+3, 4+5 short
+JP20     1+2 short for 4x clock, All open for 3X clock
+JP21     3+4 short  (should be write back cache), Open for write thru
+JP22     1+2, 4+5 short
+JP23, JP24, JP25   33Mhz for 133 operation, 40Mhz for 160 operation
+JP26     2+3 short
+JP28     1+2 short for 133Mhz, 2+3 short for 160Mhz
+JP29     1+2 short for 133Mhz, 2+3 short for 160Mhz
+JP32     1+2 short
+
+Just let me know if this worked for you.
+ASUS can give me a job!
+difilipp@whidbey.net 
+
+
+At 12:30 PM 3/28/96 -0800, you wrote:
+>
+>Hey John,
+>
+>I'm in the process of upgrading my BIOS and getting the 133Mhz processor
+>to run at 160Mhz.  Here is my current thread to two other people about the
+>process.  Once I have ALL the details, I plan on making a master GX4
+>upgrade document and posting it on the ASUS newsgroup.
+>
+>Could you give the technical specs a once-over and let me know if you
+>dis-agree with anything?
+>
+>I greatly appreciate it and I'll talk to you soon!
+>
+>
+>--David
+> +----------------------------------------------------------------------------+
+> |    David A. Ranch  - ISDN/Cablemodems/PCs      dranch@ecst.csuchico.edu    |
+> +----                                                                    ----+
+> +----- For more detailed info, check out: www.ecst.csuchico.edu/~dranch -----+
+>
+>---------- Forwarded message ----------
+>Date: Thu, 28 Mar 1996 14:27:01 -0500 (EST)
+>From: Roman Shapiro <roman@Galaxy.Net>
+>To: "David A. Ranch" <dranch@ecst.csuchico.edu>
+>Subject: Re: Setting for AMD 5x86-133 & GX4 : I've got the processor now!
+>
+>Here's something I read in a post recently:
+>
+>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>Hi
+>I've seen numerous requests for information on how to set the jumpers
+>correctly for this combination.  I received two of these processors this
+>weekend, and managed to get them going using the following jumper
+>settings:
+>
+>JP16:	1-2 4-5
+>JP17:	1-2 5-6
+>JP18:	1-2
+>JP19:	1-2 3-4 5-6
+>JP20:	1-2
+>JP21:	2-3
+>JP22:	1-2 4-5
+>
+>If you leave JP20 open the CPU runs in clock trebling mode instead of
+>clock quadrupling mode.  You could experiment and try to get it to work
+>as a 3*50MHz system.  Both CPUs ran flawlessly at both 133MHz (4*33MHz)
+>and 160MHz (4*40MHz).  The only problem I did encounter was that QEMM
+>7.5 hung when it started, no matter what the speed of the CPU was.
+>I think it has something to do with QEMM identifying the CPU incorrectly.
+>Cheers
+>Graham Inggs
+>+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>
+>
+>
+>On Thu, 28 Mar 1996, David A. Ranch wrote:
+>
+>>
+>> Hey Roman,
+>>
+>> Welp, I broke down and bought a 133Mhz processor.  I'm in the process of
+>> burning in the v401 BIOS and I would to pick your brain about what the
+>> jumper settings are for the GX4 motherboard.  Again, thanks for the help
+>> and I plan on posting all my results to the ASUS newsgroup.
+>>
+>> (from you earilier)
+>>
+>> > If you have the manual, I can tell you which entry to use (like AMD
+>> > Enhanced).
+>>
+>> Ok, the first thing is.. this processor is called the 5x86-133.  The Asus
+>> WWW site keeps mentioning two AMD DX4 processors: SV8B and the NV8T.
+>> I'm under the impression that this 133Mhz processor is neither.  Can you
+>> clear this up for me?  Ok.. for the processor stuff, check out the bottom
+>> of this e-mail since I'll put all the differentGx4 processor types there
+>> and I'll include the readme file that came with the bios upgrade just in
+>> case.
+>>
+>The SV8 and SV8 stuff only applied to the 80-120 Mhz processors.  The 133
+>has and ADZ somewhere I think.
+>
+>> > With the chip running at 4x40, I have the speed to fastest and fewest
+>> > wait states (I'm pretty sure).  But this is something that you have to
+>> > tweak in the end by yourself.  At 4x33, you should be able to set things
+>> > to max speed.
+>>
+>> Great.. I'm running an AMD Dx/2 80 5V now and I can only run it at FASTER.
+>> I still might not be able to get my system to run at fastest but bah..
+>> thats ok.  Two question(s):
+>>
+>> 	1) ASUS says that you MUST run the L1 cache in
+>> 	   Write-Through mode instead of the preferable Write-Back mode if
+>> 	   you have a bus-mastering card like a SCSI card (which I do).
+>> 	   Have you had to deal with this or it doesn't apply for your
+>> 	   situation?
+>>
+>Not sure.  I use write-back and have everything except for a SCSI card.
+>
+>> 	2) What settings are you using for your VLBus?
+>>
+>> 		- VESA delay ENABLED?   (ASUS default is enabled)
+>> 		- <33Mhz & 0ws		(This is what I'm running now)
+>> 		       or
+>> 		  >33Mhz & 1ws
+>>
+>At 40Mhz, I have the VESA delay enabled.  It may work without it at 33Mhz.
+>
+>>
+>> OK.. lastly,,from the manual as you requested, here are the different CPU
+>> jumper settings.  Could you note to me which I need to run the processor
+>> at both 133Mhz and 160Mhz for our GX4 motherboards?
+>>
+>
+>The same setting should allow you to run at 133 and 160- you just have to
+>change the bus speed (from 33 to 40).  Compare the settings from the
+>beginning of this message to the differenct cpu setting from the manual.
+>I think it's closest to the AMD486DXL4 - 2x clock- you may not have to
+>change the jumpers much. :)  There may be one jumper different- the one
+>that enables internal write-back.
+>
+>Also, be warned that at 160Mhz (4x40), my GX4 boots up and says 150Mhz.
+>
+>Good luck.
+>-Roman
+>
+>> ---
+>>
+>> probably no 	- SL Enhanced 486SX & SX2   or  Non-SL 486 & SX2
+>>
+>> probably no	- SL Enhanced (non-SL) 486DX, DX2, 487SX & ODP; 486Dx/4 @
+>> 		  3x clock
+>>
+>> probably no	- 486DX4 - 2.5x clock
+>>
+>> probably no	- 486DX4 - 2x clock (BIOS reports AM486DXL4 3x)
+>>
+>> possibly	- P24D Write-Back L1 cache
+>> 		  JP21 Short 2&3 - Write-Through L1 cache
+>>
+>> possibly	- P24CT - Write-back L1 cache
+>> 		  JP21 Short 2&3 - Write-Through L1 cache
+>>
+>> possibly	- P24T - Write-back L1 cache
+>> 		  JP21 Short 2&3 - Write-Through L1 cache
+>> 		  237-pin SL ODP
+>>
+>> possibly 120Mhz	- 486DX4 ODP (OverDrive Processor?) - 3x clock
+>>
+>> possibly	- 486DX4 ODP (OverDrive Processor?) - 2.5 clock
+>>
+>> doubtful	- 486DX4 ODP (OverDrive Processor?) - 2.0 clock
+>>
+>> doubtful	- AMD486SXL, AMD486SX2L
+>>
+>> doubtful	- AMD486DXl, AMD486DX2L
+>>
+>> possible 120Mhz	- AMD486DXL4 - 3x clock
+>>
+>> This is what I	- AMD486DXL4 - 2x clock
+>> run my Dx/2 80
+>> at
+>>
+>> doubtful	- Cyrix 486DX, DX2
+>>
+>> doubtful        - Cyrix 486DX2-V
+>>
+>> doubtful        - Cyrix DX5 - 3x clock
+>>
+>> doubtful        - Cyrix DX5 - 2x clock
+>>
+>>
+>> =======
+>>
+>>
+>> This is the text file that came with the BIOS upgrade image.  I'm
+>> including this just in case it helps.
+>>
+>> ----
+>>
+>> BIOS file : SV2G0401.AWD
+>> BIOS Ver. : 0401 (#401A0-0401)
+>> Related Mainboard : VL/I-486SV2G(X4) Rev. 2.0 or above
+>> Related Chipset : SiS 85C471 chipset
+>>
+>>
+>> Description :
+>>
+>> 1. To support the following CPUs :
+>>    a.) AMD 486DX4 (SV8B)  : with green & L1 cache write-back.
+>>    b.) Intel 486DX4 (&EW) : with green & L1 cache write-back.
+>>    c.) Cyrix 486DX4       : with green & L1 cache write-back.
+>>    d.) Cyrix 5x86 (M1sc)  : with Pentium code inside.
+>>    e.) AMD 486DX4 (NV8T)  : non-green & L1 cache write-through.
+>>
+>>    The new CPUs jumper setting as the follow :
+>>
+>>   A) Cyrix 486DX4 P/O
+>>      Cyrix 5x86 (M1sc)
+>>
+>>      JP16 : 1-2,5-6 (short)
+>>      JP17 : 1-2,5-6 (short)
+>>      JP18 : 1-2 (short)
+>>      JP19 : 1-2,3-4,5-6 (short)
+>>      JP20 : (none)
+>>      JP21 : (none)
+>>      JP22 : 1-2 (short)
+>>
+>>
+>>   B) AMD 486DX4 (SV8B)
+>>      Intel 486DX4 (&EW)
+>>
+>>      JP16 : 1-2,4-5 (short)
+>>      JP17 : 1-2,5-6 (short)
+>>      JP18 : 1-2 (short)
+>>      JP19 : 1-2,3-4,5-6 (short)
+>>      JP20 : (none)
+>>      JP21 : 3-4 (short)
+>>      JP22 : 1-2,4-5 (short)
+>>
+>>   C) Cyrix 486DX4
+>>
+>>      JP16 : 2-3,5-6 (short)
+>>      JP17 : 2-3,5-6 (short)
+>>      JP18 : 2-3 (short)
+>>      JP19 : 2-3 (short)
+>>      JP20 : 2-3 (short)
+>>      JP21 : 1-2 (short)
+>>      JP22 : 1-2 (short)
+>>
+>>   D) AMD 486DX4 (NV8T)
+>>      AMD 486DXL4
+>>
+>>      JP16 : 1-2,5-6 (short)
+>>      JP17 : 4-5 (short)
+>>      JP18 : 4-5 (short)
+>>      JP19 : (none)
+>>      JP20 : 4-5 (short)
+>>      JP21 : (2-3 short : 2x CLK, 2-3 open : 3x CLK)
+>>      JP22 : 1-2, 4-5 (short)
+>>
+>>
+>> --David
+>>
++----------------------------------------------------------------------------+
+>>  |    David A. Ranch  - ISDN/Cablemodems/PCs
+dranch@ecst.csuchico.edu    |
+>>  +----
+----+
+>>  +----- For more detailed info, check out: www.ecst.csuchico.edu/~dranch
+-----+
+>>
+>>
+>>
+>
+>
+>
+
+
+
+John and Nellena Difilippo
+difilipp@whidbey.net
+
+

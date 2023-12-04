@@ -1,0 +1,72 @@
+Received: from elf.ii.uj.edu.pl (elf.ii.uj.edu.pl [149.156.65.17])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j25F0kFJ003633
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 5 Mar 2005 08:00:46 -0700
+Received: by elf.ii.uj.edu.pl (Postfix, from userid 1641)
+	id 2668211000985; Sat,  5 Mar 2005 16:00:39 +0100 (MET)
+Received: from localhost (localhost [127.0.0.1])
+	by elf.ii.uj.edu.pl (Postfix) with ESMTP id 1A97A12C00489
+	for <DMDX@psy1.psych.arizona.edu>; Sat,  5 Mar 2005 16:00:39 +0100 (MET)
+Date: Sat, 5 Mar 2005 16:00:39 +0100
+From: Jakub Szewczyk <alvin@elf.ii.uj.edu.pl>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] timing problem
+Message-ID: <Pine.SGI.4.60.0503051344040.1180861@elf.ii.uj.edu.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+Hello,
+
+   After finding solution to my PIO card problems I managed to configure set
+for measuring ERPs. But during analysis of the first data file, I've found
+DMDX is doing very strange things with timing.
+
+I use <ms%> keyword for enforcing delay. In the following code, I've put
+into square brackets real timings measured as triggers by ERP gathering
+program - the time since the previous trigger.
+
+
+
+<azk> <cr>
+<vm 1024,768,16,0> 
+<nfb>
+<dbc 160160160> <dwc 0>
+<d 0> <t 5000>
+<RevertOutput 5,0> <InputDevice PIO12>
+
+<InputDevice Keyboard> <MapRequest +Space> <MNR +Left Shift> <MPR +Right Shift>
+
+<EndOfParameters>
+
+0 "Press space to begin.";
+
+
+-197 <ms% 1000> / <ms% 500> <o 3> "+" / <ms% 400> <o 3>[450] /
+   <ms% 300> <o 1>[360] "word1" / <ms% 200> <o 3>[270]  /
+   <ms% 115> <o 1>[180]"word2" / <ms% 200> / <ms% 300> <o 2>[287] "word3" /
+   <ms% 200> / <ms% 300> <o 3>[450] "word4" / * "???" / !;
+
+
+so the timings are very strange. this is a test procedure, in the real one I
+have used the following sequence: 
+.. / <ms% 200> / <ms% 300> <o 2> "word1" / <ms%200> / <ms% 300> <o 2> "word2" / ...
+so the delay should be always around 500, and the triggers appeared
+always in 450 ms delay, so it was not random.
+
+
+It seems the words appear on the screen in the same time as the triggers
+were gathered on another computer, so it can't be an I/O problem. I know it,
+since ERPs for successive words look similiar, and are not phase shifted (as
+it would be if the triggers were shifted in relation to words).
+
+I fear I'm making a very simple mistake, but I can't figure it out.
+
+can you figure anything out of it?
+
+
+thanks, 
+Jakub.
+

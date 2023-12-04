@@ -1,0 +1,205 @@
+Received: by cheltenham.cs.arizona.edu; Thu, 8 Dec 1994 14:01:17 MST
+To: icon-group-l@cs.arizona.edu
+Date: 8 Dec 1994 20:58:20 +0100
+From: antimiro@loria.fr (Valentin Antimirov)
+Message-Id: <3c7ogs$i9t@myrtille.loria.fr>
+Organization: CRIN & INRIA-Lorraine - Nancy - FRANCE
+Sender: icon-group-request@cs.arizona.edu
+References: <1994Dec7.221649.10939@cs.sfu.ca>, <3c62kb$pnu@caslon.CS.Arizona.EDU>
+Subject: Re: [Q] Algorithm for Regexp Subsumption
+Errors-To: icon-group-errors@cs.arizona.edu
+
+
+In article <3c62kb$pnu@caslon.CS.Arizona.EDU>, dave@CS.Arizona.EDU (Dave Schaumann) writes:
+|> 
+|> In article <1994Dec7.221649.10939@cs.sfu.ca>,
+|> Martin Vorbeck <vorbeck@cs.sfu.ca> wrote:
+|> 
+|> }  are there any algorithms out there for checking whether a regular
+|> }expression subsumes another one, ie L(E1) is a subset of L(E2)? I have a
+|> }"brute-force" solution along these lines:
+|> }
+|> }1. Compute equivalent finite automatas A1 (resp A2) for E1 (resp E2).
+|> }2. Compute A3 = A1 intersected with the complement of A2.
+|> }3. Test L(A3) = empty  ==>  E2 subsumes E1.
+|> }
+|> }But I wonder if this couldn't be done directly on the regular
+|> }expressions E1 and E2?
+|> 
+|> Another possibility would be to compute the minimized DFAs, then
+|> compute the minimized DFA of the union.  If it's the same as either
+|> of the originals, you've got a match.
+|> 
+|> Hard to say which method would be quicker.  Since they're essentially
+|> duals of each other, I wouldn't be surprised if it was a wash.
+|> 
+|> -Dave
+
+ Yes, it is possible to prove any regular inequality E1 =< E2 (as well as
+any regular equation E1 = E2) in a pure algebraic way -- without
+constructing DFA's for the expressions involved.
+
+ 1.  As far as regular equations are concerned, such a way has been
+described in [1].  It is an algebraic calculus presented in the form
+of a term-rewriting system. I have written a program in OBJ3 (an
+algebraic programming language) implementing this calculus.  If
+someone is interested in getting the program (together with quite
+complete instructions how to run it, examples, etc.), send me please a
+request by e-mail.
+
+ 2.  Since E1 =< E2 is equivalent to E1 + E2 = E2, the abovementioned
+calculus can also be used for proving/disproving regular inequalities.
+However, there exists a more direct (and more efficient) algebraic
+procedure based on so-called "partial derivatives".  Below I outline it.
+
+ Consider the set Reg of regular expressions on a given alphabet A:
+
+  Reg ::= 0 | 1 | x | Reg . Reg | Reg + Reg | Reg *
+
+where 0 denotes the empty language, 1 is a unit language, x is a letter
+from A, and the three other operations -- concatenation, regular union,
+and Kleene star -- have standard meaning.
+
+ Let Reg0, Reg1 be subsets of Reg defined by the following grammars:
+
+  Reg0 ::= 0 | x | Reg0 . Reg | Reg . Reg0 | Reg0 + Reg0
+
+  Reg1 ::= 1 | Reg1 . Reg1 | Reg1 + Reg | Reg + Reg1 | Reg *
+
+One can check that Reg is a disjoint union of Reg0 and Reg1 and that for
+any a0 \in Reg0 and a1 \in Reg1 the inequality 1 =< a0 is false and 1 =<
+a1 is true.) 
+
+ Let Set[Reg] denote the set of all finite sets of reg.  expressions.
+
+DEFINITION ( [3] ) 
+ Given x \in A, the function d_x : Reg -> Set[Reg], computing the set
+of partial derivatives of its argument w.r.t. x, is defined
+recursively by the following equations:
+
+  d_x(0) = d_x(1) = {} (* an empty set *),
+  d_x(y) = if y == x then { 1 } else {} fi,
+  d_x(a+b) = d_x(a) \cup d_x(b),
+  d_x(a0.b) = d_x(a0).b,
+  d_x(a1.b) = d_x(a1).b \cup d_x(b),
+  d_x(a*) = d_x(a).a*
+
+for all y\in A, a,b \in Reg, a0 \in Reg0, a1 \in Reg1.  Here the
+extension of concatenation _._ to Set[Reg] is defined in the following
+way:
+
+  R . 0 = {}, 
+  {} . t = {},
+  {0} . t = {},
+  {1} . t = {t},
+  {a} . t = {a.t} if a =/= 0, a =/= 1,
+  (R \cup R').t = (R.t)\cup (R'.t)
+
+for any R, R' \in Set[Reg], t \in Reg, t =/= 0, a\in Reg.
+--------------------
+
+  Given a set R \in Set[Reg], let \sum R be either 0 if R={}, or a sum
+(regular union) a + b + ... of non-zero elements a, b, ... of R. Note
+that here the regular union _+_ is considered to be associative,
+commutative and idempotent (while in the above definition of d_x() all
+regular expressions are treated as free terms).
+
+
+DEFINITION ( [2] ) Given a, b \in Reg, x\in A, and p \in d_x(a), the
+inequality p =< \sum d_x(b) is called a "partial derivative of a regular
+inequality a =< b w.r.t. the letter x".
+  Let pd_x(a =< b) be the set of all partial derivatives of a =< b w.r.t.
+x.  Given a set S of inequalities, let pd_x(S)=\bigcup_{s\in S}pd_x(s).
+------------------
+
+ Iterating this definition, one obtains partial derivatives of a =< b
+w.r.t. non-empty words on A:
+
+	pd_{wx}(a =< b) =  pd_x(pd_w(a =< b)).
+
+for all w\in A^+, x \in A.
+
+
+THEOREM ( [2] ) 
+ 1.  The set 
+
+	PD(a=<b) = \bigcup_{w\in A^+} pd_w(a =< b) 
+
+of all possible partial derivatives of a =< b w.r.t. all non-empty words
+on A is finite and its cardinality is less than or equal to
+\let(a)*2^\let(b) where \let(r) is the number of occurrences of alphabet
+letters appearing in the reg.  expression r.
+
+ 2. If a =< b is a valid inequality (i.e., the regular language denoted by
+a is a subset of one denoted by b), then all its partial derivatives are
+also valid. If a =< b is not valid, then the set PD(a =< b) contains at
+least one "trivially inconsistent" inequality of the form p1 =< q0 where
+p1\in Reg1, q0\in Reg0.  
+------------------
+
+
+ This gives the following procedure to decide whether a regular
+inequality a=<b is valid:
+
+ 1. Check if a=<b is "trivially inconsistent", i.e. if a\in Reg1, b\in
+Reg0 -- then a=<b = false. 
+
+ 2. Otherwise, compute the set pd_x(a =< b) for all the letters x
+occuring in a. If one of the new inequalities is "trivially
+inconsistent", then a=<b is disproved. Otherwise, keep computing partial
+derivatives of new inequalities until either you get a "trivially
+inconsistent" inequality, or the set of inequalities becomes saturated
+(no new partial derivative can be obtained). In the latter case, a=<b is
+valid -- as well as all the obtained partial derivatives of a=<b.
+
+(See [3] for a natural way to compute partial derivatives through
+so-called non-deterministic linear forms).
+
+
+ This is indeed a decision procedure, but its efficiency can be
+drastically improved using simple "logical" observations. First, it's
+quite clear that it makes no sense to differentiate inequalities like
+
+         a =< a, a =< a + b, 0 =< a, 1 =< a1 
+
+etc. which are "trivial tautologies". These should just be removed from
+the set of inequalities to be checked. Second, if two inequalities of the
+form a =< b and a =< b + c occurs in the set, then the second one can
+also be removed, since it is a logical consequence of the first one.
+
+ It is proved in [2] that with these optimizations the procedure in some
+cases is *EXPONENTIALLY* faster that any one constructing DFA for the
+expressions involved -- you can check it yourself on the following
+example:
+
+   (a* b)* (a a ... a) a *  =< (a + b)* a (a+b)...(a+b)
+            ^-------^                     ^------------^
+             n times                        n-1 times 
+
+(it is known that the minimal DFA for the right-hand side has 2^n
+states, but our procedure -- with the optimizations described above --
+generates only n+2 partial derivatives to be checked).
+
+
+ REFERENCES
+
+[1] V.~M. Antimirov and P.~D. Mosses.  Rewriting extended regular
+expressions.  {\em Theoretical Comput. Sci.}, 141, 1995.  (To appear.
+Available on WWW-page http://www.daimi.aau.dk/~pdm/rere.ps.Z).
+
+[2] V.~M. Antimirov.  Partial derivatives of regular expressions and
+finite automata constructions. (To be presented at STACS'95.  Available
+as tech. report CRIN-94-245).
+
+[3] V.~M. Antimirov.  Rewriting regular inequalities, October 1994.
+(Submitted)
+
+_______________________________________________________________________________
+ Valentin ANTIMIROV                     | Tel.:  (33) 83 59 30 15 (direct)
+ CRIN (CNRS) & INRIA-Lorraine,          |        (33) 83 59 30 00 (INRIA)
+ 615, rue du Jardin Botanique, B.P. 101 | Fax:   (33) 83 27 83 19
+ F54602  VILLERS-LES-NANCY Cedex,       | Telex:  850 238 F
+ FRANCE                                 | e-mail: Valentin.Antimirov@loria.fr
+-------------------------------------------------------------------------------
+
+

@@ -1,0 +1,45 @@
+Received: from wmailz.wt.net (sys48.hou.wt.net [205.230.159.48])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id KAA21887
+	for <handyboard@media.mit.edu>; Thu, 10 Dec 1998 10:25:56 -0500 (EST)
+From: michaelj@wt.net
+Received: from wt.net (sys48.hou.wt.net [205.230.159.48])
+	by wmailz.wt.net (8.8.7/8.8.7) with SMTP id JAA02837
+	for <handyboard@media.mit.edu>; Thu, 10 Dec 1998 09:10:36 -0600 (CST)
+	(envelope-from michaelj@wt.net)
+Sender: michaelj@wt.net
+Reply-To: michaelj@wt.net
+To: "handybd" <handyboard@media.mit.edu>
+Date: Thu, 10 Dec 1998 09:10:36 +600
+Subject: Re: DC Motor movement
+X-Mailer: DMailWeb Web to Mail Gateway 1.6g, http://netwinsite.com/top_mail.htm
+Message-Id: <366fe46c.b12.0@wt.net>
+X-User-Info: 149.58.101.253
+
+>hi,
+>The following command will cause the DC motor to rotote one after other
+>according to the std lib and the command. hence, the robot will gradually
+>slanted. It cannot travelled in a straight. 
+>
+>motor (2, 100);
+>motor (3,100);
+>
+>My question : how to  write in such a way to modify the library files so as
+
+>to cause both wheels of the motor to rotate simultaneously so that the
+>robot can travel in a straight line.
+>
+
+Each motor may have slightly different characteristics even though they may
+be the same brand and model. This is what you are probably seeing. The ultimate
+solution is to use a feedback mechanism, like a shaft encoder, on the motors
+and use software and/or hardware to maintain the correct speed. A cheaper alternative
+is to experiment with different value pairs for the speed setting and manually
+adjust them to make the robot track straight, then use the information to create
+a change to your motor driver routines to compensate for the differences. This
+complicates your software but is the esiest way to fix the problem. A pure software
+fix will not be able to completely compensate for the differences in the motors,
+too many variables to deal with, but is may be enough for your needs.
+
+Mike
+
+

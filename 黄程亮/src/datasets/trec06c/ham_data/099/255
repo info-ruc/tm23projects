@@ -1,0 +1,104 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j1GGJ1FJ019197
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 16 Feb 2005 09:19:01 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 84310A81320
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 16 Feb 2005 09:19:01 -0700 (MST)
+Received: from KIFXP (mfg.psych.arizona.edu [128.196.98.29])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id BE5B0A7CA49
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 16 Feb 2005 09:18:55 -0700 (MST)
+From: "Kenneth Forster" <kforster@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: maze command line/ randomization
+Date: Wed, 16 Feb 2005 09:19:05 -0700
+Message-ID: <000e01c51443$3c551360$1d62c480@KIFXP>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+In-Reply-To: <555488932@web.de>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Tanya,
+
+> <n 21><azk> <cr>  <d 0> <t 1500> <vm 1024, 768, 768, 32, 70> <id tastatur>
+> <nfb>
+> 
+> ! Practice Items
+> 
+> =1 *" This"/;
+> -1 *" information cars";
+> +1 *" wet must";
+> +1 *" rabbit be";
+> -1 *" kept bed";
+> +1 *" sanitation. secret.";
+> 
+> this is the command line and first practice item for my maze experiment. i
+> find myself confronted with several problems:
+> 
+> 1. the first word- "this"- does not get displayed.
+
+	The forward slash schedules a blank frame which erases the previous
+frame, where "This" would appear. You don't see it because there is no
+default frame duration, e.g., <fd 50>.  But you don't need it -- you want
+the word to stay on the screen until the subject responds.
+
+> 2. i don't really know how to randomize all real items but not the
+> practice items. i first thought that i' d group the practice items
+> together and then have them be the seed for the randomization but then
+> from what i have understood the randomized order would stay the same for
+> all items which is unwanted.
+
+	If you insert a $ sign before a group of items, and again at the
+end, those items appear in that position in a fixed sequence.
+
+	But if you scramble a MAZE file, the individual items that make up
+the sentence will get scrambled.  One way to cope is to set a grouping
+factor, e.g., <g 12>.  This effectively defines a group of 12 items to be a
+single item as far as scrambling is concerned.  This means you'd have to
+make all your sentences the same length (12 words in this case).  If some
+are shorter, you can include "dummy" items, such as in the following:
+ =1 *" This";
+ -2 *" information cars";
+ +3 *" wet must";
+ +4 *" rabbit be";
+ -5 *" kept bed";
+ +6 *" sanitation. secret.";
+0 c;
+0 c;
+0 c;
+0 c;
+0 c;
+0 c;
+
+These are "instructions" that don't display anything.  The "c" is necessary
+to reinstate continuous running so that DMDX goes on to the next item
+without waiting.   So, if you had 20 sentences, you'd include <s 20> <g 12>
+on the parameter line.
+
+There are more sophisticated procedures that achieve the same effect.  I
+have developed an Excel template for constructing MAZE files.  If you are
+interested let me know (mail to me not the list).
+
+--k.i.f.
+
+
+> 
+> thank you for your help,
+> 
+> tanya dolis
+> ______________________________________________________________
+> Verschicken Sie romantische, coole und witzige Bilder per SMS!
+> Jetzt bei WEB.DE FreeMail: http://f.web.de/?mc=021193
+> 
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+
+
+

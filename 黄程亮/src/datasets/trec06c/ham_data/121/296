@@ -1,0 +1,185 @@
+Received: from penguin.cs.cornell.edu (penguin.cs.cornell.edu [128.84.96.11])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3I5hW229098
+	for <egs+summary@cs.cornell.edu>; Tue, 18 Apr 2006 01:43:32 -0400 (EDT)
+Received: from pproxy.gmail.com ([64.233.166.183]) by penguin.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 18 Apr 2006 01:43:10 -0400
+Received: by pproxy.gmail.com with SMTP id c30so811458pyc
+        for <egs+summary@cs.cornell.edu>; Mon, 17 Apr 2006 22:43:10 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=W9PFKwUkFzsBHzFvHL4a4g1YHnXd4BhTl7IRgOsDbBjDsaefQ/cWPdMVw1CIDhiD5hSl02ELhvIpJugvCDbLCmxr/A+8KhdWxEzsdoskQ75YIXOrqo/VJC4Js1QlKVl6BZH47fe/3QXvBsyZIGOAobfholORqoKQBLQ6R0cAUow=
+Received: by 10.35.50.9 with SMTP id c9mr528494pyk;
+        Mon, 17 Apr 2006 22:17:59 -0700 (PDT)
+Received: by 10.35.125.16 with HTTP; Mon, 17 Apr 2006 22:17:59 -0700 (PDT)
+Message-ID: <9aa7a97d0604172217k5d180b0dwb3b402cb1923046a@mail.gmail.com>
+Date: Tue, 18 Apr 2006 01:17:59 -0400
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 22
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_6079_29173591.1145337479690"
+X-OriginalArrivalTime: 18 Apr 2006 05:43:10.0510 (UTC) FILETIME=[FA02FCE0:01C662AA]
+
+------=_Part_6079_29173591.1145337479690
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+
+    Implementing Declaritive Overlays
+    Boon Thau Loo, Tyson Condie, Joseph M. Hellerstein, Petros Maniatis,
+Timothy Roscoe, Ion Stoica
+
+    P2 is a new technology designed to streamline and quicken the design of
+peer to peer, distributed systems. A side benefit is that as the code is
+structurally designed with no syntactic noise from procedural language
+constructs, code is very easily shared, reused, and repurposed. The authors
+use three components, relational tables to represent overlay state, high
+level declaritive language to specify the overlay's logical properties and
+behavior, and graphs of the dataflow elements to represent runtime
+information processing. They use structured relational tables because they
+are a natural representation as neighbor tables are already quite common,
+tables are easily represented in declarative language, and it provides a
+consistently-named view of all the local tables and messages at different
+nodes. It is claimed that OverLog, the language presented, is not designed
+as a Domain-Specific language for overlay specification but instead an
+adaption of a powerful query language to a distributed context of data and
+messages. However, those are nearly synonymous, in that once one reaches a
+distributed context, it is a quite short hop to an overlay system.
+    P2 dataflows mix together network packet processing elements for tasks
+like queueing, (de)muxing, and congestion control along with relational
+database operators like joins and aggregations; the unification of variable=
+s
+in the body of a rule is implemented in a dataflow by an equijoin. This is =
+a
+complex operation, which can be considered somewhat inefficient; moreover,
+the future work lists sharing as an area of future work, and therefore
+earlier comments on sharing workload are somewhat immaterial. Also, the
+performance characteristics represent fairly decent behavior, which seems t=
+o
+be in a sense unnecessary; the paper is almost trying to accomplish too muc=
+h
+in that it posits that the system will aid in design time while
+simultaneously maintaining decent performance. While this is true, the
+proofs provided to precious little to back this claim up.
+
+    MACEDON: Methodology for Automatically Creating, Evaluating, and
+Designing Overlay Networks
+    Adolfo Rodriguez, Charles Killian, Sooraj Bhat, Dejan Kostic, Amin
+Vahdat
+
+    MACEDON, written before the P2 paper, performs a similar role in that i=
+t
+abstracts the work of designing overlay networks into that of specifying
+their runtime and other performance characteristics. Rather than generating
+query plans, it generates C++ code which can be compiled to run as per any
+other program. The benefits here are obvious, allowing greater programmers
+input in that the code can be modified afterwards. This might imply that th=
+e
+system is unnecessary, or might provide a human readable version of the
+specified system. The language itself describes a finite state machine, wit=
+h
+drawbacks such as high complexity to cope with system events, via API calls=
+,
+making the learning curve somewhat less steep; however, this is generally
+used in the generated code. The language that a programmer would use to
+create these API calls resembles a C or Java type language much more than
+DataLog does, while maintaining its nature as a descriptive language. It is
+therefore more mature as a language, which does not necessarily speak to th=
+e
+performance of the system but does speak to its utility as a rapid
+prototyping tool.
+    Its performance is clearly not going to suffer as compared to standard
+programming techniques -- so much of the actual performance gains are
+implemented in an automated fashion by the compiler and optimizer that
+another step hardly seems likely to hurt. Moreover, the P2 paper doesn't
+seem to present an improvement over this system, as the performance is
+better, and the ease of use is greater. While concepts such as code reuse
+and query sharing exist, they are not yet implemented in either system, and
+thus somewhat secondary.
+
+------=_Part_6079_29173591.1145337479690
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+<br>
+&nbsp;&nbsp; &nbsp;Implementing Declaritive Overlays<br>
+&nbsp;&nbsp; &nbsp;Boon Thau Loo, Tyson Condie, Joseph M. Hellerstein, Petr=
+os Maniatis, Timothy Roscoe, Ion Stoica<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;P2 is a new technology designed to streamline and
+quicken the design of peer to peer, distributed systems. A side benefit
+is that as the code is structurally designed with no syntactic noise
+from procedural language constructs, code is very easily shared,
+reused, and repurposed. The authors use three components, relational
+tables to represent overlay state, high level declaritive language to
+specify the overlay's logical properties and behavior, and graphs of
+the dataflow elements to represent runtime information processing. They
+use structured relational tables because they are a natural
+representation as neighbor tables are already quite common, tables are
+easily represented in declarative language, and it provides a
+consistently-named view of all the local tables and messages at
+different nodes. It is claimed that OverLog, the language presented, is
+not designed as a Domain-Specific language for overlay specification
+but instead an adaption of a powerful query language to a distributed
+context of data and messages. However, those are nearly synonymous, in
+that once one reaches a distributed context, it is a quite short hop to
+an overlay system.<br>
+&nbsp;&nbsp; &nbsp;P2 dataflows mix together network packet processing
+elements for tasks like queueing, (de)muxing, and congestion control
+along with relational database operators like joins and aggregations;
+the unification of variables in the body of a rule is implemented in a
+dataflow by an equijoin. This is a complex operation, which can be
+considered somewhat inefficient; moreover, the future work lists
+sharing as an area of future work, and therefore earlier comments on
+sharing workload are somewhat immaterial. Also, the performance
+characteristics represent fairly decent behavior, which seems to be in
+a sense unnecessary; the paper is almost trying to accomplish too much
+in that it posits that the system will aid in design time while
+simultaneously maintaining decent performance. While this is true, the
+proofs provided to precious little to back this claim up.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;MACEDON: Methodology for Automatically Creating, Evaluat=
+ing, and Designing Overlay Networks<br>
+&nbsp;&nbsp; &nbsp;Adolfo Rodriguez, Charles Killian, Sooraj Bhat, Dejan Ko=
+stic, Amin Vahdat<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;MACEDON, written before the P2 paper, performs a
+similar role in that it abstracts the work of designing overlay
+networks into that of specifying their runtime and other performance
+characteristics. Rather than generating query plans, it generates C++
+code which can be compiled to run as per any other program. The
+benefits here are obvious, allowing greater programmers input in that
+the code can be modified afterwards. This might imply that the system
+is unnecessary, or might provide a human readable version of the
+specified system. The language itself describes a finite state machine,
+with drawbacks such as high complexity to cope with system events, via
+API calls, making the learning curve somewhat less steep; however, this
+is generally used in the generated code. The language that a programmer
+would use to create these API calls resembles a C or Java type language
+much more than DataLog does, while maintaining its nature as a
+descriptive language. It is therefore more mature as a language, which
+does not necessarily speak to the performance of the system but does
+speak to its utility as a rapid prototyping tool.<br>
+&nbsp;&nbsp; &nbsp;Its performance is clearly not going to suffer as
+compared to standard programming techniques -- so much of the actual
+performance gains are implemented in an automated fashion by the
+compiler and optimizer that another step hardly seems likely to hurt.
+Moreover, the P2 paper doesn't seem to present an improvement over this
+system, as the performance is better, and the ease of use is greater.
+While concepts such as code reuse and query sharing exist, they are not
+yet implemented in either system, and thus somewhat secondary.
+
+------=_Part_6079_29173591.1145337479690--
+

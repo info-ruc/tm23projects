@@ -1,0 +1,52 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id NAA05452
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Oct 2000 13:18:07 -0700
+Received: from jcf.u.arizona.edu (128.196.98.7) by phobos.email.Arizona.EDU (5.1.046)
+        id 39E3B4460004A872 for DMDX@psy1.psych.arizona.edu; Fri, 13 Oct 2000 13:18:05 -0700
+Message-Id: <5.0.0.25.2.20001013131342.009de540@psy1.psych.arizona.edu>
+Date: Fri, 13 Oct 2000 13:18:03 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Timing
+In-Reply-To: <003901c0354d$0956a0c0$0ac4c380@ric.uci.edu>
+References: <5.0.0.25.2.20001013101807.009dd050@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 12:37 PM 10/13/00 -0700, you wrote:
+
+
+>Hi, My computer refresh rate is 16ms. I want to display 2 different images
+>one by one "like a loop" for 30 seconds.  The code will display the frames16
+>times per second for 30 seconds. I used the following:
+>0 %4 <bmp> "image1" ;
+>0 %4 <bmp> "image2" ;
+>did it 240 times.
+>but the timing is not coming right. i want each image to be displayed 64ms
+>and no delay time. i used <d 0>.
+>so, 64ms "each frame duration" * 480  "for both images" = 30720ms = 30sec.
+>i'm getting total time of 40 sec.
+>the program is displaying 10 frames per second not 16.
+>Any suggestions.
+
+   Make it one item using the <againwhen> keyword, the way you have those 
+images have to be read and prepared each time they are displayed and that 
+takes time.  As one item the ISI is rigidly controlled.
+
+0 / <aw 240,8> %4 <bmp> "image1" / <aw 240,8> %4 <bmp> "image2" / ;
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   When things are going well, something will go wrong.
+
+
+

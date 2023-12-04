@@ -1,0 +1,35 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8JG0Ih28502
+	for <egs@popsrv.cs.cornell.edu>; Thu, 19 Sep 2002 12:00:18 -0400 (EDT)
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Subject: 615paper13
+X-MimeOLE: Produced By Microsoft Exchange V6.0.5762.3
+Date: Thu, 19 Sep 2002 12:00:17 -0400
+Message-ID: <47BCBC2A65D1D5478176F5615EA7976D11AF6D@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615paper13
+Thread-Index: AcJf9ahXmb9NXZP0QJ+DMhDjMxPhdQ==
+From: "Vivek Vishnumurthy" <vivi@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id g8JG0Ih28502
+
+PARO:
+	The paper presents the PARO (a Power-Aware Routing Optimization) protocol. It aims to minimize the power consumption of the network as a whole, thus maximizing battery life and minimizing node and link failures.
+	The basic mechanism used by this protocol is: When node A is talking to node B, and node C overhears this conversation and sees that by participating in this conversation as an intermediate hop, it(C) can lead to a decrease in the power consumption, it does so, by sending a "route-redirect" message to A. A similar means is used when it is discovered that there is a redundant link in a path and the redundant link is dropped. The protocol also handles the scenario where more than one node discovers that power-saving is possible, by giving preference to the node that leads to the maximum reduction of power usage.We see that even with a limited number of increase in the intermediate hops, there is a substantial reduction in the power-usage.
+
+The weaknesses of the paper:
+- The extra cost of having transmitters and receviers able to work with variable power levels has not been discussed.
+- It assumes bi-directional links.
+- The communication between A and B depends on the active involvement of an (hitherto) uninvolved node: This makes security hard to implement.
+- The source node has to transmit explicit signalling packets when there is no traffic: This could lead to substantial overheads.
+- In a situation where there is a path A-B-C and C lies just outside the range of the transmission range of A, the fact that power could be saved by having A transmit its packets directly to C is never discovered.
+- Parameters other than power used has not been taken into account. The simulation should have compared performance of this protocol with others in terms of parameters such as end-end throughput, delay, etc. We cannot conclude that because the protocol has good performance wrt one parameter, it is applicable.
+- In the simulation results shown (Fig 6), the transmission success ratio is less than 0.7 for a significant portion of the domain. This is not acceptable in most scenarios.
+
+	The paper can be improved by making the simulation more rigorous, and making the route-restructuring more pro-active(eg: take into account the case mentioned above).
+

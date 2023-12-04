@@ -1,0 +1,57 @@
+Received: from luke.srtc.com (luke.srtc.com [208.132.236.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id AAA06598
+	for <handyboard@media.mit.edu>; Tue, 3 Nov 1998 00:55:58 -0500 (EST)
+Received: from SRTC (ossifrage [208.132.236.33]) by luke.srtc.com (8.6.12/8.6.9) with ESMTP id AAA00866 for <handyboard@media.mit.edu>; Tue, 3 Nov 1998 00:52:35 -0500
+Received: by SRTC (940816.SGI.8.6.9/SRTC-Client)
+        id AAA25945; Tue, 3 Nov 1998 00:56:45 -0500
+Message-Id: <199811030556.AAA25945@SRTC>
+From: ctaylor@SRTC.COM (Clem Taylor)
+Date: Tue, 3 Nov 1998 00:56:45 -0500
+X-Mailer: Mail User's Shell (7.2.5 10/14/92)
+To: handyboard@media.mit.edu
+Subject: Cool robot platform and a question...
+
+Thanks to the help of Todd Graham (thanks Todd), I've found a really cool,
+low cost, RC robot platform.  It's the same platform used by USC's 1997
+RoboCup entry, the Nikko Hercules!  It has 4 hard plastic drive wheels,
+dual drive motors, differential steering and the ability to raise and
+lower the chassis (changing the angle the wheels have to the ground, which
+changes the turning radius and the amount of wheel that has contact with
+the ground).
+
+I was planning on building my own H-bridge for it, and was surprised to
+find that it already has a dual H-bridge and a fairly decent run time.
+So, rather then build or purchase a new H-bridge I would like to hack
+apart the one that comes with the car.
+
+Being a software weenie, I don't have any experience reverse engineering a
+circuit.  I started probing around for continuity to try and figure out
+what's what and I didn't get very far.  When I tried to check voltages
+with the power applied, when I touched the circuit (or even got the probe
+near the circuit) the car would start twitching wildly, which makes
+debugging difficult.
+
+I was wondering if anyone had any luck interfacing to this or another
+Nikko car with differential steering.  I'd hope that the circuits are
+similar...
+
+TR10    TR12      TR 13
+                  TR 11
+
+                  TR6
+TR7     TR5       TR4
+
+The controller board has 8 power transistors, 10 & 12, 13 & 11, 6 & 3, and
+7 & 5 are connected to common heat sinks, and the heat sinks for 11-13 and
+5-7 are electrically common.
+
+The circuit has a 22 pin DIP chip that I would guess interfaces with the
+radio and controls the bridge.  If the DIP is parsing the radio signal and
+generating control signals for the H-bridge, I'd guess that I will have to
+remove it from the circuit and tap directly into the transistors.  Also,
+the car is a bit fast, so I'd like to be able to PWM the motors.  Any
+ideas?  Would it be easier to just start from scratch?
+
+                  Many thanks,
+                  Clem
+

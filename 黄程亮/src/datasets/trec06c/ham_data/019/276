@@ -1,0 +1,103 @@
+Received: from sable.nus.edu.sg (sable.nus.edu.sg [137.132.1.21])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id UAA29612
+	for <handyboard@media.mit.edu>; Mon, 6 Jul 1998 20:29:52 -0400 (EDT)
+Received: from leonis.nus.edu.sg (root@leonis.nus.edu.sg [137.132.1.18]) by sable.nus.edu.sg (8.8.8/8.6.9) with ESMTP id IAA12280; Tue, 7 Jul 1998 08:29:50 +0800 (SST)
+Received: from pacific.net.sg (NUSAS546.dialup.nus.edu.sg [137.132.62.60]) by leonis.nus.edu.sg (8.8.8/8.6.9/CNS-3.5) with ESMTP id IAA16637; Tue, 7 Jul 1998 08:29:48 +0800 (SST)
+Message-Id: <35A16D2F.4C418F8A@pacific.net.sg>
+Date: Tue, 07 Jul 1998 08:34:56 +0800
+From: Lim Jew Hwang <limjh@pacific.net.sg>
+X-Mailer: Mozilla 4.05 [en] (Win95; I)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: help needed for ir sensors & memory addressing latch
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi all,
+    I am new to robotics and have great difficulty trying to get the
+near-infra emmiter and
+detector on the HB to work properly. After studying the schematics, I
+figured out to
+activate J7, I should do a bit_set(0x1000,0b01000000) which appears to
+be successful,
+indicated by the LED lighting up. Since, it already has 40kHz modulation
+,all I need to do
+is to turn the output on & off at 600us for the detector to pick up the
+signal,isn't it?
+However when I put a Sharp IS1U60 on digital port 13 and did the
+following:
+
+void emit(){
+    int on,off,obstacle;
+while(1){ {
+            bit_set(0x1000,0b01000000);
+             sleep(0.0006);
+            obstacle=digital(13);
+          bit_clear(0x1000,0b01000000);
+             sleep(0.0006);
+         obstacle=digital(13);
+
+if(off && ~on)
+             obstacle=1;
+else
+             obstacle=0;}
+ printf("obstacle is %d\n",obstacle);
+        }}
+
+void main(){
+ start_process(emit());}
+
+I couldn't get the HB to indicate the presence of an obstacle.
+
+Next, I decided to get the readings from the detector on the HB instead
+as follows:
+
+void main(){
+    start_process(emit());}
+
+void emit() {
+        int on, off, obstacle;
+while (1){
+       {    bit_set(0x1000,0b01000000); /*PA6 output*/
+             sleep(0.0006);
+            on = peek(0x1000);
+
+          bit_clear(0x1000,0b01000000);
+             sleep(0.0006);
+            off = peek(0x1000); }
+
+    {if(on & 0b00000100 == 0b00000100) /*PA2 input*/
+                 on=1;
+     else
+                 on=0;
+    if(off & 0b00000100 == 0b00000100)
+                 off=1;
+     else
+                 off=0;}
+
+    if(off && ~on)
+                 obstacle=1;
+    else
+                 obstacle=0;}
+     printf("obstacle is %d\n",obstacle);
+        }}
+
+Unfortunately, this doesn't seems to work. Where did I go wrong?
+
+ Also, I have another HB which was working fine until one day, it
+decided not to boot any more. After the initial and sucessful
+downloading is over in the bootstrap mode, the LCD does not have the
+words interactive C display on it after the reset although LCD  is on.
+The charger LED is also ON all the times even though there are no
+rechargeable batteries connected to the HB when I connect the power jack
+to J12. After checking the data sheet, I suspect U2,U3 and U7 are
+damaged because they got very hot after switching on the HB for a while.
+Is there anything else that might be damaged and how should I proceed
+from here.
+
+Thanks for the attention.
+
+
+
+
+

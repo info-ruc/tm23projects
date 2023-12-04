@@ -1,0 +1,61 @@
+Received: from hotmail.com (law2-f171.hotmail.com [216.32.181.171])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id UAA10865
+	for <handyboard@media.mit.edu>; Fri, 23 Jul 1999 20:25:20 -0400 (EDT)
+Received: (qmail 51005 invoked by uid 0); 24 Jul 1999 00:24:46 -0000
+Message-Id: <19990724002446.51004.qmail@hotmail.com>
+Received: from 12.68.33.145 by www.hotmail.com with HTTP;
+	Fri, 23 Jul 1999 17:24:45 PDT
+X-Originating-Ip: [12.68.33.145]
+Reply-To: georgejr@musser.com
+From: "George Musser Jr" <gmusser@hotmail.com>
+To: handyboard@media.mit.edu
+Subject: Re: HB Serial line speed change
+Date: Fri, 23 Jul 1999 20:24:45 EDT
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+
+Here is the relevant function.  Note that it only works for baud rates up to 
+9600.
+
+void set_baud(int rate)              /* For an 8 MHz clock */
+{
+	if (rate >= 300)
+		poke(BAUD, 0xb0 | log2(9600/rate));
+}
+
+You'll need regdefines.c (for the address of BAUD) as well as the following 
+function:
+
+int log2(int x)     /*  2**logx <= x < 2**(logx+1)  */
+{
+	int logx;
+
+	if (x) {
+		logx = 15;
+		while (!(0x8000 & x)) {
+			x <<= 1;
+			logx--;
+		}
+		return logx;
+	}
+	else
+		return -1;
+}
+
+I personally like the generality of invoking log2(), but you can of course 
+use a series of if statements instead.
+
+There is also a location in the pcode interpreter that you can POKE to 
+change the baud rate used by IC.  But until IC can adjust its rate, this 
+operation will break the connection.
+
+George
+--
+George Musser
+georgejr@musser.com
+KF6LOJ
+
+
+_______________________________________________________________
+Get Free Email and Do More On The Web. Visit http://www.msn.com
+

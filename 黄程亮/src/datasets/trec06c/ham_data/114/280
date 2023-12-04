@@ -1,0 +1,62 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k1HFWcg1008553
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 17 Feb 2006 08:32:39 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id E9E52D02BC9
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 17 Feb 2006 08:32:38 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 6CCDCD05290
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 17 Feb 2006 08:32:37 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060217082421.00ba48d8@psy1.psych.arizona.edu>
+Date: Fri, 17 Feb 2006 08:32:34 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: USB-PIO24/37 output
+In-Reply-To: <81e01f9c0602170311u12c51a65tc7c8e0651ef4fb98@mail.gmail.co
+ m>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 06:11 AM 2/17/2006 -0500, you wrote:
+>Jonathan,
+>
+>Where can I find a tutorial, including sample item files, stepping through 
+>the process for sending a -5V  pulse from the USB-PIO24/37? Thanks in 
+>advance for any advice,
+>
+>Rich
+
+Certainly no one has sent a -5V pulse before, are you sure you don't mean 
+5V pulse?  If it's a 5V pulse it relatively straight forward once you get 
+the card setup and working as outlined in TimeDX's help:
+
+http://psy1.psych.arizona.edu/~jforster/dmdx/help/timedxhpiotest.htm
+
+The it's a matter of putting <id pio12> in the parameter line of a item 
+file and using <o N> anytime you want to put word N on port C of the 
+PIO.  If you want to use other ports there are other output devices, 
+pio12output16 and 24:
+
+http://psy1.psych.arizona.edu/~jforster/dmdx/help/dmdxhinput.htm
+
+To toggle bit 0 of port C on a 1 second time base the following item file 
+would be used:
+
+<id pio12> F60
+0 <o 0> / <o 1> / <o 0> / <o 1> / <o 0> / <o 1> / <o 0> / <o 1> ;l
+
+If you really want a -5V signal you'll have find a technician to set you up 
+a circuit that takes the +5V pulse and makes it a -5V pulse.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   If you look like the photo on your driver's license, you
+aren't well enough to drive.
+
+
+

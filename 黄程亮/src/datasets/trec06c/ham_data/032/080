@@ -1,0 +1,41 @@
+Received: from imo23.mx.aol.com (imo23.mx.aol.com [198.81.17.67])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA04116
+	for <handyboard@media.mit.edu>; Tue, 19 Jan 1999 08:03:04 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo23.mx.aol.com (IMOv18.1) id 9OFa007010
+	 for <handyboard@media.mit.edu>; Tue, 19 Jan 1999 08:02:09 -0500 (EST)
+Message-Id: <8acbec1c.36a48251@aol.com>
+Date: Tue, 19 Jan 1999 08:02:09 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: digital and analog port on HD
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+      I remember the Basic Stamp "POT" command which is used to read the
+position of a pot using a digital port.  The Basic Stamps are made from PIC
+microcontrollers and the digital ports are bidirectional.  That is they may be
+used as digital inputs or digital outputs.  As outputs there are CMOS FETs
+pulling the pin to + supply or Ground.  Source or singk is around 20ma.  To
+work a POT instruction, you have a POT as a variable resistor in series
+between the I/O Pin and a capacitor.  The other end of the capacitor is
+connected to ground.  To execute a POT command you would place a logic one on
+the port and set the data direction bit for that pin to 0 (output).  You leave
+it there for a reletively long to insure that the capacitor is fully charged.
+Then you change the data direction register to input and switch the I/O Port
+bit value to 0.  You then enter a loop where you switch the data direction bit
+to 0 (output) for a microsecond or two, and check the value of the input port
+(0 or 1) each time through the loop you increment (or decrement) a counter.
+When the port reads 0, you exit the loop and adjust the counter value through
+some correction factors gained through a calibration procedure.  As was
+mentioned in a previous post, this process is slow, but it will allow some
+digital ports to do some analog work.
+     With the 68HC11 you have 8 analog ports, and going through all this might
+not be the best approach.  You can get "analog switches" (like the CD4066)
+which can multiplex the analog ports if you don't have enough analog channels.
+
+Hope this is interesting
+Pherd
+

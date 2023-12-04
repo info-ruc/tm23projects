@@ -1,0 +1,61 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8JF6nh16450
+	for <egs@popsrv.cs.cornell.edu>; Thu, 19 Sep 2002 11:06:49 -0400 (EDT)
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Subject: 615 PAPER 13
+X-MimeOLE: Produced By Microsoft Exchange V6.0.5762.3
+Date: Thu, 19 Sep 2002 11:06:49 -0400
+Message-ID: <706871B20764CD449DB0E8E3D81C4D4302CEE607@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 PAPER 13
+Thread-Index: AcJf7i28wcnqZsjwSu+ZzqHZgPE/hw==
+From: "Hongzhou Liu" <liuhz@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by sundial.cs.cornell.edu id g8JF6nh16450
+
+Conserving Transmission Power in Wireless Ad Hoc Networks
+  This paper introduces PARO, a power-aware routing optimization that helps to minimize
+the transmission power needed to foward packets between wireless devices in ad hoc 
+networkss. Due to its power conserving point-to-point on-demand design, PARO is capable
+of outperforming the traditional broadcast-based routing protocols(e.g., MANET routing
+protocols). The simulation result reveals an important fact that compared to the power
+consumed by the data and control packets transmitted before convergence of optimal
+routes, the consumption of later data transmission is less significant, thus suggests
+an important design principle for future power-aware routing protocols that is the 
+avoidance of "blind" (e.g., broadcast) transmission at high power.
+  The core algorithm of PARO consists of three parts: overhearing, redirecting and
+route-maintenance. The overhearing algorithm estimates the minimum power needed to send
+packets to the overheard node. The estimated value is stored and is used by the 
+redirecting algorithm to decide if the adding of the overhearing node to the route will
+decrease the overall power consumption. If this is the case, the overhearing node 
+becomes a potential "redirector" and sends a route-redirect message to the communicating
+nodes involved. PARO uses a clever scheme here to suppress duplicate route-redirect 
+packets, that is priority route-redirector packets. Upon the reveival of this message, 
+the original route will redirect itself
+to go through the overhearing node, thus a new route with less overall power consumption
+is achieved. However, this core algorithm only applies to static netwokrs. To make it
+suitable to mobile nodes, this paper suggests some enhencements to the core algorithm, 
+such as: sending explicit signaling packets, using increasing transmission range to 
+capture mobile nodes, and so on. However some details are missing here, like how to 
+choose the value of route-timeout.  Besides, the redirecting algorithm for mobile 
+situation is describled in a informal way. I guess the authors have not come up with a 
+complete PARO solution for mobile networks at that time, thus they can only evaluate 
+and the performance of the protocol in static networks. No result about power efficiency
+in mobile networks is given in the paper. Thus, there is still some distance to make 
+PARO applicable to networks with high mobility.
+  PARO is not a "complete" routing protocol, because it's only applicable to the 
+situation where all nodes are located within the maximum transmission range of each 
+other. Thus given a sparsely populated network, PARO must be combined with some other
+traditional routing protocols to find a complete route with low power consumption.
+  When designin PARO, the authors take power efficiency as the only metrics to make a
+good routing protocol, ignoring all the other important metrics like end-to-end 
+throughput and delay. It's critical to take these metrcs into account and make some
+trade-off between them. Also it's very important to use the power capacity of each node
+fairly to prevent overloading some nodes and exhausting them, but this paper doesn't say
+any things about it.
+

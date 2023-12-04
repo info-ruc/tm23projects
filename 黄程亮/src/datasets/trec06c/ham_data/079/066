@@ -1,0 +1,49 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4KFi610269
+	for <egs@CS.Cornell.EDU>; Tue, 4 Dec 2001 15:15:44 -0500 (EST)
+Received: from plato (plato.ece.cornell.edu [128.84.81.135])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fB4KCKM21750;
+	Tue, 4 Dec 2001 15:12:20 -0500
+Date: Tue, 4 Dec 2001 15:19:10 -0500 (EST)
+From: "Panagiotis (Panos) Papadimitratos" <papadp@ece.cornell.edu>
+X-X-Sender:  <papadp@plato>
+To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+cc: Panagiotis Papadimitratos <papadp@ece.cornell.edu>
+Subject: 615 PAPER 69
+Message-ID: <Pine.SOL.4.33.0112041515110.17285-100000@plato>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Review of : "Bayeux: an architecture for scalable and Fault-tolerant
+wide-area data dissemination," by S.ZQ.Zhuang et al
+
+Panagiotis Papadimtratos papadp@ece.cornell.edu
+
+Bayeux extends Tapestry by providing a multicast delivery protocol at the
+application level as well. The oblect location infrastructure provided by
+Tapestry lets bayeux naturally built logical trees rooted at the network
+location that stores data and wishes to initiate a multicast session. The
+fault-tolerance properties provided by Tapesty are enhanced here, at the
+expense of transmission overhead with packet duplication. Moreover, Bayeux
+partitions the logical trees so that it reduces the processing overhead of
+the root nodes.
+
+In particular, the multicast operation is facilitated by the route
+aggregation, which practically keeps the tree fanout low, i.e., equal to
+the name/address base. Moreover, delivery to multiple tree nodes does not
+imply that a packet has to be duplicated: it is sufficient to send one
+replica per address prefix. Also, the tree depth depends on the size of
+the name space.  The root node advertises the session (i.e., the file id)
+which is stored at intermediate nodes, as described in Tapestry.
+
+As nodes join/leave the session, which is source- and data- specific, the
+requests propagate to the root of the tree. In order to balance this load,
+the authors propose to partition not only the trees but also oranize the
+nodes so that the access different trees according to the network
+proximity. The issue of network proximity in the light of the
+location-independent addressing schemes is recurring in the relevant
+literature, and sounds contradictory for schemes to backtrack to the ideas
+of an architecture that they had a priori rejected for their purposes.
+
+

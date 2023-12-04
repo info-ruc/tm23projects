@@ -1,0 +1,74 @@
+Received: from life.ai.mit.edu (life.ai.mit.edu [128.52.32.80])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id MAA25426
+	for <tex-fonts@math.utah.edu>; Wed, 24 Jul 2002 12:18:53 -0600 (MDT)
+Received: from MAURITIUS.ai.mit.edu (maui [128.52.37.105])
+	by life.ai.mit.edu (8.12.2/8.12.2/BASENAME(ai.master.life-8.12.2.mc,.mc):RCS_REVISION(evision: 1.23 ) with ESMTP id g6OIIVew009099;
+	Wed, 24 Jul 2002 14:18:31 -0400 (EDT)
+Message-Id: <5.1.0.14.2.20020724141546.03356960@mail.ai.mit.edu>
+X-Sender: bkph@mail.ai.mit.edu
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Wed, 24 Jul 2002 14:26:29 -0400
+To: <ud@art-satz.de>, <tex-fonts@sunshine.math.utah.edu>
+From: "Berthold K.P. Horn" <bkph@ai.mit.edu>
+Subject: RE: OpenType support (for TeX)
+In-Reply-To: <GPEMLIKGLHOKKGHPNJHMMEMOCJAA.ud@art-satz.de>
+References: <20020724.083610.99467586.wl@gnu.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 18:51 2002-07-24 +0200, Ulrich Dirr wrote:
+
+>> Some features of OpenType are nevertheless useful even for TeX,
+>> e.g. vertical representation forms for CJK glyphs or small caps
+>> substitutions.  It is a fact of life that most fonts will come in 
+>> the OpenType format today.  Adobe no longer produces Type1 fonts, 
+>> only OTFs; so TeX and Omega *must* support this format in the 
+>> near future.
+>
+>I agree.
+
+And some commercial systems do support OpenType (although not
+always in the same complete way as Type 1) -- *but* within the limitations
+of what TeX can do. That is, you can use any system-installed font
+(including Type 1, TrueType and OpenType) for screen display and printing,
+and you can write TFMs for these fonts for use by  TeX.  But as discussed, 
+TeX is in charge of typesetting, and what clever things it can do it will do, 
+and other things it will not, quite independent of what the font format is.
+
+So I think the question should not be "when will TeX support OT?"
+(which some implementation already do), but rather "how can we
+design a successor to TeX that includes support for the features
+of OpenType that TeX currently does not provide?"  And in that case
+you may be better off looking at Omega rather than starting from scratch,
+or maybe Adobe OnDesign.
+
+>> For many languages the 256 character limit is bad, so I won't 
+>> discuss this since Omega can do that better even if you don't use 
+>> any other feature of Omega.  What we need is a tool (or a suite of 
+>> tools) which prepares OTF fonts for TeX, this is, extracting the 
+>> various OpenType tables and converting them to something TeX can 
+>> understand.
+
+As indicated above, AFMs and TFMs for OT fonts can be written by
+some commercial TeX systems.  But not the hairy stuff you are looking for,
+since TeX does not provide support for them in metric files.
+
+>Yes. I also find it very useful to have the language feature tag ('language system tag'). Then you can have correct 'ch', 'ck', etc. ligatures when german is the current language but not in english where it's useless (and like the 'fi' in turkish, etc.pp.). Not to mention the 'hlig' feature tag.
+
+One rather painless way to do this presently is to have different file directories of TFM files
+for different purposes. To switch "system language" you switch a single variable
+that tells TeX where the tree of directories is.  Some systems already do this for
+convenient and easy switching between font encodings (which require different TFMs).
+
+Regards, Berthold.
+
+Of course you are unlikely to see much development of any of these hairy features
+unless the demand for such features picks up.
+
+>Ulrich Dirr
+
+--
+Berthold K.P. Horn  mailto:bkph@ai.mit.edu  http://www.ai.mit.edu/people/bkph (MT)
+
+
+

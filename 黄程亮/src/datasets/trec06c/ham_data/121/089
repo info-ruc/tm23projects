@@ -1,0 +1,222 @@
+Received: from penguin.cs.cornell.edu (penguin.cs.cornell.edu [128.84.96.11])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3B6K9226584
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 02:20:09 -0400 (EDT)
+Received: from pproxy.gmail.com ([64.233.166.181]) by penguin.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 11 Apr 2006 02:12:18 -0400
+Received: by pproxy.gmail.com with SMTP id c30so1202117pyc
+        for <egs+summary@cs.cornell.edu>; Mon, 10 Apr 2006 23:12:18 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=Ng8pjNlMqm8GyZ42oULqInbqxPQo5gIwzJV9BYXCKSSv1gXFQFOCnHQW5G2ZZ/7zC0ef5Lco6tX34V25xyu91kitBKtijy9/X9NA20v1cCZmp6pFKypdAdFdm3fynhfHnmvKuvoUHST4ZcimRnWmBf0X5OxXsf1VQh2joE4i1/4=
+Received: by 10.35.82.15 with SMTP id j15mr25526pyl;
+        Mon, 10 Apr 2006 22:45:56 -0700 (PDT)
+Received: by 10.35.125.16 with HTTP; Mon, 10 Apr 2006 22:45:56 -0700 (PDT)
+Message-ID: <9aa7a97d0604102245w38264508y4d668c2d116de536@mail.gmail.com>
+Date: Tue, 11 Apr 2006 01:45:56 -0400
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 20
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_933_5062188.1144734356301"
+X-OriginalArrivalTime: 11 Apr 2006 06:12:19.0029 (UTC) FILETIME=[E3519050:01C65D2E]
+
+------=_Part_933_5062188.1144734356301
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+
+    SCRIBE: A large-scale and decentralized application-level multicast
+infrastructure
+    Miguel Castro, Peter Druschel, Anne-Marie Kermarrec and Antony Rowstron
+
+    Built atop Pastry, Scribe permits large number of multicast groups, wit=
+h
+potentially giant membership sizes. It inherits directly Pastry's
+reliability, self-organization, and locality properties, and uses the
+consistent hashing scheme to create and manage groups, and Pastry's message
+routing to build efficient multicast trees for the dissemination of message=
+s
+to each group. Scribe provides best-effort reliability, though could be
+extended to provide better reliability. It uses a traditional Pastry model,
+but with the addition of several message types to facilitate broadcast. To
+join a broadcast group, a message is routed to the node whose nodeID lies
+closest to the group identifier, and the hops taken are cached so that
+responses may flow back along the channel thus created. The group identifie=
+r
+could be created in a variety of ways, the easiest of which would be to tak=
+e
+the ID of the creating node and concatenate some group identifier (making
+the tree efficient for the publisher), or to reverse the order of
+concatenation, to remove load. Scribe also handles tree repair (in a
+heartbeat-based failure detection system) and root repair (though precise
+algorithm is left unspecified).
+    Scribe has the advantage of being an incredibly simple algorithm. It is
+in many ways merely an application built on Pastry -- merely being the
+operative word here, because much of its good behavior can be simply
+inherited. The real places that it surpasses its substrate are in specific
+application -- whose design seems obvious, due to the limited number of way=
+s
+of acheiving it, and the order in which the papers were read -- and in the
+tree maintenance and repair steps, which are not ground breaking, but are
+better documented in this paper than elsewhere and seem entirely sufficient=
+.
+One of the major findings of Scribe's experimental data was that it did not
+behave well in the presence of a large number of small-sized groups. This i=
+s
+perfectly acceptable, once this information is known, but seems somewhat
+counterintuitive, as smaller groups (in theory!) involve fewer nodes and
+links, and thus lesser load. Their special case solution to this problem is
+somewhat worrisome, as it is underspecified and seems to indicate growing a
+node's outdegree to match membership in the group (under the collapsed
+system). This would seem to indicate that a sudden spike in popularity migh=
+t
+cause instability at some nodes as their outdegree grows; this might cause
+them to crash, creating a cascading effect. While I'm sure that this is
+taken into account, the paper does not mention this, but it may be a flaw
+specifically introduced by an otherwise benign fix.
+
+    Design and Evaluation of a Wide Area Event Notification Service
+    Antonio Carzaniga, David S. Rosenblum, Alexander L. Wolf
+
+    Much more expansive than strictly necessary, this paper delves into the
+minutiae of its logical model for providing a publish/subscribe framework.
+It does this by providing agreed upon datatypes, which permit fields to be
+generated for messages, which permit filters (and compositions of filters)
+to be applied, thus representing a sort of search on desired terms and data=
+.
+It uses a relatively unstructured network, in that subscriptions are pushed
+as far towards the publisher as possible -- as are filters, thus saving
+bandwidth -- and advertisements are sent as far down, towards consumers, as
+possible. This push and pull guarantees both coverage and reasonable
+performance. Much of the paper is devoted to the semantics of the query
+language and the concepts of a publish/subscribe system, which was
+unfortunate as this space could perhaps have been better allocated several
+different ways. Also, the paper establishes the performance models of
+hierarchical systems vis-a-vis peer to peer ones, resulting in the finding
+that hierarchical systems perform well for modest numbers of clients who
+experience thrash, subscribing and unsubscribing quickly, while peer to pee=
+r
+systems scale better with number of clients and modest rates of
+subscription-thrash, thus relatively high volume of messages.
+    The conclusion section paints doubts on how much of this product truly
+exists, and how much is merely theoretical; in an overwhelmingly theoretica=
+l
+paper, that seems dangerous. The paper is also relatively old -- merely the
+age of BitTorrent, though it seems older -- and while BitTorrent has truly
+'taken off', it seems that Siena has not. It is also unclear whether or not
+this protocol has in fact been run whatsoever in the real world, versus
+simulations -- since it aims to supplant CORBA and other such protocols,
+such a lack of real exposure is telling. In terms of the acutal algorithms
+presented, it is hard to say much, other than that they seem fine on paper,
+and are easy to motivate, and therefore likely correct. They are also
+uninspiring, though this is perhaps again a sign of age: the solution is to
+do as much work as close to the publisher as possible so to prevent extra
+messages from being sent, and to remark that this system may be symmetric,
+either via filters or via advertisements.
+
+------=_Part_933_5062188.1144734356301
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+<br>
+&nbsp;&nbsp; &nbsp;SCRIBE: A large-scale and decentralized application-leve=
+l multicast infrastructure<br>
+&nbsp;&nbsp; &nbsp;Miguel Castro, Peter Druschel, Anne-Marie Kermarrec and =
+Antony Rowstron<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Built atop Pastry, Scribe permits large number of
+multicast groups, with potentially giant membership sizes. It inherits
+directly Pastry's reliability, self-organization, and locality
+properties, and uses the consistent hashing scheme to create and manage
+groups, and Pastry's message routing to build efficient multicast trees
+for the dissemination of messages to each group. Scribe provides
+best-effort reliability, though could be extended to provide better
+reliability. It uses a traditional Pastry model, but with the addition
+of several message types to facilitate broadcast. To join a broadcast
+group, a message is routed to the node whose nodeID lies closest to the
+group identifier, and the hops taken are cached so that responses may
+flow back along the channel thus created. The group identifier could be
+created in a variety of ways, the easiest of which would be to take the
+ID of the creating node and concatenate some group identifier (making
+the tree efficient for the publisher), or to reverse the order of
+concatenation, to remove load. Scribe also handles tree repair (in a
+heartbeat-based failure detection system) and root repair (though
+precise algorithm is left unspecified). <br>
+&nbsp;&nbsp; &nbsp;Scribe has the advantage of being an incredibly
+simple algorithm. It is in many ways merely an application built on
+Pastry -- merely being the operative word here, because much of its
+good behavior can be simply inherited. The real places that it
+surpasses its substrate are in specific application -- whose design
+seems obvious, due to the limited number of ways of acheiving it, and
+the order in which the papers were read -- and in the tree maintenance
+and repair steps, which are not ground breaking, but are better
+documented in this paper than elsewhere and seem entirely sufficient.
+One of the major findings of Scribe's experimental data was that it did
+not behave well in the presence of a large number of small-sized
+groups. This is perfectly acceptable, once this information is known,
+but seems somewhat counterintuitive, as smaller groups (in theory!)
+involve fewer nodes and links, and thus lesser load. Their special case
+solution to this problem is somewhat worrisome, as it is underspecified
+and seems to indicate growing a node's outdegree to match membership in
+the group (under the collapsed system). This would seem to indicate
+that a sudden spike in popularity might cause instability at some nodes
+as their outdegree grows; this might cause them to crash, creating a
+cascading effect. While I'm sure that this is taken into account, the
+paper does not mention this, but it may be a flaw specifically
+introduced by an otherwise benign fix.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Design and Evaluation of a Wide Area Event Notification =
+Service<br>
+&nbsp;&nbsp; &nbsp;Antonio Carzaniga, David S. Rosenblum, Alexander L. Wolf=
+<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Much more expansive than strictly necessary, this
+paper delves into the minutiae of its logical model for providing a
+publish/subscribe framework. It does this by providing agreed upon
+datatypes, which permit fields to be generated for messages, which
+permit filters (and compositions of filters) to be applied, thus
+representing a sort of search on desired terms and data. It uses a
+relatively unstructured network, in that subscriptions are pushed as
+far towards the publisher as possible -- as are filters, thus saving
+bandwidth -- and advertisements are sent as far down, towards
+consumers, as possible. This push and pull guarantees both coverage and
+reasonable performance. Much of the paper is devoted to the semantics
+of the query language and the concepts of a publish/subscribe system,
+which was unfortunate as this space could perhaps have been better
+allocated several different ways. Also, the paper establishes the
+performance models of hierarchical systems vis-a-vis peer to peer ones,
+resulting in the finding that hierarchical systems perform well for
+modest numbers of clients who experience thrash, subscribing and
+unsubscribing quickly, while peer to peer systems scale better with
+number of clients and modest rates of subscription-thrash, thus
+relatively high volume of messages.<br>
+&nbsp;&nbsp; &nbsp;The conclusion section paints doubts on how much of
+this product truly exists, and how much is merely theoretical; in an
+overwhelmingly theoretical paper, that seems dangerous. The paper is
+also relatively old -- merely the age of BitTorrent, though it seems
+older -- and while BitTorrent has truly 'taken off', it seems that
+Siena has not. It is also unclear whether or not this protocol has in
+fact been run whatsoever in the real world, versus simulations -- since
+it aims to supplant CORBA and other such protocols, such a lack of real
+exposure is telling. In terms of the acutal algorithms presented, it is
+hard to say much, other than that they seem fine on paper, and are easy
+to motivate, and therefore likely correct. They are also uninspiring,
+though this is perhaps again a sign of age: the solution is to do as
+much work as close to the publisher as possible so to prevent extra
+messages from being sent, and to remark that this system may be
+symmetric, either via filters or via advertisements.
+
+------=_Part_933_5062188.1144734356301--
+

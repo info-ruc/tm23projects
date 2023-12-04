@@ -1,0 +1,39 @@
+Received: from kirkwood.hoosier.net (IDENT:root@kirkwood.hoosier.net [206.106.64.12])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA04272
+	for <handyboard@media.mit.edu>; Tue, 23 Mar 1999 12:04:54 -0500 (EST)
+Received: from mooreba.crane.navy.mil (a033-051.crane.navy.mil [164.227.33.51])
+	by kirkwood.hoosier.net (8.8.7/8.8.7) with ESMTP id MAA07316
+	for <handyboard@media.mit.edu>; Tue, 23 Mar 1999 12:03:43 -0500
+Message-Id: <199903231703.MAA07316@kirkwood.hoosier.net>
+From: "Bruce Moore" <bamoore@bloomington.in.us>
+To: <handyboard@media.mit.edu>
+Subject: Simtek memory
+Date: Tue, 23 Mar 1999 12:02:56 -0500
+X-Msmail-Priority: Normal
+X-Priority: 3
+X-Mailer: Microsoft Internet Mail 4.70.1155
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+A few weeks ago Duncan Orthner mentioned the Simtek memory chips on the HB
+newsgroup.  They sounded like a good idea so i tried them.  They work very
+well. 
+
+But.....  The HB may need a little modification to make them work rite. 
+When the HB is powered, they word just like the regular memory.  But when
+the Simtek chips loose power, memory is dumped from RAM to EEPROM (all in
+the memory chip and all automatic).  Every time the power comes back up the
+EEPROM is dumped back to RAM.  Problem is the Simtek chip needs a few
+milliseconds between the time the voltage is low enough to cause a mem dump
+to EEPROM and the time it looses power comletely.  I just put a 10 mF
+capacitor accross the plus and minus points that the battery wires connect
+to.  That seemed to make it happy.  One the Simtek data sheet there is a
+little more elegant way of doing it with a low voltage drop diode and a cap
+accross the power pin to the chip itself.  I tried the easy way first.
+
+Now I can completely remove power from the board and memory will still be
+there when I plug it back in.  
+
+
+

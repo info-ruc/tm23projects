@@ -1,0 +1,79 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id MAA10494
+	for <handyboard@media.mit.edu>; Sat, 26 Sep 1998 12:09:14 -0400 (EDT)
+Received: from cs.umt.edu (mso2-59.montana.com [208.4.224.59])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id KAA07390
+	for <handyboard@media.mit.edu>; Sat, 26 Sep 1998 10:14:50 -0600 (MDT)
+Message-Id: <360D11C6.D7439D04@cs.umt.edu>
+Date: Sat, 26 Sep 1998 10:09:42 -0600
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Multitasking problems
+References: <000201bde95f$604d8560$0264648c@adam>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Adam Oliver wrote:
+> I keep getting this message whenever I try to multitask with my board:
+> 
+> "Not enough stack memory for new process while executing main (process # 1)"
+<snip> 
+> int d;
+> 
+> void main()
+> {
+>  sony_init(1);
+>  while(!stop_button())
+>  {
+>   start_process(IRCheck());
+>  }
+>  sony_init(0);
+> }
+> 
+> void IRCheck()
+> {
+>  while(1){
+>  d = ir_data(0);}
+> }
+
+I think I know what the problem is:  Putting a start_process statement
+inside a loop like that is going to end up starting so many processes
+that the stack fills up almost instantly.  I think you probably only
+need a single IRCheck process running.  Try something like this:
+
+    int d;              /* note that this is a global variable */
+
+    void main() {
+        int ipid;
+        sony_init( 1 );
+        ipid = start_process( IRCheck() );
+        while( ! stop_button() ) {
+            printf( "IR data: %d", d );
+            msleep( 250L );
+        }
+        kill_process( ipid );
+        sony_init( 0 );
+    }
+
+    void IRCheck() {
+        while( 1 ) {
+            d = ir_data( 0 );
+            defer();
+        }
+    }
+
+Hope this helps.  Good luck!
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                     America's one of the finest countries
+Will Bain,                                           anyone ever stole.
+& Tatoosh                                           --Bobcat Goldthwait
+

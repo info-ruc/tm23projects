@@ -1,0 +1,354 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id f95KE5t09834;
+	Fri, 5 Oct 2001 13:14:05 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA02580;
+	Fri, 5 Oct 2001 14:56:06 -0400 (EDT)
+Date: Fri, 5 Oct 2001 14:56:06 -0400 (EDT)
+Received: by canaveral.red.cert.org; Fri, 5 Oct 2001 14:50:49 -0400
+Message-Id: <CA-2001-27.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-27
+X-Mozilla-Status: 9001
+X-Mozilla-Status2: 00000000
+X-UIDL: 8f1c42a6bea5b3cd9d12e2f8b72f54be
+Status: RO
+X-Status: $$$$
+X-UID: 0000000023
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-27 Format String Vulnerability in CDE ToolTalk
+
+   Original release date: October 5, 2001
+   Last revised: Thu Oct 5 14:17:55 EDT 2001
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+
+Systems Affected
+
+     * Systems running CDE ToolTalk
+
+
+Overview
+
+   There is a remotely exploitable format string vulnerability in the CDE
+   ToolTalk  RPC  database  service.  This vulnerability could be used to
+   crash  the  service or execute arbitrary code, potentially allowing an
+   intruder  to  gain  root  access.  This vulnerability is documented in
+   VU#595507.
+
+
+I. Description
+
+   The  Common  Desktop Environment (CDE) is an integrated graphical user
+   interface  that runs on Unix and Linux operating systems. CDE ToolTalk
+   is  a  message  brokering  system  that  provides  an architecture for
+   applications   to   communicate  with  each  other  across  hosts  and
+   platforms.  The ToolTalk RPC database server, rpc.ttdbserverd, manages
+   communication  between  ToolTalk  applications.  For  more information
+   about CDE, see
+
+          http://www.opengroup.org/cde/
+          http://www.opengroup.org/desktop/faq/
+
+   There is a remotely exploitable format string vulnerability in the CDE
+   ToolTalk  RPC  database  server.  While handling an error condition, a
+   syslog(3)  function  call  is  made  without providing a format string
+   specifier  argument.  Since  rpc.ttdbserverd does not perform adequate
+   input  validation  or  provide the format string specifier argument, a
+   crafted  RPC  request  containing  format  string  specifiers  will be
+   interpreted  by the vulnerable syslog(3) function call. Such a request
+   can  be  designed  to  overwrite  specific  locations  in memory, thus
+   executing code with the privileges of rpc.ttdbserverd, typically root.
+
+   The  vulnerability  was  discovered by Internet Security Systems (ISS)
+   X-Force. For more information, see
+
+          http://xforce.iss.net/alerts/advise98.php
+
+   This  vulnerability has been assigned the identifier CAN-2001-00717 by
+   the Common Vulnerabilities and Exposures (CVE) group:
+
+          http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2001-0717
+
+   Many  common UNIX systems ship with CDE ToolTalk installed and enabled
+   by  default.  The  rpcinfo  command  may help determine if a system is
+   running the ToolTalk RPC database service:
+
+          $ rpcinfo -p hostname
+
+   The  program  number  for the ToolTalk RPC database service is 100083.
+   References  to  this  number in the output from rpcinfo or in /etc/rpc
+   may  indicate  that  the ToolTalk RPC database service is running. Any
+   system  that  does  not  run  the ToolTalk RPC database service is not
+   vulnerable to this problem.
+
+
+II. Impact
+
+   An  attacker  can  execute  arbitrary  code with the privileges of the
+   rpc.ttdbserverd process, typically root.
+
+
+III. Solution
+
+Apply a patch
+
+   Appendix  A  contains  information  from  vendors  who  have  provided
+   information  for  this  advisory.  We  will  update the appendix as we
+   receive more information. If a vendor's name does not appear, then the
+   CERT/CC  did  not  hear  from  that vendor. Please contact your vendor
+   directly.
+
+Block access to vulnerable service
+
+   Until  patches are available and can be applied, you may wish to block
+   access to the RPC portmapper service and the ToolTalk RPC service from
+   untrusted  networks  such  as  the internet. Using a firewall or other
+   packet-filtering   technology,   block  the  ports  used  by  the  RPC
+   portmapper  and  ToolTalk  RPC  services.  The  RPC portmapper service
+   typically  runs on ports 111/tcp and 111/udp. The ToolTalk RPC service
+   may  be configured to use port 692/tcp or another port as indicated in
+   output from the rpcinfo command. Keep in mind that blocking ports at a
+   network  perimeter  does  not  protect the vulnerable service from the
+   internal   network.   It  is  important  to  understand  your  network
+   configuration  and  service  requirements before deciding what changes
+   are appropriate.
+
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  When  vendors  report  new  information  to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+
+Caldera, Inc.
+
+   Caldera  UnixWare  and  Open  Linux  are  vulnerable,  and  a  fix  is
+   forthcoming.
+
+
+Compaq Computer Corporation
+
+   Compaq Computer Corporation
+   ============================
+   Software Security Response Team
+   
+   Severity: low
+   
+   ToolTalk RPC Server Format String Vulnerability
+   
+   This potential security vulnerability has not been
+   reproduced for any release of Compaq Tru64 Unix.
+   However with the information available, we are providing
+   a patch that will further reduce any potential
+   vulnerability.
+   
+   A patch has been made available for all supported
+   versions of Tru64/ DIGITAL UNIX V4.0f, V4.0g, V5.0a,
+   V5.1, and V5.1a.
+   
+   *This solution will be included in a future distributed release of
+   Compaq's Tru64/ DIGITAL UNIX.
+   
+   This patch may be obtained from the following URL address:
+   
+   http://www.support.compaq.com/patches/
+   
+   Select BROWSE PATCH TREE and choose the version directory
+   required.
+   
+   The patch names are:
+   
+       DUV40F17-C0056200-11703-ER-*.tar
+       T64V40G17-C0007000-11704-ER-*.tar
+       T64V50A17-C0015500-11705-ER-*.tar
+       T64V5117-C0065200-11706-ER-*.tar
+       T64V51Assb-C0000800-11707-ER-*.tar
+   
+   Note:  Te asterisk in the filename indicates the remainder of the
+   tarfile name may change depending on the applicable date.
+   
+   This patch can be installed on:
+   
+   V4.0f, V4.0g            all patch kits
+   V5.0a, V5.1, and V5.1a  all patch kits
+
+
+Cray Inc.
+
+   UNICOS and UNICOS/mk are not vulnerable to [this] advisory.  For
+   further inform ation see Cray SPR 721061.  Cray SPRs are available
+   to licensed Cray customers.
+
+
+Hewlett-Packard Company
+
+   Patches are now available from HP.  See HPSBUX0110-168 for details.
+
+
+IBM Corporation
+
+   IBM AIX 5.1 and 4.3 are vulnerable.  IBM has released an emergency
+   fix (efix) w hich contains patched binaries for both AIX 5.1 and
+   AIX 4.3 as well as an advis ory:
+    
+       ftp://aix.software.ibm.com/aix/efixes/security/tooltalk_efix.tar.Z
+   
+   
+   IBM is working on APARs which will not be available until late
+   October or Novem ber of 2001.
+   
+       AIX 4.3: Pending assignment
+       AIX 5.1: APAR #IY23846
+
+
+The Open Group
+
+   The   Open   Group  maintains  source  code  for  the  Common  Desktop
+   Environment  (CDE).  Source  licensees of The Open Group's CDE product
+   can  contact  desktop@opengroup.org for advice and a source patch that
+   address this issue.
+
+
+SGI
+
+   SGI  acknowledges  the  CDE  vulnerabilities  reported  by CERT and is
+   currently  investigating.  No further information is available at this
+   time.  For the protection of all our customers, SGI does not disclose,
+   discuss  or  confirm  vulnerabilities  until  a full investigation has
+   occurred  and any necessary patch(es) or release streams are available
+   for all vulnerable and supported IRIX operating systems. Until SGI has
+   more  definitive  information  to provide, customers are encouraged to
+   assume   all   security   vulnerabilities   as  exploitable  and  take
+   appropriate  steps  according  to  local  site  security  policies and
+   requirements.  As  further  information  becomes available, additional
+   advisories  will  be  issued  via  the normal SGI security information
+   distribution methods including the wiretap mailing list.
+
+      http://www.sgi.com/support/security/
+
+
+Sun
+
+   Sun  has  reproduced  the  vulnerability and is testing a fix. The Sun
+   patches will be made available at the following location:
+
+       http://sunsolve.sun.com/securitypatch/
+
+
+Xi Graphics
+
+   Xi  Graphics  is  investigating  this  report  and  will  provide more
+   information when it is available.
+
+
+Appendix B. - References
+
+    1. http://www.opengroup.org/cde/
+    2. http://www.opengroup.org/desktop/faq/
+    3. http://xforce.iss.net/alerts/advise98.php
+    4. http://www.kb.cert.org/vuls/id/595507
+    5. http://www.cert.org/advisories/CA-1998-11.html
+     _________________________________________________________________
+     _________________________________________________________________
+
+   The  CERT  Coordination  Center thanks Internet Security Systems (ISS)
+   X-Force,  who  published an advisory on this issue. We would also like
+   to thank The Open Group for technical assistance.
+     _________________________________________________________________
+
+   Authors: Art Manion and Shawn V. Hernan
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-27.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+    Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+    Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+
+   October 5, 2001:  initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBO738iqCVPMXQI2HJAQHZFgP+Pr97BrhjEZKFE+MnpJMrGzy7fyWS9YTb
+Q07LB4f/q7RWx/aaj09xh15G7OSrAIS32Nw5Ksdgr1AqObGDsEvkVb4rflb7VcuM
+UJ+43zAAuv3uww/BR40itprqCw5aL8GomBvnUyVj/VDzGQHa26Vj8nILFo/dmASt
+ouGA2RLQI/s=
+=mdjA
+-----END PGP SIGNATURE-----
+

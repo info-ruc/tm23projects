@@ -1,0 +1,233 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.201] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1L05Xt26217
+	for <egs+summary@cs.cornell.edu>; Mon, 20 Feb 2006 19:05:34 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id 13so1016702nzp
+        for <egs+summary@cs.cornell.edu>; Mon, 20 Feb 2006 16:05:33 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=g85U5/9FmqHscgAI/6za5IQXmbGtRnV4dyhTlxP+9d054TEuqTfR6tzGzvXr8YGvOi0qLVL2LtVoiJ3LSRtXBQ7Z/ksKBjhD5pIqY1BSKehdJgtTxSoChXjFjPi077iMY8iHImJDo5llSS3qr66yAhyO4MjqNJxG+yJc+ZNiIWY=
+Received: by 10.36.154.3 with SMTP id b3mr2747945nze;
+        Mon, 20 Feb 2006 16:05:33 -0800 (PST)
+Received: by 10.36.146.8 with HTTP; Mon, 20 Feb 2006 16:05:33 -0800 (PST)
+Message-ID: <9aa7a97d0602201605t14b45cd4o1dd0bae712174254@mail.gmail.com>
+Date: Mon, 20 Feb 2006 19:05:33 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 8
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_9644_21480057.1140480333295"
+
+------=_Part_9644_21480057.1140480333295
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+    _The_Sybil_Attack_
+    John R Douceur
+
+    The essential point of this paper is a taunting one: to reduce loss due
+to failure, redundancy can be employed; however, if the scenario involves a
+malicious entity, then if they can leverage sufficient resources, they can
+seize a considerable amount of control. The paper also proves that logicall=
+y
+centralized authorities can prevent Sybil attacks, but that otherwise,
+extreme and unrealistic assumptions about attacker capabilities must be mad=
+e
+(and thus vulnerabilities introduced). The difficulty here lies that it is
+not just redundancy which can be impacted by one attacker who can lay claim
+to multiple identities -- in cases of data being split among several
+entities, it can lead to data leakage; thus, the system must ensure that
+distinct identities refer to distinct entities. The assumption on relative
+resources (because, of course, with unbounded greater resources, an attacke=
+r
+can do nearly anything) is very weak: merely that there exists some n for
+which all entities can perform operations which are polynomial in n, but no
+entities can perform super-polynomial operations in n.
+    The central concept was that the only way in-band to prove that two
+entities are separate is for the two to perform some computation in time
+that would tie up all of the resources of a single entity, and thus the
+identities must belong to separate entities. However, even this is not good
+enough, since it does not rule out collusion! Also, it assumes a certain
+degree of homogeneity; the assumption is easily broken by a motivated
+attacker, which is perhaps the threat model of every system. Once accepted,
+the paper goes on to indicate that identities may be able (depending on
+system) to vouch for other entities; thus the danger is that faulty entitie=
+s
+can (under the presented model) amplify their influence. The problem is wit=
+h
+the presented model of delegating identity verification: If we require not
+just individuals vouching, but paths vouching, then we can detect whether
+this attack is being used (or at least moderate the flow) based on the
+presented path contianing duplicates.
+
+    _Defending_Against_Eclipse_Attacks_on_Overlay_Networks_
+    Atul Singh, Miguel Castro, Peter Druschel, Antony Rowstron
+
+    In an overlay network, as the attacker compromises more and more nodes,
+their influence grows superlinearly; specifically, if the attacker can
+compromise a large fraction of the neighbors of a correct node, then they
+may 'eclipse' that node, preventing correct operation. It may be launched
+via a Sybil attack or via collusion, and is a higher order problem as
+attackers may manipulate the overlay maintenance algorithm to mount the
+Eclipse attack. The insight of the paper is that indegree of attacker nodes
+is going to be greater than that of "honest" nodes, and thus bounding this
+indegree mediates the attack, and to avoid the problem this creates by
+bounding outdegree as well.
+    The defense hinges on a solution to distributing node identifier, which
+is not trivially solved, as the attacker cannot easily be prevented from
+gathering multiple identities, merely slowed. The auditing method uses
+source rewriting to have a set of nodes perform in- and out-degree queries
+on behalf of other nodes on the network. Since there are a set of indirect
+nodes, as long as we assume there are f failures and the set is of size
+2*f+1, we can absolutely ensure correct behavior. This is polynomial in f,
+but capable of growing quite large. Moreover, it uses only shallow source
+re-writing, which means that a single compromised node can do significant
+damage; in fairness, however, in the peer to peer domain it is difficult
+enough to discover incorrect behavior, let alone absorb its damage
+flawlessly.
+
+    _Secure_Routing_For_Structured_Peer_to_Peer_Overlay_Networks_
+    Miguel Castro, Peter Druschel, Ayalvadi Ganesh, Antony Rowstron, Dan S.
+Wallach
+
+    This paper explores some of the capabilities of incorrectly functioning
+nodes in terms of message delivery through peer-to-peer overlays. They spli=
+t
+the weaknesses of peer to peer systems into three domains -- secure
+identification, routing table maintenance, and message routing -- and
+propose solutions for each vector of attack.
+    Secure identification is in some senses a punted issue in this paper, a=
+s
+the solution is to require out-of-band verification of separate identities,
+or a weaker guarantee than separate identities. The only "resource" which w=
+e
+can assume is equally shared between users, and no replicable due to
+collusion, etc, is time; the paper proposes & rejects a cryptographic puzzl=
+e
+solution.
+    Secure routing depends on good information which depends on secure
+identities; thus the solution to one aids the solution to the other. Their
+solution is to maintain, parallel to the optimized routing table, a second
+routing table with constrained choices, making the attacker's chance of
+having an entry in the table proportional to the number of nodes the
+attacker controls (rather than much greater). This segment does not,
+however, handle how to remove compromised nodes from the secure list, but
+merely uses it as a backup.
+    Finally, secure message passing relies on replicating messages; this is
+a secure and inoffensive method of passing, though prevents information
+loss, not information leakage.
+
+------=_Part_9644_21480057.1140480333295
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+&nbsp;&nbsp;&nbsp; <br>
+Andrew Cunningham<br>
+arc39<br>
+&nbsp;&nbsp; &nbsp;_The_Sybil_Attack_<br>
+&nbsp;&nbsp; &nbsp;John R Douceur<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;The essential point of this paper is a taunting one:
+to reduce loss due to failure, redundancy can be employed; however, if
+the scenario involves a malicious entity, then if they can leverage
+sufficient resources, they can seize a considerable amount of control.
+The paper also proves that logically centralized authorities can
+prevent Sybil attacks, but that otherwise, extreme and unrealistic
+assumptions about attacker capabilities must be made (and thus
+vulnerabilities introduced). The difficulty here lies that it is not
+just redundancy which can be impacted by one attacker who can lay claim
+to multiple identities -- in cases of data being split among several
+entities, it can lead to data leakage; thus, the system must ensure
+that distinct identities refer to distinct entities. The assumption on
+relative resources (because, of course, with unbounded greater
+resources, an attacker can do nearly anything) is very weak: merely
+that there exists some n for which all entities can perform operations
+which are polynomial in n, but no entities can perform super-polynomial
+operations in n.<br>
+&nbsp;&nbsp; &nbsp;The central concept was that the only way in-band to
+prove that two entities are separate is for the two to perform some
+computation in time that would tie up all of the resources of a single
+entity, and thus the identities must belong to separate entities.
+However, even this is not good enough, since it does not rule out
+collusion! Also, it assumes a certain degree of homogeneity; the
+assumption is easily broken by a motivated attacker, which is perhaps
+the threat model of every system. Once accepted, the paper goes on to
+indicate that identities may be able (depending on system) to vouch for
+other entities; thus the danger is that faulty entities can (under the
+presented model) amplify their influence. The problem is with the
+presented model of delegating identity verification: If we require not
+just individuals vouching, but paths vouching, then we can detect
+whether this attack is being used (or at least moderate the flow) based
+on the presented path contianing duplicates.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_Defending_Against_Eclipse_Attacks_on_Overlay_Networks_<=
+br>
+&nbsp;&nbsp; &nbsp;Atul Singh, Miguel Castro, Peter Druschel, Antony Rowstr=
+on<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;In an overlay network, as the attacker compromises
+more and more nodes, their influence grows superlinearly; specifically,
+if the attacker can compromise a large fraction of the neighbors of a
+correct node, then they may 'eclipse' that node, preventing correct
+operation. It may be launched via a Sybil attack or via collusion, and
+is a higher order problem as attackers may manipulate the overlay
+maintenance algorithm to mount the Eclipse attack. The insight of the
+paper is that indegree of attacker nodes is going to be greater than
+that of &quot;honest&quot; nodes, and thus bounding this indegree mediates =
+the
+attack, and to avoid the problem this creates by bounding outdegree as
+well.<br>
+&nbsp;&nbsp; &nbsp;The defense hinges on a solution to distributing
+node identifier, which is not trivially solved, as the attacker cannot
+easily be prevented from gathering multiple identities, merely slowed.
+The auditing method uses source rewriting to have a set of nodes
+perform in- and out-degree queries on behalf of other nodes on the
+network. Since there are a set of indirect nodes, as long as we assume
+there are f failures and the set is of size 2*f+1, we can absolutely
+ensure correct behavior. This is polynomial in f, but capable of
+growing quite large. Moreover, it uses only shallow source re-writing,
+which means that a single compromised node can do significant damage;
+in fairness, however, in the peer to peer domain it is difficult enough
+to discover incorrect behavior, let alone absorb its damage flawlessly.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_Secure_Routing_For_Structured_Peer_to_Peer_Overlay_Netw=
+orks_<br>
+&nbsp;&nbsp; &nbsp;Miguel Castro, Peter Druschel, Ayalvadi Ganesh, Antony R=
+owstron, Dan S. Wallach<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;This paper explores some of the capabilities of
+incorrectly functioning nodes in terms of message delivery through
+peer-to-peer overlays. They split the weaknesses of peer to peer
+systems into three domains -- secure identification, routing table
+maintenance, and message routing -- and propose solutions for each
+vector of attack.<br>
+&nbsp;&nbsp; &nbsp;Secure identification is in some senses a punted
+issue in this paper, as the solution is to require out-of-band
+verification of separate identities, or a weaker guarantee than
+separate identities. The only &quot;resource&quot; which we can assume is e=
+qually
+shared between users, and no replicable due to collusion, etc, is time;
+the paper proposes &amp; rejects a cryptographic puzzle solution.<br>
+&nbsp;&nbsp; &nbsp;Secure routing depends on good information which
+depends on secure identities; thus the solution to one aids the
+solution to the other. Their solution is to maintain, parallel to the
+optimized routing table, a second routing table with constrained
+choices, making the attacker's chance of having an entry in the table
+proportional to the number of nodes the attacker controls (rather than
+much greater). This segment does not, however, handle how to remove
+compromised nodes from the secure list, but merely uses it as a backup.<br>
+&nbsp;&nbsp; &nbsp;Finally, secure message passing relies on
+replicating messages; this is a secure and inoffensive method of
+passing, though prevents information loss, not information leakage.
+
+------=_Part_9644_21480057.1140480333295--
+

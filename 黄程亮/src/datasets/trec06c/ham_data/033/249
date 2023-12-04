@@ -1,0 +1,75 @@
+Received: from iron.singnet.com.sg (iron.singnet.com.sg [165.21.7.29])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id HAA06438
+	for <handyboard@media.mit.edu>; Tue, 2 Feb 1999 07:22:26 -0500 (EST)
+Received: from james (tns02636.singnet.com.sg [165.21.190.106])
+	by iron.singnet.com.sg (8.9.1a/8.9.1) with SMTP id UAA20216
+	for <handyboard@media.mit.edu>; Tue, 2 Feb 1999 20:22:23 +0800 (SGT)
+Message-Id: <006d01be4ea6$4d37e900$6abe15a5@james>
+From: "Tey Chee Beng" <cbtey@singnet.com.sg>
+To: "Handy Board mailing list" <handyboard@media.mit.edu>
+Subject: Decoding Infrared receiver
+Date: Tue, 2 Feb 1999 20:15:02 +0800
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.1
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+Content-Transfer-Encoding: 7bit
+
+Dear Mr Fred Martin/Friends,
+
+I have been playing with the handyboard for a while now, currently I have
+four handyboards.
+I'm working on the communication module between the handyboards using the
+infrared emitter and the Sharp IS1U60 infrared demodulator. Currently, I
+have this problem, I was unable to sample or decode the data from the Sharp
+IS1U60 infrared demodulator, as the transmission part is OK.
+
+The data transmitted from the infrared emitter is in the form of:
+- 1 Start bit, 8 data bit and 1 stop bit, with a frequency of 400Hz/2.5ms
+for 1 bit (for testing purpose).
+
+As for the receiver part, the Sharp IS1U60 infrared demodulator is used and
+is connected to the port PA2/TIC1. So the excepted data pulses received
+after the Sharp IS1U60 infrared demodulator or at the port PA2/TIC1 will be
+a low pulse (start bit), follow by the data (8 bits), and another low pulse
+(stop bit). When there is no data, the port PA2/TIC1 will always read high
+(logic '1').
+
+(Codes written)
+Interrupt will be generated when there is a falling edge detected on the
+port PA2/TIC1, which is the start bit of the transmitted data. Upon
+interrupt, 68HC11 will wait for 1.25ms, which is about the center of the
+Start bit, and sampled the port PA2/TIC1 for the logic level (either a '1'
+or a '0'). A logic '0' should be read from port PA2/TIC1, but that is not my
+case, coz I always read a logic '1' at port PA2/TIC1. Does anyone know
+what's the problem ?
+
+The following codes is used to read port PA2/TIC1,
+PORTA    EQU    $1000
+
+CLRA
+LDAB    PORTA
+STD       PA2         (PA2 is a two bytes variable)
+
+Even if I read the port PA2/TIC1 immediately in the interrupt subroutine, I
+still get a logic '1' instead of a logic '0'. I have double check with the
+oscilloscope that a logic '0' should be the correct value instead of a logic
+'1'.
+
+But with the  Sharp IS1U60 infrared demodulator removed, and port PA2/TIC1
+short to the ground, a logic '0' can be read.
+
+What is the problem, does anyone ever faced the same problem before ?
+Or is it because port PA2/TIC1 cannot handle a string of high frequency
+pulses.
+
+Any comments on this issue....
+
+Thanks in advance,
+James
+
+

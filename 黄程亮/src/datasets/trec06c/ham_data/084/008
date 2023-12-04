@@ -1,0 +1,80 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id g8UFnVP08810
+	for <ggilfoyl@facstaff.richmond.edu>; Mon, 30 Sep 2002 11:49:31 -0400
+Received: from urmail-ag.richmond.edu (urmail-ag.richmond.edu [141.166.183.2])
+	by argyle.richmond.edu (8.11.6/8.11.6) with ESMTP id g8UFlu317365
+	for <ggilfoyl@richmond.edu>; Mon, 30 Sep 2002 11:47:56 -0400
+Received: by urmail-ag.richmond.edu with Internet Mail Service (5.5.2653.19)
+	id <SCTSQ33B>; Mon, 30 Sep 2002 11:47:55 -0400
+Message-ID: <C1F927C74082D311A25B00508B5BFF1702C974E4@urmail-oz.richmond.edu>
+From: "Stefanovski, Sasko" <sstefano@richmond.edu>
+To: "Gilfoyle, Gerard" <ggilfoyl@richmond.edu>
+Subject: Using ssh and scp
+Date: Mon, 30 Sep 2002 11:47:51 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300003db3
+
+Dr. Gilfoyle,
+
+As I have promised, here is how you can use ssh and scp without the need to
+retype your password often.
+
+On your client machine:
+1. Generate ssh-key with
+        ssh-keygen -t dsa -b 1024 -f ~/.ssh/id_dsa
+   This will generate 2 files in your ~/.ssh directory:
+      - id_dsa
+      - id_dsa.pub
+   I've decided to create key-pair just for ssh v2 protocol.
+   There is no need for this step if you already have your keys generated.
+See in ~/.ssh directory.
+
+2. Copy the id_dsa.pub file in the ~/.ssh directory on the pscm1 machine and
+append it to the authorized_keys2 file
+       cd  ~/.ssh
+       scp id_dsa.pub gilfoyle@pscm1.richmond.edu:.ssh
+       ssh pscm1.richmond.edu
+       <type your password>
+       cd .ssh
+       cat id_dsa.pub >> authorized_keys2
+
+3. Try to login from your client machine using ssh
+         ssh pscm1.richmond.edu
+    You will get something like:
+         Enter passphrase for key '<path_to_your_home>/.ssh/id_dsa' :
+    Here enter the password you chose while generating the ssh-keys.
+    Successful login says the setup is o.k.
+
+4. Now, in order not to have your password entered on every ssh connection
+or for every scp file transfer,
+    do the following on your client machine once you have logged in (on the
+client machine).
+
+    Execute (in xterm, or whatever terminal window you are using): 
+         ssh-agent /bin/ksh
+    Note: Replace /bin/ksh with whatever you are using for your login shell.
+    Then, authenticate yourself to the agent with:
+         ssh-add
+    Enter here your password you were using for generating the ssh-keys
+    From now on, you can login with ssh or do an scp to your cluster account
+without providing password. Please be notified that you can do that only
+from the terminal window  ssh-agent was executed in, and from its child
+processes (You can open another xterm from that window, and you can initiate
+ssh connections without password from that window too).
+   If you want  to delete your identity from the agent you can use
+        ssh-add -d
+   or if you decide to remove the agent do 
+        ssh-agent -k 
+   in the same xterm you have used to start it.
+
+Hope you'll have no problems using ssh/scp.
+
+Cheers,
+Sasko
+

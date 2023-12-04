@@ -1,0 +1,116 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k35N4HFL003999
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 5 Apr 2006 16:04:17 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 161BCDCB28D
+	for <DMDX@psy1.psych.arizona.edu>; Wed,  5 Apr 2006 16:04:17 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 10C11DCABFB
+	for <DMDX@psy1.psych.arizona.edu>; Wed,  5 Apr 2006 16:04:16 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060405150847.00ba4ea0@psy1.psych.arizona.edu>
+Date: Wed, 05 Apr 2006 16:04:14 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] DMDX 3.1.5.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+DMDX 3.1.5.0 adds the <bb2mr> keyword:
+
+Branch Backwards to Most Recent Keyword
+
+<BB2MR [N]>
+
+     MDSP bit 10000000 modifier, backwards branches go to the most recent 
+occurrence of an item number instead of the first.
+
+    Without BB2MR branching backwards in DMDX is rather crude, you can only 
+branch backwards to the first occurrence in the itemfile (as opposed to the 
+most recent occurrence) of item number N because originally DMTG could not 
+parse an item file backwards. The BB2MR option that overrides this.  When 
+branching forwards if DMDX doesn't find an item number after a branch 
+keyword item it will branch to the first occurrence of that item number in 
+the item file unless BB2MR is on in which case it will branch to the most 
+recent occurrence of the item number.  When a negative item number is used 
+as a branch destination (and almost all times BB2MR is useful you'll be 
+using a negative item destination) it will also branch backwards to the 
+most recent occurrence of that item.  The is handy for repeating an item 
+conditionally without having to code each item number in dozens of little 
+branch items.  For instance we have a paradigm where the subject is allowed 
+to check the time for instance as well as respond to the item.  After 
+checking the time the item should be presented again.  This can either be 
+done by putting the item number into the <multiwaybranch> or by sticking a 
+stub item before the RT gathering item and branching back to it so every RT 
+gathering group of items can have the same structure.  Here a, b and c are 
+responses and F7 and F8 display auxiliary information and F10 displays the 
+time (with a bit of futzing around to get a leading zero on the seconds 
+when needed):
+
+<s 8> <g 8> <zil> <zor> <cr>
+
+~1;
++101 "First Question" * <mwb +a,9 +b,9 +c,9 +F7,7, +F8,8, +F10,4 binr,9> ;
+~4 <set c1=millisectime/1000> <set c2=c1/60> <set c3=c1%60> <bi 6, c3 .lt. 10>;
+5 <px .48> "" <apc 2>, ":" <apc 3> / <bu -1>;
+6 <px .48> "" <apc 2>, ":0" <apc 3> / <bu -1>;
+7 "F7 info" <bu -1>;
+8 "F8 info" <bu -1>;
+~9;
+
+~1;
++102 "Second Question" * <mwb +a,9 +b,9 +c,9 +F7,7, +F8,8, +F10,4 binr,9> ;
+~4 <set c1=millisectime/1000> <set c2=c1/60> <set c3=c1%60> <bi 6, c3 .lt. 10>;
+5 <px .48> "" <apc 2>, ":" <apc 3> / <bu -1>;
+6 <px .48> "" <apc 2>, ":0" <apc 3> / <bu -1>;
+7 "F7 info" <bu -1>;
+8 "F8 info" <bu -1>;
+~9;
+~1;
++103 "Third Question" * <mwb +a,9 +b,9 +c,9 +F7,7, +F8,8, +F10,4 binr,9> ;
+~4 <set c1=millisectime/1000> <set c2=c1/60> <set c3=c1%60> <bi 6, c3 .lt. 10>;
+5 <px .48> "" <apc 2>, ":" <apc 3> / <bu -1>;
+6 <px .48> "" <apc 2>, ":0" <apc 3> / <bu -1>;
+7 "F7 info" <bu -1>;
+8 "F8 info" <bu -1>;
+~9;
+
+     Note that without the -1 destination it wouldn't work as it would go 
+on to the next item and without BB2MR all the -1s would have to be the 
+individual item number for that group, 101, 102 or 103 in our example.  And 
+because we've now got uniform branched we could replace most of that text 
+with macros:
+
+<s 8> <g 8> <zil> <zor> <cr>
+$~999 mu+* <mwb +a,9 +b,9 +c,9 +F7,7, +F8,8, +F10,4 binr,9>+
+       mv+<set c1=millisectime/1000> <set c2=c1/60> <set c3=c1%60> <bi 6, 
+c3 .lt. 10>+
+       mw+<px .48> "" <apc 2>, ":" <apc 3> / <bu -1>+
+       mx+<px .48> "" <apc 2>, ":0" <apc 3> / <bu -1>+
+       mx+"F7 info" <bu -1>+
+       mz+"F8 info" <bu -1>+;$
+
+~1;
++101 "First Question" ~u ; ~4 ~v; 5 ~w; 6 ~x; 7 ~y; 8 ~z; ~9;
+
+~1;
++102 "Second Question" ~u ; ~4 ~v; 5 ~w; 6 ~x; 7 ~y; 8 ~z; ~9;
+
+~1;
++103 "Third Question" ~u ; ~4 ~v; 5 ~w; 6 ~x; 7 ~y; 8 ~z; ~9;
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Is not marriage an open question, when it is alleged, from the
+beginning of the world, that such as are in the institution wish to get
+out, and such as are out wish to get in?
+
+                                                 -  Ralph Emerson
+
+
+

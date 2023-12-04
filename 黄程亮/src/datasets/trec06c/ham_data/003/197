@@ -1,0 +1,34 @@
+Received: by colossus.cse.psu.edu id <78650>; Mon, 3 Jun 1996 10:03:44 -0400
+Received: from cs.huji.ac.il ([132.65.16.10]) by colossus.cse.psu.edu with SMTP id <78653>; Mon, 3 Jun 1996 10:03:27 -0400
+Received: from hazard.cs.huji.ac.il by cs.huji.ac.il with SMTP id AA28383
+  (5.67b/HUJI 4.153 for <9fans@cse.psu.edu>); Mon, 3 Jun 1996 16:59:52 +0300
+From:	Amos Shapir <amos@cs.huji.ac.il>
+Received: (from amos@localhost) by hazard.cs.huji.ac.il (8.7/1.1c)
+  id QAA00363; Mon, 3 Jun 1996 16:59:36 +0300 (IDT)
+Date:	Mon, 3 Jun 1996 09:59:36 -0400
+Message-Id: <199606031359.QAA00363@hazard.cs.huji.ac.il>
+To:	9fans
+Subject: Bug in sysrendezvous?
+Sender: owner-9fans
+Precedence: bulk
+Reply-To: 9fans
+
+The "tag" operand of rendezvous is defined as ulong; but in the
+function sysrendezvous (in sysproc.c), it's copied into an int, which
+is used as an index in a table by the REND macro.  If I'm mistaken
+correctly, this means that if the tag is negative, the resulting
+pointer would point *outside* the table!
+
+I guess this bug was not discovered because the tag is usually an
+address in user space, but nothing in the manual suggests it has to be
+below 0x80000000 (or that it shouldn't be 0xdeadbeef...)
+
+Did anybody else had any trouble with this?
+
+	Amos Shapir		Net: amos@cs.huji.ac.il
+Paper: The Hebrew Univ. of Jerusalem, Dept. of Comp. Science.
+       Givat-Ram, Jerusalem 91904, Israel
+GEO: 35 11 46 E / 31 46 21 N
+
+
+

@@ -1,0 +1,59 @@
+Received: from ea.com (gate.ea.com [159.153.89.2])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA10029
+	for <handyboard@media.mit.edu>; Thu, 25 Mar 1999 20:05:32 -0500 (EST)
+Received: from pacbell.net (4-21-36-129.ea.com [4.21.36.129] (may be forged))
+	by ea.com (8.8.7/8.8.5) with ESMTP id RAA01697
+	for <handyboard@media.mit.edu>; Thu, 25 Mar 1999 17:00:45 -0800 (PST)
+Message-Id: <36FADD5E.EA4B2D23@pacbell.net>
+Date: Thu, 25 Mar 1999 17:05:34 -0800
+From: Steve Chamberlin <slc@pacbell.net>
+Reply-To: slc@alum.mit.edu
+X-Mailer: Mozilla 4.04 [en] (Win95; I)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Re: Robot Mapping
+References: <Pine.A41.4.05.9903251202210.34964-100000@ben12.unm.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+michael lang kee wrote:
+> 
+> Hello, I am working on an autonomous mobile robot.  Which has a sonar and
+> infared sensor incorporated into it.  Right now it can avoid objects, by
+> sensing it and backing up and turning.  I want my robot to take the
+> information from the sensors and map out the terrain.  I want to know if
+> anyone has an algorithm for mapping the terrain.  The coding doesn't
+> matter, I can transform it into code I can use.
+
+I've been thinking about this too. The problem as I see it is that
+without some shaft encoders on the wheels, your robot doesn't really
+know how far it's moved, and therefore where it is in the map. If you
+power on the forward motor for 2 seconds, bump something, and go reverse
+for 2 seconds, where are you? Probably somewhere close to where you
+started, but not exactly. All of those "not exactly" errors will quickly
+add up over many iterations of forward, back, turn, etc. until the robot
+has basically no idea where it is relative to its starting position.
+Bottom line: you really need a way to calculate how far you've moved, or
+even better an external positional reference, to have much hope of
+mapping.
+
+Assuming you can solve that problem, here's an approach that's probably
+far from optimal, but it should work. Divide your area to be mapped into
+grid units, with the size of one grid unit being the size of your robot.
+Then do a depth-first search of the grid units:
+
+while (!all_grids_units_explored)
+{
+	if (unexplored_neighboring_grid_unit_exists())
+		go_to_unexplored_neighboring_grid_unit();
+	else
+		return_to_previous_grid_unit();
+}
+
+This method will eventually attempt to enter every grid unit, so you can
+tell which grid units contain obstacles using the sensors. It should be
+able to find its way through any complex "maze" of obstacles too, at
+least in theory. 
+
+--Steve
+

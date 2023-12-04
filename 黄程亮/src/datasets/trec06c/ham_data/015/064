@@ -1,0 +1,88 @@
+Received: from comp.uark.edu (root@comp.uark.edu [130.184.252.197])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id XAA01793
+	for <handyboard@media.mit.edu>; Mon, 20 Apr 1998 23:15:33 -0400 (EDT)
+Received: from brainstem (1Cust70.max13.dallas.tx.ms.uu.net [153.35.182.70]) by comp.uark.edu (8.8.5/8.7.3) with SMTP id WAA19710 for <handyboard@media.mit.edu>; Mon, 20 Apr 1998 22:15:26 -0500 (CDT)
+Message-Id: <3.0.32.19980420221107.0072e880@comp.uark.edu>
+X-Sender: dblank@comp.uark.edu
+X-Mailer: Windows Eudora Pro Version 3.0 (32)
+Date: Mon, 20 Apr 1998 22:11:14 -0500
+To: handyboard@media.mit.edu
+From: Douglas Blank <dblank@comp.uark.edu>
+Subject: Serial Communication: HB -> Win95 
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+I am using the serial_putchar() and serial_getchar() communication routines
+on the HandyBoard, and everything is working fine from the PC to the HB.
+However, I am having trouble getting the HB to send data back to the PC. 
+
+Here is main() on the HB:
+
+void main(void) {
+	char c = '!';
+	int cnt = 1;
+	disable_pcode_serial();   
+	while (cnt <= 10) {
+		c = serial_getchar();
+		printf("[%d]=%c ", cnt, c, c);
+		serial_putchar('!');
+		cnt++;
+	}
+	reenable_pcode_serial();   
+	printf("   HB Mode!");
+}
+
+The serial line is set correctly, but I haven't been able to get anything
+back to the host.
+
+I have included the code that I am compiling under VC++4.0 and Win95 below.
+If you have any suggestions of what I can do (other than trying to get
+Linux running on my laptop), I'd love to hear them. 
+
+Thanks!
+
+-Doug Blank
+
+/* Visual C++ Host Code to talk to HandyBoard         */
+/* call like: serial.exe 1                            */
+/*            to send the character "1" to the HB     */
+
+#include <stdlib.h>
+#include <stdio.h>
+
+void myputc(char c, FILE *p) {
+  int result = fputc(c, p);
+  printf("Put '%c' to HB; result was = %d\n", c, result);
+}
+
+void main(int argc, char *argv[])
+{
+  FILE *port;
+  char c = -1;
+  int x;
+  port = fopen("COM1:", "wr");
+  if (port == NULL) {
+    printf("Error establishing serial connection.\n");
+    exit(1);
+  }
+  else
+    printf("Serial connection established...\n");
+  
+  myputc(argv[1][0], port); // works, HB receives it.
+
+  /* This doesn't work!
+  while (c < 0) {
+	c = fgetc(port);
+  }
+  printf("Got %c (%d) as a return value\n", c, c);
+  */
+  fclose(port);
+}
+
+=====================================================================
+dblank@comp.uark.edu            Douglas Blank, University of Arkansas
+Assistant Professor                                  Computer Science
+==================== http://www.uark.edu/~dblank ====================
+
+
+

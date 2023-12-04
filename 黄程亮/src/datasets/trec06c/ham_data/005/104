@@ -1,0 +1,70 @@
+Received: from mx2.cac.washington.edu (mx2.cac.washington.edu [140.142.33.1])
+          by groupfs.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id NAA26394 for <mailarch+pine-info@groupms.cac.washington.edu>; Sat, 3 Jan 1998 13:19:14 -0800 (PST)
+Received: from lists2.u.washington.edu (root@lists2.u.washington.edu [140.142.56.1])
+          by mx2.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id NAA26243; Sat, 3 Jan 1998 13:19:10 -0800
+Received: from host (lists.u.washington.edu [140.142.56.13])
+          by lists2.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with SMTP
+	  id NAA17436; Sat, 3 Jan 1998 13:15:58 -0800
+Received: from mx5.u.washington.edu (mx5.u.washington.edu [140.142.32.6])
+          by lists.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with ESMTP
+	  id NAA15758 for <pine-info@lists.u.washington.edu>; Sat, 3 Jan 1998 13:14:40 -0800
+Received: from mailhost2.cac.washington.edu (mailhost2.cac.washington.edu [140.142.33.2])
+          by mx5.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id NAA15267 for <pine-info@u.washington.edu>; Sat, 3 Jan 1998 13:14:38 -0800
+Received: from Tomobiki-Cho.CAC.Washington.EDU (weiner@tomobiki-cho.cac.washington.edu [128.95.135.58])
+          by mailhost2.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with SMTP
+	  id NAA18279; Sat, 3 Jan 1998 13:14:34 -0800
+Message-Id: <Pine.NXT.4.00.9801031306030.18678-100000@Tomobiki-Cho.CAC.Washington.EDU>
+Date: Sat, 3 Jan 1998 13:14:26 -0800 (PST)
+Sender: PINE-INFO-owner@u.washington.edu
+Precedence: bulk
+From: Mark Crispin <mrc@cac.washington.edu>
+To: "Pine Discussion Forum" <pine-info@u.washington.edu>
+Subject: Re: Lock files in /var/spool/mail
+In-Reply-To: <34AD8F87.6B31@green.mv.com>
+References: <34AD8F87.6B31@green.mv.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-To: "C. Wible" <tlgm@green.mv.com>
+X-Cc: pine-info@u.washington.edu
+X-Listprocessor-Version: 8.1 beta -- ListProcessor(tm) by CREN
+
+On Fri, 2 Jan 1998, C. Wible wrote:
+> I recently upgraded to pine 3.95. Shortly after I realized that pine
+> was complaining about creating lock files. I read some web listings of
+> questions about this problem and found that the only suggestion was to
+> change the permissions on the /var/spool/mail directory. That is all
+> good, but, I dont like the idea of users being able to write files to
+> that directory. I was wondering if sometime in the furure pine might
+> include an option to specify a seperate lock directory.
+
+That wouldn't be very useful.
+
+The whole purpose of the /var/spool/mail lock file is to lock against mail
+delivery.  The mail delivery program looks for a /var/spool/mail lock
+file.
+
+If Pine used a different lock directory, then it wouldn't lock against
+mail delivery.  Then wouldn't be any point for the locking code at all.
+You might as well just delete the useless locking code, and accept that
+every so often, your mail file will be smashed because Pine and mail
+delivery wrote the mail file at the same time.
+
+If you've hacked your mail delivery program source code to lock someplace
+else, then you can hack Pine source code to do the same thing.  It should
+not be any easier (e.g. an option for a lock directory in Pine), otherwise
+people will be misled (as you were misled) to set that option without
+recognition of the consequences.  You're really being protected from
+making a bad decision.
+
+It's a complicated issue; I wrote a document which goes into it in much
+more detail.  I'll forward you a copy if you're interested.
+
+-- Mark --
+
+* Unsolicited commercial email is NOT welcome at this email address. *
+Science does not emerge from voting, party politics, or public debate.
+
+

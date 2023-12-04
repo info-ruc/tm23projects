@@ -1,0 +1,50 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id SAA17025
+	for <Handyboard@media.mit.edu>; Mon, 26 Apr 1999 18:37:10 -0400 (EDT)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Mon, 26 Apr 1999 15:37:04 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id PAA27412;
+	Mon, 26 Apr 1999 15:37:03 -0700 (PDT)
+Date: Mon, 26 Apr 1999 15:37:02 -0700 (Pacific Daylight Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Handyboard@media.mit.edu
+Cc: Curt Mills <hacker@tc.fluke.com>, Curt Mills <BowHunt@iname.com>
+Subject: GCC/HC11
+In-Reply-To: <Pine.GSO.4.02A.9904131042210.11396-100000@lab1-12.eng.utah.edu>
+Message-Id: <Pine.WNT.3.96.990426152950.61v-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Just to let everyone know:  I think I may have found a new compiler bug
+with the GCC/HC11 C-compiler.  When I did this:
+
+	c = d = serial_getchar();
+
+My program didn't work correctly.  If I did this instead: 
+
+	c = serial_getchar();
+	d = c;
+
+It worked fine.
+
+I'll try to get a chance to look at this later, but just thought that
+anyone else playing around with GCC would like to know about it.
+
+I managed to test out the DC motor controller code this weekend, and it
+works fine.  I also tweaked all of the interrupt code to disable
+interrupts for the shortest possible time.  I'll get that new library onto
+the ftp site in the next day or two.
+
+Servo code is probably next, but I'm waiting to see how the discussion
+turns out on the legbots mailing list before I decide how to implement it.
+
+Anyone else playing with GCC?
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

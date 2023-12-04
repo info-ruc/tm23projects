@@ -1,0 +1,144 @@
+Received: from Legato.COM (test8.legato.com [137.69.200.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id PAA25676
+	for <Handyboard@media.mit.edu>; Fri, 9 Apr 1999 15:15:22 -0400 (EDT)
+Received: from mail.Legato.COM (mail-net3.legato.com [137.69.3.120])
+	by Legato.COM (8.9.1/8.9.1) with ESMTP id MAA22469;
+	Fri, 9 Apr 1999 12:13:46 -0700 (PDT)
+Received: from Legato.COM (sydney [137.69.4.217])
+	by mail.Legato.COM (8.8.8+Sun/8.8.8) with ESMTP id MAA16303;
+	Fri, 9 Apr 1999 12:14:04 -0700 (PDT)
+Message-Id: <199904091914.MAA16303@mail.Legato.COM>
+X-Mailer: exmh version 2.0.2 2/24/98
+To: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+Cc: Handyboard@media.mit.edu, khearn@Legato.COM
+Subject: Re: GCC 2.8.1 for HC11 
+In-Reply-To: Your message of "Fri, 09 Apr 1999 10:48:54 PDT."
+             <Pine.WNT.3.96.990409100936.73C-100000@wapiti.tc.fluke.com> 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Fri, 09 Apr 1999 12:15:06 -0700
+From: Keith Hearn <khearn@Legato.COM>
+
+In message <Pine.WNT.3.96.990409100936.73C-100000@wapiti.tc.fluke.com>, "Curt M
+ills, WE7U" writes:
+> On Thu, 8 Apr 1999, Keith Hearn wrote:
+> 
+> > Where can I find out what pins connect through which mux to which 
+> >   I/O connector on the HB?
+> 
+> You have to get good at reading schematics in this case, period. 
+> Schematics are very hard to read at first, but it does get easier quickly. 
+> If someone were to write up details on how to access various devices on
+> the Handyboard though (including small code snipets for examples), I'm
+> sure many people would benefit from it. 
+
+I think I'm in the process of writing up such a document. Combined
+  with Fred's guide to programming the 6811 (which covers the miniboard
+  nicely), hopefully this will fill the gap.
+
+> Agreed.  Even the data books state that the mode the Handyboard's
+> processor is running in should not normally be used, and the method of
+> accessing the LCD is not immediately obvious just by looking at the
+> schematic. There are some specific things in the Handyboard design that
+> were done to save a chip or two but make the programming more difficult,
+> unless you already have something like Interactive C hiding all of these
+> details from you.
+
+And using IC libraries works well, up until you have a new piece of
+  hardware that isn't a simple digital/analog input/output, Then you're
+  stuck. For instance, when I first got a GP2D02 I tried writing IC 
+  code to use it, but IC is too slow for making those pulses that have
+  to be less than .2m-sec. So my choices were:
+
+  a) Wait for someone else to write a driver, and hope that it wasn't
+       hard-coded for their specific usage (number of sensors and which
+       ports). or...
+
+  b) Write my own driver in assembly. 
+
+Barry Brouillette very kindly provided a drivers for the GP2D02, but
+  they expect to find 2 GP2D02's on specific input and output ports.
+  If I only have 1 GP2D02 (or 3 or 4), or I want to use different 
+  ports, his code doesn't solve my problem. 
+  
+Ok, so I have to write my own driver. I can use his as an example, 
+  but what do I do the next time I pick up a piece of hardware for 
+  which no one has written a driver?
+
+I think IC is great for people who may not have much programming
+  experience and who only want to use supported hardware. That's what
+  it's written for and it does a great job at it. But we need
+  to provide a "next step" up for those who want to delve deeper
+  (without having to go as deep as parsing schematics).
+ 
+I'll try to a first draft together over the weekend. I've got the
+  basic stuff like the digital and analog inputs and outputs, the
+  timers and interrupts (although I don't know which TOC's & TIC's
+  are used for what under IC), and the LCD stuff (mostly kinda sorta).
+  I still haven't looked into the more esoteric stuff, like the IR 
+  interface and the Polaroid ultrasonic interface. Any help in the
+  form of descriptions of what you have to do to program those would 
+  sure be helpful. Especially the ultrasonic, since I don't have one
+  of those to play with.
+
+> I must say I sympathize with your thoughts, as I've been down in the
+> details of the hardware lately, and I agree that the LCD stuff is scary.
+> The only reason it works at all is that the Handyboard is running in
+> Special Test mode, which allows you to change processor states at will.  I
+> lucked out in that Chuck McManis wrote some very nice code that I could
+> borrow from.  As it was I had to hook a scopemeter up to it to see where
+> my software had gone wrong.
+
+I was working on getting my LCD code working last night. I don't have
+  a scope, but I found that I could stick some low-current LCDs (from
+  Radio Shack) in the expansion board digital output and use them as a
+  rudimentary form of "debug prints". I just do:
+
+  ldaa 0x01	
+  staa 0x5000
+
+I'm sure Curt and many others of you understand this, but here's an
+  explanation for those who's understanding of the HB is at the
+  level mine was two weeks ago:
+
+  Writing an 8-bit value into any address in the range 0x5000-0x5ff
+  sets or clears the digital outputs on the expansion board. Writing a
+  0x00 clears them all, writing 0xff sets them all, and any value in
+  between sets/clears the outputs corresponding to the binary bits in
+  the value. Digital-0 is the least significant bit, digital-7 is the
+  most significant. So 0x01 sets d-0 and clears the rest, 0x02 sets
+  d-1 and clears the rest, 0x03 sets d-0 & d-1 and clears the rest,
+  and so on.
+
+You have to make sure you're not stepping on a value that's in
+  register A and going to be used later, of course. You can also use
+  register B is register A is busy. And don't forget that register D
+  *is* registers A & B. Sticking the code just before a 'ldd' is safe,
+  since the values are about to get overwritten. 
+
+I'm using Curt's gcc-2.8.1 port, and if you don't turn on
+  optimizations, there are *tons* of placed where it'll store D to a
+  pseudo-register, the immediately turn around and load it back from
+  the same register (these go away if you compile with -O). These
+  provide ample opportunity to insert debugging code.
+
+> I think they assumed people would typically be using Interactive C,
+> therefore the difficult parts of the hardware would be hidden.  I think
+> they were right:  I've seen very few posts from people coding in anything
+> except IC.  Handyboard & IC were designed as a learning platform and they
+> appear to have been very successful at that. I'm trying to twist it into
+> something entirely different, so I certainly can't blame the designers for
+> not thinking of MY application.
+
+Yup, I agree. The HB & IC are great for students or anyone with
+  limited programming experience. Or those who just don't want to
+  twiddle the bits & bytes. I'm really glad Fred & company created
+  them. The alternatives would be to design our own MCU boards (not
+  something I'll be doing this year, or probably ever), or use 
+  something like Lego's RCX, which is an order of magnitude simpler 
+  and less flexible.
+
+  Keith
+
+
+

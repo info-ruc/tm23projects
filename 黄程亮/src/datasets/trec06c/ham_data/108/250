@@ -1,0 +1,80 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jA6K2s5L004187
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 6 Nov 2005 13:02:54 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 440FDB9D291
+	for <DMDX@psy1.psych.arizona.edu>; Sun,  6 Nov 2005 13:02:54 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-5.dsl.arizona.edu [128.196.237.5])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 19B49B940D1
+	for <DMDX@psy1.psych.arizona.edu>; Sun,  6 Nov 2005 13:02:53 -0700 (MST)
+Message-Id: <5.1.0.14.2.20051106124844.00ba47a8@psy1.psych.arizona.edu>
+Date: Sun, 06 Nov 2005 13:02:47 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Problems of two sequential stimuli, and RT
+  problems
+In-Reply-To: <5.1.0.14.2.20051106063408.00ba4820@psy1.psych.arizona.edu>
+References: <1131258836.436da3d41377d@webmail.cuhk.edu.hk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 06:41 AM 11/6/2005 -0700, you wrote:
+>At 02:33 PM 11/6/2005 +0800, you wrote:
+>>Hi everybody,
+>>
+>>I am preparing a experiment on a notebook. In each trial of the 
+>>experiment, two
+>>visual stimuli, a cross and a circle, will be shown sequentially. There are
+>>four combinations, including that a cross is shown first and then a circle is
+>>shown; a circle first and then a cross; 2 circle are shown sequentially; 2
+>>cross shown sequentially. Each stimulus would last for 75ms, and ISI would be
+>>varied from 500ms, 300ms, 100ms, 50ms, 10ms. The instruction given to the
+>>subject is that when he see cross, he need to press A; when he see circle, he
+>>need to press L. A correct repsone for each trial including 2 presses 
+>>which are
+>>in corect order. We try to write the program like this:
+
+   Yeah, the only way this is going to be done correctly is with a bunch of 
+branching or with counters and less branching.  Because you can't gather 
+two responses in an item (you can gather more but DMDX can't process the 
+results for feedback) you'll have to have a design that remembers the first 
+response in determining what feedback to give for the second response.  So 
+you can either have a design the branches depending on the result of the 
+first item to either an item that can't have a correct response or one that 
+could have one.  The way I'd be tempted to do it would be to have feedback 
+turned off and load up a counter with the lastXT of the first item and then 
+have a custom feedback routine for the second.  Something along these lines:
+
+<ep> <nfb> <s 1> <g 2> <eop>
+$
+0 "instuctions" <bu 1000>;
+
+~1 <set c1=lastXT> <return>;
+~2 <bi 5, c1 .lt. 0>;
+~3 <b1 5, lastXT .lt. 0>;
+4 "correct" <return>;
+5 "wrong" <return>;
+
+~1000;
+$
+
++1001 "circle" * <call 1>;
++1002 "cross" * <call 2>;
+
++2001 "circle" * <call 1>;
++2002 "cross" * <call 2>;
+
+   Of course there are probably a dozen things I'm forgetting but that's 
+how I'd start.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Can't sleep? Try counting your blessings.
+
+
+

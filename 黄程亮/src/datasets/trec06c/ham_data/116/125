@@ -1,0 +1,58 @@
+Received: from exchfe1.cs.cornell.edu (exchfe1.cs.cornell.edu [128.84.97.27])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k22GPit13029
+	for <egs@unix.cucs>; Thu, 2 Mar 2006 11:25:44 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.34]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 2 Mar 2006 11:25:44 -0500
+Received: from [128.253.211.203] ([128.253.211.203]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 2 Mar 2006 11:25:43 -0500
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <6B4AA970-CDE3-4E0F-BBCF-1592C931F420@cs.cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: Gun Sirer <egs@cs.cornell.edu>
+From: "Ryan S. Peterson" <ryanp@cs.cornell.edu>
+Subject: PAPER 11
+Date: Thu, 2 Mar 2006 11:25:45 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-OriginalArrivalTime: 02 Mar 2006 16:25:43.0674 (UTC) FILETIME=[F412B5A0:01C63E15]
+
+After repeated attempts to send this to egs+summary last night and  
+this morning, the mail server refuses.    Says egs+summary is an  
+invalid user...
+
+This week we explore the issue of DNS, which currently exists as a  
+centralized hierarchical entity with several limitations.  Cox, et  
+al. notes that most DNS traffic is caused because of faulty or  
+misconfigured name servers, suggesting that a less error-prone  
+solution is in order.  The authors implement a name server on top of  
+Chord, a peer-to-peer DHT.  Using a DHT to serve names improves DNS  
+by reducing errors due to configuration problems, providing better  
+load balancing, and defending against DoS attacks.  The paper focuses  
+on separating DNS record validation from the lookup algorithm, as is  
+true with today's DNS service.  However, the author's conclude that  
+using Chord is a worse solution because of its O(log n) lookup time,  
+and propose that researchers investigate more efficient ways for  
+serving DNS requests in a distributed manner.
+
+Rama and Gun take the MIT guys' challenge with a system called  
+CoDoNS.  CoDoNS is a DNS service implemented on top of Beehive.   
+Beehive is a ring-based peer-to-peer system that proactively  
+replicates objects based on their popularities, which studies have  
+shown follow a Zipf power-law distribution for DNS and many other  
+types of queries.  If enough institutions around the world dedicated  
+one or two nodes, they could become part of a new decentralized DNS  
+service with load balancing and, unlike the MIT guys' approach,  
+average constant record lookup time.  In order to validate entries in  
+the system, each entry can use public key cryptographically for  
+authentication, separating authentication from entry lookup.  As an  
+added benefit, the authors add support for slowly introducing CoDoNS  
+into common use, or else using legacy DNS as a safety net for  
+CoDoNS.  When a lookup reaches the home node (where home node is  
+defined as in Beehive), if the home node does not contain the entry,  
+it can send a legacy DNS query and forward the response back to the  
+client.  Thus, CoDoNS offers the load balancing properties and other  
+benefits of other distributed DNS systems, but is practical for use  
+in the real world because of its efficient lookup times.
+
+Ryan
+

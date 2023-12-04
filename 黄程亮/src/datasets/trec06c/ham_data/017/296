@@ -1,0 +1,66 @@
+Received: from ra.cland.net (ra.cland.net [206.29.106.10])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA03827
+	for <handyboard@media.mit.edu>; Sat, 6 Jun 1998 15:28:32 -0400 (EDT)
+Received: from mail.cland.net (pm105.cland.net [206.29.106.105])
+	by ra.cland.net (8.8.5/8.8.5) with ESMTP id OAA10725;
+	Sat, 6 Jun 1998 14:22:34 -0500 (CDT)
+Message-Id: <3579971C.24F2FDBE@mail.cland.net>
+Date: Sat, 06 Jun 1998 14:23:08 -0500
+From: John Duff <jnduff@ra.cland.net>
+Reply-To: jnduff@cland.net
+Organization: Cox Health Systems
+X-Mailer: Mozilla 4.02 [en] (Win95; I)
+Mime-Version: 1.0
+To: GJZ@aol.com
+Cc: handyboard@media.mit.edu
+Subject: Re: serial communications
+References: <7483b4f7.35797edf@aol.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Justin,
+
+Interfacing a GPS to the handyboard is straight forward.  Most GPS receivers
+comply with the National Marine Electronics Association (NMEA) standards.  They
+transmit their information in ASCII  "sentences" which are framed by a $ at the
+beginning and <cr><lf> at the end. The data elements, such as lat, lon, elevation,
+speed and direction are comma delimited and their position in the sentence is
+determined by the NMEA standard.  It is simply a matter of counting commas to
+identify any of the elements. Error checking is limited to a calculated checksum
+which is transmitted at the end of the sentence.  It should be easy to recalculate
+this value (it is the XOR of all the data elements), and compare with the
+transmitted value.
+
+I have my Tripmate GPS unit connected, and I pull out current position. I  use a
+V2X compass connected to SPI for heading info.   Several good  sites related to
+GPS and the NMEA standards are available. Here is a link to one you might try.
+ftp://sundae.triumf.ca/pub/peter/index.html#links
+
+If interested, I can send you the IC program I use.
+
+John
+
+GJZ@aol.com wrote:
+
+> i have been looking thru the libraries that people have posted on the web,
+> particularly the ones that allow serial communication.  i am not sure how the
+> system works, but there are numerous routines which turn handshake on and off,
+> as well as routines which will time out if there is no response from the
+> receiving device.  i am not sure what handshake is, i am guessing that it is a
+> "ready check".  i am wondering how the protocol for sending data is set up,
+> and if there is a way to access the bare bones I/O that the HC11 comes with.
+> is the difference extra software procedures that the HB uses to insure proper
+> data transmission?  is there any way that one can program the HB to use simple
+> start/stopbit protocol to receive data.  in particular, i am interested in
+> interfacing the HB with a GPS receiver, which i know are designed to
+> communicate with a microcontroller.  what type of transfer protocol is used in
+> this application?  if anyone has info on libraries that allow this kind of
+> communication, please let me know.  or would this have to be done thru
+> assembly language?  thanks for your help.
+>
+> Justin D. Gullotta.. , Engineer,
+> Rensselaer Polytechnic Institute.
+
+
+
+

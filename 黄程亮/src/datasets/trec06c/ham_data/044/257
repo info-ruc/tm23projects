@@ -1,0 +1,233 @@
+Received: from vo-dca-ex01.valueoptions.com (pix28.vbh.com [208.141.66.28])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA08406;
+	Thu, 20 May 1999 08:43:49 -0400 (EDT)
+Received: by vo-dca-ex01.phc.com with Internet Mail Service (5.5.2232.9)
+	id <LF093S8T>; Thu, 20 May 1999 08:43:18 -0400
+Message-Id: <132E2FC27BE7D2118F4C0008C75D5E220221FF@VO-BOS-EX01>
+From: "Weng, Andrew" <Andrew.Weng@valueoptions.com>
+To: "'Joe Marie J. Maja'" <maja@robotics.is.tohoku.ac.jp>,
+        "Fred G. Martin" <fredm@media.mit.edu>,
+        HandyBoard
+	 <handyboard@media.mit.edu>
+Subject: RE: Encoders
+Date: Thu, 20 May 1999 03:41:35 -0400
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2232.9)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BEA2BE.558635DC"
+
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+------_=_NextPart_001_01BEA2BE.558635DC
+Content-Type: text/plain;
+	charset="iso-2022-jp"
+
+I modified the sencoder() routines to work with quad encoders and a
+direction decoding IC.  the encoder_counts now returns the correct count.  I
+removed the velocity variable from the routine as well.
+I think I changed encoder routines 2 and 4 and have the direction bits on 3
+and 5.
+I don't have them with me but I can send them if you want...
+
+-Drew
+
+
+> -----Original Message-----
+> From: Joe Marie J. Maja [mailto:maja@robotics.is.tohoku.ac.jp]
+> Sent: Wednesday, May 19, 1999 9:27 PM
+> To: Fred G. Martin; HandyBoard
+> Subject: Encoders
+> 
+> 
+> Konnichiwa  !!
+> 
+> I am currently using the shaft encoder drivers of handy and it works
+> fine, until I implemented a PID (Position Control).  I need 
+> to check the
+> direction of my mobot.  Which means that - if it goes backward, I need
+> to decrease the count and increase it if it goes forward.
+> 
+> I tried to use 74HC74 to check the direction of the rotation of the
+> encoder(My encoder have this sig A and sig B output).
+> 
+> and run this code
+> 
+> void check_right_encoder()  /*process*/
+> {
+>       while(1)
+>     {
+>         if (encoder1_counts!=0)
+>               {
+>                   if(digital(8)==0) {              /*check 
+> the direction
+> of rotation */
+>                              counter_r--;           
+> /*declared as global
+> */
+>                               encoder1_counts=0;
+>                             }
+>                     else
+>                              {
+>                               counter--;
+>                                encoder1_counts=0;
+>                                }
+>                }
+> }
+> 
+> This works fine.
+> 
+> QUESTIONS:
+> 
+> Is there anyone who have tried to do the same thing, but 
+> implemented it
+> in assembly - .icb?
+> 
+> 
+> joema
+> 
+> 
+> 
+> 
+
+------_=_NextPart_001_01BEA2BE.558635DC
+Content-Type: text/html;
+	charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-2022-jp">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+5.5.2232.0">
+<TITLE>RE: Encoders</TITLE>
+</HEAD>
+<BODY>
+
+<P><FONT SIZE=3D2>I modified the sencoder() routines to work with quad =
+encoders and a direction decoding IC.&nbsp; the encoder_counts now =
+returns the correct count.&nbsp; I removed the velocity variable from =
+the routine as well.</FONT></P>
+
+<P><FONT SIZE=3D2>I think I changed encoder routines 2 and 4 and have =
+the direction bits on 3 and 5.</FONT>
+<BR><FONT SIZE=3D2>I don't have them with me but I can send them if you =
+want...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-Drew</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt; -----Original Message-----</FONT>
+<BR><FONT SIZE=3D2>&gt; From: Joe Marie J. Maja [<A =
+HREF=3D"mailto:maja@robotics.is.tohoku.ac.jp">mailto:maja@robotics.is.to=
+hoku.ac.jp</A>]</FONT>
+<BR><FONT SIZE=3D2>&gt; Sent: Wednesday, May 19, 1999 9:27 PM</FONT>
+<BR><FONT SIZE=3D2>&gt; To: Fred G. Martin; HandyBoard</FONT>
+<BR><FONT SIZE=3D2>&gt; Subject: Encoders</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; Konnichiwa&nbsp; !!</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; I am currently using the shaft encoder drivers =
+of handy and it works</FONT>
+<BR><FONT SIZE=3D2>&gt; fine, until I implemented a PID (Position =
+Control).&nbsp; I need </FONT>
+<BR><FONT SIZE=3D2>&gt; to check the</FONT>
+<BR><FONT SIZE=3D2>&gt; direction of my mobot.&nbsp; Which means that - =
+if it goes backward, I need</FONT>
+<BR><FONT SIZE=3D2>&gt; to decrease the count and increase it if it =
+goes forward.</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; I tried to use 74HC74 to check the direction of =
+the rotation of the</FONT>
+<BR><FONT SIZE=3D2>&gt; encoder(My encoder have this sig A and sig B =
+output).</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; and run this code</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; void check_right_encoder()&nbsp; =
+/*process*/</FONT>
+<BR><FONT SIZE=3D2>&gt; {</FONT>
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+while(1)</FONT>
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp; {</FONT>
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+if (encoder1_counts!=3D0)</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp; {</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(digital(8)=3D=3D0) =
+{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; /*check </FONT>
+<BR><FONT SIZE=3D2>&gt; the direction</FONT>
+<BR><FONT SIZE=3D2>&gt; of rotation */</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+counter_r--;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ </FONT>
+<BR><FONT SIZE=3D2>&gt; /*declared as global</FONT>
+<BR><FONT SIZE=3D2>&gt; */</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+encoder1_counts=3D0;</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+else</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; counter--;</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+encoder1_counts=3D0;</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+<BR><FONT SIZE=3D2>&gt; }</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; This works fine.</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; QUESTIONS:</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; Is there anyone who have tried to do the same =
+thing, but </FONT>
+<BR><FONT SIZE=3D2>&gt; implemented it</FONT>
+<BR><FONT SIZE=3D2>&gt; in assembly - .icb?</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; joema</FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+<BR><FONT SIZE=3D2>&gt; </FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BEA2BE.558635DC--
+

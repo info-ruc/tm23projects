@@ -1,0 +1,47 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0VGF5407793
+	for <egs+summary>; Tue, 31 Jan 2006 11:15:05 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k0VGF4vg010550
+	for <egs+summary>; Tue, 31 Jan 2006 11:15:04 -0500 (EST)
+Message-ID: <247983975.1138724103700.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 31 Jan 2006 11:15:03 -0500 (EST)
+From: Huang Shiang-Jia <sh366>
+To: egs+summary
+Subject: PAPER 2
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k0VGF5407793
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=AWL,BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+<Differences in Routing>
+• Chord always forwards messages to a successor (node clockwise from the key in the ID space). In Pastry and Tapestry, messages are forwarded to a node whose ID shares longer prefix with the key, or failing that is numerically closer to the key, than the present node. The ID of such a node may be larger or smaller than the present node.
+• [Locality] The advantage of Pastry and Tapestry over Chord is that they take into account network topology to reduce the routing latency. Particularly, Tapestry and Pastry behave well in locating “nearby” objects that may be distant from the present node in the ID space: Pastry maintains a neighbor set; Tapestry proposed the location mapping scheme in addition, as will be described below.
+• In stable states, Chord ‘guarantees’ the number of nodes that must be contacted in a lookup is O(logN). Pastry and Tapestry ‘expects’ the number of steps to resolve a lookup is O(logN), but it can take more steps due to the cases of surrogate routing.
+• Routing in Pastry and Tapestry is recursive (vs. iterative in Kademlia). Chord can route either iteratively or recursively.
+• In Pastry and Tapestry, the routing path is a function of the destination node ID, not of the source node ID, as in Chord. 
+
+<Differences and Issues in Replication>
+All the three routing protocols rely on applications to replicate values associated with keys, but they differ in the following ways:
+• Pastry simply provides a distributed hash table interface for replications. Replicas of the value associated with a key are stored at the k numerically closest nodes.
+• The successor list mechanism proposed by Chord a lot helps applications replicate data. In Chord, replicas of the values are stored at the k nodes succeeding the key. By keeping track of the successors, Chord can notify applications to propagate data to new replicas once any node(s) in the list fails.
+• In Tapestry, the servers that store an object periodically route publish messages toward the root of this object. Nodes along the publication path store pointer mappings for object replicas in sorted order of network latency from themselves. In this way, queries can therefore be routed to the locally nearest replica.
+
+“Replication is critical in the overlay routing infrastructure. Lookups will fail if the node that stores the value associated with the key fails. It is my doubt that is the replication ought to be done in application level or the routing protocols could do something with it?
+Second, lookups may fail when the values associated with keys migrate, but all these three papers don’t give details of the migration.”
+
+<Other Differences>
+• Chord makes the number of keys per node more uniform (in order to improve load balance) by running virtual nodes. Pastry and Tapestry just assume that nodes are assigned IDs uniformly.
+• Security issues are addressed in Tapestry; for example, security measures can be imposed in the neighbor link of a Tapestry node. In Pastry and Chord, it is applications’ responsibility to impose security measures.
+• Chord and Tapestry periodically update the routing and object location information, while Pastry lazily repairs its state table.
+• Tapestry nodes store back-pointers to help new nodes construct their routing tables, while Pastry nodes don’t.
+
+<Comments>
+• During each stabilization step in Chord, a node updates its immediate successor and one other entry in the successor list or finger table. I was wondering if all are stabilized for each call would be better.
+

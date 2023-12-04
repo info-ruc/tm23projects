@@ -1,0 +1,59 @@
+Received: from homebox (tec3.psych.arizona.edu [128.196.98.11])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id VAA09515
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 14 Jul 1999 21:17:34 -0700
+Message-Id: <3.0.1.32.19990714212137.00691e88@psy1.psych.arizona.edu>
+Date: Wed, 14 Jul 1999 21:21:37 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: VOX calibration
+In-Reply-To: <3.0.1.32.19990715134217.009764e0@pop.latrobe.edu.au>
+References: <3.0.1.32.19990714203019.0068a834@psy1.psych.arizona.edu>
+ <3.0.1.32.19990715131141.009d4190@pop.latrobe.edu.au>
+ <3.0.1.32.19990714193650.0068e4d4@psy1.psych.arizona.edu>
+ <3.0.1.32.19990715093611.009d39a0@pop.latrobe.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 01:42 PM 7/15/99 +1000, you wrote:
+>Pressing the "Sound" button in TimeDX yields the same null result- the
+>button depresses, but nothing else happens at all. I am running Windows 95,
+>and the DirectX version is version 5, I think (the program I used to
+>install it is called dx5eng.exe).
+
+  So that would indicate that there is trouble with your DirectSoundCapture
+device.  I take it that you can record successfully using the plain windows
+routines that non-DirectX programs use?  Unfortunately the diag/info
+programs (under Program Files / DirectX / Setup there is a program called
+something Like DxInfo under DX5, it's DXDiag in DX6) that I see make no
+reference to DirectSoundCapture devices so I don't see any way to get
+diagnostics there.  Perhaps you could try installing DX6.1 (dx61eng.exe)
+and see if that rectifies things.  There's not really a lot more I can do,
+all the code that interfaces with DirectSoundCapture checks error codes
+religiously and works on three different machines of mine with two
+different sounds cards (and SB16 PnP and a TBS Montego), one quiet old and
+one quiet new one.  Perhaps you have run into the problem of a sound card
+not being able to do full duplex, that is the ability record and playback
+at the same time, a necessity for DMDX -- you might want to check the
+resources allocated to the sound card in the machine's Device Manager and
+see if things look ok.  I was going to suggest that the sound device should
+have two DMA channels but I notice that the Turtle Beach Montego I have
+only has a single interrupt and no DMA channels at all for it's PCI audio
+device, the sound blaster emulation has one interrupt and two DMA channels,
+however I really doubt that DMDX would be using the sound blaster
+emulation.  Perhaps your sound cards just can't do full duplex audio.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+  You can't have everything... where would you put it?
+                                                 - Steven Wright
+
+
+

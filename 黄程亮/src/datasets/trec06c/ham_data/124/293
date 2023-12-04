@@ -1,0 +1,88 @@
+Received: from smtp.sahlgrenska.gu.se (smtp.sahlgrenska.gu.se [130.241.71.15])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k4ECoCJs031621
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 14 May 2006 05:50:12 -0700
+Received: from smtp.sahlgrenska.gu.se (smtp [130.241.71.15])
+	by smtp.sahlgrenska.gu.se (Postfix) with SMTP id 5A23B384
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 14 May 2006 14:39:50 +0200 (CEST)
+Received: from [127.0.0.1] ([130.241.178.51])
+ by smtp.sahlgrenska.gu.se (SAVSMTP 3.1.5.43) with SMTP id M2006051414395007113
+ for <DMDX@psy1.psych.arizona.edu>; Sun, 14 May 2006 14:39:50 +0200
+Message-ID: <4467277F.5030101@lungall.gu.se>
+Date: Sun, 14 May 2006 14:50:07 +0200
+From: Derek Eder <derek.eder@lungall.gu.se>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: configuration of IO card
+References: <9ae8f64a0605111535k6fc8ef9fn4c8741d9220e6505@mail.gmail.com>
+In-Reply-To: <9ae8f64a0605111535k6fc8ef9fn4c8741d9220e6505@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+John Curtin wrote:
+> I am running an experiment
+> that needs 18 output lines (8 for sending a trigger code to a physio
+> amp and 10 for controlling a shock generator) along with 2 input lines
+> (for two buttons).
+
+John,
+
+There is another option, using a simple logic integrated circuit to 
+decode a binary input "wordlet" (from the PIO output) to individual TTL 
+level output "lines".
+
+The 74xx154  4-to-16 line decoder/multiplexer for example 
+(http://www.semiconductors.philips.com/acrobat_download/datasheets/74HC_HCT154_5.pdf)
+
+You feed the chip a 4 bit address (a nibble) like this:
+
+for example:
+input                              output
+-----------------------------------------
+A0    A1    A2     A3         
+L     L     L      L             line 1 goes low
+H     L     L      L             line 2 goes low
+
+
+You need 18 outputs, so you could use 2 74xx154 chips and 6 PIO outputs 
+for addressing them.  Note that with the 4-to-16 line decoders, only one 
+output line can be active at a time. 
+
+If you needed to activate more than one trigger simultaneously to the 
+shock generator, for example, you could use a chip like the 74xx4511  
+BCD to 7-segment latch/decoder/driver. 
+(http://www.standardics.philips.com/products/hc/pdf/74hc4511.pdf)
+
+These are tinker toys - any electronic technician/engineer should be 
+able to help you should you be interested in this type option.
+
+( Now if I had the time,  I would explore a slight different route, using devices designed around the I2C serial bus commnunication protocol. )
+
+best of luck,
+
+Derek
+
+
+
+
+
+-- 
+Derek N. Eder
+
+SU/Sahlgrenska
+Utvecklingslab 1, Med
+Gröna stråket 8
+SE 413 45 Göteborg (Gothenburg)
+Sverige (Sweden)
+
++46 (031)* 342 8261 (28261 inom Sahlgrenska)
++46 0709 721 283 (mobile)
++46 (031) 25 97 07 (home)
+
+* omit the 0 when calling from outside Sweden
+
+personal web page: www.derek-eder.org
+
+

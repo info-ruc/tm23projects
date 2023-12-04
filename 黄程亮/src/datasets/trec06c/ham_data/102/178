@@ -1,0 +1,104 @@
+Received: from ALPHA9.ITS.MONASH.EDU.AU (alpha9.its.monash.edu.au [130.194.1.9])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j4QNuh5L022933
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 26 May 2005 16:56:43 -0700
+Received: from localhost ([130.194.13.82]) by vaxh.its.monash.edu.au
+ (PMDF V6.2-1 #31112) with ESMTP id <01LOQYP4L4M09ANURU@vaxh.its.monash.edu.au>
+ for DMDX@psy1.psych.arizona.edu; Fri, 27 May 2005 09:56:34 +1000
+Received: from larry.its.monash.edu.au (localhost.localdomain [127.0.0.1])
+	by localhost (Postfix) with ESMTP id A98A180002	for
+ <DMDX@psy1.psych.arizona.edu>; Fri, 27 May 2005 09:56:34 +1000 (EST)
+Received: from monash.edu.au (balamb.its.monash.edu.au [130.194.11.237])
+	by larry.its.monash.edu.au (Postfix) with ESMTP id 694BF3C003	for
+ <DMDX@psy1.psych.arizona.edu>; Fri, 27 May 2005 09:56:33 +1000 (EST)
+Received: from [130.194.162.48] by mail-store-1.its.monash.edu.au (mshttpd)
+ ; Fri, 27 May 2005 09:56:33 +1000
+Date: Fri, 27 May 2005 09:56:33 +1000
+From: Ranmalee Rathnadiwakara Eramudugolla
+ <Ranmalee.Eramudugolla@med.monash.edu.au>
+Subject: [DMDX] conditional repetition of audio files
+To: DMDX@psy1.psych.arizona.edu
+Message-id: <3e3e7a3e3c78.3e3c783e3e7a@monash.edu.au>
+MIME-version: 1.0
+Content-type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi all, 
+
+I'm trying to run an auditory experiment where the listener is 
+repeatedly presented with a 5 s wav file until he/she enters a number, 
+after 
+which DMDX is supposed to branch onto the next item. The wav file has 
+to 
+be repeated in such a way that there are no gaps between successive 
+presentations and the listener gets the impression of a continuous 
+auditory stimulus.
+
+My problem is that when i use a multi-way branch keyword and a counter 
+to loop through the wav file until a response is input, the 
+repetitions 
+of the audio file are not heard as continous:
+
+n4 g1 <azk> <nfb> <d -1> <t 5000> <vm 1400, 1050, 1050, 32, 0> <id 
+keyboard> <zil> <zek> <ztr> <zor> <vzk +4> <vzk +5> <vzk +6> <vzk +7> 
+<vzk +8> <wfbo [0]> <dbc 255255255> <dwc 0> 
+
+0 " item 1: how many sounds can you hear?" <set c1 = 40>;
++10 <umpr> <mpr +4> <mpr +5> <mpr +6> <mpr +7> <mpr +8> * 
+<wav> “file1” 
+<dec 1> <mwb +4, 30, +5, 30, +6, 30, +7, 30, +8, 30, binr 20> c; 
+20 <bicGT 1,0,-10> <c>;
+30 “next item”;
+0 " item 2: how many sounds can you hear?" <set c1 = 40>;
++11 <umpr> <mpr +4> <mpr +5> <mpr +6> <mpr +7> <mpr +8> * 
+<wav> “file2” 
+<dec 1> <mwb +4, 31, +5, 31, +6, 31, +7, 31, +8, 31, binr 21> c; 
+21 <bicGT 1,0,-11> <c>;
+31 “next item”;
+0 “End”;
+
+Then I considered using the "again" keyword, but i can't figure out 
+how 
+one would stop the repetitions when a response is input and move onto 
+the next item. 
+
+0 “item1: how many sounds can you hear?”;
++10 <umpr> <mpr +4> <mpr +5> <mpr +6> <mpr +7> <mpr +8> <mwb +4, 30, 
++5, 30, +6, 30, +7, 30, +8, 30> * <wav> “file1” <an 40,296>/; 
+30 “next item”;
+0 “item2: how many sounds can you hear?”;
++11 <umpr> <mpr +4> <mpr +5> <mpr +6> <mpr +7> <mpr +8> <mwb +4, 31, 
++5, 31, +6, 31, +7, 31, +8, 31> * <wav> “file2” <an 40,296>/; 
+31 “next item”;
+0 “End”;
+
+Any ideas on how i could do this?
+
+Thanks in advance
+Ranmalee
+
+
+Ranmalee Eramudugolla
+Department of Psychology
+Faculty of Medicine, Nursing and Health Sciences
+Monash University
+Clayton Campus
+VIC 3800
+AUSTRALIA
+
+ 
+
+
+Ranmalee Eramudugolla
+Department of Psychology
+Faculty of Medicine, Nursing and Health Sciences
+Monash University
+Clayton Campus
+VIC 3800
+
+Phone: 9905 6559
+Mobile: 0421 643124
+
+

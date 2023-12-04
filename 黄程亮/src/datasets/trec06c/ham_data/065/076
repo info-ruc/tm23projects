@@ -1,0 +1,53 @@
+Received: from mercury.bath.ac.uk (exim@mercury.bath.ac.uk [138.38.32.81])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id LAA11555
+	for <9fans@cse.psu.edu>; Tue, 4 Apr 2000 11:24:37 -0400 (EDT)
+Received: from news by mercury.bath.ac.uk with local (Exim 3.12 #1)
+	id 12cV9n-0000jl-00
+	for 9fans@cse.psu.edu; Tue, 04 Apr 2000 16:22:19 +0100
+Received: from GATEWAY by bath.ac.uk with netnews
+	for 9fans@cse.psu.edu (9fans@cse.psu.edu)
+To: 9fans@cse.psu.edu
+Date: Tue, 4 Apr 2000 14:55:01 GMT
+From: jim.robinson@stanford.edu (James A. Robinson)
+Message-ID: <200004041410.HAA15609@highwire.stanford.edu>
+Organization: Plan 9 mailing list
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: jim.robinson@stanford.edu
+Subject: [9fans] VMWare
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+I don't remember a VNC port, but I did see this post from David Bulkow
+about getting VNC to work with Plan 9.  I don't know if he got the
+network working.
+
+------- Forwarded Message
+
+Date:    Thu, 23 Dec 1999 18:54:42 -0500
+From:    David Bulkow <dbul@earthlink.net>
+To:      9fans <9fans@cse.psu.edu>
+Subject: [9fans] plan9 on vmware
+
+I have finally managed to boot Plan9 in a VMware configuration.
+The problem I ran into was the IDE driver attempting to set "read ahead
+mode".  After the command to set the feature, the IDE device status
+register indicates an error - the error register indicates Abort.
+Once the abort error is posted, the driver can no longer access the
+device and the boot fails.
+
+I did not attempt to fix the problem correctly, but instead took
+a short cut and commented out the call which sets read ahead mode.
+Performance appears acceptable.
+
+In boot/pc/hard.c comment out the call to hardsetbuf().  In 9/pc/devata.c
+comment out the call to atafeature().
+
+My next goal is to get ethernet working so I can have the VMware machines
+participate in the rest of the Plan9 environment.
+
+dbul@earthlink.net
+
+
+------- End of Forwarded Message
+

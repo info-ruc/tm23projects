@@ -1,0 +1,117 @@
+Received: from exchfe2.cs.cornell.edu (exchfe2.cs.cornell.edu [128.84.97.28])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h82Dc7j25092
+	for <egs@unix.cucs>; Tue, 2 Sep 2003 09:38:07 -0400 (EDT)
+Received: from mail.cs.cornell.edu ([128.84.97.28]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 2 Sep 2003 09:37:48 -0400
+Received: from dhcp98-166.cs.cornell.edu ([128.84.98.166]) by mail.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 2 Sep 2003 09:37:47 -0400
+Subject: 615 PAPER 1
+From: Hitesh Ballani <hitesh@cs.cornell.edu>
+To: egs+615@cs.cornell.edu
+Content-Type: text/plain
+Organization: 
+Message-Id: <1062509878.5785.19.camel@dhcp98-166.cs.cornell.edu>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
+Date: 02 Sep 2003 09:37:58 -0400
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 02 Sep 2003 13:37:47.0847 (UTC) FILETIME=[65AD8570:01C37157]
+
+The first paper discusses the DSDV Routing, a modification of the DV
+routing algorithm which ensures loop free routes and as far as I can
+infer, solves the count to infinity problem.While each node has a
+routing table giving the next hop for all the nodes in the 
+network, the most important modification in this is the inclusion of
+sequence numbers issued by the destination itself( unless the link is
+broken in which case it is issued by the intermediate node and is odd).
+This allows a node to differentiate between old and new updates leading
+to avoidance of stale and loop free routes.Also, a node need not send
+out it's table ( full dump ) each time it advertises, an incremental
+dump of the changed sequence numbers and metrics suffices most of the 
+time. Besides,the dynamic nature of the network necessitates a dampening
+of the fluctuations which is done by keeping information about settling
+times in the table and delaying sequence number change, etc.
+advertisements until after the delay time expires( although 
+broken links are announced immediately).
+
+For loop freeness it uses the concept of the sink tree - formed using
+the next hop indicator's for a particular destination. In this tree, as
+we go up from the leaves to the root, the sequence number is non-
+decreasing. But for a loop to exist, a node must loop back to a node
+with lesser or equal sequence number, so the only common 
+criteria is that the 2 nodes should have equal sequence number's, in
+which case the lower metric condition ensures that no loop is formed.
+
+While the concepts of sequence numbers and dampening seem to be very
+exciting but evidence for the same is needed. And I feel that despite
+all their efforts the algorithm will still have a convergence time on
+the higher side, especially if the  network is very dynamic and is of a
+large size . A good idea during simulation would be to determine the
+actual effects of dampening on b/w utilization and convergence.
+And then there is the issue of scalability.
+
+The second paper discusses the DSR algorithm which is a source routing
+technique adapted for wireless networks. It scores over conventional
+routing protocols like DV as it is reactive and hence does not require
+periodic broadcasting of advertisements. Since it is the source that
+provides the path to the destination so each node maintains a 
+route cache and if the desired route is not in the cache, it is obtained
+using a route discovery protocol - the reply for which may come from the
+destination or an intermediate node's cache. And since there are no
+periodic updates to monitor missing links, so it is the route
+maintenance procedure that monitor's the operation of the route and 
+informs of routing errors. It also has a number of optimizations such as
+the replies  from the cache, delays in the response to avoid congestion
+and sending non-propagating requests. There is also piggybacking, not
+only in route replies/errors but also route discoveries, and promiscuous
+mode pick up of errors.
+
+The loop avoidance in this case is simplified by the fact that it is a
+source routing protocol, so the source can check for loops in the route.
+And the formation of loops when hosts reply using their cache - i.e
+replies formed using the route record and  the cache entry is checked
+for by the individual hosts sending the reply.
+
+One of the positive aspects of the protocol is that they have not
+assumed the  bi-directionality of the links. However the simulations
+have been run for  a small number of nodes and a small number of hosts
+(linearly scalable) and is  full of variables whose values seem to have
+been chosen arbitrarily. Laying out these  variables and defining their
+effect on the performance could be the next step. Besides, security is
+an aspect that has not been in both these papers- the fact 
+that the piggybacked route discovery is spoofed by an intermediate node
+replying from it's cache could be dangerous.
+
+
+The third paper discusses the AODV, which could be termed as a hybrid
+routing protocol  as it couples reactive features such as dynamically
+obtaining information for routes on demand with proactive features such
+as HELLO messages to get local information. It is a variation of the DV
+routing protocol - so each node knows just the next hop for a
+destination but the variation here is that this information is
+maintained only for active routes, i.e. routes that have been demanded.
+As in source routing, routes are obtained through path discovery only 
+when a packet has to be sent, but the entire path is not specified by
+the source which could be a big plus in large networks. Summarily, the
+protocol has RREQ's (route requests) - to request for routes, RREP's (
+route replies ) - as replies from intermediate/destination nodes and
+HELLO messages or local broadcasts for neighbour discovery. Hence, when
+a route is demanded, a RREQ is sent by the source to it's neighbours and
+so on, each of which maintains information about the reverse path while
+forwarding the request until some node with a higher sequence number for
+that destination replies which is sent along the remembered reverse
+route. Also, it uses the concept of sequence number's in order to
+maintain most recent routing information between nodes and ensure
+loop-freeness - as the sequence number's cannot decrease along an active
+path, so the existence of a loop would violate the property that for the
+same sequence number, the path with a shorter metric is preferred. And
+while the authors must be commended for the scalability and the fact
+that they have tried to determine the optimal value of the different 
+parameters instead of some magic numbers, but the simulation scenario
+has a lot of randomness, not necessarily present in a real system.
+Besides, since the protocol seems to be a combination of the better
+halves of the DSDV and the DSR, figures comparing the three and bringing
+out empirical evidence for the superiority of the AODV would have been
+nice.
+
+

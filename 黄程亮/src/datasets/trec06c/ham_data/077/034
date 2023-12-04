@@ -1,0 +1,271 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id f7FJjrN15164;
+	Wed, 15 Aug 2001 12:45:53 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA24049;
+	Wed, 15 Aug 2001 14:10:05 -0400 (EDT)
+Date: Wed, 15 Aug 2001 14:10:05 -0400 (EDT)
+Received: by canaveral.red.cert.org; Wed, 15 Aug 2001 14:04:54 -0400
+Message-Id: <CA-2001-24.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-24
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 642f1bd4300c5792ca727cb6e0579d72
+Status: RO
+X-Status: $$$$
+X-UID: 0000000019
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-24 Vulnerability in OpenView and NetView
+
+   Original release date: August 15, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   * Systems running HP OpenView Network Node Manager (NNM) Version 6.1
+     on the following platforms:
+
+     * HP9000 Servers running HP-UX releases 10.20 and 11.00 (only)
+     * Sun Microsystems Solaris releases 2.x
+     * Microsoft Windows NT4.x / Windows 2000
+
+   * Systems running Tivoli NetView Versions 5.x and 6.x on the following
+     platforms:
+
+     * IBM AIX
+     * Sun Microsystems Solaris
+     * Compaq Tru64 Unix
+     * Microsoft Windows NT4.x / Windows 2000
+
+Overview
+
+   ovactiond is a component of OpenView by Hewlett-Packard Company (HP)
+   and NetView by Tivoli, an IBM Company (Tivoli). These products are
+   used to manage large systems and networks. There is a serious
+   vulnerability in ovactiond that allows intruders to execute arbitrary
+   commands with elevated privileges. This may subsequently lead to an
+   intruder gaining administrative control of a vulnerable machine.
+
+I. Description
+
+   ovactiond is the SNMP trap and event handler for both OpenView and
+   NetView. There is a vulnerability in ovactiond that allows an intruder
+   to execute arbitrary commands by sending a malicious message to the
+   management server. These commands run with the privileges of the
+   ovactiond process, which varies according to the operating system.
+
+   OpenView version 6.1 is vulnerable in the default configuration.
+   Versions prior to 6.1 are not vulnerable in the default configuration,
+   but there are public reports that versions prior to 6.1 may be
+   vulnerable if users have made customizations to the trapd.conf file.
+
+   On June 21, 2001, HP released a security bulletin (HP SB #154) and a
+   patch for this vulnerability in OpenView version 6.1. For more
+   information, see
+
+http://us-support.external.hp.com/cki/bin/doc.pl/screen=ckiDisplayDocument?docId=200000055277985
+http://www.kb.cert.org/vuls/id/952171
+
+   Tivoli NetView versions 5.x and 6.x are not vulnerable with the
+   default configuration. It is, however, likely that customized
+   configurations are vulnerable. This security vulnerability only exists
+   if an authorized user configures additional event actions and
+   specifies potentially destructive varbinds (those of type string or
+   opaque). Tivoli has developed a patch for versions 5.x and 6.x. The
+   patch addresses the vulnerability in ovactiond, as well as taking
+   preventative measures on other components specific to NetView.
+
+   Tivoli has published information on this vulnerability at
+
+          http://www.tivoli.com/support/
+
+II. Impact
+
+   An intruder can execute arbitrary commands with the privileges of the
+   ovactiond process. On UNIX systems, ovactiond typically runs as user
+   bin; on Windows systems it typically runs in the Local System security
+   context. On Windows NT systems, this allows an intruder to gain
+   administrative control of the underlying operating system. On UNIX
+   systems, an intruder may be able to leverage bin access to gain root
+   access.
+
+   Additionally, systems running these products often have trust
+   relationships with other network devices. An intruder who compromises
+   these systems may be able to leverage this trust to compromise other
+   devices on the network or to make changes to the network
+   configuration.
+
+III. Solution
+
+Apply a patch
+
+   Appendix A contains information provided by vendors for this advisory.
+   We will update the appendix as we receive more information. If you do
+   not see your vendor's name, the CERT/CC did not hear from that vendor.
+   Please contact your vendor directly.
+
+Appendix A. - Vendor Information
+
+   This appendix contains information provided by vendors for this
+   advisory. When vendors report new information to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular vendor is not listed below, we have not received their
+   comments.
+
+Apple
+
+   Mac OS X and Mac OS X Server do not have this vulnerability.
+
+Computer Associates
+
+   Computer Associates has completed a review of all Unicenter functions
+   and processing related to SNMP traps as indicated by the advisory.
+   Unicenter is not subject to the same vulnerabilities as demonstrated
+   by the SNMP trap managers identified by CERT (i.e., OpenView and
+   NetView). CA Unicenter does not formulate commands determined through
+   trap data parsing. Unicenter implements this technology using
+   different methods and thereby avoids this exposure. Computer
+   Associates maintains strong relationships with these vendors and
+   recommends that clients running any environments containing either of
+   these products visit the website URLs specifically identified by the
+   CERT Coordination Center.
+
+FreeBSD
+
+   FreeBSD does not use this code.
+
+Fujitsu
+
+   Regarding VU#952171, Fujitsu's UXP/V operating system is not affected
+   because there's no implementation of any OpenView Technology in UXP/V.
+
+Hewlett-Packard
+
+   On June 21, 2001, HP released a security bulletin (HP SB #154) and a
+   patch for this vulnerability in OpenView version 6.1. For more
+   information, see
+
+http://us-support.external.hp.com/cki/bin/doc.pl/screen=ckiDisplayDocument?docId=200000055277985
+http://www.kb.cert.org/vuls/id/952171
+
+Microsoft
+
+   NNM is a third-party application as far as our platform is concerned.
+   We don't have any special relationship with it. HP would need to
+   provide the patches.
+
+Tivoli
+
+   Tivoli acknowledges that certain user customizations to Tivoli NetView
+   may lead to a potential security exposure. Please reference
+   http://www.tivoli.com/support/ for further information and to obtain
+   an e-fix which addresses the issue.
+
+References
+
+1. http://us-support.external.hp.com/cki/bin/doc.pl/screen=ckiDisplayDocument?docId=200000055277985
+2. http://www.tivoli.com/support/
+3. http://www.securityfocus.com/bid/2845
+4. http://www.kb.cert.org/vuls/id/952171
+     _________________________________________________________________
+
+   The CERT Coordination Center thanks Milo G. van der Zee for notifying
+   us about this problem, and Tivoli and Hewlett-Packard for other
+   information used in the construction of this advisory.
+     _________________________________________________________________
+
+   Feedback on this document can be directed to the authors, Jason A.
+   Rafail and Shawn Hernan.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-24.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-17:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+August 15, 2001:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBO3q31wYcfu8gsZJZAQFhagP+N9mcuI14o8ykvy3FhiAm40F5YhycO+ik
+z1uLdlKkzen+x5EDaQ/amkFu8S8sIvB3iyu1DbB+GmxAHKQHzBGnnC6sJAqU3dYp
+XpaSCUGX6tW8mfjaogaZVUaENh21Wtj/lVa0sbG9GD+FmAZdgebEM59OoOY+vkRZ
+xGCSnS9TBtQ=
+=gBbI
+-----END PGP SIGNATURE-----
+

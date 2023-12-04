@@ -1,0 +1,64 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id LAA07707
+	for <handyboard@media.mit.edu>; Fri, 23 Apr 1999 11:47:42 -0400 (EDT)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Fri, 23 Apr 1999 08:31:15 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id IAA24173;
+	Fri, 23 Apr 1999 08:31:14 -0700 (PDT)
+Date: Fri, 23 Apr 1999 08:31:13 -0700 (Pacific Daylight Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Ian Nieves <wired@cmu.edu>
+Cc: handyboard@media.mit.edu, Andre Philippi <philippi@earthlink.net>,
+        Curt Mills <hacker@tc.fluke.com>, Curt Mills <BowHunt@iname.com>
+Subject: Re: handyboard clock speed
+In-Reply-To: <371E6FB5.F4FB9155@cmu.edu>
+Message-Id: <Pine.WNT.3.96.990423081732.61I-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Wed, 21 Apr 1999, Ian Nieves wrote:
+
+> Ive checked the mailing list archives and i cant find a simple answer to the
+> following question:
+> Is it possible to run the HB at >2Mhz?  That is, can I run a different version of
+> the 6811 perhaps and get 8Mhz?  What are the advantages/disadvantages?
+
+From the data books for the 68HC11, if you have any version of the
+E-series (except for perhaps one, a low-power version?), you can run them
+at up to a 3MHz E-clock (12MHz crystal). 
+
+I haven't looked at the rest of the handyboard schematic with that
+objective in mind though.  It would require someone looking at the timing
+in the datasheets for each component to determine whether it would work
+reliably.  Perhaps Fred/Randy/Chuck may have looked at the circuit with
+this in mind before?
+
+I've been wondering that very same question lately though.  I have an E
+processor in mine, and I would very much like to have an 50% speed
+increase. 
+
+I think the A-series processors are limited to a 2MHz E-clock.  I'm
+running an E9 with the ROM disabled. 
+
+The next question to ask is:  "Will my downloader work with the board
+running at a different clock frequency?". 
+
+I think this is how it works:  The HC11 starts downloading at 1200 baud
+currently, and then switches to 9600 after getting the little 200-odd byte
+downloader into the chip and running.  I'm not sure, but I think the chip
+would start at 1800 baud for the first 200-odd bytes and then those
+200-odd bytes that get loaded into the chip might need to be tweaked to
+put the chip at a standard baud rate for the rest of the download. 
+
+BTW:  I've now got interrupt-driven serial receive working in my
+Handyboard GCC libraries, and I've also now tested the stepper motor code
+on some real stepper motors.  I'll try to get the new library up on the
+ftp site tonight.
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

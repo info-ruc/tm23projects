@@ -1,0 +1,68 @@
+Received: from mailhost.dircon.co.uk (mailhost.dircon.co.uk [194.112.32.65])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id LAA19149
+	for <9fans@cse.psu.edu>; Sat, 3 Jul 1999 11:24:19 -0400 (EDT)
+Received: from cthulhu.dircon.co.uk (cthulhu.dircon.co.uk [194.112.45.202])
+	by mailhost.dircon.co.uk (8.9.1/8.8.7) with ESMTP id QAA05769
+	for <9fans@cse.psu.edu>; Sat, 3 Jul 1999 16:24:11 +0100 (BST)
+Received: (from digbyt@localhost)
+	by cthulhu.dircon.co.uk (8.8.5/8.8.5) id QAA06508
+	for 9fans@cse.psu.edu; Sat, 3 Jul 1999 16:22:22 +0100 (GMT/BST)
+Message-Id: <199907031522.QAA06508@cthulhu.dircon.co.uk>
+Subject: Re: [9fans] spawn() vs fork()
+To: 9fans@cse.psu.edu
+Date: Sat, 3 Jul 1999 16:22:21 +0100 (GMT/BST)
+In-Reply-To: <199907031023.MAA20049@hon.ai.univ-paris8.fr> from "Jean Mehat" at Jul 3, 99 12:23:21 pm
+From: Digby Tarvin <digbyt@acm.org>
+Reply-To: digbyt@acm.org (Digby Tarvin)
+X-Face:  &(//%&/WHJk7>_lW'@YYeED-qsdBV8&h3_Hpn/0.9_=}vTk</ul5CD1+9|
+	 8eB>}5u/2l=Mx&rX!\.i9X{(S@nk[we'a|IX#|?jmh`(j}a+\C5/><k{;ry[TI\%m
+	 ~tA/]g}]Y;[kvpeZ9lmiVgU^+5 'B|gP{h*Wt4Vl]+5-X'<&wu> %DpYTPd<7jF2V
+	 b[Z.TjttL[FMm_$Z$^#qd62A:T.qw7}0S\o.Or_|I 2t~t0D=eCU"S?ls%(Ro
+X-Pgp-Key-Fingerprint: 61 E7 39 FE 4A F4 CA F3  F5 5E BB 45 26 EC 36 3C
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+>
+>Imagine how you would do IO redirection with spawn().
+>
+I don't have to imagine - I have done a lot of work with the OS-9
+operating sytem which does just that.
+
+OS-9 dates back to the time when memory management with dynamic
+address translation was pretty rare and exotic (originally ran
+on M6809) so for maximum hardware portability the system
+assumes that everything works on physical addresses.
+MMU, if available, is only used to restrict read/write access.
+
+That compromise meant that a fork() style of process creation
+was not possible (all pointers in the child's data segment would
+be pointing into the parents memory), so it uses a spawn() style
+of process creation.
+
+I/O redirection is implemented using a flurry of dup(), close() open()
+calls before and after the child is created (combined with the ability
+to control how many open file descriptors are passed on to the child).
+
+Fork() is a much more elegant way of giving code in the parent
+process a chance to initialise the environment for the child
+before transferring control - not only I/O, but also current
+directory, UID, priority etc, all without having to define a
+set of additional system calls or adding a long list of arguments
+to the spawn request...
+
+On the down side, appart from relying on address translation, fork()
+is usually more complex to implement in the kernel, and a
+fork()/exec() sequence usually involves more run time overhead 
+than a single combined semantic.
+
+Regards,
+DigbyT
+-- 
+Digby R. S. Tarvin                                              digbyt@acm.org
+http://www.cthulhu.dircon.co.uk
+

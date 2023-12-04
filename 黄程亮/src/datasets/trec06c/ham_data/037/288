@@ -1,0 +1,94 @@
+Received: from mail.acadiacom.net (acadiacom.net [209.12.42.4])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id SAA00481
+	for <handyboard@media.mit.edu>; Mon, 1 Mar 1999 18:31:16 -0500 (EST)
+Received: from lectro (unverified [209.12.219.61]) by mail.acadiacom.net
+ (Rockliffe SMTPRA 3.1.4) with SMTP id <B0005634258@mail.acadiacom.net>;
+ Mon, 1 Mar 1999 17:36:54 -0600
+Message-Id: <4.1.19990301172620.009c03d0@acadiacom.net>
+X-Sender: lectro@acadiacom.net
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Mon, 01 Mar 1999 17:32:13 -0600
+To: "Carlos Fernandez" <softech@ptdprolog.net>
+From: Keith <lectro@acadiacom.net>
+Subject: Re: Bipolar Stepper Motors
+Cc: handyboard@media.mit.edu
+In-Reply-To: <01be642c$54bd8e00$cf20bacc@softech.ptdprolog.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+
+First thing take an ohm meter and "read" your coils. From any wire you
+should have one other wire at a low resistance and two at a high
+resistance. This will first determine if you have it wired right. On my
+steppers the outside two form one coil and the inside two wires form the
+other. 
+
+Lectro
+
+
+
+
+
+
+At 04:41 PM 3/1/99 -0500, you wrote:
+>Hi, everyone.  I was wondering if somebody could help me.
+>I am trying to control a 2 phase bipolar stepper motor.
+>I found a web page at :
+>http://laguna.fmedic.unam.mx/~daniel/handy_bipolar.html
+>that talks about controlling bipolar stepper motors.  But I just can't seem
+>to make it work.
+>When I use the code from the page the motors just vibrates, move forward,
+>backward and stop.
+>
+>The stepper motors have four wires.  Brown +A, Red -A, Blue +B, Yellow -B.
+>I connect them on the HB motor header:  Brown, Skip,Red,Blue,Skip,Yellow
+>
+>With the stepper motors I received a paper that says:
+>    Step        +A        +B        -A        -B
+>        1            +          +           -           -
+>        2            -           +          +           -
+>        3            -            -          +           +
+>        4            +           -          -            +
+>        5            +          +          -            -
+>
+>I was not sure how to read this, but hey whats the worst that could
+>happened.I wrote a small program trying to interpret this:
+>    void Stepper(void);
+>        int intSteps=30;
+>        int intStep;
+>        long lngDelay = 5L;
+>        for (intStep = 0; intStep < intSteps; intStep++)    {
+>            /* step 1 */
+>            fd(0);
+>            fd(1);
+>            msleep(lngDelay);
+>            /* step 2 */
+>            fd(1);
+>            bk(0);
+>            msleep(lngDelay);
+>            /* step 3 */
+>            bk(0);
+>            bk(1);
+>            msleep(lngDelay);
+>            /* step 4 */
+>            fd(0);
+>            bk(1);
+>            msleep(lngDelay);
+>            /* step 5 */
+>            fd(0);
+>            fd(1);
+>            }
+>    ao();
+>}
+>The program does not work.  The stepper motor does the same thing, it
+>varibrates, moves forward a little, moves back a little and stops.
+>
+>If anybody could help me, I would really appreciate it.
+>
+>Thanks
+>
+>
+>
+>
+
+

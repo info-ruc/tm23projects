@@ -1,0 +1,162 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h82FTHj25753
+	for <egs+615@cs.cornell.edu>; Tue, 2 Sep 2003 11:29:17 -0400 (EDT)
+Received: from [128.253.151.52] (r101192.resnet.cornell.edu [128.253.151.52])
+	by postoffice.mail.cornell.edu (8.9.3p2/8.9.3) with ESMTP id LAA29747
+	for <egs+615@cs.cornell.edu>; Tue, 2 Sep 2003 11:29:09 -0400 (EDT)
+Mime-Version: 1.0
+X-Sender: mw223@postoffice.mail.cornell.edu
+Message-Id: <a05200f02bb7a645d8569@[128.253.151.52]>
+Date: Tue, 2 Sep 2003 11:29:14 -0400
+To: egs+615@cs.cornell.edu
+From: "Matthew A. Wachs" <mw223@cornell.edu>
+Subject: 615 PAPER 1
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+
+	DSDV is an improvement to prior distance vector algorithms 
+that eliminates the possibility of both short- and long-term routing 
+loops and is tailored for use in (possibly) rapidly changing ad-hoc 
+networks. A routing table is kept by each node and is updated through 
+both periodic and change-triggered broadcast messages. Every node is 
+aware of the lowest recent "cost" (usually the measured by the number 
+of hops) of routing a message to each other node, and through which 
+of its neighbors it must send a packet destined for that node in 
+order to realize that cost (that node will consult its own table when 
+it needs handle the packet). A node broadcasts to its neighbors the 
+cost, for each node in the network, of routing a message first 
+through itself and then through its own best known route to that 
+node. Its neighbors will then decide, on a destination-by-destination 
+basis, if an advertised route they have received is preferable to the 
+one (if any) that they already know, and replace the old route if 
+necessary. Thus, the chain of events to form the routing tables 
+begins by each node advertising that it can reach itself without any 
+cost to its neighbors; followed by each of its neighbors telling each 
+of their neighbors that they can reach the original node with, say, a 
+cost of one (hop), and so on. Excessively rapid propagation of 
+changing routes is mitigated by a delay at each node to smooth out 
+transient fluctuations (by attempting to assure that a better route 
+is not received shortly after a worse one has been broadcast); 
+however, notification that a link to a node has been broken, and that 
+packets can no longer be routed to or through it, is disseminated 
+immediately.
+	Loops are avoided by a special ordering of routes used in 
+determining which of two routes is "better" (only the "best" route is 
+kept). Each route was assigned a serial number, increasing with time, 
+by the target node that advertised a route to itself (which began the 
+chain of propagation), and that serial number is preserved as the 
+information is propagated and modified by each node. Serial numbers 
+are only interpreted in the context of their particular destination 
+node and are only generated for that node by that node, so 
+synchronization is unnecessary. The route with the highest sequence 
+number (even if another is less costly) is always preferred, because 
+the newest information reflects the latest topology; but in the event 
+of a sequence number tie, the "cheapest" route wins (which occurs 
+when the same broadcast was routed through two different paths, one 
+of which was less costly). Loops cannot be completed for a route to 
+destination D because a proposed link from node A to node B that 
+would complete a loop would either need to have a higher sequence 
+number or be cheaper than the previous link out of node A, to be 
+accepted by A. However, since this would create a loop, B's route to 
+D that it is advertising to A is already through A. Broadcasts 
+pertaining to a route travel backwards along the route being 
+discovered, starting at the source, and sequence numbers are not 
+incremented as they are propagated. Thus, A must already have seen 
+and propagated the broadcast being set back to it from B, and B must 
+have received it as a consequence of A's forwarding. Therefore, its 
+sequence number will be the same as or lesser than that of A's 
+current route (because it has already been "seen" by A), but a 
+greater cost (because its path is a concatenation of A's current path 
+to D and a path from B to A). Thus it can have neither a greater 
+sequence number, nor a lesser cost, than A's present route, and will 
+never replace it to create a loop.
+	DSR is an alternative ad-hoc network routing protocol that is 
+quite different from DSDV. One difference is that DSDV maintains and 
+discovers routes whether or not they are used, while DSR only 
+attempts to discover a particular route when it is needed. Another 
+difference is that DSR tolerates one-way links. A third contrast is 
+that while DSDV relies on each node along a route to decide how next 
+to forward a packet, the source in DSR affixes a predetermined route 
+to each packet, and nodes examine this route to look up the next hop 
+for that packet ("source routing"). When a host wishes to send a 
+packet to a certain destination, it first checks to see if it has a 
+recently cached route for that destination. If not, it broadcasts a 
+route request packet to its neighbors for the target node. Its 
+neighbors propagate the request, but only once per query (to avoid 
+saturating the network unnecessarily); when they forward the request 
+packet, they append their node identification to the packet. Thus, in 
+the process of being propagated, each copy of the request packet 
+accumulates the path it took to get to the node where it is stored at 
+any particular moment. Once a copy arrives at the target node, it 
+contains a complete and verified, working path from source to target. 
+The target then labels the packet as a route reply packet and 
+attempts to return it to the source, either by specifying an 
+already-known route from target back to source and forwarding it to 
+the first intermediate node, by assuming each link is bidirectional 
+and reversing the route, or by performing a route discovery flood for 
+the reverse route using a special packet that also contains a copy of 
+the route reply. Routes can be invalidated by a cache timeout 
+procedure. Alternatively, the kth node may promiscuously listen for 
+the k+1st node in the chain to forward the packet on to the k+2th 
+node, which passively acknowledges that the k+1st node has received 
+the packet; if no such event is heard, then node k+1 is presumed to 
+be unreachable. There are several optimizations which include 
+intermediate nodes being able to answer a request directly from their 
+caches using route concatenation, and nodes listening promiscuously 
+for shortcuts (eliminating intermediate nodes when two nodes can hear 
+each other). Once a route is found, it is prefixed to each data 
+packet and each node along the path uses this information to forward 
+the data packet appropriately. Loops cannot form because once a node 
+has forwarded a particular route request once (and appended itself to 
+the encapsulated route), it remembers that request and will not 
+forward it again (thus it cannot add itself twice to the route).
+	AODV combines the on-demand-only nature of DSR (i.e. routes 
+are only found when they are needed, avoiding unneeded maintenance 
+overhead) with the local-view-only nature of DSDV (i.e. each node 
+needs only to maintain information about its neighbors, not a 
+complete route or any other such global information about the 
+network). When a route is needed in AODV, a route request packet is 
+flooded across the network, as in DSR. However, the packet contains 
+information (a sequence number) about the last known route to the 
+destination, so that caching can be exploited (i.e. an intermediate 
+node can respond immediately to advertise a route it already knows) 
+without the source receiving out-of-date information it already has. 
+Also unlike DSR, the packet is not annotated with a list of nodes it 
+has travelled through (global information), but only by a incremented 
+hop count; each node that forwards the request remembers the node 
+from which it received the request, establishing local knowledge 
+about the route in each node along the path. Thus, if the request 
+succeeds, each node knows how to return the reply by unicast (by 
+sending it to the node from which it received the route request 
+broadcast and assuming two-way links). Requests can succeed when they 
+arrive at the destination, or when they arrive at a node that has a 
+newer route to the destination than the source does, in its cache 
+(and can thus advertise that route without further investigation). 
+When either of these events occurs, the node that has fulfilled the 
+request stops propagating its copy and unicasts a reply via the 
+reverse route. As the reply is forwarded, each node along the path 
+stores the identity of the previous sender, establishing the next hop 
+from that recipient in the forward route. Each node takes two steps 
+to mitigate excessive packets: first, it only forwards a particular 
+request once; and second, it only returns a reply if it is the first 
+reply known to it, if it has a greater sequence number than previous 
+replies to the same request known to it, or if it has the same 
+sequence number as but a shorter number of hops than the other routes 
+it has seen. Viable routes are used as soon as they are found, and 
+better routes supplant them if they are discovered later. Another 
+overhead-reducing optimization is the fact that request packets 
+establish a route back to the source, thus finding a second route at 
+the same time, for "free," that not only can be used to return the 
+route reply packet, but also to send data packets. Each node also 
+takes steps to maintain the on-demand properties of the algorithm. 
+Specifically, nodes that are part of a route keep track of what 
+neighbors are actively using the route; they notify only those nodes 
+that have used a route recently if they become aware of a change in 
+the route. For instance, when a link fails, they immediately create 
+an unsolicited route reply with a higher sequence number and an 
+infinite hop count, but only send this to active upstream neighbors; 
+nodes not known to be interested in the route are not kept appraised 
+of changes. Loops in AODV are avoided in exactly the same way by 
+which they are avoided in DSDV: serial number and hop count ordering 
+make it impossible for a node to prefer a route that already includes 
+itself.
+

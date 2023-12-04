@@ -1,0 +1,51 @@
+Received: from va.cs.wm.edu (va.cs.wm.edu [128.239.2.31])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id LAA14593
+	for <handyboard@media.mit.edu>; Tue, 10 Nov 1998 11:22:04 -0500 (EST)
+Received: from nc.cs.wm.edu (nc.cs.wm.edu [128.239.2.4])
+	by va.cs.wm.edu (8.9.1/8.9.1) with ESMTP id LAA23910
+	for <handyboard@media.mit.edu>; Tue, 10 Nov 1998 11:22:05 -0500 (EST)
+Received: from nc (bynum@localhost)
+	by nc.cs.wm.edu (8.9.1/8.9.1) with ESMTP id LAA13677
+	for <handyboard@media.mit.edu>; Tue, 10 Nov 1998 11:22:02 -0500 (EST)
+Message-Id: <199811101622.LAA13677@nc.cs.wm.edu>
+X-Authentication-Warning: nc.cs.wm.edu: bynum owned process doing -bs
+To: handyboard@media.mit.edu
+Subject: Serial communication between HandyBoards
+Date: Tue, 10 Nov 1998 11:22:01 -0500
+From: Bill Bynum <bynum@CS.WM.EDU>
+
+Hello, everyone:
+
+   One of my students and I have been trying to get two HandyBoards
+to talk to each other over their serial ports, but we are having
+trouble.
+
+   We first wired a 4-wire modular connector the way the FAQ says to.
+No smoke -- a good sign.
+
+   Then we used serialio.c (linked to on the FAQ) to create a
+test program.
+
+   The receiving robot never gets past the test of the data ready
+bit of the SCSR location.  Moreover, when we comment out the wait,
+apparently no data is being placed into the SCDR location in
+the receiving robot.  These symptoms occur whether or not 
+the sender and receiver call disable_pcode_serial() (and whether
+reenable_pcode_serial() is called in there anywhere).
+
+   Our 4-wire connector cable tests out OK with an ohmmeter.
+
+   Does anyone have any suggestions of what we can try next?
+
+   Has anyone had any success in getting two HandyBoards to communicate
+through their serial ports?
+
+   Oh, by the way, we're running the 2.82 (freeware) version of the
+PCODE interpreter and ic.
+
+   Thanks.
+
+         Bill Bynum
+
+
+

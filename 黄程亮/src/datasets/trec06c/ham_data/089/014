@@ -1,0 +1,65 @@
+Received: from messenger.csusb.edu (messenger2.csusb.edu [139.182.2.65])
+	by astron.Berkeley.EDU (8.11.4/8.11.4) with ESMTP id h5QKpC424551
+	for <linuxusers@astron.berkeley.edu>; Thu, 26 Jun 2003 13:51:12 -0700 (PDT)
+Received: from conversion-daemon.messenger.csusb.edu by messenger.csusb.edu
+ (iPlanet Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003))
+ id <0HH300L01X8CTQ@messenger.csusb.edu> for linuxusers@astron.berkeley.edu;
+ Thu, 26 Jun 2003 14:05:03 -0700 (PDT)
+Received: from [139.182.144.194] (masi.csusb.edu [139.182.144.194])
+ by messenger.csusb.edu
+ (iPlanet Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003))
+ with ESMTP id <0HH3002F0X8DKM@messenger.csusb.edu> for
+ linuxusers@astron.berkeley.edu; Thu, 26 Jun 2003 14:05:01 -0700 (PDT)
+Date: Thu, 26 Jun 2003 13:51:03 -0700
+From: Zodiac Webster <zwebster@csusb.edu>
+Subject: rh linux 8.0 help
+X-Sender: zwebster@mail.csusb.edu
+To: linuxusers@astron.Berkeley.EDU
+Message-id: <a05111b01bb210c84d6d3@[139.182.144.194]>
+MIME-version: 1.0
+Content-type: text/plain; format=flowed; charset=us-ascii
+Content-transfer-encoding: 7BIT
+Content-Length: 1647
+Status: RO
+X-Status: $$$$
+X-UID: 0000000067
+
+Hi Berkeley Linux Users,
+
+I am having trouble getting a linux  RH8 box to open windows up using 
+ssh. The main purpose is to have a student log in to terminal A, ssh 
+to terminal B and bring windows from terminal B over to show up on 
+terminal A.  This usually works seemlessly with ssh. The true test 
+that something is broken is that when i ssh from terminal A to 
+terminal A, I get the same error message and no windows pop up. This 
+is not true when I do B to B.
+
+I compiled ssh from ssh.com and the same version is on both 
+computers. The 8.0 box is running something called ssh-agent whenever 
+you log in.  When I kill off that process, the user is 
+unceremoniously logged out.  I can't seem to locate where that 
+process is started, nor why it is not configured correctly... What is 
+this process and how can I stop it from running at login?
+
+First diagnostic: I can make windows on A pop up on A if I (under tcsh)
+setenv DISPLAY :0.0
+after the ssh login
+Why isn't the DISPLAY environment getting set automatically? Where 
+does this get set normally?
+
+Second: If I ssh to B from A and then setenv DISPLAY to IPaddress:0.0 
+the error message is approximately, cannot open display. I suspect 
+there is some other way to specify the display when ssh is used, but 
+it IS SUPPOSED TO BE AUTOMATIC! and it was on 7.3 (default factory 
+install!).
+
+Invoking ssh with the -X flag does not fix the problem.
+zo
+former of berkeley, still a linux user
+ps - I can't install rh 7.3 on the problematic machine since it is 
+not my machine.
+-- 
+Zodiac Webster			zwebster@csusb.edu
+Assistant Professor		Department of Physics
+CSU, San Bernardino		909-880-7593
+

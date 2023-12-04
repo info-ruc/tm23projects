@@ -1,0 +1,106 @@
+Received: from enoch.et.byu.edu (enoch.et.byu.edu [128.187.3.102])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id CAA20581
+	for <handyboard@media.mit.edu>; Fri, 16 Apr 1999 02:30:03 -0400 (EDT)
+Received: from localhost (hintonr@localhost)
+	by enoch.et.byu.edu (8.9.1/8.9.0) with ESMTP id AAA08754;
+	Fri, 16 Apr 1999 00:29:00 -0600 (MDT)
+X-Authentication-Warning: enoch.et.byu.edu: hintonr owned process doing -bs
+Date: Fri, 16 Apr 1999 00:28:59 -0600 (MDT)
+From: Ryan Hinton <hintonr@et.byu.edu>
+To: DjKOz97@aol.com
+Cc: handyboard@media.mit.edu
+Subject: Re: Wireless communication with the Handyboard
+In-Reply-To: <45641c65.2448211d@aol.com>
+Message-Id: <Pine.GHP.4.10.9904160008560.7419-100000@enoch.et.byu.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+We just finished using the same comm. boards for our senior project,
+so maybe I can help a little.
+
+On Fri, 16 Apr 1999 DjKOz97@aol.com wrote:
+
+> Hello,
+> 
+> I've been very busy trying to communicate with the Handyboard via a
+> wireless  link ( HP Development kit form Linx Technologies). I have
+> run into a slight problem-
+> 
+> The kit comes with 2 "development boards" - each contains a
+> transmitter, receiver, and an antenna. Linx provides software to
+> establish a simplex communication between 2 computers ( which means
+> only one transmitter/receiver pair are used at a time).  In order to
+> communicate with the handyboard, I'll need ( I think ) at least a
+> two way half duplex transmission protocol. 
+> 
+> Here is the problem: In the current set-up, all four Linx Tx/ Rx
+> modules are enabled at the same time.  They all transmit at the same
+> frequency, which causes a problem. Data sent to the transmitter on
+> "Board 1" is immediately picked up by the receiver on the same
+> board, having a loop- back effect.  The problem can be solved by
+> transmitting and receiving at two different frequencies, which is
+> not too difficult, considering that Linx provides a dip switch to
+> select between 8 different frequencies. 
+
+> Having explored this solution, however, I keep getting the following
+> message whenever I try to run IC via the wireless link:
+> 
+> Looking for prompt, received 255
+> Synchronizing with Board....
+> The number "received" varies with each successive synchronization
+> attempt.
+
+One interesting phenomenon we noticed was that we received random
+noise at the receiver when the transmitter wasn't on.  However, when
+the transmitter was powered up, the receiver was quite consistent--and
+mostly noise-free.
+
+> So here is the question:
+> On the Handyboard side: Is it possible to somehow monitor a pin on
+> the 68HC11 to see whether it is transmitting or receiving? I plan
+> to use this pin to  enable only one Tx/ Rx pair at a time. (The Linx
+> Tx/ Rx modules have a power down pin for this purpose).  
+> 
+> On the PC side: Could I use the DTR, CTS, and RTS serial pins to perform the 
+> same function?
+> I am confident that the wireless link works in the simplex mode, since I was 
+> able to transmit an analog audio signal from a Walkman to a Stereo! 
+> Any thoughts on the matter would be highly appreciated.
+
+That sounds along the right lines of thinking, but the problem to me
+seems to be coordination.  You're going wireless to remove the direct
+link, right?  But to use a pin from the Handyboard to enable only one
+of the TX/RX pairs at a time would require a wire connection back to
+the PC, true?
+
+To me, it appears one of your more important issues is multiplexing
+the serial line to/from the Handyboard/PC.  You didn't mention this in
+your e-mail, but it seems fairly obvious, so perhaps the omission was
+purely typographical.  Anyway, you'll need a mux somewhere to choose
+between the serial line from the RX board and to the TX board.  (As
+far as I know, anyway, IC can't transmit/receive on two different COM
+ports on the PC, nor push/pull serial data from different sources on
+the Handyboard.) 
+
+Once you've established all the correct lines, voltage levels,
+etc. (we had a hard time with this...), you'll need select lines for
+the mux on each end.  Now, we didn't play with this, but I remember a
+RSSI signal from the RX boards that, if I understand correctly, was
+supposed to indicate a detected carrier--i.e. it's receiving
+something.  It seems you should hook this up as the select line to
+your mux.  That way the serial line defaults to transmit, but should
+switch over to the RX board when it's receiving data.  You'll have to
+check the documentation on the Linx boards, but this may be your
+ticket.  
+
+Incidentally, don't forget to use a null-modem cable between the Linx
+boards and the Handyboard.  This simple oversight cost us (me) a great
+deal of time and frustration.
+
+-------------------
+Ryan Hinton ;)
+ryan_hinton@byu.edu
+http://www.et.byu.edu/~hintonr
+
+

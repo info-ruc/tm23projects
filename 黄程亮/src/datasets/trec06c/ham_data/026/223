@@ -1,0 +1,43 @@
+Received: from spitfire.fywss.com (h24-64-158-136.mt.wave.shaw.ca [24.64.158.136])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id VAA27572
+	for <9fans@cse.psu.edu>; Tue, 10 Nov 1998 21:53:13 -0500 (EST)
+Received: from spitfire (steve@localhost [127.0.0.1])
+	by spitfire.fywss.com (8.8.7/8.8.7) with ESMTP id VAA01278;
+	Tue, 10 Nov 1998 21:52:00 -0500
+Message-Id: <199811110252.VAA01278@spitfire.fywss.com>
+To: digbyt@acm.org (Digby Tarvin), 9fans@cse.psu.edu
+From: steve-kotsopoulos@home.com (Steve Kotsopoulos)
+Subject: Re: [9fans] kfs on sparc 
+In-reply-to: Your message of "Tue, 10 Nov 1998 20:06:23 EST."
+             <199811110106.BAA16290@cthulhu.dircon.co.uk> 
+Date: Tue, 10 Nov 1998 21:52:00 -0500
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+Digby Tarvin wrote:
+> I have a SPARCstation 2 which I can network boot using u9fs
+> running on a local Unix machine, and I am trying to set it
+> up to use its local hard disk.
+> 
+> I can see the disk ok after doing a
+> 	bind -a '#w1' /dev
+> But can't figure out how to partition and format it.
+[snip]
+> Finally, the entry for the sparc in BOOTING(8) only mentions
+> net booting. Can a Sun be made into a stand alone Plan9
+> workstation?
+
+I've done this with a MIPS Magnum workstation, but not a sparc.
+You'll need a kernel with kfs support, try 
+'diff /sys/src/9/magnum/magnum /sys/src/9/magnum/magnumdisk' for help with that
+
+There are scripts in the subdirs of /rc/bin for setting up standalone systems
+Take a look at /rc/bin/magnum/home, which preps the disk
+copies the boot partition and kernel, then uses kfs to
+setup the filesystem. You'll probably want to run disk/prep manually.
+You might not need a boot partition with sparcs.
+
+Once your system is setup and running, you can sync it with your
+fileserver by running something like /rc/bin/magnum/update
+

@@ -1,0 +1,138 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gBKL7It08034
+	for <ggilfoyl@facstaff.richmond.edu>; Fri, 20 Dec 2002 16:07:18 -0500
+Received: from monty.richmond.edu (monty.richmond.edu [141.166.188.13])
+	by argyle.richmond.edu (8.11.6/8.11.6) with ESMTP id gBKL5xW27259
+	for <ggilfoyl@richmond.edu>; Fri, 20 Dec 2002 16:05:59 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by monty.richmond.edu (8.11.6/8.11.6) with SMTP id gBKL8CV20786
+	for <ggilfoyl@richmond.edu>; Fri, 20 Dec 2002 16:08:12 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002122016055205404
+ for <ggilfoyl@richmond.edu>; Fri, 20 Dec 2002 16:05:52 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gBKL5qq15785
+	for <ggilfoyl@richmond.edu>; Fri, 20 Dec 2002 16:05:52 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gBKL5pR25317
+	for <ggilfoyl@richmond.edu>; Fri, 20 Dec 2002 16:05:51 -0500
+Date: Fri, 20 Dec 2002 16:05:50 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: gilfoyle <ggilfoyl@richmond.edu>
+Subject: Re: yet another question
+In-Reply-To: <3E0379DE.6EE51EF8@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0212201604370.23584-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-MailScanner: Found to be clean
+X-MailScanner-SpamCheck: not spam, SpamAssassin (score=-2.2, required 5,
+	EMAIL_ATTRIBUTION, IN_REP_TO, SIGNATURE_LONG_SPARSE,
+	SPAM_PHRASE_03_05, USER_AGENT_PINE)
+Status:   
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb2673000046c8
+
+Greetings,
+
+That's great news! factor of 83 is tremendous!
+
+G'day,
+sjames
+
+
+
+On Fri, 20 Dec 2002, gilfoyle wrote:
+
+> thanks gobs. it runs fine now. the problem we were struggling with
+> (i'm sure you're dying to know) is that we were running our
+> analysis code (Root) using Root's internal C interpreter. i wanted
+> to create a compiled version where my analysis class was compiled
+> and included in my own, local version of root. the reason for doing
+> this is pure speed. i just did a test and the compiled version is 
+> 83 times faster than the interpreted version.
+> 
+> jerry
+> 
+> steven james wrote:
+> > 
+> > Greetings,
+> > 
+> > I went and fixed the problem, hope you don't mind :-)
+> > 
+> > The path to libGui.so was in /etc/ld.so.conf as it should be, but wasn't
+> > in /etc/ld.so.cache.
+> > 
+> > The solution was to run ldconfig -v as root so that the linker would know
+> > about the library at run time.
+> > 
+> > The clue was running ldd ~gilfoyle/eod/root/gpg_linux.old (found using
+> > locate gpg_root) and seeing that ldd didn't know where libGui.so lived.
+> > 
+> > As long as the library directory is in the shared filespace (that is,
+> > under /usr anywhere), is listed in ld.so.conf, and ldconfig has been run,
+> > it will be found. The solution to the last problem was that I made
+> > anything under /usr an O.K. place for libraries.
+> > 
+> > G'day,
+> > sjames
+> > 
+> > On Thu, 19 Dec 2002, gilfoyle wrote:
+> > 
+> > > Hi Steven,
+> > >
+> > >    The Richmond cluster has been running pretty reliably for
+> > > the last couple of weeks so, of course, I have to go and
+> > > try something new. The problem is the following.
+> > >
+> > > 1. The C++ codes we write for Root are usually 'interpreted'
+> > > with a program called CINT. CINT is a convenient interactive
+> > > environment, but slow.
+> > >
+> > > 2. To speed things you can recompile and link Root with your
+> > > own personal routines that should now run about 10 times faster.
+> > > This creates a new executable with your own local classes.
+> > >
+> > > 3. I have done this on pscm1 and the code compiles and links,
+> > > but when I run it on the master I get the following message.
+> > > My version of Root is called gpg_linux.
+> > >
+> > > pscm1:root> gpg_linux
+> > > gpg_linux: error while loading shared libraries: libGui.so: cannot open
+> > > shared object file: No such file or directory
+> > >
+> > > The shared library libGui.so is in the area $ROOTSYS/lib as it is
+> > > supposed to be and the environment variable LD_LIBRARY_PATH has
+> > > $ROOTSYS/lib in it as prescribed in the Root documentation. This
+> > > problem is reminiscent of the problem we had when we could not
+> > > run root on the slave nodes because the Root libraries were not
+> > > in the standard place. Where is that standard place? Could this
+> > > be related? I can run the standard root (in $ROOTSYS/bin) with
+> > > not trouble. $ROOTSYS is set to /usr/local/PRO. Any help you
+> > > can give would be appreciated.
+> > >
+> > > thanks-in-advance,
+> > >
+> > > jerry
+> > >
+> > >
+> > 
+> > --
+> > -------------------------steven james, director of research, linux labs
+> > ... ........ ..... ....                     230 peachtree st nw ste 701
+> > the original linux labs                             atlanta.ga.us 30303
+> >       -since 1995                              http://www.linuxlabs.com
+> >                                    office 404.577.7747 fax 404.577.7743
+> > -----------------------------------------------------------------------
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

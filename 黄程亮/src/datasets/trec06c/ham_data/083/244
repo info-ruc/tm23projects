@@ -1,0 +1,56 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OIpkh06979
+	for <egs@popsrv.cs.cornell.edu>; Tue, 24 Sep 2002 14:51:46 -0400 (EDT)
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+X-MimeOLE: Produced By Microsoft Exchange V6.0.5762.3
+Subject: 615 PAPER 19
+Date: Tue, 24 Sep 2002 14:51:46 -0400
+Message-ID: <706871B20764CD449DB0E8E3D81C4D43024797F1@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 PAPER 19
+Thread-Index: AcJj+25vk2G61NgySRSWDREAs3v2jg==
+From: "Yong Yao" <yao@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id g8OIpkh06979
+
+The CEDAR paper proposes using only the core, a subset of the nodes in the
+network, to perform routing. Each node is close to one core node, which is its 
+dominator. Link states are propagated among core nodes to reduce the cost
+to construct and maintain routes. The communication between two nodes consists
+of three steps. First, the packet is sent to the dominator of the source, then 
+forwarded to the dominator of the destination. Finally, it is delivered to the destination node 
+from the dominator.  CEDAR can also apply to other reactive 
+routing protocols, like AODV,DSR, to increase the scalability of the algorithm. 
+Its cluster-based structure is also useful to many other applications, like leader 
+election, or collaborative signal processing algorithms. 
+
+The paper also presents a local algorithm to select and maintain the core structure.
+Only local computation and topology information are involved to establish core 
+nodes. Each core node behaves as the leader of its neighbors, and handles most 
+routing workload. The link state algorithm will try to minimize the length of the
+path between arbitrary source and destination. 
+
+The paper has a evaluation part including several experiments to demonstrate 
+the routing algorithm and test its performance under different setup. However,
+the simulation model is a little simple. The number of nodes is small, and 
+node density is not considered.   
+
+The workload of the algorithm is not balanced over all nodes. It is reasonable to
+believe that core nodes are the bottleneck of the whole network, and may 
+consume their battery power soon. How to dynamically switch the roles of core nodes and regular 
+nodes and still keep the network topology relatively static is an interesting research
+problem. 
+
+Scalability is another problem I worry while reading the paper. Is it possilbe to create
+large-size clusters or select higher level core nodes. CEDAR only leaves the routing 
+problem to core nodes. It fails while network size increases. Recent hardware advances have enabled distribution 
+of large scale ad hoc networks in the soon future. An interesting question is how
+to integrate CEDAR to other routing protocols.
+
+Yong
+

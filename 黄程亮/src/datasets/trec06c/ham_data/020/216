@@ -1,0 +1,73 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id TAA25641
+	for <handyboard@media.mit.edu>; Tue, 21 Jul 1998 19:13:33 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id TAA09208;
+	Tue, 21 Jul 1998 19:13:30 -0400 (EDT)
+Message-Id: <199807212313.TAA09208@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: dwhite@cybermetrix.com
+Cc: handyboard@media.mit.edu
+Subject: Re: Memory usage 
+In-Reply-To: Your message of "Tue, 21 Jul 1998 15:57:13 CDT."
+             <35B500A9.33FC@cybermetrix.com> 
+Date: Tue, 21 Jul 1998 19:13:30 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+This question how has an answer in the FAQ.  Please see:
+
+  http://el.www.media.mit.edu/projects/handy-board/faq/index.html#icmemory
+
+Following is the answer now on the FAQ page.
+
+Fred
+
+
+How much of the Handy Board's 32K memory is available for user
+programs running under Interactive C?
+
+
+Here is an approximate breakdown of how Interactive C makes use of the
+Handy Board's 32K of RAM:
+
+Purpose	Mem Usage
+------------------------------------------------------------------------
+
+Runtime P-Code OS	7936 bytes
+Stack space for user processes	6656 bytes
+Buffer for interaction process	256 bytes
+Buffer for printing	256 bytes
+User program object code
+plus user global variables	16320 bytes
+available
+
+Thus, about 16K of the memory is reserved for user code plus user
+globals. Since Interactive C compiles into code for the runtime
+virtual machine rather than into 68HC11 machine language, user IC
+programs tend to be more compact than those compiled with traditional
+compilers, partially offsetting the overhead of the IC system itself.
+
+------------------------------------------------------------------------
+
+
+
+In your message you said:
+> I don't have a handy board but am considering getting one. I like what I
+> have seen so far! I have searched the FAQ and the mail list archives but
+> can't find the answer to my question.
+> How much of the 32k does Interactive C take up? 
+> OR MORE TO THE POINT
+> How much do I have left for my application code?
+> TIA
+> Dan
+> -- 
+> /***********************************************************
+> * Dan White - National Instruments Certified Instructor    *
+> * CyberMetrix,Inc. - National Instruments Alliance Member  *
+> * <http://www.cybermetrix.com/ni>                          *
+> * dwhite@cybermetrix.com                                   *
+> ***********************************************************/
+> 
+> 
+

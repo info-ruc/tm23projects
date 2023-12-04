@@ -1,0 +1,57 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA16144
+	for <handyboard@media.mit.edu>; Thu, 7 Oct 1999 11:23:05 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id LAA03931; Thu, 7 Oct 1999 11:23:01 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:6868
+From: "Dennis Clark" <dlc@verinet.com>
+X-Real-Life-Name: Dennis Clark
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: IR proximity detectors
+Posted-Date: Thu, 7 Oct 1999 15:22:18 GMT
+Date: Thu, 7 Oct 1999 15:22:18 GMT
+Organization: none
+Message-Id: <FJ8o16.2ty@lugnet.com>
+References: <FJ7qAD.7It@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+In lugnet.robotics.handyboard, Andrew Walker writes:
+>  I'm trying to set up either one or preferably two near infra red proximity
+>detectors. I'm wondering whether the sharp IS1U60L component mounted on the
+>handy-board is suitable for this type of application.
+[snip]
+Andrew,
+
+  Take a peek at http://www.verinet.com/~dlc/botlinks.htm and bonk on the IRPD
+project.  Getting IR demodulators to work reliably is a bit more tricky that
+just looking for a bounce.  I have done a LOT of work in that area and have
+found that you really need to take into account the background noise to get a
+reliable "hit" rate.  On that web page is a schematic and PIC 12C508 code for
+implementing a self-contained IRPD using the big ugly metal can GP1U58Y style
+IR modules.  The IS1U60 will work too, but, believe it or not, the +5 and
+ground are swapped with respect to the GP1U modules!  Also, the spec sheets
+note the use of a low-pass filter made from a 47 ohm resistor and 47uf cap on
+the +5v power line - you MUST use this or the darn thing is flaky.  Another
+problem with the IS1U60 is the transparent case.  In every instance where I
+have used the IS1U60 I have had to paint flat black (or gray) paint on the
+sides, top and bottom to prevent stray IR bounces from triggering the module.
+
+  Also, Fred, you can sometimes (depending on the IR module) get reliable
+relative range finding from these modules if you check for a "hit" after every
+pulse sent out on the LED, or count the number of times you read a "hit" while
+you are pulsing the LED, the return bounce is often proportional to the
+distance from the object reflecting the IR.  This is the digital method of
+range finding corresponding to the analog "hack" of the GP1u58Y modules that
+was so popular last year.  You have to take into account the integration delay
+of that particular module.  I have found that the GP1U modules and the LiteOn
+modules have about a 200us delay from when they start seeing the pulses to when
+the detect line flips low.
+
+Food for thought!
+DLC
+

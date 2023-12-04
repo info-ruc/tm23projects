@@ -1,0 +1,119 @@
+Received: by anteroom (mbox weixl)
+ (with Cubic Circle's cucipop (v1.31 1998/05/13) Mon Jul  1 09:43:36 2002)
+X-From_: nahum@watson.ibm.com Mon Jul  1 08:46:09 2002
+Received: from igw3.watson.ibm.com (igw3.watson.ibm.com [198.81.209.18])
+	by chamber.cco.caltech.edu (8.12.3/8.12.3) with ESMTP id g61Fk2VV011094;
+	Mon, 1 Jul 2002 08:46:03 -0700 (PDT)
+Received: from sp1n293en1.watson.ibm.com (sp1n293en1.watson.ibm.com [9.2.112.57])
+	by igw3.watson.ibm.com (8.11.4/8.11.4) with ESMTP id g61Fk0U18016;
+	Mon, 1 Jul 2002 11:46:00 -0400
+Received: from orinoco.watson.ibm.com (orinoco.watson.ibm.com [9.2.14.30])
+	by sp1n293en1.watson.ibm.com (8.11.4/8.11.4) with ESMTP id g61Fk0L35788;
+	Mon, 1 Jul 2002 11:46:00 -0400
+Received: (from nahum@localhost)
+	by orinoco.watson.ibm.com (AIX4.3/8.9.3/8.9.3/01-10-2000) id LAA29252;
+	Mon, 1 Jul 2002 11:45:59 -0400
+From: Erich Nahum <nahum@watson.ibm.com>
+Message-Id: <200207011545.LAA29252@orinoco.watson.ibm.com>
+Subject: Re: About the Giga-bit TCP testbed
+In-Reply-To: <014d01c2190d$de3b6960$5b9dfea9@weixl> from "Xiaoliang (David) Wei"
+ at "Jun 21, 2002 03:24:46 am"
+To: "Xiaoliang \\(David\\) Wei" <weixl@caltech.edu>
+Date: Mon, 1 Jul 2002 11:45:57 -0400 (EDT)
+CC: nahum@watson.ibm.com, Steven Low <slow@caltech.edu>
+Reply-to: nahum@watson.ibm.com (Erich M. Nahum)
+X-Url: http://www.research.ibm.com/people/n/nahum/
+X-Mailer: ELM [version 2.4ME+ PL66 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, hits=-3.4 required=5.0 tests=IN_REP_TO version=2.30
+Content-Length: 4170
+
+Xiaoliang \(David\) Wei writes:
+> 
+> 1. How to select hardware
+> 2. How to implement the new TCP algorithms  (kernel hacking)
+> 3. how to measure the traffic
+> 4. how to generate delay and loss in the testbed.
+> 
+>      You have much experience in the gigabit network. Could you give us some
+> advice? Especially, on the hardware, what kind of network interface card is
+> preferable? Also, I found the Dell WS340 in our lab is using Intel 850E
+> chipset, which can only support 32bit*33Mhz<=1Gbps throughput. So we are
+> going to get some other machines. Can you recommend us some better
+> configurations (on the chipset, motherboard...)?
+
+David,
+
+Sorry I haven't been able to respond sooner.  InfoCom was last week
+on top of the usual craziness.  Some advice on the above issues:
+
+Hardware - in order to make sure your experiments are reasonably 
+up-to-date you need to get some contemporary hardware.  In terms of the
+boxes, you want something with 66 MHz 64 bit PCI slots.  I use an IBM
+Intellistation M-Pro model 6850, but I only looked into IBM hardware
+since that's what I'm required to use.  I'm sure Dell, HP etc. have
+similar stuff but I can't suggest any particular models.
+
+As for gigabit cards, you have several choices.  First is the copper gigabit
+vs. fiber gigabit decision.  Fiber tends to be slightly faster but copper is
+getting better and better and is *much* cheaper.  Usually for the price
+of 2 fiber cards you can buy 2 copper cards and an 8-port copper switch.
+In the long term, I really think copper is going to win out.  If you're 
+running stuff back-to-back you won't need a switch, obviously.  Cat 5e 
+crossover cabling exists so you can do point-to-point over copper as well.
+
+Right now I think the best cards are the 3Com gigabit cards, available in 
+either copper or fiber.  Check out
+
+http://www.3com.com/products/en_US/prodlist.jsp?tab=tech&pathtype=purchase&tec
+h_id=14856&techcat=Gigabit+ethernet&cat=19
+
+These are the remanufactured Alteon ACENIC cards that people love (3Com 
+bought Alteon two years ago). The 710026 is the fiber version and
+the 3C985B-SX is the copper version.  They have 1 MB RAM on board, whereas 
+most others have 64 KB-96 KB.  More importantly, they have the Tigon MIPS 
+chips on them that supports checksum offload.  Linux supports this card 
+very well (zero-copy networking) and I'll bet FreeBSD does too.
+
+Kernel Hacking -- depends on which end-host OS you'll be using.  While
+I grew up on BSD, I think linux is the way to go.  There's a great 
+environment called user-mode linux, available at
+
+	http://user-mode-linux.sourceforge.net
+
+This basically allows you to run linux in user space, so that you
+can do source-level debugging, crash your TCP without crashing the
+box, etc.  It's very impressive, and many linux hackers like Alan Cox
+use it for their regular development.
+
+The advantage of using FreeBSD is that you have all the Stevens books
+at your disposal, which are great.  But again, I think in the long term
+linux is a better skill to have.
+
+Traffic measurement: Assuming you want to measure bulk throughput, there 
+are standard tools for measuring this, like netperf and TTCP.
+
+Generating delay and loss: again, two choices, Linux and FreeBSD.  Linux
+has a package called NIST Net, but it is buggy and crashes under any
+major amount of load.  FreeBSD has something called DummyNet, which is
+much better and completely robust.  I used DummyNet for my WASP paper in
+SigMetrics last year and was totally happy with it (after getting frustrated
+with NIST Net).  One thing to bear in mind is that if you're generating
+delay and loss, that's going to slow everything down, so you need to be
+careful about attributing performance loss to the right places.  For
+example, if you use an intermediate box between two end hosts as a
+delay/loss generator, it may have trouble keeping up with the packet
+forwarding rate.
+
+That's all I can think of for now.  Let me know if you have any further
+questions or want any other advice.
+
+-Erich
+
+-- 
+Erich M. Nahum                  IBM T.J. Watson Research Center
+Networking Research             P.O. Box 704
+nahum@watson.ibm.com            Yorktown Heights NY 10598
+

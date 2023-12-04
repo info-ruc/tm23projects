@@ -1,0 +1,95 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Wed, 28 Dec 1994 07:07:58 MST
+Received: from pluto.mscc.huji.ac.il by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA09657; Wed, 28 Dec 1994 07:07:51 MST
+Received: by pluto.mscc.huji.ac.il (AIX 3.2/UCB 5.64/4.03)
+          id AA78312; Wed, 28 Dec 1994 16:07:53 +0200
+Date: Wed, 28 Dec 1994 16:07:53 +0200 (WET)
+From: Zvi Lamm <mslamm@pluto.mscc.huji.ac.il>
+To: icon-group@cs.arizona.edu
+Subject: Truth-Table generator
+Message-Id: <Pine.A32.3.91.941228160447.45969A-100000@pluto.mscc.huji.ac.il>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+I had a need to write a program to output truth tables for boolean
+expressions. I used the programmming language J (a sister of APL). The
+'program' was about two lines long.  I wrote a program for the same task
+in Icon. I include it below.  This Icon solution is ugly (because of the
+programmer, not the language..), but works. I would be happy to hear
+comments. Any idea for improvemnet is welcome. 
+
+I got alot of help on comp.lang.apl when writing the J version - so don't 
+let me down! I think I will write a short note comparing the solutions. 
+My idea is to show the way different languages shape your thought. Both J 
+and Icon are rather special in that they give the programmer tools not 
+found in other languages. Does this interest anyone? 
+
+Any way, here goes:
+
+#
+# Truth-Table genertor Ver -1.0
+# 12.1994
+#
+procedure main()
+        n:=2
+        m:=2 # number of expressions
+
+       # every write(Outl(t:=Truth_Table(n)),"--> ",Expr(t));
+
+        # shows many expr to many truth-table lines
+
+        every {
+                #write(repl("-",2*n-1+1+4*m))#
+                t:=Truth_Table(n)              & #------------------------#            
+                write(" ")                     & #<-force line break when #
+                writes(Outl(t))                & #  backtracking          #
+                every writes(" | ",Expr(t))      #------------------------#
+              }  
+
+end
+
+procedure Truth_Table(n)
+#
+# generates lines (as lists) of the truth table for n variables
+# works, but is ugly
+#
+        tabl:=list(n,0)
+        every i:=0 to 2^n-1 do                   # all lines
+                {
+                    j:=i;                        # convert number to bits
+                    k:=n;
+                    while (j > 0) do
+                        {
+                             tabl[k]:=j % 2;
+                             k:=k-1;
+                             j:=j / 2;
+                         }
+                    suspend tabl                 # return line
+                 }                                
+
+
+end
+
+procedure Expr(vec)                     
+#
+# evaluates a list of bits (the logical expr)
+# when multiple expr are suspended a mechanism in main prints them side by 
+# side
+#
+        suspend (ior(vec[1],vec[2]) |
+        ixor(vec[1],vec[2])) 
+end
+
+procedure Outl(vec)
+#
+# prints a list
+#
+        local s;
+        s:=""
+        every x:=!vec do s:=s||x||" "
+        return s
+end
+
+ 
+

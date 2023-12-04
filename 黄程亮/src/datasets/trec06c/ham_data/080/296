@@ -1,0 +1,64 @@
+Received: from smtp.localnet.com (signup.localnet.com [207.251.201.46])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with SMTP id RAA04217
+	for <tex-fonts@math.utah.edu>; Sun, 28 Apr 2002 17:54:46 -0600 (MDT)
+Received: (qmail 4098 invoked from network); 28 Apr 2002 23:53:22 -0000
+Received: from ppp187.tc-1.buf-ch.ny.localnet.com (HELO lugabout.jhcloos.org) (207.251.220.187)
+  by smtp.localnet.com with SMTP; 28 Apr 2002 23:53:22 -0000
+Received: from lugabout.jhcloos.org (localhost [127.0.0.1])
+	by lugabout.jhcloos.org (Postfix on SuSE Linux 7.3 (i386)) with ESMTP
+	id 1D06910430; Sun, 28 Apr 2002 23:54:29 +0000 (GMT)
+To: Nirmal Govind <nirmalg@psu.edu>
+Cc: tex-fonts@sunshine.math.utah.edu
+Subject: Re: Thicker Computer Modern fonts?
+References: <5.1.0.14.2.20020428094734.00b49368@mail.ai.mit.edu>
+From: "James H. Cloos Jr." <cloos@jhcloos.com>
+In-Reply-To: <5.1.0.14.2.20020428094734.00b49368@mail.ai.mit.edu>
+Date: 28 Apr 2002 19:54:29 -0400
+Message-ID: <m33cxf2xca.fsf@lugabout.jhcloos.org>
+Lines: 40
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+
+>>>>> "Nirmal"   == Nirmal Govind     <nirmalg@psu.edu> writes:
+>>>>> "Berthold" == Berthold K P Horn <bkph@ai.mit.edu> writes:
+
+Nirmal> I'm aware that the CM fonts are supposed to look that way
+Nirmal> (light) so I was wondering if there's any workaround to make the
+Nirmal> output on paper look thicker/darker. 
+
+Berthold> In some cases they have commissioned special Type 1 versions
+Berthold> of the CM fonts (or a subset thereof) that are "darker".
+
+Berthold> When using bitmapped versions of the fonts, people have
+Berthold> modified the MetaFont commands to "fatten" the strokes.
+
+What about just makeing a modes.mf entry with a larger darker than
+that used by default for the given printer?  Ie, change ljet4 from:
+
+mode_def ljfour =  %\[ HP LaserJet 4 (600dpi)
+  mode_param (pixels_per_inch, 600);
+  mode_param (blacker, .25);
+  mode_param (fillin, 0);
+  mode_param (o_correction, 1);
+  mode_common_setup_;
+enddef;
+
+to something like:
+
+mode_def blackerljfour =  %\[ HP LaserJet 4 (600dpi) with extra blacker
+  mode_param (pixels_per_inch, 600);
+  mode_param (blacker, 1);
+  mode_param (fillin, 0);
+  mode_param (o_correction, 1);
+  mode_common_setup_;
+enddef;
+
+Perhaps also the printer you are using and the 600dpi mode do not
+concur.  There are fifteen 600dpi modes in modes.mf, you might prefer
+one of the others to whichever one your setup defaults to.
+
+-JimC
+
+
+

@@ -1,0 +1,281 @@
+Received: from lclark.edu by terminator.rs.itd.umich.edu (5.67/2.2)
+	with SMTP id AA20509; Tue, 11 May 93 23:23:42 -0400
+Received: by lclark.edu (4.1/SMI-4.1)
+	id AA29736; Tue, 11 May 93 20:23:41 PDT
+Date: Tue, 11 May 1993 20:21:24 -0700 (PDT)
+From: Beth Corbo <corbo@lclark.edu>
+Sender: Beth Corbo <corbo@lclark.edu>
+Reply-To: Beth Corbo <corbo@lclark.edu>
+Subject: Quadra Utilities
+To: macgifts@mac.archive.umich.edu
+Cc: GOLDENJ@nic.CSU.net, nguyen@lenti.med.umn.edu
+Message-Id: <Pine.3.05.9305112051.A29293-f102000@sun>
+Mime-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="603987746-1640726462-737177021:#29293"
+
+--603987746-1640726462-737177021:#29293
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+
+  Here are the utilities that I found for dealing with
+setting the amount of time the Mac waits for the
+internal hard drive to spin-up and some notes
+on SCSI from Micronet.
+  Enjoy!
+
+  Beth Corbo (corbo@lclark.edu)
+
+
+
+--603987746-1640726462-737177021:#29293
+Content-Type: APPLICATION/octet-stream; name="SCSIInfo.sit.hqx"
+Content-ID: <Pine.3.05.9305112041.D29293@sun>
+Content-Description: 
+
+Macintosh SCSI Termination
+by the Engineering Department of
+MicroNet Technology, Inc.
+ 
+Dated:  11/1/90
+ 
+ 
+What is Termination?
+ 
+Termination involves the placement of impedance matching circuits on the bus.
+In the case of SCSI, these circuits are typically placed at each end of the
+SCSI Bus (cable). These circuits are known as "Thevenin Terminators" and are
+simple resistor networks in the case of SCSI.  These resistor circuits are
+composed of a 220 ohm resistor connected to Vcc and the signal node, while a
+330 ohm resistor is connected to ground and the signal node.  One of these
+resistor pairs is connected to each of the 18 active signal lines.  The Vcc (+5
+nominal) for the terminators is typically provided by line 26 on the SCSI bus
+cable.  In practice, however, this voltage is sometimes supplied by the SCSI
+device (hard disk)  directly to the terminator circuit if the circuit resides
+on the device itself.  In this case, Vcc on line 26 of the SCSI would not be
+required.
+ 
+Why Terminate?
+ 
+Terminating a SCSI bus preserves high transition speeds, and when properly
+placed will clean up the signal along the entire length of the line.  They also
+provide a reasonable degree of noise immunity.  The most important reason to
+terminate an SCSI bus is that termination is required for the bus to work!  The
+ANSI SCSI specification calls for the bus to be terminated in the way described
+above.
+ 
+How to Properly Terminate a SCSI Bus
+ 
+A SCSI bus is properly terminated by placing bus terminators at each end of the
+bus.  There are a couple of exceptions.  If the bus is very short (ie. 18" or
+less) then generally it is best to terminate just one end.  Also, if the cable
+length (6 meters maximum) between two devices is greater than 10 feet then the
+cable should be terminated at the 10 foot point in addition to each end.  When
+daisy chaining three or more SCSI devices the bus will often exceed this 10
+foot specification and will require three terminators in the chain to work
+properly.
+ 
+Physically, terminators generally have three forms in the Macintosh world.
+Electrically, these three types of terminators are equivalent and vary only in
+where and how they are installed.
+ 
+First, are the ON-DRIVE terminators which are known as resistor packs (or sips,
+or dips).  They reside right on the device (hard disk) itself and are almost
+always removable.  Always note the orientation of these parts before attempting
+to remove these!  They have a polarity and must not be inserted backwards.
+ 
+Second, there are the terminator blocks or plugs.  These are short "plug like"
+devices and are inserted between a hard drive cabinet’s SCSI connector and the
+SCSI cable or on the second cabinet connector if one exists.  Don’t confuse
+these with the ON-DRIVE terminators described above.  ON-DRIVE means literally
+that, on the drive (HDA) not on the cabinet.
+ 
+Third, are the "Mother Board" Terminators.  These may look like a SIMM or they
+may look like a narrow plug.  They are used ONLY when there is no ‘internal’
+hard drive in the Macintosh AND you are connecting an external SCSI device
+(hard drive) with an SCSI cable longer than 18".
+ 
+They are inserted into the 50 pin SCSI connector inside the Macintosh where the
+cable for an internal drive would normally connect.  These Mother Board
+Terminators are keyed (a polarity notch) and must never be inserted backwards!
+ 
+Never use the second type of terminator when the drive inside a cabinet has
+terminators installed on it.
+ 
+Common Termination Problems
+ 
+Poor Quality Cables.  Always use cables which are double shielded (foil and
+braid).  Apple and MicroNet brand SCSI cables are built with specifications
+that include twisted pair and double shielding.  Never use simple printer type
+RS232 cables!  Make sure the connector hoods (or shrouds) are each connected to
+the shield braid!
+ 
+Too Many SCSI Devices Terminated.  Only the last SCSI device (disk drive/tape
+drive/scanner/printer) should be terminated.  If the Macintosh has no hard disk
+drive installed inside it, then a Mother Board Terminator should be installed
+if the cable to the external device is longer than 18". MicroNet Technology
+developed what is called the "MBT", which can be used to terminate the
+Macintosh SE, SE/30, II, IIx, IIcx, IIci when an internal hard disk drive is
+not present and is available through MicroNet resellers.
+ 
+Total SCSI Cabling Exceeds 6 Meters (19.6').  The total length of all cables
+used (added together) must not be greater than 6 meters.  Don’t forget to add
+the internal cabinet wiring which is generally about 1 foot.
+ 
+Never use a plug type terminator designed for installation on a cabinet
+connector if the SCSI device (hard disk drive or tape drive) inside the cabinet
+already has terminators installed on the drive!
+ 
+Never Exceed the Maximum Cabling Length of 6 Meters (19.6 feet) Total.  Never
+mix cable brands, types or styles.  This is a common source of trouble.  Each
+cable has a different type of construction, impedance and wire placement which
+can result in bus reflections.  In mixed cable configurations some devices may
+simply not work even if all other guidelines are followed!
+ 
+Macintosh and The SCSI Reset Line and On-Drive and Off-Drive Termination
+ 
+Pin 40 of the 50 pin SCSI connector is the hardware reset line.  When the
+Macintosh is first turned on (cold boot time) it repeatedly asserts this reset
+line in order to reset all attached SCSI devices.  Generally, this poses no
+problem.  Some non-block devices can have trouble recovering from this reset
+condition and cause other attached devices to have trouble.  Most notable are
+older SCSI scanners and tape drives.  The most common symptom of this problem
+is a Macintosh that won’t boot from a hard drive when a scanner or tape drive
+is attached to the same cable. This problem can also occur when using some of
+the first generation SCSI hard disks.  They will enter a ‘Unit Attention’ mode
+and will not respond to read or write commands until a ‘Request Sense’ SCSI
+command is issued by the Macintosh.  Newer drives will simply abort the Unit
+Attention condition after it receives several read or write commands and
+eventually will respond to the data requests.  Symptoms of this later problem
+will be a drive which will not show up on the desktop the first time the
+Macintosh is booted but will show up fine the second time around. It should
+also be noted that whenever a SCSI device is first powered on it also enters
+this Unit Attention condition.  The symptom for this is again a drive which
+will not show up on the desktop (mount) the first time the Macintosh is booted.
+The purpose of the Unit Attention condition is to alert the Host (Macintosh)
+that an important event has occurred which the host should be aware of before
+accessing that device.  The Host is then supposed to ask the SCSI device what
+occurred by using the Request Sense command.  The Host would then act take an
+appropriate action before making data requests of the device.  A good example
+of this scenario is the resultant Unit Attention condition which follows the
+swapping of media on a removable media device, such as an optical cartridge
+device.  It should be obvious why the host should be alerted to this swap
+before it "writes data to the newly inserted cartridge"!  The Unit Attention
+condition following the swap would prompt the Host (Macintosh) to determine
+what event has caused the device to respond with a Unit Attention condition.
+When the Host (Macintosh) follows up with a Request Sense command it then
+learns of the cartridge swap and takes appropriate action.  In this case it
+grays out or removes the icon on the desktop and mounts the new cartridge.
+ 
+Hardware resets and drive power being turned off and then on again are
+considered important events. That is why they cause most SCSI devices to enter
+the Unit Attention condition. Older Macintoshes have trouble with devices which
+enter the Unit Attention condition because they don’t follow up and  query the
+device to find out the reason for the condition. Therefore, if the device
+doesn’t clear the condition itself, the Macintosh’s data requests will not be
+honored and the result can be a drive which won’t boot reliably or at all.  The
+fix for these types of problems is simply to cut the reset line somewhere in
+the cabling (line 40 at the 50 pin end).
+ 
+Many subsystem manufacturers have taken this approach successfully.  While this
+approach remains debatable it can be the only remedy for severe cases.  While
+it won’t stop devices from entering Unit Attention conditions at power up time,
+it will stop the hardware resets issued by Macintoshes at boot time from
+reaching the device.  This can make the difference in booting and not booting!
+ 
+The reason this topic is being presented here in a discussion on termination is
+that it is all important that the reset line (pin 40) always be terminated!  If
+it is not, the device will be constantly resetting itself and will not work!
+Normally this is never a problem since line 40 is one of the 18 active signal
+lines which normally get terminated.  But if you are working with a device
+which has line 40 cut inside its cabinet, AND you remove the ON-DRIVE
+terminators in favor of an ON CABINET (external) terminator then line 40 won’t
+be terminated since the cabling inside the cabinet has this line cut.
+Therefore, pin 40 on the drive won’t be terminated since this line is open and
+won’t reach the terminator which is now on the outside of the cabinet!
+ 
+The warning here is simply to verify continuity of line 40 on a cabinet’s
+internal cabling before determinating the drive inside it.  If line 40 has been
+cut on the cabling inside a drive cabinet YOU CAN’T DETERMINATE THE DRIVE
+ITSELF unless you change the internal cabling to pass line 40 through to the
+outside connector of the cabinet!
+ 
+Enough of these type of cabinets exist in the world that it is a real problem
+when reconfiguring bus termination.  Another approach to handling a case like
+this is to put this drive (or device) on the end of the SCSI which should be
+terminated anyway and don’t use an external terminator on the bus at all. If,
+however, you have more than one of these devices with line 40 cut inside its
+cabinet then you must consider changing their internal cable if you wish to
+determinate the drive (device) inside it and use external ‘plug’ type
+terminators.
+ 
+Macintosh Configurations and Termination Issues
+ 
+Point #1)  Don’t Be a Worry Wart
+ 
+There is a lot of bad advice floating around.  The purist will tell you that if
+you have more than two SCSI devices terminated on the bus you will blow up your
+Macintosh. This simply isn’t true. If you have a third terminated device on the
+bus or even (heaven forbid) a fourth you are not going to pop the SCSI chip in
+your Macintosh. In some cases with older SCSI drives it may be necessary to
+leave the ON-DRIVE terminators in place in order for them to power up and to
+work at all.
+ 
+Another purist might tell you that both ends of a SCSI bus MUST be terminated
+in order for anything to work.  This again is junk talking.  Take for example
+the fact that Apple doesn’t terminate the mother board of certain Macintosh
+computers!  If there is no internal drive in these Macintosh computers it
+simply never gets terminated like it should be (hence the  recent availability
+of mother board terminators from MicroNet Technology, Inc., and Apple
+themselves).  And since these Macintosh computers are always one end of the
+SCSI bus one might ask the purist why any SCSI devices work at all if there is
+no internal drive! The fact is that if the cable is fairly short (18" to 6')
+the Macintosh SCSI bus will generally function fine even if the Macintosh isn’t
+terminated.  However, the faster Macintosh computers, like the IIci and the
+IIfx may need internal termination inorder for them to work properly.
+ 
+The pursuit of the Perfect SCSI bus can be elusive.  As soon as you add SCSI
+devices from different vendors and use the different cables supplied by each,
+you have a potential problem.
+ 
+Mixing cable types, lengths, and styles is an invitation to trouble.  But in
+the real world, there isn’t much choice!  This is largely why switching cables
+around and trying cables of different lengths has solved many problems.  A part
+of configuring SCSI peripherals will always be determined empirically.
+ 
+ 
+Questions and Answers
+ 
+Q)  Should I ever remove the ON-DRIVE terminators from a drive which is
+installed inside a Macintosh?
+A)  NO.
+ 
+ 
+Q)  Should I ever use a Mother Board Terminator if there is a drive installed
+inside the Macintosh?
+A)  NO. You can’t !  Each plugs into the same 50 pin connector on the mother
+board and you know what they say about two pieces of matter occupying the same
+space!
+ 
+ 
+Q)  What is a ‘Black terminator’ and when should I use it?
+A)  The black terminator is a product from Apple and is for use only with the
+Macintosh IIfx.  It is an external plug type terminator and would only be used
+‘where and when’ a normal external plug type terminator would be used!  This
+black terminator differs (electrically) only slightly from a normal plug type
+terminator and not physically.  It’s purpose in life is to compensate for some
+changes in the new SCSI chip used in the Macintosh IIfx.  If later models of
+the Macintosh use this new SCSI chip then it is likely to be recommended for
+those machines as well.
+ 
+ 
+   Prepared by the Engineering Department of
+   MicroNet Technology, Inc.
+   20 Mason
+   Irvine, CA  92718
+   TEL: (714) 837-6033
+   FAX: (714) 837-1164
+ 
+ 
+ 
+Copyright 1990 by MicroNet Technology, Inc.
+ 
+ 

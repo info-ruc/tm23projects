@@ -1,0 +1,110 @@
+Received: from sirius.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [193.63.252.1])
+	by psy1.psych.arizona.edu (8.12.8/8.12.4) with ESMTP id h2DBHsIA009270
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Mar 2003 04:17:59 -0700
+Received: from [193.63.253.213] (helo=PC181.mrc-cbu.cam.ac.uk)
+	by sirius.mrc-cbu.cam.ac.uk with esmtp (Exim 4.12)
+	id 18tQrM-0007Qq-00
+	for DMDX@psy1.psych.arizona.edu; Thu, 13 Mar 2003 11:26:53 +0000
+Message-Id: <5.1.0.14.2.20030313111224.01cc9d30@pophost.mrc-cbu.cam.ac.uk>
+Date: Thu, 13 Mar 2003 11:26:52 +0000
+To: DMDX@psy1.psych.arizona.edu
+From: Paula Tavares <paula.tavares@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Re: Time issues when displaying bmp and avi
+In-Reply-To: <5.1.0.14.2.20030312152103.00b13448@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20030312170506.01d0f748@pophost.mrc-cbu.cam.ac. uk>
+ <5.1.0.14.2.20030311214210.00b128e8@psy1.psych.arizona.edu>
+ <F85R9ydqsyWVLEFN03a0000065e@hotmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Dear Jonathan,
+
+Thank you for your answer. Sorry to bother you again...
+
+
+>>1. For the films - Since the DMDX stops at the end of each item (d 180 + 
+>>film + extra tick = 16413.33 ms), the new clock-on should be activated at 
+>>17050 ms (11 trigger scans after the previous clock-on). Even if there 
+>>was an error of more or less 500 ms on the display of the film, the time 
+>>shouldn't change.
+>
+>   Why not?  The duration of the item is determined by the duration of the 
+> digital video.
+
+Because the command line of rtf file *does not* have the <cr> option activated:
+"<d 180> <zil> <rcot> <id "Keyboard"> <id pio12> <vm 1024, 768, 768, 16, 0> 
+<nfb> <t 200> <dbc 0> <dwc 255255255>"
+So each time a film finishes the DMDX should stop there, waiting for the 
+next scanner trigger (or keyboard input).
+
+Even with an error of +/- 500 ms in the display of the film (what is a lot 
+already,  film duration is 14000 ms) the next item can only be activated by 
+the next scanner trigger (which happens at 17050 ms).
+
+Any Item:  Delay  +         film         + waiting next trigger
+Time:     2400 ms + 14000ms (+/- 500 ms) + waiting next trigger
+
+With an error of -500 ms in the display of the film.
+
+Time: 15900 ms (the DmDX stops here, waiting for the next scanner trigger 
+at 17050 ms,  the previous one was at 15550 ms)
+
+With an error of +500 ms in the display of the film.
+
+Time: 16900 ms (and again the DmDX stops here, waiting for the next scanner 
+trigger at 17050 ms)
+
+Why is DMDX giving me a time of 16800(+/-)100 ms?
+
+
+
+>>2. Why are the bmp taking 14909 and 14893 ms? Why do they not take always 
+>>17050 ms?  ( d 180 + fd 1050 + extra tick = 16412.33 ms)
+>>Even if the delay of 180 is not "used" and the item takes exactly 14000 
+>>ms to load and play, the time should be 17050 - 1550 = 15500 ms.
+>
+>   No one's ever tried to do fMRI constant interval stuff with digital 
+> video before.  If I were doing it I would specify the duration of the 
+> <dv> frame and not rely on the codec to determine it's duration.
+
+Thank you for your suggestion regarding the films, but question 2 refers to 
+the time problem that is happening with the pictures. Any idea about what 
+might be happening here? The code line was
+
+"+2 <fd 1050> <bmp>*"F"/;"
+
+1050 * 13.33 = 13997 ms
+d 180        = 2400 ms
+sum          = 16397 ms
+
+The DMDX should stop after displaying it, and again the next item should be 
+trigger after 11 scanner triggers (17050 ms).
+
+Why is DMDX giving me a time of roughly 14900 ms?
+
+
+****
+Could all these problems be due to a bug in the DMDX version 2.6.04? (The 
+machine that I am using has only this version installed, and I am not 
+allowed to update it).
+****
+
+
+Thank you again for your attention and patience.
+
+Paula
+
+*****************************************
+Paula Tavares
+Cognition and Brain Sciences Unit
+15 Chaucer Road
+Cambridge
+CB2 2EF
+Telephone: 01223 355 294 EXT 196
+*****************************************
+
+
+

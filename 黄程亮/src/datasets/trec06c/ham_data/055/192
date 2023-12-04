@@ -1,0 +1,76 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id SAA01987
+	for <handyboard@media.mit.edu>; Tue, 2 Nov 1999 18:01:09 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id SAA09438; Tue, 2 Nov 1999 18:01:08 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7020
+From: hw@xs4all.nl (Hans Westerbeek)
+X-Real-Life-Name: Hans Westerbeek
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: hw@xs4all.nl
+Subject: building a remote debugger for win32 -- need help
+Posted-Date: Tue, 2 Nov 1999 23:00:57 GMT
+Date: Tue, 2 Nov 1999 23:00:57 GMT
+Organization: MirrorB Inc.
+Message-Id: <381f6d27.3689855@lugnet.com>
+Precedence: list
+
+Hi everybody,
+
+As a part of a project at my university we're building a
+crossdevelopment environment for the Windows environment. As a part of
+this programming environment we want to build a remote debugger. So,
+we will have to incorporate a downloader and a remote debugging
+mechanism that works over the serial interface.
+In the end we hope to have a fullblown Borland-C like programming
+environment for the 68HC11, with both simulated debugging and remote
+debugging. (Yup, we're ambitious:-))
+
+And right at the beginning of all this i'm walking into problems. I
+can't find anywhere in the extensive documentation that is available
+on the web how to communicate with the 68hc11 over the serial line,
+other than with Interactive C. This is not an option for us:-(.
+
+So right now I'm writing a C++ object that will communicate with the
+board. When instantiated it should install the talker that comes with
+pcbug11 (talkeree.s19) on the board and then wait for commands that
+are transmitted over the serial line.
+
+Right now i've come as far as to open the serial comport on the pc to
+talk to the board but i have no idea where to go from there. Can
+anybody help me?
+
+For the c++ literate, here's the interface of the C++ object:
+
+class SerialCommunicator
+{
+public:
+    SerialCommunicator(int port, int speed);
+   //the constructor should automatically install the talker 
+    int open(); //opens the comport
+    int close(); //closes the comport
+    int read(); //should read from the serial line. Stores what it 	
+                   //reads in private datamember Data
+    int write(char *Data);//should send data to the board 
+    int readStatus(){ return status;} 
+    //this is just to keep the state  
+private:
+    SerialCommunicator(SerialCommunicator &SC); 
+    // disables copyconstruction    
+    int portNr, comSpeed, status;//no comment needed
+    char Data[255];//string in which to store data that comes
+                            //from the serial connection
+    HANDLE hCom; //win32 handle to a comport
+    //below are other members needed by the win32 API
+    DCB Dcb;
+    COMMTIMEOUTS Timeouts;
+    
+};
+
+
+Regards.
+Hans
+

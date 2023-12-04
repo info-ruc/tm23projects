@@ -1,0 +1,108 @@
+Received: from dot.crosswinds.net ([209.47.139.147])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id OAA29549
+	for <handyboard@media.mit.edu>; Thu, 2 Apr 1998 14:06:52 -0500 (EST)
+Received: from sphere (ppp17-sby.indosat.net.id [202.155.3.17])
+	by dot.crosswinds.net (8.8.7/8.8.8) with SMTP id OAA03988;
+	Thu, 2 Apr 1998 14:06:07 -0500 (EST)
+	(envelope-from adrian@indonesia.crosswinds.net)
+From: "Adrian Susianto" <adrian@indonesia.crosswinds.net>
+To: <handyboard@media.mit.edu>
+Cc: "E. Baeck" <erwin.baeck@styria.com>,
+        "I : Budhy Sutanto" <budhy@stts.ac.id>
+Subject: Re: 68HC811E2
+Date: Fri, 3 Apr 1998 02:06:21 +0700
+Message-Id: <01bd5e6a$6c381140$LocalHost@sphere>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.71.1712.3
+X-Mimeole: Produced By Microsoft MimeOLE V4.71.1712.3
+
+...
+but I tryed this already and without success. The hbdl loader says "Invalid
+CONFIG reg (0xFF) Try again" and when I check the eeprom area with PCBUG11,
+it is already there. I think, the E2 has a special protection for the CONFIG
+----------
+
+Hello ...
+
+I'm not mastering the 68HC11 family, but I have made a project to access the
+EEPROM and CONFIG register of 68HC811E2.
+
+There is a protection in CONFIG register on every 68HC11 E family.
+
+To access the CONFIG (programming the CONFIG), you must remove the protection
+first.
+Erasing/Programming the CONFIG register follows the same procedures as that used
+for the EEPROM including bulk/byte/row erase.
+
+In normal operating modes, EEPROM and CONFIG registers are protected out of
+reset, and the user has 64 E clock cycles to unprotect any of blocks that will
+require programming or Erasing. The 68HC811E2 and other E types family use BPROT
+register (Block Protect Register) to protect the CONFIG register.
+
+The BPROT register bits can only be cleared during the first 64 E clock cycles
+after reset. Once the bit are cleared, the associated EEPROM section and/or the
+CONFIG register can be programmed or erased in the normal manner.
+
+
+BPROT register of M68HC811E2:
+
+        bit 7   bit 6   bit 5   bit 4   bit 3   bit 2   bit 1   bit 0
+       ______________________________________________________________
+      |       |       |       |       |       |       |       |       |
+$1035 |       |       |       | PTCON | BPRT3 | BPRT2 | BPRT1 | BPRT0 | BPROT register
+      |_______|_______|_______|_______|_______|_______|_______|_______|
+
+
+Where:
+
+Bits 7..5    = not implemented
+
+PTCON        = Protect CONFIG Register Bit
+                1 = Programming/Erasure of CONFIG register disabled
+                0 = Programming/Erasure of CONFIG register allowed
+
+BPRT3..BPRT0 = Block Protect Bits
+(see table     1 = Set bit protects a block of EEPROM against programming/erasure
+  below)       0 = Cleared bit permits programming/erasure of the associated block
+                 ____________________________________
+                |       |               |            |
+                |  Bit  | Block Protect | Block Size |
+                |_______|_______________|____________|
+                | BPRT0 |  $1800-$19FF  | 512 Bytes  |
+                | BPRT1 |  $1A00-$1BFF  | 512 Bytes  |
+                | BPRT2 |  $1C00-$1DFF  | 512 Bytes  |
+                | BPRT3 |  $1E00-$1FFF  | 512 Bytes  |
+                |_______|_______________|____________|
+
+
+Example:
+
+BPROT  EQU   $1035
+
+       ORG   $0
+       LDS   #$FF
+       LDAA  #$00   ;Data for clearing BPROT
+       STAA  BPROT  ;Clear BPROT
+
+
+I hope it will help.
+If you have any comment, please besure to "CC to" my address. Because I didn't
+subscribe to this mailing List.
+
+
+Best Regards,
+
+Adrian Susianto
+mailto:adrian@indonesia.crosswinds.net.id
+ICQ   : 7725108
+
+
+
+
+
+

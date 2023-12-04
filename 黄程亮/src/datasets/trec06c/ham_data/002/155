@@ -1,0 +1,60 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Wed, 28 Dec 1994 11:16:08 MST
+Received: from noao.edu by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA21060; Wed, 28 Dec 1994 11:16:07 MST
+Received: from orpheus.gemini.edu by noao.edu (4.1/SAG-Noao.G96)
+	id AA13049; Wed, 28 Dec 94 11:16:05 MST; for icon-group@cs.arizona.edu
+Received: by orpheus.gemini.edu (5.0/SMI-SVR4-SAG03X)
+	id AA15224; Wed, 28 Dec 1994 11:15:39 +0700
+Date: Wed, 28 Dec 1994 11:15:39 +0700
+From: swampler@noao.edu
+Message-Id: <9412281815.AA15224@orpheus.gemini.edu>
+Subject: Re: Truth-Table generator
+To: icon-group@cs.arizona.edu
+Content-Length: 1800
+
+> I had a need to write a program to output truth tables for boolean
+> expressions. I used the programmming language J (a sister of APL). The
+> 'program' was about two lines long.  I wrote a program for the same task
+> in Icon. I include it below.  This Icon solution is ugly (because of the
+> programmer, not the language..), but works. I would be happy to hear
+> comments. Any idea for improvemnet is welcome.
+>
+> I got alot of help on comp.lang.apl when writing the J version - so don't
+> let me down! I think I will write a short note comparing the solutions.
+> My idea is to show the way different languages shape your thought. Both J
+> and Icon are rather special in that they give the programmer tools not
+> found in other languages. Does this interest anyone?
+
+Well, I managed to delete your original program, but here's one that's probably
+similar, using generators rather than vectors.  Can it be adapted to your case?
+
+   procedure main()
+      local t1, t2
+
+      every (t1 := (0|1)) & (t2 := (0|1)) do {
+         every writes(format ( t1 | t2 |		  # variables
+                              "|" |			  # separator
+                              iand(t1,t2) | ior(t1,t2) |  # functions
+                              ixor(t1,t2)
+                     ))
+         write()
+         }
+
+   end
+
+   procedure format(t)
+
+      # pretty up things for output, the 'wide' field width (5 characters)
+      #   would let this be used to produce a table header, as in:
+      #
+      #     every writes(format("A" | "B" | "" | "A&B" | "A|B" | "A^B"))
+      #     write()
+      #
+      #   though the above main program doesn't do so...
+      # since this is a one-liner, it could be embedded in place of the call
+      #   above, but that would be ugly!
+
+      return center(map(t, "01", "FT"), 5)
+
+   end
+

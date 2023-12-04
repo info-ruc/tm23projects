@@ -1,0 +1,51 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA19863
+	for <handyboard@media.mit.edu>; Sun, 29 Nov 1998 13:18:35 -0500 (EST)
+Received: from cs.umt.edu (mso4-172.montana.com [208.4.224.172])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id LAA27445
+	for <handyboard@media.mit.edu>; Sun, 29 Nov 1998 11:17:21 -0700 (MST)
+Message-Id: <36618FD3.DFBA093D@cs.umt.edu>
+Date: Sun, 29 Nov 1998 11:17:55 -0700
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: -1 with sonar routines?
+References: <01BE1B85.0FF271E0.eacmen@postoffice.worldnet.att.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Peter Eacmen wrote:
+> What causes a -1 with the sonar routines.  I checked about all the connections that I could think of.  Any help would be appreciated
+
+The elapsed time calculation can result in negative numbers since the
+system clock wraps back to zero when it's maxed out.  If the elapsed
+time comes up negative, then the sonar_sample() and sonar_closeup()
+functions return -1.
+
+This could be due to the obstacle being very distant, accoustically
+damped, or at such an angle that the echo bounces away from the
+transducer.  My sonar will generally not "see" smooth walls at an acute
+angle.
+
+You might get more consistent results and maybe a little more range out
+of your sonar if you change the code to compensate for the negative
+elapsed times.  I think you could just add 32768 to the negative result.
+
+You may still occasionally get sporadic readings for other reasons
+(electrical noise, etc.).  To filter out the noisy readings, try using
+the median of three consecutive readings.  It works almost perfectly for
+my robot.  Besides, the way I defined the timing of the pings, my sonar
+makes a "galloping" sound.  Good luck!
+
+-- Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                     America's one of the finest countries
+Will Bain,                                           anyone ever stole.
+& Tatoosh                                           --Bobcat Goldthwait
+

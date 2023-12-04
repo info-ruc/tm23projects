@@ -1,0 +1,258 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gARLVTY16848
+	for <ggilfoyl@facstaff.richmond.edu>; Wed, 27 Nov 2002 16:31:29 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gARLUte06131
+	for <ggilfoyl@richmond.edu>; Wed, 27 Nov 2002 16:30:55 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002112716305527247
+ for <ggilfoyl@richmond.edu>; Wed, 27 Nov 2002 16:30:55 -0500
+Received: from smtp10.atl.mindspring.net (smtp10.atl.mindspring.net [207.69.200.246])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gARLUtv16535
+	for <ggilfoyl@richmond.edu>; Wed, 27 Nov 2002 16:30:55 -0500
+Received: from h-66-167-144-187.mclnva23.covad.net ([66.167.144.187] helo=mindspring.com)
+	by smtp10.atl.mindspring.net with esmtp (Exim 3.33 #1)
+	id 18H9ll-0003QJ-00; Wed, 27 Nov 2002 16:30:53 -0500
+Sender: gilfoyle@polyester.richmond.edu
+Message-ID: <3DE56439.434BE988@mindspring.com>
+Date: Wed, 27 Nov 2002 16:32:57 -0800
+From: gilfoyle <ggilfoyl@mindspring.com>
+Reply-To: ggilfoyl@richmond.edu
+Organization: University of Richmond Physics Department
+X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.12 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: steven james <pyro@linuxlabs.com>
+CC: sasko@mindspring.com
+Subject: Richmond cluster status
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Status: RO
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004437
+
+hi steven,
+
+   i made the following changes to my scripts.
+
+1. i had the script 'sleep' for 45 seconds after submitting a 
+batch job with the following command.
+
+    system("batch -f run_job");
+    sleep 45;
+
+2. i changed the way i copied the data files over from this perl command
+
+   system("bpcp /data2/e5/root/4.232/$data_filename
+$NODE:/scratch/gilfoyle/e5/$RUNNO/$data_filename");
+
+to this one.
+
+   system("bpsh $NODE cp /data2/e5/root/4.232/$data_filename
+$NODE:/scratch/gilfoyle/e5/$RUNNO/$data_filename");
+
+does this really make a difference??
+
+i tested things in the following ways.
+
+1. i ran my scripts on two data runs for a few events in each run. things
+worked.
+
+2. i ran them on 12 data runs for 250,000 events in each run. this is where
+pscm1 hung
+last week. THIS WORKED! I MAY BE ON THE VERGE OF BEING A HAPPY GUY.
+
+3. i ran my scripts on 50 data runs for 250,000 events in each run. this worked!
+
+4. i ran my scripts on 120 data runs for all the events in each run. this will
+take
+many hours, but it looks good so far.
+
+5. went to chicago for thanksgiving.
+
+i'll be in touch next week.
+
+
+jerry
+
+-- 
+Dr. Gerard P. Gilfoyle
+Physics Department                e-mail: ggilfoyl@richmond.edu
+University of Richmond, VA 23173  phone:  804-289-8255
+USA                               fax:    804-289-8482
+>From - Mon Dec  2 09:58:37 2002
+Return-Path: <ggilfoyl@mindspring.com>
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gB23xjt16838
+	for <ggilfoyl@facstaff.richmond.edu>; Sun, 1 Dec 2002 22:59:45 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gB23xAW26807
+	for <ggilfoyl@richmond.edu>; Sun, 1 Dec 2002 22:59:10 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002120122590729883
+ for <ggilfoyl@richmond.edu>; Sun, 01 Dec 2002 22:59:07 -0500
+Received: from mclean.mail.mindspring.net (mclean.mail.mindspring.net [207.69.200.57])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gB23x6q06721
+	for <ggilfoyl@richmond.edu>; Sun, 1 Dec 2002 22:59:06 -0500
+Received: from h-66-167-144-187.mclnva23.covad.net ([66.167.144.187] helo=mindspring.com)
+	by mclean.mail.mindspring.net with esmtp (Exim 3.33 #1)
+	id 18Ihjd-00077u-00; Sun, 01 Dec 2002 22:59:05 -0500
+Sender: gilfoyle@polyester.richmond.edu
+Message-ID: <3DEB0528.5D4ADD7@mindspring.com>
+Date: Sun, 01 Dec 2002 23:00:56 -0800
+From: gilfoyle <ggilfoyl@mindspring.com>
+Reply-To: ggilfoyl@richmond.edu
+Organization: University of Richmond Physics Department
+X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.12 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: steven james <pyro@linuxlabs.com>
+Subject: latest on the Richmond cluster
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004451
+
+hi steven,
+
+   here is the latest. 
+
+the good news is the cluster seems to be working at some level. some
+of the behavior is significantly different from before the upgrade 
+so we may still have some issues to resolve.
+
+when i last left you i had submitted a large number of jobs (about 
+115) to run and left for chicago for thanksgiving. things had looked 
+good for smaller numbers of jobs. when i returned only the first 55 
+jobs had been run. the remaining ones were sitting in the batch queue 
+(used the bbq and atq commands to see this). even more strange was 
+that the first 55 jobs that got submitted were still running root 
+after 3 days!! i killed those jobs by hand (kill -9), the perl scripts 
+finished up, and the jobs in the batch queue remained there and never 
+got started.  my questions are the following.
+
+1. is the apparent limit of 55 jobs fixed? can we raise it? it seems 
+reasonable to run two jobs per machine (one per cpu). the 'atd -l ' 
+command looks like it should work (according to the man page).
+
+2. after i killed the long-running root executables, i thought the 
+queued up jobs would get submitted, but they didn't. do you have any 
+idea why?
+
+3. i noticed that root found no good events even when it ran 
+successfully with a smaller number of submitted jobs. this is 
+mysterious since this code and these scripts worked before the 
+upgrade. i will investigate this problem this week. if you have any 
+ideas, please let me know.
+
+4. the last problem i'm having is that i submitted some jobs tonight 
+(sunday) and they immediately go into the 'b' queue and don't get 
+submitted. they are listed under the atq command, but do not appear 
+when i execute the bbq command. this i don't understand.
+
+let me know what you think.
+
+jerry
+
+-- 
+Dr. Gerard P. Gilfoyle
+Physics Department                e-mail: ggilfoyl@richmond.edu
+University of Richmond, VA 23173  phone:  804-289-8255
+USA                               fax:    804-289-8482
+>From - Mon Dec  2 09:58:40 2002
+Return-Path: <pyro@linuxlabs.com>
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gB2D0Ot22106
+	for <ggilfoyl@facstaff.richmond.edu>; Mon, 2 Dec 2002 08:00:24 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gB2CvgW03049
+	for <ggilfoyl@richmond.edu>; Mon, 2 Dec 2002 07:57:43 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002120207574203742
+ for <ggilfoyl@richmond.edu>; Mon, 02 Dec 2002 07:57:42 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gB2Cveq24162
+	for <ggilfoyl@richmond.edu>; Mon, 2 Dec 2002 07:57:42 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gB2Cvbk24030
+	for <ggilfoyl@richmond.edu>; Mon, 2 Dec 2002 07:57:37 -0500
+Date: Mon, 2 Dec 2002 07:57:37 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: ggilfoyl@richmond.edu
+Subject: Re: latest on the Richmond cluster
+In-Reply-To: <3DEB0528.5D4ADD7@mindspring.com>
+Message-ID: <Pine.LNX.4.21.0212020756310.23584-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status:   
+X-Mozilla-Status: 9011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004458
+
+Greetings,
+
+Your /var filesystem is full. At depends on /var to operate. (job output
+spools there).
+
+G'day,
+sjames
+
+
+
+On Sun, 1 Dec 2002, gilfoyle wrote:
+
+> hi steven,
+> 
+>    here is the latest. 
+> 
+> the good news is the cluster seems to be working at some level. some
+> of the behavior is significantly different from before the upgrade 
+> so we may still have some issues to resolve.
+> 
+> when i last left you i had submitted a large number of jobs (about 
+> 115) to run and left for chicago for thanksgiving. things had looked 
+> good for smaller numbers of jobs. when i returned only the first 55 
+> jobs had been run. the remaining ones were sitting in the batch queue 
+> (used the bbq and atq commands to see this). even more strange was 
+> that the first 55 jobs that got submitted were still running root 
+> after 3 days!! i killed those jobs by hand (kill -9), the perl scripts 
+> finished up, and the jobs in the batch queue remained there and never 
+> got started.  my questions are the following.
+> 
+> 1. is the apparent limit of 55 jobs fixed? can we raise it? it seems 
+> reasonable to run two jobs per machine (one per cpu). the 'atd -l ' 
+> command looks like it should work (according to the man page).
+> 
+> 2. after i killed the long-running root executables, i thought the 
+> queued up jobs would get submitted, but they didn't. do you have any 
+> idea why?
+> 
+> 3. i noticed that root found no good events even when it ran 
+> successfully with a smaller number of submitted jobs. this is 
+> mysterious since this code and these scripts worked before the 
+> upgrade. i will investigate this problem this week. if you have any 
+> ideas, please let me know.
+> 
+> 4. the last problem i'm having is that i submitted some jobs tonight 
+> (sunday) and they immediately go into the 'b' queue and don't get 
+> submitted. they are listed under the atq command, but do not appear 
+> when i execute the bbq command. this i don't understand.
+> 
+> let me know what you think.
+> 
+> jerry
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

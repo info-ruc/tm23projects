@@ -1,0 +1,96 @@
+Received: from Sniper.HPC.MsState.Edu (smmsp@localhost [127.0.0.1]); 
+          by ERC.MsState.Edu (8.13.5/8.13.5/ERC-Mailhost/1.20) with ESMTP; 
+          id k33ITErF025554 for <ies_tips-outgoing@Sniper.HPC.MsState.Edu>; 
+          Mon, 3 Apr 2006 13:29:14 -0500 (CDT)
+Received: (from majordom@localhost)
+	by Sniper.HPC.MsState.Edu (8.13.5/8.13.3/Submit) id k33ITCE4025547
+	for ies_tips-outgoing; Mon, 3 Apr 2006 13:29:12 -0500 (CDT)
+Received: from groupwise.erc-win.erc.msstate.edu (Groupwise.HPC.MsState.Edu [130.18.13.20]); 
+          by ERC.MsState.Edu (8.13.5/8.13.5/ERC-Mailhost/1.20) with ESMTP; 
+          id k33ITAsm025515; 
+          Mon, 3 Apr 2006 13:29:10 -0500 (CDT)
+Received: from ERC_DO-MTA by groupwise.erc-win.erc.msstate.edu
+	with Novell_GroupWise; Mon, 03 Apr 2006 13:29:09 -0500
+Message-Id: <s4312325.070@groupwise.erc-win.erc.msstate.edu>
+X-Mailer: Novell GroupWise Internet Agent 6.5.3 
+Date: Mon, 03 Apr 2006 13:28:32 -0500
+From: "Joe Picone" <picone@CAVS.MsState.Edu>
+To: <ies_ifc@CAVS.MsState.Edu>
+Cc: <ies_tips@CAVS.MsState.Edu>
+Subject: ies_tips: Re: ies_ifc: Instructions using purify
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Sender: owner-ies_tips@CAVS.MsState.Edu
+Precedence: bulk
+Reply-To: "Joe Picone" <picone@CAVS.MsState.Edu>
+
+Please make a web page with this information and store it in the
+appropriate place.
+
+Daniel: Please advise them on this.
+
+-Joe
+
+>>> "Seungchan Lee" <slee@CAVS.MsState.Edu> 04/03/06 9:07 AM >>>
+I resolved compilation problem with purify.
+This is due to sphere utility in our system.
+I also saw some memory problem in our IFC class. This need to be fixed
+with purify.
+So, if anyone who want to use puriry, it need to recompile repository
+without sphere.
+Here are instructions for compiling repository and compiling utility
+program with purify.
+
+First, instructions for compiling repository. Recently, we have many
+changes in our IFC classes.
+So, when doing this we will meet several problems.
+
+cd $ISIP_DEVEL
+cvs co -p -d tools .
+cd tools
+
+./configure --with-audiofile=/cavs/hse/ies/isip/common/local/audiofile
+--with-communicator=/cavs/hse/ies/isip/common/local/communicator
+--with-communicator-include=/cavs/hse/ies/isip/common/local/communicator/include
+--with-communicator-libdir=/cavs/hse/ies/isip/common/local/communicator/lib/x86-linux
+--with-sctk=/cavs/hse/ies/isip/common/local/sctk
+
+[ Do not include sphere utility. I removed it above configure command]
+[ MAKE SURE THE SPACING AND ALL OTHER DETAILS ARE CORRECT]
+
+MODIFY  ISIP_BASE_ENV.sh  file
+
+[ copy and paste the followings and remove the existing  EXTRA_LIBS and
+EXTRA_INCLUDE in your ISIP_ENV_BASE.sh 
+EXTRA_LIBS="-L/cavs/hse/ies/isip/common/local/audiofile/lib -laudiofile
+ -L/cavs/hse/ies/isip/common/local/communicator/lib/x86-linux -lGalaxy
+-L -L/cavs/hse/ies/isip/users/wholland/research/expat-1.95.8/lib -lexpat
+";
+EXTRA_INCLUDE="-I/cavs/hse/ies/isip/common/local/audiofile/include
+-I/cavs/hse/ies/isip/common/local/communicator/include 
+-I/cavs/hse/ies/isip/users/wholland/research/expat-1.95.8/include -I "; 
+]
+
+source ISIP_BASE_ENV.sh
+
+make depend
+make install [ if you want debug mode, make DEBUG=-g OPTIMIZE= install
+, but it is recommanded this option in your /var/tmp  directory]
+
+And, the following is for using purify.
+
+export ISIP_CPLUS_COMPILER="purify -cache-dir=$HOME/cache g++"
+make depend
+make install  [ if you want using purity in debug mode, follow debug
+mode compilation]
+
+And, it takes about one hour to compile utility program with purify.
+Until now, I summarized using purify.
+If further questions or any problem with purify, please let me know.
+
+-Seungchan
+
+
+

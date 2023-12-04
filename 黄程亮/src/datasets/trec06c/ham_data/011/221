@@ -1,0 +1,60 @@
+Received: from watfast.uwaterloo.ca (slegon@watfast.uwaterloo.ca [129.97.172.120])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id QAA17797
+	for <handyboard@media.mit.edu>; Wed, 25 Feb 1998 16:29:09 -0500 (EST)
+Received: (from slegon@localhost)
+	by watfast.uwaterloo.ca (8.8.5/8.8.5) id QAA24365
+	for handyboard@media.mit.edu; Wed, 25 Feb 1998 16:28:05 -0500 (EST)
+From: Skye Legon <slegon@watfast.uwaterloo.ca>
+Message-Id: <199802252128.QAA24365@watfast.uwaterloo.ca>
+Subject: Sonar questions (technical ones!)
+To: handyboard@media.mit.edu
+Date: Wed, 25 Feb 1998 16:28:05 -0500 (EST)
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Hello everyone,
+
+A few sonar questions (other than where to buy them):
+
+1: The speed of sound has been widely quoted to be 0.9 ft/ms (274m/s),
+   but my Physics text lists it as 343 m/s (at 20C/70F), which is about
+   1.13 ft/ms, or 25% faster.  So why the 0.9 value (or just cuz
+   the Polaroid guys say so)?
+
+2: The sonar routines (e.g. sonar_sample()) return the distance as an
+   int, meaning the greatest round-trip distance possible is 32768 
+   half-microsecs, or 8192 microsecs one-way.  By my math, 8.2ms is
+   about 3m (10 ft).  Is this our max distance?  Any way to improve
+   this?
+
+3: My sonar works well, but about 10% of the time it returns a spurious
+   low value (around 2200 counts/8 inches), even if nothing has moved
+   or changed in the environment.  I have written a kludge to simply
+   re-pulse if it receives such a result, which works fine, but it's
+   ugly and I'm just treating the symptom, not the cause.  Any ideas
+   why this is?  (I'm using sonar_closeup(), BTW)
+
+4: I'm confused by the guts of the sonar routines.  The start_time is
+   read from the system TCNT register as a 16-bit integer (max 32768
+   counts).  If TCNT increments 2,000,000 counts/sec, does this mean 
+   TCNT rolls over every 16ms?  If so, it seems quite likely that the
+   counter will roll over while we're waiting for a pulse to return
+   depending on when we peek it for the start_time.  However, the 
+   routines work fine, so can someone please clear up my 
+   misunderstanding?
+
+Cheers!  Skye.
+
++-----------------------------------------+----------------------------+
+| Skye Legon                              |   University of Waterloo   |
+| Systems Design Engineering              | __/   __/  __/         __/ |
+| Pattern Analysis & Machine Intelligence | __/   __/  __/   __/   __/ |
+| 143 Columbia St. West, Unit E-4         | __/   __/  __/  ____/  __/ |
+| Waterloo Ontario CANADA  N2L 3L2        | __/__/__/   __/__/\__/__/  |
+| +1(519)888-9249                         |  ______/     ___/  \___/   |
+| slegon@uwaterloo.ca                     |  DC 2620, 888-4567 x5192   |
++-----------------------------------------+----------------------------+
+
+

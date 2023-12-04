@@ -1,0 +1,82 @@
+Received: from zinger.cs.cornell.edu (zinger.cs.cornell.edu [128.84.96.55])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8JFTRh21360
+	for <egs@sundial.cs.cornell.edu>; Thu, 19 Sep 2002 11:29:28 -0400 (EDT)
+From: Emin Gun Sirer <egs@CS.Cornell.EDU>
+Received: (from egs@localhost)
+	by zinger.cs.cornell.edu (8.11.3/8.11.3/C-3.2) id g8JFTRa11104
+	for egs; Thu, 19 Sep 2002 11:29:27 -0400 (EDT)
+Date: Thu, 19 Sep 2002 11:29:27 -0400 (EDT)
+Message-Id: <200209191529.g8JFTRa11104@zinger.cs.cornell.edu>
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 13
+
+
+>From linga@CS.Cornell.EDU Thu Sep 19 11:27:39 2002
+>Date: Thu, 19 Sep 2002 11:27:39 -0400 (EDT)
+>From: Prakash Linga <linga@CS.Cornell.EDU>
+>To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+>Subject: PAPER #13
+>
+>
+>
+>Power-aware routing optimization (PARO)
+>
+>A power-aware routing protocol which tries to minimize the transmission power
+>requirements in a mobile adhoc network has been proposed in this paper.
+>Intermediate nodes (called redirectors) choose to forward packets on behalf of
+>source destination pairs to reduce the power requirements for transmission of
+>packets. This optimization works in case when the destination is within range
+>of the source. In case of wide-area networks, local-energy saving coupled with
+>wide-area routing is used to forward packets when source and destination are
+>not within transmission range of each other.
+>Some important assumptions are: Radios can dynamically adjust their
+>transmission power levels. Also, transmission power required to send a packet
+>from node A to node B is almost the same as that required to send the same
+>packet from node B to node A. Transmission is much more power consuming than
+>reception or listening (and hence optimize on transmission power.)
+>Protocol tries to maximize the number of redirectors on the path from source to
+>destination to minimize power requirements (unlike traditional algorithms which
+>try to minimize the number of hops required.) Routes are discovered on-demand
+>(reactive). Every node adds the power level used to transmit the packet to
+>the packet header. Any node which overhears the transmission then takes note of
+>the power level used and based on the reception level calculates the power
+>required to reach the transmitting node.
+>Basic algorithm: At first, source directly communicates with the destination
+>(say, by sending the transmission at maximum power level). Some node which
+>overhears this transmission will calculate if it could reduce the power
+>requirements if it acts as a redirector. If so, it will inform the source and
+>the destination that it will act as a redirector using a route-redirect message
+>(and adds appropriate entries in the redirect table). Nodes which can further
+>optimize the power requirements will add on as redirectors.
+>There is also the route maintenance part where the routes are adapted to the
+>changing topology. This is done using some small enhancements to the
+>overhearing and redirecting part. Transmission level to the next redirector
+>is now sum of old estimate and delta where delta depends on the average speed
+>of the nodes in the network and the time since the next redirector was
+>overheard. If a node does not transmit any packets to any destination for
+>route-timeout period it proactively sends route maintenance packets.
+>Also, other nodes in the network can overhear transmissions to redirector nodes
+>and if any of these move the new nodes can elect to act as redirectors if that
+>helps.
+>Preliminary performance evaluation results are presented which validate the
+>protocol
+>
+>Pros:
+>A power-aware reactive routing protocol has been proposed in this paper.
+>Initial simulation/experimental results show the efficacy of the protocol.
+>This protocol works in differenct communication environments like sensor n/ws,
+>home n/ws, MANETs.
+>
+>Cons:
+>Simplitic assumptions like  transmission power required to send a packet
+>from node A to node B is almost the same as that required to send the same
+>packet from node B to node A.
+>No thorough evaluation of the work.
+>This is a local optimization. Not clear if this works well in a larger network.
+>
+>Future directions:
+>-More thorough evaluation of the protocol especially is large networks.
+>-Testing performance of different applications running on PARO.
+>-Saving reception and listening power inaddition to transmission power.
+>
+

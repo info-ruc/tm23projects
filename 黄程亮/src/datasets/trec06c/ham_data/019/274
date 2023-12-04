@@ -1,0 +1,80 @@
+Received: from bach.videotron.net (bach.videotron.net [205.151.222.10])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id TAA10621
+	for <handyboard@media.mit.edu>; Mon, 6 Jul 1998 19:11:15 -0400 (EDT)
+Received: from desrosiers-h.cmc.ec.gc.ca (ppp103.100.mmtl.videotron.net [207.253.100.103]) by bach.videotron.net (8.8.5/8.8.2) with SMTP id TAA10868 for <handyboard@media.mit.edu>; Mon, 6 Jul 1998 19:11:12 -0400 (EDT)
+Message-Id: <199807062311.TAA10868@bach.videotron.net>
+X-Sender: vlleeeos@pop.videotron.ca
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.0
+Date: Mon, 06 Jul 1998 19:10:43 -0400
+To: handyboard@media.mit.edu
+From: Remi Desrosiers <harlock@videotron.ca>
+Subject: Re: Serial line interrupt
+In-Reply-To: <3.0.5.32.19980706182917.00801bb0@193.137.127.65>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 18:29 7/6/98 +0200, you wrote:
+>Hello all,
+>
+>I'm currently trying to communicate between the Handy Board and a PC (i486) 
+>using the existing serial line between the two. Sending data from the handy 
+>Board to the PC is no problem. An interrupt handler puts all incoming serial 
+>data into a buffer, which the main program can read from.
+>
+>Sending data from the PC to the Handy Board is another story. The serial 
+>routines on http://www.ai.mit.edu/people/rsargent/ic/serialio.html work
+>fine if 
+>the PC isn't sending very fast. The current 'solution' is to put the PC in a 
+>short loop after it has sent a character to slow it down. But that's not a
+>very 
+>elegant solution.
+>
+>Is there a way to use the same technique on the handy Board as on the PC
+>(using 
+>an interrupt handler)? If so, has anyone used that approach and is willing
+to 
+>share this code?
+>
+>If there is a simpler way of doing things, I would also be glad to know
+about 
+>it.
+>
+>Jan Sipke van der Veen
+>
+>
+>Jose Antonio Barata de Oliveira
+>Universidade Nova de Lisboa - Dep. Eng. Electrotecnica
+>Quinta da Torre
+>P 2825 - Monte da Caparica
+>Portugal
+>
+>
+>TF: +351-1-2948535
+>FAX: +351-1-2948532
+> 
+
+Hi,
+
+you could simply build and Acknowledge routine so that every character sent
+by the PC could be echoed back by the HandyBoard. It asks a bit more of
+processing time from the HandyBoard, but at least it's simple to build :)
+
+ex:
+PC sends 0x56
+HB sends back 0xFF then 0x56
+(here 0xFF could tell the computer that this is an echoed character)
+
+Or you could lookup how to build a CRC correction scheme and build a kind
+of packet with the CRC byte at the end, which would save a lot of
+transmission time, but more processing time for the HB.
+
+
+
+.-------------------------- . . .
+|  Remi Desrosiers
+| "My Youth in Arcadia"       ICQ# 7228856
+|  harlock@videotron.ca 
+.  remi.desrosiers@polymtl.ca
+.
+.
+

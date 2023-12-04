@@ -1,0 +1,82 @@
+Received: from mx2.cac.washington.edu (mx2.cac.washington.edu [140.142.33.1])
+          by groupfs.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id QAA25378 for <mailarch+pine-info@groupms.cac.washington.edu>; Tue, 20 Jan 1998 16:00:08 -0800 (PST)
+Received: from lists2.u.washington.edu (root@lists2.u.washington.edu [140.142.56.1])
+          by mx2.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id QAA24441; Tue, 20 Jan 1998 16:00:01 -0800
+Received: from host (lists.u.washington.edu [140.142.56.13])
+          by lists2.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with SMTP
+	  id PAA23421; Tue, 20 Jan 1998 15:56:28 -0800
+Received: from mxu2.u.washington.edu (mxu2.u.washington.edu [140.142.32.9])
+          by lists.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with ESMTP
+	  id PAA44024 for <pine-info@lists.u.washington.edu>; Tue, 20 Jan 1998 15:54:49 -0800
+Received: from sakaki.communique.net (sakaki.communique.net [204.27.65.7])
+          by mxu2.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id PAA16135 for <pine-info@u.washington.edu>; Tue, 20 Jan 1998 15:54:48 -0800
+Received: from nodon.communique.net (ppp-204-27-123-130.co.communique.net [204.27.123.130])
+	by sakaki.communique.net (8.8.5/8.8.5) with SMTP id RAA29406
+	for <pine-info@u.washington.edu>; Tue, 20 Jan 1998 17:54:38 -0600 (CST)
+Message-Id: <019301bd25fe$6b99bbc0$c8a3070a@nodon.communique.net>
+Date: Tue, 20 Jan 1998 17:52:07 -0600
+Reply-To: "Don Allaire" <scp@COMMUNIQUE.NET>
+Sender: PINE-INFO-owner@u.washington.edu
+Precedence: bulk
+From: "Don Allaire" <scp@COMMUNIQUE.NET>
+To: "Pine Discussion Forum" <pine-info@u.washington.edu>
+Subject: Pine & Cursor Keys with Wyse50 and Wyse60 terminals
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-To: <pine-info@u.washington.edu>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.2106.4
+X-Listprocessor-Version: 8.1 beta -- ListProcessor(tm) by CREN
+
+Hello:
+
+I would like to get some info in the archives that helped me out.  Below is
+a response I recieved from Richard Gering answering the question of why
+don't the cursor keys work properly in Pine 3.96 with Wyse 50 and Wyse 60
+terminals without doing a recompile of Pine.  Thanks again Richard!
+
+Question:
+
+I am running FreeBSD 2.2.2, and using the standard Termcap database that
+shipped with the OS release.  We are running Pine v. 3.96.
+
+When our wyse50 & wyse60 terminals log in, the TERM environment variable
+is set to the correct terminal type.  When pine is run, the key
+ mappings for the arrow keys don't work properly.  I have checked out the
+ termcap database, and it seems to have the correct key mappings for ku,
+ kd, kl, kr.  For instance, when I press the up arrow in Pine's main menu
+ screen, pine responds with "^K is not defined for this screen".
+
+
+Answer:
+
+By default, Pine will not accept any key sequence that doesn't start with
+an ESCape. This was done for historic reasons. There is a way to activate
+full termcap/terminfo support though, which should give you what you want.
+
+To accomplish this, append "-DTERMCAP_WINS" to the lines defining the
+"STDCFLAGS=" in both pico/makefile.<os> and pine/makefile.<os>. Next, do a
+complete rebuild: you're in business!
+
+You should be aware that certain Ctrl-key based commands in Pine and Pico
+will not work on a Wyse 50, since these commands are identical to the
+values returned by some of the edit keys (which now have precedence).
+Most noticeably Ctrl-^ (Mark) and Ctrl-K (Cut) will now act as Home and
+Cursor-Up respectively.
+
+To use Mark and Cut, press ESC ESC ^ and ESC ESC K instead. In Pine,
+ESC ESC <key> is always available as an alternate to pressing Ctrl-<key>.
+
+This "problem" can be avoided on the Wyse 60 terminals by selecting a TERM
+entry that programs the cursor keys with ANSI sequences. Usually, these
+entries have the extension "ak" tagged to then (for ANSI Key, I guess).
+
+
+
+

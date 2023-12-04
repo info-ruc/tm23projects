@@ -1,0 +1,70 @@
+Received: from vscano-c.ucl.ac.uk (vscano-c.ucl.ac.uk [144.82.100.156])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k2KJkIg1009867
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 20 Mar 2006 12:46:18 -0700
+Received: from holtz.phon.ucl.ac.uk ([128.40.52.10])
+	by vscano-c.ucl.ac.uk with esmtp (Exim 4.60)
+	(envelope-from <souhila@phonetics.ucl.ac.uk>)
+	id 1FLQKU-0006PB-A6
+	for DMDX@psy1.psych.arizona.edu; Mon, 20 Mar 2006 19:46:14 +0000
+Received: from phon.ucl.ac.uk (holtz.phon.ucl.ac.uk [128.40.52.10])
+	by holtz.phon.ucl.ac.uk (8.11.7p1+Sun/8.11.7) with ESMTP id k2KJkB311923
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 20 Mar 2006 19:46:11 GMT
+From: "Souhila Messaoud-Galusi" <souhila@phonetics.ucl.ac.uk>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] record long output sounds
+Date: Mon, 20 Mar 2006 19:46:10 +0000
+Message-Id: <20060320191445.M44600@phon.ucl.ac.uk>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset=iso-8859-1
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Dear all,
+
+I am using DMDX to run experiments with children and the forum and the 
+online tips have been of a great help to build the scripts. 
+I am builiding tests with an animated character presenting non word 
+repetition and rapid automatic naming tasks and I would like to record the 
+oral response in a wav file (but not the RT so I used RecordVocal on its 
+own) and the following mouse response in the azk file. 
+I managed to do all that with DMDX (thank you) but I cannot record responses 
+longer than 30-40 s into .wav file (at <t 49000> DMDX writes "malloc of 
+record buffer failed ..."). I guess this means that I am asking too much but 
+in case I wanted to ask if there is a special parameter to specify in order 
+to record 1 or even 2 minutes long files or is 40-ish the max? The best 
+would be a kind of <notimelimit> parameter for recording - but I think it is 
+impossible.
+
+Please find a piece of my script below that works fine :)
+
+N2 <azk> f38 <t 48500> <id "mouse"> <id RecordVocal> <dbc 255255255 > <dwc 
+255000255> <nfb> <vm 1024,768,768,16,0> <aikn +Button 2>
+0 <dv> "instruction1" <c>;
+0 <fm 0.5[,2]> "middle click when ready";
+250 <ms% 200> <c>;
++1 <fm 0.5[,4]> “+” / <wav 2> "1-qoop"/ <fm 0.5[,4]> *"?";
+250 <ms% 200> <c>;
+0 <set c1 = lastRT > <px 0.4> "Time" <apc 1>;
+0 <dv> "instruction2" <c>;
++2 <fm 0.5[,4]> “+” / <wav 2> "2-mar"/ <fm 0.5[,4]> *"?";
+250 <ms% 200> <c>;
+0 <ck> <bmp> “smiley3”, <ln 4> <fm 0.5[,2]> "Thank You." / <wav 
+2> "applause";
+
+Would be gratefull for any tips
+
+Best
+Souhila
+
+Souhila MESSAOUD-GALUSI
+Post Doc
+UCL (University College London)
+Department of Phonetics and Linguistics
+Wolfson House
+4 Stephenson Way
+London NW12HE
+
+
+

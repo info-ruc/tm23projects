@@ -1,0 +1,33 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1S6w9t01039
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 01:58:09 -0500 (EST)
+Received: from localhost (cpe-69-207-49-126.twcny.res.rr.com [69.207.49.126])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1S6w7E7021490
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 01:58:08 -0500 (EST)
+Date: Tue, 28 Feb 2006 01:58:06 -0500
+From: Niranjan Sivakumar <ns253@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 10
+Message-Id: <20060228015806.17778139.ns253@cornell.edu>
+Organization: Cornell Law School
+X-Mailer: Sylpheed version 2.2.0 (GTK+ 2.8.12; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: 7bit
+
+Niranjan Sivakumar
+
+Samsara is designed to enforce fairness in p2p systems without resorting to a centralized system or relying on third parties, thereby maintaining the decentralized nature of the network.  The system is based on creating “claims.”  A “claim” is created when a node in the network requests resources.  The “claim” is basically setting aside the same amount of data that has been consumed.  Nodes check each other to verify that the claims for the data that they are holding are being maintained.  Nodes can also forward claims to “downstream” nodes; that is, nodes that are holding claims on behalf of the node that is now being asked to hold a claim.  However, the node that forwards the claim maintains responsibility for the forwarded claim.  The system is designed to deal with transient failures through gradated grace periods.  This system makes it difficult for “bad” nodes to take advantage of the grace period an!
+ d exploit the system.  
+
+Sharp is another system with a claim based system for fairness.  Sharp includes some cryptographic features to protect integrity of claims through public-key encryption.  Resources at a given portion of the system are controlled by a site authority.  For obtaining a claim, a soft lease, called a ticket, is first obtained from an agent.  This does not guarantee resources.  Then, the ticket is presented to a site authority to get a hard lease, called a claim, and then will have a certain amount of resources guaranteed for a certain term.  Sharp agents can issues more tickets than they can support a probabilistic claim system.  The site authority is used to prevent conditions where multiple tickets could result in two nodes fighting over one claim.  
+
+PPay is a system for making small, secure payments in a p2p system.  The system is based off cryptographic virtual “coins” that are somewhat analogous to real world coins.  The authors indicate that since this system is designed for small payments, very strong security is not necessary.  Thus, rather than actually preventing coin fraud, the system simply works to make coin fraud unprofitable and traceable.  The system is largely decentralized, but a broker is involved when creating or closing accounts.
+
+Karma is a system designed to incentivize resource sharing through a virtual “currency”, Karma.  Groups of nodes known as bank-sets keep track of how much karma users have.  Users “pay” karma to consume resources and receive karma for contributing resources.  Thus more resources can only be used as more resources are provided to the system.  Karma is designed to provide non-repudiation, certification, and atomicity.  Public key cryptography is used for transactions in the system, but a scheme has been presented where a public-key infrastructure is not required to have valid key pairs.  A number of possible attacks and defenses against them are described in the paper, including sybil attacks, denial of service attacks, and replay attacks.  
+
+One issue with Samsara seems to be that while the probabilistic punishment system may be sufficient for some applications, there may certainly be applications where the owner of a node may be upset for being punished by losing some portion of their data during an honest failure.  Another issues seems to be with responsibility remaining in nodes that forwards claims.  This seems to create an issue where misbehaving nodes can cause those forwarding claims to be punished.  The oversubscription system in Sharp seems to be quite complex, particularly adjusting oversubscription degree to maintain a target efficiency level, as is indicated in the paper, but clearly implemented.  The security features of the PPay appear to limit it to small payments and do not scale well to larger payments as the incentives against coin fraud seem to be in part be based on the small value of the payments.  Also, the involvement of a broker does take a system away from being totally decentralized and!
+  p2p.  Karma is theoretically interesting, but the feasibility of an implementation is not clear from the paper.
+

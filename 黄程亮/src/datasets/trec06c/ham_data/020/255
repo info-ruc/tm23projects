@@ -1,0 +1,111 @@
+Received: from zeus.UWaterloo.ca (zeus.uwaterloo.ca [129.97.50.172])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id MAA09999;
+	Fri, 24 Jul 1998 12:26:05 -0400 (EDT)
+Received: by zeus.UWaterloo.ca (NX5.67g/NX3.0M)
+	id AA08843; Fri, 24 Jul 98 12:23:14 -0500
+Date: Fri, 24 Jul 1998 12:23:12 -0500 (GMT-0500)
+From: Sheridan Edward Ethier <seethier@zeus.UWaterloo.ca>
+To: "Fred G. Martin" <fredm@media.mit.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: Sonar Help! 
+In-Reply-To: <199807210409.AAA08778@ml.media.mit.edu>
+Message-Id: <Pine.NXT.3.91.980724121259.8783A-100000@zeus>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Fred,
+
+I decided not to use the external battery for now and try and get the
+sonar working using the directions on the web page.  Instead of connecting
+the power throught the Motor Power header, I have simple connect V+ and
+GND to TIC3's PWR and Grnd (and excluded the diodes).  BINH and INIT are 
+connected to D4 and D5, resp.
+The sonar_sample() call just seems to give random numbers between 
+-327676 and
++32767.  However, sonar_closeup() gives the same sort of values EXCEPT when
+I put something close to the transducer.  In this case, I tend to get either
+2191 or 2639, consistently.  If, I move the object away, it goes back to
+random values.  I  have tried changing VR1 
+(though I have no idea what it does) and these results haven't changed.
+
+
+The voltage across V+ and GND is 5.0V and HB GND and Sonar GND are the same.
+
+Any ideas?
+
+Sheridan
+
+
+On Tue, 21 Jul 1998, Fred G. Martin wrote:
+
+> In your message you said:
+> > I have tried the official Handy Board Sonar hookup from the Web sie and 
+> > didn't get very good results.  Most of the time,
+> > the sonar would produce seemingly random numbers (including negatives).
+> > Every once in a while, it would give a constant value of 302-600 when 
+> > something was put close but didn't seem to change as the object was moved 
+> > closer or farther away.  The only variation (I think) I did was used
+> > 2.5A diodes instead of 3.0A.  
+> > 
+> > Also, I cut the motor power trace to use an external battery.  Do you still
+> > recommend using the "official" hookup by basically tying the sonar's 
+> > V+ and Gnd to external battery (9V)?
+> 
+> 
+> what kind of ext batt are you using?  are the diodes in series with
+> that?  what voltage do you have on the sonar when it's in operation?
+> are the sonar's ground and the HB's ground connected?
+> 
+> fred
+> 
+> 
+> > 
+> > If you could help, I'd appreciate it greatly.  From looking at the mail,
+> > it seems most people get it to work easily.  I have not been so lucky!
+> > 
+> > Sheridan
+> > 
+> > 
+> > On Mon, 20 Jul 1998, Fred G. Martin wrote:
+> > 
+> > > why don't you use the directions at
+> > > 
+> > >   http://el.www.media.mit.edu/projects/handy-board/software/sonar.html
+> > > 
+> > > ?
+> > > 
+> > > this is the "official" way to interface the sonar to the HB.
+> > > 
+> > > Fred
+> > > 
+> > > 
+> > > In your message you said:
+> > > > Hi,
+> > > > 
+> > > > I am having problems getting my Polaroid sonar to work properly. 
+> > > > Following Kent Farnsworth's directions, I have hooked up the sonar:
+> > > > 
+> > > > Sonar   ====>   Handy Board
+> > > > ECHO            TIC3 (Top position)
+> > > > V+              TIC3 (Middle)
+> > > > GND		TIC3 (Bottom)
+> > > > INIT		PIN 9 of 2nd L293DNE socket
+> > > > BINH ---1K---   PIN 1 of 2nd L293DNE socket
+> > > > 
+> > > > Installed a 0.1 uf capacitor in C7.
+> > > > 
+> > > > After running Kent's sonartst.c, the transducer makes the ticking
+> > > > sound and 213" is displayed on the LCD.  Unfortunately, it doesn't
+> > > > change!  If I unplug the ECHO, the display goes to 0".  If I apply
+> > > > a voltage to where the ECHO is supposed to be, I can produce varying
+> > > > distances between 0" and 213".
+> > > > 
+> > > > Does anybody know what is going on?
+> > > > 
+> > > > Sheridan
+> > > > 
+> > > > 
+> > > 
+> > 
+> 
+

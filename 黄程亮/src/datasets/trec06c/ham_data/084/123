@@ -1,0 +1,381 @@
+Received: from wss100.berkeley.edu (wss100.Berkeley.EDU [128.32.25.64])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g9PK6t2t015892;
+	Fri, 25 Oct 2002 13:06:55 -0700 (PDT)
+Received: from uclink4.berkeley.edu (localhost.localdomain [127.0.0.1])
+	by wss100.berkeley.edu (8.11.6/8.11.6) with ESMTP id g9PK6rW00754;
+	Fri, 25 Oct 2002 13:06:53 -0700
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g9PK6qH8007211;
+	Fri, 25 Oct 2002 13:06:52 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id g9PHtGo28442;
+	Fri, 25 Oct 2002 13:55:16 -0400
+Date: Fri, 25 Oct 2002 13:55:16 -0400
+Message-Id: <CA-2002-29.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-29 Buffer Overflow in Kerberos Administration Daemon
+Precedence: bulk
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 1155
+Status: RO
+X-Status: $$$$
+X-UID: 0000000063
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-29 Buffer Overflow in Kerberos Administration Daemon
+
+   Original issue date: October 25, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+
+Systems Affected
+
+     * MIT  Kerberos  version  4  and  version  5  up  to  and  including
+       krb5-1.2.6
+     * KTH eBones prior to version 1.2.1 and KTH Heimdal prior to version
+       0.5.1
+     * Other  Kerberos implementations derived from vulnerable MIT or KTH
+       code
+
+
+Overview
+
+   Multiple  Kerberos distributions contain a remotely exploitable buffer
+   overflow  in  the  Kerberos  administration  daemon. A remote attacker
+   could  exploit  this  vulnerability  to  gain  root  privileges  on  a
+   vulnerable system.
+
+   The CERT/CC has received reports that indicate that this vulnerability
+   is  being  exploited.  In  addition,  MIT advisory MITKRB5-SA-2002-002
+   notes that an exploit is circulating.
+
+   We strongly encourage sites that use vulnerable Kerberos distributions
+   to  verify the integrity of their systems and apply patches or upgrade
+   as appropriate.
+
+
+I. Description
+
+   Kerberos   is   a  widely  used  network  protocol  that  uses  strong
+   cryptography   to  authenticate  clients  and  servers.  The  Kerberos
+   administration  daemon  (typically  called  kadmind)  handles password
+   change  and other requests to modify the Kerberos database. The daemon
+   runs  on the master Key Distribution Center (KDC) server of a Kerberos
+   realm.
+
+   The   code   that   provides   legacy   support  for  the  Kerberos  4
+   administration   protocol   contains  a  remotely  exploitable  buffer
+   overflow.  The  vulnerable code does not adequately validate data read
+   from  a network request. This data is subsequently used as an argument
+   to  a  memcpy()  call,  which  can  overflow a buffer allocated on the
+   stack.  An  attacker does not have to authenticate in order to exploit
+   this  vulnerability,  and the Kerberos administration daemon runs with
+   root privileges.
+
+   Both  Massachusetts  Institute  of Technology (MIT) and Kungl Tekniska
+   Högskolan  (KTH)  Kerberos are affected, as well as operating systems,
+   applications,  and  other Kerberos implementations that use vulnerable
+   code derived from either the MIT or KTH distributions. In MIT Kerberos
+   5, the Kerberos 4 administration daemon is implemented in kadmind4. In
+   KTH  Kerberos  4  (eBones),  the  Kerberos  administration  daemon  is
+   implemented  in  kadmind. KTH Kerberos 5 (Heimdal) also implements the
+   daemon  in  kadmind;  however,  the Heimdal daemon is only affected if
+   compiled  with  Kerberos  4  support.  Since  the  vulnerable Kerberos
+   administration  daemon  is  included  in  the  MIT  Kerberos 5 and KTH
+   Heimdal distributions, both Kerberos 4 sites and Kerberos 5 sites that
+   enable   support  for  the  Kerberos  4  administration  protocol  are
+   affected.
+
+   Further   information   about  this  vulnerability  may  be  found  in
+   VU#875073.
+
+   MIT  has  released  an  advisory  that contains information about this
+   vulnerability:
+
+     http://web.mit.edu/kerberos/www/advisories/MITKRB5-SA-2002-002-kadm
+     4.txt
+
+   The  KTH  eBones  and Heimdal web sites also contain information about
+   this vulnerability:
+
+     KTH eBones
+     http://www.pdc.kth.se/kth-krb/
+
+     KTH Heimdal
+     http://www.pdc.kth.se/kth-krb/
+
+   In  addition  to  resolving  the vulnerability described in VU#875073,
+   version  0.51  of KTH Heimdal contains other fixes related to the KDC.
+   See the ChangeLog for more information:
+
+     ftp://ftp.pdc.kth.se/pub/heimdal/src/heimdal-0.5-0.5.1.diff.gz
+
+   This  vulnerability  has  been  assigned  CAN-2002-1235  by the Common
+   Vulnerabilities and Exposures (CVE) group.
+
+
+II. Impact
+
+   An  unauthenticated, remote attacker could execute arbitrary code with
+   root  privileges.  If  an attacker is able to gain control of a master
+   KDC,  the  integrity  of  the  entire  Kerberos  realm is compromised,
+   including  user  and  host  identities  and  other systems that accept
+   Kerberos authentication.
+
+
+III. Solution
+
+Apply a patch or upgrade
+
+   Apply  the  appropriate  patch or upgrade as specified by your vendor.
+   See Appendix A below and the Systems Affected section of VU#875073 for
+   specific information.
+
+Disable vulnerable service
+
+   Disable  support  for  the Kerberos 4 administration protocol if it is
+   not  needed.  In  MIT  Kerberos  5,  this can be achieved by disabling
+   kadmind4.  For  information  about disabling all Kerberos 4 support in
+   MIT Kerberos 5 at compile time, see
+
+     http://web.mit.edu/kerberos/www/krb5-1.2/krb5-1.2.6/doc/install.htm
+     l#SEC24
+
+   In  KTH  Heimdal,  it  is  necessary  to recompile kadmind in order to
+   disable  support  for  the  Kerberos  4  administration  protocol. For
+   information  about  disabling all Kerberos 4 support in KTH Heimdal at
+   compile time, see
+
+     http://www.pdc.kth.se/heimdal/heimdal.html#Building%20and%20Install
+     ing
+
+   This  solution  will  prevent  Kerberos  4 administrative clients from
+   accessing  the  Kerberos  database.  It  will  also prevent users with
+   Kerberos  4  clients  from  changing  their passwords. In general, the
+   CERT/CC  recommends  disabling  any  service  that  is  not explicitly
+   required.
+
+Block or restrict access
+
+   Block  access  to  the  Kerberos administration service from untrusted
+   networks  such  as the Internet. Furthermore, only allow access to the
+   service  from trusted administrative hosts. By default, the Kerberos 4
+   administration daemon listens on 751/tcp and 751/udp, and the Kerberos
+   5  administration  daemon  listens  on  749/tcp and 749/udp. It may be
+   necessary  to block access to the Kerberos 5 administration service if
+   the  daemon also supports the Kerberos 4 administration protocol. This
+   workaround will prevent administrative connections and password change
+   requests  from  blocked  networks.  Note that this workaround will not
+   prevent  exploitation,  but  it  will  limit  the  possible sources of
+   attacks.
+
+
+Appendix A. Vendor Information
+
+   This  appendix  contains information provided by vendors. When vendors
+   report  new  information,  this section is updated and the changes are
+   noted  in  the  revision  history. If a vendor is not listed below, we
+   have not received their comments.
+
+Apple Computer, Inc.
+
+     The  Kerberos  Administration Daemon was included in Mac OS X 10.0,
+     but removed in Mac OS X 10.1 and later.
+     We  encourage  sites  that use vulnerable Kerberos distributions to
+     verify  the integrity of their systems and apply patches or upgrade
+     as appropriate.
+
+Conectiva
+
+     Our  MIT  Kerberos  5  packages in Conectiva Linux 8 do contain the
+     vulnerable kadmind4 daemon, but it is not used by default nor is it
+     installed as a service.
+
+     Updated packages are being uploaded to our ftp server and should be
+     available in a few hours at:
+
+       ftp://atualizacoes.conectiva.com.br/8/
+
+     The  krb5-server-1.2.3-3U8_3cl.i386.rpm  package contains a patched
+     kadmind4  daemon.  An  announcement  will  be  sent to our security
+     mailing list a few hours after the upload is complete.
+
+Debian
+
+     Debian has released DSA-178:
+
+       http://www.debian.org/security/2002/dsa-178
+
+FreeBSD
+
+     Both the FreeBSD base Kerberos 4 (kadmind) and Kerberos 5 (k5admind
+     v4  compatibility)  daemons were vulnerable and have been corrected
+     as  of  23  October  2002.  In addition, the heimdal and krb5 ports
+     contained  the  same vulnerability and have been corrected as of 24
+     October 2002. A Security Advisory is in progress.
+
+KTH Kerberos
+
+     The  eBones  and  Heimdal  web  sites  have  information about this
+     vulnerability:
+
+       KTH eBones
+       http://www.pdc.kth.se/kth-krb/
+     
+       KTH Heimdal
+       http://www.pdc.kth.se/kth-krb/
+
+Microsoft Corporation
+
+     Microsoft's  implementation  of  Kerberos  is  not affected by this
+     vulnerability.
+
+MIT Kerberos
+
+     MIT has released MIT krb5 Security Advisory 2002-002:
+
+       http://web.mit.edu/kerberos/www/advisories/MITKRB5-SA-2002-002-ka
+       dm4.txt
+
+NetBSD
+
+     NetBSD has released NetBSD-SA2002-026:
+
+       ftp://ftp.NetBSD.org/pub/NetBSD/security/advisories/NetBSD-SA2002
+       -026.txt.asc
+
+OpenBSD
+
+     OpenBSD  has released Security Fix 016 for OpenBSD 3.1 and Security
+     Fix 033 for OpenBSD 3.0.
+
+       OpenBSD 3.1
+       http://www.openbsd.org/errata31.html#kadmin
+
+       OpenBSD 3.0
+       http://www.openbsd.org/errata30.html#kadmin
+
+Openwall
+
+     Openwall GNU/*/Linux is not vulnerable. We don't provide Kerberos.
+
+SuSE
+
+     SuSE  Linux  7.2  and  later  are  shipped  with  Heimdal  Kerberos
+     included,  but  Kerberos  4  support  is  disabled in all releases.
+     Therefore, SuSE Linux and SuSE Enterprise Linux are not affected by
+     this bug. [See also: SuSE-SA:2002:034]
+
+Wind River Systems (BSDI)
+
+     No version of BSD/OS is vulnerable to this problem.
+
+
+Appendix B. References
+
+     * http://web.mit.edu/kerberos/www/
+     * http://web.mit.edu/kerberos/www/advisories/MITKRB5-SA-2002-002-kad
+       m4.txt
+     * http://web.mit.edu/kerberos/www/krb5-1.2/krb5-1.2.6/doc/install.ht
+       ml#SEC24
+     * http://www.pdc.kth.se/kth-krb/
+     * http://www.pdc.kth.se/heimdal/
+     * http://www.pdc.kth.se/heimdal/heimdal.html#Building%20and%20Instal
+       ling
+
+     _________________________________________________________________
+
+   Authors: Art Manion and Jason A. Rafail.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-29.html
+   ______________________________________________________________________
+
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+
+   October 25, 2002: Initial release
+
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPbluwGjtSoHZUTs5AQFRbgQApOEHrz7fSu37W8quhTH34fn4E3Jq/Aih
+fTTy4b+hVwLujxlws+5lgug9vBd/QVrZEPT+g7xqBNtpsG+XBlAvUDIZJytKz6vN
+rTZbMEyKc6PK92n4OJ1iRgG7WaZibEXaeScZSclEgY8yAkQmoVZUzvwzgZaFXXfQ
+ihRKZyB9lbc=
+=/bkR
+-----END PGP SIGNATURE-----
+

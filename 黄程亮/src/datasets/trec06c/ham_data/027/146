@@ -1,0 +1,33 @@
+Received: from luke.srtc.com (luke.srtc.com [208.132.236.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id WAA00513
+	for <handyboard@media.mit.edu>; Tue, 17 Nov 1998 22:31:23 -0500 (EST)
+Received: from SRTC (ossifrage [208.132.236.33]) by luke.srtc.com (8.6.12/8.6.9) with ESMTP id WAA17442 for <handyboard@media.mit.edu>; Tue, 17 Nov 1998 22:27:53 -0500
+Received: by SRTC (940816.SGI.8.6.9/SRTC-Client)
+        id WAA04900; Tue, 17 Nov 1998 22:32:19 -0500
+Message-Id: <199811180332.WAA04900@SRTC>
+From: ctaylor@SRTC.COM (Clem Taylor)
+Date: Tue, 17 Nov 1998 22:32:19 -0500
+X-Mailer: Mail User's Shell (7.2.5 10/14/92)
+To: handyboard@media.mit.edu
+Subject: Re: 32V DC Motor
+
+While on the subject of motors and H-bridges.  I recently ordered a L298
+based motor controller kit from JCM Electronics.
+
+Unlike the L293, the L298 supports breaking and has two bits for
+direction and one enable bit.  It would be easy to add use an inverter to
+generate the extra direction bit, but breaking sounds like it could be a
+useful feature, so I would like to be able to support it.
+ 
+The the standard PWM code should work just fine for strobing the enable,
+all I would have to do is find two extra output pins and hack on the way
+the PWM code sets the direction.
+ 
+I only need two motors, so I was thinking about removing both L293s and
+stealing the direction bits from channel 2 and 3.  I need the SPI so those
+pins are not available.  What would you guys recommend?
+ 
+Is breaking really worth it, or should I just get an inverter?
+
+                 --Clem
+

@@ -1,0 +1,80 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k3Q1HVc8022103
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 18:17:31 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id EE60FDED2D0
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 18:17:30 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.Arizona.EDU [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 90336DEEE3E
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 18:17:29 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060425181010.00ba4908@psy1.psych.arizona.edu>
+Date: Tue, 25 Apr 2006 18:17:24 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: timing on mwc
+In-Reply-To: <6.2.3.4.2.20060425165336.046c0c50@popmail.ucsd.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 05:12 PM 4/25/2006 -0700, you wrote:
+>Hi All,
+>
+>   I am trying to set up an experiment with fake feedbacks, in which for 
+> 75% of trials subjects will get a positive feedback no matter what key 
+> pressed, and for the remaining 25% they will get negative feedbacks. 
+> There was also a too long feedback. The sample lines are like below:
+>
+>  <zil> <zor> <cr> <n 6> <d 0> <rcot> <t 1200> <nfb> <vm 
+> 1024,768,768,16,0> <id keyboard> <vzk +Left Arrow> <vzk +Right Arrow>
+>
+>1 <% 60> "GO"/<% 60>/<bu 1000>
+>m1#<umnr><umpr><mpr +Left Arrow><mpr +Right Arrow>#
+>m2#<umnr><umpr><mnr +Left Arrow><mnr +Right Arrow>#
+>mC#<mwc "+Left Arrow", 991, "+Right Arrow", 991, cinr, 999>#
+>mW#<mwc "+Left Arrow", 992, "+Right Arrow", 992, cinr, 999>#;
+>
+>999 d2 "Time Out" <return>;
+>991 d2 "RIGHT" <return>;
+>992 d2 "WRONG" <return>;
+>
+>=1000 *<% 30> g "fix"/<% 87> g "blank"/!;
+>=1000 *<% 30> g "fix"/<% 87> g "blank"/!;
+>+1 ~1 ~C *<% 30> g "pic1"/<% 87> g "blank"/!;
+>-2 ~2 ~W *<% 30> g "pic2"/<% 87> g "blank"/!;
+>=1000*<% 30> g "fix"/<% 87> g "blank"/!;
+>=1000*<% 30> g "fix"/<% 87> g "blank"/!;
+>
+>    Since I want to use this for fMRI, the timing of mwc is essential.
+
+   Then you sure don't want <d 0> in your parameter line as that's just as 
+fast as DMDX can go plus 2 ticks.  It might work out to be 2 ticks if your 
+machine is fast enough but there's no guaranteed timing with a delay of zero.
+
+>  First, the rcot showed that for items numbered 1000, the timing is 
+> perfect. However, for those items numbered 1&2, there are two more ticks. 
+> Are these two more ticks due to the d2 setting?
+
+   Not really, you're not asking for rigid timing so DMDX is at liberty to 
+do as it pleases.
+
+>  Second, those fake feedbacks appeared with a very short duration, is 
+> there way to lengthen the duration? I tried using <%> key word, but failed.
+
+   You will have to have another frame after the feedback, usually this 
+will be a blank frame to erase the feedback.
+
+999 d2 "Time Out" <% 30> / <return>;
+
+   Note this will add another tick and above the time of the feedback.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   An elephant is a mouse built to Mil-spec.
+
+
+

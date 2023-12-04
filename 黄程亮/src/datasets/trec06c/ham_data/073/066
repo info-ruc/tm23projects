@@ -1,0 +1,47 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id UAA11541
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 15 Oct 2000 20:51:52 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by phobos.email.Arizona.EDU (5.1.046)
+        id 39E3B44600060AD8 for DMDX@psy1.psych.arizona.edu; Sun, 15 Oct 2000 20:51:51 -0700
+Message-Id: <5.0.0.25.2.20001015204323.009d5110@psy1.psych.arizona.edu>
+Date: Sun, 15 Oct 2000 20:51:49 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] audio visual sync with PIO12
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   It occurs to me (during evening meditation of course) that there are a 
+couple of explanations for John Kline's trouble synching the output of the 
+PIO12 with the audio.  First is not likely to be the solution as I suspect 
+it would produce the opposite effect they are measuring and that is that 
+the sound system in his machine actually has 50ms of latency in it -- have 
+you guys measured the latency of that sound card?  Second is more likely to 
+be the explanation and that is that you can't actually stick an output 
+keyword in an audio frame (contrary to what I may have said a last week), 
+at least not one that will be synched with the audio.  Because audio frames 
+generate no display they are very odd beasts as far as DMDX is concerned, 
+they become more like place holders for commands to be given to the audio 
+thread (which executes them at a later date) so PIO12 output requests in 
+them might not be a good idea, a much better idea is to place the output 
+instruction in a visual frame, even if you have to build a frame that has 
+the same visual display in it as is already on the screen.  Without delving 
+into the code too deeply and taking time off from writing the branching 
+code (which I'm not going to do) I can't get any more explicit.
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Why did the Roman Empire collapse? What's the Latin for office
+automation?
+
+
+

@@ -1,0 +1,116 @@
+Received: from lh2.rdc1.tx.home.com (ioracle@ha2.rdc1.tx.home.com [24.4.0.67])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id WAA21669
+	for <handyboard@media.mit.edu>; Mon, 3 Jul 2000 22:33:06 -0400 (EDT)
+Received: from testcomputer ([24.6.20.194]) by lh2.rdc1.tx.home.com
+          (InterMail vM.4.01.02.00 201-229-116) with SMTP
+          id <20000704023304.CWBN15683.lh2.rdc1.tx.home.com@testcomputer>;
+          Mon, 3 Jul 2000 19:33:04 -0700
+Message-Id: <001701bfe561$103bb4c0$c2140618@meta1.la.home.com>
+From: "T. Gathright" <terrygathright@home.com>
+To: "Robert Kelly" <Robert_kelly@fceinc.com>, <handyboard@media.mit.edu>
+References: <Fx4qMC.HCq@lugnet.com>
+Subject: Re: VECTOR 2X
+Date: Mon, 3 Jul 2000 21:39:23 -0500
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-Mimeole: Produced By Microsoft MimeOLE V5.00.2919.6600
+
+Hi Robert,
+It has been over a year since I have had the vector 2x connected to my board
+but if you follow the instructions  that Tom Brusehaver posted in
+contributed software everything should work ok.  You will have to connect to
+one of the motor driver chips but it's no big problem, I just shoved a wire
+along side pin #2 of the 16 pin DIP motor chip for motors 2 and 3.  I
+mounted the v2x on a aluminum angle 2' above the motors. It worked fair
+inside and great outdoors.
+    Every now and then the compass would "hang-up" but you can reset by
+monterialy grounding one of the pins, that information is in Tom's
+instructions.
+    I would like to reconnect the v2x to my board but have installed the
+expansion board  and have not seen any  information posted as how to do it.
+The code below was in the software downloaded from Tom Brusehaver's
+compass. zip file.
+Let us know how it turns out.
+Bye
+Terry G.
+
+/* compass testing miniboard */
+
+void v2x()
+{
+ comp_init(1);
+
+ printf("\nCompass Init..\n");
+ beep();
+
+ start_process(take_readings());
+}
+
+
+void take_readings()
+{
+ int heading,tmp;
+
+ while(1)
+ {
+  heading = head_word;
+  printf("Heading %d (0x%x)\n", heading,head_word);
+  sleep(0.5);  /* otherwise the display blinks! */
+ }
+}
+
+/* int main()  */
+/* {           */
+/*  v2x(); */
+/* }           */
+
+
+
+
+----- Original Message -----
+From: "Robert Kelly" <Robert_kelly@fceinc.com>
+To: <handyboard@media.mit.edu>
+Sent: Monday, July 03, 2000 11:18 AM
+Subject: VECTOR 2X
+
+
+> Hi all,
+>
+> I am currently fabricating my new HBoard based robot and have only gotten
+to
+> the design stages. I have ordered a Vector 2x but haven't recieved it yet.
+I
+> am not particularly well endowed with electronics or assembly language
+skills
+> (very little except that I knew enough  to correctly solder my board
+together
+> by following instructions)I can program adequately in IC.
+>
+> I have looked at the Vector 2x stuff submitted by Tom Brushaver (sp?) and
+am
+> not sure it will work with my setup. It looks like his method requires the
+use
+> of motor ports or something.
+>
+> Has anyone successfully implemented one of these things using the HBoard
+and
+> expansion board without permanent modifications?
+>
+> Most importantly, can anyone give explicit instructions(with info on what
+> other components are needed, connection from pins on the Vector 2x to the
+> specific I/O ports on the Hboard and Expansion Board, code if possible)
+and
+> even software to get one of these working?
+>
+> Any tips on mounting to reduce interference of the mag field?
+>
+> Thanks all,
+>
+> Bob K.
+
+

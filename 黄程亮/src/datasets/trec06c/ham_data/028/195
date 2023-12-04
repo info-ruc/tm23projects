@@ -1,0 +1,53 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA30672
+	for <handyboard@media.mit.edu>; Sat, 28 Nov 1998 20:17:48 -0500 (EST)
+Received: from cs.umt.edu (mso2-91.montana.com [208.4.224.91])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id SAA17980
+	for <handyboard@media.mit.edu>; Sat, 28 Nov 1998 18:16:33 -0700 (MST)
+Message-Id: <3660A095.ABEF0F91@cs.umt.edu>
+Date: Sat, 28 Nov 1998 18:17:09 -0700
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Has anyone been experimenting with mapping algorithms?
+References: <366088BB.F172CB23@unm.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+jdunn@unm.edu wrote:
+> We've been reading up on the many different algorithms for mapping an
+> environment using autonomous robots.  Has anyone else been trying to figure
+> out the best approach to map an area and it's obstacles using less than 32k
+> of memory?
+
+The two basic approaches are (1) a bitmap, and (2) a list of obstacle
+coordinates.
+
+A bitmap is just a grid of 1's and 0's indicating the presence of an
+obstacle at each grid point.  It can be implemented as a 1-D integer
+array with a simple indexing function to specify the proper array index
+and bit.  If you have 32 kilobytes available, you can map a grid up to
+about 500 x 500 points.
+
+A list of obstacle coordinates is more useful where the search area is
+very large and/or where the obstacles are fairly sparse and memory is at
+a premium.  One way to store and retrieve the obstacle coordinates is in
+a hash table.  You could cram both the x and y coordinates into a single
+integer.  The list is a little harder to use algorithmically than a
+bitmap.
+
+I haven't actually tried these yet, so if you beat me to it, let me know
+how it works out.  Good luck!
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,             If you can find something everyone agrees on,
+Will Bain,                                                  it's wrong.
+& Tatoosh                                                    --Mo Udall
+

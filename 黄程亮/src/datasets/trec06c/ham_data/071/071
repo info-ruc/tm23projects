@@ -1,0 +1,86 @@
+Received: from math.psu.edu (leibniz.math.psu.edu [146.186.130.2])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id GAA11016
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 06:52:58 -0400 (EDT)
+Received: from weyl.math.psu.edu (weyl.math.psu.edu [146.186.130.226])
+	by math.psu.edu (8.9.3/8.9.3) with ESMTP id GAA28943
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 06:52:57 -0400 (EDT)
+Received: from localhost (viro@localhost)
+	by weyl.math.psu.edu (8.9.3/8.9.3) with ESMTP id GAA11112
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 06:52:57 -0400 (EDT)
+X-Authentication-Warning: weyl.math.psu.edu: viro owned process doing -bs
+Date: Sat, 2 Sep 2000 06:52:57 -0400 (EDT)
+From: Alexander Viro <viro@math.psu.edu>
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] rfork(), getss() etc etc
+In-Reply-To: <E13V9vX-0005TL-0U@anchor-post-30.mail.demon.net>
+Message-ID: <Pine.GSO.4.10.10009020555201.9425-100000@weyl.math.psu.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+
+
+On Sat, 2 Sep 2000 nigel@9fs.org wrote:
+
+> >>	(Thread_Data *) (ESP & -Alignment) + Alignement - sizeof(Thread_Data)
+> 
+> Hadn't escaped my radar. We're getting into machine dependency here again,
+> but it is a solution that I had tried.
+> 
+> >>	consequences - you are welcome, just let's avoid imitating *.advocacy.
+> 
+> One man's advocacy is another man's technical discussion. I simply do not
+> buy the "clone() is perfect and cannot be changed" attitude, or for that
+> matter the "FreeBSD rfork() is perfect and cannot be changed" attitude either.
+FreeBSD rfork() still can be used to panic the box ;-/
+
+> In both cases, the problem could be solved by adding a spot of functionality,
+> and taking away none.
+> 
+> So one could add this feature, break nothing, and aid a whole class of applications.
+> Why not?
+
+	OK, I'll try to describe the reasons. Let's hope that I'm awake
+enough to do that...
+
+	Splitting the stack means that we are getting two classes of 
+pointers - stack and non-stack ones. E.g. if you are doing coroutines you
+can't pass the pointers to auto variables even if their lifetimes are OK.
+It's not nice, to put it mildly.
+	On the kernel side we would have to use separate page tables for
+every process. Even if they share VM context. It has a lot of interesting
+implications. One of them is that unmapping becomes very expensive.
+Another, and that's more serious, is that _every_ context switch leads to
+complete TLB flush.
+	You will not notice the effect simply benshmarking schedule(),
+but you will get big slowdown spread over the userland. It's not a pure
+theory - effect is quite visible.
+	Trying to work around that would give serious mess in VM code. If
+you have a clean way to do that - great. So far all proposals were
+extremely messy.
+	Moreover, we _have_ support for large amount of mappings. It makes
+the situation very different - solution that works for Plan 9 will break
+horribly on such types of use. "Don't do it, then" is a nice policy, but
+it works both ways.
+	Having the "same VM - same memory" policy simplifies the things
+big way.
+
+	IOW, mixing these things will require serious changes in the
+kernel that will try it and I'm less than sure that it's worth the
+trouble. Same goes for doing tons of segments on the Plan 9 side (bloated
+kernel memory and serious slowdown  or  changing the data structures in
+not-too-obvious ways).
+
+	Features may be nice, but they must be doable in clean way.
+Otherwise you end up with SVR4 on hands.
+
+	One of the things that might make sense on our side would be
+sharing a VMA (more or less equivalent to Plan 9 segment) between several
+VMs. Right now I don't see how to do it without very bad behaviour in case
+of VM with many areas. Hell knows, it might be doable. However, semantics
+of mmap() becomes rather interesting with such change. And life without a
+feature is IMO better than life with an ugly kludge.
+
+

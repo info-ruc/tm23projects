@@ -1,0 +1,80 @@
+Received: from ml.media.mit.edu (root@ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA14967;
+	Wed, 20 Jan 1999 20:10:32 -0500 (EST)
+Received: from localhost (fredm@localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id UAA19967;
+	Wed, 20 Jan 1999 20:10:30 -0500 (EST)
+Message-Id: <199901210110.UAA19967@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: fredm@localhost [127.0.0.1] didn't use HELO protocol
+To: tgb@wamnet.com
+Cc: fredm@media.mit.edu, pknight@home.com, handyboard@media.mit.edu
+Subject: Re: blowing analog inputs [was: Battery Level Indicator]
+In-Reply-To: Your message of "Wed, 20 Jan 1999 08:07:35 CST."
+             <199901201407.IAA02652@cozy.wamnet.com> 
+Date: Wed, 20 Jan 1999 20:10:28 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+> When I first got my HC11EVB I ran 12V straight into the E port (one of
+> the pins), and was sure I ruined the chip.  I called the tech support
+> person at motorola, and he said 12V on a A/D port should be no
+> problem.  Sure enough it all still worked.
+
+this isn't right, so i feel the need to correct you.  the hc11's
+analog inputs are sensitive; i have seen many of them destroyed (on a
+pin-by-pin basis), and voltages above 5v or below 0v are the cause).
+
+more accurately, it's not the voltage that does the damage, it's the
+current, but let's take it one step at a time.
+
+here is the relevant section from the Pink Book, section 12.3:
+
+  "Since there are no P-channel devices directly connected to the A/D
+   input or reference pins, voltages above V DD do not pose a latchup
+   threat. If an A/D input rises above the threshold of the protection
+   device, an input protection device avalanches, and current into this
+   device should be limited."
+
+Your tech was probably thinking only of the latchup problem.  the
+hc11's analog ins won't latch up with overvoltage, but that doesn't
+mean they won't be destroyed.
+
+the key phrase is "current into this device should be limited."  the
+over voltage diodes protect against voltages higher than 5v, but these
+only work if the over-voltage is current-limited---e.g., in the case
+where you have a 5 to 10K resistor in series between the out-of-spec
+high voltage and the hc11 analog in.
+
+also, a guaranteed way to blow the pins is to put in a voltage less
+than zero volts:
+
+  "Because of an inherent diode to V SS , A/D
+   inputs must not go below V SS , or the input can be permanently
+   damaged. A series resistor of 1 kW will prevent damage ..."
+
+Here's more if you're interested.  the bottom line is: don't let more
+than 25 mA get into the analog input.  Use a 1K to 5K resistor in
+series with your "dangerous voltage source" (that is: the signal
+you're trying to measure) if there's *ANY* chance that voltage will go
+over 5v or under 0v.
+
+Fred
+
+more detail from section 12.3:
+
+  "The minimum-desirable source impedance for an analog input signal
+   should ensure the current at the A/D pin never gets high enough to
+   cause CMOS latchup. The HC-MOS process used on the MC68HC11A8 is much
+   more robust than older 14xxx-style CMOS, but the current at a pin
+   should still be limited to 25 mA or less. Although the pins can
+   withstand much more, 25 mA is considered a good design target. The
+   source impedance that meets this limitation will depend on the total
+   system. For example, suppose the worst-case scenario for a particular
+   system results in an analog source accidentally shorting to P12 V. The
+   inherent internal diodes to V SS will clamp the volt-age at the pin to
+   about -0.7 V. This clamped voltage means a maximum current of 25 mA
+   must cause 11.3 V to be dropped across a series-limiting resistance,
+   which calcu-lates to 452 ohm. However, some guard band should be allowed
+   for tolerances on the clamped voltage, the source voltages, the
+   resistor, etc."
+

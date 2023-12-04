@@ -1,0 +1,154 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.130])
+	by astron.Berkeley.EDU (8.11.7/8.11.4) with SMTP id k2MKEa108628;
+	Wed, 22 Mar 2006 12:14:37 -0800 (PST)
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.13.1/8.13.1/1.31) with ESMTP id k2MJxVL3000348;
+	Wed, 22 Mar 2006 14:59:31 -0500
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.13.1/8.13.1/Submit/1.1) with SMTP id k2MHAp9b025222;
+	Wed, 22 Mar 2006 12:10:51 -0500
+Date: Wed, 22 Mar 2006 12:10:51 -0500
+Message-Id: <TA06-081A.31861@us-cert.gov>
+From: US-CERT Technical Alerts <technical-alerts@us-cert.gov>
+To: technical-alerts@us-cert.gov
+Organization: US-CERT - +1 202-205-5266
+List-Id: US-CERT Technical Alerts <technical-alerts.us-cert.gov>
+List-Help: <http://www.us-cert.gov/cas/#tech>, <mailto:Majordomo@us-cert.gov?body=help>
+List-Subscribe: <mailto:Majordomo@us-cert.gov?body=subscribe%20technical-alerts>
+List-Unsubscribe: <mailto:Majordomo@us-cert.gov?body=unsubscribe%20technical-alerts>
+List-Post: NO (posting not allowed on this list)
+List-Archive: <http://www.us-cert.gov/cas/techalerts>
+Subject: US-CERT Technical Cyber Security Alert TA06-081A -- Sendmail Race Condition Vulnerability 
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000177
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+  
+                        National Cyber Alert System
+
+                 Technical Cyber Security Alert TA06-081A
+
+
+Sendmail Race Condition Vulnerability
+
+   Original release date: March 22, 2006
+   Last revised: --
+   Source: US-CERT
+
+
+Systems Affected
+
+   Sendmail versions prior to 8.13.6.
+
+
+Overview
+
+   A race condition in Sendmail may allow a remote attacker to execute
+   arbitrary code.
+
+
+I. Description
+
+   Sendmail contains a race condition caused by the improper handling of
+   asynchronous signals. In particular, by forcing the SMTP server to
+   have an I/O timeout at exactly the correct instant, an attacker may be
+   able to execute arbitrary code with the privileges of the Sendmail
+   process.
+
+   Details, including statements from affected vendors are available in
+   the following Vulnerability Note:
+   VU#834865 - Sendmail contains a race condition
+   A race condition in Sendmail may allow a remote attacker to execute
+   arbitrary code.
+   (CVE-2006-0058)
+
+   Please refer to the Sendmail MTA Security Vulnerability Advisory and
+   the Sendmail version 8.13.6 release page for more information.
+
+
+II. Impact
+
+   A remote, unauthenticated attacker could execute arbitrary code with
+   the privileges of the Sendmail process. If Sendmail is running as
+   root, the attacker could take complete control of an affected system.
+
+
+III. Solution
+
+Upgrade Sendmail
+
+   Sendmail version 8.13.6 has been released to correct this issue. In
+   addition to VU#834865, Sendmail 8.13.6 addresses other security issues
+   and potential weaknesses in the Sendmail code.
+
+   Patches to correct this issue in Sendmail versions 8.12.11 and 8.13.5
+   are also available.
+
+
+Appendix A. References
+
+     * US-CERT Vulnerability Note VU#834865 -
+       <http://www.kb.cert.org/vuls/id/834865>
+
+     * Sendmail version 8.13.6 - <http://www.sendmail.org/8.13.6.html>
+
+     * Sendmail MTA Security Vulnerability Advisory -
+       <http://www.sendmail.com/company/advisory>
+
+     * Sendmail version 8.12.11 Patch -
+       <ftp://ftp.sendmail.org/pub/sendmail/8.12.11.p0>
+
+     * Sendmail version 8.13.5 Patch -
+       <ftp://ftp.sendmail.org/pub/sendmail/8.13.5.p0>
+
+     * CVE-2006-0058 -
+       <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-0058>
+
+
+ ____________________________________________________________________
+
+   The most recent version of this document can be found at:
+
+     <http://www.us-cert.gov/cas/techalerts/TA06-081A.html>
+ ____________________________________________________________________
+
+   Feedback can be directed to US-CERT Technical Staff. Please send
+   email to <cert@cert.org> with "TA06-081A Feedback VU#834865" in the
+   subject.
+ ____________________________________________________________________
+
+   For instructions on subscribing to or unsubscribing from this
+   mailing list, visit <http://www.us-cert.gov/cas/signup.html>.
+ ____________________________________________________________________
+
+   Produced 2006 by US-CERT, a government organization.
+
+   Terms of use:
+
+     <http://www.us-cert.gov/legal.html>
+ ____________________________________________________________________
+
+
+Revision History
+
+   Mar 22, 2006: Initial release
+
+     
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iQEVAwUBRCGC0X0pj593lg50AQLczAf+NzjAlt+FR5QXIayFTYL3RPVXuVU8RYtp
+i4a62FbF6bDQkVJZwWqusa1XCOaAk2HhIYbYHt2RDIKyXU8PlIs1VjtKCMzhfhNE
+HyJfBhfCJycU0udMsoH1IorH9bves2Ubog+mLS/eGMCcgNUJ+z3P/U8KukZfeRJi
+5+jGrqksuz342XlI/9vKc9x3ateUrAyS2plbWc8wzxiG/T82hO7fCxz9mnd1V6zM
+Ub2iFAIpAbBhvEJOt7/IHxnmED/YaFF6JWbvWrZxXkLpcLFNKTN7j4pyX4ymqPmk
+rSoSXeCb5cc2ARBCyfsLY5+i96BxV0RgfcBXbT9mRjv7die16AoTXQ==
+=7/71
+-----END PGP SIGNATURE-----
+

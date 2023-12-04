@@ -1,0 +1,61 @@
+Received: from vector.wantree.com.au (ns1.wantree.com.au [203.27.235.1])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id IAA02359
+	for <handyboard@media.mit.edu>; Thu, 16 Mar 2000 08:41:02 -0500 (EST)
+Received: from adam (reggae-25-241.nv.iinet.net.au [203.59.90.241])
+	by vector.wantree.com.au (8.8.7/8.8.7) with SMTP id VAA17684
+	for <handyboard@media.mit.edu>; Thu, 16 Mar 2000 21:40:58 +0800
+Message-Id: <000901bf8f4d$841537a0$0500a8c0@wantree.com.au>
+From: "Adam Oliver" <oli@wantree.com.au>
+To: "Handyboard Mailing List" <handyboard@media.mit.edu>
+References: <003601bf8e84$a7c81c40$0500a8c0@wantree.com.au> <38CFBAA9.FB24EE1C@selway.umt.edu>
+Subject: Re: Non-polaroid Sonar
+Date: Thu, 16 Mar 2000 21:42:47 +0800
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+X-Mimeole: Produced By Microsoft MimeOLE V5.00.2615.200
+
+Thanks for your help :-D
+
+Just so I'm clear, ref pink book page 10-17.
+Does the "bit_set( 0x1021, 1 );" refer to bit 0 -EDG3B, and
+bit_clear( 0x1021, 2 ); " refer to bit 1 -EDG3A.
+This is what was throwing me, I always thought bits started at zero and
+ended at 7, not 1 to 8 as appears to be the case here. Is this what the
+"zero-indexed " means?
+
+sorry if it's a basic question, but if you don't ask you never learn :-)
+
+thanks Again
+
+Adam
+
+
+
+> In the sonar code from the web site, the rising edge detection on timer
+input channel 3 (TIC3) is set like this:
+>
+>    bit_clear( 0x1021, 2 ); bit_set( 0x1021, 1 );
+>
+> According to the little pink book, address 0x1021 is the Timer Control
+Register 2 (TCTL2) (in the Register & Control Bit Assignments section). To
+set channel 3 to capture falling edges only, you'd make the last two bits
+(set, clear) instead of (clear, set), like this:
+>
+>    bit_set( 0x1021, 2 ); bit_clear( 0x1021, 1 );
+>
+> Hope this helps!
+>
+> -- Will
+>
+> BTW, can anyone tell me why the bit_set and bit_clear commands aren't
+zero-indexed WRT the bit index (like everything else in C and machine code
+is)? Just curious.
+>
+
+
+

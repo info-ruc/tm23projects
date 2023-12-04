@@ -1,0 +1,84 @@
+Received: from stout.engsoc.carleton.ca (IDENT:root@stout.engsoc.carleton.ca [134.117.69.22])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA11525
+	for <handyboard@media.mit.edu>; Fri, 16 Apr 1999 12:57:09 -0400 (EDT)
+Received: from pcrkdoc9.nortel.ca (carlnet-93-227.res.carleton.ca [134.117.93.227])
+	by stout.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id MAA05892;
+	Fri, 16 Apr 1999 12:56:35 -0400
+Message-Id: <004501be882a$225125e0$e35d7586@nortel.ca>
+From: "William Sitch" <wsitch@engsoc.carleton.ca>
+To: <doug@los-gatos.net>, <handyboard@media.mit.edu>
+Subject: Re: design alternatives: servo control and power source
+Date: Fri, 16 Apr 1999 12:56:54 -0400
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.0810.800
+X-Mimeole: Produced By Microsoft MimeOLE V5.00.0810.800
+
+Hi Doug:
+
+    I built a 12-servomotor walking robot using two SSCs - their interface
+with the HandyBoard is well documented, and ICB drivers are available on the
+webpage.  I communicate with two SSCs (www.seetron.com) via one serial line
+connected to PA7 - a digital input port - as documented.
+
+The SSCs require a 9-volt supply, so I share the HandyBoard battery.  I use
+a rechargable NiCd battery, and to this point it hasn't required intentional
+recharging.  The SSCs also take in a 4.8-volt to 6-volt supply that is
+pulse-width-modulated to drive the servomotors.  In my experience, the
+twelve standard motors (50oz-in) can draw 3A at 5V at stall - which is a
+large amount of current.
+
+If you have a large 9-volt supply to power the boards and the motors, the
+servomotor current draw will spike and probably reset your control boards.
+You could try to isolate the supply leading to your boards, but that would
+be complicated and not completely effective.  You'd also have to voltage
+divide the large 9-volt supply, and this gets tricky - you'd have a
+considerable loss over the voltage divider that would make this
+unattractive.  The number 15% comes to mind, but I can't back that up.
+
+I used the one 9-volt NiCd for the HandyBoard and the SSCs, and a 4x1.2-volt
+NiCd battery pack for the servomotors.  As I mentioned, the motors peaked at
+3A of current draw.  In retrospect, I would have designed for double the
+weight in batteries, and put four more NiCds in parallel for extended
+operating life.
+
+I hope that helps!
+
+--
+William Sitch, http://www.engsoc.carleton.ca/~wsitch
+4th Year Electrical Engineering at Carleton University
+
+----- Original Message -----
+From: <doug@los-gatos.net>
+To: <handyboard@media.mit.edu>
+Sent: Friday, April 16, 1999 11:59 AM
+Subject: design alternatives: servo control and power source
+
+
+>Hello,
+>
+>I am planning to build a robot based on the Lynxmotion Hexapod II
+>and Big Grip kits. There will be 12 servos for lego control, 2
+>servos for the manipulator, and 2 more for a camera pan/tilt
+>unit. Everything appears fairly straightforward, but:
+>
+>1) I am trying to decide on whether to use two mini SSCs or the
+>   Ferrettronics chips to control the servos. Does anyone have
+>   any info/experience that might sway me one way or the other?
+>   Is anyone aware of documentation or tips for using either
+>   of these with the handy board?
+>
+>2) I am wondering if I can run the servos from the handy board
+>   batteries or if I need to have a separate battery pack for
+>   the servos. Obviously the HB batteries won't last very long
+>   if they are also running 16 servos, but would this work?
+>
+>TIA,
+>Doug
+>
+
+

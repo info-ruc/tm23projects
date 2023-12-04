@@ -1,0 +1,62 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k22DHEt15564
+	for <egs@unix.cucs>; Thu, 2 Mar 2006 08:17:14 -0500 (EST)
+Received: from exchfe1.cs.cornell.edu ([128.84.97.27]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 2 Mar 2006 08:17:14 -0500
+Received: from [192.168.0.6] ([65.110.147.185]) by exchfe1.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 2 Mar 2006 08:17:13 -0500
+Message-ID: <4406EFAF.3030204@cs.cornell.edu>
+Date: Thu, 02 Mar 2006 08:14:23 -0500
+From: Tudor Marian <tudorm@cs.cornell.edu>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: egs@cs.cornell.edu
+Subject: PAPER 11
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 02 Mar 2006 13:17:14.0037 (UTC) FILETIME=[9F010E50:01C63DFB]
+
+<Serving DNS>
+
+The paper proposes an alternative secure DNS using the hashtable
+interface provided by a p2p overlay in a straightforward way. The system
+takes advantage of Chord's fault tolerance and load balancing
+properties, and eliminates the administrative issues faced by the
+current DNS deployment. The namespace authority entities are thus
+decoupled from where the data entries are stored. Although resolved
+lookups are cached along the return path, the latency incurred by the
+system is considerable compared with the default DNS (median response
+time of 350ms as opposed to 43ms in favor of the conventional system).
+
+Replicating entries only to six sites to begin with might not be enough,
+and data could be lost before request replies store cached copies. Also
+network partitions may yield unexpected scenarios when nodes are unable
+to lookup names that are part of the same organization because they have
+been hashed on the other edge of the Internet, while a hierarchical DNS
+would only sever the connection to the outer world and allow lookup
+resolves to names in a common subtree.
+
+</Serving DNS>
+
+<CoDoNS>
+
+The paper presents the implementation of a backward - compatible
+alternative DNS system that, like the previous paper is build on top of
+a structured DHT. Aside the fact that it takes advantage of the same
+properties  given by a p2p underlying overlay (like load ballancing ,
+failure resilience and authority - location decoupling), CoDoNS also
+addresses the low latency problem using proactive replication. The
+Beehive replication framework provides an analytical solution to optimal
+replica placement when the popularity of the items obey a power law
+distribution, and it is well known that DNS lookups do obey such a model.
+
+At the moment, if a lookup is routed towards a home node that does not
+have the record, another DNS query is issued towards the legacy DNS
+system. In such a scenario, the latency of a cold start could be
+significant.
+
+</CoDoNS>
+
+Tudor
+
+

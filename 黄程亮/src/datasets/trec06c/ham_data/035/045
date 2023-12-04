@@ -1,0 +1,98 @@
+Received: from stout.engsoc.carleton.ca (IDENT:root@stout.engsoc.carleton.ca [134.117.69.22])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id VAA14595
+	for <handyboard@media.mit.edu>; Wed, 10 Feb 1999 21:24:23 -0500 (EST)
+Received: from pcrkdoc9.nortel.ca (carlnet-93-227.res.carleton.ca [134.117.93.227])
+	by stout.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id VAA27969;
+	Wed, 10 Feb 1999 21:23:53 -0500
+Message-Id: <01d701be5565$8998c160$e35d7586@nortel.ca>
+From: "William Sitch" <wsitch@engsoc.carleton.ca>
+To: "Max Davies" <mdavies@CAM.ORG>
+Cc: <handyboard@media.mit.edu>
+Subject: Re: Stack Overflow
+Date: Wed, 10 Feb 1999 21:23:39 -0500
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.0810.800
+X-Mimeole: Produced By Microsoft MimeOLE V5.00.0810.800
+
+Hi everyone:
+
+    Sorry for the reply latency, I was buried under an avalanche of work and
+assignments.  Changing the format of the code (as detailed below) helped
+immensely.  I re-wrote two of my drivers to use the increased size, and
+everything is working perfectly.
+
+I believe this is definitely something for the FAQ, as the solution is
+fairly obscure, and the "yacc" keyword is best searched for.  Thanks to Max,
+Regan, and Fred, for all your kind help.
+
+----- Original Message -----
+From: Max Davies <mdavies@CAM.ORG>
+To: William Sitch <wsitch@engsoc.carleton.ca>
+Cc: <handyboard@media.mit.edu>
+Sent: Sunday, January 24, 1999 11:16 AM
+Subject: Re: Stack Overflow
+
+
+>William Sitch wrote:
+>
+>> ...I tried to increase the stack size of the process I spawn, but the
+error
+>> still exists.  I think I might be getting a compile-time stack overflow -
+or
+>> something like that.  The procedure it crashes for is a leg controller,
+and
+>> consists of many "if .. else if" statements.
+>
+>If your code looks something like this...
+>
+>if (i == 1) do001(); else
+>if (i == 2) do002(); else
+>if (i == 3) do003(); else
+>.
+>.
+>.
+>if (i == 100) do100();
+>
+>...then try changing it to this:
+>
+>/* Not really a loop, just so we can break */
+>
+>for (;;) {
+>    if (i == 1) {
+>        do001();
+>        break;
+>    }
+>    if (i == 2) {
+>        do002();
+>        break;
+>    }
+>    if (i == 3) {
+>        do003();
+>        break;
+>    }
+>    .
+>    .
+>    .
+>    if (i == 100) {
+>        do100();
+>        break;
+>    }
+>
+>    break;  /* Always break... this isn't really a loop */
+>}
+>
+>
+>...this won't be any less efficient and should resolve your compile-time
+stack
+>overflow as it doesn't nest the IF statements.
+>
+>/Max
+>
+>
+
+

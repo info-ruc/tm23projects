@@ -1,0 +1,66 @@
+Received: from exchfe1.cs.cornell.edu (exchfenlb-1.cs.cornell.edu [128.84.97.33])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LHdHt07564
+	for <egs@unix.cucs>; Tue, 21 Feb 2006 12:39:17 -0500 (EST)
+Received: from EXCHVS1.cs.cornell.edu ([128.84.97.23]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 21 Feb 2006 12:01:11 -0500
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Subject: Paper 8
+Date: Tue, 21 Feb 2006 12:00:45 -0500
+Message-ID: <2AA53C9C489B0049B43E56D28088677B52D475@EXCHVS2.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Paper 8
+Thread-Index: AcY3CFriXUaK6m0gS0KwUfkAioO90Q==
+From: "Kelvin So" <kelvinso@cs.cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+X-OriginalArrivalTime: 21 Feb 2006 17:01:11.0971 (UTC) FILETIME=[6AEB4F30:01C63708]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1LHdHt07564
+
+	The first paper, "Sybil Attack," describes an attack where one faulty
+entity creates multiple entities in the overlay network. Using multiple
+identities in the network, one faulty entity can control a large portion of
+the overlay network and undermine its function. One way to solve such a
+problem is to use centralized trusted authorities to sign certificate for
+each entity. The paper claims that the system without a trusted authority is
+not practical to use resource-demanding challenges, such as computation,
+storage or communication challenges, to validate one's identity because node
+needs to send out challenges concurrently and it assumes the system has
+uniform resource constraints. Also, if we indirectly validate entities using
+vouchers, the number of vouchers has to be greater than the number of faulty
+nodes. As system scales to larger size, it is not feasible to use such a
+technique to verify node's identity to prevent Sybil Attack. 
+	The second paper, "Defending against Eclipse attacks on overlay
+networks," presents a more general attack which controls a large fraction of
+the neighbors' pointers of correct nodes. Defense for Sybil attack may not
+work for Eclipse Attack, because faulty nodes can manipulate the overlay
+maintenance algorithm instead of presenting multiple identities to launch
+Eclipse attack. In this paper, it presents a general technique by limiting
+the in-degree and out-degree of a node to minimize Eclipse Attack on any
+overlay network. Using such a technique, the overlay network does not require
+any special structure in the overlay maintenance algorithm. To audit the
+in-degree and out-degree of a node, each node needs to maintain a back
+pointer list. Periodically, node sends out challenges to verify the in-degree
+and out-degree of a node. Also, it also needs to implement an anonymous
+channel such that nodes do not know who challenges the node and the reply
+only comes from challenged node. Using such a defense, the construction of
+overlay network is more constrained and optimization, such as PNS, does not
+perform as well in such a constrained network (because it has fewer neighbors
+to pick from).
+	The third paper, "Secure routing for structured peer-to-peer overlay
+networks," presents techniques to provide security in structured overlay
+network. It describes three major components in secure routing, which include
+a secure assignment of node identifiers, secure routing table maintenance,
+and secure message forwarding. In secure assignment of node id, it uses
+certified node id to against Sybil Attack. For secure routing table
+maintenance, it uses two routing tables, one normal pastry table and another
+constrained version of pastry table, which points to the closest node Id in
+id space instead of using proximity metric. For secure message forwarding, it
+uses routing failure test by comparing the densities of nodes to test if the
+root is likely to be correct for the key. If the test returns negative, it
+will uses redundant routing to route to the correct node. 
+

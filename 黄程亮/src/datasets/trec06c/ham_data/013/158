@@ -1,0 +1,43 @@
+Received: from toybox.parlance-ncs.com (smtp.nameconnector.com [205.181.121.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id KAA20992
+	for <handyboard@media.mit.edu>; Fri, 27 Mar 1998 10:18:04 -0500 (EST)
+Received: from nameconnector.com ([205.181.121.144])
+          by toybox.parlance-ncs.com (Netscape Mail Server v2.02)
+          with ESMTP id AAA387 for <handyboard@media.mit.edu>;
+          Fri, 27 Mar 1998 10:18:58 -0500
+Message-Id: <351BC2E9.227E604D@nameconnector.com>
+Date: Fri, 27 Mar 1998 10:16:57 -0500
+From: vandeweg@parlance-ncs.com (Mike Vande Weghe)
+Organization: Parlance Corporation
+X-Mailer: Mozilla 4.03 [en] (WinNT; I)
+Mime-Version: 1.0
+To: Handy Board <handyboard@media.mit.edu>
+Subject: 68HC11 register locations?
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I'm writing an assembly routine under IC on the Handy Board, but I'm
+getting a little confused about the memory locations of the 68HC11
+registers.  The Motorola manual shows that the registers associated with
+the input and output timers are in the $1000 range.  For instance,
+TCTL1=$1020, TMSK1=$1022, TFLG1=$1023.  These definitions are also made
+in the 6811regs.asm file supplied with IC, so everything seems
+consistent.  If I look at the IC pcode source, however, I see that an
+extra $1000 is added to these addresses.  This is done by loading $1000
+into the X register (either directly or by using the #BASE symbol, which
+is defined to be $1000), and then making all the address references
+relative to the X register.  For instance,
+
+	LDX	#BASE
+	LDA	TMSK1,X
+etc.
+
+Which is the correct set of address locations?  When assembling the
+version with the $1000 added I get a "Warning --- Value Truncated" for
+each line uses the relative addressing.  Anyone have any ideas?  Why
+does IC add an extra $1000?
+
+  Thanks,
+
+   - Mike
+

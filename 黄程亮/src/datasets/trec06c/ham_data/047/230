@@ -1,0 +1,58 @@
+Received: from jcf (jcf.psych.arizona.edu [128.196.98.7])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id QAA24853
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 8 Jul 1999 16:46:35 -0700
+Message-Id: <3.0.1.32.19990708165038.0068bdbc@psy1.psych.arizona.edu>
+Date: Thu, 08 Jul 1999 16:50:38 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] 1.1.06
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+  I've released 1.1.06 which:
+
+1/ Fixed the FEEDBACKDURATION and FEEDBACKLINE keywords, they were
+documented but not available.
+
+2/ Made movingimages() sleep if it's not moving images into video memory
+which might reduce some pre-emption problems, basically lets the rest of
+the machine do other things when DMDX is not so busy.  Previously DMDX only
+slept at the start of an item.
+
+3/ Stopped movingimages() from moving stuff (with Blt, the BLock Transfer
+function) if a Flip has not completed as the blt will be queued and then go
+to the wrong buffer.  This fixes the S3 problem in Ken's lab which wasn't
+related to the video card at all but instead the P166 processor was at
+fault.  Basically if the CPU is slow enough the erase of a feedback message
+can wind up not being moved into video memory before the Flip of the
+feedback itself and the erase winds up in the wrong place leading to all
+hell breaking loose with the display.  Once again, this only cropped up
+with feedback and on slow machines, if you didn't see it it wasn't
+happening as the results were fairly catestrophic.
+
+4/ I made the About box a bit fancier, centered all dialogs, disabled
+screen savers and monitor power off programs.
+
+  1.1.07 will include a new input device that will poll joystick buttons as
+fast as pio12 buttons (read as fast as possible), the catch being the
+joystick must be an old fashioned analog thing on port 201H.  It won't work
+on NT or win2000 (like the pio12 input device won't) nor will new fangled
+joysticks work with it, you'll still have to use the DirectX devices for those.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+Any philosophy that can be put in a nutshell belongs there.
+
+                                             -  Sydney J. Harris
+
+
+

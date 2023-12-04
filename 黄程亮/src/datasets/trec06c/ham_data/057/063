@@ -1,0 +1,85 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id FAA08795
+	for <handyboard@media.mit.edu>; Thu, 25 Nov 1999 05:21:04 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id FAA13792; Thu, 25 Nov 1999 05:21:04 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7131
+From: Nick Taylor <ntaylor@iname.com>
+X-Real-Life-Name: Nick Taylor
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: Nick Taylor <ntaylor@iname.com>
+Subject: Re: robot project
+Posted-Date: Thu, 25 Nov 1999 10:20:39 GMT
+Date: Thu, 25 Nov 1999 10:20:39 GMT
+Organization: None
+Message-Id: <383D0D77.F04720EE@iname.com>
+References: <19991125094717.9229.rocketmail@web601.yahoomail.com>
+Content-Type: text/plain; charset=iso-8859-1
+Mime-Version: 1.0
+Precedence: list
+Content-Transfer-Encoding: quoted-printable
+X-Mime-Autoconverted: from 8bit to quoted-printable by aleve.media.mit.edu id FAA08795
+
+Mike,
+
+Don't think it's going to work.  186,000 miles per second is almost
+1,000,000,000 feet per second ... so if your receiver antennas are
+12 inches apart the time difference of the received pulse will be
+0.001 microseconds maximum ... way too short to measure with your
+HandyBoard.  You might give ultrasonics a try.
+
+Good luck and have fun,
+ - Nick -
+
+Michael Miranda wrote:
+>=20
+> Hi,
+>=20
+> I=92m trying to get a robot to turn a face the owner
+> using rf.  I have one transmitter (that the owner will
+> wear) and three receivers (set up in a triangle).  We
+> want to use the transmitter as a beacon.  Then
+> whichever receiver gets the signal first, that=92s where
+> the owner is and where we want to turn to.  We can
+> transmit to the receivers, but we can=92t see which
+> receiver is getting the signal first.  I am trying to
+> look at the falling edge of one pulse.  In my program
+> any receiver with a high signal will set its time
+> variable to i (counter).  And the last time its high
+> corresponds to the falling edge.  The problem seems to
+> be the time of the loop is too slow and with in one
+> loop all the signals change (at the same time).  What
+> I would like to do is speed up the loop, if that is
+> possible. Can anyone help, is my thinking wrong?
+> Here, is my code:
+>=20
+> float i, ta, tb, tc;
+> void main(void)
+> {
+>         ta=3D0.;
+>         tb=3D0.;
+>         tc=3D0.;
+>         i=3D0.;
+>         while (i<200.)
+>         {
+>                 if (digital(11)=3D=3D1)
+>                         tb=3Di;
+>                 if (digital(12)=3D=3D1)
+>                         ta=3Di;
+>                 if (digital(13)=3D=3D1)
+>                         tc=3Di;
+>                 i++;
+>         }
+>                 printf("A%d B%d \rC%d\n",ta,tb,tc);
+> }
+>=20
+> Mike
+>=20
+> __________________________________________________
+> Do You Yahoo!?
+> Thousands of Stores.  Millions of Products.  All in one place.
+> Yahoo! Shopping: http://shopping.yahoo.com
+

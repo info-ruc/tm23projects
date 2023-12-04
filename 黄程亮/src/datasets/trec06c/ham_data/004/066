@@ -1,0 +1,58 @@
+Received: from plan9.cs.bell-labs.com (ampl.com [204.178.16.2]) by cse.psu.edu (8.8.5/8.7.3) with SMTP id NAA19924 for <9fans@cse.psu.edu>; Fri, 21 Mar 1997 13:30:51 -0500 (EST)
+From: presotto@plan9.bell-labs.com
+Message-Id: <199703211830.NAA19924@cse.psu.edu>
+To: 9fans@cse.psu.edu
+Date: Fri, 21 Mar 1997 13:28:40 -0500
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+Russ Cox made it easier to add new keyboard sequences to
+plan 9.  The pertinent files are:
+
+ftp://plan9.bell-labs.com/plan9/update/cmd/aux/mklatinkbd.c
+frp://plan9.bell-labs.com/plan9/update/9/port/858968110.rc
+
+Here's his mail explaining it:
+
+  Subject: /lib/keyboard and latin1.c
+
+  A while ago, Rob and I exchanged the attached email.
+  It's a shame that editing /lib/keyboard doesn't work, so
+  I fixed that.  Take a look at ls /usr/rsc/kbd/mklatinkbd.c.
+  The way I've installed it at home is to change latin1.c to read
+
+	struct cvlist
+	{
+		char	*ld;		/* must be seen before using this conversion */
+		char	*si;		/* options for last input characters */
+		Rune	*so;		/* the corresponding Rune for each si entry */
+	} latintab[] = {
+	#include "latin1.h"
+		0,	0,		0
+	};
+
+  and then have mkfile generate latin1.h with 
+	aux/mklatinkbd /lib/keyboard >latin1.h
+
+  As an aside, I found two ``bugs'' in the keyboard file
+  as shipped on the CD.  The sequences <= and => are used
+  for both ≤, ≥ and ⇐,⇒, according to /lib/keyboard.
+  It looks like they've been fixed, at least on emelie
+  (haven't checked elsewhere).  The program will catch
+  duplicate sequences.
+
+    From rsc Fri Oct 25 08:36:01 1996
+    Subject: re: /lib/keyboard
+
+    how does one add more compose sequences
+    in plan 9?  i tried editing /lib/keyboard
+    and rebooting, but that did not work.
+
+      From rob Fri Oct 25 09:02:01 1996
+      Subject: re: /lib/keyboard
+
+      unfortunately, it's not nearly that easy.  you need to edit
+      /n/bootes/sys/src/9/port/latin1.c.  you just edited the
+      documentation, a rarely successful method of change.
+

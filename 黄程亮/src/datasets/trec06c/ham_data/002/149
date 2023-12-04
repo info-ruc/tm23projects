@@ -1,0 +1,35 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Mon, 26 Dec 1994 16:33:28 MST
+Received: from agate.Berkeley.EDU by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA28262; Mon, 26 Dec 1994 16:33:26 MST
+Received: by agate.berkeley.edu (8.6.8.1/1.33)
+	id OAA12758; Mon, 26 Dec 1994 14:10:57 -0800
+Received: from GATEWAY by agate with netnews
+	for icon-group@cs.arizona.edu (icon-group-l@cs.arizona.edu)
+To: icon-group-l@cs.arizona.edu
+Date: 26 Dec 1994 14:10:30 -0800
+From: omalley@porte-de-st-ouen.ics.uci.edu (T. Owen O'Malley)
+Message-Id: <3dnf0m$85i@porte-de-st-ouen.ics.uci.edu>
+Organization: UC Irvine Department of ICS
+Sender: icon-group-request@cs.arizona.edu
+References: <3djj5e$7pd@news2.delphi.com>
+Subject: Re: DeMorgan's Law doesn't work
+
+In <3djj5e$7pd@news2.delphi.com> MENGARINI@news.delphi.com (MENGARINI@DELPHI.COM) writes:
+>   (  nn := (0 to 9) || (0 to 9)
+>   ,  not exists( downloadDir || "w" || nn )
+>   ,  not exists( targetDir   || "w" || nn )
+>   )|stop( "No names of the form w[0-9][0-9] were unused." )
+
+I was playing around with your example and the following code works:
+
+every nn := ((0 to 1) || (0 to 9)  | 
+             stop( "No names of the form w[0-9][0-9] were unused." )) do {
+  exists( (downloadDir | targetDir | break) || "w" || nn )
+}
+
+  Owen
+
+Department of ICS  | omalley@ics.uci.edu                 (ARPA)
+UC Irvine          | http://www.ics.uci.edu/~omalley/    (WWW)
+Irvine, CA 92717   | ucbvax!ucivax!omalley               (UUCP)
+

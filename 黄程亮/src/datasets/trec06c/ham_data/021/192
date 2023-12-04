@@ -1,0 +1,80 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id MAA12767
+	for <handyboard@media.mit.edu>; Fri, 7 Aug 1998 12:16:28 -0400 (EDT)
+Received: from cs.umt.edu (mso1-18.montana.com [208.4.224.18])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id KAA10688
+	for <handyboard@media.mit.edu>; Fri, 7 Aug 1998 10:14:15 -0600 (MDT)
+Message-Id: <35CB27C8.6C34128E@cs.umt.edu>
+Date: Fri, 07 Aug 1998 10:14:00 -0600
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: what is poke and peek command
+References: <199808070226.KAA22399@zinc.singnet.com.sg>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+phillip chia wrote:
+> How to understand what is poke( 1009, 0x20) and bit set (1008, 0x20) ?
+> What is 0 x20 and 0x30 ? how to interpret it ?  when should I use 0x20
+> ,0x30, or 0x40 ?
+<snip>
+
+The poke command writes a byte (eight bits) into memory.  The peek
+command reads a byte from memory.  The bit_set command turns on the
+specified bits of a byte in memory, but leaves the other bits
+unaffected.
+
+An integer constant that begins with 0x is in hexadecimal (base 16)
+format, and each digit can range from zero to F.  For instance, 0x20 is
+equivalent to 32 in decimal (i.e. 2*16 + 0*1).  To figure out which bits
+would be set by a bit_set( loc, 0x20 ) statement, convert the
+hexadecimal to binary.  Each hex digit represents four bits, so 0x20 is
+the same as 0010 0000 in binary (the first group of four bits is 2 in
+binary and the second group is zero).
+
+The difference between poke and bit_set can best be illustrated by an
+example.  Say the current byte value stored in a particular memory
+location is 0xD6 (that's 1110 0110 in binary).  Poke( loc, 0x30 ) would
+simply replace the current value with the 0x30, but bit_set( loc, 0x30 )
+would make the result the logical OR of the current value and the 0x30
+mask value:
+
+     bit_set( loc, 0x30 );
+
+         1110 0110   current value 0xD6
+     OR  0011 0000   the mask value 0x30
+    ---------------
+         1111 0110   the result 0xF6 (246 in decimal)
+
+
+The bit_clear simply clears any bits that are specified in the mask,
+leaving the others unaffected (it's the logical AND NOT of the current
+value and the mask value):
+
+     bit_clear( loc, 0x30 );
+
+         1110 0110   current value 0xD6
+ AND NOT 0011 0000   the mask value 0x30
+    ---------------
+     ...which can be rewritten as:
+
+         1110 0110   current value 0xD6
+    AND  1100 1111   the NOT of the mask value
+    ---------------
+         1100 0110   the result 0xC6 (198 in decimal)
+
+Hope this helps.  Good luck!
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,      I don't want to achieve immortality through my work.
+Will Bain,                      I want to achieve it through not dying.
+& Tatoosh                                                 --Woody Allen
+

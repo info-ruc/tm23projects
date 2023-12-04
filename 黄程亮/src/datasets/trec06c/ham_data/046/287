@@ -1,0 +1,61 @@
+Received: from mail-gw6.pacbell.net (mail-gw6.pacbell.net [206.13.28.41])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA10136
+	for <handyboard@media.mit.edu>; Wed, 23 Jun 1999 12:41:41 -0400 (EDT)
+Received: from pacbell.net (adsl-206-170-238-215.dsl.lsan03.pacbell.net [206.170.238.215])
+	by mail-gw6.pacbell.net (8.9.3/8.9.3) with ESMTP id JAA27584;
+	Wed, 23 Jun 1999 09:41:39 -0700 (PDT)
+Message-Id: <37710F1D.5E01B34F@pacbell.net>
+Date: Wed, 23 Jun 1999 09:45:19 -0700
+From: Gary Livick <glivick@pacbell.net>
+X-Mailer: Mozilla 4.51 (Macintosh; I; PPC)
+Mime-Version: 1.0
+To: lroska <lroska@home.com>
+Cc: "handyboard@media.mit.edu" <handyboard@media.mit.edu>
+Subject: Re: speed control help
+References: <37705DDA.21E800D@home.com>
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+
+It sounds like you are running open loop.  If you use the wheel encoders as
+feedback devices to close the loop, then you can use the motor control
+function in your program as a variable to adjust motor control current via
+PWM to match the command speed.  It is basically a fly-by-wire system
+then.  You command a target speed, give it to the motor control logic and
+then let the software maintain the command speed.  The result should be
+that the robot will move at the command speed when going up hill, down
+hill, over rough carpet and over smooth surfaces within the torque
+limitations of your motors.
+
+The code to do this has already been generated.  If you look at the Rug
+Warrior book, "Mobile Robots, 2nd ed." on page 393, there it is.  The first
+edition of the book also describes the method in detail.
+
+Gary Livick
+
+lroska wrote:
+
+> I have a problem that involves speed control.
+>
+> My robot is curently configured for differential steering and have
+> shaft encoders installed on each one for feedback.
+>
+> the shaft encoders generate 64 pulses /rev
+> The motors are PWM using the rug warrior setup.
+>
+> The problem is that the motors are non linear in respect to the power
+> applied to them.
+>
+> At full power (100%) the shaft encoders return 64 pulses/s
+> at 75% they return 62 pulses/s, at 50% power they return 60 pulses/s
+> and at 25% they return 50 pulses/s
+>
+> the speed control software i'm using is assuming that the response is
+> linear so for 50% power it expects to see 32 pulses/s but in fact it is
+> receiving 50 pulses/s therefore it slows down the motor to a crawl.
+>
+> Is there a formula that I can use to solve for the expected pulses/s for
+> a given power input?
+>
+> Any help is appreciated!
+
+

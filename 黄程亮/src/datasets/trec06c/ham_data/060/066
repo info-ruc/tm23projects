@@ -1,0 +1,111 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [208.235.160.21])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id VAA07516
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Jan 2000 21:16:49 -0700
+Received: (qmail 23559 invoked from network); 26 Jan 2000 04:07:29 -0000
+Received: from uofa-dsl-17.dakotacom.arizona.edu (HELO homebox) (150.135.175.17)
+  by breaker.dakotacom.net with SMTP; 26 Jan 2000 04:07:29 -0000
+Message-Id: <3.0.1.32.20000125211648.0068e61c@psy1.psych.arizona.edu>
+Date: Tue, 25 Jan 2000 21:16:48 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: 
+In-Reply-To: <Pine.HPX.4.10.10001251822560.28664-100000@pavo.U.Arizona.E
+ DU>
+References: <3.0.6.32.20000125165327.0079cce0@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 06:23 PM 1/25/00 -0700, you wrote:
+>At 04:53 PM 1/25/2000 -0700, j.c.f. wrote:
+>
+>
+>> Are you complaining about a one minute
+>> variability or a one minute overall longer execution time?
+>
+>Rather than running for 681 sec. total, my program would run 752 seconds.
+>
+>Thanks for the suggestions re. extended parameter line and timeout. I'll
+>give it a try and report back.
+
+  Oh, I recall now, sometimes it runs for 681 and sometimes for 752, right?
+ If anyone else cares to think about this here are the first few lines of
+his item file:
+
+N202 <zil> <ContinuousRun> <t 1800> <defaultwritingcolor 255255255> 0
+<nofeedback> <defaultbackgroundcolor 0>  <defaultfont Times New Roman>
+<defaultfontsize 26> <id keyboard> <d 48> <RecordClockOnTime>
+<TimeCriticalFrame> <id PIO12> <mip 27> <vm 640,480,480,16,0> 
+
+! "Scan 1" 6000 ms, Instruction 3000 ms, IAPS 500 ms, PUN or IOU 2500 ms,
+88888 (Fixation) 6000 ms., Total = 861000 ms.;
+
+0 " Experiment Ready ";
+
+=99999 *< fd 360>  "Scan 1"/;
+
+!Set 6;
+!6 Pleas A; 
+
+=11111 *<fd 180>  "Pleasant,  Unpleasant, or Neither ?"/;
+=4660 <fd 30> *g"d:\Iaps\4660.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=1463 <fd 30> *g"d:\Iaps\1463.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=2391 <fd 30> *g"d:\Iaps\2391.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=7900 <fd 30> *g"d:\Iaps\7900.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=7390 <fd 30> *g"d:\Iaps\7390.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=4599 <fd 30> *g"d:\Iaps\4599.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=88888 <fd 360> *g"d:\Iaps\Crosshair.bmp"/;
+
+!6 Unp B;
+
+=11111 *<fd 180>  "Pleasant,  Unpleasant, or Neither ?"/;
+=3063 <fd 30> *g"d:\Iaps\3063.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=6190 <fd 30> *g"d:\Iaps\6190.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=3181 <fd 30> *g"d:\Iaps\3181.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=3300 <fd 30> *g"d:\Iaps\3300.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=1112 <fd 30> *g"d:\Iaps\1112.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=5531 <fd 30> *g"d:\Iaps\5531.bmp"/,<fd 150> g"d:\Iaps\PUN2.bmp"/;
+=88888 <fd 360> *g"d:\Iaps\Crosshair.bmp"/;
+
+!6 Mix Ext;
+
+
+  Hmm, I see you've not setup a default frame duration on the parameter
+line, although you appear to set the frame duration explicitely on
+everything except the erase frames at the end of the items, which shouldn't
+matter, the duration of the last frame doesn't count (as frame duration
+only affects a following frame if there are no more frames that frame just
+stays on the screen and DMDX ends the item, unless of course it's waiting
+for a response) however having a default frame duration of zero could be
+affecting that.  I wouldn't think your somewhat unusual "/," combo would be
+doing it either, but it certainly doesn't hurt to change it to just a "/".
+
+  You might want to check that the frame duration of your 640x480x16bpp
+video mode does in fact not vary, it's faintly possible that in between
+uses of the machine the monitor type changes (on account of it not being
+setup right so win32 is constantly trying to set it up) and therefore the
+refesh rate with it.  You could check that the monitor description does in
+fact not change as well, display properties (right click on desktop) /
+settings / advanced / monitor.
+
+  I take it you've checked the outputfiles for display errors?  Using the
+zillion mode means that the output is flushed to disk every item and this
+takes time, if you have a less than excellent file system this can take
+longer than perhaps your <delay 48> allows for, but I'd be surprised,
+that's a good amount of time.
+
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+Interesting but useless facts #13.
+Filicide is the murder of a cat.
+
+
+

@@ -1,0 +1,70 @@
+Received: from mx1.magmacom.com (mx1.magmacom.com [206.191.0.217])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA08064
+	for <handyboard@media.mit.edu>; Fri, 1 Jan 1999 11:01:21 -0500 (EST)
+Received: from mail2.magma.ca (mail2x.magma.ca [206.191.0.220])
+	by mx1.magmacom.com (8.9.1a/8.9.1) with ESMTP id LAA22674;
+	Fri, 1 Jan 1999 11:01:22 -0500 (EST)
+Received: from port27.magma.ca (port27.magma.ca [206.191.5.27])
+	by mail2.magma.ca (8.9.1a/8.9.1) with SMTP id LAA15790;
+	Fri, 1 Jan 1999 11:01:19 -0500 (EST)
+Message-Id: <199901011601.LAA15790@mail2.magma.ca>
+X-Authentication-Warning: mail2.magma.ca: port27.magma.ca [206.191.5.27] didn't use HELO protocol
+Date: Fri, 01 Jan 1999 10:53:35 -0500
+From: "K.L.McKinnon" <"klmckin@nospam"@magmacom.com>
+X-Mailer: Mozilla 4.05 [en] (Win95; I)
+Mime-Version: 1.0
+To: Michael Toh <leahcim@pacific.net.sg>
+Cc: handyboard@media.mit.edu
+Subject: Re: sensors input
+References: <1.5.4.32.19981230190657.00673aac@pacific.net.sg>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+You don't really show your connection to your Handyboard, but I would
+suspect that with 16 connectted in parallel, you are probably drawing
+sufficient current to drop your voltage below the reset value of the
+micro monitor (DS1233? if I remember corretly).
+Perhaps try testing the voltage with all in place, and making sure it is
+above about 4.5v.
+
+K.L. McKinnon
+
+Michael Toh wrote:
+> 
+> hi  everyone,
+> 
+> i have tried to configure a set of sensors used for sensoring the wall in
+> the maze.
+> 
+> the circuitry of each of the sensors is:
+>                          +5V        +5V
+>                         -----      -----
+>                           |          |
+>                           |          |
+>                           \          \
+>                           /          /
+>                R1=82 ohm  \          \ R2=120Kohms
+>                           /          /
+>                           |          |
+>                           |          |
+>                        -------      |/
+>          IR emitter      \./        |\ IR receiver
+>                         -----        |
+>                           |          |
+>                           |          |
+>                          ---        ---
+>                          GND        GND
+> 
+> the IR sensor is sharing the same +5V source and the same ground. but when i
+> assembly 16 of them together, the habdyboard will immediately switch to
+> reset mode. so i tried to troubleshoot by only connecting the digital sensor
+> port and it works. but after about 2mins, the HB switch to reset mode again.
+> the same situation happen when i tried with the analog port only.
+> 
+> i like to know what is wrong and how to solve. could it be the wire is short
+> or the circuitry is faulty? or could it be the HB cannot supply enough
+> current to the sensors ?
+> please help! i am really at my wits end.
+> 
+> michael
+

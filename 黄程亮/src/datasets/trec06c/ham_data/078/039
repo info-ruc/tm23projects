@@ -1,0 +1,92 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9MMhZo18125
+	for <egs@CS.Cornell.EDU>; Mon, 22 Oct 2001 18:43:35 -0400 (EDT)
+Received: from mars (dhcp5.csl.cornell.edu [132.236.71.52])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id SAA28615
+	for <egs@CS.Cornell.EDU>; Mon, 22 Oct 2001 18:43:34 -0400 (EDT)
+From: "ming hao" <mh97@cornell.edu>
+To: "'Emin Gun Sirer'" <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 26
+Date: Mon, 22 Oct 2001 18:42:36 -0400
+Message-ID: <000201c15b4a$d8de4f40$3447ec84@mars>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.2616
+Importance: Normal
+In-Reply-To: <200110162318.f9GNIpP11007@zinger.cs.cornell.edu>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+
+Performance Comparison of Two On-Demand Routing Protocols for
+Ad Hoc Networks
+Charles E.Perkins,Elizabeth M.Royer,Samir R.Das and Mahesh K.Marina.
+
+
+the main differences of these two algorithms are:
+1. DSR can grab more route info for each requet-reply cycle than
+aodv and rhus tends to have less route discovery. 
+2. destination replies all the requests from differnet paths for DSR
+while AODV just replies once.
+3.cache pollution is main problem of DSR while the TTL machanism may
+expire valid routes.
+4.AODV propagates errors to all the nodes using the broken links while
+DSR just backs the packets to the upstream nodes.
+
+the authors have done a much more thouroughly study for these two 
+algorithms than previous one. some interesting and important results
+are summarized here.
+
+1. DSR has less routing overhead than AODV. this mainly come from the 
+optimizations of DSR such as caching, promiscuous propagation and the 
+fact that source node gets all the routes for intermediate nodes in 
+addition to the destination nodes. all these make DSR have less routing
+overhead.
+
+2. but for MAC overhead, AODV tends has less overhead than DSR because
+MAC layer deal with RREQ and RREP and REER int the differnt way.
+broadcast
+does not involve RTS/CTS.  so i think the concept of MAC overhead is one
+
+of  main contributions of this paper. this metric is more accurate than 
+routing overhead in the term of considering power consumtion and
+bandwidth
+effeciency.
+
+
+3. lack of load balancing can result in the long latency. this is
+reflected
+when the network has less mobility and more data sources. both
+algorithms 
+suffered.
+
+4. the trend is that AODV has smaller latency and much higer packet
+delivery 
+ratio than DSR in the case of higher mobility and more nodes and
+sources.
+this stems from the high possibility of DSR's cache pollution and more
+collision at MAC layer because of the multiple replies.  while onthe
+other hand in the lower mobility environment, the timer mechanism can
+cause DSDV expire valid route and link failure caused by congestion can
+be tolerated by DSR because of its abandunt route infomation and
+salvaging mechanism in the intermediate nodes.
+
+5. as indicated in the previous paper, the DSR tends to have shorter
+paths. This fact has two sides effect. in the congestion, DSR tends to
+make thing worse. so load balancing is necessary in the hot spot
+scenario.
+
+in the summary, i like this paper much better than the previous one
+because it really covers more scenario so that giving us a more complete
+results.it also explained the deep reasons which is definitely useful
+for future algorithm  development.  further, some new metrics are used
+which can reflect more practical performance of the routing algorithms.
+
+
+-ming 
+
+
+
+

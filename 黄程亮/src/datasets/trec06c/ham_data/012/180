@@ -1,0 +1,99 @@
+Received: from mail.utexas.edu (mail.utexas.edu [128.83.126.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id SAA12711
+	for <handyboard@media.mit.edu>; Fri, 13 Mar 1998 18:03:54 -0500 (EST)
+Received: (qmail 29927 invoked by uid 0); 13 Mar 1998 23:03:52 -0000
+Received: from dial-118-16.ots.utexas.edu (HELO ?128.83.154.64?) (128.83.154.64)
+  by mail.utexas.edu with SMTP; 13 Mar 1998 23:03:52 -0000
+X-Sender: oren@mail.utexas.edu (Unverified)
+Message-Id: <v03007800b12f691bab78@[128.83.221.32]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Fri, 13 Mar 1998 17:04:13 -0600
+To: handyboard@media.mit.edu
+From: Anthony Oren Loeppert <oren@mail.utexas.edu>
+Subject: Strange IC error
+
+I have attached the HB to a formerly radio controled car.  I built an h
+brigde as described on wizard.org to control the motor.  Anway.... all is
+going well, I have written routines to control the motor.  Still sounds
+great... Until I get to uploading them into the HB using IC 2.853-Rev2.  I
+get a:
+Fatal Internal Error
+Illegal size to spew push-op
+
+and then it shuts down.  I have never had this problem before and I don't
+know what to do about it.  Are the upload files only allowed to be so big?
+Here is the exact contents of the file I am trying to upload.  The variable
+'motor' is the number of the motor output of the HB which my steering motor
+is connected to.  I have connected the reverse and forward control wires of
+the HB to SCK and MOSI.
+
+void fd_left(int on, int off, int motor,int turnlen)
+{
+	turn(on,off,motor,turnlen, -1,1);
+}
+
+void fd_right(int on, int off, int motor,int turnlen)
+{
+	turn(on,off,motor,turnlen, 1,1);
+}
+
+void bk_left(int on, int off, int motor,int turnlen)
+{
+	turn(on,off,motor,turnlen, -1,-1);
+}
+
+void bk_right(int on, int off, int motor,int turnlen)
+{
+	turn(on,off,motor,turnlen, 1,-1);
+}
+
+
+void forward(int on, int off, int len)
+{
+	turn(on,off,0,len,0,1);
+}
+
+void backward(int on, int off, int len)
+{
+	turn(on,off,0,len,0,-1);
+}
+
+void turn(int on, int off, int motor,int turnlen, int turndir, int dir)
+{
+	int i=0;
+	char direction;
+	if(dir>0)
+		direction = 0x08;
+	else
+		direction = 0x10;
+
+
+	if(motor >= 0 && motor <4)
+	{
+		bit_set(0x1009, 0x3c);
+		bit_clear(0x1008, 0x08);
+		bit_clear(0x1008, 0x10);
+
+		if(turndir != 0)
+		{
+			if(turndir > 0)
+				bk(motor);
+			else
+				fd(motor);
+		}
+		while(i < turnlen)
+		{
+			bit_set(0x1008,direction);
+			msleep((long)on);
+			bit_clear(0x1008,direction);
+			msleep((long)off);
+			i++;
+		}
+		ao();
+	}
+
+}
+
+
+

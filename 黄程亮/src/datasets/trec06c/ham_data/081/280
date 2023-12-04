@@ -1,0 +1,74 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id g5SKWSP07926
+	for <ggilfoyl@facstaff.richmond.edu>; Fri, 28 Jun 2002 16:32:28 -0400
+Received: from webmail.richmond.edu (newman.richmond.edu [141.166.188.61])
+	by argyle.richmond.edu (8.11.6/8.11.6) with ESMTP id g5SKVEe14518
+	for <ggilfoyl@richmond.edu>; Fri, 28 Jun 2002 16:31:14 -0400
+X-WebMail-UserID:  fchinchi@richmond.edu
+Date: Fri, 28 Jun 2002 16:31:14 -0400
+Sender: Francisco Chinchilla <fchinchi@richmond.edu>
+From: Francisco Chinchilla <fchinchi@richmond.edu>
+To: ggilfoyl@richmond.edu
+X-EXP32-SerialNo: 00003277
+Subject: powering up/down the new cluster
+Message-ID: <3D1C99D2@webmail.richmond.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebMail (Hydra) SMTP v3.61
+Status:  O
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb26730000359b
+
+If the power went off and came back on then turn everything off first (turn 
+the power switch off by hand, except on pscm1, that one you can issue a halt 
+or shutdown command).  The instructions to turn the new cluster on assume 
+everything is turned off and I think this is the only 'sure' way top bring it 
+back up safely.
+
+TURNING THE CLUSTER ON
+1) Turn the 3 RAID machines on.  I recommend you wait 10 seconds or so before 
+you turn the next one on.  You are turning on at least 10 hard drives per 
+machine, and that could just pull too much power at once if you do all 3 at 
+the same time.
+
+2) Turn the actual FILESERVER on.  The fileserver will talk to the 3 RAID 
+machines and lights will blink.  When this is done,
+
+3) Turn the MASTER on.  You can turn off the sec. master on too.
+
+4) Boot all the other cluster nodes by just turningon the powerbar switch.  
+Turn on only 1 switch (4 nodes) at a time.  Turning on more than a couple 
+machines at a time requires too much from the tftp server that runs on the 
+master, and as a consequence they will not be able to download the kernel and 
+they will all be unavailable.  The safest way is to wait till the 4 nodes that 
+you just turned on become 'available' before you turn on the next one, but I 
+think you can wait till they are 'up', wait 2 mins, then turn the next 4 nodes 
+on.
+
+Overall this takes at least 40 mins.
+
+
+TURNING THE CLUSTER OFF
+1) from the master, ssh to the fileserver and turn it off
+	ssh fileserver
+	shutdown -hF now
+	exit (from the fileserver)
+2) On the master, shutdown -hF now
+
+3) Power down the 3 RAIDS by hitting the switch.  Now hit the power switch on 
+the fileserver to really turn it off (the shutdown command just turns 
+everything off so that hitting the switch is safe)
+
+4) Power down all the strips.
+
+
+NOTES
+1) You can reboot the NODES with no problems, not true for the master nor the 
+fileserver.  You have to go through the whole procedure again.
+
+2) If a node doesn't become available at first, press and hold the power 
+switch on that node for ~4 seconds to turn it off.  Press it again to turn it 
+back on (the reset button sometimes doesnt do much, but this does).
+

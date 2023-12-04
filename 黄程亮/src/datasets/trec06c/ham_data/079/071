@@ -1,0 +1,79 @@
+Received: from capricorn.ds.csl.cornell.edu (capricorn.csl.cornell.edu [132.236.71.92])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB6IBk612442
+	for <egs@cs.cornell.edu>; Thu, 6 Dec 2001 13:11:46 -0500 (EST)
+content-class: urn:content-classes:message
+Subject: 615 Paper 70
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Thu, 6 Dec 2001 13:15:11 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
+Message-ID: <97C142C1212ED545B0023A177F5349C40A0A34@capricorn.ds.csl.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 Paper 70
+Thread-Index: AcF+gfGy8NK2YS5/Qie3hYaFftZKPw==
+From: "Avneesh Bhatnagar" <avneesh@csl.cornell.edu>
+To: <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id fB6IBk612442
+
+A scalable content addressable network
+
+This paper presents the design of a scalable indexing mechanism, which
+unlike Chord and PAstry, visualizes the routing space as a d dimensional
+torus. A hashing mechanism is used here to store a key, value pair where
+the key is deterministically mapped onto a point P using the hashing
+mechanism. Routing is done by using greedy forwarding; each node has a
+set of neighbors whose coordinate spans overlap in d-1 dimensions and
+which abut in one dimension. This gives the average path length as
+d/4(n^1/d), while the max number of neighbors would be 2d. Each can node
+keeps a chunk (zone) of the hashtable containing the key value pairs.
+
+In order to join the CAN network, a node must query an existing CAN
+node, which then attempts to find a neighbor node whose hash zone needs
+to be split. This is chosen randomly in the simple version of the
+algorithm, but can be chosen as a function of how much load a particular
+zone has (size). Larger zone would be a good candidate for splitting.
+The node then joins the routing mechanism, by informing its new
+neighbors of its existence and updating its neighbor state on the basis
+of soft state updates. Node departure is followed by a timed TakeOver
+message, which a neighbor that detects lack of response from a node,
+sends to the failed node's neighbors informing them of a takeover of the
+zone.
+
+The authors then discuss and improve the basic algorithm, and also
+evaluate the impaacts of the improvements:
+a. Multidimensional co-ordinate spaces: Increasing dimensions of CAN
+coordinate space yields shorter path lengths.
+b. Realities: Each node can maintain multiple coordinate spaces, with
+contents of the hash table being replicated at each of these. This
+'replication' yields better data availability and lower hop count.
+c. Better routing metrics such as measuring the latency between nodes,
+to avoid long hops.
+d. Having overloaded co-ordinate zones, i.e. instead of one node owning
+a zone, multiple nodes do so, and this improves fault tolerance along
+with reduced per hop latency/path length.
+e. Multiple hash functions: k different hash functions that map a single
+key to k different points would also increase availability.
+f. Topologically sensitive routing. This feature is well handled in e.g.
+Pastry which takes into account leaf sets while routing. Here this would
+be a problem, which the authors attempt to solve by setting up
+'landmarks' upon which geographically close routing can be leveraged.
+g. Caching and replication of commonly used data can alleviate strain on
+hot spots.
+The authors then evaluate CAN with and without these factors and also
+the effect that each of these has on the overall performance. I think
+Table 3 on page 169 gives a very good idea of how these changes affect
+performance.
+
+I think that this paper was quite well written and brings some important
+issues into light. The idea of zones is quite interesting. The only
+issue that I can see here is again the inherent assumption that all
+nodes are equal in capabilities. Furthermore, there seems to be quite a
+lot of state that would have to be transferred periodically if we were
+to look at the best case performance as shown on page 168 (30 nodes as
+neighbors). Furthermore, it would have been interesting if the authors
+had evaluated this with the Pastry and Chord designs to trade off the
+zone idea with a simple circular ring.  
+

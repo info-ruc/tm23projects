@@ -1,0 +1,63 @@
+Received: from entoo.connect.com.au (entoo.connect.com.au [192.189.54.8])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id AAA03525
+	for <handyboard@media.mit.edu>; Wed, 17 Jun 1998 00:35:42 -0400 (EDT)
+Received: from online.mail (acc6-ppp9.syd.enternet.com.au [210.8.3.201]) by entoo.connect.com.au with SMTP id OAA04673
+  (8.8.6/IDA-1.7 for <handyboard@media.mit.edu>); Wed, 17 Jun 1998 14:35:26 +1000 (EST)
+Received: from brian [192.168.7.2] by online.mail [127.0.0.1] with SMTP (MDaemon.v2.7.SP3.R) for <handyboard@media.mit.edu>; Wed, 17 Jun 1998 14:31:06 +1000
+Message-Id: <Version.32.19980617140419.00ded620@denison>
+Message-Id: <Version.32.19980617140419.00ded620@denison>
+X-Sender: brian@denison
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.0 Demo
+Date: Wed, 17 Jun 1998 14:30:06 +1000
+To: brian-c@technologist.com
+From: Brian Lavery <blavery@online-int.com.au>
+Subject: Re: HB Memory...
+Cc: handyboard@media.mit.edu
+In-Reply-To: <199806162322.TAA23962@web04.globecomm.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+X-Mdaemon-Deliver-To: handyboard@media.mit.edu
+Reply-To: blavery@online-int.com.au
+
+>When pcode is downloaded to the Handy Board, how much memory space 
+>does it take up?
+>I am a little concerned about having enough memory space for my programs. 
+>As I see it now, I think I may max out the 32KB. 
+>Does anyone have tips on how to concerve space. The only thing I can 
+>think of is to edit out some functions from lib_hb.c that I am not 
+>using, and also not loading the r22 IR files which I'm not using either.
+
+Brian,
+The RAM memory space is divided into two big parts very roughly like this:
+   0x8000 - about 0xBE00 or so   = your "user" program
+                                   (the C program sent by I-C)
+   0xBFxx - 0xBFFF               = interrupt vector table (immovable!)
+   0xC000 - 0xFEFF               = PCODE.S19 pcode engine & its work areas
+   0xFFF0 - 0xFFFF               = CPU stack space
+
+You will always have a bit under 16 kB (0x8000 - 0xBF??) for your user
+programs, that is:
+- your own C files
+- the Library C files
+- any ICB assembler files you use.
+When IC sends your files to the Handyboard, it displays the memory location
+of the various component files of your project.  You can guage how full you
+are: the closer you get to 0xBE00 or so (on the I-C display), the fuller
+you are getting!
+
+You have to save space in the 8000-bf00 area.  Curtailing library functions
+is wise.  
+
+But using a different version of I-C, along with its fresh compilation of
+the PCODE interpreter engine, could conceivably affect the use of memory in
+the upper region (c000-FF00) very slightly, but that is of no use to you in
+squeezing in more of your own project files (8000-bf00).
+
+The facts are, that the HB just has a certain memory allowance for your
+programs, and you have to be as efficient within that space as you can!
+
+Regards
+Brian Lavery  <blavery@computer.org>
+
+
+

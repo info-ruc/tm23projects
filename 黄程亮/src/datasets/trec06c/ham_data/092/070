@@ -1,0 +1,59 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i0U0XZR4006215
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 29 Jan 2004 17:33:35 -0700
+Received: from anybodyi.u.arizona.edu (ppp104.broadband01.tus.dakotacom.net [69.9.24.104])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id i0U0XZPn029274
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 29 Jan 2004 17:33:35 -0700 (MST)
+Message-Id: <5.1.0.14.2.20040129172416.00b12910@psy1.psych.arizona.edu>
+Date: Thu, 29 Jan 2004 17:33:30 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: frame "" 1 tick late
+In-Reply-To: <a05200f01bc3f04a3a9f9@[143.232.72.236]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 10:45 AM 1/29/2004 -0800, you wrote:
+>Hi,
+>
+>We just got some new monitors with faster refresh rates and I have been 
+>getting quite a few display timing error messages. Many of them claim that 
+>the error is in "frame """. I am wondering if that refers to the blank 
+>frame at the end of the trial.
+
+   More than likely, don't see any other blank frames.
+
+>Here is an example item with the corresponding error message.
+>
+>+3409 "#######",<ln 1>"#######"/"#######",%3<ln 1>"WHONE"/"#######",%3<ln 
+>1>"glask"/"#######",%3<ln 1>"LANED"/"#######",%3<ln 
+>1>"trooch"/"#######",%3<ln 1>"CLOUCH"/"#######",%7<ln 1>"#######"/"event" 
+>,%16<ln 1> "#######"/"%@$?$@%",*<ln 1>"MEMORY"/;
+>
+>!  Display error at msec 1788670.77, tick 253995 in item 3409, frame ""
+>!    moved into video memory 1 tick late
+>!     (previous frame's duration will have been longer)
+>!    -- possibly caused by another process taking 2 ticks
+
+   If you have somewhat old video cards it might be time to consider newer 
+cards, with 10 frames and lower amounts of video memory DMDX won't be able 
+to buffer the last few frames so has to move them into video memory once 
+the item has started executing -- and something else is interfering with 
+that every now and then.  That or use a less demanding video mode, say 16 
+bit instead of 32 if you're using it.  If you have GeForce video cards and 
+are running DMDX with a shortcut that overrides it's use of many display 
+buffers it's time to download the later drivers that no longer have the 
+yawning chasm of a bug that the earlier drivers did and stop using the 
+-buffers 2 shortcut.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Fellow with closed mind often has open mouth.
+
+
+

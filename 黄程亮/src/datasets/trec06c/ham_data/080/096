@@ -1,0 +1,48 @@
+Received: from mail.umu.se (custer.umdac.umu.se [130.239.8.14])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id KAA02121
+	for <tex-fonts@math.utah.edu>; Wed, 27 Mar 2002 10:04:37 -0700 (MST)
+Received: from [130.239.20.144] (mac144.math.umu.se [130.239.20.144])
+	by mail.umu.se (8.8.8/8.8.8) with ESMTP id SAA08022;
+	Wed, 27 Mar 2002 18:04:29 +0100 (MET)
+X-Sender: lars@abel.math.umu.se
+Message-Id: <l03130302b8c7a8ef0b2f@[130.239.20.144]>
+In-Reply-To: <200203271555.IAA00691@sunshine.math.utah.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Date: Wed, 27 Mar 2002 18:04:30 +0100
+To: "Walter Schmidt" <was@VR-Web.de>
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?=  <Lars.Hellstrom@math.umu.se>
+Subject: Re: fontinst question
+Cc: "tex-fonts" <tex-fonts@sunshine.math.utah.edu>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sunshine.math.utah.edu id KAA02123
+
+At 16.52 +0100 2002-03-27, Walter Schmidt wrote:
+>On Wed, 27 Mar 2002 13:10:04 +0000, Rowland McDonnell wrote:
+>
+>>Now here's a thing.  I've just looked at the log file kicked out by
+>>fontinst 1.801 in response to a \latinfamily command.  It's full of lines
+>>like:
+>>
+>>\installfont <punl8t><punl8r,latin><T1><T1><pun><l><n>
+>>
+>>If that first instance of `T1' ought to be `t1', might it be an idea to
+>>change what fontinst prints?
+>
+>The first instance of `T1' refers to the file t1.etx;
+>on a non-Unix system, the case does certainly not matter here.
+>
+>I'm not even sure whether uc/lc matters, as to the *second*
+>instance of `T1'.
+
+It matters! In the end it will all become the names of the fontdef tokens
+that LaTeX uses to switch fonts, and \T1/pun/m/n/10 is not the same token
+as \t1/pun/m/n/10. What would happen is that LaTeX would input t1pun.fd,
+hoping to get some font T1/pun/... defined, but that the file would instead
+define t1/pun/... The end result would probably be that LaTeX uses
+T1/cmr/m/n instead.
+
+Lars Hellström
+
+
+

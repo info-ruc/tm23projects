@@ -1,0 +1,397 @@
+Received: from beast (beast [128.32.92.126])
+	by astron.Berkeley.EDU (8.11.4/8.11.4) with SMTP id h23Knlc21134
+	for <linuxusers@astron.berkeley.edu>; Mon, 3 Mar 2003 12:49:47 -0800 (PST)
+Message-Id: <200303032049.h23Knlc21134@astron.Berkeley.EDU>
+Date: Mon, 3 Mar 2003 12:49:46 -0800 (PST)
+From: Kelley McDonald <kelley@astro.berkeley.edu>
+Reply-To: Kelley McDonald <kelley@astro.berkeley.edu>
+Subject: very bad security bug in sendmail
+To: linuxusers@astron.Berkeley.EDU
+MIME-Version: 1.0
+Content-Type: MULTIPART/mixed; BOUNDARY=Battery_of_Barracuda_590_000
+X-Mailer: dtmail 1.3.0 @(#)CDE Version 1.5.3 SunOS 5.9 sun4u sparc 
+Content-Length: 14540
+Status: RO
+X-Status: $$$$
+X-UID: 0000000058
+
+--Battery_of_Barracuda_590_000
+Content-Type: TEXT/plain; charset=us-ascii
+Content-MD5: b9ou6WV3aB1/PGJ+TI0ktw==
+
+I strongly advise if you run sendmail as a daemon
+on any of your linux-based computers, disable it 
+until you can apply the patch or upgrade it to
+sendmail-8.12.8.  See attached mail for more info.
+
+Kelley
+------------------------------------------------------
+Kelley McDonald              Sr. Systems Administrator
+Astronomy Department         kelley@astro.berkeley.edu
+------------------------------------------------------
+
+--Battery_of_Barracuda_590_000
+Content-Type: MESSAGE/rfc822; name=Mailbox
+Content-Description: Mailbox
+
+From kmcd@uclink4.berkeley.edu  Mon Mar  3 12:40:13 2003
+Received: from uclink4.berkeley.edu (beast [128.32.92.126])
+	by astron.Berkeley.EDU (8.11.4/8.11.4) with ESMTP id h23KeDc20848
+	for <kelley@astro.berkeley.edu>; Mon, 3 Mar 2003 12:40:13 -0800 (PST)
+Message-ID: <3E63BDAC.80902@uclink4.berkeley.edu>
+Date: Mon, 03 Mar 2003 12:40:12 -0800
+From: Kelley McDonald <kmcd@uclink4.berkeley.edu>
+User-Agent: Mozilla/5.0 (X11; U; SunOS sun4u; en-US; rv:1.0.1) Gecko/20020921 Netscape/7.0
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: kelley@astron.berkeley.edu
+Subject: [Fwd: CERT Advisory CA-2003-07 Remote Buffer Overflow in Sendmail]
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Length: 13100
+Status: RO
+
+
+
+-------- Original Message --------
+Subject: CERT Advisory CA-2003-07 Remote Buffer Overflow in Sendmail
+Date: Mon, 3 Mar 2003 13:07:52 -0500
+From: CERT Advisory <cert-advisory@cert.org>
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+To: cert-advisory@cert.org
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-07 Remote Buffer Overflow in Sendmail
+
+    Original release date: March 3, 2003
+    Last revised: --
+    Source: CERT/CC
+
+    A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+      * Sendmail Pro (all versions)
+      * Sendmail Switch 2.1 prior to 2.1.5
+      * Sendmail Switch 2.2 prior to 2.2.5
+      * Sendmail Switch 3.0 prior to 3.0.3
+      * Sendmail for NT 2.X prior to 2.6.2
+      * Sendmail for NT 3.0 prior to 3.0.3
+      * Systems  running  open-source  sendmail  versions prior to 8.12.8,
+        including UNIX and Linux systems
+
+Overview
+
+    There  is  a vulnerability in sendmail that may allow remote attackers
+    to gain the privileges of the sendmail daemon, typically root.
+
+I. Description
+
+    Researchers  at  Internet  Security  Systems  (ISS)  have discovered a
+    remotely  exploitable  vulnerability  in  sendmail. This vulnerability
+    could  allow  an  intruder  to  gain  control of a vulnerable sendmail
+    server.
+
+    Most  organizations  have  a variety of mail transfer agents (MTAs) at
+    various  locations  within their network, with at least one exposed to
+    the   Internet.   Since   sendmail  is  the  most  popular  MTA,  most
+    medium-sized  to  large  organizations are likely to have at least one
+    vulnerable   sendmail   server.  In  addition,  many  UNIX  and  Linux
+    workstations  provide  a  sendmail  implementation that is enabled and
+    running by default.
+
+    This    vulnerability    is    message-oriented    as    opposed    to
+    connection-oriented. That means that the vulnerability is triggered by
+    the  contents  of  a  specially-crafted  email  message rather than by
+    lower-level  network  traffic.  This  is important because an MTA that
+    does  not  contain  the  vulnerability will pass the malicious message
+    along  to  other  MTAs  that may be protected at the network level. In
+    other  words, vulnerable sendmail servers on the interior of a network
+    are  still  at risk, even if the site's border MTA uses software other
+    than sendmail. Also, messages capable of exploiting this vulnerability
+    may pass undetected through many common packet filters or firewalls.
+
+    Sendmail has indicated to the CERT/CC that this vulnerability has been
+    successfully  exploited in a laboratory environment. We do not believe
+    that   this   exploit  is  available  to  the  public.  However,  this
+    vulnerability  is  likely  to  draw  significant  attention  from  the
+    intruder community, so the probability of a public exploit is high.
+
+    A  successful  attack  against  an  unpatched sendmail system will not
+    leave any messages in the system log. However, on a patched system, an
+    attempt  to  exploit  this  vulnerability will leave the following log
+    message:
+
+      Dropped invalid comments from header address
+
+    Although  this does not represent conclusive evidence of an attack, it
+    may be useful as an indicator.
+
+    A  patched  sendmail server will drop invalid headers, thus preventing
+    downstream servers from receiving them.
+
+    The CERT/CC is tracking this issue as VU#398025. This reference number
+    corresponds to CVE candidate CAN-2002-1337.
+
+    For more information, please see
+
+        http://www.sendmail.org
+        http://www.sendmail.org/8.12.8.html
+        http://www.sendmail.com/security/
+        http://www.iss.net/issEn/delivery/xforce/alertdetail.jsp?oid=21950
+        http://www.kb.cert.org/vuls/id/398025
+
+II. Impact
+
+    Successful exploitation of this vulnerability may allow an attacker to
+    gain  the  privileges  of  the  sendmail  daemon, typically root. Even
+    vulnerable  sendmail servers on the interior of a given network may be
+    at  risk  since  the vulnerability is triggered from the contents of a
+    malicious email message.
+
+III. Solution
+
+Apply a patch from Sendmail
+
+    Sendmail  has produced patches for versions 8.9, 8.10, 8.11, and 8.12.
+    However,  the  vulnerability  also  exists  in earlier versions of the
+    code;  therefore,  site  administrators  using  an earlier version are
+    encouraged to upgrade to 8.12.8. These patches are located at
+
+        ftp://ftp.sendmail.org/pub/sendmail/sendmail.8.12.security.cr.patch
+ 
+ftp://ftp.sendmail.org/pub/sendmail/sendmail.8.11.6.security.cr.patch
+        ftp://ftp.sendmail.org/pub/sendmail/sendmail.8.9.3.security.cr.patch
+
+Apply a patch from your vendor
+
+    Many  vendors  include  vulnerable  sendmail  servers as part of their
+    software distributions. We have notified vendors of this vulnerability
+    and  recorded  their  responses  in  the  systems  affected section of
+    VU#398025.  Several  vendors  have  provided  a  statement  for direct
+    inclusion in this advisory; these statements are available in Appendix
+    A.
+
+Enable the RunAsUser option
+
+    There is no known workaround for this vulnerability. Until a patch can
+    be  applied,  you  may  wish to set the RunAsUser option to reduce the
+    impact  of this vulnerability. As a good general practice, the CERT/CC
+    recommends  limiting  the  privileges  of  an  application  or service
+    whenever possible.
+
+Appendix A. - Vendor Information
+
+    This  appendix  contains  information  provided  by  vendors  for this
+    advisory.  As  vendors  report new information to the CERT/CC, we will
+    update this section and note the changes in our revision history. If a
+    particular  vendor  is  not  listed  below, we have not received their
+    comments.
+
+Apple Computer, Inc.
+
+    Security  Update  2003-03-03  is available to fix this issue. Packages
+    are  available  for  Mac OS X 10.1.5 and Mac OS X 10.2.4. It should be
+    noted  that  sendmail  is  not enabled by default on Mac OS X, so only
+    those  systems which have explicitly enabled it are susceptible to the
+    vulnerability.  All  customers of Mac OS X, however, are encouraged to
+    apply this update to their systems.
+
+Avaya, Inc.
+
+    Avaya  is  aware  of the vulnerability and is investigating impact. As
+    new information is available this statement will be updated.
+
+BSD/OS
+
+    Wind  River  Systems  has  created  patches for this problem which are
+    available  from  the  normal  locations for each release. The relevant
+    patches are M500-006 for BSD/OS version 5.0 or the Wind River Platform
+    for  Server Appliances 1.0, M431-002 for BSD/OS 4.3.1, or M420-032 for
+    BSD/OS 4.2 systems.
+
+Cisco Systems
+
+    Cisco is investigating this issue. If we determine any of our products
+    are    vulnerable    that    information   will   be   available   at:
+    http://www.cisco.com/go/psirt
+
+Cray Inc.
+
+    The  code  supplied  by Cray, Inc. in Unicos, Unicos/mk, and Unicos/mp
+    may  be  vulnerable.  Cray  has  opened  SPRs  724749  and  724750  to
+    investigate.
+
+    Cray, Inc. is not vulnerable for the MTA systems.
+
+Hewlett-Packard Company
+
+    SOURCE:
+             Hewlett-Packard Company
+             HP Services
+             Software Security Response Team
+
+    x-ref:  SSRT3469 sendmail
+
+    HP will provide notice of the availability of patches through standard
+    security bulletin announcements and be available from your normal HP
+    Services support channel.
+
+IBM Corporation
+
+    The  AIX  operating  system  is  vulnerable  to  the  sendmail  issues
+    discussed in releases 4.3.3, 5.1.0 and 5.2.0.
+
+    A  temporary  patch  is available through an efix package which can be
+    found at
+    ftp://ftp.software.ibm.com/aix/efixes/security/sendmail_efix.tar.Z
+
+    IBM will provide the following official fixes:
+
+           APAR   number   for   AIX  4.3.3:  IY40500  (available  approx.
+           03/12/2003)
+           APAR   number   for   AIX  5.1.0:  IY40501  (available  approx.
+           04/28/2003)
+           APAR   number   for   AIX  5.2.0:  IY40502  (available  approx.
+           04/28/2003)
+
+Openwall GNU/*/Linux
+
+    Openwall GNU/*/Linux is not vulnerable. We use Postfix as the MTA, not
+    sendmail.
+
+Red Hat Inc.
+
+    Updated  sendmail  packages  that are not vulnerable to this issue are
+    available  for  Red  Hat  Linux,  Red Hat Advanced Server, and Red Hat
+    Advanced  Workstation.  Red Hat Network users can update their systems
+    using the 'up2date' tool.
+
+    Red Hat Linux:
+
+      http://rhn.redhat.com/errata/RHSA-2003-073.html
+
+    Red Hat Linux Advanced Server, Advanced Workstation:
+
+      http://rhn.redhat.com/errata/RHSA-2003-074.html
+
+SGI
+
+    SGI  acknowledges  VU#398025  reported  by  CERT  and  has released an
+    advisory to address the vulnerability on IRIX.
+
+    Refer   to   SGI   Security   Advisory  20030301-01-P  available  from
+    ftp://patches.sgi.com/support/free/security/advisories/20030301-01-P
+    or http://www.sgi.com/support/security/.
+
+The Sendmail Consortium
+
+    The  Sendmail  Consortium  suggests  that  sites  upgrade to 8.12.8 if
+    possible.  Alternatively,  patches  are available for 8.9, 8.10, 8.11,
+    and 8.12 on http://www.sendmail.org/
+
+Sendmail, Inc.
+
+    All  commercial  releases including Sendmail Switch, Sendmail Advanced
+    Message  Server (which includes the Sendmail Switch MTA), Sendmail for
+    NT,  and Sendmail Pro are affected by this issue. Patch information is
+    available at http://www.sendmail.com/security.
+      _________________________________________________________________
+
+    Our  thanks  to  Internet  Security Systems, Inc. for discovering this
+    problem,  and  to  Eric  Allman,  Claus  Assmann,  and Greg Shapiro of
+    Sendmail  for  notifying  us of this problem. We thank both groups for
+    their assistance in coordinating the response to this problem.
+      _________________________________________________________________
+
+    Authors: Jeffrey P. Lanza and Shawn V. Hernan
+    ______________________________________________________________________
+
+    This document is available from:
+    http://www.cert.org/advisories/CA-2003-07.html
+    ______________________________________________________________________
+
+CERT/CC Contact Information
+
+    Email: cert@cert.org
+           Phone: +1 412-268-7090 (24-hour hotline)
+           Fax: +1 412-268-6989
+           Postal address:
+           CERT Coordination Center
+           Software Engineering Institute
+           Carnegie Mellon University
+           Pittsburgh PA 15213-3890
+           U.S.A.
+
+    CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+    EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+    during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+    We  strongly  urge you to encrypt sensitive information sent by email.
+    Our public PGP key is available from
+    http://www.cert.org/CERT_PGP.key
+
+    If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+    information.
+
+Getting security information
+
+    CERT  publications  and  other security information are available from
+    our web site
+    http://www.cert.org/
+
+    To  subscribe  to  the CERT mailing list for advisories and bulletins,
+    send  email  to majordomo@cert.org. Please include in the body of your
+    message
+
+    subscribe cert-advisory
+
+    *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+    Patent and Trademark Office.
+    ______________________________________________________________________
+
+    NO WARRANTY
+    Any  material furnished by Carnegie Mellon University and the Software
+    Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+    Mellon University makes no warranties of any kind, either expressed or
+    implied  as  to  any matter including, but not limited to, warranty of
+    fitness  for  a  particular purpose or merchantability, exclusivity or
+    results  obtained from use of the material. Carnegie Mellon University
+    does  not  make  any warranty of any kind with respect to freedom from
+    patent, trademark, or copyright infringement.
+      _________________________________________________________________
+
+    Conditions for use, disclaimers, and sponsorship information
+
+    Copyright 2003 Carnegie Mellon University.
+
+    Revision History
+Mar 03, 2003:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPmOZEWjtSoHZUTs5AQGNUwP/YC0aRMqrFoLxUjG9pZIOBb98z8BFPfTW
+w/5u09rcW7WpH52XGaOWbu9PYtnLKtPaMrwevc38r6ILvZywasxdpUcUtR4W9XPZ
+9EW4LYB1EaU81PLpzkQXWkVAhlX4vgHTU75oEcjfsacxXHlxtMYM1JpmyO8gvlnl
+pD4vLdvJqHE=
+=PfHu
+-----END PGP SIGNATURE-----
+
+
+-- 
+------------------------------------------------------
+"Lighten up the cross, it's a long journey ahead..."
+
+Kelley McDonald              Sr. Systems Administrator
+Astronomy Department         kelley@astro.berkeley.edu
+------------------------------------------------------
+
+
+--Battery_of_Barracuda_590_000--
+

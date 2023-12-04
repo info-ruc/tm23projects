@@ -1,0 +1,106 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id g9CFvoP11177
+	for <ggilfoyl@facstaff.richmond.edu>; Sat, 12 Oct 2002 11:57:50 -0400
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id g9CFvf307429
+	for <ggilfoyl@richmond.edu>; Sat, 12 Oct 2002 11:57:41 -0400
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002101211574004953
+ for <ggilfoyl@richmond.edu>; Sat, 12 Oct 2002 11:57:40 -0400
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id g9CFvew30626
+	for <ggilfoyl@richmond.edu>; Sat, 12 Oct 2002 11:57:40 -0400
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id g9CDRkE30441;
+	Sat, 12 Oct 2002 09:27:47 -0400
+Date: Sat, 12 Oct 2002 09:27:46 -0400 (EDT)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: ggilfoyl@richmond.edu
+cc: markus@linuxlabs.com
+Subject: Re: problem with University of Richmond cluster
+In-Reply-To: <3DA523FE.EFF6BA95@mindspring.com>
+Message-ID: <Pine.LNX.4.21.0210120823490.24105-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300003f0e
+
+greetings,
+
+Apologies for the delay getting back to you. It appears that there are
+two ways to solve this problem.
+
+The first would be to re-compile the 2.2.x kernel with the task limit
+raised. That would certainly reduce the problem and provide for minimal
+disruption of the system.
+
+The other soloution to the problem is to upgrade to our new Nimbus
+distribution. Nimbus is based on the Los Alamos Clustermatic and uses the
+2.4.19 kernel. 2.4.x naturally has a much larger task/thread limit since
+it's dependance on the size of a TSS segment has been removed.
+
+It is based on RedHat 7.2. 
+
+Other improvements include a batch scheduling system, lighter weight
+system monitoring (with the same information available) and improvements
+in the automatic addition of new nodes. 
+
+Further information is available from www.clustermatic.org.
+
+Please let me know if you have any questions and which way you want to go
+with this, and we can make necessary arrangements.
+
+G'day,
+sjames
+
+ On Wed, 9 Oct 2002, gilfoyle wrote:
+
+> Hi Steven,
+> 
+>    I am one of the physicists from the University of Richmond (along 
+> with Mike Vineyard) that is using the cluster you delivered to us 
+> earlier this year. We have recently run into a problem which is 
+> limiting our ability to make full use of the cluster. The problem is 
+> the following. Until a couple of days ago we have never tried to run 
+> multiple jobs on each slave node in the entire cluster. On Tuesday, 
+> for the first time, I submitted 148 jobs evenly distributed among the 
+> 48 slave nodes. After about 4-5 hours no more jobs were running, but I 
+> noticed that only about 1/3 of the submitted jobs produced any usable 
+> output. Today, I was running another large set of jobs and found I 
+> could no longer run any new processes even from the command line of a 
+> shell. For example, I would type in 'ls' and get back 'no more 
+> processes'. It appears there is an upper limit on the number of 
+> processes that can be run on the master. Once you exceed that limit it 
+> looks like any new attempts to start a process are essentially 
+> ignored. In submitting the full set of 148 jobs many were not run 
+> because they would have exceeded this upper limit on the allowed 
+> number of processes. Right now I can run no more than about 40 jobs on 
+> the cluster without encountering this problem. This is fewer than one 
+> job per slave node. Each job I submit starts three separate processes 
+> so I am starting 120 processes. In searching the web, there are 
+> discussions of this limitation and a solution (which involves building 
+> a new kernel). The urls are below. I have also attached the scripts I 
+> am using to do the data analysis (one shell script and one perl 
+> script). Any help you can provide would be greatly appreciated.
+> 
+> Thanks-in-advance,
+> 
+> Jerry Gilfoyle
+> 
+> http://www.ltsp.org/documentation/lts_ig_v2.4/lts_ig_v2.4-14.html
+> 
+> http://www.geocrawler.com/archives/3/61/1998/10/0/2207294/
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

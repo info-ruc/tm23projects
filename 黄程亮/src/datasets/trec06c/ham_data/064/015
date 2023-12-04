@@ -1,0 +1,82 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id FAA09968
+	for <handyboard@media.mit.edu>; Tue, 21 Mar 2000 05:14:04 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id FAA15757; Tue, 21 Mar 2000 05:14:04 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7631
+From: "John Wynne" <jwynne@uci.edu>
+X-Real-Life-Name: John Wynne
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: handy board troubles...
+Posted-Date: Tue, 21 Mar 2000 10:13:00 GMT
+Date: Tue, 21 Mar 2000 10:13:00 GMT
+Organization: none
+Message-Id: <FrroDo.C06@lugnet.com>
+References: <Frp7CB.GBD@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Actually Jake, I'm having a similar problem right now, with regard to
+loss of RAM capabilities.
+
+I've been testing a new Polaroid 6500 sonar (which now works!) on the HB
+and I've got it hooked up through the exp. board. I tried to run a simple
+program that used actuated two servos, two motors, while polling one analog
+input. It seemed to work without the Polaroid connected, but when I fired
+it up with everything loaded on, it died, and now my HB can't seem to hold
+it's RAM with the RJ11 cord connected to the charger/dler. I'm not completely
+sure how the servos are powered/oscillated (etc.) so I haven't been able
+to locate where I might have suffered some kind of power surge (possibly
+from the sonar ranging board)... does it make any sense to think that
+the sonar could have any affect on other periferals without being directly
+powered up?... How ARE the servos on the Exp. Board driven?
+
+thanks for any help,
+
+John
+
+p.s. On a somewhat different subject... I was wondering: Can the analog(n)
+function be polled at any rate with success, or is it necessary to check
+ the CCF flag on the ADCTRL register (0x1030) be checked before
+everytime and before the call to analog()? I'm reading an analog port quite
+rapidly and I just wanted to know if this precursory check needed to be done.
+If so, is the same true with the exp. board analog ports?
+
+THANKS!
+
+In lugnet.robotics.handyboard, Jake Burkholder writes:
+>Hi,
+>
+>A while ago I shorted out my handy board which caused the ram chip to fry.
+>I've since replaced it, and the board boots again, but I am now seeing
+>other strange behaviour.
+>
+>The batteries are connected and the board recieves power, but when I turn it
+>off the contents of RAM is lost unless the rj11 jack is plugged into the
+>charger/serial board.  The charger board need not be plugged into the wall, so
+>the power is coming from the batteries, and I've checked with a voltage meter
+>that there is always +5v to the RAM chip.  If I turn off the board and unplug
+>the rj11 jack, the board no longer boots and the pcode needs to be reloaded.
+>If I really quickly turn it off, remove the rj11 jack and turn it on again, it
+>works but then if I leave it off for more than a few moments the RAM is lost.
+>
+>If I call sleep() or msleep() or anything that uses them from IC the heart
+>beat stops and I have to reset the board.
+>
+>The infrared input/ouput seems to work fine, and I have an expansion board
+>with a polaroid sonar, and it works fine too.  Normal IC stuff, printf etc.
+>works fine.
+>
+>What I believe happened with the catastrophic failure of my ram chip is that
+>the pins on the bottom of the board pierced the insulation on the wires to the
+>battery.  I disconnected it quickly but there was smoke and sparks.  The board
+>worked perfectly before this, and booted right up on replacing the RAM chip.
+>
+>Any help is appreciated...Thank you
+>
+>Jake
+

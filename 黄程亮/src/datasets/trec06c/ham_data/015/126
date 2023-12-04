@@ -1,0 +1,93 @@
+Received: from alpha.delta.edu (alpha.delta.edu [161.133.129.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id EAA30602
+	for <handyboard@media.mit.edu>; Thu, 23 Apr 1998 04:43:12 -0400 (EDT)
+Received: from pm144-00.dialip.mich.net by alpha.delta.edu; (5.65v3.0/1.1.8.2/06Jan97-0932AM)
+	id AA28847; Thu, 23 Apr 1998 04:45:56 -0400
+Received: from kott.my.domain (dakott@kott.my.domain [192.168.0.1])
+	by kott.my.domain (8.8.8/8.8.5) with SMTP id VAA13838;
+	Wed, 22 Apr 1998 21:52:03 -0400 (EDT)
+Date: Wed, 22 Apr 1998 21:52:03 -0400 (EDT)
+From: David Kott <dakott@alpha.delta.edu>
+Sender: dakott@kott.my.domain
+To: crm0922@bu.edu
+Cc: handyboard@media.mit.edu
+Subject: Re: Help!! Polaroid problem!!!
+In-Reply-To: <19980421142005.9164.rocketmail@attach1.rocketmail.com>
+Message-Id: <Pine.BSF.3.96.980422212714.13786C-100000@kott.my.domain>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Tue, 21 Apr 1998, Chris Moylan wrote:
+
+> microcontroller is virtually identical at the lowest level.  The problem
+> is when we attach the device to the scope, we NEVER see any significant
+> voltage on the ECHO pin.  With the INIT pulsing 5V every second, we
+> still get nothing but residual noise (kind of a lot, but at no more
+
+residual noise?  It was my understanding that the Polaroid module used
+pulse time differentials to relay distance information.  One need only
+look at the difference in time, between the leading edge of the init
+pulse, and the leading edge of the echo pulse to determine the distance
+from an object.  This is different from modules that generate a variable
+voltage between two limits proportional to the Time of Flight of a given
+ping.  When you say "noise", it makes me think that you are dismissing
+the actual Time of Flight information as a glitch in the output.  You
+should see about .9 ms between the leading edge of the init pulse and
+the falling edge of the echo pulse for every foot between your transducer
+and a given target.
+
+Someone please correct and clarify this if I am wrong.  I don't remember
+specifically what version of the classic Polaroid transducer
+driver/detector we used, and Chris may be using a different one.
+
+
+> than .5V)and the remnants of the sixteen pulses from the ping.  I hear
+> a clicking sound too, which was unexpected and is quite annoying.  Is
+> this normal?  How come I never have any voltage on ECHO?  I am not
+
+Every transducer I have ever used has had a human audible component that
+was heard every time the transducer emitted a ping.  I think this is
+called "ringing", and is due to the emitter plate flexing, and generating
+harmonics which may fall into the human audio range.  Check out the
+Fourier transform of a digital pulse and you can see the frequency
+components that we hear.
+
+> using the blanking inhibit at all, and if I look at the noise at about
+> a 200mv setting on the scope, I can see a shape in the noise that
+> changes with an objects proximity to the transducer, but it is not
+> anything like a logic level.  I have tried a million different ways of
+
+Could your scope leads be a bit flaky?  How are you triggering?  If you
+are using a digital scope, try and configure the instrument for "manual"
+trigger, as opposed to "auto" trigger.  There will most likely be a
+variable setting to allow you to set the trigger threshold.  All the
+digital Tek's do this.  I seem to recall it being under the "Vertical
+Menu", or was it "Acquire"? *shrug*  Then attempt to "capture" the echo
+edge event.  It was a 5 volt signal; have no doubts there.
+
+<snip>
+> way to test it.  We connected it to the microcontroller as it connects
+> to the handyboard, but that of course didn't work either.  If you can
+
+How did you connect it to your Micro?  Again, the device we used did not
+supply an analogish level to represent the Time of Flight of a given
+audionic pulse.  The time information was determined by measuring the
+difference between the init pulse and the echo pulse with an Input
+Capture.  With a 2 Mhz E-clock, the magic number turned out to be about
+150 TPU counts per foot.  I don't remember precisely how we got that..
+probably trial and error.
+
+> respond via email, that would be best because I don't get this list
+> regularly.  Please respond soon so I don't fail senior design!! ;-) 
+
+Note that I have forwarded my response to the Handyboard list as well.
+
+Have faith, and good luck.
+
+								-d
+    The Fourth Law of Programming:
+
+    Anything that CAN go wrong wi
+  /kernel: pid 128 (sendmail), uid 0: exited on signal 11 (core dumped)
+
+

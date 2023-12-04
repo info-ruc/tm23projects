@@ -1,0 +1,56 @@
+Received: from caraway.ee.byu.edu (caraway.ee.byu.edu [128.187.30.79])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA07346
+	for <handyboard@media.mit.edu>; Mon, 6 Jul 1998 15:02:06 -0400 (EDT)
+Received: from caraway (localhost [127.0.0.1]) by caraway.ee.byu.edu with SMTP (8.7.6/8.7.1) id NAA07810; Mon, 6 Jul 1998 13:02:05 -0600 (MDT)
+Sender: goldt@ee.byu.edu
+Message-Id: <35A11F2D.3B18@et.byu.edu>
+Date: Mon, 06 Jul 1998 13:02:05 -0600
+From: "Timothy B. Gold" <goldt@et.byu.edu>
+X-Mailer: Mozilla 3.04Gold (X11; I; HP-UX B.10.20 9000/777)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Cc: jab@dee.fct.unl.pt
+Subject: Re: Serial line interrupt
+References: <3.0.5.32.19980706182917.00801bb0@193.137.127.65>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+> Sending data from the PC to the Handy Board is another story. The serial
+> routines on http://www.ai.mit.edu/people/rsargent/ic/serialio.html work
+> fine if
+> the PC isn't sending very fast. The current 'solution' is to put the PC in a
+> short loop after it has sent a character to slow it down. But that's not a
+> very
+> elegant solution.
+> 
+> Is there a way to use the same technique on the handy Board as on the PC
+> (using
+> an interrupt handler)? If so, has anyone used that approach and is willing to
+> share this code?
+
+  I had the same problem a few weeks ago, ended up writing an interrupt
+handler for the Handy Board which will buffer up the incoming serial
+information so that none of it is lost.  I guess the Handy Board
+normally just polls the serial port (I think with the system
+interrupt?), so if data is coming in too fast some of it gets lost.
+
+  Anyway, the code seems to work just fine.  The actual buffer size is
+flexible -- you just have to edit the code in a couple of places.  I
+have done much experimenting to see how big the buffer actually needs to
+be to prevent any data loss.  One side effect, which may or may not be a
+problem depending on what you're doing: once the interrupt handler is
+active, you can no longer use interractive C to interface with the
+handyboard.  So it's a good idea to write your code in such a way that
+you have a way to disable the serial interrupt handler from the
+handyboard itself, otherwise you'll have to redownload the pcode to be
+able to get it to talk to interactive C.
+
+  I want to touch up the code a little before I put it out on the
+mailing list (clean it up a little and put a few more comments in
+explaing what's going on).  Give me a day or so and I'll have it posted
+here to the mailing list.
+
+Tim Gold
+goldt@et.byu.edu
+BYU Robotics Lab
+

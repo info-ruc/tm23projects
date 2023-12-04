@@ -1,0 +1,65 @@
+Received: from mta1.snfc21.pbi.net (mta1.snfc21.pbi.net [206.13.28.122])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id UAA10215
+	for <handyboard@media.mit.edu>; Tue, 7 Mar 2000 20:21:00 -0500 (EST)
+Received: from pacbell.net ([206.170.238.215])
+ by mta1.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.09.16.21.57.p8)
+ with ESMTP id <0FR200AWTWXWWD@mta1.snfc21.pbi.net> for
+ handyboard@media.mit.edu; Tue,  7 Mar 2000 17:18:02 -0800 (PST)
+Date: Tue, 07 Mar 2000 17:18:31 -0800
+From: Gary Livick <glivick@pacbell.net>
+Subject: Re: Can I interface the Handy board to a PC to run there the robot's
+ brain?
+To: Julian <jf595@columbia.edu>
+Cc: handyboard@media.mit.edu
+Message-Id: <38C5AA64.21322E1F@pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854";
+ x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+References: <Fr2uzH.8Eq@lugnet.com>
+
+First, try this:
+http://el.www.media.mit.edu/groups/el/projects/handy-board/software/contrib/drushel/serialio.c
+
+If that won't do it for you, and you can get I/O control over your PC, you can
+use the SPI port at J6 for some very fast transfers.
+
+There are people who have interfaced RF links to various boards, but the task
+does not appear trivial.  Sign up to the list server at the Seattle Robotics
+Society to ask questions of those who have done it.  The URL for the SRS is
+http://www.seattlerobotics.org/
+
+What in the world are you doing that you cannot get your program on the Handy
+Board?  I am running a grid-based navigation routine using a 20 x 40 grid,
+driving two motors, two servos and two wheel encoders, and doing obstacle
+detection and position updating with an IR ranging sensor.  I run IC, which takes
+up half of the 32K of external RAM, but even with all this I have several
+thousand bytes of RAM left over.  I have never succeeded in using it all, but I'm
+sure it can be done.  I'm just wondering how you did it.
+
+If you can't get your program into RAM using IC, then you can switch to a
+commercial C compiler such as ICC11 from Imagecraft, and get the 16K taking up by
+the Pcode interpreter back for your own use.
+
+Good luck,
+
+Gary Livick
+Tiny HC11 products for your robot
+http://www.teleport.com/~raybutts/
+
+
+Julian wrote:
+
+> Hi, I am new on this, and I am not sure if can use the handy board to  get the
+> data from the sensors or to send the motor commands, but to send the data to a
+> PC in order to process them, i.e., to run the program that controls the robot
+> in a pc, in which I can run very complex programs, and then send the data back
+> to the handy board to tell the motors wath to do. May I even do it in a
+> wireless way (with a RF interface?)? where in the handy board do I have to
+> connect the interface (which one anyway!)?
+> Thanks
+>
+> Julian
+
+

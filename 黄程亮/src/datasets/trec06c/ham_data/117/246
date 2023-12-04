@@ -1,0 +1,87 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2EGIRt22204
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 11:18:27 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2EGIPJg008984
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 11:18:25 -0500 (EST)
+Received: from 128.84.154.13 (proxying for unknown)
+        by webmail.cornell.edu with HTTP;
+        Tue, 14 Mar 2006 11:18:26 -0500 (EST)
+Message-ID: <15222.128.84.154.13.1142353106.squirrel@webmail.cornell.edu>
+Date: Tue, 14 Mar 2006 11:18:26 -0500 (EST)
+Subject: PAPER 14
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Ng, T. and H. Zhang present "Predicting Internet Network Distance..."
+which examines predicting internet network "distance" via several
+approaches.  Generally, "distance" measures latency in the network.  First
+IDMaps is briefly examined which is a client-server architecture where a
+server maintains a toplogical model of the network and can make
+predictions of latency for clients.  However, this model presents an
+overhead of communicating with a potentially heavily loaded server.  Next,
+Global Network Positioning is presented which uses landmarks in the
+network.  These landmarks measure their latencies to each other and embed
+themselves in a Euclidean space by minimizing the overall difference
+between computed distance in the Euclidean space and the actual measured
+distances..  New nodes measure their latencies to the landmarks and embed
+themselves in the space similarly.  Finally a triangulation heuristic is
+presented where nodes measure the number of hops to various "bases" in the
+network.  This provides some kind of upper bound as the min of the sum of
+the number of hops to all bases from each node.  An evaluation of these
+systems is presented using relative and direction errors which first
+suggest that GNP outperforms both other methods(90% of estimates have
+relative error of .97) and that these systems typically overestimate the
+latency (and do so with large deviations).
+
+Dabek et al. present "Vivaldi" which models the coordinate embedding
+problem as a spring potential energy minimization problem.  Here, nodes
+are connected via springs with the rest length of the springs equal to the
+measured RTTs between nodes and the actual length of the springs equal to
+the distance between node in some coordinate space (several are
+considered).  The optimization problem then iteratively examines the
+forces on each node, sums them and applies the resulting force for some
+timestep delta.  This algorithm can be distributed such that each node
+makes a sample with a peer and applies that new "force" to the existing
+samples it already has.  This leads to an adjustment in the coordinate
+space and yields a local search problem.  Several coordinate systems are
+examined and finally a 2-d Euclidean space with "height vectors" is
+proposed which is shown to model (with some intuitive arguments regarding
+height vectors modelling access links and the plane modelling the internet
+core) internet RTTs well.  However, the evaluation doesn't consider
+changes in RTTs between nodes.  Instead all RTTs are preset and fixed for
+the lifetime of the simulation.  It's not clear how the local search
+problem would fare in such a dynamic environment and even so it's not
+clear that the optimization will converge in any case (although it seems
+to have in the presented simulation).  Furthermore, the model presented
+seems to have a good intuitive basis and is mathematically well defined,
+however no analysis of this model is performed to explore parameters of
+the system.
+
+Wong, Slivkins, Sirer present "Meridian" which is another network distance
+solution; however, Meridian doesn't embed nodes in a global coordinate
+system.  Instead, each node maintains a set of concentric, exponentially
+expanding rings.  Each ring contains a fixed number of nodes at the given
+ring distance (actually a range of distances).  In this way each node
+accurately models the distance to its neighbors.  This solution is less
+general than the absolute coordinate embedding because each node only has
+a local model of positioning.  No global model is available for general
+use.  However, solutions to three common problems using Meridian are
+presented: closest node discovery (find the node closest to some target),
+central node discovery (find the node central to a set of nodes) and
+latency region
+intersection select (find the set of nodes all of which have latency less
+than some bound to all nodes in another diverse set of nodes). 
+Additionally analysis is presented that under some important metrics
+Meridian will provide epsilon-nice rings (such that "good" closest
+neighbors will be selected with high probability) for small per-node
+state.  Empirical results (supporting assumptions made in analysis)
+suggest that Meridian significantly outperforms the above two embedding
+solutions.
+

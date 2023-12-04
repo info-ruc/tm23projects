@@ -1,0 +1,67 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i4KFxUIn016590
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 20 May 2004 08:59:30 -0700
+Received: from anybodyi.u.arizona.edu (ppp146.broadband01.tus.dakotacom.net [69.9.24.146])
+	by breaker.dakotacom.net (8.12.2/8.12.2) with ESMTP id i4KFxUD6014710
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 20 May 2004 08:59:30 -0700 (MST)
+Message-Id: <5.1.0.14.2.20040520084813.00b14568@psy1.psych.arizona.edu>
+Date: Thu, 20 May 2004 08:59:25 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: long non-alphabet sutimuli
+In-Reply-To: <001601c43e56$0c7859e0$c570f59b@so13037x0>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 07:34 PM 5/20/2004 +0900, you wrote:
+>Hallo,
+>I am a master's student at University of Essex. I am planning to conduct
+>Sentence Matching Experiment in Japanese,
+>And have problems in displaying a long sentence containing several
+>Chinese characters (Hiragana and Katakana are okey to be displayed).
+>When the string of Chinese characters are more than 4, the error message
+>"frame has multiple test segment, possible missing frame delimeter".
+
+   Multiple text segments means that DMDX found something like the following:
+
+   +1 / "frame 1" / "frame 2" "second text segment" / "frame 3"  *;
+
+   It usually occurs because there's a missing frame delimiter and the item 
+should look like:
+
+   +1 / "frame 1" / "frame 2" / "second text segment is now frame 3" / 
+"frame 4"  *;
+
+>If someone knows how to display long sentences in Chinese chracter,
+>please let me know.
+
+   Shouldn't be any particularly big deal, it's been done before.  You 
+might want to make sure you're using the latest DMDX though as there have 
+been a couple of fixes to handle Asian weirdnesses to do with smart quotes 
+and the VOX test.
+
+>Also, if someone has a format for Sentence Matching, I would appriciate
+>if I could take a look. (Mine uses <% 0>, maybe not a good idea).
+
+   %0 frames are fine, often it's easier to use the comma frame delimiter 
+instead though.  For instance the following item can be re-written:
+
++1 / "frame 1" / %0 "frame 2" / ! "frame 3"  *;
+
+   With a comma frame separator it becomes:
+
++1 / "frame 1" / "frame 2" , "frame 3"  *;
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Any fool can paint a picture, but it takes a wise man to be
+able to sell it.
+                                      - Samuel Butler (1835-1902)
+
+
+

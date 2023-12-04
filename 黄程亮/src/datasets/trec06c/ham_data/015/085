@@ -1,0 +1,59 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id AAA01722
+	for <handyboard@media.mit.edu>; Wed, 22 Apr 1998 00:28:01 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id AAA16133;
+	Wed, 22 Apr 1998 00:28:00 -0400 (EDT)
+Message-Id: <199804220428.AAA16133@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Peter Eacmen <eacmen@postoffice.worldnet.att.net>
+Cc: Handy Board Mailing List <handyboard@media.mit.edu>
+Subject: Re: IR Transmit ?!? HELP 
+In-Reply-To: Your message of "Tue, 21 Apr 1998 23:06:42 EDT."
+             <353D5EC2.EBBAFEB6@postoffice.worldnet.att.net> 
+Date: Wed, 22 Apr 1998 00:28:00 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+> I recently assembled a Handy Board, everything is perfect except for the
+> IR Transmitter.  The IR Tx LED does not light.  It is not the LED itself
+> because I replaced it.  I can't seem to figre out what's wrong.  Please
+> help.
+
+Did you follow the instructions in the HB Assembly debug? at
+
+  http://el.www.media.mit.edu/projects/handy-board/hbassem/hbassem5.html
+
+it says:
+
+  Output Stage
+  
+  If LED9R fails to light after the poke command is issued, trace the 
+  following progression of signals. Please refer to the infrared output 
+  schematic: 
+  
+  * 6811 Timer Output 2. This is the signal from the 6811 that enables
+  the IR transmission circuit. Check pin 28 of the 6811; it should be
+  high.  The signal is wired to pin 2 of U7; it also should be high.
+  
+  * Oscillator Output. Look at the signal on pin 3U7; when the 6811
+  timer output 2 is high, it should be a 40 kHz square wave. If not,
+  check for proper installation of U7, R4, and C6.
+  
+  * Inverter. The 40 kHz square wave should go to pin 1 of U9, where it
+  is inverted and output on pin 2 of the same chip.
+  
+  * Transistor Drive. The 40 kHz signal then passes through R3, where it
+  is delivered to the base of Q1. Check for the signal's presence at
+  these points.
+  
+  * Transistor and LED Wiring. Check that the emitter lead of the
+  transistor is properly grounded, and that LED9R and R5 have good
+  solder joints.
+  
+
+
+let us know the results.
+
+fred
+

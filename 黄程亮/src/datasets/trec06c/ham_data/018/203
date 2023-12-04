@@ -1,0 +1,53 @@
+Received: from graphics.Stanford.Edu (graphics.Stanford.Edu [171.64.77.146]) by filter.Stanford.EDU (8.7.5/8.7.1) with ESMTP id TAA10140 for <jedavis@filter.Stanford.EDU>; Wed, 17 Jun 1998 19:17:18 -0700 (PDT)
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.64.24])
+	by graphics.Stanford.Edu (8.9.0/8.9.0) with ESMTP id TAA16414
+	for <jedavis@graphics.Stanford.EDU>; Wed, 17 Jun 1998 19:17:18 -0700 (PDT)
+Received: (from dk@localhost)
+	by Xenon.Stanford.EDU (8.8.7/8.8.8) id TAA12009
+	for jedavis@graphics; Wed, 17 Jun 1998 19:15:09 -0700 (PDT)
+X-UIDL: 898632301.000
+From: David Koller <dk@CS.Stanford.EDU>
+Message-Id: <199806180215.TAA12009@Xenon.Stanford.EDU>
+Subject: serial_sgi changes
+To: jedavis@graphics.Stanford.EDU
+Date: Wed, 17 Jun 1998 19:15:09 -0700 (PDT)
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Status: RO
+
+
+James --
+
+   Here's the minor changes to serial_sgi.c to match with the
+new termios struct (/usr/include/sys/termios.h) in IRIX 6.3+.
+
+------------------------------------------------------------
+OLD:
+------------------------------------------------------------
+SerialID Serial_OpenPort(long baud, long parity,
+                         long char_bits, long stop_bits)
+...
+io_settings.c_cflag = baud | char_bits | parity | stop_bits;
+io_settings.c_cflag |= CREAD | CLOCAL;
+
+
+------------------------------------------------------------
+NEW:
+------------------------------------------------------------
+SerialID Serial_OpenPort(speed_t baud, long parity,
+                         long char_bits, long stop_bits)
+...
+io_settings.c_cflag = char_bits | parity | stop_bits | CREAD | CLOCAL;
+io_settings.c_ispeed = io_settings.c_ospeed = baud;
+
+
+Note that you'll also want to remove all the #define BAUDxxxx
+lines in serial_sgi.h, as the OpenPort API changes so that the
+baud is specified with the explicit value.
+
+------------------
+Dave Koller
+dk@cs.stanford.edu
+

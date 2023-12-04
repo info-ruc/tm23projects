@@ -1,0 +1,62 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id SAA22650
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 30 Oct 2000 18:35:47 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by deimos.email.Arizona.EDU (5.1.046)
+        id 39F9F7780002EC32 for DMDX@psy1.psych.arizona.edu; Mon, 30 Oct 2000 18:35:45 -0700
+Message-Id: <5.0.0.25.2.20001030182716.009db170@psy1.psych.arizona.edu>
+Date: Mon, 30 Oct 2000 18:35:45 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: frame duration
+In-Reply-To: <39F9F77A000017C2@deimos.email.Arizona.EDU>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 04:16 PM 10/30/00 -0700, you wrote:
+>I am trying to run a program using the 1.3 version.  My goal is to have
+>the frames displayed for different amounts of time.
+>
+><ep> F359 d5  t24000 <ContinuousRun> <RecordClockOnTime> <nfb> <zil> 
+><AzkiiResponses>
+><id "keyboard"> <dfs 64> <bgc 000000000> <eop>
+>
+>+100   %719 <t 14000> * "REST"/;    For 14 seconds displayed for 14secs
+>+165 %119 <t 2000> * "REMEMBER"/;   For 2 seconds displayed for 24 sec
+>+101  %599 <t 24000>  * <line -1> "Orientation", <line 1> "fMRI experience"/;
+>
+>For 24 sec displayed for 24 sec
+>
+>
+>When I run the program it seems to only follow the parameter line. I have
+>had success with this working in the past but I am having problems with
+>it now. I have gone in and changed a few things but don't remember what
+>they were and all combos I can think of haven't been successful. I would
+>appreciate any suggestions.
+
+   Well, T and <t> don't set the frame duration, F and % do.  T sets the 
+time limit on the subjects RT in milliseconds, F and % set the frame 
+duration in tics.  You'll probably also want to keep the time limit less 
+that the frame's duration for your continuous running FMRI task (otherwise 
+DMDX will wait for an RT if it hasn't been received by the display's end 
+time leading to inconsistent total run times). Also, in item 101 you'll 
+want to specify the frame's duration in the last frame, a comma operator is 
+a frame delimiter that forces the duration of the first frame to be zero 
+and for the second frame to not erase the first's display so it only makes 
+sense to set the duration in the last part of a comma separated series of 
+frames.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Any simple theory will be worded in the most complicated way.
+
+
+

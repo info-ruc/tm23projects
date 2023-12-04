@@ -1,0 +1,60 @@
+Received: by cheltenham.cs.arizona.edu; Sun, 18 Dec 1994 04:49:38 MST
+To: icon-group-l@cs.arizona.edu
+Date: 17 Dec 1994 15:33:01 GMT
+From: ruiter@ruls41.fsw.LeidenUniv.nl (Jan-Peter de Ruiter)
+Message-Id: <3cv0bd$gdv@highway.LeidenUniv.nl>
+Organization: Leiden University, The Netherlands
+Sender: icon-group-request@cs.arizona.edu
+References: <dkuhlmanD0wuqE.I5w@netcom.com>
+Subject: Re: Backtracking in Icon
+Errors-To: icon-group-errors@cs.arizona.edu
+
+G. David Kuhlman (dkuhlman@netcom.com) wrote:
+: But now, in spite of the fact that I have a language
+: with a strong backtracking mechanism, I find that I
+: don't use it much, except of course, for trivial
+: constructs like:
+
+:     (checkValid(x) | write("error"))
+
+I must admit that in the thousands of Icon programs that I've
+written, I've used serious backtracking only once. But when I used it,
+it turned out to be very handy. I had this large lexicon of
+nouns, and had to devise 4tuples of word pairs like this:
+
+toilet paper
+paper cloth
+cloth builder
+builder toilet
+
+(NOTE: this is a nonsense example, only for illustration - in Dutch you
+have compounds, that look like "toiletpaper", and then it makes
+more sense to look for these 4tuples for not all compounds exist
+in the Dutch lexicon)
+
+I could just write a statement with &'s specifying the
+relations I needed, and generate them all using backtracking.
+Very nice indeed!
+
+There's one more thing I'd like to point out, and that is that
+the construct you used as an example can also be programmed in
+C. If you just write
+
+  (checkValid(x) || printf("error"));
+
+you'll have the same thing. So it isn't really backtracking
+here. It's actually "short circuit evaluation". The same thing
+can be done in LISP or SCHEME, without backtracking.
+
+What _can't_ be done in C, and is very convenient in Icon, is
+
+	nlines :=  +argument[1] | 10  
+
+thereby establishing a default value for nlines that can be 
+overwritten by a commandline argument. This is a very natural
+formulation that I use very often in my Icon programs.
+
+Hoping to have been informative,
+
+Jan
+

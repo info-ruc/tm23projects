@@ -1,0 +1,111 @@
+Received: from saffron.cc.columbia.edu (saffron.cc.columbia.edu [128.59.59.102])
+	by jalapeno.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0KNLv22012959;
+	Fri, 20 Jan 2006 18:21:57 -0500 (EST)
+Received: from saffron.cc.columbia.edu (localhost [127.0.0.1])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0KNDQnr015481
+	for <cuflow-users-outgoing@columbia.edu>; Fri, 20 Jan 2006 18:13:26 -0500 (EST)
+Received: (from majordom@localhost)
+	by saffron.cc.columbia.edu (8.13.0/8.12.8/Submit) id k0KNDPjp015480
+	for cuflow-users-outgoing; Fri, 20 Jan 2006 18:13:25 -0500 (EST)
+Received: from marionberry.cc.columbia.edu (marionberry.cc.columbia.edu [128.59.28.167])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0KNDOAd015475
+	for <majordom+cuflow-users@saffron.cc.columbia.edu>; Fri, 20 Jan 2006 18:13:24 -0500 (EST)
+Received: from hoshi.dynamicnetworks.us (hoshi.dynamicnetworks.us [216.126.231.195])
+	by marionberry.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0KNDJxj027089
+	for <cuflow-users@columbia.edu>; Fri, 20 Jan 2006 18:13:23 -0500 (EST)
+Received: (qmail 25528 invoked by uid 89); 20 Jan 2006 23:13:15 -0000
+Received: by simscan 1.1.0 ppid: 25521, pid: 25524, t: 0.5031s
+         scanners: clamav: 0.87/m:34/d:1184 spam: 3.1.0
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	hoshi.dynamicnetworks.us
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.1.0
+Received: from unknown (HELO ?127.0.0.1?) (rgalloway@stonegate-wvc.us@148.175.49.1)
+  by hoshi.dynamicnetworks.us with SMTP; 20 Jan 2006 23:13:14 -0000
+Message-ID: <43D16E83.8050805@dynamicnetworks.us>
+Date: Fri, 20 Jan 2006 16:13:07 -0700
+From: Robert S Galloway <rgalloway@dynamicnetworks.us>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
+MIME-Version: 1.0
+To: flowscan@net.doit.wisc.edu, cuflow-users@columbia.edu
+Subject: Strange Error Messages -- Table.pm
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: 0 () 
+X-Scanned-By: MIMEDefang 2.48 on 128.59.29.5
+X-Scanned-By: MIMEDefang 2.48 on 128.59.28.167
+Sender: owner-cuflow-users@columbia.edu
+Precedence: bulk
+X-No-Spam-Score: Local
+
+Hello everyone,
+
+I just did a new install of my FlowScan/CUFlow setup and I'm getting an 
+error message in my log files that I've never seen before. See below. 
+Everything seems to be OK, but it's still an error message.
+
+Install:
+CentOS 4.2
+Perl 5.8.5
+CUFlow 1,7
+FlowScan 1.006 with flow-tools patched FlowScan.pm
+
+2006/01/20 15:55:29 working on file 
+/var/netflow/ft-v05.2006-01-20.155000-0700...
+2006/01/20 15:55:29 flowscan-1.020 CUFlow: Cflow::find took  0 wallclock 
+secs ( 0.13 usr +  0.00 sys =  0.13 CPU) for 20863 flow file bytes, flow 
+hit ratio: 1324/1336
+2006/01/20 15:55:29 flowscan-1.020 CUFlow: report took  0 wallclock secs 
+( 0.00 usr +  0.00 sys =  0.00 CPU)
+sleep 30...
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+Use of uninitialized value in numeric gt (>) at 
+/usr/lib/perl5/site_perl/5.8.5/HTML/Table.pm line 1684.
+
+Here is the sub and line 1684 is pointed out.
+
+sub addRow {
+   my $self = shift;
+
+   # this sub should add a row, using @_ as contents
+   my $count = @_;
+   # if number of cells is greater than cols, let's assume
+   # we want to add a column.
+--->>> 1684   $self->{last_col} = $count if ($count > $self->{last_col});
+   $self->{last_row}++;  # increment number of rows
+   for (my $i = 1; $i <= $count; $i++) {
+      # Store each value in cell on row
+         $self->{rows}[$self->{last_row}]->{cells}[$i]->{contents} = shift;
+   }
+   return $self->{last_row};
+
+}
+
+Thanks!
+
+Robert S Galloway
+www.dynamicnetworks.us/netflow/
+
+

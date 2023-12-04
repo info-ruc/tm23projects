@@ -1,0 +1,58 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fA14r1R02040
+	for <egs@popsrv.cs.cornell.edu>; Wed, 31 Oct 2001 23:53:02 -0500 (EST)
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
+Subject: cs615 PAPER 31
+Date: Wed, 31 Oct 2001 23:53:01 -0500
+Message-ID: <706871B20764CD449DB0E8E3D81C4D4301E7F289@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: cs615 PAPER 31
+Thread-Index: AcFikRWv/ADbLOAnQm+6sEWZNABAHw==
+From: "Venu Ramasubramanian" <ramasv@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id fA14r1R02040
+
+Semantic File Systems
+
+	This paper describes an attribute-value pairs based naming
+scheme that is translated into a standard directory based file system
+interface.  The AV based naming provides users ease of searching and
+finding desired files much like a database.  Using user specified
+transducers to generate the AV pairs associated with a file increases
+the usability of this system.
+
+	Each file has a transducer that can be specified by the user,
+whose role is to identify attribute value pairs associated with this
+file that can be used at search time to locate it.  Users can search for
+files by specifyinga name consisting of AV pairs.  The name is
+translated into a tree (directoy structure) and access to the file is
+provided using the standard FS interface.  Virtual links are used to
+associate a file in multiple virtual directory.
+
+	Query processing is of course the main component of this system.
+several indexes are created for the attributes and values geberated by
+the transducers.  The indexes are updated periodically.   The query
+processing component uses this index to locate the reqd file and
+materialize a directory structure containing this file.  The incremental
+indexing operation is however shown to be expensive. Thus practically,
+reindexing would have to be done infrequently and during times of low
+process load.  I think that the reindexing scheme could be improved
+further.
+
+	It may not be possible to translate all kinds of queries into
+directory based names.  Insisting on a file system interface forces the
+system to loose flexibility in query specification.  Searching through
+contents of a text file such as done on the internet may require
+specifying the entire file as values to certain attributes.  The size of
+AV pairs so created might be huge (duplication of the file) and so would
+be the index required to access it.  The query resolution process
+specified by this system may be inefficient for such searches.  Yet, the
+user defined transducers and directory based naming makes the system
+very attractive to use.       
+

@@ -1,0 +1,70 @@
+Received: from norma.Berkeley.EDU (norma [128.32.92.224])
+	by astron.Berkeley.EDU (8.11.4/8.11.4) with ESMTP id g5EGsUU28721
+	for <linuxusers@astron.Berkeley.EDU>; Fri, 14 Jun 2002 09:54:31 -0700 (PDT)
+Received: from localhost (jhall@localhost)
+	by norma.Berkeley.EDU (8.11.4/8.11.4) with ESMTP id g5EGsUX21592
+	for <linuxusers@astro>; Fri, 14 Jun 2002 09:54:31 -0700 (PDT)
+X-Authentication-Warning: norma.Berkeley.EDU: jhall owned process doing -bs
+Date: Fri, 14 Jun 2002 09:54:30 -0700 (PDT)
+From: Joseph Lorenzo Hall <jhall@astro.berkeley.edu>
+X-X-Sender: jhall@norma
+To: linuxusers@astron.Berkeley.EDU
+Subject: linux: quite the dandy of a mistake...
+Message-ID: <Pine.GSO.4.44.0206140941110.21579-100000@norma>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 2228
+Status: RO
+X-Status: $$$$
+X-UID: 0000000045
+
+
+Alright, let's see if any of you have any bright ideas about this one:
+
+In the process of using Acronis Disk Administrator to resize my ext3
+partition I mistakenly installed their dorky bootloader (Acronis OS
+Selector) over GRUB on the mbr of my hard drive.
+
+You would think that wouldn't be a problem and that I could do a
+'grub-install hda' to re-write GRUB stage1 to the mbr.  I did this and for
+some unexplainable reason I also did 'grub-install hda1'.
+
+Now hda1 is my Windows 98 SE partition! This means the small bit of code
+that is GRUB stage1 was written to my Windows partition.  Now, when I boot
+up, I get the GRUB bootloader menu and can boot into Linux fine (thank you
+God) but when I choose to boot to Windows it simply executes the GRUB
+stage1 code (which outputs to the screen 'GRUB loading stage2...') and
+hangs.
+
+I've tried booting with a win98se bootdisk and doing a 'sys c:' and even
+'fdisk /mbr' followed by a 'sys c:' but everytime the sys command returns
+'invalid media type reading drive c, abort, retry, fail?'
+
+I can still mount the dos partition so I can backup any data or files and
+reformat that partition as a last resort (then I'd have to decide whether
+to shun MS forevert or to reinstall windoze).  I'd prefer to just fix the
+damage that the 'grub-install hda1' did... but I've reached the limit of
+my expertise (and maybe the expertise/interest of the bug-grub mailing
+list).
+
+Any thoughts would be appreciated,
+Joe
+
+------------------------------------------------------------------
+Joseph Lorenzo Hall                     jhall@astro.berkeley.edu
+Graduate Student                        astron.berkeley.edu/~jhall
+Astronomy Department
+601 Campbell Hall                       voice: (510) 643-8592
+University of California at Berkeley    fax  : (510) 642-3411
+Berkeley, CA 94720-3411                 face : 753B Campbell
+
+"Current copyright law, with its exceptions and exceptions to exceptions,
+is not very different from Ptolemy's epicycles and epicycles within
+epicycles."
+-Ernest Miller and Joan Feigenbaum, "Taking the Copy Out of Copyright"
+http://astro.berkeley.edu/~jhall/pdf/MF.pdf
+
+Does your congressmember know how you feel? Let them know TODAY:
+http://www.visi.com/juan/congress/
+
+

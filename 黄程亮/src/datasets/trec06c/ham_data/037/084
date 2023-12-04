@@ -1,0 +1,74 @@
+Received: from mars.advis.de (root@mars.advis.de [193.158.16.3])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id PAA17051
+	for <handyboard@media.mit.edu>; Tue, 23 Feb 1999 15:13:46 -0500 (EST)
+Received: from advis.de (root@port149.gw3.dresden.advis.de [193.158.16.149])
+	by mars.advis.de (8.8.8/8.8.8) with ESMTP id UAA23610
+	for <handyboard@media.mit.edu>; Tue, 23 Feb 1999 20:02:35 +0100
+Sender: root@mars.advis.de
+Message-Id: <36D30C17.B85F218A@advis.de>
+Date: Tue, 23 Feb 1999 21:14:15 +0100
+From: Thomas Heidel <theidel@advis.de>
+Organization: advis.de
+X-Mailer: Mozilla 4.5 [en] (X11; I; Linux 2.0.35 i586)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Re: Sharp GP2D02 and assembly language
+References: <199902230309.TAA18299@barry.detroit.sgi.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I have the same problem. For now I don't care since
+the GP2D02 is the only thing connected to an digital output.
+
+I am using the following:
+
+Include:
+
+	subroutine_get_userval:
+ 	       ldab    USERVAL  ; load USERVAL to d register
+ 	       clra             ; clear upper byte
+ 	       rts              ; return value in d
+
+to Fred's libexbd.asm; read it from an ic-program and pass it
+to your gp2d02-routine.
+ 
+I agree, it is not very nice too, and you can't use it from
+an assembler routine either. The alternative way would be to
+reserve a byte in pcode_hb.asm (like "beeptone" at 0x26). 
+Even less sexy :-(
+... unless Fred would do it in version 2.8x of pcode.asm ;-)
+
+
+
+Thomas.
+
+
+
+
+
+Barry Brouillette wrote:
+> 
+> Hi,
+> I've written a short assembly language routine to access the Sharp GP2D02
+> sensor and it works just great but...  I have one question.
+> 
+> Since I use the expansion board's digital outs to control the sensor I
+> need to make sure my routine doesn't stomp on any other digtal outs in
+> the process.  I used Fred's libexbd.asm to see how to do digital outputs.
+> Apparently, you can't read the output latch back in so he keeps a local
+> variable USERVAL to keep track of which outputs are set.
+> 
+> My question is this: How can my assembly program access Fred's USERVAL so
+> that my program can also know what bits are set by Fred's set_digital_out
+> routine?
+> 
+> I assume that I could simply #include libexpd.asm in my program and use
+> the resulting .icb file in place of both his libexpbd.icb and my
+> GP2D02.icb but that seems kludgy to me and difficult to explain when
+> posting the code.  Any ideas?
+> 
+> Barry
+

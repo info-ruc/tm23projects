@@ -1,0 +1,57 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jA8FUK5L016648
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 8 Nov 2005 08:30:20 -0700
+Received: from localhost (legolas.email.arizona.edu [10.0.0.224])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 37A0BBA5F04
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  8 Nov 2005 08:30:20 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-5.dsl.arizona.edu [128.196.237.5])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 374F5BA82EB
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  8 Nov 2005 08:30:19 -0700 (MST)
+Message-Id: <5.1.0.14.2.20051108081913.00ba4838@psy1.psych.arizona.edu>
+Date: Tue, 08 Nov 2005 08:30:08 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: feedback duration and delay
+In-Reply-To: <9ae8f64a0511071923o50a00f99lfa2b9587e8b3abf3@mail.gmail.co
+ m>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 09:23 PM 11/7/2005 -0600, you wrote:
+>In a previous post you indicated:
+>#define FB_DELAY        2       /* delay of feedback signal */
+>#define FB_DUR  35      /* duration of feedback message (default) */
+>
+>The delay before the feedback is likely to be longer than 2 ticks if your 
+>machine can't assemble the display that quickly though.
+>
+>You can change the default feedback duration with FBD in the header.  Can 
+>you change the default for FB_Delay if you wanted to provide more time to 
+>assemble feedback to avoid slop in timing when using clearfeedback?
+
+   Don't think so, can't imagine that I would have ever exposed that.  If 
+you want precision in the feedback you'll have to write a custom feedback 
+routine on very similar fashion to the one I gave over the weekend only 
+with more tests on lasXT for incorrect and too long.  The delay from the 
+item _should_ apply over all non-display items (ones with ~ for a CR 
+indicator) so in your RT items you should be able specify the delay of the 
+feedback and in the last item of the feedback that displays either the 
+"wrong", "correct" or "too long" message you should be able to specify the 
+delay of the next RT item.  But everyone needs to bear in mind that unless 
+you've deliberately made the display longer than the RT there's going to be 
+a whole load of variability as the feedback is going to be scheduled from 
+the RT and the RT isn't synchronized with the raster.  So yesterday's 
+request for a 10ms delay from RT to feedback isn't going to happen too often.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   I think, therefore I am.  I think.
+
+
+

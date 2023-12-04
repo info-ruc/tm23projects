@@ -1,0 +1,49 @@
+Received: from watfast.uwaterloo.ca (slegon@watfast.uwaterloo.ca [129.97.172.120])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA01053
+	for <handyboard@media.mit.edu>; Thu, 23 Jul 1998 09:14:47 -0400 (EDT)
+Received: (from slegon@localhost)
+	by watfast.uwaterloo.ca (8.8.8/8.8.8) id JAA12611
+	for handyboard@media.mit.edu; Thu, 23 Jul 1998 09:14:38 -0400 (EDT)
+From: Skye Legon <slegon@watfast.uwaterloo.ca>
+Message-Id: <199807231314.JAA12611@watfast.uwaterloo.ca>
+Subject: Config register 0x3c trauma
+To: handyboard@media.mit.edu (MIT Handyboard List)
+Date: Thu, 23 Jul 1998 09:14:38 -0400 (EDT)
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+You all may recall my problems downloading to my board and receiving
+a "config register set to 0x3c" error.  I am glad to report there was
+a very simple solution, but it was a nightmare to debug.  So allow me
+to share my wisdom so other unfortunate souls don't go through this.
+
+You get this 0x3c error when you DON'T HAVE A COMMON GROUND between
+the serial board and the handy board.  I got the same error for 2
+different HBs and 3 different HC11 chips (using HBDL on Win95) so it
+appears repeatable, not just a spurious floating value.  If you use DL 
+or DLM you just get a "synchronization" error.  One for the books...
+(or the mail archive).
+
+Cheers, Skye.
+
+PS: In case anyone is wondering how this came to be: I am using the
+serial/charger board only for communication, not charging (thus I never
+checked the charging ciruit).  In addition I am powering the HB on a
+completely different circuit than the serial board, thus the common
+ground is only needed for communication.  I had taken care of this,
+but an electrical mishap broke the ground connection, and it was not
+easy to discover this was the problem!
+
++-----------------------------------------+----------------------------+
+| Skye Legon                              |   University of Waterloo   |
+| Systems Design Engineering              | __/   __/  __/         __/ |
+| Pattern Analysis & Machine Intelligence | __/   __/  __/   __/   __/ |
+| 143 Columbia St. West, Unit E-4         | __/   __/  __/  ____/  __/ |
+| Waterloo Ontario CANADA  N2L 3L2        | __/__/__/   __/__/\__/__/  |
+| +1(519)888-9249                         |  ______/     ___/  \___/   |
+| slegon@uwaterloo.ca                     |  DC 2620, 888-4567 x5192   |
++-----------------------------------------+----------------------------+
+
+

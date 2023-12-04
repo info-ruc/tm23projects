@@ -1,0 +1,60 @@
+Received: from madcap.apk.net (madcap.apk.net [207.54.158.16])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id OAA08088
+	for <handyboard@media.mit.edu>; Fri, 3 Mar 2000 14:07:52 -0500 (EST)
+Received: from junior.apk.net (drushel@junior.apk.net [207.54.158.20]) by madcap.apk.net (8.9.3/8.9.3/apk.990812+rchk1.22+bspm1.13.1.5) with ESMTP id NAA10430 for <handyboard@media.mit.edu>; Fri, 3 Mar 2000 13:57:52 -0500 (EST)
+Received: (from drushel@localhost)
+	by junior.apk.net (8.9.3/8.9.3) id NAA18348
+	for handyboard@media.mit.edu; Fri, 3 Mar 2000 13:57:47 -0500 (EST)
+From: Richard Drushel <drushel@apk.net>
+Message-Id: <200003031857.NAA18348@junior.apk.net>
+X-Real-To: handyboard@media.mit.edu
+Subject: new lock_process() function library for IC
+To: handyboard@media.mit.edu
+Date: Fri, 3 Mar 2000 13:57:47 -0500 (EST)
+X-Mailer: ELM [version 2.5 PL1]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+	I have written some library code which allows user programs to
+effectively hog_processor() for a user-specified time interval, instead of
+the 256 msec allowed by hog_processor().  The new functions are:
+
+void lock_process(float seconds)	;locks out all other running
+					;processes for time seconds.
+					;time can range from .001-4294967
+					;seconds.  (The counter is a 32-bit
+					;msec counter.)
+
+void unlock_process()			;unlocks the lock_process() lock and
+					;swaps to the next process, allowing
+					;multitasking to resume.
+
+lock_process() installs a timer tick daemon which manages the counter and
+prevents the current process from being swapped out, based upon the state of
+a global enable flag.  The daemon is an .icb file.
+
+lock_process() requires the hog_processor() function from lib-???.c and
+the int2uf() function from my math.c library.  lock_process() works on both
+Handy Boards and 6.270 boards.
+
+The files are available via anonymous ftp at:
+
+ftp://junior.apk.net/pub/users/drushel/lock_process/lock_process.c
+ftp://junior.apk.net/pub/users/drushel/lock_process/lock_process.icb
+ftp://junior.apk.net/pub/users/drushel/lock_process/lock_process.lis
+ftp://junior.apk.net/pub/users/drushel/lock_process/lock_process.asm
+ftp://junior.apk.net/pub/users/drushel/lock_process/math.c
+
+	Please let me know if you find any bugs or have any comments.
+
+	Fred, feel free to add these to the appropriate area of the Handy
+Board website.
+
+	*Rich*
+-- 
+Richard F. Drushel, Ph.D.            | "Aplysia californica" is your taxonomic
+Department of Biology, Slug Division | nomenclature.  /  A slug, by any other
+Case Western Reserve University      | name, is still a slug by nature.
+Cleveland, Ohio  44106-7080  U.S.A.  |     -- apologies to Data, "Ode to Spot"
+

@@ -1,0 +1,35 @@
+Received: from xproxy.gmail.com (xproxy.gmail.com [66.249.82.192] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k274wDt09178
+	for <egs+summary@cs.cornell.edu>; Mon, 6 Mar 2006 23:58:13 -0500 (EST)
+Received: by xproxy.gmail.com with SMTP id i26so917298wxd
+        for <egs+summary@cs.cornell.edu>; Mon, 06 Mar 2006 20:58:12 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:date:from:to:subject:message-id:x-mailer:mime-version:content-type:content-transfer-encoding;
+        b=Wdk8Ydb3/zAkDJGgixBCYolCDk/rAWmlLZJ+mx0zvN2NK1b5lRbvSCGenl9emw3JC3FhAFegqIsmstUywJROU+5esJMiO0PXm0RxITC5jmZP+z5BC1eQoGeXmSrr0JkxuLz9teP4nhZ7x5kF8rzMi9xJoh2R54+R4pDNZbr/I/c=
+Received: by 10.70.43.18 with SMTP id q18mr1046380wxq;
+        Mon, 06 Mar 2006 20:58:12 -0800 (PST)
+Received: from localhost ( [69.207.49.126])
+        by mx.gmail.com with ESMTP id h14sm1467948wxd.2006.03.06.20.58.12;
+        Mon, 06 Mar 2006 20:58:12 -0800 (PST)
+Date: Mon, 6 Mar 2006 23:58:11 -0500
+From: Niranjan Sivakumar <niranjan.sivakumar@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 12
+Message-Id: <20060306235811.0489a2a3.niranjan.sivakumar@gmail.com>
+X-Mailer: Sylpheed version 2.2.0 (GTK+ 2.8.13; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Niranjan Sivakumar
+
+Storage Management and Caching in PAST, a Large-Scale Persistent Peer-to-Peer Storage Utility
+Wide-Area Cooperative Storage with CFS
+
+PAST is an implementation of a peer-to-peer file storage system that runs on top of Pastry.  PAST offers relatively simple functionality, with three basic operations:  insert, lookup, and reclaim.  Past allows for users to request a certain amount of replication in the system, and will replicate the object on nodes with close nodeID's to the 128 most significant bits of the fileID.  The system relies on the natural variation that will be expected in nodes that are adjacent to one another in Pastry to ensure some robustness in its replication.  The system also allows for some further, more informal caching (not guaranteed) to further alleviate load imbalances.  The authors present a basic security mechanism that is based on public key cryptography facilitated by smartcards that are signed by a trusted authority.  There is also a replica diversion mechanism in order for burdened nodes to pass on requests to nodes in their leaf sets.
+
+CFS is another file storage system running on a distributed hash table, in this case DHash (a variant of Chord.)  The system is similar to PAST in many ways, but as the authors point out, the main difference between the two systems is that Pastry considers files as single objects whereas CFS splits files up into blocks, somewhat like a conventional file system.  CFS has a similar replication scheme to PAST, placing block replicas on some specified number of servers in the locality where the file's ID falls.  CFS uses DHash's caching system to provide further replication by caching blocks at nodes that are traversed en route to the desired data.  Also, CFS refers to the security system outlined in PAST as something that could be leveraged to implement a quota system.
+
+While both of these implementations are somewhat novel approaches for the application of p2p networks, neither seems to provide a compelling reason to use the system.  Both of the papers seem to indicate that the systems could be useful if future research into adding more features to their respective DHT layers are fruitful, but as it stands, they are quite simple.  The security system that is proposed is centralized, and as seen with other systems, this seems to be somewhat against the distributed natures of the systems themselves.  The PAST paper appears to almost discount the possibility of malicious nodes causing routing failures that would result in denial of service.  In CFS, the idea of breaking files up into blocks is interesting, but it seems that finding the correct block size could be challenging and having a file split up into many pieces and having to perform many lookups on a Chord based network is not negligible.
+

@@ -1,0 +1,28 @@
+Received: from caldo.demon.co.uk (caldo.demon.co.uk [194.222.207.148])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id NAA17951
+	for <9fans@cse.psu.edu>; Fri, 20 Nov 1998 13:41:09 -0500 (EST)
+From: forsyth@caldo.demon.co.uk
+Message-Id: <199811201841.NAA17951@cse.psu.edu>
+To: 9fans@cse.psu.edu
+Date: Fri, 20 Nov 1998 18:42:05 GMT
+Subject: Re: [9fans] Malloc
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+the limit isn't really a function of the compiler,
+since pcc uses the same one,
+but APE's libraries are typically larger.
+the problem is possibly a kernel limit on
+the PC: check that you don't need
+to change SEGMAPSIZE in /sys/src/9/pc/mem.h
+
+#define	SEGMAPSIZE	64	/* 16 is for wooses */
+
+i think this is in the FAQ somewhere, which you might
+check for details (in case anything else is required).
+
+perhaps /sys/src/ape/lib/ap/plan9/malloc.c needs
+similar changes to /sys/src/libc/port/malloc.c
+(which are in a boddle somewhere).
+

@@ -1,0 +1,46 @@
+Received: from mail.utexas.edu (mail.utexas.edu [128.83.126.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id HAA01247
+	for <handyboard@media.mit.edu>; Tue, 24 Mar 1998 07:19:00 -0500 (EST)
+Received: (qmail 21499 invoked by uid 0); 24 Mar 1998 12:18:58 -0000
+Received: from dial-17-14.ots.utexas.edu (HELO ?128.83.128.46?) (128.83.128.46)
+  by mail.utexas.edu with SMTP; 24 Mar 1998 12:18:58 -0000
+Message-Id: <v03007800b13d4a76bdaf@[128.83.221.54]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Tue, 24 Mar 1998 06:19:07 -0600
+To: handyboard@media.mit.edu
+From: Anthony Oren Loeppert <oren@mail.utexas.edu>
+Subject: Extending the HB memory... I know, I know...
+
+I couldn't sleep so I thought I would make some use of my insomnia.
+
+Several people have asked if the HB's memory can be extended, and usually
+the answer is no, not if you want to run IC.  I have been taking a break
+from my navigation systems, and been thinking about a SPI driven memory
+extension.  I have 2, 128k SRAM chips, just lying here doing nothing so I
+started wondering what it would take to build and write code to support the
+device.  What I envision is a sort of harddrive for the HB.  Sure it's
+slow, but to be able to dynamically load/unload stored programs or data not
+always needed in main memory, it might be worth the trouble.  I was
+thinking 4, 8 bit serial_in/parallel_out (HC164) strung together the memory
+chips, and an 8 bit parallel in serial out(HC165).  18 bits necessary for
+adressing 256k of memory, 8 for data to be written.  1 bit for read/write.
+Am I leaving anything out? That still leaves 5 bits to either add a few
+more bits to the addressing space for larger chunks of RAM, or control
+plenty of stuff via the serial port.  The actual device _seems_ easy enough
+to build, but the task of the software seems a little more daunting.  My
+problem is I don't know much about how IC does it's memory management (I
+guess that's what source code is for though), not much about memory
+management in general.  I have a book on design of operating systems which
+has some stuff about mem. man. but haven't really had chance to read it.
+Does integrating this idea into IC seem riddled with problems, or does it
+sound semi-reasonable?  I'm a CS major, so something like this would really
+be educational. I'm not asking for help with the programming (at least not
+yet), I am just trying to test the water before I jump in head first.
+
+SO.... with all that said, if this message seems crazy, I'll blame it the
+fact that I haven't slept in a long time.
+
+
+
+

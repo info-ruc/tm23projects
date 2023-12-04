@@ -1,0 +1,70 @@
+Received: from outmail.freedom2surf.net (outmail1.freedom2surf.net [194.106.33.237])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k1GK2Tg1002376
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Feb 2006 13:02:29 -0700
+Received: from [192.168.0.3] (i-194-106-39-102.freedom2surf.net [194.106.39.102])
+	by outmail.freedom2surf.net (8.12.10/8.12.10) with ESMTP id k1GK2MRu030629
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Feb 2006 20:02:22 GMT
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <2CE6F188-61DB-471D-BCF7-83FC8806678C@psychology.nottingham.ac.uk>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: DMDX@psy1.psych.arizona.edu
+From: Walter van Heuven <wvh@psychology.nottingham.ac.uk>
+Subject: [DMDX] Display errors and delay parameter
+Date: Thu, 16 Feb 2006 20:02:21 +0000
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi all,
+
+I am testing the following DMDX code using DMDX 3.1.4.4.
+
+<n 4> <s 4> <cr> <azk> <nfb> <t 2000> <d 40> <fd 10> <id "PIO12"> <id  
+"keyboard"> <vm 1024, 768, 768, 32, 85> <dbc 000> <dwc 255255255> <rcot>
+
++001  <delay 40> <fd 85> / <fd 43> "#######" /  <fd 4> "prime1" / *  
+"TARGET1";
++002  <delay 40> <fd 85> / <fd 43> "#######" /  <fd 4> "prime2" /  *  
+"TARGET2";
++003  <delay 40> <fd 85> / <fd 43> "#######" /  <fd 4> "prime3" / *  
+"TARGET3";
++004  <delay 40> <fd 85> / <fd 43> "#######" /  <fd 4> "prime4" /  *  
+"TARGET4";
+
+$
+0 "THE END";
+$
+
+When I run this code I get display errors for each item:
+
+   Item       RT       COT
+      3  -2000.00      0.00
+!  Display error at msec 4105.97, tick 345 in item 2, frame ""
+!    moved into video memory 132 ticks late
+!     (previous frame's duration will have been longer)
+      2  -2000.00   3588.56
+!  Display error at msec 7694.17, tick 650 in item 1, frame ""
+!    moved into video memory 132 ticks late
+!     (previous frame's duration will have been longer)
+
+However, when I remove <d 40> from the parameter line the display  
+errors disappear!
+
+refresh 11.77ms
+   Item       RT       COT
+      1  -2000.00      0.00
+      3  -2000.00   4047.43
+      4  -2000.00   8094.86
+      2  -2000.00  12142.29
+
+The display errors reappear however when I remove <delay 40> from  
+each item and put <d 40> on the parameter line. I don't understand  
+this. The display errors also disappear when I remove <delay 40> from  
+each item and change the <d 40> on parameter line to <d 0>! Can  
+somebody explain this behavior?
+
+Thanks,
+
+Walter
+

@@ -1,0 +1,80 @@
+Received: from exchfe1.cs.cornell.edu (exchfenlb-1.cs.cornell.edu [128.84.97.33])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LA3vt24542
+	for <egs@unix.cucs>; Tue, 21 Feb 2006 05:03:57 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.34]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 21 Feb 2006 05:03:57 -0500
+Received: from [128.253.211.203] ([128.253.211.203]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 21 Feb 2006 05:03:56 -0500
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <D46B7381-E98B-4928-AA78-021FF19A3C6E@cs.cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: "Ryan S. Peterson" <ryanp@cs.cornell.edu>
+Subject: PAPER 8
+Date: Tue, 21 Feb 2006 05:03:56 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-OriginalArrivalTime: 21 Feb 2006 10:03:56.0662 (UTC) FILETIME=[20B65160:01C636CE]
+
+Douceur introduces the concept of a Sybil attack on a peer-to-peer  
+system as an attempt by malicious users to thwart the normal  
+operation of the network by creating multiple identities.  In  
+addition to describing the negative effects of Sybil attacks, the  
+author proves that reasonable p2p systems have no hope of completely  
+avoiding them.  Most importantly, Douceur shows that large p2p  
+systems are vulnerable to Sybil attacks for two reasons.  First, as  
+the number of total nodes increases, the number of malicious  
+identities (multiple identities actually mapping to the same "real"  
+entity) is also likely to increase.  When the number of malicious  
+nodes reaches a threshold, there are enough of them to launch an  
+attack against some portion of the network.  Second, if the correct  
+("honest") nodes in the system are required to accept new nodes into  
+the system by verifying their trust, either directly or indirectly  
+through other trusted nodes, they must synchronize their "accepting  
+time intervals" to avoid accepting malicious nodes.  Both problems  
+demonstrate the vulnerability of p2p networks as they scale to large  
+sizes, suggesting a difficult tradeoff in p2p system design: size  
+versus security.
+
+Singh, et al. present a more general form of attacks on p2p networks  
+called eclipse attacks and offer a method for preventing such attacks  
+in some networks.  Eclipse attacks are characterized by one or more  
+malicious nodes hijacking connections to correct nodes, hiding the  
+correct nodes from network view and possibly disrupting the network  
+by acting on packets originally destined for the eclipsed nodes.  The  
+authors' main contribution is a defense against such attacks by  
+capping the degree of each node in the system.  Nodes involved in an  
+eclipse attack necessarily have more incoming edges than correct  
+nodes since they receive traffic destined for the hidden nodes.   
+Therefore, by monitoring the degrees of neighboring nodes, correct  
+nodes can decide which nodes are malicious and avoid them.  The paper  
+also presents an anonymous auditing protocol for  periodically  
+testing neighbor nodes to determine their degrees, removing them from  
+their neighbor list if they exceed the degree limit.  One limitation  
+of this work is that it is designed for unstructured p2p networks,  
+and does not easily transfer to structure networks such as Pastry and  
+Chord.
+
+The final paper, Secure routing for structured peer-to-peer overlay  
+networks, by Castro, et al. describes security in p2p systems,  
+presenting and implementing a secure version of Pastry.  The modified  
+Pastry focuses on security in three aspects: node ids, node routing  
+tables, and node forwarding.  By creating a strict protocol over the  
+the three domains, the resulting system guarantees that a message  
+sent from a correct node will make it to its destination within the  
+network with very high probability assuming a bounded number of  
+malicious nodes, a claim much stronger than previous similar work.   
+To ensure security in node routing tables, the protocol places strict  
+constraints on what types of nodes each location of the routing table  
+can point to.  The intuition for secure forwarding is that a node  
+sends a message normally and sets a timeout.  If the timeout expires  
+without receiving a response from the destination node, the sender  
+assumes a malicious node intercepted the message, and so the sender  
+resends the message via multiple, hopefully disjoint paths to the  
+sender.  With high probability, one path will contain only correct  
+nodes, and the message will reach its destination.  Experiments and  
+analysis show that a network can withstand 25% malicious nodes  
+without compromising the network.
+
+Ryan
+

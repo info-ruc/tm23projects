@@ -1,0 +1,83 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id KAA13052
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 27 Oct 2000 10:12:18 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by deimos.email.Arizona.EDU (5.1.046)
+        id 39F6178200041D4A for DMDX@psy1.psych.arizona.edu; Fri, 27 Oct 2000 10:12:17 -0700
+Message-Id: <5.0.0.25.2.20001027100301.009dd040@psy1.psych.arizona.edu>
+Date: Fri, 27 Oct 2000 10:12:15 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: PBwith RTs
+In-Reply-To: <39F97864.40742AC7@forenap.asso.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 01:43 PM 10/27/00 +0100, you wrote:
+>Dear all,
+>Dear Jonathan,
+>
+>1- With all your information I am getting there.
+>The scanner in now trigerring DMDX quite well.
+>
+>Question now is about getting RTs
+>
+>With the previous code :
+>
+>+001 <ms% 2000> <bmp> *"images1";
+>I was correctly getting all RTs into the protocol.azk file
+>
+>With the actual code  (using D instead for triggering) such as
+>
+>+001 d1 <bmp> <*image1";
+>250 d444 ...
+>as you suggested
+>I am getting the following message error in protocol.azk
+>!  Display error at msec 8227.26, tick 572 in item 250, frame "image1"
+>
+>!    moved into video memory 4 ticks late
+>
+>!     (previous frame's duration will have been longer)
+>
+>!    -- possibly caused by another process taking 8 ticks
+>
+>which is the first image of the sequence.
+>
+>Does it means d! is not enought ???
+
+   It means the D1 is not enough, just the first one though.  I set a D1 
+there because we wanted the sequence to begin as rapidly as possible after 
+the FMRI triggered DMDX, obviously you're going to have to use a D of 5 or 
+more.
+
+
+>2- the refresh time is 13.41 ms
+>How can I fix it to 15ms (easier to calculate ticks more precisely)
+>I saved (thought it was) using TImedX but still get 13.4 in the
+>protocol.azk file.
+
+   The short answer is "You can't".  The long answer is that you may be 
+able to lie to your windows installation about the monitor you have and 
+fool it into thinking it can't go at 75Hz but windows has a knack of 
+re-detecting the monitor some time later and screwing your experiments 
+up.  You could try using progressively higher video modes will the refresh 
+rate drops, but of course your bitmaps are going to get smaller unless you 
+tell DMDX to stretch them (might work well enough).  But either way of 
+course then the refresh interval will be 16.66ms -- so then you could try 
+removing lines from one of those modes (assuming you are using the primary 
+monitor for DMDX's output which is more than likely, doesn't sound like 
+you've got a multi-monitor setup).
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Any simple theory will be worded in the most complicated way.
+
+
+

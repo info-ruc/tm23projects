@@ -1,0 +1,37 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id LAA18646;
+	Wed, 20 May 1998 11:01:23 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id LAA00920;
+	Wed, 20 May 1998 11:01:22 -0400 (EDT)
+Message-Id: <199805201501.LAA00920@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Skye Legon <slegon@watfast.uwaterloo.ca>
+Cc: fredm@media.mit.edu (Fred G. Martin),
+        handyboard@media.mit.edu (MIT    Handyboard List)
+Subject: Re: important update to Handy Board standard libraries. 
+In-Reply-To: Your message of "Wed, 20 May 1998 09:43:43 EDT."
+             <199805201343.JAA19958@watfast.uwaterloo.ca> 
+Date: Wed, 20 May 1998 11:01:21 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+> Will this new lib_hb.c also replace the Smooth PWM lib_hb.c released
+> by Newton Labs?  It appears not.  What is the easiest way to consolidate
+> the Smooth PWM routines with your improved analog code?
+
+You must manual consolidate the new driver with the smooth-pwm
+libraries.
+
+To consolidate, 
+
+1.  edit the smooth-pwm lib_hb.c, and remove the function
+"_raw_analog()",
+
+2.  install the new lib_hb.icb file in your IC lib directory (this
+contains the assembly-language replacement for _raw_analog), and
+
+3.  add lib_hb.icb to your lib_hb.lis master library file.
+
+Fred
+

@@ -1,0 +1,150 @@
+Received: from burdell.cc.gatech.edu (root@burdell.cc.gatech.edu [130.207.3.207])
+	by lennon.cc.gatech.edu (8.9.1/8.9.1) with ESMTP id FAA22592
+	for <pwh@lennon.cc.gatech.edu>; Sun, 8 Aug 1999 05:28:33 -0400 (EDT)
+Received: from luckystrike.resnet.gatech.edu (IDENT:509@r45h132.res.gatech.edu [128.61.45.132])
+	by burdell.cc.gatech.edu (8.9.1/8.9.1) with ESMTP id FAA11825
+	for <pwh@cc.gatech.edu>; Sun, 8 Aug 1999 05:28:33 -0400 (EDT)
+Received: from localhost (toast@localhost)
+	by luckystrike.resnet.gatech.edu (8.8.7/8.8.7) with ESMTP id EAA23173
+	for <pwh@cc.gatech.edu>; Sun, 8 Aug 1999 04:30:37 -0400
+Date: Sun, 8 Aug 1999 04:30:36 -0400 (EDT)
+From: nick black <toast@r45h132.res.gatech.edu>
+To: pwh@cc.gatech.edu
+Subject: hw #3 criteria
+Message-ID: <Pine.LNX.4.10.9908080429500.23171-100000@luckystrike.resnet.gatech.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+
+here it is...sorry it took so long; i didn't get back in until 4 this
+morning.
+
+cs 3411 summer '99
+homework #3 -- solutions
+
+p1
+--------
+In ANSI C, a function prototype without parameter types indicates that no
+assumptions are to be made about the function's arguments, and the
+parameters used in the first call to this function implicitly type it.
+Type checking is then used for the rest of the files being compiled
+relative to this first invocation, but no type checking can be done with
+precompiled files.  Use of the void keyword indicates that no parameters
+are to be accepted, and allows type checking to continue (the ability to
+write a function prototype sans typing exists only to guarantee
+compilability of older programs, and should cause a warning in
+ANSI-compliant compilers).
+
+To simulate this in C++, one must use elliptical notation.  The C
+prototype f(), as explained, is equivalent to the C++ prototype f(...),
+while f() in C++ would indicate a function with no parameters (equal to
+C's f(void), which would mean the same thing in C++).
+
+p2
+-------
+a)  list=={3,1}
+b)  list=={5,1}
+c)  list=={3,5}
+d)  list=={5,1} if the language uses true pass by reference as opposed to
+          an explicit dereferencing hack
+
+p3
+-------
+void map(double a[],unsigned int n,double (*fp)(double)){
+  for(;n>0;n--){
+    a[n-1]=(*fp)(a[n-1]);
+  }
+}  
+
+p4
+--------
+A thunk is the subprogram created by the compiler to generate the address
+of a pass-by-name parameter.  It is implicly called each time the
+parameter is accessed, to see if updates to the calling function's data
+segment have caused the actual parameter to reference a new address,
+usually seen in code involving array elements or an expression involving a
+variable.
+
+p5
+---------
+A default parameter is set to a default initialization in the function
+prototype using the syntax <type> <name> = <value>.  When calling the
+function, this parameter is optional; if omitted, the default value will
+be used.
+
+Default parameters oftentimes can be used in the place of several
+overloaded functions.  Rather than writing parameter-minimal functions
+which call a polymorphic version of the same function with some value, one
+function may specify default parameters.  Both are oftentimes seen in
+constructors.
+
+p6
+---------
+Objects in java pass are passed by value, but it is the reference to them
+which is actually passed.  This means that
+
+int foo(String bar){
+  bar=new String("Hello!");
+}
+
+is legal, and will change how bar is interpreted within the function, but
+not outside -- we have set the actual value of the reference to a new
+value, which is ignored, as it was only a copy.  Changing the actual
+values within the same reference, however, works as usual.
+
+Adding the final keyword to an object parameter indicates that the
+reference is constant, and that assigning it to a new value should cause a
+compiler error.  It does not, however, mean that the contents of the
+object are constant.
+
+p7
+--------
+Advantages:
+  Numeric error codes mean that a function returning a numeric value
+cannot span the entire set of numbers without a helper global variable,
+ala strtol(3c) & errno in C.
+  Exception propagation cannot be easily simulated using numeric return
+values.
+  
+Disadvantages:
+  Exception handling adds complexity to the language, as it is often based
+on new keywords and clauses.
+  
+p8
+--------
+Unchecked exceptions can theoretically be thrown by any method, so the
+compiler does not ensure that they are caught (else every method call
+would require a catch(RuntimeException e) and catch(Error e)).  Checked
+exceptions must explictly be propagatable or caught, and are all
+exceptions which are not derivatives of RuntimeException or Error.
+
+A finally clause is generally "cleanup code" which is run when a) the try
+block ends without throwing an exception, b) an exception is thrown and
+handled, or c) after the excpetions is thrown but before it is propagated
+upwards.
+
+p9
+----------
+This function will generate a list of all factors of n.  The brackets
+indicate that we are consing up a list.  The | operator allows us to
+define this set, which will be all i's which fulfill the conditions given
+to the right (qualifiers).  The inner brackets once again create a list,
+this time generated using the .. operator for ordered set transversal.
+All i's between 1 and n div 2, which produce 0 when modulated against n,
+are added to the body.
+
+p10
+----------
+Functional programming, at the cost of reduced efficency, does not require
+the programmer to "worry" about variables and assignment/allocation.
+Functional languages can be expressed in a highly regular, simple style,
+as can their semantics.  Functional programs can be mathematically proven
+correct, due to their lack of side effects, and this also allows for graph
+transversal algorithms well-suited for concurrent execution.
+
+nick black   cs/math major   3411 ta[ "Save the whales,
+     georgia institute of technology[   feed the hungry,
+http://luckystrike.resnet.gatech.edu[    free the mallocs."
+dank@cc.gatech.edu      404.206.0502[         -slashdot.org
+
+

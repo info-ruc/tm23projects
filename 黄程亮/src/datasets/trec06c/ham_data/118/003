@@ -1,0 +1,290 @@
+Received: from pproxy.gmail.com (pproxy.gmail.com [64.233.166.183] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2G3s8t09800
+	for <egs+summary@cs.cornell.edu>; Wed, 15 Mar 2006 22:54:09 -0500 (EST)
+Received: by pproxy.gmail.com with SMTP id o67so347274pye
+        for <egs+summary@cs.cornell.edu>; Wed, 15 Mar 2006 19:54:08 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=j2ZS/bi4it/pocNOviz5PuyzghMotaDu52vUO3K58wxgu6BgNaH17F2B2JkKU9xoY/z4oQpZ0mKFMWhP1bA1vAzmelTDM3JgvJ3aMfbh3F9BAFBS/NAZl3hFUogn7yl/od6xarOLbaEvVYdPInT0UjzkJ0SqBFxVay9GQZLSQFQ=
+Received: by 10.35.54.20 with SMTP id g20mr501434pyk;
+        Wed, 15 Mar 2006 19:54:08 -0800 (PST)
+Received: by 10.35.61.2 with HTTP; Wed, 15 Mar 2006 19:54:08 -0800 (PST)
+Message-ID: <9aa7a97d0603151954ga64a9c6gd8816959c90d712b@mail.gmail.com>
+Date: Wed, 15 Mar 2006 22:54:08 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 14
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_349_14065812.1142481248026"
+
+------=_Part_349_14065812.1142481248026
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+    Crowds
+    Offering enhanced anonymity on the internet, Crowds operates by creatin=
+g
+a network of colluding peers who bounch any given web request through
+several local redirections before allowing it to leave; thus, upon receipt
+of a request, the remote server cannot know who issued the request that it
+is responding to (as long as the issuer did not include any identifying
+details). Individual entrants -- Jondos, in the parlance of the paper --
+rely on a server to introduce them to the crowd, but there is no reason tha=
+t
+this should not be a well known node in the system.
+    An odd statement is made regarding mixes and how crowds does not
+implement a mix: the paper claims that mixes do not provide sender
+anonymity. This need not be true, and is an odd thing to state, since there
+is no reason that it should be so; certainly, I did not learn about mixes
+that did not do this! Also, an attempt is made to claim that mixes' relianc=
+e
+on public key cryptography is a weakness, while a similar ability is even
+found in Crowds (though implied to be pairwise symmetric keys). However, th=
+e
+behavior properties of Crowds is better than that of a system of mixes, due
+to the fact that each element of a Crowds system serves as a mix for each
+other element. Complete knowledge of active Jondos is assumed, which is not
+scalable (though traffic impacting any one node is relatively stable).
+Precapturing embedded content is extraordinarily clever, but does not
+completely preclude timing attacks -- page redirections might still trigger
+this (or are they usually javascript?).
+    The biggest drawback to the system is the amount of trust which must be
+placed in fellow jondos -- SSL links are not supported, and due to the
+structure of the internet, it is extraordinarily difficult to ensure that a
+man-in-the-middle attack has not been executed in delivering web content.
+This could be done with end-to-end encryption, but for obvious reasons this
+is difficult, and so the limitations must be lived with; for certain media,
+multiple paths could be used to request the site, which (while lowering
+anonymity) would raise surety of content. The biggest problem is that joins
+are batched and it is possible to link requestors by spanning routes of
+requests (ie, routes pre- and post- join batches) implies that browsing mus=
+t
+be done quickly and targetted, which is not the standard use-model for te
+internet, these days!
+
+    P^5
+    P^5 performs structured anonymous broadcast via a broadcast tree, where
+a node joins several groups at various points in the tree, where distance
+from the root corresponds to message efficiency. The overhead in the system
+can become staggering, even with the assumed lateral links, though the
+system is guaranteed "secretive enough", i.e. rigorous proofs are presented
+that a node will not inadvertantly expose more information than it chooses
+to. It assumes a public key infrastructure through the curious method of no=
+t
+assuming a global public key infrastructure while assuming that two parties
+may ascertain each others public keys through OOB mechanisms.
+    P^5's main shortcomings are that due to the nature of its broadcast
+trees, each message sent results in a flood of (unreliable) mesages
+throughout the network, hitting especially hard the closer one comes to the
+root. Also, P^5 is vulnerable to asynchronous analysis; it is noted that a
+user should not change the set of channels it is part of, or intersection
+attacks become feasible. However, this is essentially what happens each tim=
+e
+a user logs off, which means that repeated use of P^5 leaks information.
+Also, though we have receiver anonymity, since we can have both sender and
+receiver anonymity, this paper suffers from a very simple problem: there is
+no reason to trust any given message, since it cannot rely on any
+information about the sender to vouch for its relevance.
+
+    Dining Cryptographers
+    The cryptography used here is easy, though with many "side effects". By
+relying on a broadcast medium, and some structure where each edge in the
+graph has some random bit shared between the two nodes it links, a bit of
+information may be communicated by each non-speaker broadcasting the
+cumulative xor of each incident edge's bit; the speaker also xor's in the
+bit that the speaker wishes to communicate. After each step of speaking, th=
+e
+spoken bit may be determined by taking the xor of the communicated bits --
+thus, there is a perfect model of who-knows-what. The scheme suffers from
+some drawbacks, but far fewer than other systems for anonymity -- partition=
+s
+are dangerous, allowing information to leak (in the extreme case, where the
+broadcaster is surrounded by colluding nodes, their information is
+completely compromised) but with even one non-colluding node, the speaker i=
+s
+again "anonymous".
+    The base version of the system can be incredibly expensive, as for each
+bit of message traffic, essentially N^2 information must be exchanged -- if
+a node has connectivity less than N, then it trusts some portion of the
+users, because it is now that much easier to partition that node,
+determining whether or not it is the speaker. Also, it's very slow, as each
+bit sent must be sent throughout the entire network; though they point out
+that this can be done en masse, by sending an entire message of bits, the
+point remains that the activities of every remote peer, not just a subset o=
+f
+the remote peers, determine the propagation of the message. Finally, the
+entire system relies on an efficient broadcast mechanism which, while not
+vulnerable to analysis (we are still essentially using one-time-pads) is
+certainly not reasonable to assume: each node ends up having to have n^2
+connectivity if only to dissemenate information, though there are more
+efficient schemes for this, so they could be used, the paper doesn't
+reference them. As a postscript, denial of service and noise injection are
+trivial in this system, and devastating.
+
+    Herbivore
+    Built upon the strength of DC-nets and assumptions about the strength o=
+f
+cryptographic techniques, Carnivore builds another anonymous system that is
+more scalable and efficient than DC-nets. It is built over Pastry, with
+crypto-puzzles to protect against Sybil attacks; the insight is that we can
+have clusters of high connectivity to conceal information, which preserve
+many of the extraordinarily good security properties of DC-nets.
+    The paper leaves unclear precisely how exactly slots are reserved
+without making clear the intended author for any given period -- usually on=
+e
+would try to inductively use the same system for this, but this is clearly
+unallowable as the entire issue is collision detection. Implied is that thi=
+s
+is a well known solution, but if this problem may be solved anonymously,
+then the entire question is easily solved by simply using the scheduling
+algorithm "larger". Also, if the individual to whom a given timestamp has
+been assigned becomes known, then since the message is known (in encrypted
+form at minimum!) the anonymity has failed, and thus this reservation
+decision is of utmost importance! Also, the system uses "local proxies" to
+explore other cliques on the ring; we can only hope that they are elected
+through this protocol (otherwise, we essentially rely on onion routing).
+Performance is enhanced under Herbivore, but is clearly still not optimal;
+this is a necessary condition, apaprently, and unfortunate.
+
+------=_Part_349_14065812.1142481248026
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+&nbsp;&nbsp; &nbsp;Crowds<br>
+&nbsp;&nbsp; &nbsp;Offering enhanced anonymity on the internet, Crowds
+operates by creating a network of colluding peers who bounch any given
+web request through several local redirections before allowing it to
+leave; thus, upon receipt of a request, the remote server cannot know
+who issued the request that it is responding to (as long as the issuer
+did not include any identifying details). Individual entrants --
+Jondos, in the parlance of the paper -- rely on a server to introduce
+them to the crowd, but there is no reason that this should not be a
+well known node in the system. <br>
+&nbsp;&nbsp; &nbsp;An odd statement is made regarding mixes and how
+crowds does not implement a mix: the paper claims that mixes do not
+provide sender anonymity. This need not be true, and is an odd thing to
+state, since there is no reason that it should be so; certainly, I did
+not learn about mixes that did not do this! Also, an attempt is made to
+claim that mixes' reliance on public key cryptography is a weakness,
+while a similar ability is even found in Crowds (though implied to be
+pairwise symmetric keys). However, the behavior properties of Crowds is
+better than that of a system of mixes, due to the fact that each
+element of a Crowds system serves as a mix for each other element.
+Complete knowledge of active Jondos is assumed, which is not scalable
+(though traffic impacting any one node is relatively stable).
+Precapturing embedded content is extraordinarily clever, but does not
+completely preclude timing attacks -- page redirections might still
+trigger this (or are they usually javascript?).<br>
+&nbsp;&nbsp; &nbsp;The biggest drawback to the system is the amount of
+trust which must be placed in fellow jondos -- SSL links are not
+supported, and due to the structure of the internet, it is
+extraordinarily difficult to ensure that a man-in-the-middle attack has
+not been executed in delivering web content. This could be done with
+end-to-end encryption, but for obvious reasons this is difficult, and
+so the limitations must be lived with; for certain media, multiple
+paths could be used to request the site, which (while lowering
+anonymity) would raise surety of content. The biggest problem is that
+joins are batched and it is possible to link requestors by spanning
+routes of requests (ie, routes pre- and post- join batches) implies
+that browsing must be done quickly and targetted, which is not the
+standard use-model for te internet, these days!<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;P^5<br>
+&nbsp;&nbsp; &nbsp;P^5 performs structured anonymous broadcast via a
+broadcast tree, where a node joins several groups at various points in
+the tree, where distance from the root corresponds to message
+efficiency. The overhead in the system can become staggering, even with
+the assumed lateral links, though the system is guaranteed &quot;secretive
+enough&quot;, i.e. rigorous proofs are presented that a node will not
+inadvertantly expose more information than it chooses to. It assumes a
+public key infrastructure through the curious method of not assuming a
+global public key infrastructure while assuming that two parties may
+ascertain each others public keys through OOB mechanisms.<br>
+&nbsp;&nbsp; &nbsp;P^5's main shortcomings are that due to the nature
+of its broadcast trees, each message sent results in a flood of
+(unreliable) mesages throughout the network, hitting especially hard
+the closer one comes to the root. Also, P^5 is vulnerable to
+asynchronous analysis; it is noted that a user should not change the
+set of channels it is part of, or intersection attacks become feasible.
+However, this is essentially what happens each time a user logs off,
+which means that repeated use of P^5 leaks information. Also, though we
+have receiver anonymity, since we can have both sender and receiver
+anonymity, this paper suffers from a very simple problem: there is no
+reason to trust any given message, since it cannot rely on any
+information about the sender to vouch for its relevance. <br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Dining Cryptographers<br>
+&nbsp;&nbsp; &nbsp;The cryptography used here is easy, though with many
+&quot;side effects&quot;. By relying on a broadcast medium, and some struct=
+ure
+where each edge in the graph has some random bit shared between the two
+nodes it links, a bit of information may be communicated by each
+non-speaker broadcasting the cumulative xor of each incident edge's
+bit; the speaker also xor's in the bit that the speaker wishes to
+communicate. After each step of speaking, the spoken bit may be
+determined by taking the xor of the communicated bits -- thus, there is
+a perfect model of who-knows-what. The scheme suffers from some
+drawbacks, but far fewer than other systems for anonymity -- partitions
+are dangerous, allowing information to leak (in the extreme case, where
+the broadcaster is surrounded by colluding nodes, their information is
+completely compromised) but with even one non-colluding node, the
+speaker is again &quot;anonymous&quot;. <br>
+&nbsp;&nbsp; &nbsp;The base version of the system can be incredibly
+expensive, as for each bit of message traffic, essentially N^2
+information must be exchanged -- if a node has connectivity less than
+N, then it trusts some portion of the users, because it is now that
+much easier to partition that node, determining whether or not it is
+the speaker. Also, it's very slow, as each bit sent must be sent
+throughout the entire network; though they point out that this can be
+done en masse, by sending an entire message of bits, the point remains
+that the activities of every remote peer, not just a subset of the
+remote peers, determine the propagation of the message. Finally, the
+entire system relies on an efficient broadcast mechanism which, while
+not vulnerable to analysis (we are still essentially using
+one-time-pads) is certainly not reasonable to assume: each node ends up
+having to have n^2 connectivity if only to dissemenate information,
+though there are more efficient schemes for this, so they could be
+used, the paper doesn't reference them. As a postscript, denial of
+service and noise injection are trivial in this system, and devastating.<br=
+>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Herbivore<br>
+&nbsp;&nbsp; &nbsp;Built upon the strength of DC-nets and assumptions
+about the strength of cryptographic techniques, Carnivore builds
+another anonymous system that is more scalable and efficient than
+DC-nets. It is built over Pastry, with crypto-puzzles to protect
+against Sybil attacks; the insight is that we can have clusters of high
+connectivity to conceal information, which preserve many of the
+extraordinarily good security properties of DC-nets.<br>
+&nbsp;&nbsp; &nbsp;The paper leaves unclear precisely how exactly slots
+are reserved without making clear the intended author for any given
+period -- usually one would try to inductively use the same system for
+this, but this is clearly unallowable as the entire issue is collision
+detection. Implied is that this is a well known solution, but if this
+problem may be solved anonymously, then the entire question is easily
+solved by simply using the scheduling algorithm &quot;larger&quot;. Also, i=
+f the
+individual to whom a given timestamp has been assigned becomes known,
+then since the message is known (in encrypted form at minimum!) the
+anonymity has failed, and thus this reservation decision is of utmost
+importance! Also, the system uses &quot;local proxies&quot; to explore othe=
+r
+cliques on the ring; we can only hope that they are elected through
+this protocol (otherwise, we essentially rely on onion routing).
+Performance is enhanced under Herbivore, but is clearly still not
+optimal; this is a necessary condition, apaprently, and unfortunate.
+
+------=_Part_349_14065812.1142481248026--
+

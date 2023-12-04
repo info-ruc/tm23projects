@@ -1,0 +1,69 @@
+Received: from robotics.is.tohoku.ac.jp (canary-gw.robotics.is.tohoku.ac.jp [130.34.54.35])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id VAA15354;
+	Wed, 19 May 1999 21:27:20 -0400 (EDT)
+Received: from gannet.robotics.is.tohoku.ac.jp (gannet [130.34.184.194])
+	by robotics.is.tohoku.ac.jp (8.8.8/3.6W) with ESMTP id KAA00420;
+	Thu, 20 May 1999 10:27:05 +0900 (JST)
+Received: from robotics.is.tohoku.ac.jp (localhost [127.0.0.1])
+	by gannet.robotics.is.tohoku.ac.jp (8.9.3/3.7W) with ESMTP id KAA01393;
+	Thu, 20 May 1999 10:27:04 +0900 (JST)
+Sender: maja@robotics.is.tohoku.ac.jp
+Message-Id: <374364E8.8B06F04F@robotics.is.tohoku.ac.jp>
+Date: Thu, 20 May 1999 10:27:04 +0900
+From: "Joe Marie J. Maja" <maja@robotics.is.tohoku.ac.jp>
+Organization: Nakano Laboratory (Advanced Robotics Laboratory)
+X-Mailer: Mozilla 4.5 [en] (X11; I; SunOS 5.5.1 sun4u)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: "Fred G. Martin" <fredm@media.mit.edu>,
+        HandyBoard <handyboard@media.mit.edu>
+Subject: Encoders
+Content-Type: text/plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+
+Konnichiwa  !!
+
+I am currently using the shaft encoder drivers of handy and it works
+fine, until I implemented a PID (Position Control).  I need to check the
+direction of my mobot.  Which means that - if it goes backward, I need
+to decrease the count and increase it if it goes forward.
+
+I tried to use 74HC74 to check the direction of the rotation of the
+encoder(My encoder have this sig A and sig B output).
+
+and run this code
+
+void check_right_encoder()  /*process*/
+{
+      while(1)
+    {
+        if (encoder1_counts!=0)
+              {
+                  if(digital(8)==0) {              /*check the direction
+of rotation */
+                             counter_r--;           /*declared as global
+*/
+                              encoder1_counts=0;
+                            }
+                    else
+                             {
+                              counter--;
+                               encoder1_counts=0;
+                               }
+               }
+}
+
+This works fine.
+
+QUESTIONS:
+
+Is there anyone who have tried to do the same thing, but implemented it
+in assembly - .icb?
+
+
+joema
+
+
+
+
+

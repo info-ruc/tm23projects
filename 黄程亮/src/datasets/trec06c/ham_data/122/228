@@ -1,0 +1,112 @@
+Received: from smtp.sahlgrenska.gu.se (smtp.sahlgrenska.gu.se [130.241.71.15])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k3PAdcQl016718
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 03:39:39 -0700
+Received: from smtp.sahlgrenska.gu.se (smtp [130.241.71.15])
+	by smtp.sahlgrenska.gu.se (Postfix) with SMTP id 280913BB
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 12:29:42 +0200 (CEST)
+Received: from [127.0.0.1] ([130.241.178.51])
+ by smtp.sahlgrenska.gu.se (SAVSMTP 3.1.5.43) with SMTP id M2006042512294122312
+ for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 12:29:41 +0200
+Message-ID: <444DFC64.40809@lungall.gu.se>
+Date: Tue, 25 Apr 2006 12:39:32 +0200
+From: Derek Eder <derek.eder@lungall.gu.se>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] CR timing intelligence check
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+I realize that <CR> timing issues are documented, but nevertheless I 
+find myself with a nagging sense of insecurity that I am understanding 
+them correctly.
+
+Could someone please check my understanding of the timing of the 
+following item in a DMDX item file (which I have broken up here into 
+"lines" and simplified):
+
+
+### Psuedo Item file snipplet ###
+<n 336>  <azk> <cr> <fd 1 > <id QPIO12> <dbc 000125255> <dwc 0> <vm 1024 
+768 768 16 60>  <dfs 20 > <nfb>
+[line 1]  +23 <fd 223>  "+"  /
+[line 2]  <fd 13>   "+" , <fd 13> "O" * <Timeout 2700 >  /
+[line 3]  <fd 49 >  "+" /
+[line 4]  <fd 106>, "+" , ">>>>>" ;
+ 
+
+Intentions:
+
+Display a "+" for 223 ticks [line 1]
+Display a "+" and superimposed "O" for 13 tics, start RT timer at 
+beginning of frame [line 2]
+Display a "+" for 13 ticks [line 3]
+Display a "+" and ">>>>>" for 106 ticks.  Advance to next frame (item) 
+on RT response or timeout
+
+
+elapsed     frame             event
+ticks       duration
+-------------------------------------------------------
+1           223               display line 1
+224         1                 change frame
+225         13                begin line 2, start timer
+238         1                 change frame
+239         49                display line 3
+288         1                 change frame
+289         13                display line 4
+
+
+Thank you,
+
+Derek
+
+
+Note:  The strange construction of:   <fd 13>   "+" , <fd 13> "O"  from 
+line 2 was discussed in the archives several years ago 
+(http://psy1.psych.arizona.edu/cgi-bin/thread?message=660756).
+I don't remember why I found it necessary to do it that way, but it 
+seemed necessary!
+
+
+### actual item file snip ###
+
+<ep> <n 336>  <azk> <cr> <fd 1 >
+
+<id QPIO12> <dbc 000125255> <dwc 0> <vm 1024 768 768 16 60>  <dfs 20 > 
+<nfb>
+
+<! ANT.5.0 Fri Mar 10 18:57:34 2006 > </ep>
+
+1000 <ms% 10000> <XYJustification 1> <XY 0.5, 0.5>  <fm 0.542> "+"    /<ne>;
+
+-1 <! 2700 spatial.T>  <fd 31>  <XYJustification 1> <XY 0.5, 0.5>  <fm 
+0.542> "+"  /  <fd 13>  <XYJustification 1> <XY 0.5, 0.5>  <fm 0.542> 
+"+" , <fd 13> <XYJustification 1> <XY 0.5,0.459>  <fm 1.008> "O" * 
+<Timeout 2700 >  / <fd 49 > <XYJustification 1> <XY 0.5, 0.5>  <fm 
+0.542> "+" / <XYJustification 1> <XY 0.5, 0.5>  <fm 0.542> "+" , <fd 
+106> <XYJustification 1> <XY 0.5, 0.459>  <fm 1.008> ">><>>" ;
+
+
+
+-- 
+Derek N. Eder
+
+SU/Sahlgrenska
+Utvecklingslab 1, Med
+Gröna stråket 8
+SE 413 45 Göteborg (Gothenburg)
+Sverige (Sweden)
+
++46 (031)* 342 8261 (28261 inom Sahlgrenska)
++46 0709 721 283 (mobile)
++46 (031) 25 97 07 (home)
+
+* omit the 0 when calling from outside Sweden
+
+personal web page:  www.derek-eder.org
+
+
+

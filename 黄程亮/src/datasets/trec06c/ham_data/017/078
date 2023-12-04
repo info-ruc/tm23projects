@@ -1,0 +1,54 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id UAA07992
+	for <handyboard@mailhub.media.mit.edu>; Tue, 19 May 1998 20:18:12 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id UAA00378
+	for handyboard; Tue, 19 May 1998 20:18:12 -0400 (EDT)
+Message-Id: <199805200018.UAA00378@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: handyboard@media.mit.edu
+Subject: important update to Handy Board standard libraries.
+Date: Tue, 19 May 1998 20:18:12 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+Hi all,
+
+There has been a bug lurking in the Handy Board standard library files
+since the dawn of time (well, 1996, when the HB got started).
+
+The bug can happen when you are using multi-tasking, and more than one
+IC task is performing analog sensor readings, or if you have loaded
+drivers that may perform analog conversions (e.g., the shaft encoder
+utilities).
+
+In the subroutine in lib_hb.c which performs analog readings
+(_raw_analog), it is possible for another process (either an IC
+process or an assembly language driver) to interrupt the analog
+conversion, in between the time when the analog channel is selected
+and the result is read back.  If the interrupting process performs an
+analog conversion of its own, when the interrupted subroutine gets
+control back, it reports the later reading rather than the one it
+started.
+
+I've posted an updated version of the libraries that fix this problem.
+A short assembly language driver performs the basic analog read
+function.  Interrupts are disabled during the span between the
+selecting the analog channel and reading the result.
+
+I recommend that everyone download and install these new drivers.
+Aside from fixing this intermittent bug, the new driver is faster and
+smaller.
+
+To download, please see the Handy Board home page:
+
+  http://el.www.media.mit.edu/projects/handy-board/
+
+Let me know if you have any questions or concerns.
+
+
+Fred
+
+P.S.  Thanks to Ericson Mar and Rick Freuler for noticing and
+reporting this problem.
+

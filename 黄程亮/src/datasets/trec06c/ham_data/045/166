@@ -1,0 +1,53 @@
+Received: from icarus.idirect.com (icarus.idirect.com [207.136.80.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA19699
+	for <handyboard@media.mit.edu>; Sun, 30 May 1999 20:48:11 -0400 (EDT)
+From: orthner@idirect.com
+Received: from orion.idirect.com (orion.idirect.com [207.136.80.167])
+	by icarus.idirect.com (8.9.3/8.9.3) with ESMTP id UAA20150
+	for <handyboard@media.mit.edu>; Sun, 30 May 1999 20:48:07 -0400 (EDT)
+Received: from ts6-27t-26.idirect.com (ts6-27t-26.idirect.com [216.154.3.90])
+	by orion.idirect.com (8.9.3/8.9.3) with SMTP id UAA14311
+	for <handyboard@media.mit.edu>; Sun, 30 May 1999 20:48:06 -0400 (EDT)
+X-Authentication-Warning: orion.idirect.com: ts6-27t-26.idirect.com [216.154.3.90] didn't use HELO protocol
+Message-Id: <3.0.6.32.19990530204754.007b8900@idirect.com>
+X-Sender: orthner@idirect.com
+X-Mailer: QUALCOMM Windows Eudora Light Version 3.0.6 (32)
+Date: Sun, 30 May 1999 20:47:54 -0400
+To: <handyboard@media.mit.edu>
+Subject: Re: Memory & Sound Detection
+In-Reply-To: <003f01beaaf2$71e9ae20$2e46a8c0@default>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 08:14 PM 5/30/99 -0300, Jose Luis De Filpo wrote:
+
+>        Is there a way to remove a program from the memory of the HB
+>without downloading the PCode? , for example i have two programs in memory,
+>and i want to remove only one of them, is it possible?
+
+Umm, not sure what exactly you are asking here. If you have programs loaded
+in the HB, then you also have the pcode downloaded. At the IC prompt type
+"unload filename.c" and the file will be removed from the HB. 
+
+>        Also i am looking for a way to use 2 or 3 electret mics to make the
+>robot follow sounds, I know that is needed a preamp between mic and analog
+>input, but I'm not sure about the circuit to be used. Has someone tried
+>this?
+
+This was done ten years ago on squirt, a very tiny MIT (olympic robot
+competition era) robot. The sound was localized via the difference in
+amplitude between two microphones. This circuit is in the olympic robot
+building manual (A.I. Lab memo #1230)and the paper on squirt (memo #1120).
+A similar circuit was used on the rug warrior, I think. That circuit is
+available on the EAS site at:
+
+http://www.hooked.net/~jfong/public/Computers/fingerboard/schematics/fb_inte
+rface.pdf
+
+I think a better (more directionally accurate) method would be to use
+timing differences and use three microphones. To that end I've been
+considering programming a PIC to do the timing and then just (serially?)
+output the direction information to the HB. 
+
+Hope this helps, Duncan
+

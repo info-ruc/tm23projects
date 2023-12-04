@@ -1,0 +1,58 @@
+Received: from mailhost.vuse.vanderbilt.edu (root@mailhost.vuse.vanderbilt.edu [129.59.100.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA12178
+	for <handyboard@media.mit.edu>; Tue, 7 Dec 1999 11:37:13 -0500 (EST)
+Received: from edo (edo [129.59.102.76])
+	by mailhost.vuse.vanderbilt.edu (8.9.1/8.9.1/VUSE-2.0) with SMTP id KAA11384
+	for <handyboard@media.mit.edu>; Tue, 7 Dec 1999 10:37:10 -0600 (CST)
+Message-Id: <002701bf40d1$c11bcb70$4c663b81@vuse.vanderbilt.edu>
+From: "Kar-Wing Chan" <kwchan@vuse.vanderbilt.edu>
+To: <handyboard@media.mit.edu>
+Subject: synchronization error
+Date: Tue, 7 Dec 1999 10:40:19 -0600
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2014.211
+X-Mimeole: Produced By Microsoft MimeOLE V5.00.2014.211
+
+I'm encountering a synchronization error when calling serial_putchar within
+a for loop.  Here's my code:
+
+void test(){
+ int looper;
+
+ for (looper=0;looper<16;looper++){
+  if (looper<7){
+   serial_putchar(analog(looper));
+   printf("\nPort: %d  Value: %d",looper,analog(looper));
+  }
+  else{
+   serial_putchar(digital(looper));
+   printf("\nPort: %d  Value: %d",looper,digital(looper));
+  }
+ }
+}
+
+
+It crashes after displaying the third port.  I've done the serial loopback
+test and it works fine.
+
+Here's the error message in interactive C:
+
+Downloading 6 bytes (addresses C200-C205): 6 loaded
+Board synchronization error: sent 114, received 73
+Board synchronization error: sent 114, received 255
+
+I'm using Windows NT 4.0, service pack 5 and IC version 3.2
+
+Please help.
+
+
+Thank you,
+
+Kar-Wing
+
+

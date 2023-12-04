@@ -1,0 +1,225 @@
+Received: from hawk.mail.pas.earthlink.net (hawk.mail.pas.earthlink.net [207.217.120.22])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id QAA13238
+	for <tex-fonts@math.utah.edu>; Tue, 23 Jul 2002 16:14:00 -0600 (MDT)
+Received: from user-2ive3mi.dialup.mindspring.com ([165.247.14.210] helo=stkitts.ai.mit.edu)
+	by hawk.mail.pas.earthlink.net with esmtp (Exim 3.33 #1)
+	id 17X7ul-0000mO-00; Tue, 23 Jul 2002 15:13:56 -0700
+Message-Id: <5.1.0.14.2.20020723175905.00a97868@mail.ai.mit.edu>
+X-Sender: bkph@mail.ai.mit.edu
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Tue, 23 Jul 2002 18:12:43 -0400
+To: wadams@atlis.com, tex-fonts@sunshine.math.utah.edu
+From: "Berthold K.P. Horn" <bkph@ai.mit.edu>
+Subject: Re: OpenType support (for TeX)
+In-Reply-To: <3D3DCF57.F31FF629@atlis.com>
+References: <2.2.32.20020723205830.00e86fbc@pop.panix.com>
+ <5.1.0.14.2.20020723172138.02796848@mail.ai.mit.edu>
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="=====================_542828025==_.ALT"
+
+--=====================_542828025==_.ALT
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+At 05:49 PM 7/23/2002 -0400, William Adams wrote:
+
+>Berthold said:
+>
+> >TeX does all of this sort of thing, and in return, it cannot tolerate this
+> >happening "under the hood". It requires TFM metric files that it can
+> >believe in. TeX cannot work properly when things can change while
+> >it isn't looking.
+>
+>I don't see why / how TeX could care about things changing after it's
+>done looking at things.
+
+Well, TeX typesets according to the metrics in the TFM. It takes
+care of kerning and ligature substitution (and quite complex ones
+are possible in TeX 3.0 and later).
+
+Now if the output/display/print system takes output from TeX and messes
+with it by, for example, combining characters and replacing them with
+ligatures, then the space taken on the line changes.  You can compensate
+for this by adding letter spacing between letters, but of course this
+is undesirable.  It may not be visible in benign cases, but is just the
+wrong thing to do.  TeX should be in complete control of layout.
+
+Plus what it the point? TeX already does kerning and ligatures.
+In fact, if TeX knows about the ligatures in the font (as it should from
+the TFM) file it will already have made the replacements and no new
+ones will be triggered in the font. So then it "just works" but clearly
+there is then no benefit to OpenType, the OT font is used by TeX just like
+any other font.
+
+And if you are looking for Unicode as the justification for using OpenType
+keep in mind that you can use Type 1 and TrueType fonts with
+large character sets just as well (from applications other than TeX).
+There is no advantage to OT here.
+
+In some TeX systems you can access
+arbitrary characters in a font by reencoding it using an encoding vector
+you design.  But you are still limited to 256 per font in TeX.
+It's just you can choose which 256 glyph "window" into the font
+you want to see.  To conveniently get more you need a 16-bit version
+of TeX such as Omega.
+
+>As I understand it in TeX/GX, when the page is shipped out, where each
+>line would
+>normally be written to the .dvi file, it's instead passed to the
+>QuickDraw/GX Line Layout Manager which sets said characters to that
+>width according to the rules in the font(s).
+
+Well, yes, but those widths are the same as those in the TFM file
+(or should be). So no change should occur at this stage.
+
+>Apparently this is an easy way
+>to do this since TeX is so resistant to doing letterspacing which would
+>interfere with substituting (for example) a ct ligature with a the ct 
+>characters.
+
+I doubt it actually works as described.  I bet it simply puts them down
+on the line exactly as TeX dictates.  If it didn't, it shouldn't be called TeX!
+
+>I've read the bit in _Digital Typography_ about the difficulties of
+>extending TeX to larger character sets, and've looked over Omega a
+>couple of times, so I've some inkling of the technical difficulties
+>involved in doing this directly in TeX. However, I'm working up towards
+>a long-term personal project
+>which will need something like to these capabilities, and so am
+>investigating how to do this sort of thing in TeX, or something like to
+>it (one alternative I'm looking at is CCS, a proprietary batch
+>pagination system which my employer developed a while back), because I
+>simply can't stand Adobe's ideas of user interface
+
+Could you explain this a bit more?  Do you mean Adobe typesetting software?
+Or ATM? Or Acrobat? Or the way fonts work in Windows and on the Mac?
+
+>and can't justify
+>purchasing a new / high-end Mac or Windows machine.
+
+You don't normally need a hi-end machine for TeX, since most
+implementations can typeset the multi-hundred page TeX book
+an a very small number of seconds.  Also, a "hi end" windows
+machine costs *very* little these days. Certainly your employer
+could justify it. It would cost a lot less than a few hours on tex-fonts :-)
+
+Regards, Berthold.
+
+>William
+
+--
+Berthold K.P. Horn mailto:bkph@ai.mit.edu http://www.ai.mit.edu/people/bkph (BK)
+--=====================_542828025==_.ALT
+Content-Type: text/html; charset="us-ascii"
+
+<html>
+<font size=3>At 05:49 PM 7/23/2002 -0400, William Adams wrote:<br><br>
+<blockquote type=cite class=cite cite>Berthold said:<br><br>
+&gt;TeX does all of this sort of thing, and in return, it cannot tolerate
+this <br>
+&gt;happening &quot;under the hood&quot;. It requires TFM metric files
+that it can <br>
+&gt;believe in. TeX cannot work properly when things can change while
+<br>
+&gt;it isn't looking.<br><br>
+I don't see why / how TeX could care about things changing after
+it's<br>
+done looking at things.</font></blockquote><br>
+Well, TeX typesets according to the metrics in the TFM. It takes<br>
+care of kerning and ligature substitution (and quite complex ones<br>
+are possible in TeX 3.0 and later).<br><br>
+Now if the output/display/print system takes output from TeX and messes
+<br>
+with it by, for example, combining characters and replacing them
+with<br>
+ligatures, then the space taken on the line changes.&nbsp; You can
+compensate<br>
+for this by adding letter spacing between letters, but of course
+this<br>
+is undesirable.&nbsp; It may not be visible in benign cases, but is just
+the<br>
+wrong thing to do.&nbsp; TeX should be in complete control of
+layout.<br><br>
+Plus what it the point? TeX already does kerning and ligatures.<br>
+In fact, if TeX knows about the ligatures in the font (as it should
+from<br>
+the TFM) file it will already have made the replacements and no new<br>
+ones will be triggered in the font. So then it &quot;just works&quot; but
+clearly<br>
+there is then no benefit to OpenType, the OT font is used by TeX just
+like<br>
+any other font.<br><br>
+And if you are looking for Unicode as the justification for using
+OpenType<br>
+keep in mind that you can use Type 1 and TrueType fonts with<br>
+large character sets just as well (from applications other than
+TeX).&nbsp; <br>
+There is no advantage to OT here.&nbsp; <br><br>
+In some TeX systems you can access<br>
+arbitrary characters in a font by reencoding it using an encoding
+vector<br>
+you design.&nbsp; But you are still limited to 256 per font in TeX.<br>
+It's just you can choose which 256 glyph &quot;window&quot; into the
+font<br>
+you want to see.&nbsp; To conveniently get more you need a 16-bit version
+<br>
+of TeX such as Omega.<br><br>
+<blockquote type=cite class=cite cite><font size=3>As I understand it in
+TeX/GX, when the page is shipped out, where each<br>
+line would<br>
+normally be written to the .dvi file, it's instead passed to the<br>
+QuickDraw/GX Line Layout Manager which sets said characters to that<br>
+width according to the rules in the font(s). </font></blockquote><br>
+Well, yes, but those widths are the same as those in the TFM file<br>
+(or should be). So no change should occur at this stage.<br><br>
+<blockquote type=cite class=cite cite><font size=3>Apparently this is an
+easy way<br>
+to do this since TeX is so resistant to doing letterspacing which
+would<br>
+interfere with substituting (for example) a ct ligature with a the ct
+characters.</font></blockquote><br>
+I doubt it actually works as described.&nbsp; I bet it simply puts them
+down<br>
+on the line exactly as TeX dictates.&nbsp; If it didn't, it shouldn't be
+called TeX!<br><br>
+<blockquote type=cite class=cite cite><font size=3>I've read the bit in
+_Digital Typography_ about the difficulties of<br>
+extending TeX to larger character sets, and've looked over Omega a<br>
+couple of times, so I've some inkling of the technical difficulties<br>
+involved in doing this directly in TeX. However, I'm working up
+towards<br>
+a long-term personal project<br>
+which will need something like to these capabilities, and so am<br>
+investigating how to do this sort of thing in TeX, or something like
+to<br>
+it (one alternative I'm looking at is CCS, a proprietary batch<br>
+pagination system which my employer developed a while back), because
+I<br>
+simply can't stand Adobe's ideas of user interface
+</font></blockquote><br>
+Could you explain this a bit more?&nbsp; Do you mean Adobe typesetting
+software?<br>
+Or ATM? Or Acrobat? Or the way fonts work in Windows and on the
+Mac?<br><br>
+<blockquote type=cite class=cite cite><font size=3>and can't 
+justify<br>
+purchasing a new / high-end Mac or Windows
+machine.</font></blockquote><br>
+You don't normally need a hi-end machine for TeX, since most<br>
+implementations can typeset the multi-hundred page TeX book<br>
+an a very small number of seconds.&nbsp; Also, a &quot;hi end&quot;
+windows <br>
+machine costs *very* little these days. Certainly your employer<br>
+could justify it. It would cost a lot less than a few hours on tex-fonts
+:-)<br><br>
+Regards, Berthold.<br><br>
+<blockquote type=cite class=cite cite><font size=3>William</blockquote>
+<x-sigsep><p></x-sigsep>
+--<br>
+Berthold K.P. Horn
+<a href="mailto:bkph@ai.mit.edu" eudora="autourl">mailto:bkph@ai.mit.edu</a>
+<a href="http://www.ai.mit.edu/people/bkph" eudora="autourl">http://www.ai.mit.edu/people/bkph</a> (BK)</font></html>
+
+--=====================_542828025==_.ALT--
+
+

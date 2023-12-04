@@ -1,0 +1,78 @@
+Received: from smok.apk.net (smok.apk.net [207.54.158.15])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id JAA02858
+	for <HANDYBOARD@MEDIA.MIT.EDU>; Tue, 1 Jun 1999 09:48:54 -0400 (EDT)
+From: Bob_Kelly/First_Union@firstunion-reit.com
+Received: from funotes.firstunion-reit.com ([206.183.20.41]) by smok.apk.net (8.9.3/8.9.3/apk.981124) with SMTP id JAA04168 for <HANDYBOARD@MEDIA.MIT.EDU>; Tue, 1 Jun 1999 09:28:29 -0400 (EDT)
+Received: by funotes.firstunion-reit.com(Lotus SMTP MTA Internal build v4.6.2  (651.2 6-10-1998))  id 85256783.0049ACDE ; Tue, 1 Jun 1999 09:24:43 -0400
+X-Lotus-Fromdomain: FIRST UNION
+To: HANDYBOARD@MEDIA.MIT.EDU
+Message-Id: <85256783.0049AAEC.00@funotes.firstunion-reit.com>
+Date: Tue, 1 Jun 1999 09:24:38 -0400
+Subject: Ranging techniques
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+
+
+Hello everyone...
+
+
+If I may be permitted to ask your input on some of the following...
+
+
+I have implemented a Polaroid sonar module and a GP2D02 IR ranging unit on
+a R/C servo actuated pan/tilt mechanism. I can put in "scan_long(45.0)" or
+"scan_short(45.0)" and a sensor reading 45 degrees to the right of the
+centerline of the robot that supplies me with the average of 10 "hits" of
+the "sonar_sample()" or "sonar_closeup()" and a GP2D02 reading at short
+range.. Everything appears to work well and I am very satisfied to this
+point with the progress I am making on my robot. However....
+
+1). The Polaroid module seems to be very linear in its output, as would be
+expected by the time of flight method. I am using a factor of sonar output
+divided by 3636.3636 to get the range in feet. The two methods of
+measurement each seem to have their own useful envelope. The
+"sonar_closeup()" function is good betwee about 6" and about 2 1/2 feet.
+The "sonar_sample()" routine appears to work well between 1 1/2 feet and
+about 6 1/2 feet. This is fine as the ranges overlap and I can write a
+routine to use the correct function to provide a good time of flight range.
+My question is, if the sonar is supposed to be good out to about thirty
+feet, why do I get alot of "-1" returns from the sonar function out past
+about 8 feet? And why, between about 6 feet and 8 feet do the readings
+become somewhat inconsistent? Overall, I find the current capabilities fine
+for what I am doing and the max reasonably accurate range of 6 feet
+acceptable, but hey, there's always room for improvement.
+
+2). The GP2D02 works well too and is very useful in the short range and
+provides a very accurate (read: consistent) reading between about 1 1/2
+feet and 2 or 3 inches. This is excellent and fill s a gap left by the
+sonar. Plus, while the software driver is active, the global value is
+updated constantly. The problem is, the output of the sensor is not linear
+and I want to convert the output into inches or feet so it can be used
+along with the sonar output (I plan to implement some sort of comparison
+between sensor readings and have what seems to be the most accurate sensor
+for a given range used). I have logged the average of three readings for
+each inch of range over 18 inches and have found the sensor readings have
+larger changes  at short ranges than for the same change in acual distance
+at longer distances. I graphed the readings in excel and it is  a nice,
+smooth and predictable curve.  I can't find my high school algebra books
+anywhere but I just know there is a method of converting the non-linear
+output to linear inches. (By the way, I modified the output of the sensor
+by subtracting it from 238, which is what appears to be the closest range
+reading obtainable before the sensor becomes unreliable - this gives me an
+output that ranges from zero at close range and about 155 at long range).
+Has anyone had any success at converting the output of this sensor to
+inches or some other linear unit of measure? It would be very helpful if
+somebody assisted my mathematically challenged self.
+
+
+Thank you all in advance for your input,
+
+
+Regards,
+
+Bob Kelly.
+
+
+

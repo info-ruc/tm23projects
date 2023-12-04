@@ -1,0 +1,68 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id SAA27813
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 10 Aug 2000 18:16:29 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.18) by deimos.email.Arizona.EDU (5.0.046)
+        id 398ABB8400058990 for DMDX@psy1.psych.arizona.edu; Thu, 10 Aug 2000 18:16:28 -0700
+Message-Id: <4.3.2.7.2.20000810001646.00a95880@psy1.psych.arizona.edu>
+Date: Thu, 10 Aug 2000 00:29:13 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DMDX 2.x timing
+In-Reply-To: <4.3.1.1.20000810153012.00bcfcb0@kforster.inbox.email.arizo
+ na.edu>
+References: <4.3.2.7.2.20000810092555.00a91cc0@psy1.psych.arizona.edu>
+ <4.3.2.7.0.20000810101450.00c2ade0@pophost.mrc-cbu.cam.ac.u k>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:40 PM 8/10/00 -0700, you wrote:
+>Given the previous discussion about differences in refresh intervals 
+>estimated by different versions of DMDX, I think it is worth making the 
+>following points.
+>
+>1.  On my machines, at least, the two versions give the same results.  So 
+>it is possible that the discrepancies are limited to particular graphics 
+>cards and/or CPUs.
+
+   Guaranteed.
+
+
+>2.  If you are worried about whether your refresh interval is really what 
+>DMDX reports, there is a very simple test.  Write an item file that asks 
+>for a frame to be displayed for 10000 ticks, and then time the display 
+>with a stopwatch to see whether you get the right value.  Do this 20 times 
+>and average the results, and then divide by 10000, and you will have a 
+>very precise measurement of the refresh interval.
+
+   I'm not entirely sure that method would work if DMDX was told that the 
+retrace interval was 8.5ms when it was in fact 11.5ms.  Such a method 
+certainly worked in the days of yore when we had a retrace interrupt with 
+DM and DMTG, however I'm pretty sure it won't work now as DMDX will be 
+working to make the retrace interval 8.5ms.  The only sure way (short of 
+using photosensitive test equipment) is to read the documentation in TimeDX 
+on timing the retrace interval and to look closely at the results printed 
+in that window.  If the interval was 11.5ms when the parameters specified 
+8.5ms there would be an enormous number of timed out retraces (75% or more 
+would be my guess) and while DMDX operates just dandy missing upwards of 
+50% of them when it's timing parameters are correct you will find that the 
+times that it finds two retraces in a row at are exactly the retrace 
+interval, it's likely that in the above scenario that it would never find 
+two retraces in a row, if it did the intervals would be all over the place.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+"Life, loathe it or ignore it, you can't like it."
+
+                    -  Marvin, "Hitchhiker's Guide to the Galaxy"
+
+
+

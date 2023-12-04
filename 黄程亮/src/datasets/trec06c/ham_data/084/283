@@ -1,0 +1,126 @@
+Received: from zinger.cs.cornell.edu (zinger.cs.cornell.edu [128.84.96.55])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id gACHpBQ09809
+	for <egs@cs.cornell.edu>; Tue, 12 Nov 2002 12:51:11 -0500 (EST)
+Received: from localhost (ashieh@localhost)
+	by zinger.cs.cornell.edu (8.11.3/8.11.3/C-3.2) with ESMTP id gACHpBU22794
+	for <egs@cs.cornell.edu>; Tue, 12 Nov 2002 12:51:11 -0500 (EST)
+Date: Tue, 12 Nov 2002 12:51:11 -0500 (EST)
+From: Alan Shieh <ashieh@CS.Cornell.EDU>
+To: <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 63
+Message-ID: <Pine.GSO.4.33.0211121250510.22606-100000@zinger.cs.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Can unstructured P2P systems perform as well as, or better than, more
+structured P2P networks?
+
+An unstructured P2P system can perform as well as a structured one, as
+the network construction mechanism can be induced to form occasional
+long-range links such that the network diameter becomes small.
+However, even with the presence of such structure in the network
+topology, a local routing algorithm may not in general be able to find
+the short paths that these long-range links induce. Freenet's DFS
+mechanism, which performs the same behavior as the simple algorithm
+described in Jon's paper, plus backtracking, appears capable of
+finding such routes in the average case after the network has
+"converged". Hence, Freenet appears to somehow induce the necessary
+structure for efficient routing; however, it provides no guarantees
+about worst-case routing performance, and its topology is heavily
+dependent on query pattern and frequency. Structured P2P systems do
+not suffer from these shortcomings so long as the network has
+stabilized. However, maintaining the necessary invariants imposes
+organizational overhead when nodes join and die.
+
+What are the design constraints of P2P systems (e.g. typical system
+lifetimes, bandwidths, etc.)?
+
+The design constraints of P2P systems depend on the target
+application.  For instance, Tapestry targets a utility infrastructure
+model, and hence a more uniform distribution of node capability that
+is biased towards more powerful nodes and reliable. Moreover, these
+nodes are assumed to be in both the center and "edge" of the Internet,
+for otherwise it would not make sense for them to have evaluated the
+performance of TCP on top of such a Tapestry routing fabric.
+
+However, the majority of P2P applications is targeted for end-users.
+These users, who are typically on the edge of the network and
+constrained by an asymmetric, possibly slow last-mile connection, for
+social reasons such as demand for "music-sharing", social conscience,
+are the most likely to be early adopters of P2P filesharing, and form
+the vast majority of the online community.  Even with widespread
+adoption in the corporate world or infrastructure companies, end-users
+will be the rule rather than the exception.
+
+Thus, P2P file systems must explicitly take into account the vast
+disparities of capabilities within the system, as an ad hoc approach
+is unlikely to map functionality onto the appropriate nodes. The
+important constraints are system lifetime, bandwidth, and
+trustworthiness.  For reasons of reliability, a P2P system should map
+index state and critical high degree routing tables or hotspots onto
+systems well-endowed in the above areas, for otherwise underpowered
+systems would choke on high query and routing traffic, and freeloading
+nodes can potentially drop queries and route requests. The Saroiu
+paper suggests mechanisms for ensuring these qualities in a network,
+see below for description.
+
+** The small-world phenomenon: An algorithmic perspective
+
+This paper discusses theoretical bounds on the performance of local
+routing algorithms in a class of random graph models. In many classes
+of random graphs, the expected network diameter is small, and hence
+there exist short routing paths.  However, it is difficult for a
+routing algorithm to find such paths given only local routing
+information.  The topology in this paper is a 2-D lattice with
+deterministic local connectivity and non-deterministic global
+connectivity, where the long-range links obey a power distribution
+(parameter r) on the distance of the hop.
+
+It is shown that a routing algorithm which is aware of the location of
+the target on the lattice, the deterministic local structure, and the
+routing tables of all nodes which have touched a particular message,
+finds routes with short (logarithmic) expected hop counts if and only
+if r=2, and indeed such a routing algorithm will yield this bound for
+any topology in which which links are equally likely to occur in any
+level (range 2^j-2^j+1). The intuition is that the r=2 distribution
+allows the local routing algorithm to determine a good route given
+geographic knowledge of the network.
+
+** P2P and the small world phenomena
+
+This work's main contribution is an analysis of the differing failure
+modes in Gnutella and Freenet. Gnutella clients tend to form a small
+number of links, whose node distribution is exponential in the
+out-degree. Freenet tends to form networks whose node distributions
+follow a powerlaw in the out-degree. Thus, Freenet is considerably
+more resilient against random failure than Gnutella. However, Gnutella
+is considerably more resilient against directed attack against high
+degree nodes, the intuition being that the exponential distribution
+tends to make every node about equally useful, and hence a directed
+attack does not differ much from random failures. The author also
+notes that a freeriding node in Freenet does not tend to pollute query
+operations, as routing would never be established through such a
+node. However, Gnutella does establish links to nodes that only issue
+queries, and hence such non-sharing nodes may waste slots and decrease
+the number of useful nodes covered by the TTL horizon.
+
+** A Measurement Study of Peer-to-Peer File Sharing Systems
+
+This paper evaluates the distribution of node capabilities and
+trustworthiness in the Gnutella and Napster networks. It finds that,
+as expected, most nodes are indeed operated by users on the edge of
+the Internet, and hence connected to the Internet via slow or
+asymmetric links.  Moreover, nodes are very likely to lie about their
+available bandwidth, and the vast majority do not share files, as
+providing this information in both of these systems strictly worsens
+one's performance, and users are likely to log off the network once
+the desired files are found. Hence, P2P systems must either
+independently verify the bandwidth of each node in the system, or
+provide incentives for honesty. Moreover, the clients should be
+designed such that users are encouraged to remain online, and to share
+files. Without such mechanisms, the social (irate ISPs) and
+performance consequences favor freeloading attitudes, and mainly the
+altruism of a small part of the online community keeps these systems
+useful.
+
+

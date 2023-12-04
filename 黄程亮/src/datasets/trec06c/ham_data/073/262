@@ -1,0 +1,95 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id QAA10965
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 26 Oct 2000 16:40:35 -0700
+Received: from u.arizona.edu (dhcp-211.psych.Arizona.EDU [128.196.99.211])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with ESMTP id QAA30146
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 26 Oct 2000 16:40:34 -0700
+Message-ID: <39F8C19C.CF933C6C@u.arizona.edu>
+Date: Thu, 26 Oct 2000 16:43:25 -0700
+From: Scott Hayes <smhayes@u.arizona.edu>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: displaying image files
+References: <5.0.0.25.2.20001025091203.009e2eb0@psy1.psych.arizona.edu> <5.0.0.25.2.20001025190545.009d4930@psy1.psych.arizona.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi Jonathon,
+I reinstalled the video drivers and dropped the delay from the parameter line, and
+still have the same problem.  I'm trying to limit the # of back buffers that DMDX
+creates by running the command line -display 3 in MS DOS, and receive the error
+message "Invalid video driver name <0 Primary Driver> from Registry Key
+<Software\TimeDX\2\Video-Driver>.  Is this the correct way to invoke the display n
+command?  And if so, does the error message I receive when attempting to invoke the
+display n command suggest that I have not alleviated the problem with my video
+drivers?
+
+Thanks,
+Scott
+
+"j.c.f." wrote:
+
+> At 02:45 PM 10/25/00 -0700, you wrote:
+> >Dear Jonathon,
+> >
+> >I am currently trying to simultaneously display 2 .bmp files.  The first 3
+> >trials of the block run fine.  However, during the time that the 4th trial
+> >should appear, DMDX sequentially redisplays the previous 3 trials (items
+> >are not
+> >in their original locations--the images are off the screen,  cue words are in
+> >different locations).
+>
+>    Your video drivers are broken.  If new video drivers don't fix the
+> problem you may have to invoke DMDX with the -display N to limit the number
+> of back buffers DMDX creates.  Values for N should be based on the number
+> of screens that DMDX displays correctly before all hell breaks loose.
+>
+> >   Next, it moves onto the 4th, 5th, and 6th trials, runs
+> >them correctly, and then re-displays trials 4-6 in a similar manner to trials
+> >1-3.  The .bmp files are 1555 kb; my computer has NVIDIA TNT 2 M64 4XAGP video
+> >card, and 128 MB RAM, so I think this should be sufficient to run the
+> >block.  Or
+> >are these files simply too large?
+> >
+> >In the dialogue box, some messages I receive are:  Display error at Tick 15;
+> >moved into VM 5 ticks late.  Prep A .05 msec, b 0.52 msec.  Display error at
+> >tick 632, moved into VM 25 ticks late, Prep A 438.45 msec, B 30.55.
+>
+>    Standard stuff, if these errors are occuring on the first frame of the
+> items and if you are using a D parameter images can take longer than the
+> default delay and will cause these errors.
+>
+> >I've included my parameter line and 1st 4 trials below.
+> >
+> ><n 19> <azk> <rcot> <cr> <id keyboard> <fd 375> <d 10> <t 3000> <nfb> <vm 1024
+> >768 768 16 0>
+>
+>    Yup, a D of 10, unless they're _way_ small images no machine on the face
+> the planet can currently read two bitmaps in 10 ticks.  That preparation A
+> time of 438.45 msecs above indicates you've got more like 1/2 a second read
+> time, something like a <d 40> would be more appropriate (or
+> larger).  Better yet, don't use delay parameters unless you have to.
+>
+> -jonathan (j.c.f.)
+>
+>   /"\
+>   \ /
+>    X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+>   / \
+>
+> Remember that whatever misfortune may be your lot, it could only be
+> worse in Cleveland.
+>
+>                                -  National Lampoon, "Deteriorata"
+>
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+
+

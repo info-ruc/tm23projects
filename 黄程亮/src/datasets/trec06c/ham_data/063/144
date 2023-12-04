@@ -1,0 +1,49 @@
+Received: from mail.montana.com (mailB.montana.com [199.2.139.117])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id LAA26223
+	for <handyboard@media.mit.edu>; Wed, 15 Mar 2000 11:31:58 -0500 (EST)
+Received: from selway.umt.edu (golfswit.montana.com [208.23.167.3])
+	by mail.montana.com (8.9.3/8.9.3) with ESMTP id JAA10735
+	for <handyboard@media.mit.edu>; Wed, 15 Mar 2000 09:21:05 -0700 (MST)
+Message-Id: <38CFBAA9.FB24EE1C@selway.umt.edu>
+Date: Wed, 15 Mar 2000 09:30:33 -0700
+From: Will Bain <willb@selway.umt.edu>
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Non-polaroid Sonar
+References: <003601bf8e84$a7c81c40$0500a8c0@wantree.com.au>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+In the sonar code from the web site, the rising edge detection on timer input channel 3 (TIC3) is set like this:
+
+   bit_clear( 0x1021, 2 ); bit_set( 0x1021, 1 );
+
+According to the little pink book, address 0x1021 is the Timer Control Register 2 (TCTL2) (in the Register & Control Bit Assignments section). To set channel 3 to capture falling edges only, you'd make the last two bits (set, clear) instead of (clear, set), like this:
+
+   bit_set( 0x1021, 2 ); bit_clear( 0x1021, 1 );
+
+Hope this helps!
+
+-- Will
+
+BTW, can anyone tell me why the bit_set and bit_clear commands aren't zero-indexed WRT the bit index (like everything else in C and machine code is)? Just curious.
+
+
+
+> Adam Oliver wrote:
+> 
+> Greetings all,
+> 
+> I've just finished building Kam Leang's sonar circuit as published on his web site, and it all seems to be working well. I am having a problem interfacing it to the handyboard however.
+> I'm not entirely sure how to set bits high and low etc on the SPI port, which is where I intend to hook this up. I have looked at the other sonar code thats around, but it hasn't been of much help.
+> 
+> This particular circuit doesn't use any kind of inhibitor to remove extreme close range signals. All I need is a ping out, then to count time before it bounces back. All the examples I've seen have used a rising edge signal, however this circuit is normally high and drops low when an echo is detected. The pink book just confused me even more (I hate to say).
+> 
+> Could anyone out there give me a few pointers of what bits need setting/resetting, and how to go about it? It would be greatly appreciated.
+> 
+> thanks
+> Adam
+>
+

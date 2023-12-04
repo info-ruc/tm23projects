@@ -1,0 +1,60 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fA1GjYR15838
+	for <egs@cs.cornell.edu>; Thu, 1 Nov 2001 11:45:34 -0500 (EST)
+Received: from descartes (descartes.ee.cornell.edu [128.84.236.60])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fA1GjFJ16085
+	for <egs@cs.cornell.edu>; Thu, 1 Nov 2001 11:45:15 -0500
+Date: Thu, 1 Nov 2001 11:44:21 -0500 (EST)
+From: Prince Samar <samar@ece.cornell.edu>
+X-Sender: samar@descartes.ee.cornell.edu
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 30
+Message-ID: <Pine.GSO.4.21.0111011143510.21972-100000@descartes.ee.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+30) The Design and Implementation of an Intentional Naming System
+
+This paper presents the design, implementation and evaluation of the
+Intentional Naming System (INS), a resource discovery and service
+location system for a mobile network. INS is a useful naming system when
+a source only knows what it is looking for and the location of the data
+is unknown. INS uses a simple language based on attributes and values
+(caller av-pairs) for naming.
+
+The design goals for INS have been:
+* Expressiveness: applications should be able to express arbitrary
+service descriptions and queries.
+* Responsiveness: the naming system should be able to quickly adapt to
+node mobility or service mobility.
+* Robustness: Failures of a few name resolvers and services should not
+have any significant effect on the network.
+* Easy configuration: The name resolvers should be able to automatically
+configure themselves.
+
+The INS service model supports 
+- early binding to obtain a list of IP addresses for for a name and 
+- late binding which include intentional anycast and intentional
+multicast. For intentional anycast, an INR (Intentional Name Resolver)
+forwards a packet to the "best" node satisfying the query based on the
+specified application controlled metric. Intentional multicast forwards
+the packet to all the names satisfying the query. 
+INS integrates resolution and routing, facilitating applications to
+handle node and service mobility and provide efficient group
+communication. Services periodically advertise their intentional names to
+the system to describe what they provides. The INRs self configure,
+forming an application-level overlay network among themselves over which
+they send updates of valid names in the system. The INRs also incorporate
+load balancing algorithm to perform well. INS maintains weak consistency
+amongst replicated resolvers using soft-state message exchanges.
+
+The authors also described the design and analysis of an efficient
+algorithm that performs name look-ups and show that an implementation can
+perform between several hundred to a few thousand name-lookups per
+second. Using intentional names with intentional unicast/mulitcast is a
+neat way to discover resources in a dynamic, mobile network. However, the
+INS is not scalable to a wide area deployment. Also, the name resolvers
+have to proactively update and maintain information, which may affect the
+overall performance of the network.
+

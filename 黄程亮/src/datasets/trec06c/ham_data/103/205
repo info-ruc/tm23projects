@@ -1,0 +1,113 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5RKKM5L015944
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 27 Jun 2005 13:20:22 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 3627CADA658
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 27 Jun 2005 13:20:22 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.Arizona.EDU [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id AA652ADCF4B
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 27 Jun 2005 13:20:21 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050627131503.00ba4b40@psy1.psych.arizona.edu>
+Date: Mon, 27 Jun 2005 13:20:17 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Mixing audio signals
+In-Reply-To: <007701c57b46$d308e5b0$3516c781@lscp23>
+References: <5.1.0.14.2.20050627103006.00ba4c60@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+My guess is that you'll have to be specifically setting the duration of the 
+frames that follow the first one.  Perhaps your audio files are a little 
+weird and DMDX can't interpret their durations correctly.
+
+At 08:34 PM 6/27/2005 +0200, you wrote:
+>Jonathan,
+>
+> > How does it not work?  It looks good to me.
+>
+>I've just tried the script on a different computer and found exactly the
+>same problem.
+>I used DMDX 3.1.2.6 on WIN XP and 98.
+>I've also recorded the output signal to see what happens.
+>
+>The two first files on each channel (RIGHT_WORD and left_word1) strart ok
+>and are perferctly synchronized.
+>However, the 3 remaing files (left_word2...4) do not appear untill 400 ms
+>after the offset of left_word1 (!) and are strangly srambled altogether
+>(!!!).
+>
+>Something that might help. I seems to have to do with adding %0 to "svp
+>start".
+>If I delete the %0, I found that the files are showing a convenient and
+>expected behavior. However, when doing that I loose synchrony of the first
+>files, given that %0 avoid the concurent file from starting 1 tick later, as
+>described in the audio input help.
+>
+>-Sid
+>
+>----- Original Message -----
+>From: Jonathan C. Forster
+>To: DMDX@psy1.psych.arizona.edu
+>Sent: Monday, June 27, 2005 7:30 PM
+>Subject: [DMDX] Re: Mixing audio signals
+>
+>Hi,
+>I'm trying to construct an experiment in which two audio signals are mixed
+>together and start simultaneously. One steam is made of a single long wav
+>file, whereas the other one is made of 4 small wav files.
+>For simplicity, one can imagine that one signal comes in the right ear and
+>one comes in the left ear, similarly to dichotic listening experiments:
+>
+>R channel: RIGHT_WORD
+>L channel: left_word1 --> left_word2 --> left_word3 --> left_word4
+>
+>I've followed the suggestion made on Mike Ford's page to use the "svp"
+>keyword.
+>While I've been able to have two files presented simultaneously (one on the
+>right, one on the left), I've been unable to have the remaining files played
+>SEQUENTIALY on the left channel.
+>
+>Here is a sample of the script:
+>=1 <ms% 1000> / <svp start> %0 * <wav 1> "RIGHT_WORD" / <wav 0> "left_word1"
+>/
+><wav 0> "left_word2" /  <wav 0> "left_word3" /  <wav 0> "left_word4";
+>
+>Any help or advice would be appreciated.
+>Thanks,
+>
+>-Sid
+>
+>
+>
+>                                                /"\
+>  -jonathan (j.c.f.)                            \ /
+>                                                 X
+>     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+>
+>
+>   You must ask much to get a little.
+>                                                      - Anonymous
+>
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   You must ask much to get a little.
+                                                      - Anonymous
+
+
+

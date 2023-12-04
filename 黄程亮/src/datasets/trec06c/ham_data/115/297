@@ -1,0 +1,217 @@
+Received: from [65.212.118.2] (HELO ns2.ihmc.us)
+  by ihmc.us (CommuniGate Pro SMTP 4.3.5)
+  with SMTP id 5747231 for Cmaptools@ihmc.us; Mon, 27 Feb 2006 18:26:49 -0600
+Received: from [80.237.160.131] (helo=lvps80-237-160-131.dedicated.hosteurope.de) by ns2.ihmc.us
+	with ESMTP (Spamphibian Gateway 1.1 60220 for Mac OS X powerpc); Mon, 27 Feb 2006 18:25:49 -0600
+Received: (qmail 23170 invoked from network); 28 Feb 2006 01:25:46 +0100
+Received: from e178239229.adsl.alicedsl.de (HELO ?192.168.178.25?) (85.178.239.229)
+  by lvps80-237-160-131.dedicated.hosteurope.de with SMTP; 28 Feb 2006 01:25:46 +0100
+User-Agent: Microsoft-Entourage/11.1.0.040913
+X-Original-Date: Tue, 28 Feb 2006 01:25:43 +0100
+Subject: Re: [Cmaptools] Re: CmapServer Installation Linux
+X-Original-To: CmapTools Discussion List <Cmaptools@ihmc.us>
+X-Original-Message-ID: <C0295717.9AED%sienknecht@itara.org>
+In-Reply-To: <list-5747147@ihmc.us>
+Mime-version: 1.0
+Content-type: text/plain;
+	charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+Hello,
+
+I can confirm that everything is running now.
+
+There is this "-console" flag which made it possible to run the installer in
+an interactive mode in the text-only environment.
+"Console" mode:
+LinuxCmapServer_v4.02_02-02-06.bin -i console"
+
+After the installation I installed the CmapServer on a remote computer I use
+for administration to install the AdminTools, too, because they are not
+available as a single download, as Rodrigo mentioned. I was able to
+administer the fresh installed CmapServer afterwards.
+
+Thank you again for your fast and detailed help.
+Kind Regards,
+Johannes 
+
+> To unsubscribe, E-mail to: <Cmaptools-off@ihmc.us>
+> -----------------------------------
+> All,
+> 
+> I just want to provide a summary of the messages we had
+> exchanged with Johannes regarding to the installation of a
+> CmapServer in a Linux machine without X11 installed. In
+> order to install a CmpServer in Linux you don' t need X11
+> installed, because the CmapServer can be installed in
+> console mode or providing the variables in a properties
+> file.
+> 
+> Johannes problem was caused by an old
+> CmapServer.properties file we had in our website,
+> 
+> After Johannes installed successfully the CmapServer, he
+> wanted to know how to use the AdminTools to adminstrate
+> the CmapServer and to identify if the CmapServer was
+> running. Our answer to Johannes was:
+> 
+> "The AdminTool cannot be run in a text-only environment"
+> .....
+> "You don't need to install X11 in the [Linux] server
+> machine. As you know, the CmapServer program does not have
+> a GUI and you can run the AdminTools from any other
+> computer and administrate the CmapServer remotely, even
+> from a machine with a different operating system. At this
+> time we don't have a separate installer for the AdminTool,
+> but you can download the CmapServer installer into a
+> Windows machine and install it, then you will get the
+> AdminTool executable file.  The best way to know if the
+> CmapServer is up and running, is running a CmapTools
+> client and see if the new CmapServer shows up in the All
+> Places view."
+> 
+> Sincerely,
+> 
+> Rodrigo Carvajal
+> 
+> 
+> 
+> On Wed, 15 Feb 2006 11:43:33 -0600
+>   "Johannes Sienknecht" <Cmaptools@ihmc.us> wrote:
+>> To unsubscribe, E-mail to: <Cmaptools-off@ihmc.us>
+>> -----------------------------------
+> Hello,
+> 
+> Thank you very much for your answers, sadley the problems
+> still resist...
+> 
+> 
+> 1.:
+> I tried to start the AdminTool - I did not expect to get
+> it running because
+> the server ist not running, but maybe the errormessage is
+> interesting...
+> Do I need X11 to use the CmapServer and/or the AdminTool?
+> 
+> ---
+> 
+> #:/opt/CmapServer/bin$ ./AdminTool
+> Invocation of this Java Application has caused an
+> InvocationTargetException.
+> This application will now exit. (LAX)
+> 
+> Stack Trace:
+> java.awt.HeadlessException:
+> No X11 DISPLAY variable was set, but this program
+> performed an operation
+> which requires it.
+> 
+> ---
+> 
+> 2.:
+> I edited the serverconfig.txt as far as I could. In the
+> last mailing I
+> mentioned , that I do not understand all of it. I inserted
+> the IP and a
+> hostname and also a name behind server.name. Java is
+> running, and I do
+> receive an email, that CmapServer is started succesfully,
+> but in the logfile
+> there are messages, that the configuration file is without
+> the inserted
+> informations, and that CmapServer failed to initialize.
+> 
+> ---
+> 
+> [From logfile like in the attached file]
+> 
+> Found network interface: lo
+>     lo: 127.0.0.1
+> Returning: 213.239.220.73
+> IP address not found in configuration file.
+> Use IP address: 213.239.220.73
+> Hostname not found in configuration file.
+> Use hostname: 213-239-220-73.clients.your-server.de
+> Could not find mandatory config entry or value is empty
+> for server.name
+> Aborting startup: CmapServer failed to start.
+> The CmapServer failed to initialize.
+> (CLASS: nlk.resio.StartupMonitor METHOD: abort LINE: 112)
+> nlk.exception.resio.ResioXcp: server.name
+>          at
+> nlk.resio.CMapServerSettings.getRequired(CMapServerSettings.java:162)
+>          at
+> nlk.resio.CMapServerShell.initRegistrationParameters(CMapServerShell.java:45
+> 0)
+>          at 
+> nlk.resio.CMapServerShell.main(CMapServerShell.java:131)
+>          at 
+> sun.reflect.NativeMethodAccessorImpl.invoke0(Native
+> Method)
+>          at 
+> sun.reflect.NativeMethodAccessorImpl.invoke(Unknown
+> Source)
+>          at 
+> sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown
+> Source)
+>          at java.lang.reflect.Method.invoke(Unknown
+> Source)
+>          at com.zerog.lax.LAX.launch(DashoA8113)
+>          at com.zerog.lax.LAX.main(DashoA8113)
+> 
+> ---
+> 
+> [received email from server:]
+> 
+> This is an automatic message from: neture
+> 
+> The CmapServer has been started successfully.
+> 
+> 
+> ------------------- Startup Information
+> -------------------
+> 
+> Started on: Feb 15, 2006 2:07:09 PM
+> 
+> Running services:
+>   - Soup
+>   - AdminService
+>   - CollaborationService
+>   - SendMailService
+>   - PingService
+>   - IndexChangeService
+>   - Resource
+>   - DiscussionThreadService
+> 
+> Server Configuration:
+> server.name: neture
+> server.version: 4.02
+> server.ip.address: 213.239.220.73
+> server.hostname: softmonsters.com
+> server.port: 4447
+> webserver.port: 8080
+> server.connection.mode: normal
+> 
+> ---
+> 
+> 
+> 
+> I have added the zipped logs-folder as an attachement.
+> 
+> Rodrigo, you said I could send the cmapserver.txt, too -
+> but I can not find
+> it - I have attached the serverconfig.txt and the
+> properties instead. Where
+> can I find the cmapserver.txt file?
+> 
+> Kind Regards,
+> Johannes
+> 
+> #############################################################
+> This message is sent to you because you are subscribed to the mailing list
+> <Cmaptools@ihmc.us>.
+> To unsubscribe, E-mail to: <Cmaptools-off@ihmc.us>
+> To switch to the DIGEST mode, E-mail to <Cmaptools-digest@ihmc.us>
+> Send administrative queries to  <Cmaptools-request@ihmc.us>
+
+

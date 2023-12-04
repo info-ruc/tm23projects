@@ -1,0 +1,20 @@
+Received: by psuvax1.cse.psu.edu id <33983>; Fri, 26 May 1995 04:08:07 -0400
+Received: from lore.plan9.cs.su.oz.au ([129.78.96.2]) by psuvax1.cse.psu.edu with SMTP id <33977>; Fri, 26 May 1995 04:04:15 -0400
+Date:	Fri, 26 May 1995 03:48:17 -0400
+From:	David Hogan <dhog@plan9.cs.su.oz.au>
+To:	9fans
+Subject: eqn fix
+Message-Id: <95May26.040415edt.33977@psuvax1.cse.psu.edu>
+Sender: owner-9fans
+Precedence: bulk
+Reply-To: 9fans
+
+Here's a quick and dirty hack for plan 9 eqn, to stop it from
+inserting font changes in the middle of unicode characters.
+Edit /sys/src/cmd/eqn/text.c, find the function trans(), and
+change both occurrences of "isalpha(c)" to "(isalpha(c) || (c&0x80))".
+mk installall.  You can now use all those Greek letters in
+equations without spelling them out!  (hey, it's almost WYSIWYG :-)
+
+
+

@@ -1,0 +1,32 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OIVDh03086
+	for <egs@popsrv.cs.cornell.edu>; Tue, 24 Sep 2002 14:31:13 -0400 (EDT)
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+X-MimeOLE: Produced By Microsoft Exchange V6.0.5762.3
+Subject: 615paper19
+Date: Tue, 24 Sep 2002 14:31:13 -0400
+Message-ID: <47BCBC2A65D1D5478176F5615EA7976D11AF72@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615paper19
+Thread-Index: AcJj+I+S+oNLblLQSWamwRbX/EzL7g==
+From: "Vivek Vishnumurthy" <vivi@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id g8OIVDh03086
+
+	This is the first paper we have seen that talks about a protocol that supports QoS requirements. Such a protocol is essential when a real-time  application is being run, and the application needs some minimum guarantee of resources to work. A nice feature of the paper is that at the beginning it  lists out the goals of CEDAR  and the goals of QoS routing.
+	The protocol does away with broadcasts altogether. It achieves the desired results of a broadcast by first building an underlying Core Node  network, and then transmitting unicast messages between these Core nodes. But this means that when a particular Core Node has a large number of  neighbors in the core, it has to spend a long time sending messages to these nodes one after the other. (whereas in an equivalent setup where  broadcasts are used, a broadcast is achieved with just a single message) The protocol avoids redundant message transmission between Core nodes by  caching the RTS/CTS packets that precede a Core message.
+	The paper also describes the concept of "Fast Moving Decrease Waves and Slow Moving Increase Waves" for state propagation. This feature  prevents the problems caused by links coming up for a short time and then crashing.
+
+Weaknesses:
+- The period for which the RTS and CTS pkts corresponding to a Core broadcast are cached is not specified.
+- During the QoS route computation, the protocol tries to build the longest sub-path(that satisfies the Bandwidth requirement) possible along the computed  core path. This process might miss out on some possible routes, and the route computation could fail. (Eg: Suppose that this stage builds a path from  Source S to an intermediate point T, but T eventually fails to find a required route to Dest D. It is possible that a route with the reqd BW exists from S to D  along some other path)
+- The simulation has been conducted with a maximum of only 20 nodes. Also, in each set of simulations, a maximum of 10 end-to-end connections have  been run. This is not substantial enough to analyse the protocol.
+- When there is a link failure, the protocol attempts both Point of Failure and Source reconfigurations. The Point of  Failure reconfiguration is wasteful,  because the in-transmit packets that this reconfig tries to get to the dest will, in probability, get there after the deadlines of the packets (The application has  a bandwidth requirement, so the pkts have some delay constraints)
+
+	The work can be improved by running longer simulations over larger networks, and measuring the throughput achieved. Also comparisons can  be made with an optimal shortest-Just_Enough algo(that computes the shortest route among all those routes that have at least as much bandwidth as  reqd), instead of with an optimal shortest-widest algo.
+

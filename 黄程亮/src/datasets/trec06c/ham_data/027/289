@@ -1,0 +1,84 @@
+Received: from cornell.edu (cornell.edu [132.236.56.6])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id RAA05427
+	for <handyboard@media.mit.edu>; Sat, 21 Nov 1998 17:22:53 -0500 (EST)
+Received: from cu-dialup (H1508.DIALUP.CORNELL.EDU [128.253.44.86])
+	by cornell.edu (8.8.5/8.8.5) with SMTP id RAA11005;
+	Sat, 21 Nov 1998 17:22:50 -0500 (EST)
+Message-Id: <199811212222.RAA11005@cornell.edu>
+X-Sender: mjh10@postoffice2.mail.cornell.edu
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.0
+Date: Sat, 21 Nov 1998 18:00:28 -0500
+To: DjKOz97@aol.com, handyboard@media.mit.edu
+From: Matt Harlan <mjh10@cornell.edu>
+Subject: Re: Using 30VDC to drive motors
+In-Reply-To: <9636bb1a.3656e5a4@aol.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+Dave
+	As far as connecting the grounds, that just means that the HB and the
+motors must share a common ground.  The H-bridges need to reference the
+direction and PWM signal to ground and if that ground reference is not the
+same as the HB's the motors flip out.
+
+	I used the motor power header for the gorund so that the motor supply
+ground runs throught the on board choke before it get's to the digital
+ground on the HB.  Motor are noisy and can cause the HB to reset.  
+
+> "Make sure the supply ground for the 18200's is connected to the HB ground.
+>You'll get some very strange results if you don't.  Use the motor supply
+>header on the HB for this connection.  You can take advantage of the noise
+>filtering of the HB that way."
+
+
+>First, does this mean that I should connect the HB ground to the 30VDC ground
+>I'm using to power the motors?
+
+YES.
+
+
+>"The motor control routines in IC are completely compatible with the 18200's.
+>The enable lines for the HB motor chips go to the PWM line on the 18200's.
+>The direction lines from the HB go to the direction line on the 18200's.  
+>HB pin 1 to PWM motor 1
+>HB pin 2 to direction motor 1
+>HB pin 9 to PWM motor 2
+>HB pin 10 to direction motor 2"
+>
+>Second, the does the pinout given above refer to the motor ports on the
+>handyboard? If so, there is no connection on pin 2, and pins 9 and 10
+refer to
+>two different motors!?
+
+It's been awhile since I had the HB out, but if memory serves me, those
+should be right.  The connections are from the chip sockets for the on
+board h-bridges, to the 18200.  
+
+after checking the schematics, the connections are right.  Pin 1 on the
+L293 serves as the PWM input to the 18200, and Pin 2 is the direction.  Pin
+2 should be a direction connection from the '374 latch on the HB, and Pin 7
+is its complement via an inverter.  Are you sure pin 2 is not connected?
+
+I used a 16 pin DIP header for a ribbon cable to get the connection.  Pin 1
+and 2 on the L293 socket to one 18200 and 9 and 10 to the other 18200.
+Pins 9 and 10 should be setup the same way as pins 1 and 2.  
+
+I'm not sure if that clears things up even a little.
+
+if not, tell me exactly what is connected and what isn't working, and we'll
+go from there.
+
+good luck
+
+matt 
+
+
+
+______________________________________________________
+Matthew J. Harlan
+Cornell University			     Cornell Formula SAE
+Electrical Engineering		     Engine Management
+(607) 255-2541
+mjh10@cornell.edu
+
+

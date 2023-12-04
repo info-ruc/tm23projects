@@ -1,0 +1,67 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id SAA22699
+	for <handyboard@media.mit.edu>; Thu, 16 Mar 2000 18:43:02 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id SAA27779; Thu, 16 Mar 2000 18:43:02 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7616
+From: "John Wynne" <jwynne@uci.edu>
+X-Real-Life-Name: John Wynne
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Speed.asm problem...
+Posted-Date: Tue, 14 Mar 2000 23:11:18 GMT
+Date: Tue, 14 Mar 2000 23:11:18 GMT
+Organization: None
+Message-Id: <FrJGIK.LBD@lugnet.com>
+Precedence: list
+
+Hello, I am currently using speed.icb/shaft.c (IC v3.2 library files) to
+count clicks on optical encoders for my two drive wheels using the Pulse
+accumulator and the IC3 interrupt. I noticed that there was an inconsistency
+in the _unassembled_  speed.asm file as noted below:
+
+file speed.asm:
+<snip>
+
+TFLG1    EQU     $1023
+
+  ORG MAIN_START
+
+subroutine_initialize_module:        /* This module runs whenever a reset
+occurs */
+
+     ldd #IC3_interrupt_handler      /* Get 16-bit address of interrupt
+handler */
+     std $FFEA                       /* Store in IC3 interrupt vector
+location */
+     cli                             /* Enable interrupts globally */
+     rts                             /* Return from initialzie_module
+subroutine */
+
+
+variable_left_clicks:       /* Create right_clicks, a variable accessible by
+IC */
+     fdb 0                           /* Fill double byte (16 bits).
+right_clicks = 0 */
+
+IC3_interrupt_handler:
+     ldd variable_left_clicks      /* Get the value in right_clicks */
+     addd #1                         /* Add one more encoder count */
+     std variable_right_clicks       /* Store back to right_clicks */
+     ldaa #%00000001                 /* Clear the IC3 flag by writing a one
+*/
+     staa TFLG1                      /* Store in TFLG1 to clear IC3 flag */
+     rti                             /* Return from interrupt */
+
+
+<snip>
+
+It appears that the interrupt handler loads "left_clicks" increments it by
+1, and then stores it in "right_clicks". This doesn't seem right. Has anyone
+noticed this before? Is this the assembled (.icb) version different?
+
+
+John
+

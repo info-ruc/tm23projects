@@ -1,0 +1,53 @@
+Received: from paw.montana.com (paw.montana.com [199.2.139.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id UAA19367
+	for <handyboard@media.mit.edu>; Fri, 13 Feb 1998 20:59:58 -0500 (EST)
+Received: from Nepenthe (mso1-30.montana.com [208.4.224.30])
+	by paw.montana.com (8.8.5/8.8.5) with SMTP id TAA26098
+	for <handyboard@media.mit.edu>; Fri, 13 Feb 1998 19:50:21 -0700 (MST)
+Date: Fri, 13 Feb 1998 19:50:21 -0700 (MST)
+Message-Id: <199802140250.TAA26098@paw.montana.com>
+X-Sender: willbain@cs.umt.edu
+X-Mailer: Windows Eudora Light Version 1.5.2
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+To: <handyboard@media.mit.edu>
+From: Will Bain <willbain@cs.umt.edu>
+Subject: Re: encoders
+
+At 07:58 PM 2/13/98 +1100, Joe Martin wrote:
+>Hello all,
+>            I am attempting to use the shaft encoder routines but am having
+trouble.When I try to load the file fencoder0.icb I get a message that ic
+cannot find the file.Any hints?
+>   Also I would like to know whether these routines count off one edge of a
+pulse or what dictates how the count is incremented.
+
+I think the file is named fencdr0.icb by default (not fencoder.icb).  Maybe
+it's just that simple (I hope)?  Also, it's probably easiest if it's in the
+directory with all the other stuff you're loading (the lib directory).
+
+These encoder routines seem to simply monitor the analog port and increase
+the count whenever the reading drops below the low threshold or goes above
+the high threshold.  The simple way to set these threshold values is to
+print the value on the analog port repeatedly in a loop while spinning the
+shaft around, and making a note of the low and high readings.  My
+Hall-effect magnetic sensors, for example, only range between about 110 and
+135, so I set the low threshold to 115 and the high to 130, and they work
+great.  Your results will vary depending on the type of sensors you're using
+(IR transceiver, etc.), but if you calibrate them correctly, you'll be off
+by just a constant factor.
+
+Try the slow versions of the routines first (e.g. sencdr0.icb) instead of
+the fast ones, since the slow ones are more efficient.  Good luck.
+
+--Will Bain
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                      Few things are harder to put up with
+Will Bain,                        than the annoyance of a good example.
+& Tatoosh                                                  --Mark Twain
+
+

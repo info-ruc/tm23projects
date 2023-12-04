@@ -1,0 +1,130 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3010>; Fri, 3 Jun 1994 20:21:12 -0400
+Received: from minster.york.ac.uk ([144.32.128.41]) by psuvax1.cse.psu.edu with SMTP id <296782>; Fri, 3 Jun 1994 20:10:57 -0400
+Date:	Fri, 3 Jun 1994 19:26:54 -0400
+To:	9fans@cse.psu.edu
+Message-ID: <swordfish.770688639@minster.york.ac.uk>
+subject: cpu command
+from:	forsyth@plan9.cs.york.ac.uk
+
+>> | When I try to use the 'cpu' command on the terminal, it prints:
+>> | 
+>> | cpu: can't read server challenge: plan9: file does not exist
+>> 
+>> I haven't gotten this to work either, I have to admit.
+>> I was secretly hoping it would be fixed in the next release,
+>> assuming there is one. :-)
+
+i've got lots of them, so i must be doing something right!
+i think the following is true (and it works for me).  generally, after following
+the installation notes, i think i just read the manual pages it refers to very carefully, and pondered
+the examples on the CDROM.  i found it was easy at first to miss out a step, though,
+and even now i'll sometimes forget to add a new cpu server to the key file when first configuring it.
+also, until i understood the defaulting scheme in /lib/ndb/local, i sometimes forgot to add
+the auth= and proto= entries.  in the following, i try to point out some pitfalls.
+i advise you to read the discussion near the end of the installation document and appropriate
+manual pages once more, since i can't guarantee to give a step-by-step description.
+it really does all work as documented, though.
+see the descriptions auth(8), cs(8), ndb(8), cpurc(8), listen(8), keyfs(4), ndb(6),
+listed here in no particular order.
+
+first, set up an authentication server.
+
+there must be an authentication key for each host that acts as a server.
+one of your cpu servers must act as an authentication server.
+an authentication server runs auth/keyfs in /bin/cpurc.
+in the following example, the key lines in a typical machine's entry in cpurc are
+marked:
+
+switch($sysname) {
+...
+case mycpusysname 1.2.3.4
+	sysname=mycpusysname
+	# ... set up devices here
+
+	auth/keyfs -m/mnt/keys /adm/keys	# <- start the keyfs
+	auth/keyfs -m/mnt/netkeys /adm/netkeys	# <- same for net keys
+
+	# the next few lines are not specific to authentication servers
+	ip/ipconfig
+	ip/rarpd & 	# only needed if you have suns to boot
+	ip/tftpd -d & ip/bootp
+	ndb/dns -s
+
+	# these are:
+	# the -t /bin/service.auth in the following are needed for auth to work
+	aux/listen -t /bin/service.auth -d /bin/service dk	# <- use this only if you have Datakit!
+	aux/listen -t /bin/service.auth -d /bin/service il	# <- required
+
+	# there are no authentication services on tcp/ip unless you use matty's 9x
+	# or implement other services of your own!
+	aux/listen tcp		# <- required if you use tcp/ip
+
+each aux/listen does an announce for the specified protocol; that is,
+listens on dk!*!*, il!*!*, and tcp!*!* for incoming calls.  the pattern
+is net!host!port where * matches all.
+
+the `musca' sample in the CDROM /bin/cpurc created a second il listener at this
+point:
+	aux/listen il
+i did not copy this.  it seemed likely to announce a second il!*!* (if the kernel
+accepted it) BUT this process, without the -t option, will not successfully
+handle incoming calls to the auth services.  it seemed either wrong
+or redundant, so i did not copy it, and things have gone smoothly.  i think
+this is the only difference in my procedure compared to what's on the CDROM.
+
+your cpu server should now be configured in /bin/cpurc as an authentication server.
+
+next, add keys for any hosts that need them -- including the cpu server itself.
+auth/keyfs must be running for you to do this: i usually just restart the machine
+to run /bin/cpurc, but you can probably just invoke the command on the console (as
+is done during the bootstrap procedure):
+	auth/keyfs
+use `auth/adduser -hp host-name' on the console of the authentication server to
+add a `host' entry for each `host-name'. use your machine password as chosen during the installation.
+terminals do NOT need host entries.
+
+if you don't include key entries for your cpu servers, or keyfs isn't runing,
+and you try a cpu command on a terminal, you probably do get the following message:
+>> | cpu: can't read server challenge: plan9: file does not exist
+
+if your root comes from a plan 9 file server that does its own authentication (a common case),
+you will need to `auth' on the file server's console after adding new keys.
+a root taken from u9fs will not care -- it doesn't use the keys -- BUT u9fs had better accept attach
+messages from `none' (and probably `bootes' when acting as a root server -- but i've not tried that configuration).
+you can add `none' to the unix password file as a user who cannot log in, and has
+few file permissions -- perhaps a synonym for `nobody'.
+otherwise, you won't be able to run untrusted listener services: the listener
+creates a new name space by attaching to #s/boot as "none", and u9fs will reject such an attach
+without a corresponding entry in the unix password file.
+
+a final point: also ensure you have the right entries in the /lib/ndb/local database.
+
+i believe you need an appropriate `auth=' entry corresponding to the sys= entry in /lib/ndb/global
+for both the cpu server and your terminal(s).  programs that need authentication
+services won't know where to look otherwise.  there is a way of making a default
+apply to all machines on a network or subnetwork, but you can skip that
+for now.  ndb(6) describes the defaulting: see the discussion of meta-addresses of the
+form $attribute.  it's very nice.  callers to authentication services call
+	net!$auth!servicename
+(eg, net!$auth!rexauth), and ndb/cs searches up the network tree to find the
+auth= entry nearest the resolving host.
+
+note that the cpu server that is acting as authentication server must have $auth
+resolve to itself.  as i said, the quickest way to get things running on a small plan 9
+network is just to make explicit entries and generalise the /lib/ndb/local file later
+when you understand how the $attribute search works.  you'll need something like this:
+
+sys = mycpu
+	... networking info.
+	auth=mycpu	# <- important bit: mycpu does its own authentication
+	proto=il	# <- tells ndb/cs that this machine can use IL/IP on which auth depends
+
+sys = myterm
+	... networking info.
+	auth=mycpu	# <- important bit: use mycpu for authentication
+	proto=il	# <- tells ndb/cs that this machine can use IL/IP on which auth depends
+
+
+with any luck, you might get your cpu servers working now!
+
+

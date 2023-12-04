@@ -1,0 +1,60 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k4CK9RcV018191
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 12 May 2006 13:09:28 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id D9FE5E0E8DC
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 12 May 2006 13:09:27 -0700 (MST)
+Received: from KIFXP (unknown [128.196.98.56])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id A1CD6E0E27D
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 12 May 2006 13:09:26 -0700 (MST)
+From: "Kenneth Forster" <kforster@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: Randomize picture selection
+Date: Fri, 12 May 2006 13:09:30 -0700
+Message-ID: <004901c675ff$fa593b60$3862c480@KIFXP>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+In-Reply-To: <001401c675a4$fdec5c90$0200a8c0@LAPTOP>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+Teodor,
+
+	 
+> is there a way to select pictures stored in the same directory as the RTF
+> file RANDOMLY ?
+
+I'm sure there is very complex way of doing this in DMDX, but here's a
+simple solution that should work.
+
+	In the parameter line, you specify the number of items, which would
+be 30 plus the number of practice items that contain a clockon signal (*).
+let's suppose that's 6 practice items:
+
+<n 36> <s 200>
+
+We also set the scramble block size to a value bigger than the total number
+of items.  The item file consists of all 180 test items, plus the 6 practice
+items.
+
+After the 30th test item, you include the following:
+
+$0 <branch 1000>;
+
+The very last item in the item file should be:
+
+$1000 "That's the end.";$
+
+The branch instruction tells DMDX to ignore all items up until 1000.  The
+importance of specifying the number of items is that it allows you to save
+the data (although this may no longer be necessary -- I haven't checked).
+
+	--k.i.f.
+
+
+
+

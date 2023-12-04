@@ -1,0 +1,85 @@
+Received: from freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with SMTP id RAA11947
+	for <handyboard@media.mit.edu>; Fri, 25 Feb 2000 17:37:10 -0500 (EST)
+Received: (qmail+freegate 7362 invoked by alias); 25 Feb 2000 22:36:33 -0000
+Received: from ws29-n0.hq.freegate.com (HELO drpepper) (208.226.86.157)
+  by hq.freegate.com with SMTP; 25 Feb 2000 22:36:33 -0000
+Message-Id: <4.1.20000225143258.03b2a230@mailhost.hq.freegate.com>
+X-Sender: cmcmanis@mcmanis.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Fri, 25 Feb 2000 14:39:36 -0800
+To: John Osowski <jjo@emrtc.nmt.edu>, handyboard@media.mit.edu
+From: Chuck McManis <cmcmanis@mcmanis.com>
+Subject: Re: Using ICC11 with the handy board
+In-Reply-To: <3.0.1.32.20000225141059.006d805c@mailhost.emrtc.nmt.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+Hi John,
+
+Using compiled programs with the Handyboard is not difficult, the steps
+used to download a compiled program are exactly the same as downloading the
+"pcoder" file in the Handyboard documentation. The compiled program is used
+instead of the pcoder_hb.s19 file. 
+
+There are several things to be aware of;
+
+1) Unlike IC, when using a compiled program you must put the board in
+download mode each time you wish to change the program. That means that you
+need the board physically near you while programming.
+
+2) Memory on the Handyboard is somewhat fragmented, in part because the way
+the handboard runs (Motorola Special Test Mode) puts the interrupt vectors
+at the top of the BF00 (or B600?) page. Anyway, icc11 can deal with it
+better than IC does but it needs to be understood.
+
+3) The Handyboard library with icc11 includes (IMNSHO) better LCD support
+than IC (I wrote it so I'm biased :-). However it does use a 1Khz system
+interrupt to be somewhat compatible with IC timings, it doesn't have to use
+a 1Khz interval. Further, if you look at the code that handles encoders you
+will see that it can run at pretty much any schedule you desire.
+
+--Chuck
+
+ 
+At 02:10 PM 2/25/00 -0700, John Osowski wrote:
+>Dear Sir or Madam,
+>
+>Let me preface this email by saying that I am an extreme novice at
+>programming microprocessors so please try not to laugh to hard at my
+>questions. 
+>
+>I recently started an electronics project for which I chose to use the
+>handy board as a controller.  Unfortunately, I need to operate at speeds
+>significantly faster then the 1 kHz system interrupt allows.  Keep in mind
+>that I do not need the functionality of the LCD display even though it
+>would be nice.  Anyway, I did some research and found that Imagecraft's
+>ICC11 compiler would provide me with a means of simplifying the use of
+>interrupts, provide for faster routines and still allow me to program in C.  
+>
+>Here is my dilemma.  To perform bootstrap mode programming, the ICC11
+>manual states that I must, "...Refer to the target system reference on how
+>to set the system to run in this mode."  I know that resetting the system
+>while holding down the start button puts the HB in bootstrap download mode,
+>however, I'm quite certain that the bootload program provided with the HB
+>sets up the system interrupt that I do not want. Imagecraft provides a HB
+>library, however, I would still be left with the system interrupt problem.
+>How do I set up the HB to accept programs I've developed using ICC11
+>without the constraint of a 1 kHz system interrupt?  
+>
+>Thank you for our assistance.
+>
+>	John Osowski, 
+>	System Specialist
+>	(505) 835-5368
+>	jjo@emrtc.nmt.edu
+>
+>Energetic Materials Research and Testing Center
+>New Mexico Institute of Mining and Technology
+>
+>	
+>
+>
+>
+
+

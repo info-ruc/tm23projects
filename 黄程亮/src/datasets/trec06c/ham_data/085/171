@@ -1,0 +1,323 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id gBGNJ1Pc017056;
+	Mon, 16 Dec 2002 15:19:01 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id gBGJbpV18899;
+	Mon, 16 Dec 2002 14:37:51 -0500
+Date: Mon, 16 Dec 2002 14:37:51 -0500
+Message-Id: <CA-2002-36.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-36 Multiple Vulnerabilities in SSH Implementations
+Precedence: bulk
+Status: RO
+X-Status: $$$$
+X-UID: 0000000071
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+
+CERT Advisory CA-2002-36 Multiple Vulnerabilities in SSH Implementations
+
+   Original issue date: December 16, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+
+Systems Affected
+
+     * Secure  shell  (SSH)  protocol  implementations in SSH clients and
+       servers from multiple vendors
+
+
+Overview
+
+   Multiple  vendors' implementations of the secure shell (SSH) transport
+   layer  protocol  contain  vulnerabilities  that  could  allow a remote
+   attacker  to  execute  arbitrary  code  with the privileges of the SSH
+   process  or  cause a denial of service. The vulnerabilities affect SSH
+   clients  and  servers, and they occur before user authentication takes
+   place.
+
+
+I. Description
+
+   The SSH protocol enables a secure communications channel from a client
+   to a server. From the IETF draft SSH Transport Layer Protocol:
+
+     The  SSH  transport layer is a secure low level transport protocol.
+     It  provides  strong encryption, cryptographic host authentication,
+     and  integrity  protection....  Key  exchange  method,  public  key
+     algorithm,  symmetric  encryption algorithm, message authentication
+     algorithm, and hash algorithm are all negotiated. 
+
+   Rapid7  has  developed  a suite (SSHredder) of test cases that examine
+   the  connection  initialization,  key  exchange, and negotiation phase
+   (KEX,  KEXINIT)  of  the SSH transport layer protocol. The suite tests
+   the  way  an  SSH  transport  layer  implementation handles invalid or
+   incorrect  packet  and  string  lengths,  padding  and padding length,
+   malformed strings, and invalid algorithms.
+
+   The  test  suite  has  demonstrated  a  number  of  vulnerabilities in
+   different  vendors' SSH products. These vulnerabilities include buffer
+   overflows,  and they occur before any user authentication takes place.
+   SSHredder  was  primarily  designed  to  test  key  exchange and other
+   processes that are specific to version 2 of the SSH protocol; however,
+   certain classes of tests are also applicable to version 1.
+
+   Further  information about this set of vulnerabilities may be found in
+   Vulnerability Note VU#389665.
+
+   Rapid7  has  published a detailed advisory (R7-0009) and the SSHredder
+   test suite.
+
+   Common  Vulnerabilities and Exposures (CVE) has assigned the following
+   candidate numbers for several classes of tests performed by SSHredder:
+
+     * CAN-2002-1357 - incorrect field lengths
+     * CAN-2002-1358 - lists with empty elements or multiple separators
+     * CAN-2002-1359 - "classic" buffer overflows
+     * CAN-2002-1360 - null characters in strings
+
+
+II. Impact
+
+   The  impact  will vary for different vulnerabilities and products, but
+   in  severe  cases,  remote attackers could execute arbitrary code with
+   the  privileges  of  the SSH process. Both SSH servers and clients are
+   affected,  since  both  implement the SSH transport layer protocol. On
+   Microsoft  Windows  systems,  SSH  servers  commonly  run  with SYSTEM
+   privileges,  and  on UNIX systems, SSH daemons typically run with root
+   privileges.  In  the  case  of SSH clients, any attacker-supplied code
+   would  run  with  the  privileges  of  the user who started the client
+   program,  with  the  possible  exception  of  SSH  clients that may be
+   configured  with an effective user ID of root (setuid root). Attackers
+   could  also  crash  a  vulnerable  SSH  process,  causing  a denial of
+   service.
+
+
+III. Solution
+
+Apply a patch or upgrade
+
+   Apply  the  appropriate  patch or upgrade as specified by your vendor.
+   See Appendix A below and the Systems Affected section of VU#389665 for
+   specific information.
+
+Restrict access
+
+   Limit  access  to  SSH  servers  to  trusted  hosts and networks using
+   firewalls or other packet-filtering systems. Some SSH servers may have
+   the  ability  to  restrict  access  based  on IP addresses, or similar
+   effects  may  be  achieved  by  using  TCP  wrappers  or other related
+   technology.
+
+   SSH  clients  can  reduce  the  risk  of attacks by only connecting to
+   trusted servers by IP address.
+
+   While  these  workarounds  will  not  prevent  exploitation  of  these
+   vulnerabilities,  they  will  make attacks somewhat more difficult, in
+   part by limiting the number of potential sources of attacks.
+
+
+Appendix A. Vendor Information
+
+   This  appendix  contains information provided by vendors. When vendors
+   report  new  information,  this section is updated and the changes are
+   noted  in  the  revision  history. If a vendor is not listed below, we
+   have  not  received  their  comments.  The Systems Affected section of
+   VU#389665 contains additional vendor status information.
+
+Cisco Systems, Inc.
+
+     The   official   statement  regarding  this  is  that  we  are  not
+     vulnerable.
+
+Cray Inc.
+
+     Cray  Inc.  supports  the  OpenSSH  product through their Cray Open
+     Software  (COS)  package.  COS  3.3,  available the end of December
+     2002,  is  not vulnerable. If a site is concerned, they can contact
+     their  local  Cray  representive  to  obtain  an  early copy of the
+     OpenSSH contained in COS 3.3.
+
+F-Secure
+
+     F-Secure  SSH products are not exploitable via these attacks. While
+     F-Secure  SSH  versions  3.1.0  build 11 and earlier crash on these
+     malicious  packets,  we  did  not find ways to exploit this to gain
+     unauthorized  access  or  to  run  arbitrary code. Furthermore, the
+     crash  occurs  in a forked process so the denial of service attacks
+     are not possible.
+
+Fujitsu
+
+     Fujitsu's  UXP/V  OS  is not vulnerable because it does not support
+     SSH.
+
+IBM
+
+     IBM's  AIX  is  not  vulnerabible  to  the issues discussed in CERT
+     Vulnerability Note VU#389665.
+
+lsh
+
+     I've now tried the testsuite with the latest stable release of lsh,
+     lsh-1.4.2. Both the client and the server seem NOT VULNERABLE.
+
+NetScreen Technologies Inc.
+
+     Tested latest versions. Not Vulnerable.
+
+OpenSSH
+
+     From  my testing it seems that the current version of OpenSSH (3.5)
+     is not vulnerable to these problems, and some limited testing shows
+     that no version of OpenSSH is vulnerable.
+
+Pragma Systems, Inc.
+
+     December 16, 2002
+
+     Rapid 7 and CERT Coordination Center Vulnerability report VU#389665
+
+     Pragma Systems Inc. of Austin, Texas, USA, was notified regarding a
+     possible  vulnerability  with  Version  2.0  of Pragma SecureShell.
+     Pragma  Systems  tested Pragma SecureShell 2.0 and the upcoming new
+     Version  3.0,  and found that the attacks did cause a memory access
+     protection fault on Microsoft platforms.
+
+     After   research,   Pragma   Systems  corrected  the  problem.  The
+     correction of the problem leads us to believe that any attack would
+     not cause a Denial of Service, or the ability of random code to run
+     on the server.
+
+     The  problem  is  corrected  in Pragma SecureShell Version 3.0. Any
+     customers  with concerns regarding this vulnerability report should
+     contact   Pragma   Systems,   Inc   at   support@pragmasys.com  for
+     information  on  obtaining  an upgrade free of charge. Pragma's web
+     site is located at www.pragmasys.com and the company can be reached
+     at 1-512-219-7270.
+
+PuTTY
+
+     PuTTY 0.53b addresses vulnerabilities discovered by SSHredder.
+
+SSH Communications Security
+
+     SSH Secure Shell products are not exploitable via these attacks.
+
+
+Appendix B. References
+
+     * CERT/CC Vulnerability Note: VU#389665 -
+       http://www.kb.cert.org/vuls/id/389665
+     * Rapid 7 Advisory: R7-0009 -
+       http://www.rapid7.com/advisories/R7-0009.txt
+     * Rapid 7 SSHredder test suite -
+       http://www.rapid7.com/perl/DownloadRequest.pl?PackageChoice=666
+     * IETF     Draft:     SSH     Transport     Layer     Protocol     -
+       http://www.ietf.org/internet-drafts/draft-ietf-secsh-transport-15.
+       txt
+     * IETF Draft: SSH Protocol Architecture -
+       http://www.ietf.org/internet-drafts/draft-ietf-secsh-architecture-
+       13.txt
+     * Privilege Separated OpenSSH -
+       http://www.citi.umich.edu/u/provos/ssh/privsep.html
+
+     _________________________________________________________________
+
+   The  CERT  Coordination  Center  thanks  Rapid7  for  researching  and
+   reporting these vulnerabilities.
+     _________________________________________________________________
+
+   Author: Art Manion.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-36.html
+   ______________________________________________________________________
+
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+
+   December 16, 2002: Initial release
+
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPf4qimjtSoHZUTs5AQEGbAQAiJcA+QFf2mOElaPIFwEmSRC83xlKifq/
+PlmaGbUx2UnwTIi8s2ETF8KjlfQjjgO20B4ms1MMaJ/heyxklOgpeBOQ2mpa2Tnd
+yIY7sxpBuRjF1qS6yQ8/OrcsSqVxdxZWkPLAypV11WcJlMmSxxLdKi5t86EsWic3
+xazIo8XEipc=
+=Nj+0
+-----END PGP SIGNATURE-----
+

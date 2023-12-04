@@ -1,0 +1,69 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id VAA11514
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 26 Oct 2000 21:25:47 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by phobos.email.Arizona.EDU (5.1.046)
+        id 39E3B44600150747 for DMDX@psy1.psych.arizona.edu; Thu, 26 Oct 2000 21:25:46 -0700
+Message-Id: <5.0.0.25.2.20001026212437.009db760@psy1.psych.arizona.edu>
+Date: Thu, 26 Oct 2000 21:25:45 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: displaying image files
+In-Reply-To: <39F8C19C.CF933C6C@u.arizona.edu>
+References: <5.0.0.25.2.20001025091203.009e2eb0@psy1.psych.arizona.edu>
+ <5.0.0.25.2.20001025190545.009d4930@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 04:43 PM 10/26/00 -0700, you wrote:
+>Hi Jonathon,
+>I reinstalled the video drivers and dropped the delay from the parameter 
+>line, and
+>still have the same problem.  I'm trying to limit the # of back buffers 
+>that DMDX
+>creates by running the command line -display 3 in MS DOS, and receive the 
+>error
+>message "Invalid video driver name <0 Primary Driver> from Registry Key
+><Software\TimeDX\2\Video-Driver>.  Is this the correct way to invoke the 
+>display n
+>command?  And if so, does the error message I receive when attempting to 
+>invoke the
+>display n command suggest that I have not alleviated the problem with my video
+>drivers?
+
+   Never trust me, from the docs under "Command line options":
+
+-display n
+         Causes DMDX to use display driver number n, handy in a multimon 
+system with a remote subjects display when you want to test something 
+without going to the subjects display, you can have two shortcuts to DMDX, 
+one that uses the normal subjects display and another with the command line 
+parameter -display 1 for using the primary display for output.  The n comes 
+from the number that is the first part of any display driver name as 
+displayed by TimeDX's Video Driver selection dialog.
+
+   (that would be the wrong switch to use)
+
+-buffer n
+         Some video card drivers are f..., well, broken and return errors 
+(or cause crashes) if DMDX requests large numbers of back buffers, notably 
+the Cirrus Logic 5465 AGP drivers.  This may be caused by some confusion 
+over what is video memory and what is not, in any event the user needs a 
+way to override DMDX'
+s calculation of the number of video buffers available and this is it.
+
+   (this would be the correct option for you to use)
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Any simple theory will be worded in the most complicated way.
+
+
+

@@ -1,0 +1,49 @@
+Received: from smtp3.unsw.edu.au (smtp3.unsw.EDU.AU [149.171.96.70])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h427JJoh016019
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 2 May 2003 00:19:19 -0700
+Received: from smtp.unsw.edu.au (antivirus-02.services.comms.unsw.EDU.AU [149.171.193.81])
+	by smtp3.unsw.edu.au (8.11.2/8.11.2) with ESMTP id h427RXu26041
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 2 May 2003 17:27:33 +1000 (EST)
+Received: from student.unsw.edu.au ([129.94.35.39])
+	by smtp.unsw.edu.au (8.11.2/8.11.2) with ESMTP id h427RWL26035
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 2 May 2003 17:27:32 +1000 (EST)
+Message-ID: <3EB21DE4.4000207@student.unsw.edu.au>
+Date: Fri, 02 May 2003 17:27:32 +1000
+From: Rachel Bond <r.bond@student.unsw.edu.au>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] alternate naming and keypress responses
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Dear list members,
+
+My experiment alternates between two types of items:
+- simple ones requiring a timed picture naming response
+- complex ones where the subject gives a series of verbal responses, and 
+the experimenter must press a key to progress to the next item.
+
+This means I need DMDX to respond on the simple trials to the voicekey, 
+and on the complex trials to the keyboard, but importantly NOT to the 
+voicekey, as subjects will be talking.
+I have tried to disengage the voicekey using <UnMapRequest>, but without 
+success: it still triggers to verbal responses.
+
+Here's my attempt to make it work:
+
+<azk> <cr> <clfb> <id "keyboard"> <id DigitalVOX> <vm 640,480,16,0>
+0 "Press spacebar to start";
++1 <ms% 800> _____ _____ _____ / <ms% 500> / * <umr> <mpr +Space> 
+<ntl> <ln -2> sentence1, <ln 0> sentence2, <ln 2> sentence3 /!;
++2 <ms% 2000> * * * * */ <ms% 500> / * <umr> <mpr +DigitalVox> <fd 
+254> <t 3000> <bmp> picture1;
++3 * <fd 254> <t 3000> <bmp> picture2;
+0 This is the end ";
+
+Thanks for any assistance
+Rachel
+
+

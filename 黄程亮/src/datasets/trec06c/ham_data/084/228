@@ -1,0 +1,443 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gA7EGqP25250
+	for <ggilfoyl@facstaff.richmond.edu>; Thu, 7 Nov 2002 09:16:52 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gA7EB6413915
+	for <ggilfoyl@richmond.edu>; Thu, 7 Nov 2002 09:11:06 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002110709110631740
+ for <ggilfoyl@richmond.edu>; Thu, 07 Nov 2002 09:11:06 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gA7EB6w29876
+	for <ggilfoyl@richmond.edu>; Thu, 7 Nov 2002 09:11:06 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gA72A1E03227
+	for <ggilfoyl@richmond.edu>; Wed, 6 Nov 2002 21:10:01 -0500
+Date: Wed, 6 Nov 2002 21:10:00 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: "Gerard P. Gilfoyle" <ggilfoyl@richmond.edu>
+Subject: Re: thanks and a long question
+In-Reply-To: <3DC9AA69.8EE2DC8C@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0211062036200.429-300000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="-1562895071-592316270-1036635000=:429"
+Status:   
+X-Mozilla-Status: 9013
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb2673000041db
+
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+  Send mail to mime@docserver.cac.washington.edu for more info.
+
+---1562895071-592316270-1036635000=:429
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Greetings,
+
+The reboot of the master is not actually necessary. Instead, you can just
+do:
+
+/etc/init.d/beowulf restart 
+on the master and reboot the slaves. Note that the restart command will
+crash any running jobs on the cluster (of course, so does rebooting the
+master :-)
+
+For item 4, it may be the size of the library at issue, or it may be
+confused by the number of library paths. I have seen that before (in
+particular w/ the Intel compiler libraries). It may be that I will need to
+modify the node_up script to preload /usr/root/PRO/lib. I will be happy to
+take care of that. 
+
+Alternatively, placing the attached scripts into
+/usr/lib/beoboot/bin (make sure to chmod +x the scripts) should cause the
+nodes to preload the needed library and make sure they can find them.
+
+The instructions for running X should not be necessary. I suppose since
+the X libs are linked against, they get loaded even when the command
+options say don't use X.
+
+Hope the eveninng beer was good (he says over the half-pot sized cup of
+morning coffee).
+
+G'day,
+sjames
+
+
+
+On Wed, 6 Nov 2002, Gerard P. Gilfoyle wrote:
+
+> hi steven,
+> 
+>    here is the latest. 
+> 
+> 1. i added the /usr/X11R6/lib to the libraries list in 
+> /etc/beowulf/config so it looks like this.
+> 
+> libraries /lib /usr/lib /usr/X11R6/lib 
+> 
+> i then powered down the slaves, rebooted the master (is this necessary?
+> i thought this might be overkill), and powered up slaves 0-1.
+> 
+> slave 0 seemed to be acting fine so i tried to run root using the
+> following command.
+> 
+> pscm1:gilfoyle> bpsh 0 root -b -q /scratch/gilfoyle/e5/24023/run_eod3.C
+> 
+> and got
+> 
+> /usr/root/PRO/bin/root.exe: error while loading shared libraries:
+> libCore.so: cannot open shared object file: No such file or directory
+> 
+> 2. ok. this is a library in /usr/root/PRO/lib so i just add that to the
+> library list which now looks like this.
+> 
+> libraries /lib /usr/lib /usr/X11R6/lib /usr/root/PRO/lib
+> 
+> i power down slaves 0-1, reboot the master, and power up slaves 0-1. i
+> have
+> set the root environment variable LD_LIBRARY_PATH to /usr/root/PRO/lib.
+> i
+> now get the following.
+> 
+> pscm1:gilfoyle>  bpsh 0 root -b -q /scratch/gilfoyle/e5/24023/run_eod3.C
+> root: error while loading shared libraries: libXpm.so.4: cannot open
+> shared object file: No such file or directory
+> 
+> this was the original Xlib that couldn't be found even though its area 
+> (/usr/X11R6/lib) is now in the libraries list.
+> 
+> 3. ok, can i try doing this with the LD_LIBRARY_PATH variable? i set it
+> the following way in my .cshrc file.
+> 
+> setenv LD_LIBRARY_PATH ${ROOTSYS}/lib  <-- ROOTSYS is the root area
+> setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/X11R6/lib 
+> 
+> i power down slaves 0-1, reboot the master (i'm getting faster with
+> this), and
+> power back up slaves 0-1.
+> 
+> now i try to run root with
+> 
+> bpsh 0 root -b -q /scratch/gilfoyle/e5/24023/run_eod3.C
+> 
+> and it hangs and i can no longer communicate with the slave. i checked
+> before
+> running root that i could run bpsh commands on the slave and it worked
+> fine.
+> 
+> 4. a wild guess. is there a limit on the number of libraries i can add
+> in
+> /etc/beowulf/config. my next idea was to copy all the libraries into
+> /usr/lib. do you think this would work? i have to go home now and put
+> our
+> 4-year-old to bed.
+> 
+> 5. you last message described how to use X on the slave. i don't think
+> we
+> need to do this. the '-b' option in root is meant to run root without
+> any graphics and i have done this many times even on the cluster before
+> the
+> upgrade. i guess they build one version of root and run it in graphics
+> and non-graphics modes. if you think we need to do the things you
+> describe,
+> let me know.
+> 
+> let me know what you think.
+> 
+> time for a beer.
+> 
+> jerry
+> 
+> 
+> steven james wrote:
+> > 
+> > Greetings,
+> > 
+> > I am happy I could help.
+> > 
+> > A long question deserves a long answer, so here goes :-)
+> > 
+> > You were on the right track by putting the Xlib in with the regular libs.
+> > 
+> > The issue is that slave nodes recieve their files from the master's /lib
+> > and /usr/lib directory.
+> > 
+> > This is a configuration option in /etc/beowulf/config.
+> > 
+> > Addint /usr/X11R6/lib there, then restarting the cluster should make it
+> > find the library.
+> > 
+> > It is normally not included since it's unusual for a cluster app to want
+> > to use X (other than the root process of a parallel visualization
+> > app, that is).
+> > 
+> > This is not necessarily a problem, just an unusual situation that needs
+> > configuring. Depending on exactly how it does it's thing, you may also
+> > need to set the DISPLAY environment variable explicitly to 192.168.1.1:0
+> > 
+> > It may also be necessary to use xhost to permit the node to use the
+> > Xservices on the master. For your example of node 3, you would want
+> > xhost +n3
+> > 
+> > before running root. (A useful note, the nss libs are patched so that
+> > n<node_number> will correctly resolve to the node's IP address.
+> > 
+> > If you are wanting to have the X connection re-directed to a workstation
+> > somewhere, we'll need to set the master up to forward outgoing connections
+> > from compute nodes so the X connection can get through.
+> > 
+> > G'day,
+> > sjames
+> > 
+> > 
+> > On Wed, 6 Nov 2002, Gerard P. Gilfoyle wrote:
+> > 
+> > > Hi Steven,
+> > >
+> > >    Thanks for all your help on Monday with the upgrade of the Richmond
+> > > cluster. I have spent yesterday and today getting all our software
+> > > tools up and running and I have run into a problem. We use a code
+> > > called root to analyze our physics data both interactively and in
+> > > batch. It was written at CERN (a large, international particle physics
+> > > lab in Europe). I can run root on the master (pscm1) in interactive
+> > > mode and in batch with no problems. However, when I try to run it in
+> > > batch on a cluster node it can't find a library. The commands and
+> > > error message are below.
+> > >
+> > > running root in batch on master:
+> > >
+> > >        root -b -q run_eod3.C  <-- this works
+> > >
+> > > The '-b' means batch and '-q' means the next thing is a file
+> > > containing commands for the data analysis.
+> > >
+> > > running root in batch on a slave 3:
+> > >
+> > >        bpsh 3 root -b -q /scratch/gilfoyle/e5/24028/run_eod3.C
+> > >
+> > > error message from the previous command:
+> > >
+> > > root: error while loading shared libraries: libXpm.so.4: cannot open
+> > > shared object file: No such file or directory
+> > >
+> > > The library libXpm.so.4 is located in /usr/X11R6/lib/ on pscm1 so
+> > > presumably this is an environment variable problem. I have tried
+> > > various fixes, but all have failed. Some of the things I tried are
+> > > listed below.
+> > >
+> > > 1. root uses a library whose location is defined by the environment
+> > > variable LD_LIBRARY_PATH which will point to an area like
+> > > /usr/root/lib/. I have tried adding /usr/X11R6/lib/ to this path and
+> > > even putting libXpm.so.4 in with the normal root libraries, but I get
+> > > the same failure.
+> > >
+> > > 2. After the upgrade on Monday, we created user directories and
+> > > account in the /home area, but I realized later the disk partition
+> > > containing /home was too small. I moved the home directories to
+> > > /usr/home. I speculated that the slave was not finding the correct
+> > > .cshrc file so I created a temporary /home/gilfoyle
+> > > area, put all the files in there (including the .cshrc file), and
+> > > tried running root on the slave from that new directory. I get the
+> > > same error message.
+> > >
+> > > Do you have any thoughts on what a solution could be???
+> > >
+> > > I will also contact the root developers to see if they have run into
+> > > this problem.
+> > >
+> > > thanks-in-advance,
+> > >
+> > > jerry
+> > >
+> > >
+> > 
+> > --
+> > -------------------------steven james, director of research, linux labs
+> > ... ........ ..... ....                     230 peachtree st nw ste 701
+> > the original linux labs                             atlanta.ga.us 30303
+> >       -since 1995                              http://www.linuxlabs.com
+> >                                    office 404.577.7747 fax 404.577.7743
+> > -----------------------------------------------------------------------
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+
+
+---1562895071-592316270-1036635000=:429
+Content-Type: TEXT/PLAIN; charset=US-ASCII; name=setup_libs
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.LNX.4.21.0211062110000.429@ucontrol.mobiledns.com>
+Content-Description: 
+Content-Disposition: attachment; filename=setup_libs
+
+IyEvYmluL3NoDQojDQojIEVyaWsgSGVuZHJpa3MgPGhlbmRyaWtzQGxhbmwu
+Z292Pg0KIw0KIyAkSWQ6IHNldHVwX2xpYnMsdiAxLjMgMjAwMS8xMC8xNSAy
+MjowNjo0NyBoZW5kcmlrcyBFeHAgJA0KIw0KIyBUaGlzIGlzIGEgdmVyeSBz
+aW1wbGUgc2NyaXB0IHRvIGNvcHkgc2hhcmVkIGxpYnJhcmllcyB0byBub2Rl
+cyBpbiBhDQojIGNsdXN0ZXIuICBUaGlzIGlzIGJyb2tlbiBvdXQgbGlrZSB0
+aGlzIHNvIHRoYXQgaXQgY2FuIGVhc2lseSBiZSBydW4NCiMgaWYgbGlicmFy
+aWVzIGFyZSB1cGRhdGVkIGFmdGVyIGEgbm9kZSBpcyBib290ZWQuDQojDQoj
+IFBvc3NpYmxlIGZ1dHVyZSBmZWF0dXJlczoNCiMgICogdGFrZSAtYSB0byBy
+dW4gb24gYWxsIG5vZGVzLg0KIyAgKiB0YWtlIHNvbWUgYXJndW1lbnQgdG8g
+cmVkbyB0aGUgbGlicmFyeSBsaXN0IGFuZCB0aGVuIHVwZGF0ZQ0KIyAgICBh
+bGwgdGhlIG5vZGVzLg0KDQpjZCAvDQojIEFyZ3VtZW50IHNhbml0eSBjaGVj
+a2luZw0KaWYgWyAiJDEiID0gIiIgXSA7IHRoZW4NCiAgICBlY2hvICJVc2Fn
+ZTogc2V0dXBfbGlicyA8bm9kZW51bWJlcj4gW3Jvb3Rmc10iDQogICAgZXhp
+dCAxDQpmaQ0KDQpOT0RFPSQxDQpST09URlM9JDINClBBVEg9L3NiaW46L3Vz
+ci9zYmluOiRQQVRIDQoNCmlmIFsgLXogIiRST09URlMiIF0gOyB0aGVuIFJP
+T1RGUz0vIDsgZmkNCg0KZWNobyAic2V0dXBfbGliczogQ29weWluZyBsaWJy
+YXJpZXMgdG8gbm9kZSAkTk9ERS4uLiINCmlmICEgYnBsaWIgLWwgfCBzZWQg
+LWUgJ3MhXi8hIScgfCB0YXIgY2YgLSAtVCAtIHwgXA0KICAgIGJwc2ggJE5P
+REUgdGFyIC1DICRST09URlMgLXhmIC0gOyB0aGVuDQogICAgZWNobyAxPiYy
+ICJMaWJyYXJ5IGNvcHkgdG8gbm9kZSAkTk9ERSBmYWlsZWQuICAocm9vdGZz
+PSRST09URlMpIg0KICAgIGV4aXQgMQ0KZmkNCg0KZWNobyAic2V0dXBfbGli
+czogQ29weWluZyBsZC5zby5jb25mLi4uIg0KYnBjcCAvZXRjL2xkLnNvLmNv
+bmYgJE5PREU6L2V0Yw0KDQplY2hvICJzZXR1cF9saWJzOiBSdW5uaW5nIGxk
+Y29uZmlnIG9uIG5vZGUgJE5PREUuLi4iDQppZiAhIGJwc2ggJE5PREUgbGRj
+b25maWcgLXIgJFJPT1RGUyA7IHRoZW4NCiAgICBlY2hvIDE+JjIgIlJ1bm5p
+bmcgbGRjb25maWcgb24gJE5PREUgZmFpbGVkLiAocm9vdGZzPSRST09URlMp
+Ig0KICAgIGV4aXQgMQ0KZmkNCg0KIyBUcmFuc2ZlciBsaWJyYXJ5IGxpc3Qg
+dG8gdGhlIHJlbW90ZSBub2RlLg0KZWNobyAic2V0dXBfbGliczogVHJhbnNm
+ZXJpbmcgaW4ta2VybmVsIGxpYnJhcnkgbGlzdCB0byBub2RlICROT0RFLi4u
+Ig0KaWYgISBicGxpYiAtbCB8IGJwc2ggJE5PREUgYnBsaWIgLWEgLSA7IHRo
+ZW4NCiAgICBlY2hvIDE+JjIgIkZhaWxlZCB0byBzZXR1cCBsaWJyYXJ5IGxp
+c3Qgb24gJE5PREUuIg0KICAgIGV4aXQgMQ0KZmkNCg0KZXhpdCAwDQo=
+---1562895071-592316270-1036635000=:429
+Content-Type: TEXT/PLAIN; charset=US-ASCII; name=node_up
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.LNX.4.21.0211062110001.429@ucontrol.mobiledns.com>
+Content-Description: 
+Content-Disposition: attachment; filename=node_up
+
+IyEvYmluL3NoDQojLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQojIEVyaWsg
+QXJqYW4gSGVuZHJpa3MgPGhlbmRyaWtzQGxhbmwuZ292Pg0KIyBDb3B5cmln
+aHQgKEMpIDIwMDAgU2N5bGQgQ29tcHV0aW5nIENvcnBvcmF0aW9uDQojIA0K
+IyBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRp
+c3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQ0KIyBpdCB1bmRlciB0aGUgdGVy
+bXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxp
+c2hlZCBieQ0KIyB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRo
+ZXIgdmVyc2lvbiAyIG9mIHRoZSBMaWNlbnNlLCBvcg0KIyAoYXQgeW91ciBv
+cHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLg0KIyANCiMgVGhpcyBwcm9ncmFt
+IGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1
+c2VmdWwsDQojIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBl
+dmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mDQojIE1FUkNIQU5UQUJJTElU
+WSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0
+aGUNCiMgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0
+YWlscy4NCiMgDQojIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkg
+b2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlDQojIGFsb25nIHdp
+dGggdGhpcyBwcm9ncmFtOyBpZiBub3QsIHdyaXRlIHRvIHRoZSBGcmVlIFNv
+ZnR3YXJlDQojIEZvdW5kYXRpb24sIEluYy4sIDU5IFRlbXBsZSBQbGFjZSAt
+IFN1aXRlIDMzMCwgQm9zdG9uLCBNQSAwMjExMS0xMzA3LCBVU0EuDQojIA0K
+IyAkSWQ6IG5vZGVfdXAsdiAxLjE3IDIwMDIvMDEvMDQgMDA6Mzk6NTkgaGVu
+ZHJpa3MgRXhwICQNCiMtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCnVtYXNr
+IDAyMgkJCSMgRGVmYXVsdCB1bWFzayBmb3IgdGhpcyBzdHVmZi4NCmNkIC8N
+Cg0KIyBBcmd1bWVudCBzYW5pdHkgY2hlY2tpbmcNCmlmIFsgIiQxIiA9ICIi
+IF0gOyB0aGVuDQogICAgZWNobyAiVXNhZ2U6IG5vZGVfdXAgPG5vZGVudW1i
+ZXI+Ig0KICAgIGV4aXQgMQ0KZmkNCg0KTk9ERT0kMQ0KQ09ORklHPS9ldGMv
+YmVvd3VsZi9jb25maWcNCkJJTkRJUj0vdXNyL2xpYi9iZW9ib290L2Jpbg0K
+DQojIFVzYWdlOiBiZW9jb25maWcgdGFnIFtjb25maWdfZmlsZV0NCmJlb2Nv
+bmZpZygpIHsNCiAgICBsb2NhbCBGSUxFPSQyDQogICAgaWYgWyAteiAiJEZJ
+TEUiIF0gOyB0aGVuIEZJTEU9JHtDT05GSUd9IDsgZmkNCiAgICBpZiBbICEg
+LWYgJHtGSUxFfSBdIDsgdGhlbg0KICAgICAgICBlY2hvICJXYXJuaW5nOiAk
+e0ZJTEV9IGZpbGUgbm90IGZvdW5kLiIgPiYyDQoJcmV0dXJuDQogICAgZmkN
+CiAgICAjIFRoZXNlIHNlZCBiaXRzOg0KICAgICMgIC0gc3RyaXAgc3BhY2Vz
+DQogICAgIyAgLSBzdHJpcCBsZWFkaW5nICsgdHJhaWxpbmcgc3BhY2UNCiAg
+ICAjICAtIGlmIGxpbmUgc3RhcnRzIHdpdGggJDEsIHN0cmlwIG9mZiAkMSBh
+bmQgcHJpbnQgaXQuDQogICAgc2VkIC1uZSAicy8jLiovLyIgPCAke0ZJTEV9
+IFwNCgkgLWUgInMvXltbOnNwYWNlOl1dXCsvLztzL1tbOnNwYWNlOl1dXCtc
+JC8vIiBcDQogICAgICAgICAtZSAiL14kMVtbOnNwYWNlOl1dL3tzL14kMVtb
+OnNwYWNlOl1dXCsvLztwO30iDQp9DQoNCmRpZSgpIHsNCiAgICBpZiBbIC1u
+ICIkMSIgXSA7IHRoZW4NCiAgICAgICAgZWNobyAxPiYyICIkMSINCiAgICBm
+aQ0KICAgIGlmIFsgLW4gIiQyIiBdIDsgdGhlbg0KICAgICAgICBlY2hvIDE+
+JjIgIkZhdGFsIGVycm9yIHBlcmZvcm1pbmc6ICQqIg0KICAgIGZpDQogICAg
+aWYgWyAtbiAiJE1PVU5URUQiIF0gOyB0aGVuDQogICAgICAgIHVtb3VudCAk
+SU5JVFJEX0JVSUxEDQogICAgICAgIHJtZGlyICAkSU5JVFJEX0JVSUxEDQog
+ICAgZmkNCiAgICBleGl0IDENCn0NCg0KcnVuX2NtZCgpIHsNCiAgICBldmFs
+ICIkKiIgfHwgZGllICIiICIkKiINCn0NCg0KIyBBIG1lc3NhZ2UgZm9yIHRo
+ZSBjb25zb2xlIG9uIHRoZSByZW1vdGUgZW5kLg0KYnBzaCAkTk9ERSAtLXN0
+ZG91dCAvZGV2L2NvbnNvbGUgXA0KICBlY2hvIC1lICJub2RlX3VwOiBUaGlz
+IGlzIG5vZGUgJE5PREUuXG5ub2RlX3VwOiBib290IGxvZyBhdmFpbGFibGUg
+aW4gL3Zhci9sb2cvYmVvd3VsZi9ub2RlLiROT0RFIG9uIHRoZSBtYXN0ZXIu
+Ig0KDQojLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQojIEZpcnN0IHRoaW5n
+cyBmaXJzdC4uLiBzZXQgdGhlIHN5c3RlbSBjbG9jaw0KZWNobyAibm9kZV91
+cDogU2V0dGluZyBzeXN0ZW0gY2xvY2suIg0KcnVuX2NtZCAkQklORElSL2Jk
+YXRlICROT0RFDQoNCiMgbWFwcGluZyBvZiByYW0gZGV2aWNlcyBhdCB0aGlz
+IHBvaW50Lg0KIyAvZGV2L3JhbTAgPC0gaW5pdHJkIGdvZXMgaGVyZQ0KDQoj
+cnVuX2NtZCBicHNoICROT0RFIG1vdW50IC1udCBwcm9jIG5vbmUgL3Byb2MN
+Cg0KIyBYWFggV2UgbmVlZCBhIHdheSB0byBmaWd1cmUgb3V0IHdoYXQgaW50
+ZXJmYWNlIGlzIHVwIGF0IHRoaXMgcG9pbnQNCiMgc28gdGhhdCB3ZSBrbm93
+IHdoaWNoIG9uZSB0byBzbGFwIGEgbmV0bWFzayBvbnRvLg0KZWNobyAibm9k
+ZV91cDogVE9ETyBzZXQgaW50ZXJmYWNlIG5ldG1hc2suIg0KDQojIC4uLiBh
+bmQga2ljayBvbiB0aGF0IGxvb3AgYmFjayBpbnRlcmZhY2UNCmVjaG8gIm5v
+ZGVfdXA6IENvbmZpZ3VyaW5nIGxvb3BiYWNrIGludGVyZmFjZS4iDQpydW5f
+Y21kIGJwc2ggJE5PREUgaWZjb25maWcgbG8gMTI3LjAuMC4xIG5ldG1hc2sg
+MjU1LjAuMC4wDQpydW5fY21kIGJwc2ggJE5PREUgcm91dGUgYWRkIC1uZXQg
+MTI3LjAuMC4wIG5ldG1hc2sgMjU1LjAuMC4wIGxvDQoNCiMtLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0NCiMgS2VybmVsIE1vZHVsZXMNCiMNCiMgV2Ugc2hv
+dWxkIHByb2JhYmx5IHBheSBhdHRlbnRpb24gdG8gImluc21vZCIgbGluZXMg
+aW4gdGhlIGNvbmZpZw0KIyBmaWxlIGhlcmUuLi4NCktWRVI9YGJwc2ggJE5P
+REUgdW5hbWUgLXJgCSMgTWFrZSBub3RlIG9mIHRoZSByZW1vdGUga2VybmVs
+IHZlcnNpb24NCmZvciBtb2R1bGUgaW4gYCRCSU5ESVIvcGNpbG9va3VwICRO
+T0RFYDsgZG8NCiAgICBtb2Rwcm9iZSAtLW5vZGUgJE5PREUgJG1vZHVsZQ0K
+ZG9uZQ0KDQojLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQojIEZpbGUgU3lz
+dGVtcw0KIw0KDQojIFdlIG5lZWQgYSB3YXkgZm9yIHNldHVwX2ZzIHRvIGxl
+dCB1cyBrbm93IHdoZXJlIHRoZSByb290IGZpbGVzeXN0ZW0NCiMgaXMgbW91
+bnRlZC4uLiANCiRCSU5ESVIvc2V0dXBfZnMgJE5PREUgfHwgZXhpdCAxDQoN
+CiMgUG9wdWxhdGUgaXQgPw0KIyBTZXR1cCBzY3JhdGNoIGFuZCB0bXAgc3Bh
+Y2UuLi4NCnJ1bl9jbWQgYnBzaCAkTk9ERSBta2RpciAtcCAvcm9vdGZzL3t0
+bXAsc2NyYXRjaH0NCnJ1bl9jbWQgYnBzaCAkTk9ERSBjaG1vZCAxNzc3IC9y
+b290ZnMve3RtcCxzY3JhdGNofQ0KDQpicGxpYiAtbCB8IGJwc2ggJE5PREUg
+YnBsaWIgLWEgLQ0KJEJJTkRJUi9zZXR1cF9saWJzICROT0RFIC9yb290ZnMg
+fHwgZXhpdCAxDQoNCiMgQ29weSBvdmVyIGRldmljZSBub2RlcyBmcm9tIHRo
+ZSBmcm9udCBlbmQuDQplY2hvICJub2RlX3VwOiBwb3B1bGF0aW5nIC9kZXYg
+YW5kIC9ldGMiDQpydW5fY21kIGJwc2ggJE5PREUgbWtkaXIgLXAgL3Jvb3Rm
+cy97ZGV2LGV0Y30NCg0KZWNobyAibm9kZV91cDogQ29weWluZyBvdmVyIGRl
+dmljZSBub2Rlcy4iDQpydW5fY21kIGJwc2ggJE5PREUgbWtkaXIgLXAgL3Jv
+b3Rmcy9kZXYNCiNmaW5kIC9kZXYgLW1vdW50IC10eXBlIGIgLW8gLXR5cGUg
+YyB8IFwNCiMgICAgc2VkIC1lICdzIV4vISEnIHwgdGFyIGNmIC0gLVQgLSB8
+IGJwc2ggJE5PREUgdGFyIC1DIC9yb290ZnMgLXhmIC0NCkRFVkxJU1Q9ImNv
+bnNvbGUgemVybyBudWxsIg0KdGFyIC1DIC9kZXYgLWNmIC0gJERFVkxJU1Qg
+fCBicHNoICROT0RFIHRhciAtQyAvcm9vdGZzL2RldiAteGYgLQ0KWyAiJD8i
+ID0gIjAiIF0gfHwgZGllICIiICJjb3B5aW5nIGRldmljZSBub2RlcyINCg0K
+ZWNobyAibm9kZV91cDogQ29weWluZyBvdmVyIHRpbWUgem9uZSBpbmZvLiIN
+CnJ1bl9jbWQgYnBjcCAvZXRjL2xvY2FsdGltZSAkTk9ERTovcm9vdGZzL2V0
+Yy9sb2NhbHRpbWUNCg0KZWNobyAibm9kZV91cDogQ29weSBvdmVyIG5zc3dp
+dGNoIGluZm8uIg0KcnVuX2NtZCBjYXQgPDwgRU9GIHwgYnBzaCAkTk9ERSAt
+LXN0ZG91dCAvcm9vdGZzL2V0Yy9uc3N3aXRjaC5jb25mIGNhdA0KcGFzc3dk
+OiBicHJvYw0KaG9zdHM6IGJwcm9jDQpFT0YNCg0KIyBuc3NfYnByb2MgaXMg
+b3B0aW9uYWwgZXF1aXBtZW50IHNvIGlnbm9yZSBlcnJvcnMuLi4uDQojZWNo
+byAibm9kZV91cDogQ29weWluZyBvdmVyIGJwcm9jIG5zcyBsaWJyYXJ5LiIN
+CiNicGNwIC9saWIvbGlibnNzX2Jwcm9jLnNvLjIgJE5PREU6L3Jvb3Rmcy9s
+aWINCg0KIy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KIyBGaW5pc2ggdXAu
+Li4NCg0KI3J1bl9jbWQgYnBzaCAkTk9ERSB1bW91bnQgLW4gL3Byb2MNCg0K
+cnVuX2NtZCBicGN0bCAtUyAkTk9ERSAtciAvcm9vdGZzDQoNCiNpZiBuZWVk
+ZWQgZm9yIGxvY2tpbmcgTkZTDQojcnVuX2NtZCBicHNoICROT0RFIHBvcnRt
+YXANCg0KIyBUaGlzIGlzIGEgaGFjayB0byBtYWtlIHRoZSBkeW5hbWljIGxp
+bmtlciB3b3JrIGZvciB0aGluZ3Mgd2hpY2ggYXJlDQojIGV4ZWMnZWQgcmVt
+b3RlbHkuDQpydW5fY21kIGJwc2ggLU4gJE5PREUgL3NiaW4vbGRjb25maWcg
+LWwgL2xpYi9sZC0qDQoNCnJ1bl9jbWQgYnBzaCAtTiAkTk9ERSBob3N0bmFt
+ZSBuJE5PREUNCg0KcnVuX2NtZCAkQklORElSL25vZGVpbmZvICROT0RFCQkJ
+IyBVcGRhdGUgbm9kZSBpbmZvcm1hdGlvbiBEQg0KDQppZiBbIC14IC91c3Iv
+bGliL2Jlb2Jvb3QvaW5pdC5kL3JjUyBdOyB0aGVuIC91c3IvbGliL2Jlb2Jv
+b3QvaW5pdC5kL3JjUyAkTk9ERQ0KZmkNCg0KIy0tLSBBIG1lc3NhZ2UgZm9y
+IHRoZSBsb2cgZmlsZSBhbmQgbm9kZSdzIGNvbnNvbGUuDQplY2hvICJub2Rl
+X3VwOiBOb2RlIHNldHVwIGZpbmlzaGVkLiINCmJwc2ggJE5PREUgLS1zdGRv
+dXQgL2Rldi9jb25zb2xlIGVjaG8gIm5vZGVfdXA6IE5vZGUgc2V0dXAgZmlu
+aXNoZWQuIg0KZXhpdCAwDQo=
+---1562895071-592316270-1036635000=:429--
+

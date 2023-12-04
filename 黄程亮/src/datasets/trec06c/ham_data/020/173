@@ -1,0 +1,50 @@
+Received: from alf.glinx.com (root@alf.glinx.com [142.176.48.18])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id QAA30208
+	for <handyboard@media.mit.edu>; Sun, 19 Jul 1998 16:10:15 -0400 (EDT)
+From: adekolaf@is2.dal.ca
+Received: from adekolaf.tuns.ca (ke-ts2-16.glinx.com [142.176.49.88])
+	by alf.glinx.com (8.9.0/8.9.0) with SMTP id RAA14974
+	for <handyboard@media.mit.edu>; Sun, 19 Jul 1998 17:10:13 -0300
+Message-Id: <199807192010.RAA14974@alf.glinx.com>
+To: "handybd" <handyboard@media.mit.edu>
+Date: Sun, 19 Jul 1998 17:07:12 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Subject: Parellel port control
+Priority: normal
+
+Has anybody tried using the "delay function, outportb function and 
+inportb function" that comes with Borland C++  5.01. I am trying to 
+control a set of  LEDs conncted to my printer port  using a C++ 
+program. My program woudn't compile. The error is that delay, 
+outportb and inportb functions are not define. A segment of my 
+program is as follows:
+
+#include <dos.h>
+#include <stdio.h>
+
+#define BASE  0x0378  //base address of LPT1 for my computer
+#define BASE_S  BASE + 1
+#define BASE_C  BASE + 2
+
+main( )
+{
+
+ int data_in;
+ int count = 8;
+do
+  {
+     outportb(DATA, 0x00);  //turn  eight LEDs on
+     delay(1000);
+     outportb(DATA, 0xff);  //turn LEDs off
+     data_in = inportb((STATUS)^0x80));  //read in a byte.
+     printf("%x\n", data_in);
+     count = count - 1  
+  }while(count !=0);
+
+}
+
+I would really appreciate if someone know what is wrong. I check the 
+dos.h files and it seems to be fine
+

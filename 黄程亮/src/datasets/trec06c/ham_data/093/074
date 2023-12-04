@@ -1,0 +1,79 @@
+Received: from imap4.leeds.ac.uk (imap4.leeds.ac.uk [129.11.157.34])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i35CKpIn007832
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 5 Apr 2004 05:20:54 -0700
+Received: from VEX1.ds.leeds.ac.uk (dex1n1.leeds.ac.uk [129.11.77.11])
+	by imap4.leeds.ac.uk (8.12.10/8.12.10) with ESMTP id i35CKm4k005074
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 5 Apr 2004 13:20:49 +0100 (BST)
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Subject: [DMDX] RE: Re: Millisecond synchronization
+Date: Mon, 5 Apr 2004 13:20:45 +0100
+Message-ID: <53F96C888AD4344FB735FBC33E8152D81708FC@VEX1.ds.leeds.ac.uk>
+From: "Ronan O'Ceallaigh" <R.O'Ceallaigh@leeds.ac.uk>
+To: <DMDX@psy1.psych.arizona.edu>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Sorry, I should have explained our setup a bit better. At the moment, I'm running both DMDX and the eye tracker on the same computer, so both processes will be working off the same clock. This is why I thought using the system clock with a millisecond time-stamp may work. (I do realise that running both processes on the same machine will introduce some additional error, but this setup is due to funding constraints.)
+
+However, if there was a way for DMDX to set a given memory location or interrupt, I could try to use that as the trigger for the eye tracking software. I'm reluctant to use a feedback loop from a PIO card, but if you think that's the only solution I'll attempt it.
+
+Regards,
+Ronan
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu [mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of Jonathan C. Forster
+Sent: 01 April 2004 18:41
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: Millisecond synchronization
+
+
+At 04:34 PM 4/1/2004 +0100, you wrote:
+>Hello,
+>
+>I'm trying to interface a DMDX experiment with an eye tracker, and I'm
+>having trouble synchronising the two data sets. I need to be able to link 
+>each eye position, of which there are 50 a second, to what dmdx is 
+>displaying at that time, so it's crucial that I can tell when each process 
+>starts.
+>
+>I've used <rcot> to give me the millisecond starting point of each 
+>trial
+>within the experiment, but I need to know the exact millisecond starting 
+>point of the experiment itself for this to be useful. So far all that I 
+>have is the second time stamp on the top of a ZIL or AZK file. Is there 
+>anyway to get this information? Or is anyone aware of a workaround that I 
+>could use?
+
+
+   We usually synchronize machines in such circumstances with a signal from 
+an interface card, can your eye tracker record another channel of data?  Or 
+alternatively can be started by the signal from DMDX?  Barring that the 
+time stamp of the file is all that exists right now and I doubt that giving 
+you a millisecond accurate time stamp would help much as the probability of 
+the two clocks being in synch to the millisecond is zero.  Even if you have 
+them synched to an external time source both machines will drift almost 
+immediately.   Which is which recording a signal from DMDX in the eye 
+tracking data is the best solution.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Life is not lost by dying; life is lost minute by minute, day by day, in all the thousand, small, uncaring ways.
+                                               - Stephen V. Benet
+
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+

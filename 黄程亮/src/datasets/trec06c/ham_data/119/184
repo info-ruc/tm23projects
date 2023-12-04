@@ -1,0 +1,166 @@
+Received: from vikki.vulnwatch.org (vikki.vulnwatch.org [199.201.145.182])
+	by draco.acs.uci.edu (8.13.6/8.13.1) with SMTP id k2TE83gv002986
+	for &lt;<A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">iglesias at draco.acs.uci.edu</A>&gt;; Wed, 29 Mar 2006 06:08:08 -0800
+Received: (qmail 10529 invoked by alias); 29 Mar 2006 14:21:32 -0000
+Mailing-List: contact <A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">vulnwatch-help at vulnwatch.org</A>; run by ezmlm
+Precedence: bulk
+List-Post: &lt;mailto:<A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">vulnwatch at vulnwatch.org</A>&gt;
+List-Help: &lt;mailto:<A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">vulnwatch-help at vulnwatch.org</A>&gt;
+List-Unsubscribe: &lt;mailto:<A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">vulnwatch-unsubscribe at vulnwatch.org</A>&gt;
+List-Subscribe: &lt;mailto:<A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">vulnwatch-subscribe at vulnwatch.org</A>&gt;
+Delivered-To: mailing list <A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">vulnwatch at vulnwatch.org</A>
+Delivered-To: moderator for <A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">vulnwatch at vulnwatch.org</A>
+Received: (qmail 18358 invoked from network); 29 Mar 2006 07:13:53 -0000
+Message-ID: &lt;<A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">442A2564.9010600 at xfocus.org</A>&gt;
+Date: Wed, 29 Mar 2006 14:12:52 +0800
+From: XFOCUS Security Team &lt;<A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">security at xfocus.org</A>&gt;
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc4 (X11/20050929)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: <A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">bugtraq at securityfocus.com</A>, <A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">full-disclosure at lists.grok.org.uk</A>,
+        <A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">vulnwatch at vulnwatch.org</A>, <A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">mplayer-users at mplayerhq.hu</A>
+X-Enigmail-Version: 0.93.0.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Subject: [VulnWatch] [xfocus-SD-060329]MPlayer: Multiple integer overflows
+X-DRACO-MailScanner-Information: 
+X-DRACO-MailScanner: No viruses found
+X-MailScanner-From: vulnwatch-return-1736-iglesias=<A HREF="https://maillists.uci.edu/mailman/listinfo/uci-linux">draco.acs.uci.edu at vulnwatch.org</A>
+Status: O
+X-Status: 
+X-Keywords:                  
+X-UID: 100
+
+- -----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+	[xfocus-SD-060329]MPlayer: Multiple integer overflows
+
+  MPlayer is a media player capable of handling multiple multimedia file
+formats.
+
+  XFOCUS team (<A HREF="http://www.xfocus.org/">http://www.xfocus.org/</A>) had  discovered
+Multiple integer overflows .Those can lead to a heap-based buffer
+overflow. This could result in the execution of arbitrary code with the
+permissions of the user running MPlayer.
+
+
+Affected packages
+=================
+
+    -------------------------------------------------------------------
+     Package              /    Vulnerable    /              Unaffected
+    -------------------------------------------------------------------
+   media-video/mplayer     &lt;= 1.0.20060329
+
+Description
+===========
+
+[1]in libmpdemux/asfheader.c
+- - -----------------------------------
+    218           asf_scrambling_h=buffer[0];
+    219           asf_scrambling_w=(buffer[2]&lt;&lt;8)|buffer[1];
+    220           asf_scrambling_b=(buffer[4]&lt;&lt;8)|buffer[3];
+    221           asf_scrambling_w/=asf_scrambling_b;
+char convert to int ,int value would be negative number.
+this lead to  asf_descrambling() heap-based buffer overflow.
+
+
+[2]in libmpdemux/aviheader.c
+- - -----------------------------------
+    218       s-&gt;wLongsPerEntry = stream_read_word_le(demuxer-&gt;stream);
+    219       s-&gt;bIndexSubType = stream_read_char(demuxer-&gt;stream);
+    220       s-&gt;bIndexType = stream_read_char(demuxer-&gt;stream);
+    221       s-&gt;nEntriesInUse = stream_read_dword_le(demuxer-&gt;stream);
+    222       *(uint32_t *)s-&gt;dwChunkId =
+stream_read_dword_le(demuxer-&gt;stream);
+    223       stream_read(demuxer-&gt;stream, (char *)s-&gt;dwReserved, 3*4);
+    224       memset(s-&gt;dwReserved, 0, 3*4);
+    225
+    226       print_avisuperindex_chunk(s,MSGL_V);
+    227
+    228       msize = sizeof (uint32_t) * s-&gt;wLongsPerEntry *
+s-&gt;nEntriesInUse;[ERROR]
+    229       s-&gt;aIndex = malloc(msize);
+    230       memset (s-&gt;aIndex, 0, msize);
+    231       s-&gt;stdidx = malloc (s-&gt;nEntriesInUse * sizeof
+(avistdindex_chunk));[ERROR]
+    232       memset (s-&gt;stdidx, 0, s-&gt;nEntriesInUse * sizeof
+(avistdindex_chunk));
+    233
+    234       // now the real index of indices
+    235       for (i=0; i&lt;s-&gt;nEntriesInUse; i++) {
+    236           chunksize-=16;
+    237           s-&gt;aIndex[i].qwOffset =
+stream_read_dword_le(demuxer-&gt;stream) &amp; 0xffffffff;
+    238           s-&gt;aIndex[i].qwOffset |=
+((uint64_t)stream_read_dword_le(demuxer-&gt;stream) &amp; 0xffffffff)&lt;&lt;32;
+    239           s-&gt;aIndex[i].dwSize =
+stream_read_dword_le(demuxer-&gt;stream);
+    240           s-&gt;aIndex[i].dwDuration =
+stream_read_dword_le(demuxer-&gt;stream);
+    241           mp_msg (MSGT_HEADER, MSGL_V, &quot;ODML (%.4s): [%d]
+0x%016&quot;PRIx64&quot; 0x%04x %u\n&quot;,
+    242                   (s-&gt;dwChunkId), i,
+    243                   (uint64_t)s-&gt;aIndex[i].qwOffset,
+s-&gt;aIndex[i].dwSize, s-&gt;aIndex[i].dwDuration);
+    244       }
+
+[ERROR] two integer overflows lead to a heap-based buffer overflow.
+NOTE: aviheader.c have another potential integer overflows.
+
+
+ABOUT XCON (Ad Time ;) )
+========================
+  XCon2006 the Fifth Information Security Conference will be held
+in Beijing, China, during August 18-20, 2006. ...
+  more at xcon2006 call for paper
+  <A HREF="http://www.xfocus.org/documents/200603/14.html">http://www.xfocus.org/documents/200603/14.html</A>
+
+  Welcome ;)
+
+
+- - --
+
+Kind Regards,
+
+- - ---
+XFOCUS Security Team
+<A HREF="http://www.xfocus.org">http://www.xfocus.org</A>
+
+
+
+- -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFEKiVkwhDwaF6cSWIRAppzAJ9cCFzXSN9yuU6gNqecBlGV1IaBOgCeJfGM
+Vck95rxGIr86/9BZ3csUl0w=
+=NdG5
+- -----END PGP SIGNATURE-----
+
+------- End of Forwarded Message
+
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001984.html">[UCI-Linux] Fedora Core 5 Update: mtr-0.71-0.FC5.1
+</A></li>
+	<LI>Next message: <A HREF="001994.html">[UCI-Linux] Fedora Core 5 Update: libsemanage-1.6-1.fc5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1992">[ date ]</a>
+              <a href="thread.html#1992">[ thread ]</a>
+              <a href="subject.html#1992">[ subject ]</a>
+              <a href="author.html#1992">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://maillists.uci.edu/mailman/listinfo/uci-linux">More information about the UCI-Linux
+mailing list</a><br>
+</body></html>

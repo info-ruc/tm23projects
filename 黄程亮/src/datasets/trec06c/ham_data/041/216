@@ -1,0 +1,108 @@
+Received: from mail-gw6.pacbell.net (mail-gw6.pacbell.net [206.13.28.41])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id TAA15016
+	for <handyboard@media.mit.edu>; Mon, 12 Apr 1999 19:25:07 -0400 (EDT)
+Received: from pacbell.net (ppp-207-215-160-125.grdn01.pacbell.net [207.215.160.125]) by mail-gw6.pacbell.net (8.8.8/8.7.1+antispam) with ESMTP id QAA26438; Mon, 12 Apr 1999 16:24:29 -0700 (PDT)
+Message-Id: <37128174.6780FE37@pacbell.net>
+Date: Mon, 12 Apr 1999 16:27:50 -0700
+From: Gary Livick <glivick@pacbell.net>
+X-Mailer: Mozilla 4.06 (Macintosh; I; PPC)
+Mime-Version: 1.0
+To: rmtmd <rmtmd@concentric.net>,
+        "handyboard@media.mit.edu" <handyboard@media.mit.edu>
+Subject: Re: Expansion Board Servo timing...
+References: <199904122231.SAA29635@cliff.concentric.net>
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+
+Hi Doc,
+
+The function call "init_expbd_servos(0);" turns them off, "init_expbd_servos(1);"
+turns them on.  Something like "servo5=2300;" commands a servo to a position, but
+only if the servos are initialized as per above.  Maybe I used a confusing term
+when I said de-initialize.
+
+Now, let me get this straight....  Medical Director?  Maybe I can work with you
+on a robot that will remove any undifferentiated glial cells from in vitro
+cultures once we figure out how to get pluripotent stem cells to differentiate in
+this way.  The pluripotent cells are tumorgenic, as you know, so we have to be
+careful to get 'em all differentiated, or get them out of the culture before
+inplant into the substantia nigra.  What do you think?
+
+Or, maybe I just stick with picking up Coke cans :-)
+
+Best regards,
+
+Gary Livick
+
+
+
+
+rmtmd wrote:
+
+> How do you "de-initialize" a sevo?  I am only familiar with the
+> init_expbd_servos(x) command and with reassigning the servo(x) global
+> variable to effect servo repositioning.
+>
+> Ross M. Tonkens, M.D.
+> Medical Director
+> Primary Care of Nevada
+> 100 North Green Valley Parkway
+> Suite 240
+> Henderson, NV 89014
+>
+> 702 914-7120  VOICE
+> 702 914-7129  FAX
+>
+> Gary Livick
+>
+> >Drew-
+> >
+> >I have a Handy Board on a robot that runs three servos and the GP2D02 sensor,
+> >and I have the same nervous jitters problem.  However, I do not run any
+> >processes on this application.  I am using IC under v 3.2 of the software, so
+> >I could use processes but didn't.  Look around on the site at
+> >http://www.acroname.com and find "Scooter Dude" in the gallery if you want to
+> >see what the application is
+> >
+> >I also have a Rug Warrior board powering a different robot, and it uses a
+> >servo to aim a sonar mast.  I do see the effects of running processes on that
+> >in that the servo jumps from place to place, whereas when running the servo
+> >absent any other processes it runs smoothly.  BUT it does not "jitter" like
+> >the Handy Board servos.
+> >
+> >I haven't dug into it yet, but there is obviously something fundamentally
+> >different about the way the Handy Board drives servos compared to the way the
+> >Rug Warrior does it.  Because this is the case, I am not sure that allocating
+> >more run time for the servo process is going to fix it, but it is easy enough
+> >to try.  After that, an intense study of the implementation technique on the
+> >Handy Board is in order.  Let me know if you get time to look into that, and
+> >I'm sure others will be interested as well.  One possible band-aide would be
+> >to de-initialize the servos between each finite change in their command
+> >state.  That stops them from jittering because they are powered down.
+> >
+> >Gary Livick
+> >http://www.lightwaverobotics.com
+> >
+> >
+> >
+> >wengd@optionshealthcare.com wrote:
+> >
+> >> How sensitive are the exp bd servo routines to many processes running
+> >> concurrently.  My servo works fine in a stand alone test file but when I
+> >> include it in my main code it gets the "nervous shakes", as if the timing
+> >> pulse is fluctuating ( I don't have a scope to verify this).  The main code
+> >> starts separate processes for Sharp GP2D02, Photo, Bump, Pyro, User
+> >> (scans start button) and a Sonar which I disabled.  Some of these
+> >> sensors are located on a servo controlled head.  What's up?? Am I just
+> >> trying to do too much? Can the processes be assigned more or less
+> >> "ticks" to resolve this?  Thanks for any suggestions.....
+> >> -Drew
+> >
+> >
+>
+> RMT
+
+
+
+
+

@@ -1,0 +1,38 @@
+Received: from poisson.ee.ualberta.ca (verret@poisson.ee.ualberta.ca [129.128.197.78])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id TAA17963
+	for <handyboard@media.mit.edu>; Thu, 16 Mar 2000 19:28:33 -0500 (EST)
+Received: from localhost (verret@localhost)
+	by poisson.ee.ualberta.ca (8.8.6 (PHNE_17135)/8.8.6) with SMTP id RAA20149
+	for <handyboard@media.mit.edu>; Thu, 16 Mar 2000 17:28:32 -0700 (MST)
+Date: Thu, 16 Mar 2000 17:28:30 -0700 (MST)
+From: Sean Verret <verret@ee.ualberta.ca>
+To: handyboard@media.mit.edu
+Subject: Getting the L297 into wave drive mode
+In-Reply-To: <Pine.4.10.10003161631450.16216-100000@lab1-7.eng.utah.edu>
+Message-Id: <Pine.HPX.4.02A.10003161718310.19951-100000@poisson.ee.ualberta.ca>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hi I'm using the L297/L298 chip configuration to run 4-phase unipolar
+stepper motors.  Currently I'm driving them in half-step mode but I'm not
+getting enough torque.. :(  Has anyone successfully gotten the L297 chip
+into wave drive mode?  I believe I have a way to do it (which I'll explain
+below) but I was wondering if anyone had done it an easier way?
+
+The way i propose:
+
+since the translator of the 297 needs to be in an even state i will reset
+the translator putting it in state 1 and setting the half/full_bar mode
+low, then when the clock changes the state of the translator to state 2 I
+want to set the half/full_bar mode high.  Now my question is do I want to
+send the 4 signals (A,B,C and D) into my microcontroller and determine
+what mode the translator is in and then have an output from my
+microcontroller set the half/full_bar mode accordingly?  or should I just
+use a and/or/xor/nor/etc configuration to set my half/full_bar signal
+accordingly?
+
+Thanks
+Sean Verret
+
+
+

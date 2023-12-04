@@ -1,0 +1,479 @@
+Received: from postoffice2.mail.cornell.edu (postoffice2.mail.cornell.edu [132.236.56.10])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h82Eoej15157
+	for <egs+615@cs.cornell.edu>; Tue, 2 Sep 2003 10:50:41 -0400 (EDT)
+Received: from fawaz (dhcp-97-228.cs.cornell.edu [128.84.97.228])
+	by postoffice2.mail.cornell.edu (8.9.3p2/8.9.3) with ESMTP id KAA27164
+	for <egs+615@cs.cornell.edu>; Tue, 2 Sep 2003 10:50:34 -0400 (EDT)
+From: "Fawaz Khalil Allahwala" <fa33@cornell.edu>
+To: <egs+615@cs.cornell.edu>
+Subject: 615 PAPER 1
+Date: Tue, 2 Sep 2003 10:50:32 -0400
+Message-ID: <000801c37161$8fa90110$e4615480@fawaz>
+MIME-Version: 1.0
+X-Security: MIME headers sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.138 $Date: 2003-01-26 11:25:54-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0009_01C37140.08976110"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.2627
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0009_01C37140.08976110
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+AODV
+Each host operates as a specialized router. Routes are obtained on
+demand with little or no reliance on periodic advertisement. Nodes do
+not discover or maintain the routes about the other unless they have to
+communicate with each other. It uses hello broadcast to be aware of its
+neighborhood. Instead of source routing the AODC relies on dynamically
+establishing route table entries at intermediate nodes. In order to
+maintain a loop free topology it makes uses of monotonically increasing
+sequence numbers which is a counter to supersede stale values so same
+node is never used twice in a route. The protocol depends on
+bidirectional links but the paper also mentions that its certain
+modifications to the algorithm can make this requirement unnecessary
+ 
+Algorithm: 
+When a node needs to communicate to another node not directly in its
+neighborhood (neighborhood is discovered using broadcast hello so its
+trivial) its sends a RREQ message with a unique <source_address,
+broadcast_id) pair. If a receiving node has already received this pair
+then it drops the RREQ otherwise it broadcast it to its own neighborhood
+after increasing its hop-count. The RREQ of best hop-count is sent only.
+The receiving node also replies with a route reply packet. The interplay
+of these messages (typical reverse path and forward path setup) results
+in the route setup 
+ 
+ 
+ 
+ 
+ 
+ 
+DSDV
+IT is based on periodic advertisement and it's a modification to the
+basic Bellman Ford routing mechanism. It requires the nodes to broadcast
+its entire routing table fairly frequently to avoid an expired topology
+to go undetected. Any new routing information received is delayed for a
+small duration to dampen any fluctuations in the topology.
+In case of a broken link the neighboring detecting host immediately
+broadcast the link broken message with a new sequence number. This is
+the only time that some other node and not the destination host generate
+the sequence number. It also makes use of the sequence number to detect
+and avoid loops. Each node maintains the full routing table which is
+periodically broadcast. Additionally important topological changes such
+as lost or new node are immediately broadcast (after the required
+damping time) so that everyone is aware of the changes immediately.
+ 
+Algorithm:
+On receiving the broadcast the route is updated only if the sequence
+number is better than the old one or the sequence number is same but the
+metric is better.
+ 
+Comment:
+Periodic broadcast of the entire routing table seems to be a waste of
+the bandwidth. The O(n2) time will not scale for large networks.
+ 
+ 
+ 
+ 
+ 
+ 
+Dynamic Source Routing
+It uses no periodic advertisement. It does not require bidirectional
+links between hosts.
+On transmission of a data packet, the entire route is defined by the
+source node in the packet header. The packet is then simply forwarded
+according to the route specified in the header. The sender constructs
+the source route according to the route cache it has constructed from
+all the information it has gained from previous transmissions. If no
+route is found in the route cache then the sender uses the route
+discovery protocol to discover the path. It also uses the
+sender-sequence number pair to detect redundant route discovery
+messages. 
+ 
+Route Discovery Algorithm:
+On receiving the route discovery message it checks in the packet route
+whether its address already exist. If yes then this packet went through
+a loop so it is discarded.
+If the destination address is its own address then the packet has
+reached its destination so return the route using the route reply
+packet. In all other cases simply append the host address and
+rebroadcast.
+ 
+Comment:
+The route discovery protocol is not dependent on bidirectional links.
+However it does not seems to consider the cost of a link or cost of
+alternate route as well. This can be added to the protocol by adding a
+cost-metric field to the route discovery packet. Each node which
+receives this packet updates this cost metric. When a node receives a
+discovery packet which it has already seen then it dumps it only if the
+cost metric is higher. 
+ 
+
+------=_NextPart_000_0009_01C37140.08976110
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<DEFANGED_META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+
+
+<DEFANGED_meta name=3DProgId content=3DWord.Document>
+<DEFANGED_meta name=3DGenerator content=3D"Microsoft Word 10">
+<DEFANGED_meta name=3DOriginator content=3D"Microsoft Word 10">
+<DEFANGED_link rel=3DFile-List href=3D"cid:filelist.xml@01C37140.07BFECD0">
+<!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:DoNotRelyOnCSS/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:DocumentKind>DocumentEmail</w:DocumentKind>
+  <w:EnvelopeVis/>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+ <!-- <DEFANGED_STYLE>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	mso-style-noshow:yes;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Arial;
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	color:windowtext;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+ --> </DEFANGED_STYLE>
+<!--[if gte mso 10]>
+ <!-- <DEFANGED_STYLE>
+ /* Style Definitions */=20
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+ --> </DEFANGED_STYLE>
+<![endif]-->
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple =
+style=3D'tab-interval:.5in'>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>AODV<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Each host operates as a specialized router. Routes are obtained =
+on
+demand with little or no reliance on periodic advertisement. Nodes do =
+not
+discover or maintain the routes about the other unless they have to =
+communicate
+with each other. It uses hello broadcast to be aware of its =
+neighborhood.
+Instead of source routing the AODC relies on dynamically establishing =
+route
+table entries at intermediate nodes. In order to maintain a loop free =
+topology
+it makes uses of monotonically increasing sequence numbers which is a =
+counter
+to supersede stale values so same node is never used twice in a route. =
+The
+protocol depends on bidirectional links but the paper also mentions that =
+its
+certain modifications to the algorithm can make this requirement =
+unnecessary<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Algorithm: <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>When a node needs to communicate to another node not directly in =
+its neighborhood
+(neighborhood is discovered using broadcast hello so <span =
+class=3DGramE>its</span>
+trivial) its sends a RREQ message with a unique &lt;<span =
+class=3DSpellE>source_address</span>,
+<span class=3DSpellE>broadcast_id</span>) pair. If a receiving node has =
+already
+received this pair then it drops the RREQ otherwise it broadcast it to =
+its own neighborhood
+after increasing its hop-count. The RREQ of best hop-count is sent only. =
+The
+receiving node also replies with a route reply packet. The interplay of =
+these
+messages (typical reverse path and forward path setup) results in the =
+route
+setup <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>DSDV<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>IT is based on periodic advertisement and it&#8217;s a =
+modification to
+the basic Bellman Ford routing mechanism. It requires the nodes to =
+broadcast
+its entire routing table fairly frequently to avoid an expired topology =
+to go
+undetected. Any new routing information received is delayed for a small
+duration to dampen any fluctuations in the =
+topology.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>In case of a broken link the neighboring detecting host =
+immediately
+broadcast the link broken message with a new sequence number. This is =
+the only
+time that some other node and not the destination host generate the =
+sequence
+number. It also makes use of the sequence number to detect and avoid =
+loops. Each
+node maintains the full routing table which is periodically broadcast.
+Additionally important topological changes such as lost or new node are
+immediately broadcast (after the required damping time) so that everyone =
+is
+aware of the changes immediately.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Algorithm:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>On receiving the broadcast the route is updated only if the =
+sequence
+number is better than the old one or the sequence number is same but the =
+metric
+is better.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Comment:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Periodic broadcast of the entire routing table seems to be a =
+waste of
+the bandwidth. The <span class=3DGramE>O(</span>n2) time will not scale =
+for large
+networks.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Dynamic Source Routing<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>It uses no periodic advertisement. It does not require =
+bidirectional
+links between hosts.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>On transmission of a data packet, the entire route is defined by =
+the
+source node in the packet header. The packet is then simply forwarded =
+according
+to the route specified in the header. The sender constructs the source =
+route
+according to the route cache it has constructed from all the information =
+it has
+gained from previous transmissions. If no route is found in the route =
+cache
+then the sender uses the route discovery protocol to discover the path. =
+It also
+uses the sender-sequence number pair to detect redundant route discovery
+messages. <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Route Discovery Algorithm:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>On receiving the route discovery message it checks in the packet =
+route
+whether its address already exist. If yes then this packet went through =
+a loop
+so it is discarded.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>If the destination address is its own address then the packet =
+has
+reached its destination so return the route using the route reply =
+packet. In
+all other cases simply append the host address and =
+rebroadcast.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Comment:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>The route discovery protocol is not dependent on bidirectional =
+links.
+However it does not seems to consider the cost of a link or cost of =
+alternate
+route as well. This can be added to the protocol by adding a cost-metric =
+field
+to the route discovery packet. Each node which receives this packet =
+updates
+this cost metric. When a node receives a discovery packet which it has =
+already
+seen then it dumps it only if the cost metric is higher. =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_0009_01C37140.08976110--
+

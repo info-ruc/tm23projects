@@ -1,0 +1,188 @@
+Received: from listserv.fnal.gov (listserv.fnal.gov [131.225.9.3])
+	by spartha.spa.umn.edu (8.11.6p2/8.11.6) with ESMTP id h5EMlBu516921;
+	Sat, 14 Jun 2003 17:47:11 -0500 (CDT)
+Received: from listserv (listserv.fnal.gov) by listserv.fnal.gov (LSMTP for Windows NT v1.1b) with SMTP id <0.004DE83A@listserv.fnal.gov>; Sat, 14 Jun 2003 17:47:11 -0500
+Received: from LISTSERV.FNAL.GOV by LISTSERV.FNAL.GOV (LISTSERV-TCP/IP release
+          1.8d) with spool id 601702 for
+          MINOS_SOFTWARE_DISCUSSION@LISTSERV.FNAL.GOV; Sat, 14 Jun 2003
+          17:47:11 -0500
+Received: from heffalump.fnal.gov by listserv.fnal.gov (LSMTP for Windows NT
+          v1.1b) with SMTP id <0.004DE838@listserv.fnal.gov>; Sat, 14 Jun 2003
+          17:47:11 -0500
+Received: from conversion-daemon.heffalump.fnal.gov by heffalump.fnal.gov
+          (iPlanet Messaging Server 5.2 HotFix 1.10 (built Jan 23 2003)) id
+          <0HGH00801TYHVS@heffalump.fnal.gov> for
+          minos_software_discussion@listserv.fnal.gov (ORCPT
+          MINOS_SOFTWARE_DISCUSSION@fnal.gov); Sat, 14 Jun 2003 17:47:11 -0500
+          (CDT)
+Received: from ppnt41.physics.ox.ac.uk (ppnt41.physics.ox.ac.uk [163.1.244.27])
+          by heffalump.fnal.gov (iPlanet Messaging Server 5.2 HotFix 1.10
+          (built Jan 23 2003)) id <0HGH00801TF26R@heffalump.fnal.gov> for
+          minos_software_discussion@listserv.fnal.gov (ORCPT
+          MINOS_SOFTWARE_DISCUSSION@fnal.gov); Sat, 14 Jun 2003 17:47:10 -0500
+          (CDT)
+Received: from ppnt41.physics.ox.ac.uk (ppnt41.physics.ox.ac.uk [163.1.244.27])
+          by heffalump.fnal.gov (iPlanet Messaging Server 5.2 HotFix 1.10
+          (built Jan 23 2003)) with ESMTP id
+          <0HGH0004DTYMJR@heffalump.fnal.gov> for
+          MINOS_SOFTWARE_DISCUSSION@fnal.gov; Sat, 14 Jun 2003 17:47:10 -0500
+          (CDT)
+Received: by ppnt41.physics.ox.ac.uk with Internet Mail Service (5.5.2655.55)
+          id <K1WT7BRA>; Sat, 14 Jun 2003 23:47:10 +0100
+Content-return: allowed
+Date: Sat, 14 Jun 2003 23:47:05 +0100
+From: Nick West <n.west1@physics.ox.ac.uk>
+Subject: RE: topics for database day
+To: "'Pete Border'" <border@physics.umn.edu>
+Cc: minos_software_discussion <MINOS_SOFTWARE_DISCUSSION@fnal.gov>,
+       Dennis Box <dbox@fnal.gov>, jtrumbo@fnal.gov
+Message-id: <35666012DF4CD411BE940090279FA24003C011AA@ppnt41.physics.ox.ac.uk>
+MIME-version: 1.0
+X-Mailer: Internet Mail Service (5.5.2655.55)
+Content-type: text/plain
+Sender: owner-minos_software_discussion@LISTSERV.FNAL.GOV
+Status:  O
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 363e01060000b86a
+
+Hi Pete,
+
+George has asked me to suggest some restructuring of your topics for
+DB day.  We have 2 slots:-
+
+Tuesday 17 June - WH1E
+
+9:00 - 10:00  Internal DB issues
+
+13:30 - 15:30  Database discussions with FNALCD
+15:30 - 15:45  Break
+15:45 - 17:45  Database discussions with FNALCD (continued)
+
+and should use our time with CD slot for technology transfer rather
+than internal stuff.
+
+In the morning we can do:-
+
+  Current Status:
+
+
+     -Tables and table czars
+         -mysql file sizes
+         -list of czars- comments and status from each
+
+We have Jon's page:-
+
+    http://www.hep.umn.edu/~urheim/status_index.html
+
+is there work in the short term here?
+
+     -Updates via DBMauto
+         -had been using CVS based scripts
+         -dbmauto automatically
+             -distributes new data
+             -installs and checksums
+         -status; dbm works now, cvs is turned off
+
+I can summarise where we are and the work that needs to be done.
+There are long term support issues that should be touched on.
+
+In the afternoon we talk to FNALCD:-
+
+
+Here I see all of your topics:-
+
+  Overview of Minos database system:
+     -Data Warehouse at FNAL
+     -Local Installations
+     -Access via DBI/RDBC
+     -Updates via DBM
+
+  Current Status:
+     -Warehouse at FNAL
+         -Oracle
+         -size (?)
+         -connections required (??)
+         -table conversions
+
+     -Local Installations
+         -Mysql, postgres??
+         -Database comparisons page
+         -currently have xx local installations
+
+     -Access via DBI/RDBC
+         -user API is simple
+             -caches
+             -validities and overlaps
+             -chain of data sources
+         -status; ok for mysql, testing for oracle, ?? for postgres
+         -usability: development work can be verrrryyyyy slow...
+
+as a way to provide a context for our discussions with CD so don't
+need detailed coverage. Will you summarise?
+
+I see the main topic being the appropriate choice of
+technology.  I have raised with Liz and Dennis the fundamental
+question of whether an SQL database is really what we need for
+detector configuration.  I tried to summarise my unease this way:-
+
+  I cannot find any convincing argument that we are doing the right thing
+  when it comes to providing context sensitive detector data. We have a
+  multi-layer database set of libraries that are hard to install (at least
+  getting combinations that play nicely together) and work reliably.
+   What does all this pain buy us? Performance that is
+  frankly appalling. Its my fault as much as anyone's'. When we started
+  this I just timed MySQL getting many rows from a large table and it
+  looked good enough. But when we layer on the other DB software, and then
+  turn the rows into objects and convert, in some cases, millions of
+  string into floating point numbers it all gets very slow.
+
+Liz asked me to be more specific so I replied:-
+
+  I think we can keep this very simple by just looking at one extreme
+  case: CALNONLINEARITY.  The data consists of 40 floating point numbers
+  and there is ~186000 rows. This is what I have done:-
+
+  1)  Design:-
+        I have made each row a separate row in the database, well they
+        cannot all be one row!
+        I have made each row an object.  Perhaps I could do better here
+       say one object for the whole table with handles to the rows?
+
+  2)  Implementation:-
+        It takes ~ 100 secs cpu and 175 sec elapse to build the table:-
+            cpu elap
+             45 110  secs for the raw query to get data into memory
+             25  30  secs to make the table row objects
+             15  20  secs to get the data via TSQL
+             15  15  to fill the table row objects
+
+  Here are the two questions:-
+
+    1) Is my design right, and if not what should I have done?  2) If
+  the answer to 1) is that it was right, is the performance badly wrong,
+  and if so where am I wasting time?
+
+  If we could speed up this worse case by a factor of 5 or so then I
+  would have to eat my words about the technology choice!
+
+Hopefully they should already be primed with an answer to this, and
+assuming they come up with a convincing answer that an SQL database is
+the answer we could get into discussions on what our strategy
+should be.  As I said in my mail to you the other day, my primary
+concerns are-
+
+1)  Robustness
+2)  Performance for large simple queries
+3)  Long term support throughout the collaboration.
+
+We have to consider a time frame of at least ~ 10 years and that we
+know that our choice technology will remain driven to use commodity
+computing.  We could start with Brett's point about RH 9 support.
+Liz has also given us:-
+
+  http://www-css.fnal.gov/dsg/external/freeware/index.html
+
+Cheers,
+
+Nick.

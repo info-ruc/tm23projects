@@ -1,0 +1,233 @@
+Received: from mx2.cac.washington.edu (mx2.cac.washington.edu [140.142.33.1])
+          by groupfs.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id IAA29781 for <mailarch+pine-info@groupms.cac.washington.edu>; Thu, 8 Jan 1998 08:07:05 -0800 (PST)
+Received: from lists3.u.washington.edu (root@lists3.u.washington.edu [140.142.56.3])
+          by mx2.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id IAA02385; Thu, 8 Jan 1998 08:07:00 -0800
+Received: from host (lists.u.washington.edu [140.142.56.13])
+          by lists3.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with SMTP
+	  id IAA05866; Thu, 8 Jan 1998 08:01:52 -0800
+Received: from mxu1.u.washington.edu (mxu1.u.washington.edu [140.142.32.8])
+          by lists.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with ESMTP
+	  id IAA14850 for <pine-info@lists.u.washington.edu>; Thu, 8 Jan 1998 08:00:36 -0800
+Received: from bkb01-ims-01.us.ikom.net (bkb01-ims-01.ikon.com [205.145.58.62])
+          by mxu1.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id IAA02156 for <pine-info@u.washington.edu>; Thu, 8 Jan 1998 08:00:35 -0800
+Received: by BKB01-IMS-01 with Internet Mail Service (5.5.1960.3)
+	id <CQQGLHKH>; Thu, 8 Jan 1998 11:00:28 -0500
+Message-Id: <DDEE9110CB62D111A6F600805FFEDF4143A9@use01-msx-01.us.ikom.net>
+Date: Thu, 8 Jan 1998 11:00:19 -0500 
+Sender: PINE-INFO-owner@u.washington.edu
+Precedence: bulk
+From: "Everett, Marty" <MEverett@IKON.com>
+To: "Pine Discussion Forum" <pine-info@u.washington.edu>
+Subject: RE: Pine with Exchange 5.5
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+X-To: "'Feinholz, Steven'" <sf3@ElSegundoCA.NCR.COM>
+X-Cc: "'pine-info@u.washington.edu'" <pine-info@u.washington.edu>,
+        "Riley, David" <DRiley@IKON.com>, "Wyant, Rich" <RWyant@IKON.com>
+X-Listprocessor-Version: 8.1 beta -- ListProcessor(tm) by CREN
+
+Port 143 is the imap tcp port. This tells me that IMAP is NOT turned
+running on the NT exchange server. Need to make sure you have IMAP
+running on that box!.
+
+A simple test will let you know when it is running. from a command
+prompt run:
+
+$ telnet  imap01  143 - imap01 is the hostname of exchange server.
+
+this is what you should get back
+Trying...
+Connected to imap01.
+Escape character is '^T'.
+OK Microsoft Exchange IMAP4rev1 server version 5.5.1960.6 (imap01) ready
+
+If you do not get the message from exchange then it is not running.
+
+Thanks Marty
+
+	----------
+	From:  Feinholz, Steven[SMTP:sf3@ElSegundoCA.NCR.COM]
+	Sent:  Wednesday, January 07, 1998 5:47 PM
+	To:  Everett, Marty
+	Subject:  RE: Pine with Exchange 5.5
+
+	I keep getting:
+
+	   Can't connect to <...> server, 143: refused
+
+	or:
+
+	   Can't connect to <...> server, 143: timed out
+
+	__________________________________________________
+	Steven Feinholz
+	NCR Parallel Systems
+	Client Software
+	Phone: (310) 524-5945
+	Fax:     (310) 524-5515
+	VoicePlus: 427-5945
+	email: Steven.Feinholz@ElSegundoCa.NCR.COM
+
+	> ----------
+	> From: 	Everett, Marty[SMTP:MEverett@IKON.com]
+	> Sent: 	Wednesday, January 07, 1998 1:45 PM
+	> To: 	Everett, Marty; 'Feinholz, Steven'
+	> Cc: 	Wyant, Rich; Riley, David; Wessells, Jim; Yang, Jennifer
+	> Subject: 	RE: Pine with Exchange 5.5
+	> 
+	> What I did.
+	> 
+	> 1) 	find out what system my mail box was on.
+	> 2) 	Make sure Imap is turned on that system. Has be on that
+system
+	> 3) 	Note your NT account login.
+	> 4) 	Then set these two lines in you .pinerc
+	> 		inbox-path={fred01/user=imap}inbox
+	> 		rsh-open-timeout=0
+	> 		
+	> 		fred01 is the hostname of the Exchange server
+i.e.
+	> should resolve to the ip address of your NT exchange server
+that has
+	> your mail box on it.
+	> 		imap is the your nt account name on the nt
+server
+	> 		rsh-open-timeout will set it so that it will
+prompt you
+	> for a password right away and not try to see if r-commands
+will work
+	> first.
+	> 
+	> 	Other option of note :
+	> 
+	> 	To make it so it looks like the mail you send came from
+your
+	> exchange account set these options in your .pinerc.
+	> 
+	> 1) 	personal-name="Imap User"
+	> 	This should match what your full name is in exchange
+	> 2) 	customized-hdrs=From: Imap  User <imap@domain.com>
+	> 		this should match your full name in exchange and
+what
+	> your smtp address is in exchange  ( not your local host but on
+the
+	> exchange server !!)
+	> 		Also note the for the hdrs change to work you
+must
+	> compile pine with the proper support turned on.
+	> 
+	> 	To use exchange as your sendmail server and not your
+local
+	> sendmail daemon then.
+	> 
+	> 1) 	smtp-server=jane01
+	> 		This should be what ever exchange server has the
+	> "Internet Mail connector turned on" this does not have to be
+the same
+	> server that has your mail box but can be. This can be nice
+because you
+	> will not have to setup or play with local sendmail daemon to
+make pine
+	> sendmail.
+	> 
+	> 	To get a global address from exchange. This is more
+difficult
+	> because pine does not have ldap support at this time. What you
+can get
+	> around this with and external ldap query program that runs the
+creates
+	> the pine address book on a timely basis. If you need to know
+how to do
+	> this let me know but you will some none pine programs.
+	> 
+	> 	Thanks Marty
+	> 
+	> 
+	> 
+	> 		
+	> 
+	> 
+	> 	----------
+	> 	From:  Feinholz, Steven[SMTP:sf3@ElSegundoCA.NCR.COM]
+	> 	Sent:  Wednesday, January 07, 1998 4:17 PM
+	> 	To:  Everett, Marty
+	> 	Subject:  RE: Pine with Exchange 5.5
+	> 
+	> 	Actually, I could use some help. We have Exchange 5.x
+	> 	running with an MSMail 7.0 server. I think we are
+switching
+	> 	to the Exchange server in the next few months.
+	> 
+	> 	But I have been unable to get Pine to even recognize my
+	> 	INBOX on the server. Maybe I am setting it up
+incorrectly.
+	> 	I was pointing the INBOX to my PST file on the server.
+	> 
+	> 	__________________________________________________
+	> 	Steven Feinholz
+	> 	NCR Parallel Systems
+	> 	Client Software
+	> 	Phone: (310) 524-5945
+	> 	Fax:     (310) 524-5515
+	> 	VoicePlus: 427-5945
+	> 	email: Steven.Feinholz@ElSegundoCa.NCR.COM
+	> 
+	> 	> ----------
+	> 	> From: 	Everett, Marty[SMTP:MEverett@IKON.com]
+	> 	> Sent: 	Wednesday, January 07, 1998 11:40 AM
+	> 	> To: 	Pine Discussion Forum
+	> 	> Subject: 	RE: Pine with Exchange 5.5
+	> 	> 
+	> 	> I have pine working with the default inbox and
+exchange 5.5
+	> jut fine.
+	> 	> I
+	> 	> have not at this time tried any other folders. ( not
+user how
+	> ?). If
+	> 	> you
+	> 	> need some setup detail let me know.
+	> 	> 
+	> 	> 	----------
+	> 	> 	From:  Ian
+McArthur[SMTP:Ian.McArthur@physics.ox.ac.uk]
+	> 	> 	Sent:  Wednesday, January 07, 1998 1:11 PM
+	> 	> 	To:  Pine Discussion Forum
+	> 	> 	Subject:  Pine with Exchange 5.5
+	> 	> 
+	> 	> 	Dear All,
+	> 	> 	I notice that a couple of people have reported
+on this
+	> list that
+	> 	> they
+	> 	> 	are unable to get Pine 3.96 to see all folders
+on an
+	> exchange
+	> 	> server
+	> 	> 	running 5.5 with IMAP enabled. I too have
+encountered
+	> this and
+	> 	> was told
+	> 	> 	that this is due to the absence of some optional
+IMAP2
+	> backwards
+	> 	> 	compatibility in the MS product. Can anyone
+confirm this
+	> and if
+	> 	> so
+	> 	> 	anyone put a timescale on the release of a full
+IMAP4
+	> version of
+	> 	> Pine ?
+	> 	> 	I'm certainly keen to see it. 
+	> 	> 	Cheers, Ian
+	> 	> 	
+	> 	> 
+	> 	
+	> 
+	
+

@@ -1,0 +1,68 @@
+Received: from Legato.COM (test8.legato.com [137.69.200.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA10675
+	for <handyboard@media.mit.edu>; Wed, 31 Mar 1999 14:01:30 -0500 (EST)
+Received: from mail.Legato.COM (mail-net2.legato.com [137.69.2.140])
+	by Legato.COM (8.9.1/8.9.1) with ESMTP id KAA00730;
+	Wed, 31 Mar 1999 10:59:17 -0800 (PST)
+Received: from Legato.COM (ducati [137.69.4.216])
+	by mail.Legato.COM (8.8.8+Sun/8.8.8) with ESMTP id KAA20474;
+	Wed, 31 Mar 1999 10:59:28 -0800 (PST)
+Message-Id: <199903311859.KAA20474@mail.Legato.COM>
+X-Mailer: exmh version 2.0.2 2/24/98
+To: Will Bain <willbain@cs.umt.edu>
+Cc: Handyboard Mailing List <handyboard@media.mit.edu>,
+        MSMKatz <msmkatz@wxs.nl>, khearn@Legato.COM
+Subject: Re: Help needed! 
+In-Reply-To: Your message of "Tue, 30 Mar 1999 23:58:47 MST."
+             <3701C7A7.A6BD2BF6@cs.umt.edu> 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Wed, 31 Mar 1999 11:00:28 -0800
+From: Keith Hearn <khearn@Legato.COM>
+
+
+If you're having problems getting your HB to work on one serial port
+  but it works on another, you might want to check for IRQ conflicts.
+
+By default, Com1 and Com3 both are assigned IRQ3, and Com2 & Com4 are
+  both assigned IRQ4. So if you have a modem on Com4 using IRQ4, you
+  may well have problems if you start trying to use Com2 if it's also
+  using IRQ4. I just went through this getting my plug-and-play 
+  modem to work under Linux.
+
+If you're using Windows, go to the Control Panel and bring up the
+  System window and check your serial devices to see what IRQs 
+  they're using. Under linux you can look at /proc/interrupts to see
+  what IRQs are being used by what.
+
+  Keith Hearn
+  khearn@legato.com
+
+In message <3701C7A7.A6BD2BF6@cs.umt.edu>, Will Bain writes:
+> lectro@acadiacom.net wrote:
+> > 
+> > I had a similar problem and had to try a different serial port. I have a
+> > serial mouse and the board will only work properly in com 1. If I try com
+> > 2, I get similar problems to yours
+> > 
+> > keith
+> 
+> DOING!  Yeah, now that you mention it, I had the same problem when I got my H
+> B.  Took me about a week before I got around to trying COM1.  That fixed it, 
+> so I left it that way and forgot about it long ago.  At the time, no one on t
+> he list had any helpful suggestions for me, either.
+> 
+> Anyone else out there had problems using COM2 with a serial mouse on COM1?
+> 
+> -- Will
+>                                           , ,
+>         __@_/             \_@__           |/
+>           |                /__,           o             @_/
+>           )\              )              ( \            (\/\\,
+> ~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> Wendy Parson,                        Every improvement in communication
+> Will Bain,                                makes the bore more terrible.
+> & Tatoosh                                           --Frank Moore Colby
+
+
+

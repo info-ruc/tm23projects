@@ -1,0 +1,84 @@
+Received: from celestial.berkeley.edu (celestial [128.32.92.243])
+	by astron.Berkeley.EDU (8.11.4/8.11.4) with ESMTP id h5QMFR429388;
+	Thu, 26 Jun 2003 15:15:27 -0700 (PDT)
+Received: from localhost (colby@localhost)
+	by celestial.berkeley.edu (8.11.4/8.11.4) with ESMTP id h5QMFSK02057;
+	Thu, 26 Jun 2003 15:15:28 -0700
+X-Authentication-Warning: celestial.berkeley.edu: colby owned process doing -bs
+Date: Thu, 26 Jun 2003 15:15:28 -0700 (PDT)
+From: James Colby Kraybill <colby@astro.berkeley.edu>
+To: Zodiac Webster <zwebster@csusb.edu>
+cc: linuxusers@astron.Berkeley.EDU
+Subject: Re: rh linux 8.0 help
+In-Reply-To: <a05111b01bb210c84d6d3@[139.182.144.194]>
+Message-ID: <Pine.LNX.4.44.0306261512360.1547-100000@celestial.berkeley.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 2366
+Status: RO
+X-Status: $$$$
+X-UID: 0000000069
+
+
+
+This is only automatic if both the host from which you are running
+ssh has it either configured in the /etc/ssh[2]/ssh_config file
+or you specify -X or +x on the command line AND the target machine
+is configured to allow X11 tunneling in its configuration file,
+/etc/ssh[2]/sshd_config
+
+The commercial version of ssh that you have compiled uses the
+syntax +x instead of -X, so try that first.
+
+- Colby
+
+---------------------------------------------------------------------
+James Colby Kraybill                       Radio Astronomy Laboratory
+colby@astro.berkeley.edu           University of California, Berkeley
+
+
+
+
+On Thu, 26 Jun 2003, Zodiac Webster wrote:
+
+> Hi Berkeley Linux Users,
+>
+> I am having trouble getting a linux  RH8 box to open windows up using
+> ssh. The main purpose is to have a student log in to terminal A, ssh
+> to terminal B and bring windows from terminal B over to show up on
+> terminal A.  This usually works seemlessly with ssh. The true test
+> that something is broken is that when i ssh from terminal A to
+> terminal A, I get the same error message and no windows pop up. This
+> is not true when I do B to B.
+>
+> I compiled ssh from ssh.com and the same version is on both
+> computers. The 8.0 box is running something called ssh-agent whenever
+> you log in.  When I kill off that process, the user is
+> unceremoniously logged out.  I can't seem to locate where that
+> process is started, nor why it is not configured correctly... What is
+> this process and how can I stop it from running at login?
+>
+> First diagnostic: I can make windows on A pop up on A if I (under tcsh)
+> setenv DISPLAY :0.0
+> after the ssh login
+> Why isn't the DISPLAY environment getting set automatically? Where
+> does this get set normally?
+>
+> Second: If I ssh to B from A and then setenv DISPLAY to IPaddress:0.0
+> the error message is approximately, cannot open display. I suspect
+> there is some other way to specify the display when ssh is used, but
+> it IS SUPPOSED TO BE AUTOMATIC! and it was on 7.3 (default factory
+> install!).
+>
+> Invoking ssh with the -X flag does not fix the problem.
+> zo
+> former of berkeley, still a linux user
+> ps - I can't install rh 7.3 on the problematic machine since it is
+> not my machine.
+> --
+> Zodiac Webster			zwebster@csusb.edu
+> Assistant Professor		Department of Physics
+> CSU, San Bernardino		909-880-7593
+>
+
+

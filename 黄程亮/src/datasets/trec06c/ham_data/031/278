@@ -1,0 +1,59 @@
+Received: from mailhub.tc.fluke.com (mailhub.tc.fluke.com [206.138.179.14])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA22746
+	for <handyboard@media.mit.edu>; Fri, 15 Jan 1999 16:37:20 -0500 (EST)
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id NAA24674;
+	Fri, 15 Jan 1999 13:36:10 -0800 (PST)
+Date: Fri, 15 Jan 1999 13:36:09 -0800 (Pacific Standard Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Gustav Schulz <Simon.Schulz@hagener-tgz.de>
+Cc: handyboard@media.mit.edu
+Subject: Re: Scrolling through the LCD messages by the knob
+In-Reply-To: <369F9470.507144B2@hagener-tgz.de>
+Message-Id: <Pine.WNT.3.96.990115133215.142E-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Fri, 15 Jan 1999, Gustav Schulz wrote:
+
+> i am looking for a program to use the knob for scrolling through
+> messages.
+
+
+> anyone already written such a program ?
+
+Yes, and it is totally trivial to do so.  I don't have my sources here at
+the moment, but it is roughly like this:
+
+
+c = readknob();  /* or whatever the cmd is for reading it */
+
+if ( c < 64 )
+{
+  print "a";
+}
+else if ( c < 128 )
+{
+  print "b";
+}
+else if ( c < 192 )
+{
+  print "c";
+}
+else
+{
+  print "d";
+}
+
+or set a variable inside each if block and then run through a switch
+statement later when you're doing your printing.
+
+Sorry if my C is rusty.  I do too many languages nowadays...
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

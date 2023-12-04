@@ -1,0 +1,99 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2GGtHt05712
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 11:55:17 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2GGtGvm022316
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 11:55:17 -0500 (EST)
+Message-ID: <000901c6491a$670b77e0$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 15
+Date: Thu, 16 Mar 2006 11:55:16 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+Crowds is a simple system that has a Blender (a pre-known server) that sets 
+up communication between a p2p like system and a client.  The client 
+requests, from the Blender, all the peers in the system (although not all 
+are necessary) and then when it sends out a request, it forwards it on to 
+one of them (possibly itself).  To prevent an attacker from using the newly 
+incoming node as information, joins are done in batches.  Crowds is not 
+concerned with an all-knowing observer: the communication is not symetric. 
+Therefore, an observer can see that a request was made from a node that 
+never had an incoming packets.  The observer could therefore know exactly 
+which node originated the request.  Mix that in with no gauranteed receiver 
+anonymity and you have a problem.  Crowds works by having clients run a 
+program called a 'jondo' that works as an application-layer program that 
+forwards and processes requests.  The jondo, when a user requests a page, 
+forwards that request on to another server.  If the request came from 
+another node then it, with probability p_f, forwards the message on to 
+another node and with probability p_f-1 sends the request to the 
+destination.  Communication between peers is encrypted so anyone outside the 
+crowd cannot see what is being transmitted.  Anyone along the path, however, 
+can see the packet in plaintext.  This is necessary since they might be the 
+node that has to forward the request on to the server.  Also note that paths 
+are persistent.  For security measures, each time you send a request you 
+send it along the same path.  Even if a peer drops out then you keep 
+forwarding it along the same path until the dropped peer and then randomly 
+pick a new peer.
+    Crowds has several problems.  A lot of Crowds depends on the end user. 
+When a join commit occurs, the jondo alerts the user to stop browsing the 
+same website or they might be discovored: this seems like a downfall.  All 
+of the interesting things are also put into the Blender: node joins, 
+commits, usernames and identifying information.  While security might not be 
+comprimised if the Blender goes down, a legal attack on the server will make 
+Crowds non-functional since no-one new can join and once you drop out you 
+are out for good.  The Blender also gets rid of Sybil attacks and 
+user-duplication problems.  Lastly, performance on this system is pretty 
+terrible: a 25k packet takes nearly 20 seconds to be routed through 5 
+people!
+
+P5 is another protocol that uses a heirarchical system of mixes.  A mix is a 
+group of peers that constantly send information back and forth to each other 
+(making communication synchronous).  If a message is 'real' then it is 
+encrypted and looks just as random as the 'junk' messages that normally get 
+sent between peers.  The obvious down side to this is the high overhead of 
+encryption and the massive amount of bandwidth overhead that is needed for 
+synchronous communication...especially since most of the packets are likely 
+to be garbage.  P5 scales this system up by making it heirarhical.  The mix 
+that you join depends on how much communication you are willing to bear. 
+The more you are willing to take on, the more anonymitty you are gauranteed. 
+The nice thing about this system is that an all-knowing passive observer 
+(that can't hack encryption) cannot get to the contents of the message, 
+cannot know where the receiver or the senders are.  At any point, if a node 
+wants to decrease its communication throughput and decrease its security 
+alongside it, they can do that (while climbing up is impossible).  It seems 
+that the massive amount of communication would still be a downside to this 
+system.  Both encryption and the synchronous communication make the system 
+too hefty.
+
+HerbivoreFS is a file-sharing protocol that preservers user anonymity.  It 
+acheives this by inserting Dining Crypto Nets into a P2P system.  In this 
+way, an attackers that has infinite wire-tapping abilities can only find out 
+which net the packet came from, not the exact peer.  Therefore, if your net 
+is large enough, legal attacks cannot be mounted on a specific person (and 
+anonymity is preserved).
+
+The Dining Cryptographers paper introduces a concept of XORing public keys 
+together.  In this way, when a receiver gets the packet that is destined for 
+her, she cannot determine exactly which sender actually sent it (since it is 
+encrypted with all the keys along the path to her).  The author goes on to 
+show that using several methods, it is possible to deter a malicious or 
+misbehaving node.
+    The problem is that you need a concensus protocol or some sort of hefty 
+higher level communication between nodes to get them to agree to some of the 
+conditions the author outlines, making this system unrealistic.  The second 
+problem is the massive amount of encryption going on, slowing down the 
+packet while it is being dragged along the path. 
+

@@ -1,0 +1,137 @@
+Received: from arachne.eng.utah.edu (arachne.eng.utah.edu [155.99.222.1])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id MAA26700
+	for <handyboard@media.mit.edu>; Wed, 22 Mar 2000 12:09:43 -0500 (EST)
+Received: from lab1-7.eng.utah.edu (lab1-7.eng.utah.edu [155.99.222.56])
+	by arachne.eng.utah.edu (8.9.1a/8.9.1) with ESMTP id KAA09064;
+	Wed, 22 Mar 2000 10:09:41 -0700 (MST)
+Received: from localhost (kleang@localhost)
+	by lab1-7.eng.utah.edu (8.9.3/8.9.3) with ESMTP id KAA02661;
+	Wed, 22 Mar 2000 10:09:42 -0700 (MST)
+X-Authentication-Warning: lab1-7.eng.utah.edu: kleang owned process doing -bs
+Date: Wed, 22 Mar 2000 10:09:42 -0700 (MST)
+From: Kam Leang <kleang@eng.utah.edu>
+To: Frankie Lai <97139371d@polyu.edu.hk>
+Cc: handyboard@media.mit.edu
+Subject: Re: Interfaced your Sonar with HB
+In-Reply-To: <001301bf92a2$1a8d7a60$56e0849e@frankiehome>
+Message-Id: <Pine.4.10.10003221007140.369-100000@lab1-7.eng.utah.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hi Everyone!
+It looks like Frankie Lai has found a way to interface the sonar I have on
+my site to the HB.  Here are his comments:
+
+On Tue, 21 Mar 2000, Frankie Lai wrote:
+
+> Hi, Kam Leang,
+> 
+> I'm a student studying EE in HongKong Polytechnic University. My final year
+> project is to build a hexapod, and I had tried to build a sonar based on
+> your design, and trying to interfacing it to the HandyBoard.
+> 
+> Now, I'm pleased to tell you that your circuit can be interfaced with HB
+> easily just use the Polaroid driver provided in MIT site.
+> 
+> Of course, a little bit modification is need, haha, very easy......
+> 1..Connect the ping line to PD4.
+> 2..Connect the echo line to A0 through a NOT gate. According to the driver,
+> the echo signal should be "1" when detected.
+> 
+> And I had successed in getting results, it is very sensitive.
+> Thank you for your designs, I can save a lot of money now, haahaa.
+
+hihi,
+me again......I think you know already, but I would like to precise it.
+The echo line through NOT gate is then connect to port A0, that is the
+sensor input 7 on HB.
+
+Thanks Frankie!
+
+-kam
+
+
+> 
+> Frankie Lai    97139371d@polyu.edu.hk
+> 
+> 
+> ----- Original Message -----
+> From: Kam Leang <kleang@eng.utah.edu>
+> To: Frankie Lai <97139371d@polyu.edu.hk>
+> Cc: <handyboard@media.mit.edu>
+> Sent: Friday, March 17, 2000 7:35 AM
+> Subject: Re: Non-polaroid Sonar
+> 
+> 
+> > Hi Everyone!
+> > If anyone gets the interface to work, I'd love to post it on my site along
+> > with the appropriate references and credits.  It would be neat if the
+> > sensor works with the HB!
+> >
+> > Good luck!
+> > -kam
+> > http://www.leang.com/kam
+> >
+> > On Thu, 16 Mar 2000, Frankie Lai wrote:
+> >
+> > > Hi all,
+> > > I'm now building the ultrasonic sensor from kam leang's page, did anyone
+> > > interface it with handyboard?? Can anyone give me some advice on driving
+> it?
+> > >
+> > > thanks
+> > > Frankie Lai 97139371d@polyu.edu.hk
+> > >
+> > >
+> > > In lugnet.robotics.handyboard, Will Bain <willb@selway.umt.edu> writes:
+> > > >Adam Oliver wrote:
+> > > >> Just so I'm clear, ref pink book page 10-17.
+> > > >> Does the "bit_set( 0x1021, 1 );" refer to bit 0 -EDG3B, and
+> > > >> bit_clear( 0x1021, 2 ); " refer to bit 1 -EDG3A.
+> > > >> This is what was throwing me, I always thought bits started at zero
+> and
+> > > >> ended at 7, not 1 to 8 as appears to be the case here. Is this what
+> the
+> > > >> "zero-indexed " means?
+> > > >>
+> > > >> sorry if it's a basic question, but if you don't ask you never learn
+> :-)
+> > > >
+> > > >No, that's a very good question. It had me confused, too. The second
+> argument
+> > > to bit_set and bit_clear is not actually the index of a bit at all; it's
+> a bit
+> > > mask.
+> > > >
+> > > >For example, when you do bit_set( 0x1021, 3 ), the 3 becomes 0000 0011
+> in
+> > > binary, so it will set the last two bits of the address. Hope this
+> helps!
+> > > >
+> > > >-- Will
+> > >
+> >
+> >                                          ______    ______
+> > --------------------------------------- |_    _|  |_    _|
+> >  Kam Leang                                |  |______|  |______
+> >  University of Utah                       |  |_    _|  |_    _|
+> >  Department of Mechanical Engineering     |  | |  | |  | |  |
+> >  MEB Room 2202 Salt Lake City, UT 84112   |  |_|__|_|  | |  |
+> >  Tel.801.581.7105  Fax.801.585.9825       \ ___________/ |  |
+> >  http://www.leang.com/kam                      |  |______|  |
+> > ---------------------------------------------- \ ___________/
+> >
+> 
+> 
+
+                                         ______    ______
+--------------------------------------- |_    _|  |_    _|
+ Kam Leang                                |  |______|  |______
+ University of Utah                       |  |_    _|  |_    _| 
+ Department of Mechanical Engineering     |  | |  | |  | |  |
+ MEB Room 2202 Salt Lake City, UT 84112   |  |_|__|_|  | |  |
+ Tel.801.581.7105  Fax.801.585.9825       \ ___________/ |  |
+ http://www.leang.com/kam                      |  |______|  |
+---------------------------------------------- \ ___________/
+
+

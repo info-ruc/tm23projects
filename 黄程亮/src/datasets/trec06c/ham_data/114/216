@@ -1,0 +1,80 @@
+Received: from xproxy.gmail.com (xproxy.gmail.com [66.249.82.205] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1G5MFt02784
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 00:22:15 -0500 (EST)
+Received: by xproxy.gmail.com with SMTP id s6so60692wxc
+        for <egs+summary@cs.cornell.edu>; Wed, 15 Feb 2006 21:22:15 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:reply-to:to:subject:date:user-agent:organization:mime-version:content-type:content-transfer-encoding:content-disposition:message-id:from;
+        b=LC5hcj4KvanUtFNV9DIKQ1niRp7iYgL6iW0UmEcu/DZXP4uRAYSBI1M85lQv0lBY+qJtyA3Gc9gz52CjOzEg+lW8q4YmVysohRXX57mAKN60DkQyoJ8DZXafHIgmb2eOg1+jX3rKD5HuDx/LDFe8c3ePbXH3h9uew3iy+h5fz70=
+Received: by 10.70.34.13 with SMTP id h13mr595047wxh;
+        Wed, 15 Feb 2006 21:22:14 -0800 (PST)
+Received: from ?192.168.0.101? ( [69.207.63.116])
+        by mx.gmail.com with ESMTP id h11sm415032wxd.2006.02.15.21.22.13;
+        Wed, 15 Feb 2006 21:22:14 -0800 (PST)
+Reply-To: ns253@cornell.edu
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 7
+Date: Thu, 16 Feb 2006 00:22:10 -0500
+User-Agent: KMail/1.9
+Organization: Cornell University
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200602160022.11755.ns253@cornell.edu>
+From: Niranjan Sivakumar <niranjan.sivakumar@gmail.com>
+
+Niranjan Sivakumar
+
+GeoPeer:  A Location-Aware Peer-to-Peer System
+Querying Peer-to-Peer Networks Using P-Trees
+Mercury:  Supporting Scalable Multi-Attribute Range Queries
+
+GeoPeer presents a slightly different routing concept than we have seen in 
+previous papers.  Rather than having randomly placing nodes in the network, 
+GeoPeer purposefully places nodes based on their geographic location in order 
+to aid range querying based on location.  The system relies on Delaunay 
+triangulation for creating local neighbor groups and routing in them.  The 
+system also maintains long range contacts in order to minimize network 
+diameter and avoid some of the issues, such as latency, that would be faced 
+if neighbor groups grew to be very large and the whole network was based on 
+only Delaunay triangulation.
+
+The P-Trees approach presents a method to facilitate queries that are more 
+semantically rich than simple lookups based on a key that is mapped to an 
+object.  This system is designed to be adapted to a system like Chord.  The 
+P-Trees approach is based on B+ trees.  Nodes in the system essentially hold 
+parts of the tree, and rely on other nodes in the system to complete the 
+tree.  A stabilization process is presented to deal with nodes that leave and 
+join the system.  The system is able to continue to work even in the face of 
+changes to the network, but with some detriments to performance.
+
+Mercury is a system for multi-attribute range queries.  Mercury is based on 
+creating routing hubs that are used to handle different attributes that may 
+be present in the data that is stored in the system.  Mercury also arranges 
+routing hubs into a ring, but like GeoPeer, this cannot be a random ring and 
+must be ordered in a way to have data organized contiguously to facilitate 
+the range searching.  The system maintains a mechanism to poll sample nodes 
+to get an idea of different system metrics and another mechanism for 
+load-balancing.  The load-balancing is particularly important in a system 
+like Mercury because there may not be a uniform distribution of objects in 
+this system.  Another feature offered by the system is for caching objects at 
+long-distance nodes.
+
+One of the issues that may arise with both GeoPeer and the P-Trees system 
+deals with high churn systems.  GeoPeer seems to have a fairly complicated 
+procedure to deal with nodes joining or leaving the network and many messages 
+seem to be passed between the nodes in a given locality.  This could become 
+an issue if there are rapid joins and nodes in a given neighborhood.  The 
+P-Trees system has mechanisms to deal with nodes leaving and joining the 
+system, but it seems that performance may be noticeably degraded in a system 
+where there are a lot of inconsistencies.  One issue seen in Mercury deals 
+with scalability.  In the example of the game provided in the paper, the 
+authors only seem to be confident in the scalability of the system up to 
+"thousands" of nodes if game specific caching was implemented.  However, it 
+is not unimaginable that popular applications such as games may incorporate 
+more information to be shared, stricter latency requirements, and many more 
+participants, perhaps in the millions.
+

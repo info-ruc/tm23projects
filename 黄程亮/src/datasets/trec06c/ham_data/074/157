@@ -1,0 +1,49 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id QAA29737
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 13 Nov 2000 16:03:35 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.20) by deimos.email.Arizona.EDU (5.1.046)
+        id 39F9F7780013D7EF for DMDX@psy1.psych.arizona.edu; Mon, 13 Nov 2000 16:03:32 -0700
+Message-Id: <5.0.0.25.2.20001113155615.009e0680@psy1.psych.arizona.edu>
+Date: Mon, 13 Nov 2000 16:03:31 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Output keywords
+In-Reply-To: <3A106885.CDAC56D4@math.arizona.edu>
+References: <200011131556.PAA12845@mailhost.mrc-cbu.cam.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:17 PM 11/13/00 -0700, you wrote:
+>I'm trying to test the output of a PIO12 card and I'm getting
+>confused about the relationship between numbers associated with
+>the Output command and the pins that fire when the command is
+>used.  Suppose I wanted to fire output 0 by itself.  Then I fire
+>output 1, then output 2, each by themselves.  What number should
+>follow the Output command for each of these?
+
+   Depends what you mean by "fire", active low, active high, 
+what?  Typically we use active low signals but a lot of other devices 
+expect positive polarity too. The O switch outputs a word to the output 
+ports, to set bit 0 low (all others high) you would use <ox fe> (<ox> uses 
+hexadecimal words instead of decimal which is easier for me to handle when 
+negative logic is being used, esp. when my calculator is at work), bit 1 
+low would be <ox fd>, (fb, f7, ef, df, bf 7f for the rest of the series), 
+bit 0 high (all others low) o1, bit 1 high o2 (4, 8, 16, 32, 64, 128 for 
+the rest of the series.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Dimensions will always be expressed in the least usable term.
+Velocity, for example, will be expressed in furlongs per fortnight.
+
+
+

@@ -1,0 +1,85 @@
+Received: from csl.psychol.cam.ac.uk (csl.psychol.cam.ac.uk [131.111.177.90])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id LAA06457
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 20 May 1999 11:23:04 -0700
+Received: from bonobo by csl.psychol.cam.ac.uk (8.8.8/1.1.19.2/04Sep98-0140PM)
+	id TAA0000021175; Thu, 20 May 1999 19:22:57 +0100 (BST)
+Message-Id: <3.0.6.32.19990520193228.00965ad0@csl.psychol.cam.ac.uk>
+Date: Thu, 20 May 1999 19:32:28 +0100
+To: DMDX@psy1.psych.arizona.edu
+From: Matt Davis <matt@csl.psychol.cam.ac.uk>
+Subject: [DMDX] Getting data from .azk files
+Cc: csl@csl.psychol.cam.ac.uk, language@mrc-cbu.cam.ac.uk
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+I've written a handy program called GETDAT.AWK to process .azk data files. 
+
+This will take a multi-subject .azk data file and re-arrange it into
+columns, one column per subject with each subject's data ordered by item
+number. The data will be output to the same filename as before but with the
+suffix .txt. This format is useful if you often import multiple subject
+DMDX data files into a spreadsheet package such as Microsoft Excel.
+
+For example the file PILOT.AZK:
+
+ Subjects incorporated to date: 002 
+ Data file started on machine dmdx4 
+
+ **********************************************************************
+
+ Subject 1, 05/18/1999 15:51:05 on dmdx4, refresh 11.80ms, ID Matt 
+   Item    RT 
+   1096    436 
+   1009   -393 
+   1029   -407 
+   1098    491 
+
+ **********************************************************************
+
+ Subject 2, 05/18/1999 15:51:30 on dmdx4, refresh 11.80ms, ID M H D 
+   Item    RT 
+   1096    795 
+   1009    727 
+   1029    660 
+   1098    527 
+
+Will be converted into PILOT.TXT like this:
+
+ Output from DMDX file: E:\pilot.azk 
+
+ Sub_Num   1       2  
+ Sub_ID    Matt    M H D  
+ 1009      -393    727  
+ 1029      -407    660  
+ 1096      436     795  
+ 1098      491     527 
+
+
+The program is written in the awk scripting language, so it will run on
+most unix systems as well as on windows 95/NT machines with an appropriate
+version of awk. There are complete instructions on how to download and
+install it on my DMDX page:
+
+http://csl.psychol.cam.ac.uk/~matt/dmdx.html
+
+Any comments or suggested improvements would also be appreciated.
+
+Matt
+
+
+
+**************************************************
+
+ Matt Davis
+ Centre for Speech and Language
+ Dept. of Experimental Psychology
+ Cambridge University
+
+ Email: matt@csl.psychol.cam.ac.uk   
+ WWW:   http://csl.psychol.cam.ac.uk/~matt/
+
+**************************************************
+

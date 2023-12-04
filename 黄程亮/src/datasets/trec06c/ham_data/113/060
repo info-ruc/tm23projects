@@ -1,0 +1,239 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0VFl8428762
+	for <egs+summary>; Tue, 31 Jan 2006 10:47:08 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k0VFl7p0029079
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary>; Tue, 31 Jan 2006 10:47:07 -0500 (EST)
+Message-ID: <001d01c6267d$a08c6200$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz>
+From: "Kevin" <km266>
+To: <egs+summary>
+Subject: PAPER 2
+Date: Tue, 31 Jan 2006 10:47:22 -0500
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_001A_01C62653.B7465A20"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.4 required=5.0 tests=AWL,BAYES_00,
+	FORGED_OUTLOOK_TAGS,HTML_10_20,HTML_MESSAGE autolearn=no version=3.0.2
+X-Spam-Level: 
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_001A_01C62653.B7465A20
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+ Chord is different from Pastry in several key ways.  The first is the =
+way that it routes a key to a node.  Chord tries to locate a node, n, =
+where n is the the first node greater than or equal to the key.  Instead =
+of routing by constantly finding a node whose prefix matches that of the =
+keys by one more digit, it keeps bookmarks, or a finger table, of nodes =
+that are progressively farther away (by factors of 2).  In this way it =
+is possible for n to find a node who has more information in its finger =
+table about the target.  This also leads to an O(log n) lookup time.  =
+Chord does not place a constraint on the structure of the keys it looks =
+up, giving the higher-level application more freedom.  Like Pastry, =
+Chord keeps a leaf-set like structure of successor nodes (and one =
+predecessor node) in order to help maintain stability in case of =
+joins/leaves.  Unlike Pastry, Chord offers no neighborhood-like set.  =
+Locality is not taken into account in Chord and it is perfectly possible =
+for a packet to be routed around the world several times before it =
+reaches its proper destination.
+ Chord does have a wide variety of problems.  While not a technical =
+issue, one complaint I have with it is the word 'successor'.  In most =
+uses I have seen, successor usually is strictly greater than, not equal =
+to or greater than in the way Chord uses it.  If a node fails that was =
+holding specific data, that data is forever lost.  This issue is =
+discussed without any great depth in part of the paper and says to just =
+duplicate data to k successors of n -- this ends up being quite a =
+nuisence since all of a sudden each node is responsible for k-times the =
+amount of data it was originally responsible for.  Failures between =
+stabilizations kill the system.  In their example, 3 failures out of a =
+500 node system cause a failure rate of 3%.  If a chunk of the physical =
+system got taken out and 25 nodes failed (5% of the whole system), 25% =
+of queries will fail!  Luckily it seems this will only delay correct =
+transmission of the message, although in a really big system, =
+stabalizing every 30 seconds might not be realistic.  My last complaint =
+and probably biggest complaint is, once again, security.  A node could =
+join in with a fake ID and drop packets on the ground or throw other =
+nodes' finger tables off.
+
+
+ Tapestry works on the principal of a Plaxton mesh.  As far as I could =
+tell, the network topology is not circular.  Messages get routed =
+similarly to Pastry with suffixes being matched one base at a time and =
+messages being routed closer to the target.  The difference is the =
+target: the target is not where the object is stored, but rather a node =
+that knows where the object is stored.  This improves security but takes =
+away from reliability.  In order to eliminate a single point of failure, =
+multiple nodes have information on the node that stores the object.  =
+Furthermore, nodes along the path aquire this information as it is =
+routed through them and they cache it.  Tapestry also combines the idea =
+of a neighbor table with the routing table, trying to ensure that the =
+new table takes both into account: it knows where a message should be =
+routed along with the quickest (ping-wise, or otherwise) node to pass =
+the message on to.
+ Tapestry has some problems, one of which seems to be its use of =
+resources.  Throughout the paper it is stated that bandwidth, disk =
+space, and other resources will be plentiful.  With many people =
+searching for and looking to download more files, it is arguable that =
+traffic and disk space are big issues.  Tapestry also seems to 'trust' a =
+node more than it should.  Tapestry gives a failed node a second chance =
+period while it tries to contact it once in a while to see if it is back =
+online.  While this might be good in a reliable set of nodes or servers =
+you expect to constantly be up, it is fully possible for a node to join =
+and leave the network within a couple of minutes, or faster.   If this =
+is done by multiple nodes with similar numbers then the alternative =
+nodes in the neighbor table might all be in their second chance period.  =
+When the main node goes down, a search has to be initiated anyway, yet =
+interim network performance was not optimal.  The last problem I would =
+like to mention with Tapestry is one that the paper points out itself.  =
+A new node coming in changes the way an object might be routed.  Before =
+the system is refreshed, there is a vulnerability here.
+------=_NextPart_000_001A_01C62653.B7465A20
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<DEFANGED_META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<DEFANGED_META content=3D"MSHTML 6.00.2900.2802" name=3DGENERATOR>
+ <!-- <DEFANGED_STYLE> --> </DEFANGED_STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>&nbsp;Chord is different from Pastry in =
+several key=20
+ways.&nbsp; The first is the way that it routes a key to a node.&nbsp; =
+Chord=20
+tries to locate a node, n, where n is the the first node greater than or =
+equal=20
+to the key.&nbsp; Instead of routing by constantly finding a node whose =
+prefix=20
+matches that of the keys by one more digit, it keeps bookmarks, or a =
+finger=20
+table, of nodes that are progressively farther away (by factors of =
+2).&nbsp; In=20
+this way it is possible for n to find a node who has more information in =
+its=20
+finger table about the target.&nbsp; This also leads to an O(log n) =
+lookup=20
+time.&nbsp; Chord does not place a constraint on the structure of the =
+keys it=20
+looks up, giving the higher-level application more freedom.&nbsp; Like =
+Pastry,=20
+Chord keeps a leaf-set like structure of successor nodes (and one =
+predecessor=20
+node) in order to help maintain stability in case of joins/leaves.&nbsp; =
+Unlike=20
+Pastry, Chord offers no neighborhood-like set.&nbsp; Locality is not =
+taken into=20
+account in Chord and it is perfectly possible for a packet to be routed =
+around=20
+the world several times before it reaches its proper =
+destination.<BR>&nbsp;Chord=20
+does have a wide variety of problems.&nbsp; While not a technical issue, =
+one=20
+complaint I have with it is the word 'successor'.&nbsp; In most uses I =
+have=20
+seen, successor usually is strictly greater than, not equal to or =
+greater than=20
+in the way Chord uses it.&nbsp; If a node fails that was holding =
+specific data,=20
+that data is forever lost.&nbsp; This issue is discussed without any =
+great depth=20
+in part of the paper and says to just duplicate data to k successors of =
+n --=20
+this ends up being quite a nuisence since all of a sudden each node is=20
+responsible for k-times the amount of data it was originally responsible =
+
+for.&nbsp; Failures between stabilizations kill the system.&nbsp; In =
+their=20
+example, 3 failures out of a 500 node system cause a failure rate of =
+3%.&nbsp;=20
+If a chunk of the physical system got taken out and 25 nodes failed (5% =
+of the=20
+whole system), 25% of queries will fail!&nbsp; Luckily it seems this =
+will only=20
+delay correct transmission of the message, although in a really big =
+system,=20
+stabalizing every 30 seconds might not be realistic.&nbsp; My last =
+complaint and=20
+probably biggest complaint is, once again, security.&nbsp; A node could =
+join in=20
+with a fake ID and drop packets on the ground or throw other nodes' =
+finger=20
+tables off.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;Tapestry works on the principal =
+of a Plaxton=20
+mesh.&nbsp; As far as I could tell, the network topology is not =
+circular.&nbsp;=20
+Messages get routed similarly to Pastry with suffixes being matched one =
+base at=20
+a time and messages being routed closer to the target.&nbsp; The =
+difference is=20
+the target: the target is not where the object is stored, but rather a =
+node that=20
+knows where the object is stored.&nbsp; This improves security but takes =
+away=20
+from reliability.&nbsp; In order to eliminate a single point of failure, =
+
+multiple nodes have information on the node that stores the =
+object.&nbsp;=20
+Furthermore, nodes along the path aquire this information as it is =
+routed=20
+through them and they cache it.&nbsp; Tapestry also combines the idea of =
+a=20
+neighbor table with the routing table, trying to ensure that the new =
+table takes=20
+both into account: it knows where a message should be routed along with =
+the=20
+quickest (ping-wise, or otherwise) node to pass the message on=20
+to.<BR>&nbsp;Tapestry has some problems, one of which seems to be its =
+use of=20
+resources.&nbsp; Throughout the paper it is stated that bandwidth, disk =
+space,=20
+and other resources will be plentiful.&nbsp; With many people searching =
+for and=20
+looking to download more files, it is arguable that traffic and disk =
+space are=20
+big issues.&nbsp; Tapestry also seems to 'trust' a node more than it=20
+should.&nbsp; Tapestry gives a failed node a second chance period while =
+it tries=20
+to contact it once in a while to see if it is back online.&nbsp; While =
+this=20
+might be good in a reliable set of nodes or servers you expect to =
+constantly be=20
+up, it is fully possible for a node to join and leave the network within =
+a=20
+couple of minutes, or faster.&nbsp;&nbsp; If this is done by multiple =
+nodes with=20
+similar numbers then the alternative nodes in the neighbor table might =
+all be in=20
+their second chance period.&nbsp; When the main node goes down, a search =
+has to=20
+be initiated anyway, yet interim network performance was not =
+optimal.&nbsp; The=20
+last problem I would like to mention with Tapestry is one that the paper =
+points=20
+out itself.&nbsp; A new node coming in changes the way an object might =
+be=20
+routed.&nbsp; Before the system is refreshed, there is a vulnerability=20
+here.</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_001A_01C62653.B7465A20--
+

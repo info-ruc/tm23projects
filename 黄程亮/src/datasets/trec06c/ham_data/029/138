@@ -1,0 +1,122 @@
+Received: from imo29.mx.aol.com (imo29.mx.aol.com [198.81.17.73])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id HAA27348
+	for <handyboard@media.mit.edu>; Mon, 7 Dec 1998 07:58:09 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo29.mx.aol.com (IMOv18.1) id FKBPa19657
+	 for <handyboard@media.mit.edu>; Mon, 7 Dec 1998 07:57:23 -0500 (EST)
+Message-Id: <5ef58e8e.366bd0b3@aol.com>
+Date: Mon, 7 Dec 1998 07:57:23 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Extra output for clocking   (Using Hardware Output Compare)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Hugo:
+     I am not going to be able to answer this one fully.  We will need to hear
+from others on the list to hear how to mix assembler code into an IC program,
+how to have the IC program modify assembler variables, and how to set up
+interrupt service routines.
+     The following code fragments are from the Toshiba TMP68HC11 Reference
+Manual 1990.  I have only added extra comments to make this more specific to
+your application.  I hope this helps and I hope others can supply the missing
+pieces.  If so, you may generate clock pulses over 100KHz.
+
+The assembler presented in the manual is broken into two parts.  First there
+is a "set up" procedure that initializes control registers and set the
+interrupt vector.  This could probably be done in IC.  The Interrupt Service
+Routine (ISR) should be written in assembler.  The hardware is expectin the
+STD command to load new values into the output compare function and using a
+different type of store could result in premature triggering of the output.
+Numbers proceeded with a $ are hexidecimal, numbers preceeded with a numbers
+preceeded with a % are binary, # are litterals (don't fetch from address).
+
+
+Setup:
+write the command "Jump To my ISR (SV50C2)" into the memory at the interrupt
+vector 
+for output compare 2
+
+	LDA	#$7E		;Extended Jump Op Code
+	STAA	P0VOC2	;(This is defined as $00DC on the Evaluation Board)
+	LDX	#SV50C2	;Address of my interrupt service routine
+	STX	PVOC2+1	;Finish JMP instruction to my timer routine
+
+now set up control register so that the output pin will toggle state each time
+the Output Compare Register matches the free running timer value and generates
+an interrupt.  The value loaded will need to be changed for each OC register
+used.  Use the logical Or of the following values to set up the desired OC
+registers.  Some care must be observed in this part to preserve what the rest
+of IC and the Handy Board is doing.  Someone please address the issue of how
+the LCD control TOC4 is to be set up.
+
+0100 0000	OC2
+0001 0000	OC3
+0000 0100	OC4
+0000 0001	OC5
+
+	LDX	#REGBAS	;Point to register block ($1000 on the Evaluation Board)
+	LDAA	#%01000000	;OM2:OL2 = 0:1 (toggle state of TOC2 each interrupt)
+	STAA	TCTL1,C	;Setup OC2 to toggle on compare
+	LDAA	#%01000000	;For OC2 it is the same value but for others:
+
+0100 0000	OC2
+0010 0000	OC3
+0001 0000	OC4
+0000 1000	OC5
+
+	STAA	TFLG1,X	;Clear any pending OC2F flag 
+	STAA	TMSK1,X	;Enable OC2 interrupts
+	CLI			;Enable all unmasked hardare interrupts
+
+TMSK1 = $22
+TFLG1 = $23
+
+That is all we need to do for setup.  The interrupt service routine contains
+the number that controlls the speed of the output signal.  In this examble it
+is called HDLY.  This is the variable that should be consistant with your IC
+program.  You should write a program that varies this number to ramp up and
+down the speed of your stepper.  If it is easy you just include the variable
+in your ramping code.  If it is hard, you write a subroutine that modifies
+this value.  Remember that as the number gets larger the clock signal gets
+slow.  Also remember that changes in small timer values make great changes in
+frequency.  (This problem has given me trouble many times in the past.)  If
+your decrease your timer dealy by two when the timer value is $07FF to $07FD,
+your frequency changes less than one percent.  If you change the delay value
+from 4 to 2 the frequency doubles.  
+     I should also mention that the Interrupt service routine seems to assume
+that the X register is pointing the the register block.  Above we seemed to
+need to set this explicitly.  This is another item the IC experts will need to
+comment on.  Now here is the interrupt service routine:
+
+SV5OC2:
+	LDD	HDLY		;Get Delay time for 1/2 cycle (Your variable here)
+	ADD	TOC2,X		;Add to the last compare register value
+	STD	TOC2,X		;Update OC2 [Schedule next edge] (The value MUST be stored with
+this instruction)
+	BCLR	TFLG1,X $BF	;clear OC2F
+	RTI			;thats it, the pin will chage again after this delay
+
+other values for the bit clear function:
+$BF	OC2
+$DF	OC3
+$EF	OC4
+$F7	OC5
+
+
+TOC1 = $16
+TOC2 = $18
+TOC3 = $1A
+TOC4 = $1C
+TOC5 = $1E
+
+     Well for what it's worth.  That is how you use the hardware timer
+function.  They require software service to make them more versatile.  If you
+get this implimented, your motors should really hum.  If not,... well have you
+considered DC?
+
+Hope this helps,
+Pherd
+

@@ -1,0 +1,88 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id PAA23136
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 19 Oct 2000 15:41:30 -0700
+Received: from jcf.u.arizona.edu (128.196.98.7) by phobos.email.Arizona.EDU (5.1.046)
+        id 39E3B446000C0857 for DMDX@psy1.psych.arizona.edu; Thu, 19 Oct 2000 15:41:29 -0700
+Message-Id: <5.0.0.25.2.20001019152852.009d4e30@psy1.psych.arizona.edu>
+Date: Thu, 19 Oct 2000 15:41:31 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] 2.2.01
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   So DMDX 2.2.01 is up on the web page, basically for every branch type 
+there is a call variant of it.  New keywords are:
+
+<Call N>Unconditional Call
+<Return>Exit Called subroutine
+<ret>Exit Called subroutine
+<CallIfCounterLE N1,N2,N3>Call if Counter Lower
+<cicLE N1,N2,N3>Call if Counter Lower
+<CallIfCounterGT N1,N2,N3>Call if Counter Greater
+<cicGT N1,N2,N3>Call if Counter Greater
+<cic N>Call If Correct
+<CallIfCorrect N>Call If Correct
+<cierGT N1,N2>Call If Error Rate Greater
+<CallIfErrorRateGT N1,N2>Call If Error Rate Greater
+<cierLE N1,N2>Call If Error Rate Lower
+<CallIfErrorRateLE N1,N2>Call If Error Rate Lower
+<cinr N>Call If No Response
+<CallIfNoResponse N>Call If No Response
+<CallIfRandomNumberLE N1,N2>Call If Random Number Lower
+<cirnLE N1,N2>Call If Random Number Lower
+<ciw N>Call If Wrong
+<CallIfWrong N>Call If Wrong
+<IndexedCall N>Indexed Call on Counter N's value
+<ic N>Indexed Call on Counter N's value
+<MultiWayCall text,N[, text,N]...>Multi-Way Call
+<mwc text,N[, text,N]...>Multi-Way Call
+
+   Also, the help file is complete, last one didn't have everything new and 
+the alphabetical lists weren't updated -- now they are.  The call keywords 
+allow things like custom acoustic feedback and pausing during continuous 
+running on no responses:
+
+F80 <azk> <nfb> <id "keyboard">
+
+0 "Acoustic Feedback Example" <bu 100>;
+10 d2 <biw 20> c;
+0  d20 <wav> "correct" <return>;
+20 d2 <binr 30> c;
+0  d20 <wav> "wrong" <return>;
+30 d20 <wav> "noresponse" <return>;
+
++100 * "target" / <call -10> c;
++110 * "target" / <call -10> c;
+
+0 "end"l;
+
+
+
+F80 <azk> <cr> <id "keyboard">
+
+0 "Pausing on No Response" <bu 100>;
+10 d2 c;
+0  "Hit Request to Continue" <return>;
+
++100 * "target" / <cinr -10>;
++110 * "target" / <cinr -10>;
+
+0 "end"l;
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   When things are going well, something will go wrong.
+
+
+

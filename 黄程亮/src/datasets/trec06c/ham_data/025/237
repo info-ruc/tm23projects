@@ -1,0 +1,3711 @@
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id RAA15531
+	for suif-talk-doit; Mon, 2 Nov 1998 17:35:31 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from turing.une.edu.au (turing.une.edu.au [129.180.11.17])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id RAA15527
+	for <suif-talk@corsica.Stanford.EDU>; Mon, 2 Nov 1998 17:35:28 -0800 (PST)
+Received: from mcs.une.edu.au (localhost [127.0.0.1])
+	by turing.une.edu.au (8.8.5/8.8.5) with ESMTP id MAA00834;
+	Tue, 3 Nov 1998 12:35:28 +1100 (EST)
+Message-ID: <363E5DE0.CDACE8C1@mcs.une.edu.au>
+Date: Tue, 03 Nov 1998 12:35:28 +1100
+From: Shiping Chen <shiping@turing.une.edu.au>
+Organization: University of New England, Australia 
+X-Mailer: Mozilla 4.05 [en] (X11; I; OSF1 V4.0 alpha)
+MIME-Version: 1.0
+To: suif-talk@corsica.Stanford.EDU, cwilson@cs.stanford.edu
+Subject: About sf2c
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: 7bit
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Shiping Chen <shiping@turing.une.edu.au>
+
+</A>
+</B></PRE>
+<PRE>
+
+Hi, Chris,
+
+Congratulation on that you got the new job!
+
+When I used `sf2c' to convert some Fortran benchmark
+programs to C, I found that many 2D or 3D arrays in these
+Fortran programs were transformed into 1D arrays.
+Although the transformation is correct in the sense of
+semantics, it makes SUIF dependence test invalid (the index is too messy).
+Could anyone tell me how to switch off the transformation?
+or Are there any better programs to convert Fortran programs to C?
+
+Thank you in advance!
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+Shiping Chen
+
+School of Mathematical and Computer Sciences
+University of New England (UNE)
+Armidale, NSW 2351, Australia
+
+Tel  : +61 (0)2 6773 3935
+Fax  : +61 (0)2 6773 3312
+Email: shiping@cs.une.edu.au
+Web  : http://cs.une.edu.au/~shiping
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+
+
+</PRE>
+<A NAME="line_no_62">
+<PRE><B>
+>From owner-suif-talk  Mon Nov  2 17:39:40 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id RAA15565
+	for suif-talk-doit; Mon, 2 Nov 1998 17:39:37 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id RAA15561
+	for <suif-talk@corsica.Stanford.EDU>; Mon, 2 Nov 1998 17:39:36 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id RAA28476;
+	Mon, 2 Nov 1998 17:38:24 -0800 (PST)
+Date: Mon, 2 Nov 98 17:38:24 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: Shiping Chen <shiping@turing.une.edu.au>
+Cc: suif-talk@corsica.Stanford.EDU
+Subject: Re: About sf2c
+In-Reply-To: Your message of Tue, 03 Nov 1998 12:35:28 +1100
+Message-ID: <CMM.0.90.4.910057104.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+> Hi, Chris,
+> 
+> Congratulation on that you got the new job!
+> 
+> When I used `sf2c' to convert some Fortran benchmark
+> programs to C, I found that many 2D or 3D arrays in these
+> Fortran programs were transformed into 1D arrays.
+> Although the transformation is correct in the sense of
+> semantics, it makes SUIF dependence test invalid (the index is too messy).
+> Could anyone tell me how to switch off the transformation?
+> or Are there any better programs to convert Fortran programs to C?
+> 
+> Thank you in advance!
+> 
+> _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+> 
+> Shiping Chen
+
+You should run ``scc -V file.f -.spd''.  This will run sf2c and then
+snoot but then it will run some passes to recover the symbolic
+information.  sf2c does linearize array references, but it keeps the
+information around encoded in assignments to specially named
+variables.  The fixfortran pass uses this information to reconstruct
+the array information.
+
+        --Chris
+
+</PRE>
+<A NAME="line_no_116">
+<PRE><B>
+>From owner-suif-talk  Mon Nov  2 17:49:56 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id RAA15598
+	for suif-talk-doit; Mon, 2 Nov 1998 17:49:54 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id RAA15594
+	for <suif-talk@corsica.Stanford.edu>; Mon, 2 Nov 1998 17:49:52 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id RAA00268
+	for suif-talk@corsica.Stanford.edu; Mon, 2 Nov 1998 17:50:02 -0800 (PST)
+Date: Mon, 2 Nov 98 17:50:02 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: suif-talk@corsica.Stanford.EDU
+Subject: Thank you
+Message-ID: <CMM.0.90.4.910057802.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+Hi everyone,
+
+I just want to say thank you to everyone who has wished me well on my
+new job and thanked me for what I have done on SUIF.  You have been
+very kind and I really appreciate it.
+
+I have found those on the suif-talk and suif-bugs lists great people
+to deal with.  You have been appreciative of whatever I've been able
+to do that has been useful and forgiving of things that have gone
+wrong.  And I've enjoyed the conversations I've been able to have with
+some of you in person at workshops and conferences.
+
+Thank you.
+
+        --Chris
+
+</PRE>
+<A NAME="line_no_157">
+<PRE><B>
+>From owner-suif-talk  Tue Nov  3 12:05:11 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id MAA17919
+	for suif-talk-doit; Tue, 3 Nov 1998 12:04:34 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from pacific.pgroup.com (pacific.pgroup.com [192.124.124.8])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id MAA17915
+	for <suif-talk@corsica.Stanford.EDU>; Tue, 3 Nov 1998 12:04:32 -0800 (PST)
+Received: from pgroup.com (stork.pgroup.com [192.124.124.39]) by pacific.pgroup.com (8.8.5/8.6.11) with ESMTP id MAA06236 for <suif-talk@corsica.Stanford.EDU>; Tue, 3 Nov 1998 12:04:13 -0800 (PST)
+Message-ID: <363F6345.663407CC@pgroup.com>
+Date: Tue, 03 Nov 1998 12:10:45 -0800
+From: David L Moore <dlmoore@pgroup.com>
+X-Mailer: Mozilla 4.05 [en] (WinNT; I)
+MIME-Version: 1.0
+To: "suif-talk@corsica.Stanford.EDU" <suif-talk@corsica.Stanford.EDU>
+Subject: Attendance at SC98
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: David L Moore <dlmoore@pgroup.com>
+</A>
+</B></PRE>
+<PRE>
+
+I would like to get together a list of where everyone is staying and when you arrive and depart for SC98 so that I can contact everyone as needed.
+
+I am staying at the Howard Johnson Hotel, 9956 Hawaiian Court. I arrive late Saturday Night and leave straight after the show Thursday - my flight is at 7.
+
+</PRE>
+<A NAME="line_no_188">
+<PRE><B>
+>From owner-suif-talk  Tue Nov  3 12:31:31 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id MAA17965
+	for suif-talk-doit; Tue, 3 Nov 1998 12:31:28 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from CS.Princeton.EDU (root@CS.Princeton.EDU [128.112.136.10])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id MAA17959
+	for <suif-talk@corsica.stanford.edu>; Tue, 3 Nov 1998 12:31:26 -0800 (PST)
+Received: from vista.CS.Princeton.EDU (vista.CS.Princeton.EDU [128.112.152.57])
+	by CS.Princeton.EDU (8.8.8/8.8.8) with ESMTP id PAA20853
+	for <suif-talk@corsica.stanford.edu>; Tue, 3 Nov 1998 15:30:25 -0500 (EST)
+Received: (from danwang@localhost)
+	by vista.CS.Princeton.EDU (8.8.7/8.8.7) id PAA03911;
+	Tue, 3 Nov 1998 15:30:24 -0500
+To: suif-talk@corsica.Stanford.EDU
+Subject: suif 2.0 optimizations
+From: Daniel Wang <danwang@cs.princeton.edu>
+Date: 03 Nov 1998 15:30:24 -0500
+In-Reply-To: Chris Wilson's message of Wed, 28 Oct 98 11:17:44 PST
+Message-ID: <r8tu30gv7rz.fsf@vista.CS.Princeton.EDU>
+Lines: 12
+X-Mailer: Gnus v5.4.55/Emacs 20.2
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Daniel Wang <danwang@cs.princeton.edu>
+</A>
+</B></PRE>
+<PRE>
+
+
+
+some very basic questions.
+For the basesuif.alpha-2.0.0.720
+
+1. Does scc -O actually do any optimizations?
+2. How can I get an optimized  version of a C program in suif 2.0 format?
+3. What scalar opts can suif 1/2 currently do.
+4. How does scc compile code (covert back to c and use native compiler?)
+
+
+
+
+</PRE>
+<A NAME="line_no_232">
+<PRE><B>
+>From owner-suif-talk  Tue Nov  3 16:49:56 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id QAA27814
+	for suif-talk-doit; Tue, 3 Nov 1998 16:49:49 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id QAA27810
+	for <suif-talk@corsica.Stanford.EDU>; Tue, 3 Nov 1998 16:49:48 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id QAA26756;
+	Tue, 3 Nov 1998 16:49:56 -0800 (PST)
+Date: Tue, 3 Nov 98 16:49:56 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: Daniel Wang <danwang@cs.princeton.edu>
+Cc: suif-talk@corsica.Stanford.EDU
+Subject: Re: suif 2.0 optimizations
+In-Reply-To: Your message of 03 Nov 1998 15:30:24 -0500
+Message-ID: <CMM.0.90.4.910140596.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+> some very basic questions.
+> For the basesuif.alpha-2.0.0.720
+> 
+> 1. Does scc -O actually do any optimizations?
+
+Yes, it runs some simple SUIF1 optimization passes.
+
+Keep in mind that these are optimizations designed to make
+parallelization easier.  They were never intended to be
+general-purpose optimizations.
+
+> 2. How can I get an optimized  version of a C program in suif 2.0 format?
+
+You could run ``scc -V -O2 -.out.c -keep -keep''.  This will convert
+to C output using SUIF1 and show you the passes are they are being
+run.  Look and see what the last file is before s2c is run.  Run the
+converter to SUIF2 on that file.
+
+> 3. What scalar opts can suif 1/2 currently do.
+
+There aren't any general purpose scalar opts.  There are some special
+scalar opts in SUIF1 to help parallelization.  See the porky1 man page
+for a list of the passes that are available.
+
+> 4. How does scc compile code (covert back to c and use native compiler?)
+
+Yes, it converts it back to C and uses the native compiler.  If you
+use the ``-V'' option, scc will show you exactly what it is running.
+Please see the scc man page for further information.
+
+        --Chris
+
+</PRE>
+<A NAME="line_no_291">
+<PRE><B>
+>From owner-suif-talk  Tue Nov  3 22:03:50 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id WAA28375
+	for suif-talk-doit; Tue, 3 Nov 1998 22:03:09 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from mail.iitk.ac.in ([202.54.56.131])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id WAA28371
+	for <suif-talk@corsica.stanford.edu>; Tue, 3 Nov 1998 22:02:02 -0800 (PST)
+Received: from apah.cc.iitk.ernet.in (apah.cc.iitk.ernet.in [144.16.167.6])
+	by mail.iitk.ac.in (8.8.8/8.8.7) with SMTP id LAA32131
+	for <suif-talk@suif.stanford.edu>; Wed, 4 Nov 1998 11:31:49 +0530
+Date: Wed, 4 Nov 1998 11:33:23 +0530 (IST)
+From: Alok Agarwal <alokka@iitk.ac.in>
+X-Sender: alokka@apah.cc.iitk.ernet.in
+To: suif-talk@corsica.Stanford.EDU
+Subject: baseparsuif
+Message-ID: <Pine.HPP.3.96.981104112910.17195B-100000@apah.cc.iitk.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Alok Agarwal <alokka@iitk.ac.in>
+</A>
+</B></PRE>
+<PRE>
+
+
+	Installing baseparsuif-1.0.0.beta.1 gives some errors 
+like :
+   runtime_seq.c:1304: parse error before `$'
+
+ Do you know how to get across the problem ?
+
+---- 
+ Alok Agarwal,      
+ Senior Undergraduate , CSE ,     
+ A-120/I , I.I.T. Kanpur 
+ E-mail: alokka@iitk.ac.in
+        alokka@rocketmail.com
+
+
+</PRE>
+<A NAME="line_no_334">
+<PRE><B>
+>From owner-suif-talk  Tue Nov  3 22:07:37 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id WAA28395
+	for suif-talk-doit; Tue, 3 Nov 1998 22:07:35 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from mail.iitk.ac.in ([202.54.56.131])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id WAA28391
+	for <suif-talk@corsica.stanford.edu>; Tue, 3 Nov 1998 22:06:44 -0800 (PST)
+Received: from apah.cc.iitk.ernet.in (apah.cc.iitk.ernet.in [144.16.167.6])
+	by mail.iitk.ac.in (8.8.8/8.8.7) with SMTP id LAA32200
+	for <suif-talk@suif.stanford.edu>; Wed, 4 Nov 1998 11:36:57 +0530
+Date: Wed, 4 Nov 1998 11:38:31 +0530 (IST)
+From: Alok Agarwal <alokka@iitk.ac.in>
+X-Sender: alokka@apah.cc.iitk.ernet.in
+To: suif-talk@corsica.Stanford.EDU
+Subject: Some questions
+Message-ID: <Pine.HPP.3.96.981104112547.17195A-100000@apah.cc.iitk.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Alok Agarwal <alokka@iitk.ac.in>
+</A>
+</B></PRE>
+<PRE>
+
+
+ I have some questions about SUIF loop optimizations :	
+
+  As you have already said all the optimizations are concerning
+parallelizations only, so how does it handles the data distribution and 
+loop breaking on different processors. Suppose that I have to parallelize
+a program and use PVM to run the program on different processors.
+
+ To parallelize the loops, Does SUIF does the calculation of
+'communication overheads' on various processors ? If yes, which part of
+the code does that ?
+
+-Thanks.
+ ---- 
+ Alok Agarwal,      
+ Senior Undergraduate , CSE ,     
+ A-120/I , I.I.T. Kanpur 
+ E-mail: alokka@iitk.ac.in
+        alokka@rocketmail.com
+
+
+
+</PRE>
+<A NAME="line_no_384">
+<PRE><B>
+>From owner-suif-talk  Tue Nov  3 22:16:39 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id WAA28421
+	for suif-talk-doit; Tue, 3 Nov 1998 22:16:37 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id WAA28417
+	for <suif-talk@corsica.Stanford.EDU>; Tue, 3 Nov 1998 22:16:36 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id WAA02064;
+	Tue, 3 Nov 1998 22:11:50 -0800 (PST)
+Date: Tue, 3 Nov 98 22:11:50 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: Alok Agarwal <alokka@iitk.ac.in>
+Cc: suif-talk@corsica.Stanford.EDU
+Subject: Re: baseparsuif
+In-Reply-To: Your message of Wed, 4 Nov 1998 11:33:23 +0530 (IST)
+Message-ID: <CMM.0.90.4.910159910.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+> 	Installing baseparsuif-1.0.0.beta.1 gives some errors 
+> like :
+>    runtime_seq.c:1304: parse error before `$'
+> 
+>  Do you know how to get across the problem ?
+> 
+> ---- 
+>  Alok Agarwal,      
+
+Let me guess, you're installing it on a Linux system.
+
+This is a known problem.  It's caused by an incompatibility between
+the GNU version of m4 and standard m4.  There is an option you can
+give to the GNU m4 to make it behave as standard m4.  There's an
+environment variable you can set to have the makefiles automatically
+pass that along to m4 (see the Makefiles).
+
+Perhaps someone can look this up in the mailing list archives and send
+out more details.
+
+        --Chris
+
+</PRE>
+<A NAME="line_no_433">
+<PRE><B>
+>From owner-suif-talk  Tue Nov  3 22:17:29 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id WAA28433
+	for suif-talk-doit; Tue, 3 Nov 1998 22:17:26 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id WAA28429
+	for <suif-talk@corsica.Stanford.EDU>; Tue, 3 Nov 1998 22:17:25 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id WAA02520;
+	Tue, 3 Nov 1998 22:16:56 -0800 (PST)
+Date: Tue, 3 Nov 98 22:16:56 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: Alok Agarwal <alokka@iitk.ac.in>
+Cc: suif-talk@corsica.Stanford.EDU
+Subject: Re: Some questions
+In-Reply-To: Your message of Wed, 4 Nov 1998 11:38:31 +0530 (IST)
+Message-ID: <CMM.0.90.4.910160216.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+>  I have some questions about SUIF loop optimizations :
+>   As you have already said all the optimizations are concerning
+> parallelizations only, so how does it handles the data distribution and
+> loop breaking on different processors. Suppose that I have to parallelize
+> a program and use PVM to run the program on different processors.
+> 
+>  To parallelize the loops, Does SUIF does the calculation of
+> 'communication overheads' on various processors ? If yes, which part of
+> the code does that ?
+> 
+> -Thanks.
+>  ----
+>  Alok Agarwal,
+
+All the currently released SUIF parallelization uses a shared memory
+model.  No explicit model of communication costs is used.  In the
+released code, it generally goes for the largest granularity of
+parallelism available and uses it without regard to communications,
+though there are mechanisms for turning off parallelization of loops
+that cause slowdowns.
+
+There are various experimental projects at Stanford that have taken
+data distribution into account, but these are not yet publicly
+available.
+
+        --Chris
+
+</PRE>
+<A NAME="line_no_487">
+<PRE><B>
+>From owner-suif-talk  Wed Nov  4 08:04:36 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id IAA29623
+	for suif-talk-doit; Wed, 4 Nov 1998 08:03:50 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from minuet.das.harvard.edu (minuet.das.harvard.edu [140.247.50.251])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id IAA29619
+	for <suif-talk@corsica.Stanford.EDU>; Wed, 4 Nov 1998 08:03:48 -0800 (PST)
+Received: from gigue.eas.harvard.edu (gigue.eas.harvard.edu [140.247.51.194])
+	by minuet.das.harvard.edu (8.9.1/8.9.1) with ESMTP id LAA17158;
+	Wed, 4 Nov 1998 11:03:57 -0500 (EST)
+Received: (from holloway@localhost)
+	by gigue.eas.harvard.edu (8.9.1/8.9.1) id LAA09117;
+	Wed, 4 Nov 1998 11:03:57 -0500 (EST)
+From: Glenn Holloway <holloway@deas.harvard.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <13888.31468.712437.64050@gigue.eas.harvard.edu>
+Date: Wed, 4 Nov 1998 11:03:56 -0500 (EST)
+To: suif-talk@corsica.Stanford.EDU
+Subject: Re: suif 2.0 optimizations
+In-Reply-To: <r8tu30gv7rz.fsf@vista.CS.Princeton.EDU>
+References: <r8tu30gv7rz.fsf@vista.CS.Princeton.EDU>
+X-Mailer: VM 6.46 under Emacs 19.34.1
+CC: Daniel Wang <danwang@cs.princeton.edu>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Glenn Holloway <holloway@deas.harvard.edu>
+</A>
+</B></PRE>
+<PRE>
+
+Dan Wang writes:
+
+> some very basic questions.
+> For the basesuif.alpha-2.0.0.720
+> 
+> 1. Does scc -O actually do any optimizations?
+> 2. How can I get an optimized  version of a C program in suif 2.0 format?
+> 3. What scalar opts can suif 1/2 currently do.
+
+In Machine SUIF 1, we have scalar optimization passes including
+dead code elimination, constant and copy propagation, and common
+subexpression elimination.  We haven't released these; we're con-
+verting them to Machine SUIF 2, which is nearing an alpha
+release.  (Some of the interface documents for Machine SUIF 2 can
+already be viewed at http://www.eecs.harvard.edu/machsuif/.)
+
+Machine SUIF 2 will be an integral part of the new SUIF system.
+Colleagues at Rice have been working with us to develop scalar
+optimizations that can operate at both the machine-specific and
+machine-independent levels.
+
+> 4. How does scc compile code (covert back to c and use native compiler?)
+
+Machine SUIF 2 will have a C back end of its own, as well as one
+for the Digital Alpha and Intel x86.  The C and Alpha back ends
+are working now.
+
+
+Glenn Holloway
+holloway@eecs.harvard.edu
+
+</PRE>
+<A NAME="line_no_553">
+<PRE><B>
+>From owner-suif-talk  Wed Nov  4 13:47:05 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id NAA04702
+	for suif-talk-doit; Wed, 4 Nov 1998 13:46:44 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from mail.iitk.ac.in ([202.54.56.131])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id NAA04698
+	for <suif-talk@corsica.Stanford.EDU>; Wed, 4 Nov 1998 13:46:31 -0800 (PST)
+Received: from bhaskar.cc.iitk.ernet.in (bhaskar.cc.iitk.ernet.in [144.16.167.7])
+	by mail.iitk.ac.in (8.8.8/8.8.7) with SMTP id DAA10559;
+	Thu, 5 Nov 1998 03:16:01 +0530
+Date: Thu, 5 Nov 1998 03:17:14 +0530 (IST)
+From: Alok Agarwal <alokka@iitk.ac.in>
+X-Sender: alokka@bhaskar.cc.iitk.ernet.in
+To: Chris Wilson <cwilson@cs.stanford.edu>
+cc: suif-talk@corsica.Stanford.EDU
+Subject: Re: Some questions
+In-Reply-To: <CMM.0.90.4.910160216.cwilson@Xenon.Stanford.EDU>
+Message-ID: <Pine.HPP.3.96.981105031607.14410A-100000@bhaskar.cc.iitk.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Alok Agarwal <alokka@iitk.ac.in>
+</A>
+</B></PRE>
+<PRE>
+
+> 
+> All the currently released SUIF parallelization uses a shared memory
+> model.  No explicit model of communication costs is used.  In the
+> released code, it generally goes for the largest granularity of
+> parallelism available and uses it without regard to communications,
+> though there are mechanisms for turning off parallelization of loops
+> that cause slowdowns.
+
+	Can you tell me how to turn off those and which part of the code
+handles that.
+
+-Alok Agarwal.
+
+
+</PRE>
+<A NAME="line_no_597">
+<PRE><B>
+>From owner-suif-talk  Thu Nov  5 14:44:12 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id OAA12425
+	for suif-talk-doit; Thu, 5 Nov 1998 14:43:00 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from turing.une.edu.au (turing.une.edu.au [129.180.11.17])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id OAA12421
+	for <suif-talk@corsica.Stanford.EDU>; Thu, 5 Nov 1998 14:42:57 -0800 (PST)
+Received: from mcs.une.edu.au (localhost [127.0.0.1])
+	by turing.une.edu.au (8.8.5/8.8.5) with ESMTP id JAA04963;
+	Fri, 6 Nov 1998 09:43:03 +1100 (EST)
+Message-ID: <364229F6.63E8549E@mcs.une.edu.au>
+Date: Fri, 06 Nov 1998 09:43:03 +1100
+From: Shiping Chen <shiping@turing.une.edu.au>
+Organization: University of New England, Australia 
+X-Mailer: Mozilla 4.05 [en] (X11; I; OSF1 V4.0 alpha)
+MIME-Version: 1.0
+To: Chris Wilson <cwilson@cs.stanford.edu>, suif-talk@corsica.Stanford.EDU
+Subject: Re: About scc
+References: <CMM.0.90.4.910057104.cwilson@Xenon.Stanford.EDU>
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: 7bit
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Shiping Chen <shiping@turing.une.edu.au>
+</A>
+</B></PRE>
+<PRE>
+
+Chris Wilson wrote:
+
+> You should run ``scc -V file.f -.spd''.  This will run sf2c and then
+> snoot but then it will run some passes to recover the symbolic
+> information.  sf2c does linearize array references, but it keeps the
+> information around encoded in assignments to specially named
+> variables.  The fixfortran pass uses this information to reconstruct
+> the array information.
+
+Thank you, Chris. It works now.
+
+Now I want to select some passes, say, pass1and pass2,
+and reorder them, such as pass1->pass2 or pass2->pass1.
+Could you tell me how to do that with `scc'. Do I need recode `scc'?
+
+Thank you!
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+Shiping Chen
+
+School of Mathematical and Computer Sciences
+University of New England (UNE)
+Armidale, NSW 2351, Australia
+
+Tel  : +61 (0)2 6773 3935
+Fax  : +61 (0)2 6773 3312
+Email: shiping@cs.une.edu.au
+Web  : http://cs.une.edu.au/~shiping
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+
+
+</PRE>
+<A NAME="line_no_662">
+<PRE><B>
+>From owner-suif-talk  Thu Nov  5 16:02:11 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id QAA12662
+	for suif-talk-doit; Thu, 5 Nov 1998 16:01:59 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id QAA12658
+	for <suif-talk@corsica.Stanford.EDU>; Thu, 5 Nov 1998 16:01:58 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id QAA28624;
+	Thu, 5 Nov 1998 16:02:01 -0800 (PST)
+Date: Thu, 5 Nov 98 16:02:01 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: Shiping Chen <shiping@turing.une.edu.au>
+Cc: suif-talk@corsica.Stanford.EDU
+Subject: Re: About scc
+In-Reply-To: Your message of Fri, 06 Nov 1998 09:43:03 +1100
+Message-ID: <CMM.0.90.4.910310521.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+> Chris Wilson wrote:
+> 
+> > You should run ``scc -V file.f -.spd''.  This will run sf2c and then
+> > snoot but then it will run some passes to recover the symbolic
+> > information.  sf2c does linearize array references, but it keeps the
+> > information around encoded in assignments to specially named
+> > variables.  The fixfortran pass uses this information to reconstruct
+> > the array information.
+> 
+> Thank you, Chris. It works now.
+> 
+> Now I want to select some passes, say, pass1and pass2,
+> and reorder them, such as pass1->pass2 or pass2->pass1.
+> Could you tell me how to do that with `scc'. Do I need recode `scc'?
+> 
+> Thank you!
+> 
+> _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+> 
+> Shiping Chen
+
+The easiest way is to create a little shell script to run the passes
+manually yourself.
+
+The table of passes that scc uses is in commands.def.  There's a
+comment at the top of the file describing the format.  From the
+comments and the entries that are already there, you should be able to
+figure out how to reorder and add or remove passes.  Then you can
+recompile scc and it will use your new set of passes.
+
+The shell script is probably easier.
+
+        --Chris
+
+</PRE>
+<A NAME="line_no_723">
+<PRE><B>
+>From owner-suif-talk  Fri Nov  6 03:00:42 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id CAA13853
+	for suif-talk-doit; Fri, 6 Nov 1998 02:59:37 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from sicmail.epfl.ch (sicmail.epfl.ch [128.178.50.31])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with SMTP id CAA13849
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 6 Nov 1998 02:59:33 -0800 (PST)
+Received: from epfl.ch (actually c3ipc11.epfl.ch) by sicmail with SMTP (local);
+          Fri, 6 Nov 1998 11:58:30 +0100
+Message-ID: <3642D619.D6BB7744@epfl.ch>
+Date: Fri, 06 Nov 1998 11:57:29 +0100
+From: Michel Thomas <Michel.Thomas@epfl.ch>
+Organization: EPFL DE-C3I
+X-Mailer: Mozilla 4.05 [en] (WinNT; I)
+MIME-Version: 1.0
+To: SUIF Mailing list <suif-talk@corsica.Stanford.EDU>
+Subject: Compile output C file
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Michel Thomas <Michel.Thomas@epfl.ch>
+</A>
+</B></PRE>
+<PRE>
+
+I compile one C file with pscc command with -.spd option. After that, I
+convert the binary SUIF file in C with s2c command.
+I would like to compile this output C file with a common compiler
+like gcc or cc. But I have to link other SUIF binary files which
+contains
+the definition of function like suif_named_doall().
+Is there a problem with the installation of one SUIF package?
+
+Thanks,
+Michel
+--
+-----------------------------------------------------------------------
+Michel THOMAS
+Swiss Federal Instute of Technology
+EPFL-DE Integrated Systems Center (C3I)
+CH-1015 Ecublens - Switzerland
+
+Phone +41 (0) 21 693 69 80            mailto:michel.thomas@epfl.ch
+Fax     +41 (0) 21 693 46 63
+-----------------------------------------------------------------------
+
+
+
+</PRE>
+<A NAME="line_no_775">
+<PRE><B>
+>From owner-suif-talk  Fri Nov  6 10:46:08 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id KAA14696
+	for suif-talk-doit; Fri, 6 Nov 1998 10:45:47 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from fox.doc.ic.ac.uk (fox.doc.ic.ac.uk [146.169.1.1])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id KAA14692
+	for <suif-talk@suif.stanford.edu>; Fri, 6 Nov 1998 10:45:45 -0800 (PST)
+Received: from boitano.doc.ic.ac.uk ([146.169.29.151] helo=doc.ic.ac.uk)
+	by fox.doc.ic.ac.uk with esmtp (Exim 1.92 #1)
+	id 0zbqtT-0002EK-00; Fri, 6 Nov 1998 18:45:59 +0000
+Message-ID: <364343E7.884902B4@doc.ic.ac.uk>
+Date: Fri, 06 Nov 1998 18:45:59 +0000
+From: Markus Weinhardt <m.weinhardt@doc.ic.ac.uk>
+Organization: Imperial College, London
+X-Mailer: Mozilla 4.07 [en] (X11; I; Linux 2.0.34 i686)
+MIME-Version: 1.0
+To: suif-talk@corsica.Stanford.EDU
+Subject: Documentation for dependences/Unrolling/Inlining
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Markus Weinhardt <m.weinhardt@doc.ic.ac.uk>
+</A>
+</B></PRE>
+<PRE>
+
+Hello,
+
+I'm trying to interpret the output of example program 4 in SUIF
+Cookbook, where dependences are described by expressions like (+ * -8).
+Unfortunately, I could not find an explanation for those symbols in the
+Cookbook or the Dependence Library documentation. Can anybody explain
+their meaning?
+
+On another topic, are there any implementations for loop unrolling or
+procedure inlining (selective, i.e. controlled by the pass or by
+annotations) available?
+
+Thanks and regards,
+Markus Weinhardt
+
+-- 
+Dr. Markus Weinhardt, Department of Computing, Imperial College
+180 Queen's Gate, London SW7 2BZ, UK - m.weinhardt@doc.ic.ac.uk
+Tel. +44-171-5948186  Fax +44-171-5818024   Mob. +44-961-301558
+
+</PRE>
+<A NAME="line_no_825">
+<PRE><B>
+>From owner-suif-talk  Fri Nov  6 14:08:12 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id OAA15115
+	for suif-talk-doit; Fri, 6 Nov 1998 14:07:49 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id OAA15111
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 6 Nov 1998 14:07:47 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id OAA08799;
+	Fri, 6 Nov 1998 14:07:59 -0800 (PST)
+Date: Fri, 6 Nov 98 14:07:58 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: Michel Thomas <Michel.Thomas@epfl.ch>
+Cc: SUIF Mailing list <suif-talk@corsica.Stanford.EDU>
+Subject: Re: Compile output C file
+In-Reply-To: Your message of Fri, 06 Nov 1998 11:57:29 +0100
+Message-ID: <CMM.0.90.4.910390078.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+> I compile one C file with pscc command with -.spd option. After that, I
+> convert the binary SUIF file in C with s2c command.
+> I would like to compile this output C file with a common compiler
+> like gcc or cc. But I have to link other SUIF binary files which
+> contains
+> the definition of function like suif_named_doall().
+> Is there a problem with the installation of one SUIF package?
+> 
+> Thanks,
+> Michel
+
+suif_named_doall() is one of the functions in the SUIF parallel
+runtime library named ``runtime''.  pscc runs a pass called pgen and
+generates parallel code using this runtime interface.  You will need
+to link with this runtime library compiled for your target platform.
+
+        --Chris
+
+</PRE>
+<A NAME="line_no_870">
+<PRE><B>
+>From owner-suif-talk  Fri Nov  6 18:15:24 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id SAA15596
+	for suif-talk-doit; Fri, 6 Nov 1998 18:13:57 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from turing.une.edu.au (turing.une.edu.au [129.180.11.17])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id SAA15592
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 6 Nov 1998 18:13:50 -0800 (PST)
+Received: from mcs.une.edu.au (localhost [127.0.0.1])
+	by turing.une.edu.au (8.8.5/8.8.5) with ESMTP id NAA29939;
+	Sat, 7 Nov 1998 13:13:31 +1100 (EST)
+Message-ID: <3643ACCA.4577B3EB@mcs.une.edu.au>
+Date: Sat, 07 Nov 1998 13:13:30 +1100
+From: Shiping Chen <shiping@turing.une.edu.au>
+Organization: University of New England, Australia 
+X-Mailer: Mozilla 4.05 [en] (X11; I; OSF1 V4.0 alpha)
+MIME-Version: 1.0
+To: cwilson@cs.stanford.edu, suif-talk@corsica.Stanford.EDU
+Subject: Statistics for dependence patterns of Benchmarks
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: 7bit
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Shiping Chen <shiping@turing.une.edu.au>
+</A>
+</B></PRE>
+<PRE>
+
+Chris Wilson wrote:
+
+> The easiest way is to create a little shell script to run the passes
+> manually yourself.
+
+Thank you, Chirs, for your good idea.
+
+I am doing statistics for dependence patterns of some benchmarks
+(Perfect and Nas). I found out that the most loops in these benchmarks
+either have no dependencies (parallel loops) or  have the dependencies
+with many stars, such as: (+, *, *). This makes many loop transformations
+invalid.
+
+I wonder if you made the same observation, or if my statistical program is
+incorrect. Do you have such a program to provide us?
+
+
+Thank you very much!
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+Shiping Chen
+
+School of Mathematical and Computer Sciences
+University of New England (UNE)
+Armidale, NSW 2351, Australia
+
+Tel  : +61 (0)2 6773 3935
+Fax  : +61 (0)2 6773 3312
+Email: shiping@cs.une.edu.au
+Web  : http://cs.une.edu.au/~shiping
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+
+
+</PRE>
+<A NAME="line_no_936">
+<PRE><B>
+>From owner-suif-talk  Fri Nov  6 21:07:52 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id VAA15803
+	for suif-talk-doit; Fri, 6 Nov 1998 21:07:03 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from beowulf.ucsd.edu (beowulf.ucsd.edu [132.239.17.2])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id VAA15799
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 6 Nov 1998 21:07:01 -0800 (PST)
+Received: (from mitchell@localhost)
+	by beowulf.ucsd.edu (8.8.6/8.8.6) id VAA29475
+	for suif-talk@corsica.Stanford.EDU; Fri, 6 Nov 1998 21:07:18 -0800 (PST)
+Date: Fri, 6 Nov 1998 21:07:18 -0800 (PST)
+From: Nick Mitchell <mitchell@cs.ucsd.edu>
+Message-Id: <199811070507.VAA29475@beowulf.ucsd.edu>
+To: suif-talk@corsica.Stanford.EDU
+Subject:  Re: Statistics for dependence patterns of Benchmarks
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Nick Mitchell <mitchell@cs.ucsd.edu>
+</A>
+</B></PRE>
+<PRE>
+
+
+> either have no dependencies (parallel loops) or  have the dependencies
+> with many stars, such as: (+, *, *). This makes many loop transformations
+> invalid.
+
+Hi Shiping, 
+
+While data depenence analysis in SUIF1 (at least the released version)
+is a little on the weak side (it doesn't, for example, support dataflow
+dependence analysis), many of the core NAS benchmarks are just pernicious
+in the way you have observed. For example, both CG and IS include
+indirect memory references (the former in a sparse matrix-vector product
+and the latter in the tally phase of the integer sort). EP, though
+embarrasingly parallel, also includes non-affine array references.
+
+This does not, however, mean they are not optimizable. :)
+nick
+
+</PRE>
+<A NAME="line_no_979">
+<PRE><B>
+>From owner-suif-talk  Tue Nov 10 09:27:30 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id JAA23133
+	for suif-talk-doit; Tue, 10 Nov 1998 09:25:10 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from poste.uqac.uquebec.ca (poste.uqac.uquebec.ca [132.212.11.73])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id JAA23129
+	for <suif-talk@corsica.stanford.edu>; Tue, 10 Nov 1998 09:25:06 -0800 (PST)
+Received: from dsaermetis.uqac.uquebec.ca (dsaermetis.uqac.uquebec.ca [132.212.200.93]) by poste.uqac.uquebec.ca (8.8.4/8.7.3) with SMTP id MAA26144 for <suif-talk@suif.stanford.edu>; Tue, 10 Nov 1998 12:24:54 -0500 (EST)
+Received: from uqac.uquebec.ca by dsaermetis.uqac.uquebec.ca (SMI-8.6/SMI-SVR4)
+	id MAA02032; Tue, 10 Nov 1998 12:24:54 -0500
+Message-ID: <364876E4.B8E1D683@uqac.uquebec.ca>
+Date: Tue, 10 Nov 1998 12:24:53 -0500
+From: Levis Theriault <ltheriau@uqac.uquebec.ca>
+X-Mailer: Mozilla 4.06 [en] (X11; I; SunOS 5.5.1 sun4m)
+MIME-Version: 1.0
+To: suif-talk@corsica.Stanford.EDU
+Subject: baseparsuif-1.0.0.beta.2
+Content-Type: multipart/mixed; boundary="------------C1ACA614AEFFE149CDB4B799"
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Levis Theriault <ltheriau@uqac.uquebec.ca>
+</A>
+</B></PRE>
+<PRE>
+
+This is a multi-part message in MIME format.
+--------------C1ACA614AEFFE149CDB4B799
+Content-Type: multipart/alternative; boundary="------------310790E33B8EEC2F82454366"
+
+
+--------------310790E33B8EEC2F82454366
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I'd like to know more about it onto the install package
+"baseparsuif-1.0.0.beta.2", because not compiled the package
+baseparsuif. The use operating system is SOLARIS 2.4.
+
+The package is installed success: basesuif-1.1.2 and
+suifbuilder-1.0.0.beta.1.
+
+The caracter "$" in the file runtime_seq.c is a problem. Chek the
+attachment file for the error of the make install.
+
+What is the problem here?
+
+Regards,
+
+Levis.
+
+--
+************************************************************************
+Levis Theriault
+ERMETIS-UQAC Local 2-205
+555 bould. de l'Universite
+Chicoutimi (Quebec)
+G7H 2B1
+Tel: (418) 545-5011 ext. 2268
+E-mail: ltheriau@uqac.uquebec.ca
+************************************************************************
+
+
+
+--------------310790E33B8EEC2F82454366
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+Hi,
+<P>I'd like to know more about it onto the install package "baseparsuif-1.0.0.beta.2",
+because not compiled the package baseparsuif. The use operating system
+is SOLARIS 2.4.
+<P>The package is installed success: basesuif-1.1.2 and suifbuilder-1.0.0.beta.1.
+<P>The caracter "$" in the file runtime_seq.c is a problem. Chek the attachment
+file for the error of the make install.
+<P>What is the problem here?
+<P>Regards,
+<P>Levis.
+<PRE>--&nbsp;
+************************************************************************
+Levis Theriault
+ERMETIS-UQAC Local 2-205
+555 bould. de l'Universite
+Chicoutimi (Quebec)
+G7H 2B1
+Tel: (418) 545-5011 ext. 2268
+E-mail: ltheriau@uqac.uquebec.ca
+************************************************************************</PRE>
+&nbsp;</HTML>
+
+--------------310790E33B8EEC2F82454366--
+
+--------------C1ACA614AEFFE149CDB4B799
+Content-Type: text/plain; charset=us-ascii; name="error_compiler.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline; filename="error_compiler.txt"
+
+suif-recursive-make: gmake
+gmake[1]: Entering directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/baseparsuif-1.0.0.beta.2/runtime'
+gcc -c -g -Wall   -I/nfs/dsa/sug7/suif/basesuif-1.1.2/include  -DSTATS -lthread runtime_seq.c
+runtime_seq.c: In function `main':
+runtime_seq.c:623: parse error before `$'
+runtime_seq.c: In function `suif_wait_for_end':
+runtime_seq.c:1105: parse error before `$'
+runtime_seq.c:1113: parse error before `$'
+runtime_seq.c:1100: warning: unused variable `hi_res_end_time'
+runtime_seq.c: In function `suif_reset_stats':
+runtime_seq.c:1258: parse error before `$'
+runtime_seq.c: In function `suif_serial':
+runtime_seq.c:1307: parse error before `$'
+runtime_seq.c:1513: parse error before `$'
+runtime_seq.c:1521: parse error before `$'
+runtime_seq.c:1508: warning: unused variable `hi_res_end_time'
+runtime_seq.c:1296: warning: unused variable `partime_hi_res'
+runtime_seq.c: In function `suif_doall':
+runtime_seq.c:1605: parse error before `$'
+runtime_seq.c:1816: parse error before `$'
+runtime_seq.c:1824: parse error before `$'
+runtime_seq.c:1811: warning: unused variable `hi_res_end_time'
+runtime_seq.c:1594: warning: unused variable `partime_hi_res'
+runtime_seq.c: In function `suif_hi_res_clock':
+runtime_seq.c:2405: parse error before `$'
+runtime_seq.c:2403: warning: unused variable `itime'
+runtime_seq.c: In function `suif_start_timer':
+runtime_seq.c:2424: parse error before `$'
+runtime_seq.c: In function `suif_end_timer':
+runtime_seq.c:2438: parse error before `$'
+runtime_seq.c:2446: parse error before `$'
+runtime_seq.c:2433: warning: unused variable `hi_res_end_time'
+runtime_seq.c: In function `rcinld_':
+runtime_seq.c:5232: warning: missing braces around initializer for `(anonymous).__convert_long_double_i'
+runtime_seq.c: In function `rcixld_':
+runtime_seq.c:5245: warning: missing braces around initializer for `(anonymous).__convert_long_double_i'
+runtime_seq.c: At top level:
+runtime_seq.c:1994: warning: `_barrier' defined but not used
+runtime_seq.c:2006: warning: `_barrier2' defined but not used
+runtime_seq.c:384: warning: `alltime_hi_res' defined but not used
+runtime_seq.c:2381: warning: `hi_res_start_time' defined but not used
+gmake[2]: *** [runtime_seq.o] Error 1
+gmake[1]: *** [libruntime_seq.a] Error 2
+gmake[1]: Leaving directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/baseparsuif-1.0.0.beta.2/runtime'
+gmake: *** [recursive] Error 1
+
+--------------C1ACA614AEFFE149CDB4B799--
+
+
+</PRE>
+<A NAME="line_no_1131">
+<PRE><B>
+>From owner-suif-talk  Tue Nov 10 11:01:36 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id LAA23477
+	for suif-talk-doit; Tue, 10 Nov 1998 11:01:23 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from mail.iitk.ac.in ([202.54.56.131])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id LAA23473
+	for <suif-talk@corsica.Stanford.EDU>; Tue, 10 Nov 1998 11:01:07 -0800 (PST)
+Received: from apah.cc.iitk.ernet.in (apah.cc.iitk.ernet.in [144.16.167.6])
+	by mail.iitk.ac.in (8.8.8/8.8.7) with SMTP id AAA00341;
+	Wed, 11 Nov 1998 00:30:04 +0530
+Date: Wed, 11 Nov 1998 00:31:06 +0530 (IST)
+From: Alok Agarwal <alokka@iitk.ac.in>
+X-Sender: alokka@apah.cc.iitk.ernet.in
+To: Levis Theriault <ltheriau@uqac.uquebec.ca>
+cc: suif-talk@corsica.Stanford.EDU
+Subject: Re: baseparsuif-1.0.0.beta.2
+In-Reply-To: <364876E4.B8E1D683@uqac.uquebec.ca>
+Message-ID: <Pine.HPP.3.96.981111002939.5772B-100000@apah.cc.iitk.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Alok Agarwal <alokka@iitk.ac.in>
+</A>
+</B></PRE>
+<PRE>
+
+
+Hi all,
+ I am also facing the same problem. I am using LINUX OS.
+As suggested by Chris, I searched for m4 in Makefiles, but 
+there were none. So please tell me hoe to get across the
+problem.
+
+-Bye.
+---- 
+ Alok Agarwal,      
+ Senior Undergraduate , CSE ,     
+ A-120/I , I.I.T. Kanpur 
+ E-mail: alokka@iitk.ac.in
+        alokka@rocketmail.com
+
+On Tue, 10 Nov 1998, Levis Theriault wrote:
+
+
+  [NON-Text Body part not included]
+
+
+</PRE>
+<A NAME="line_no_1182">
+<PRE><B>
+>From owner-suif-talk  Tue Nov 10 11:44:42 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id LAA23549
+	for suif-talk-doit; Tue, 10 Nov 1998 11:44:30 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id LAA23545
+	for <suif-talk@corsica.Stanford.EDU>; Tue, 10 Nov 1998 11:44:28 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id LAA18423;
+	Tue, 10 Nov 1998 11:43:13 -0800 (PST)
+Date: Tue, 10 Nov 98 11:43:12 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: Alok Agarwal <alokka@iitk.ac.in>
+Cc: Levis Theriault <ltheriau@uqac.uquebec.ca>, suif-talk@corsica.Stanford.EDU
+Subject: Re: baseparsuif-1.0.0.beta.2
+In-Reply-To: Your message of Wed, 11 Nov 1998 00:31:06 +0530 (IST)
+Message-ID: <CMM.0.90.4.910726992.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+> Hi all,
+>  I am also facing the same problem. I am using LINUX OS.
+> As suggested by Chris, I searched for m4 in Makefiles, but 
+> there were none. So please tell me hoe to get across the
+> problem.
+> 
+> -Bye.
+
+Here's a message on the subject that I found in the SUIF mailing list
+archive:
+
+    http://suif.stanford.edu/suif/mlists/suif-bugs/199607/19960711.html
+
+Please let me know if there is still a problem.
+
+        --Chris
+
+</PRE>
+<A NAME="line_no_1226">
+<PRE><B>
+>From owner-suif-talk  Tue Nov 10 12:24:42 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id MAA23652
+	for suif-talk-doit; Tue, 10 Nov 1998 12:24:35 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from mail.iitk.ac.in ([202.54.56.131])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id MAA23648
+	for <suif-talk@corsica.Stanford.EDU>; Tue, 10 Nov 1998 12:24:15 -0800 (PST)
+Received: from apah.cc.iitk.ernet.in (apah.cc.iitk.ernet.in [144.16.167.6])
+	by mail.iitk.ac.in (8.8.8/8.8.7) with SMTP id BAA01284;
+	Wed, 11 Nov 1998 01:48:52 +0530
+Date: Wed, 11 Nov 1998 01:49:54 +0530 (IST)
+From: Alok Agarwal <alokka@iitk.ac.in>
+X-Sender: alokka@apah.cc.iitk.ernet.in
+To: Chris Wilson <cwilson@cs.stanford.edu>
+cc: Levis Theriault <ltheriau@uqac.uquebec.ca>, suif-talk@corsica.Stanford.EDU
+Subject: Re: baseparsuif-1.0.0.b
+In-Reply-To: <CMM.0.90.4.910726992.cwilson@Xenon.Stanford.EDU>
+Message-ID: <Pine.HPP.3.96.981111014827.9113A-100000@apah.cc.iitk.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Alok Agarwal <alokka@iitk.ac.in>
+</A>
+</B></PRE>
+<PRE>
+
+> 
+> Here's a message on the subject that I found in the SUIF mailing list
+> archive:
+> 
+>     http://suif.stanford.edu/suif/mlists/suif-bugs/199607/19960711.html
+> 
+> Please let me know if there is still a problem.
+> 
+>         --Chris
+
+ That problem goes but following error message comes ....
+
+-Thanks.
+--------------------------------------------------------------
+runtime_seq.c:66: parse error before `!'
+In file included from /usr/include/stdlib.h:210,
+                 from runtime_seq.c:221:
+/usr/include/sys/types.h:33: parse error before `u_char'
+/usr/include/sys/types.h:33: warning: data definition has no type or storage class
+runtime_seq.c: In function `suif_wait_for_end':
+runtime_seq.c:1110: invalid lvalue in assignment
+runtime_seq.c:1111: invalid lvalue in assignment
+runtime_seq.c:1112: invalid lvalue in assignment
+runtime_seq.c: In function `suif_serial':
+runtime_seq.c:1518: invalid lvalue in assignment
+runtime_seq.c:1519: invalid lvalue in assignment
+runtime_seq.c:1520: invalid lvalue in assignment
+runtime_seq.c: In function `suif_doall':
+runtime_seq.c:1821: invalid lvalue in assignment
+runtime_seq.c:1822: invalid lvalue in assignment
+runtime_seq.c:1823: invalid lvalue in assignment
+runtime_seq.c: In function `suif_hi_res_clock':
+runtime_seq.c:2404: invalid lvalue in assignment
+runtime_seq.c:2405: invalid lvalue in assignment
+runtime_seq.c:2406: invalid lvalue in assignment
+runtime_seq.c: In function `suif_end_timer':
+runtime_seq.c:2443: invalid lvalue in assignment
+runtime_seq.c:2444: invalid lvalue in assignment
+runtime_seq.c:2445: invalid lvalue in assignment
+runtime_seq.c: In function `rcinld_':
+runtime_seq.c:5229: warning: missing braces around initializer for `(anonymous).__convert_long_double_i'
+runtime_seq.c: In function `rcixld_':
+runtime_seq.c:5242: warning: missing braces around initializer for `(anonymous).__convert_long_double_i'
+runtime_seq.c: At top level:
+runtime_seq.c:1991: warning: `_barrier' defined but not used
+runtime_seq.c:2003: warning: `_barrier2' defined but not used
+make[2]: *** [runtime_seq.o] Error 1
+make[1]: *** [libruntime_seq.a] Error 2
+make: *** [recursive] Error 1
+----------------------------------------------------------------
+
+
+</PRE>
+<A NAME="line_no_1308">
+<PRE><B>
+>From owner-suif-talk  Tue Nov 10 21:58:15 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id VAA25663
+	for suif-talk-doit; Tue, 10 Nov 1998 21:57:18 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from mail.iitk.ac.in ([202.54.56.131])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id VAA25655
+	for <suif-talk@corsica.stanford.edu>; Tue, 10 Nov 1998 21:56:56 -0800 (PST)
+Received: from apah.cc.iitk.ernet.in (apah.cc.iitk.ernet.in [144.16.167.6])
+	by mail.iitk.ac.in (8.8.8/8.8.7) with SMTP id KAA05352
+	for <suif-talk@suif.stanford.edu>; Wed, 11 Nov 1998 10:20:53 +0530
+Date: Wed, 11 Nov 1998 10:21:53 +0530 (IST)
+From: Alok Agarwal <alokka@iitk.ac.in>
+X-Sender: alokka@apah.cc.iitk.ernet.in
+To: suif-talk@corsica.Stanford.EDU
+Subject: Compiling programs.
+Message-ID: <Pine.HPP.3.96.981111101740.8672B-100000@apah.cc.iitk.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Alok Agarwal <alokka@iitk.ac.in>
+</A>
+</B></PRE>
+<PRE>
+
+
+	I am facing a great problem in compiling suif programs.
+first of all, it does not finh the header files. But when I give 
+path through cc -I .... then it finds the first level header files 
+and none others. 
+	Do I have to use some makefiles to compile the program ??
+I was compiling the dependence analysis program, given in documents
+of "baseparsuif". Can anybody tell me how to compile programs written
+using library functions of SUIF ??
+
+---- 
+ Alok Agarwal,      
+ Senior Undergraduate , CSE ,     
+ A-120/I , I.I.T. Kanpur 
+ E-mail: alokka@iitk.ac.in
+        alokka@rocketmail.com
+
+
+</PRE>
+<A NAME="line_no_1354">
+<PRE><B>
+>From owner-suif-talk  Wed Nov 11 04:54:28 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id EAA26553
+	for suif-talk-doit; Wed, 11 Nov 1998 04:53:27 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from mail.iitk.ac.in ([202.54.56.131])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id EAA26547
+	for <suif-talk@corsica.stanford.edu>; Wed, 11 Nov 1998 04:51:00 -0800 (PST)
+Received: from apah.cc.iitk.ernet.in (apah.cc.iitk.ernet.in [144.16.167.6])
+	by mail.iitk.ac.in (8.8.8/8.8.7) with SMTP id SAA14127
+	for <suif-talk@suif.stanford.edu>; Wed, 11 Nov 1998 18:17:37 +0530
+Date: Wed, 11 Nov 1998 18:18:35 +0530 (IST)
+From: Alok Agarwal <alokka@iitk.ac.in>
+X-Sender: alokka@apah.cc.iitk.ernet.in
+To: suif-talk@corsica.Stanford.EDU
+Subject: Cookbook: core dump in prog4
+Message-ID: <Pine.HPP.3.96.981111181238.9880A-100000@apah.cc.iitk.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Alok Agarwal <alokka@iitk.ac.in>
+</A>
+</B></PRE>
+<PRE>
+
+
+	I was trying to run program from cookbook4 (using LINUX)
+and it is dumping core even on the test sample given. I tried to
+fogure it out and found that it is dumping on line 32 :
+
+	void print_dep(in_array * ai1, in_array * ai2)
+	{
+    		dvlist * dep = DependenceTest(ai1, ai2);
+ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+	Is there any problem with this ??. Actually I was not 
+able to install baseparsuif completely, (installation stopping 
+at run_time library installation), so copied the dependence library 
+at appropriate place, and complied. Can anybody figure out what is 
+the problem ??
+
+-Thanks.
+---- 
+ Alok Agarwal,      
+ Senior Undergraduate , CSE ,     
+ A-120/I , I.I.T. Kanpur 
+ E-mail: alokka@iitk.ac.in
+        alokka@rocketmail.com
+
+
+</PRE>
+<A NAME="line_no_1407">
+<PRE><B>
+>From owner-suif-talk  Wed Nov 11 07:08:26 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id HAA26756
+	for suif-talk-doit; Wed, 11 Nov 1998 07:07:56 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from poste.uqac.uquebec.ca (poste.uqac.uquebec.ca [132.212.11.73])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id HAA26752
+	for <suif-talk@corsica.stanford.edu>; Wed, 11 Nov 1998 07:07:49 -0800 (PST)
+Received: from dsaermetis.uqac.uquebec.ca (dsaermetis.uqac.uquebec.ca [132.212.200.93]) by poste.uqac.uquebec.ca (8.8.4/8.7.3) with SMTP id KAA06193 for <suif-talk@suif.stanford.edu>; Wed, 11 Nov 1998 10:07:24 -0500 (EST)
+Received: from uqac.uquebec.ca by dsaermetis.uqac.uquebec.ca (SMI-8.6/SMI-SVR4)
+	id KAA03338; Wed, 11 Nov 1998 10:07:24 -0500
+Message-ID: <3649A82B.748AAE5E@uqac.uquebec.ca>
+Date: Wed, 11 Nov 1998 10:07:24 -0500
+From: Levis Theriault <ltheriau@uqac.uquebec.ca>
+X-Mailer: Mozilla 4.06 [en] (X11; I; SunOS 5.5.1 sun4m)
+MIME-Version: 1.0
+To: suif-talk@corsica.Stanford.EDU
+Subject: suifvbrowser 1.0.0.beta.1
+Content-Type: multipart/alternative; boundary="------------1E85A1BC8A9A32F5D566010B"
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Levis Theriault <ltheriau@uqac.uquebec.ca>
+</A>
+</B></PRE>
+<PRE>
+
+
+--------------1E85A1BC8A9A32F5D566010B
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+
+Hi,
+
+I wanted to install Suif on our SOLARIS 2.4.
+
+The first three packages installed is OK :
+
+        basesuif 1.1.2
+        suifbuilder 1.0.0.beta.1
+        suifcallgraph 1.0.0.beta.1
+        baseparsuif 1.0.0.beta.2
+
+I had problems installing :
+
+        suifvbrowser 1.0.0.beta.1
+
+
+The following happened :
+
+dsadocsvr:~/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser % gmake
+show-install
+make[1]: Entering directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+make[1]: Leaving directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+suifvbrowser/vbrowser ... FAILED -- see
+suifvbrowser/vbrowser/install.log
+
+
+dsadocsvr:~/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser % less
+install.log
+make[1]: Entering directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+if test -d RCS ; then \
+  rm -rf /nfs/dsa/sug7/suif/basesuif-1.1.2/src/suifvbrowser/vbrowser ; \
+
+ else : ; \
+ fi
+make[1]: Leaving directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+make[1]: Entering directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+if test -d RCS ; then \
+  mkdir /nfs/dsa/sug7/suif/basesuif-1.1.2/src/suifvbrowser/vbrowser ; \
+  chmod 775 /nfs/dsa/sug7/suif/basesuif-1.1.2/src/suifvbrowser/vbrowser
+; \
+ else : ; \
+ fi
+make[1]: Leaving directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+make[1]: Entering directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+g++ -o vbrowser -g -Wall -Wno-unused
+-I/nfs/dsa/sug7/suif/basesuif-1.1.2/include   vbrowser.o
+pointer_module.o help.o suif_init.o \
+   -L/nfs/dsa/sug7/suif/basesuif-1.1.2/sparc-sun-solaris2.5/solib
+-L/nfs/dsa/sug7/suif/basesuif-1.1.2/sparc-sun-solaris2.5/lib  -lvsuif
+-lvisual -lcg
+-lannotes -luseful -lsuif -ltk -ltcl -lX11 -lm prog_ver.cc
+Undefined   first referenced
+ symbol         in file
+socket
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+getpeername
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+recv
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+xdrmem_create                       /usr/logiciel/gnu5/lib/libX11.so
+gethostbyname
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+accept
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+send
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+bind
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+setsockopt
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclIOSock.o)
+getservbyname
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclIOSock.o)
+Tk_CreateMainWindow
+/nfs/dsa/sug7/suif/basesuif-1.1.2/sparc-sun-solaris2.5/lib/libvisual.a(visual.o)
+
+gethostbyaddr
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+getsockopt
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclIOSock.o)
+authdes_create                      /usr/logiciel/gnu5/lib/libX11.so
+inet_addr
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+inet_ntoa
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+shutdown                            /usr/logiciel/gnu5/lib/libX11.so
+getsockname
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+dlsym
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclLoadDl.o)  (symbol belongs to
+implicit dependency /usr/lib/libdl.so.1)
+dlopen
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclLoadDl.o)  (symbol belongs to
+implicit dependency /usr/lib/libdl.so.1)
+dlerror
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclLoadDl.o)  (symbol belongs to
+implicit dependency /usr/lib/libdl.so.1)
+listen
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+connect
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+ld: fatal: Symbol referencing errors. No output written to vbrowser
+make[3]: *** [vbrowser] Error 1
+make[2]: *** [vbrowser] Error 2
+make[1]: *** [reinstall-keep-src] Error 2
+make[1]: Leaving directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+make[1]: Entering directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+make[1]: Nothing to be done for `install-verdata'.
+make[1]: Leaving directory
+`/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+
+
+
+--> ld: fatal: Symbol referencing errors. No output written to vbrowser
+!!!
+
+What is the problem, please?
+
+Regards,
+
+ps - thanks for the patches from package "baseparsuif 1.0.0.beta.2"...
+the setting up successfully.
+
+Levis.
+
+--
+************************************************************************
+Levis Theriault
+ERMETIS-UQAC Local 2-205
+555 bould. de l'Universite
+Chicoutimi (Quebec)
+G7H 2B1
+Tel: (418) 545-5011 ext. 2268
+E-mail: ltheriau@uqac.uquebec.ca
+************************************************************************
+
+
+
+--------------1E85A1BC8A9A32F5D566010B
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+&nbsp;
+<BR>Hi,
+<P>I wanted to install Suif on our SOLARIS 2.4.
+<P>The first three packages installed is OK :
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; basesuif 1.1.2
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; suifbuilder 1.0.0.beta.1
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; suifcallgraph 1.0.0.beta.1
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; baseparsuif 1.0.0.beta.2
+<P>I had problems installing :
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; suifvbrowser 1.0.0.beta.1
+<BR>&nbsp;
+<P>The following happened :
+<P>dsadocsvr:~/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser % gmake
+show-install
+<BR>make[1]: Entering directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>make[1]: Leaving directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>suifvbrowser/vbrowser ... FAILED -- see suifvbrowser/vbrowser/install.log
+<BR>&nbsp;
+<P>dsadocsvr:~/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser % less
+install.log
+<BR>make[1]: Entering directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>if test -d RCS ; then \
+<BR>&nbsp; rm -rf /nfs/dsa/sug7/suif/basesuif-1.1.2/src/suifvbrowser/vbrowser
+; \
+<BR>&nbsp;else : ; \
+<BR>&nbsp;fi
+<BR>make[1]: Leaving directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>make[1]: Entering directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>if test -d RCS ; then \
+<BR>&nbsp; mkdir /nfs/dsa/sug7/suif/basesuif-1.1.2/src/suifvbrowser/vbrowser
+; \
+<BR>&nbsp; chmod 775 /nfs/dsa/sug7/suif/basesuif-1.1.2/src/suifvbrowser/vbrowser
+; \
+<BR>&nbsp;else : ; \
+<BR>&nbsp;fi
+<BR>make[1]: Leaving directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>make[1]: Entering directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>g++ -o vbrowser -g -Wall -Wno-unused&nbsp;&nbsp; -I/nfs/dsa/sug7/suif/basesuif-1.1.2/include&nbsp;&nbsp;
+vbrowser.o pointer_module.o help.o suif_init.o \
+<BR>&nbsp;&nbsp; -L/nfs/dsa/sug7/suif/basesuif-1.1.2/sparc-sun-solaris2.5/solib
+-L/nfs/dsa/sug7/suif/basesuif-1.1.2/sparc-sun-solaris2.5/lib&nbsp; -lvsuif
+-lvisual -lcg
+<BR>-lannotes -luseful -lsuif -ltk -ltcl -lX11 -lm prog_ver.cc
+<BR>Undefined&nbsp;&nbsp; first referenced
+<BR>&nbsp;symbol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in file
+<BR>socket&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>getpeername&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>recv&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>xdrmem_create&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/usr/logiciel/gnu5/lib/libX11.so
+<BR>gethostbyname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>accept&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>send&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>bind&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>setsockopt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclIOSock.o)
+<BR>getservbyname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclIOSock.o)
+<BR>Tk_CreateMainWindow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/suif/basesuif-1.1.2/sparc-sun-solaris2.5/lib/libvisual.a(visual.o)
+<BR>gethostbyaddr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>getsockopt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclIOSock.o)
+<BR>authdes_create&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/usr/logiciel/gnu5/lib/libX11.so
+<BR>inet_addr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>inet_ntoa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>shutdown&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/usr/logiciel/gnu5/lib/libX11.so
+<BR>getsockname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>dlsym&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclLoadDl.o)&nbsp; (symbol belongs
+to implicit dependency /usr/lib/libdl.so.1)
+<BR>dlopen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclLoadDl.o)&nbsp; (symbol belongs
+to implicit dependency /usr/lib/libdl.so.1)
+<BR>dlerror&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclLoadDl.o)&nbsp; (symbol belongs
+to implicit dependency /usr/lib/libdl.so.1)
+<BR>listen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>connect&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/nfs/dsa/sug7/ltheriau/tcltk/libtcl.a(tclUnixChan.o)
+<BR>ld: fatal: Symbol referencing errors. No output written to vbrowser
+<BR>make[3]: *** [vbrowser] Error 1
+<BR>make[2]: *** [vbrowser] Error 2
+<BR>make[1]: *** [reinstall-keep-src] Error 2
+<BR>make[1]: Leaving directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>make[1]: Entering directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>make[1]: Nothing to be done for `install-verdata'.
+<BR>make[1]: Leaving directory `/nfs/dsa/sug7/ltheriau/suifvbrowser/src/suifvbrowser-1.0.0.beta.1/vbrowser'
+<BR>&nbsp;
+<P>--> ld: fatal: Symbol referencing errors. No output written to vbrowser
+!!!
+<P>What is the problem, please?
+<P>Regards,
+<P>ps - thanks for the patches from package "baseparsuif 1.0.0.beta.2"...
+the setting up successfully.
+<P>Levis.
+<PRE>--&nbsp;
+************************************************************************
+Levis Theriault
+ERMETIS-UQAC Local 2-205
+555 bould. de l'Universite
+Chicoutimi (Quebec)
+G7H 2B1
+Tel: (418) 545-5011 ext. 2268
+E-mail: ltheriau@uqac.uquebec.ca
+************************************************************************</PRE>
+&nbsp;</HTML>
+
+--------------1E85A1BC8A9A32F5D566010B--
+
+
+</PRE>
+<A NAME="line_no_1727">
+<PRE><B>
+>From owner-suif-talk  Wed Nov 11 07:54:20 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id HAA26838
+	for suif-talk-doit; Wed, 11 Nov 1998 07:54:14 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from eng.wayne.edu (hub.eng.wayne.edu [141.217.13.43])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with SMTP id HAA26834
+	for <suif-talk@corsica.stanford.edu>; Wed, 11 Nov 1998 07:54:13 -0800 (PST)
+Received: from atharvan.eng.wayne.edu by eng.wayne.edu (4.1/SMI-SVR4)
+	id AA23404; Wed, 11 Nov 98 10:52:11 EST
+Received: by atharvan.eng.wayne.edu (SMI-8.6/SMI-SVR4)
+	id KAA17674; Wed, 11 Nov 1998 10:51:59 -0500
+Date: Wed, 11 Nov 1998 10:51:59 -0500
+From: sumit@atharvan.eng.wayne.edu (Sumit Roy)
+Message-Id: <199811111551.KAA17674@atharvan.eng.wayne.edu>
+To: ltheriau@uqac.uquebec.ca
+Subject: Re: suifvbrowser 1.0.0.beta.1
+Cc: suif-talk@corsica.Stanford.EDU
+Content-Type: X-sun-attachment
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: sumit@atharvan.eng.wayne.edu (Sumit Roy)
+</A>
+</B></PRE>
+<PRE>
+
+----------
+X-Sun-Data-Type: text
+X-Sun-Data-Description: text
+X-Sun-Data-Name: text
+X-Sun-Charset: us-ascii
+X-Sun-Content-Lines: 6
+
+
+Hi,
+you have to add "-lsocket -lnsl" to the list of libraries used to compile 
+vbrowser. I have attached the Makefile from $SUIFHOME/src/suifvbrowser/vbrowser.
+
+Sumit
+----------
+X-Sun-Data-Type: default
+X-Sun-Data-Description: default
+X-Sun-Data-Name: Makefile
+X-Sun-Charset: us-ascii
+X-Sun-Content-Lines: 14
+
+TARGET =	vbrowser
+SUPER_PACKAGES_PATH = suifvbrowser
+LIBS =		-lvsuif -lvisual -lcg -lannotes -luseful -lsuif \
+		-ltk -ltcl -lX11 -lm -lsocket -lnsl -ldl 
+MANPAGES =	vbrowser.1
+HEADERS =	vbrowser.h includes.h pointer_module.h
+SRCS =		vbrowser.cc pointer_module.cc help.cc
+OBJS =		vbrowser.o pointer_module.o help.o
+EXTRA_CXXFLAGS = $(TCL_INCLUDE_FLAGS)
+
+all:		prog
+install-bin:	install-prog
+
+include $(SUIFHOME)/Makefile.std
+
+</PRE>
+<A NAME="line_no_1790">
+<PRE><B>
+>From owner-suif-talk  Wed Nov 11 08:16:48 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id IAA26908
+	for suif-talk-doit; Wed, 11 Nov 1998 08:16:36 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from mail.iitk.ac.in ([202.54.56.131])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id IAA26897
+	for <suif-talk@corsica.stanford.edu>; Wed, 11 Nov 1998 08:15:14 -0800 (PST)
+Received: from pc028 (alokka@pc028.cse.iitk.ernet.in [144.16.162.28])
+	by mail.iitk.ac.in (8.8.8/8.8.7) with SMTP id VAA16269
+	for <suif-talk@suif.stanford.edu>; Wed, 11 Nov 1998 21:46:17 +0530
+Date: Wed, 11 Nov 1998 21:44:33 +0530 (IST)
+From: Alok Agarwal <alokka@iitk.ac.in>
+X-Sender: alokka@pc028.cse.iitk.ernet.in.
+To: suif-talk@corsica.Stanford.EDU
+Subject: Problem with predep
+Message-ID: <Pine.LNX.4.02.9811112139440.11281-100000@pc028.cse.iitk.ernet.in.>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Alok Agarwal <alokka@iitk.ac.in>
+</A>
+</B></PRE>
+<PRE>
+
+
+Hi all,
+ 	I was passing my program through various passes 
+as suggested in "SUIF Parallelizing compiler guide" and 
+when it was passing through 'predep -presc' it gave following
+errors :
+
+**** Program: predep
+**** Assertion failure in file "immed.cc" at line 381  (module libsuif.a)
+**** immed::string - type is  
+
+and dumped core. Do anybody know what is the problem ???
+
+Please tell me since I can't proceed.
+
+-thanks
+-Alok Agarwal.
+
+
+</PRE>
+<A NAME="line_no_1837">
+<PRE><B>
+>From owner-suif-talk  Wed Nov 11 13:50:25 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id NAA27891
+	for suif-talk-doit; Wed, 11 Nov 1998 13:49:23 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from poste.uqac.uquebec.ca (poste.uqac.uquebec.ca [132.212.11.73])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id NAA27887
+	for <suif-talk@corsica.stanford.edu>; Wed, 11 Nov 1998 13:49:21 -0800 (PST)
+Received: from dsaermetis.uqac.uquebec.ca (dsaermetis.uqac.uquebec.ca [132.212.200.93]) by poste.uqac.uquebec.ca (8.8.4/8.7.3) with SMTP id QAA10164; Wed, 11 Nov 1998 16:48:24 -0500 (EST)
+Received: from uqac.uquebec.ca by dsaermetis.uqac.uquebec.ca (SMI-8.6/SMI-SVR4)
+	id QAA01496; Wed, 11 Nov 1998 16:48:24 -0500
+Message-ID: <364A0627.8C8DF98C@uqac.uquebec.ca>
+Date: Wed, 11 Nov 1998 16:48:23 -0500
+From: Levis Theriault <ltheriau@uqac.uquebec.ca>
+X-Mailer: Mozilla 4.06 [en] (X11; I; SunOS 5.5.1 sun4m)
+MIME-Version: 1.0
+To: suif-talk@corsica.Stanford.EDU
+CC: suif-talk@corsica.Stanford.EDU, sumit@atharvan.eng.wayne.edu,
+        cwilson@cs.stanford.edu
+Subject: suifvbrowser1.0.0.beta.1
+Content-Type: multipart/alternative; boundary="------------99FA40FD2B566297B8D87998"
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Levis Theriault <ltheriau@uqac.uquebec.ca>
+</A>
+</B></PRE>
+<PRE>
+
+
+--------------99FA40FD2B566297B8D87998
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I wanted to install Suif on our SOLARIS 2.4.
+
+The packages installed is OK :
+
+        basesuif 1.1.2
+        suifbuilder 1.0.0.beta.1
+        suifcallgraph 1.0.0.beta.1
+        baseparsuif 1.0.0.beta.2
+        suifvbrowser 1.0.0.beta.1
+
+I had problem with the executable ("sbrowser"). The following happened :
+
+dsaermetis:~/suifvbrowser/src/suifvbrowser/vbrowser % vbrowser
+ld.so.1: vbrowser: fatal: libX11.so.6.0: can't open file: errno=2
+Killed
+
+The "libX11.so.6.0" is not using for installation package, our library
+is "libX11.so.4". I find it hard to understand his utility executable
+"vbrowser" is using not "libX11.so.6.0" at the time of installation, but
+I use "libX11.so.4".
+
+What is the problem, please?
+
+Regards,
+
+Levis.
+
+
+--
+************************************************************************
+Levis Theriault
+ERMETIS-UQAC Local 2-205
+555 bould. de l'Universite
+Chicoutimi (Quebec)
+G7H 2B1
+Tel: (418) 545-5011 ext. 2268
+E-mail: ltheriau@uqac.uquebec.ca
+************************************************************************
+
+
+
+--------------99FA40FD2B566297B8D87998
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+Hi,
+<P>I wanted to install Suif on our SOLARIS 2.4.
+<P>The packages installed is OK :
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; basesuif 1.1.2
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; suifbuilder 1.0.0.beta.1
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; suifcallgraph 1.0.0.beta.1
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; baseparsuif 1.0.0.beta.2
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; suifvbrowser 1.0.0.beta.1
+<P>I had problem with the executable ("sbrowser"). The following happened
+:
+<P>dsaermetis:~/suifvbrowser/src/suifvbrowser/vbrowser % vbrowser
+<BR>ld.so.1: vbrowser: fatal: libX11.so.6.0: can't open file: errno=2
+<BR>Killed
+<P>The "libX11.so.6.0" is not using for installation package, our library
+is "libX11.so.4". I find it hard to understand his utility executable "vbrowser"
+is using not "libX11.so.6.0" at the time of installation, but I use "libX11.so.4".
+<P>What is the problem, please?
+<P>Regards,
+<P>Levis.
+<BR>&nbsp;
+<PRE>--&nbsp;
+************************************************************************
+Levis Theriault
+ERMETIS-UQAC Local 2-205
+555 bould. de l'Universite
+Chicoutimi (Quebec)
+G7H 2B1
+Tel: (418) 545-5011 ext. 2268
+E-mail: ltheriau@uqac.uquebec.ca
+************************************************************************</PRE>
+&nbsp;</HTML>
+
+--------------99FA40FD2B566297B8D87998--
+
+
+</PRE>
+<A NAME="line_no_1956">
+<PRE><B>
+>From owner-suif-talk  Thu Nov 12 08:58:58 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id IAA00895
+	for suif-talk-doit; Thu, 12 Nov 1998 08:57:44 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from poste.uqac.uquebec.ca (poste.uqac.uquebec.ca [132.212.11.73])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id IAA00891
+	for <suif-talk@corsica.stanford.edu>; Thu, 12 Nov 1998 08:57:41 -0800 (PST)
+Received: from dsaermetis.uqac.uquebec.ca (dsaermetis.uqac.uquebec.ca [132.212.200.93]) by poste.uqac.uquebec.ca (8.8.4/8.7.3) with SMTP id LAA18091; Thu, 12 Nov 1998 11:56:46 -0500 (EST)
+Received: from uqac.uquebec.ca by dsaermetis.uqac.uquebec.ca (SMI-8.6/SMI-SVR4)
+	id LAA02308; Thu, 12 Nov 1998 11:56:46 -0500
+Message-ID: <364B134C.37032AD@uqac.uquebec.ca>
+Date: Thu, 12 Nov 1998 11:56:45 -0500
+From: Levis Theriault <ltheriau@uqac.uquebec.ca>
+X-Mailer: Mozilla 4.06 [en] (X11; I; SunOS 5.5.1 sun4m)
+MIME-Version: 1.0
+To: suif-talk@corsica.Stanford.EDU
+CC: suif-talk@corsica.Stanford.EDU, sumit@atharvan.eng.wayne.edu,
+        cwilson@cs.stanford.edu
+Subject: profiling passes
+Content-Type: multipart/alternative; boundary="------------096A3535B881D7F5454A7AD1"
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Levis Theriault <ltheriau@uqac.uquebec.ca>
+</A>
+</B></PRE>
+<PRE>
+
+
+--------------096A3535B881D7F5454A7AD1
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I like obtained the "profiling passes" written by Todd Mowry.
+
+The URL where obtained information is :
+http://suif.stanford.edu/~jlim/visualsuif.html - here is the message ...
+
+/------------------------------------------------------------------------------------------------------------\
+
+Profile Viewer
+
+The profile viewer displays various profile information:
+
+    Profile information obtained from pixie. The Suif file must contain
+specific profiling information (of annotations "if_feedback",
+"loop_feedback",
+    ..). The profile information is obtained from profiling passes
+written by Todd Mowry.
+    Runtime statistics printed out by the runtime library. Pipe the
+runtime library output to a file, and then open the file under the
+Profile
+    Viewer, to display the information. The viewer allows you to link
+the runtime statistics to the source codes or Suif codes.
+\------------------------------------------------------------------------------------------------------------/
+
+Where I can get the "profiling passes" in question!!!
+
+Regards,
+
+Levis.
+
+
+--
+************************************************************************
+Levis Theriault
+ERMETIS-UQAC Local 2-205
+555 bould. de l'Universite
+Chicoutimi (Quebec)
+G7H 2B1
+Tel: (418) 545-5011 ext. 2268
+E-mail: ltheriau@uqac.uquebec.ca
+************************************************************************
+
+
+
+--------------096A3535B881D7F5454A7AD1
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+Hi,
+<P>I like obtained the "profiling passes" written by Todd Mowry.
+<P>The URL where obtained information is : <A HREF="http://suif.stanford.edu/~jlim/visualsuif.html">http://suif.stanford.edu/~jlim/visualsuif.html</A>
+- here is the message ...
+<P>/------------------------------------------------------------------------------------------------------------\
+<BR>Profile Viewer
+<P>The profile viewer displays various profile information:
+<P>&nbsp;&nbsp;&nbsp; Profile information obtained from pixie. The Suif
+file must contain specific profiling information (of annotations "if_feedback",
+"loop_feedback",
+<BR>&nbsp;&nbsp;&nbsp; ..). The profile information is obtained from profiling
+passes written by Todd Mowry.
+<BR>&nbsp;&nbsp;&nbsp; Runtime statistics printed out by the runtime library.
+Pipe the runtime library output to a file, and then open the file under
+the Profile
+<BR>&nbsp;&nbsp;&nbsp; Viewer, to display the information. The viewer allows
+you to link the runtime statistics to the source codes or Suif codes.
+<BR>\------------------------------------------------------------------------------------------------------------/
+<P>Where I can get the "profiling passes" in question!!!
+<P>Regards,
+<P>Levis.
+<BR>&nbsp;
+<PRE>--&nbsp;
+************************************************************************
+Levis Theriault
+ERMETIS-UQAC Local 2-205
+555 bould. de l'Universite
+Chicoutimi (Quebec)
+G7H 2B1
+Tel: (418) 545-5011 ext. 2268
+E-mail: ltheriau@uqac.uquebec.ca
+************************************************************************</PRE>
+&nbsp;</HTML>
+
+--------------096A3535B881D7F5454A7AD1--
+
+
+<A NAME="line_no_2078">
+<PRE><B>
+>From owner-suif-talk  Fri Nov 13 12:44:59 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id MAA04655
+	for suif-talk-doit; Fri, 13 Nov 1998 12:43:51 -0800 (PST)
+Received: from cs.clemson.edu (citron.cs.clemson.edu [130.127.48.6])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id MAA04651
+	for <suif-talk@corsica.stanford.edu>; Fri, 13 Nov 1998 12:43:42 -0800 (PST)
+Received: from comet8.cs.clemson.edu (comet8 [130.127.48.67])
+	by cs.clemson.edu (8.8.8/8.8.8) with ESMTP id PAA11470
+	for <suif-talk@corsica.stanford.edu>; Fri, 13 Nov 1998 15:44:00 -0500 (EST)
+Received: from localhost (hotlewp@localhost)
+	by comet8.cs.clemson.edu (8.8.8/8.8.8) with SMTP id PAA05185
+	for <suif-talk@corsica.stanford.edu>; Fri, 13 Nov 1998 15:44:00 -0500 (EST)
+X-Authentication-Warning: comet8.cs.clemson.edu: hotlewp owned process doing -bs
+Date: Fri, 13 Nov 1998 15:44:00 -0500 (EST)
+From: Hotle William P <hotlewp@cs.clemson.edu>
+X-Sender: hotlewp@comet8
+To: SUIF Talk mailing list <suif-talk@corsica.Stanford.EDU>
+Subject: SUIF to simplescalar tools
+Message-ID: <Pine.GSO.3.96.981113154119.5123B-100000@comet8>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Hotle William P <hotlewp@cs.clemson.edu>
+</A>
+</B></PRE>
+<PRE>
+
+Is anyone currently working to port SUIF to a SimpleScalar Tools
+simulator?
+Any info or guidance would be appreciated.
+Thanks.
+
+------------------------------------------------------------
+*  Bill Hotle, Clemson University Computer Science Dept.   *
+*  E-Mail - hotlewp@cs.clemson.edu , Home - whotle@aol.com *
+*  Web Page - www.clemson.edu/~whotle                      *
+*  Office - G-17 Jordan Hall        Phone 656-2841         *
+
+
+<A NAME="line_no_2120">
+<PRE><B>
+>From owner-suif-talk  Fri Nov 13 13:41:11 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id NAA04791
+	for suif-talk-doit; Fri, 13 Nov 1998 13:41:08 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from miris.lcs.mit.edu (root@miris.lcs.mit.edu [18.111.0.89])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id NAA04787
+	for <suif-talk@corsica.stanford.edu>; Fri, 13 Nov 1998 13:41:03 -0800 (PST)
+Received: from miris.lcs.mit.edu (beng@localhost [127.0.0.1])
+	by miris.lcs.mit.edu (8.8.7/8.8.7) with ESMTP id QAA18906;
+	Fri, 13 Nov 1998 16:40:52 -0500 (EST)
+Message-Id: <199811132140.QAA18906@miris.lcs.mit.edu>
+To: Hotle William P <hotlewp@cs.clemson.edu>
+cc: SUIF Talk mailing list <suif-talk@corsica.Stanford.EDU>
+Subject: Re: SUIF to simplescalar tools 
+In-reply-to: Your message of "Fri, 13 Nov 1998 15:44:00 EST."
+             <Pine.GSO.3.96.981113154119.5123B-100000@comet8> 
+From: Benjamin Greenwald <beng@lcs.mit.edu>
+X-Sender: beng@lcs.mit.edu
+Date: Fri, 13 Nov 1998 16:40:52 -0500
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Benjamin Greenwald <beng@lcs.mit.edu>
+</A>
+</B></PRE>
+<PRE>
+
+Is there any particular reason you can't use s2c and then the supplied
+SimpleScalar gcc?
+
+-Ben
+
+> Is anyone currently working to port SUIF to a SimpleScalar Tools
+> simulator?  Any info or guidance would be appreciated.  Thanks.
+>
+> ----------------------------------------------------------------------
+> *  Bill Hotle, Clemson University Computer Science Dept.  E-Mail     *
+> *  - hotlewp@cs.clemson.edu , Home - whotle@aol.com Web Page -       *
+> *  www.clemson.edu/~whotle Office - G-17 Jordan Hall Phone 656-2841  *
+>
+
+<A NAME="line_no_2162">
+<PRE><B>
+>From owner-suif-talk  Fri Nov 13 14:04:14 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id OAA04861
+	for suif-talk-doit; Fri, 13 Nov 1998 14:03:57 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from dip.eecs.umich.edu (vlaovic@dip.eecs.umich.edu [141.212.99.5])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id OAA04857
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 13 Nov 1998 14:03:55 -0800 (PST)
+Received: from localhost (vlaovic@localhost)
+	by dip.eecs.umich.edu (8.9.1/8.9.0) with ESMTP id RAA14168;
+	Fri, 13 Nov 1998 17:03:55 -0500 (EST)
+Date: Fri, 13 Nov 1998 17:03:55 -0500 (EST)
+From: Stevan Vlaovic <vlaovic@eecs.umich.edu>
+To: Hotle William P <hotlewp@cs.clemson.edu>
+cc: SUIF Talk mailing list <suif-talk@corsica.Stanford.EDU>
+Subject: FW: SimpleScalar version 3.0 pre-release available (fwd)
+Message-ID: <Pine.GSU.4.05.9811131702300.17910-100000@dip.eecs.umich.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Stevan Vlaovic <vlaovic@eecs.umich.edu>
+</A>
+</B></PRE>
+<PRE>
+
+
+Yes, see Todd Austin's comments below......
+Any questions feel free to ask.
+
+-stevan
+
+On Fri, 13 Nov 1998, Hotle William P wrote:
+
+> Is anyone currently working to port SUIF to a SimpleScalar Tools
+> simulator?
+> Any info or guidance would be appreciated.
+> Thanks.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++        
+
+
+> -----Original Message-----
+> From:	Austin, Todd 
+> Sent:	Friday, November 13, 1998 1:54 PM
+> To:	Vlaovic, Steven
+> Cc:	Austin, Todd
+> Subject:	FW: SimpleScalar version 3.0 pre-release available (fwd)
+> 
+> Here's the SimpleScalar 3.0 pre-release announcement, 3.0 will run
+> Alpha OSF binaries, so this should work fine with the Alpha back-end
+> of SUIF.  Don't be put off because this is a pre-release, the code
+> is very stable, at this point were simply putting the finishing
+> touches on the 3.0 release documentation.  -Todd
+> 
+> --
+> %% Todd Austin, taustin@ichips.intel.com, http://www.cse.ogi.edu/~taustin/
+> %% MicroComputer Research Labs, Intel Corporation, Hillsboro, Oregon
+> %% Opinions expressed are solely my own.  Not an Intel spokesperson. 
+> 
+> -----Original Message-----
+> From: Todd Austin [mailto:taustin@cse.ogi.edu] 
+> Sent: Monday, October 12, 1998 10:59 AM
+> To: Austin, Todd
+> Subject: SimpleScalar version 3.0 pre-release available (fwd)
+> 
+> 
+> Forwarded message:
+> >From taustin@cse.ogi.edu  Wed Sep  2 22:47:12 1998
+> From: Todd Austin <taustin@cse.ogi.edu>
+> Message-Id: <199809030532.WAA27651@church.cse.ogi.edu>
+> Subject: SimpleScalar version 3.0 pre-release available
+> To: simplescalar@cs.wisc.edu, architecture@cs.wisc.edu,
+> calder@cs.ucsd.edu,
+>         glenn.reinman@intel.com, grunwald@cs.colorado.edu,
+>         tyson@eecs.umich.edu
+> Date: Wed, 2 Sep 1998 22:32:36 -0700 (PDT)
+> Cc: taustin@ichips.intel.com, taustin@cse.ogi.edu, dburger@cs.wisc.edu,
+>         sohi@cs.wisc.edu
+> X-Mailer: ELM [version 2.4 PL24]
+> MIME-Version: 1.0
+> Content-Type: text/plain; charset=US-ASCII
+> Content-Transfer-Encoding: 7bit
+> 
+> Greetings, a pre-release of SimpleScalar release 3.0 is now available.
+> We've completed implementation and started our internal regression
+> testing,
+> and now we need current users to start testing this code.  In particular,
+> we would really appreciate:
+> 
+> 	1) bug reports and/or bug fixes
+> 	2) fixes and/or testing results on platforms not listed below
+> 	3) comments/suggestions regarding this release in general
+> 
+> We will be making another pre-release in about a month, which will
+> incorporate all implemented fixes and enhancement finished at that time
+> (plus some more documentation that is still cooking...).  Later this year
+> we will make a release to the general public.
+> 
+> NOTE: this pre-release includes only the simulator distribution, the
+> compiler chain from the previous release may be used to generate
+> binaries that run on the new simulators (release 2.0 is available from
+> from the SimpleScalar home page:
+> 
+> 	http://www.cs.wisc.edu/~mscalar/simplescalar.html
+> 
+> To assist in your testing, we've included SimpleScalar PISA and Alpha
+> OSF Unix test binaries in the simulator distribution.
+> 
+> To get the pre-release, point your browser at the directory:
+> 
+> 	http://www.cs.wisc.edu/~austin/simple/
+> 
+> and get the file:
+> 
+> 	simplesim-3.0a.tar.gz
+> 
+> Then unpack this in a directory you've made and read the README in the
+> "simplesim-3.0/" directory for installation, usage, and testing
+> instructions.
+> 
+> We hope you find this release useful, please send
+> comments/fixes/suggestions
+> to taustin@cse.ogi.edu or simplescalar@cs.wisc.edu.  Enjoy!
+> 
+> Regards, -Todd
+> 
+> p.s. a draft of the 3.0 release announcement is attached...
+> 
+> p.p.s. check out the section "WHAT'S NEW IN RELEASE 3.0" below to see
+> the goods...
+> 
+> -- ANNOUNCE --
+> 
+> Greetings, Todd Austin, Doug Burger, and the UW-Madison Multiscalar
+> project
+> are pleased to announce the availability of the third major release of the
+> SimpleScalar Architectural Research Tool Set.  It is our hope that
+> computer
+> architecture researchers and educators will find this release of value.
+> We
+> welcome your feedback, Enjoy!!
+> 
+> 
+> WHAT IS THE SIMPLESCALAR TOOL SET?
+> 
+> The SimpleScalar Tool Set consists of compiler, assembler, linker and
+> simulation tools for the SimpleScalar PISA and Alpha AXP architectures.
+> With this tool set, the user can simulate real programs on a range of
+> modern processors and systems, using fast execution-driven simulation.
+> The
+> tool set contains many simulators ranging from a fast functional simulator
+> to a detailed out-of-order issue processor with a multi-level memory
+> system.  The tool set provides researchers and educators with an easily
+> extensible, portable, high-performance test bed for systems design or
+> instruction.
+> 
+> The SimpleScalar PISA (Portable ISA) instruction set is an extension of
+> Hennessy and Patterson's DLX instruction set, including also a number of
+> instructions and addressing modes from the MIPS-IV and RS/6000
+> instruction set definitions.  SimpleScalar PISA instructions employ a
+> 64-bit encoding to facilitate instruction set research, e.g., it's
+> possible to synthesize instructions or annotate existing instructions,
+> or vary the number of registers a program uses.  The Alpha AXP
+> architecture is a RISC instruction set developed by DEC.
+> 
+> The SimpleScalar simulator suite includes a wide range of simulation tools
+> ranging from simple functional (instruction only, no timing) simulators to
+> detailed performance (instruction plus timing) simulators.  The following
+> simulators are included in this release:
+> 
+> 	sim-fast	-> a very fast functional (i.e., no timing)
+> simulator
+> 	sim-safe	-> the minimal functional SimpleScalar simulator
+> 	sim-profile	-> a program profiling simulator
+> 	sim-cache	-> a multi-level cache simulator
+> 	sim-cheetah	-> a single-pass multi-configuration cache simulator
+> 	sim-bpred	-> a branch predictor simulator
+> 	sim-outorder	-> a detailed out-of-order issue performance
+> (timing)
+> 			   simulator with a multi-level memory system
+> 
+> All the simulators in the SimpleScalar tools set are execution-driven, as
+> a
+> result, there is no need to generate, store, or read instruction trace
+> files
+> since all instructions streams are generated on the fly.  In addition,
+> execution-driven simulation is an invaluable tool for modeling control and
+> data
+> mis-speculation in the performance simulators.
+> 
+> 
+> WHY WOULD I WANT TO USE THE SIMPLESCALAR TOOL SET?
+> 
+> The SimpleScalar Tool Set has many powerful features, here's the short
+> list:
+> 
+> 	- it's free and all sources are included
+> 	- it's extensible (because it includes all sources and extensive
+> docs)
+> 	- it's portable (it run on most any unix-like host including WinNT)
+> 	- it's fast (on a P6-200, function simulation -> 4+ MIPS, and
+> detailed
+> 	  out-of-order performance simulation with a multi-level memory
+> 	  system and mispeculation modeling cruises at 150+ KIPS)
+> 	- it's detailed (a whole family of simulators are included)
+> 
+> 
+> WHY WOULD I NOT WANT TO USE THE SIMPLESCALAR TOOL SET?
+> 
+> 	- it doesn't execute the instruction set I'm interested in:
+> currently
+> 	  SimpleScalar only supports the SimpleScalar PISA and Alpha AXP
+> 	  instruction set architectures (an iA32 version is available inside
+> 	  Intel only, contact taustin@ichips.intel.com for details)
+> 	- it doesn't support parallel system simulation: currently
+> 	  SimpleScalar is primarily a uniprocessor simulation environment;
+> 	  and although work is ongoing to add MP support, other simulation
+> 	  environments may be more appropriate for your work (e.g., RSIM
+> 	  from Rice or SimOS from Stanford both support MP simulation)
+> 	- it doesn't support system simulation: currently SimpleScalar
+> 	  only supports simulation of the user-level instructions, any
+> 	  execution within the operation system is not simulated, instead
+> 	  the SimpleScalar simulators execute the system-level instruction
+> 	  on behalf of the simulated program, other simulation environments
+> 	  support system simulation, such as SimOS from Stanford
+> 
+> 
+> HOW DO I GET IT?
+> 
+> The tool set is available from the University of Wisconsin, to access
+> the SimpleScalar Home Page, point your browser at:
+> 
+> 	http://www.cs.wisc.edu/~mscalar/simplescalar.html
+> 
+> The complete release is available via anonymous FTP at:
+> 
+> 	ftp://ftp.cs.wisc.edu/pub/Sohi/Code/simplescalar
+> 
+> 
+> WHO WROTE THE SIMPLESCALAR TOOL SET?
+> 
+> The SimpleScalar tool set simulators and GNU compiler ports were written
+> by
+> Todd Austin.  The tool set is currently supported by Doug Burger (who
+> wrote
+> much of the documentation as well) and Todd Austin.  The development of
+> this
+> code was supported by grants from the National Science Foundation (grant
+> CCR-9303030 plus software capitalization supplement) and the Office of
+> Naval
+> Research (grant N00014-93-1-0465).  The GNU compiler chain was written by
+> the
+> Free Software Foundation.
+> 
+> 
+> ON WHICH PLATFORMS DOES IT RUN?
+> 
+> SimpleScalar should port easily to any 32- or 64-bit flavor of UNIX or
+> Windows NT, particularly those that support POSIX-compliant system
+> calls.  The list of tested platforms are:
+> 
+> 		gcc/AIX413/RS6k
+> 		xlc/AIX413/RS6k
+> 		gcc/FreeBSD3.0/x86
+> 		gcc/HPUX/PA-RISC
+> 		c89/HPUX/PA-RISC
+> 		gcc/SunOS413/SPARC
+> 		gcc/Solaris2/SPARC
+> 		gcc/Solaris2/x86
+> 		gcc/Linux/x86
+> 		gcc/Linux/Alpha
+> 		gcc/DECOSFUnix/Alpha
+> 		cc/DECOSFUnix/Alpha
+> 		gcc/CygWin32-WinNT/x86
+> 		VC++/WinNT/x86
+> 
+> 
+> HOW CAN I KEEP INFORMED AS TO NEW RELEASES AND ANNOUNCEMENTS?
+> 
+> We have set up a SimpleScalar mailing list. To subscribe, send e-mail to
+> majordomo@cs.wisc.edu, with the message body (not the subject header)
+> containing "subscribe simplescalar".  Also, watch the SimpleScalar web
+> page at:
+> 
+> 	http://www.cs.wisc.edu/~mscalar/simplescalar.html
+> 
+> 
+> WHAT'S NEW IN RELEASE 3.0:
+> 
+> Lots!  Here's a list of the major new features...
+> 
+>     * SimpleScalar now executes multiple instruction sets: SimpleScalar
+>       PISA (Portable ISA, the old "SimpleScalar ISA") and Alpha AXP.
+>       All simulators and options (e.g., DLite!) are supported for both
+>       instruction sets.  See README for details on compiling binaries
+>       and configuring the simulators.  See README.retarget for details
+>       on how to retarget the SimpleScalar tool set to another
+>       instruction set.  As always, the SimpleScalar/PISA tools will
+>       build on any supported platform.  The SimpleScalar/Alpha tools
+>       will build on any little-endian host with 64-bit integers (either
+>       in hardware or via the compiler), the SimpleScalar/Alpha tools are
+>       known to be stable on Alpha OSF Unix and Linux/x86 hosts.
+> 
+>     * All simulators now support external I/O traces (EIO traces).
+>       Generated with a new simulator (sim-eio), EIO traces capture
+>       initial program state and all subsequent external interactions a
+>       program has with the operating system.  Using this external I/O
+>       trace, any SimpleScalar simulator can re-execute the same
+>       execution using only the EIO file; no options, binaries, files,
+>       system calls, etc, are needed to re-create the same execution.
+>       All other aspects of the execution is identical, i.e., the same
+>       functional simulation is performed, either non-speculative or
+>       otherwise.  See the file README.eio for usage details.  EIO traces
+>       solve a number of perennial problems associated with functional
+>       simulation:
+> 
+> 	- EIO trace executions are 100% reproducible, since the sources
+> 	  of irreproducibility (i.e., external interactions such as
+> 	  reading a date from the OS) are captured in the EIO trace
+> 	  file; it is now possible to run simulations from EIO traces,
+> 	  even with mis-speculation modeling, and get *exactly* the same
+> 	  results ever time!
+> 
+> 	- EIO trace files provide a convenient method to execute
+> 	  interactive programs in batch mode; programs that read any
+> 	  number of files, user input, or output including network I/O
+> 	  will read this I/O from a single EIO trace file.
+> 
+> 	- EIO trace files are extremely portable, any host that will
+> 	  build SimpleScalar can execute any EIO trace even if the host
+> 	  only has minimal minimal system call support, e.g., Windows
+> 	  NT.  This is because system calls are not performed with EIO
+> 	  traces, all external interactions are read from the EIO trace
+> 	  file, which only requires that only simple file I/O be
+> 	  performed by the simulator.
+> 
+>       In addition, EIO traces provide a convenient means for packaging
+>       up an experiment into a single file.  Within the EIO trace file
+>       are the options, user environment, file accesses, network I/O,
+>       etc.  used to create the original experiment.  Moreover, EIO
+>       traces also capture the output of a program, e.g., writes, network
+>       output, etc.  The simulators check any output attempted against
+>       that recorded in the EIO trace file, making EIO trace files
+>       self-validating.  An EIO trace file may be compressed with GZIP or
+>       compress, the SimpleScalar simulators will automagically
+>       decompress them on the fly, as long as the simulator can locate
+>       your GZIP binary.
+> 
+>     * The simulators now compile "out of the box" on many more platforms
+>       (listed above); in addition, you should be able to get
+>       SimpleScalar up and running with minimal effort on any target with
+>       32- or 64-bit integers, IEEE FP, and POSIX-like system calls.  See
+>       README.port for details on how to port the SimpleScalar tool set
+>       to a new host environment.  In addition, SimpleScalar now builds
+>       on Windows NT with either MS VC++ or Cygnus/Win32 tools.  See
+>       README.winnt for caveats regarding the Windows NT ports.
+> 
+> 
+> And here's a list of other sundry enhancements we've made since the
+> SimpleScalar 2.0 release:
+> 
+>   Enhancements to the foundation modules:
+> 
+>     * the EXO persistent data structure library has been incorporated
+>       into SimpleScalar release 2.1; this library is used by the EIO
+>       trace module; it implements extensive collection of scalar and
+>       container data structures with run-time typing; once constructed
+>       EXO data structures can be automagically written to and read from
+>       file streams with a single function call, the EXO library handles
+>       all the gory details of interning and externing the data
+>       structures from/to ASCII form, generally useful code if you hate
+>       to use scanf() and printf() for saving and restoring arbitrary
+>       data structures; see "libexo/libexo.h" for details...
+> 
+>     * added explicit fault support to functional simulation component
+>       and memory module
+> 
+>     * memory module updated to support 64/32-bit address spaces on
+>       64/32-bit machines, now implemented with a dynamically optimized
+>       hashed page table
+> 
+>     * added support for multiple register and memory contexts
+> 
+>     * improved loader error messages, e.g., loading Alpha binaries on
+>       PISA-configured simulator (or vice versa) indicates specifically
+>       what happened
+> 
+>     * added portable myprintf() and myatoq() routines for printing and
+>       reading quadword's, respectively; works on machines without hardware
+>       quadword data types
+> 
+>     * added gzopen() and gzclose() routines for reading and writing
+>       compressed files, updated sysprobe to search for GZIP, if found
+>       support is enabled
+> 
+>     * F_IMM (immediate field used by instruction) flag to machine.def
+> flags
+> 
+>     * "contrib/" directory contains various enhancements that
+> (unfortunately)
+>       I did not get time to include into the mainline release - there's a
+>       lot of gold to mine in that directory, check it out!
+> 
+>     * BITMAP_COUNT_ONES() added to bitmap.h
+> 
+>     * added register pretty printing routines to machine.[hc]
+> 
+> 
+>   New simulator options/statistics:
+> 
+>     * added option "-max:inst" to limit number of instructions analyzed
+> 
+>     * added simulator and program output redirection (via "-redir:sim"
+>       and "redir:prog" options, respectively)
+> 
+>     * added "-nice" option that resets simulator scheduling priority to
+>       specified level
+> 
+>     * all simulators now emit command line used to invoke them
+> 
+>     * added fast forward option ("-fastfwd") to sim-outorder that skips a
+>       specified number of instructions (using functional simulation)
+>       before starting timing simulation
+> 
+>     * explicit BTB sizing option added to branch predictors, use "-btb"
+>       option to configure BTB
+> 
+>     * branch predictor updates in sim-outorder can now optionally occur
+>       in ID, WB, or CT, user selectable via the "-bpred:spec_update"
+> option
+> 
+>     * return address stack (RAS) performance stats improved
+> 
+>     * added queue statistics for IFQ, RUU, and LSQ; all terms of
+>       Little's law are measured and reported; the fraction of cycles in
+>       which queue is full is also measured
+> 
+>     * added control registers display command "cregs" to DLite!
+> 
+>     * added "-t" option on sysprobe that probes sizes of various C data
+> types
+> 
+>     * new smaller cleaner minimal functional simulator skeleton
+> 
+> 
+>   Performance enhancements:
+> 
+>     * added support for fast shifts if host machine can successfully
+>       implement them, sysprobe tests if fast shifts work and then sets
+>       -DFAST_SRA and -DFAST_SRL accordingly; this also fixes shifts when
+>       the high order bit is set for some machines; define -DSLOW_SHIFTS
+>       to disable this feature
+> 
+>     * branch predictor module's L2 index computation is more
+>       "compatible" to McFarling's version of it, i.e., if the PC xor
+>       address component is only part of the index, take the lower order
+>       address bits for the other part of the index, rather than the
+>       higher order ones
+> 
+>     * sim-fast now autodetects GNU GCC jump table support and enables
+>       USE_JUMP_TABLE
+> 
+>     * sim-outorder speculative loads no longer allocate memory pages,
+>       this significantly reduces memory requirements for programs with
+>       lots of mispeculation (e.g., cc1)
+> 
+>     * speculative fault handling simplified
+> 
+>     * instruction pre-decoding added to loader module for
+> SimpleScalar/PISA,
+>       added to sim-fast for SimpleScalar/Alpha
+> 
+> 
+>   Portability enhancements:
+> 
+>     * reorganized instruction semantics definitions; now using
+>       name-mangled macros, this approach is very portable (it even works
+>       on MS VC++) and it allows C statements to portably implement
+>       instruction semantics
+> 
+>     * reorganized Makefile: it now works with MS VC++ NMAKE, and many
+>       host configurations are supplied in the header; added target
+>       configuration support; converted "sim-tests" target to use
+>       "-redir:sim" and "-redir:prog" options, this eliminates the need
+>       for the non-portable "redir" scripts
+> 
+>     * implemented a more portable random() interface
+> 
+>     * added support for MS VC++ compilation on Windows NT
+> 
+> 
+> And here's a list of fixes we've made since the SimpleScalar 2.0 release:
+> 
+>     * LWL/LWR/SWL/SWR semantics fixed in pisa.def, these instruction now
+>       work correctly on big- and little-endian machines, this fixes all
+>       previous problems with IJPEG failing during functional simulation
+> 
+>     * fixed a BFD/non-BFD loader problem where tail padding in the text
+>       segment was not correctly allocated in simulator memory; when
+>       padding region happened to cross a page boundary the final text
+>       page has a NULL pointer in mem_table, resulting in a SEGV when
+>       trying to access it in instruction pre-decoding
+> 
+>     * sim-outorder speculative memory access functions now return a
+>       deterministic value (0) when accessing bogus address/alignment;
+>       mis-speculation modeling should now be 100% deterministic with
+>       EIO traces
+> 
+>     * fixed speculative quadword store bug (missing most significant word)
+> 
+>     * disabled calls to sbrk() under malloc(), this breaks some
+>       malloc() implementation (e.g., newer Linux releases)
+> 
+>     * sim-outorder perfect branch predictor was reseting IFQ head
+>       incorrectly (improves sim performance)
+> 
+>     * sim-outorder now really does limit issue width (was always infinite)
+> 
+>     * sim-outorder and sim-cache gave broken error messages if invalid IL2
+>       params were specified
+> 
+>     * instruction address compression (64->32 bit) added to sim-cache
+> 
+>     * BITMAP_NOT() fixed
+> 
+>     * return address stack (RAS) update bug fixed (improves pred perf)
+> 
+>     * fixed a cache timing bug that caused some incorrect and *huge* miss
+>       latencies around 2 billion cycles; fixes occasional deadlock
+> problems
+>       in vortex
+> 
+>     * fixed cache writeback stats for cache flushes
+> 
+>     * fixed DLite! "help" command for invalid commands
+> 
+>     * options package fixes: on/off supported for booleans, relative
+>       pathnames, negative integers are now parsed correctly
+> 
+>     * -max:inst is limited to 2147483647 for sim-cheetah due to integer
+>       overflow problems in libcheetah (to be fixed...)
+> 
+>     * sim-outorder now computes correct result when a non-speculative
+>       register operand is also defined speculative within the same inst
+> 
+>     * Perl scripts now work with Perl 5.0
+> 
+> 
+> Please send up your comments regarding this tool set, we are continually
+> trying to improve it and we appreciate your input.
+> 
+> Best Regards,
+> 
+> Todd Austin (taustin@cse.ogi.edu), Intel Microcomputer Research Labs
+> Doug Burger (dburger@cs.wisc.edu), UW-Madison Computer Sciences Department
+
+
+<A NAME="line_no_2721">
+<PRE><B>
+>From owner-suif-talk  Fri Nov 13 14:30:12 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id OAA04923
+	for suif-talk-doit; Fri, 13 Nov 1998 14:30:10 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from cecil.cs.wisc.edu (cecil.cs.wisc.edu [128.105.175.17])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id OAA04919
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 13 Nov 1998 14:30:08 -0800 (PST)
+Received: (from plakal@localhost)
+	by cecil.cs.wisc.edu (8.8.6/8.8.6) id QAA01324;
+	Fri, 13 Nov 1998 16:30:17 -0600 (CST)
+Message-ID: <19981113163017.A1315@cs.wisc.edu>
+Date: Fri, 13 Nov 1998 16:30:17 -0600
+From: Manoj Plakal <plakal@cs.wisc.edu>
+To: Benjamin Greenwald <beng@lcs.mit.edu>,
+        Hotle William P <hotlewp@cs.clemson.edu>
+Cc: SUIF Talk mailing list <suif-talk@corsica.Stanford.EDU>
+Subject: Re: SUIF to simplescalar tools
+Mail-Followup-To: Benjamin Greenwald <beng@lcs.mit.edu>,
+	Hotle William P <hotlewp@cs.clemson.edu>,
+	SUIF Talk mailing list <suif-talk@corsica.Stanford.EDU>
+References: <Pine.GSO.3.96.981113154119.5123B-100000@comet8> <199811132140.QAA18906@miris.lcs.mit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.93.2i
+In-Reply-To: <199811132140.QAA18906@miris.lcs.mit.edu>; from Benjamin Greenwald on Fri, Nov 13, 1998 at 04:40:52PM -0500
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Manoj Plakal <plakal@cs.wisc.edu>
+</A>
+</B></PRE>
+<PRE>
+
+Benjamin Greenwald wrote (Fri, Nov 13, 1998 at 04:40:52PM -0500) :
+> Is there any particular reason you can't use s2c and then the supplied
+> SimpleScalar gcc?
+> 
+> -Ben
+> 
+> > Is anyone currently working to port SUIF to a SimpleScalar Tools
+> > simulator?  Any info or guidance would be appreciated.  Thanks.
+> >
+
+Vanilla SUIF does not really do too many uniprocessor-oriented optimizations.
+What we probably want is a Harvard Machine-SUIF (MachSUIF) back-end that 
+targets SimpleScalar.
+
+At the recent PLDI conference, there was a National Compiler 
+Infrastructure tutorial and in the SUIF2 section, Mike Smith
+talked about the next generation of MachSUIF which would hook up
+with SUIF2. I asked him about how long it would take  to port it
+to SimpleScalar and he said that given SimpleScalar's MIPS-like ISA,
+it would take of the order of days (and not weeks or months). Though,
+I don't know if anyone has done it yet :).
+
+Manoj
+
+
+<A NAME="line_no_2780">
+<PRE><B>
+>From owner-suif-talk  Sun Nov 15 08:51:11 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id IAA08490
+	for suif-talk-doit; Sun, 15 Nov 1998 08:49:59 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from desh.cse.iitd.ernet.in (cse.iitd.ernet.in [202.141.68.3])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id IAA08486
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 15 Nov 1998 08:49:33 -0800 (PST)
+Received: from ssen.cse.iitd.ernet.in (shashank@ssen.cse.iitd.ernet.in [10.20.2.26])
+	by desh.cse.iitd.ernet.in (8.8.7/8.8.7) with ESMTP id WAA29628
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 15 Nov 1998 22:19:42 +0530
+Received: from localhost (shashank@localhost)
+	by ssen.cse.iitd.ernet.in (8.8.7/8.8.7) with SMTP id WAA00589
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 15 Nov 1998 22:19:46 +0530
+Date: Sun, 15 Nov 1998 22:19:46 +0530 (IST)
+From: Shashank Gupta <shashank@cse.iitd.ernet.in>
+To: suif-talk@corsica.Stanford.EDU
+Subject: problems : suif 2 on hp-ux
+Message-ID: <Pine.LNX.3.96.981115221232.584A-100000@ssen.cse.iitd.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Shashank Gupta <shashank@cse.iitd.ernet.in>
+</A>
+</B></PRE>
+<PRE>
+
+hi,
+
+i am trying to install basesuif-2.0.0.alpha.784 on HP-UX 10.10. i am using
+egcs1.1b (gcc version - egcs-2.91.57). 
+
+the installation of the "sty" fails with the following message.
+
+can anyone please advice what i should do ? 
+
+thanks in advance,
+
+shashank.
+---------------------------------------------------------------------
+
+
+g++ -g -pedantic -Wchar-subscripts -Wcomment -Wformat -Wimplicit
+-Wreturn-type -Wswitch -Wtrigraphs -Wreorder -Wpointer-arith
+-Wstrict-prototypes -Wmissing-prototypes -Wnested-externs
+-DINLINE_ALL_TEMPLATES -DSUIF_STRIPPED_HEADERS
+-I/usr4/tools/suif/basesuif-2.0.0.alpha.784/include     -c
+parse_command_line.cc -o parse_command_line.o
+cc1plus: warning: -g is only supported when using GAS on this processor,
+cc1plus: warning: -g option disabled.
+as: error 7108: The value 0x42c4c did not fit into a 19 bit field at
+offset 0x50f8  (op code - BL) (7108)
+gmake[5]: *** [parse_command_line.o] Error 1
+gmake[4]: *** [parse_command_line.o] Error 2
+gmake[3]: *** [real-reinstall-keep-src] Error 2
+gmake[2]: *** [real-reinstall] Error 2
+gmake[1]: *** [reinstall] Error 2
+gmake: *** [install] Error 2
+
+
+-------------------------------------------
+Shashank Gupta
+Project Associate, Embedded Systems Project, 
+Deptt. of Comp.Sc.& Engg., IIT Delhi.
+
+
+
+<A NAME="line_no_2849">
+<PRE><B>
+>From owner-suif-talk  Sun Nov 15 08:59:36 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id IAA08535
+	for suif-talk-doit; Sun, 15 Nov 1998 08:59:34 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from desh.cse.iitd.ernet.in (cse.iitd.ernet.in [202.141.68.3])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id IAA08531
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 15 Nov 1998 08:59:29 -0800 (PST)
+Received: from ssen.cse.iitd.ernet.in (shashank@ssen.cse.iitd.ernet.in [10.20.2.26])
+	by desh.cse.iitd.ernet.in (8.8.7/8.8.7) with ESMTP id WAA29733
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 15 Nov 1998 22:30:07 +0530
+Received: from localhost (shashank@localhost)
+	by ssen.cse.iitd.ernet.in (8.8.7/8.8.7) with SMTP id WAA00617
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 15 Nov 1998 22:30:13 +0530
+Date: Sun, 15 Nov 1998 22:30:12 +0530 (IST)
+From: Shashank Gupta <shashank@cse.iitd.ernet.in>
+To: suif-talk@corsica.Stanford.EDU
+Subject: suif 2 on linux
+Message-ID: <Pine.LNX.3.96.981115222330.584B-100000@ssen.cse.iitd.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Shashank Gupta <shashank@cse.iitd.ernet.in>
+</A>
+</B></PRE>
+<PRE>
+
+
+Hi, 
+
+when installing suif 2 on pentium with linux using egcs1.1b, the
+package "suif" aborts with the following message.
+
+the total mem + swap space on the machine is around 196 MB. does anyone
+have an experience regarding the space requirements of suif 2 ? 
+
+thanks,
+
+shashank.
+
+----------------------- 
+
+/usr/bin/ld: Can not allocate 1000 bytes after allocating 102543420 bytes
+collect2: ld returned 1 exit status
+gmake[7]: *** [libsuif.so] Error 1
+gmake[6]: *** [libsuif.so] Error 2
+gmake[5]: *** [real-reinstall-keep-src] Error 2
+gmake[4]: *** [reinstall-keep-src] Error 2
+gmake[3]: *** [install-keep-src] Error 2
+
+
+
+-------------------------------------------
+Shashank Gupta
+Project Associate, Embedded Systems Project, 
+Deptt. of Comp.Sc.& Engg., IIT Delhi.
+
+
+<A NAME="line_no_2909">
+<PRE><B>
+>From owner-suif-talk  Sun Nov 22 07:06:58 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id HAA14893
+	for suif-talk-doit; Sun, 22 Nov 1998 07:04:25 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from desh.cse.iitd.ernet.in (cse.iitd.ernet.in [202.141.68.3])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id HAA14889
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 22 Nov 1998 07:03:57 -0800 (PST)
+Received: from ssen.cse.iitd.ernet.in (shashank@ssen.cse.iitd.ernet.in [10.20.2.26])
+	by desh.cse.iitd.ernet.in (8.8.7/8.8.7) with ESMTP id UAA09444
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 22 Nov 1998 20:34:02 +0530
+Received: from localhost (shashank@localhost)
+	by ssen.cse.iitd.ernet.in (8.8.7/8.8.7) with SMTP id UAA01181
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 22 Nov 1998 20:35:13 +0530
+Date: Sun, 22 Nov 1998 20:35:13 +0530 (IST)
+From: Shashank Gupta <shashank@cse.iitd.ernet.in>
+To: SUIF Talk mailing list <suif-talk@corsica.Stanford.EDU>
+Subject: suif 2 installation on linux
+In-Reply-To: <19981113163017.A1315@cs.wisc.edu>
+Message-ID: <Pine.LNX.3.96.981120150757.601A-100000@ssen.cse.iitd.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Shashank Gupta <shashank@cse.iitd.ernet.in>
+</A>
+</B></PRE>
+<PRE>
+
+
+hello, 
+
+i am currently trying to install suif2 with egcs1.1b on linux (pentium).
+in the tv package, i get the following eror -
+
+--------------------------------------------------------------------
+tv_exprset.h: In method `void tv_rc_exprset<elem_t>::make_modifiable()':
+In file included from tv_exprset.cc:31:
+tv_exprset.h:260: use of class template `template <class elem_t>
+tv_exprset<elem_t>' as expression
+gmake[7]: *** [tv_exprset.o] Error 1
+gmake[6]: *** [tv_exprset.o] Error 2
+gmake[5]: *** [real-reinstall-keep-src] Error 2
+gmake[4]: *** [reinstall-keep-src] Error 2
+gmake[3]: *** [install-keep-src] Error 2
+gmake[3]: Nothing to be done for `install-verdata'.
+--------------------------------------------------------------------
+
+The line under question in the file tv_exprset.h (260) is 
+
+            tv_exprset &old_exprset = _block->exprset();
+
+
+What can be done. Any help will be appreciated,
+
+thanks,
+shashank
+
+-------------------------------------------
+Shashank Gupta
+Project Associate, Embedded Systems Project, 
+Deptt. of Comp.Sc.& Engg., IIT Delhi.
+
+
+
+
+
+<A NAME="line_no_2977">
+<PRE><B>
+>From owner-suif-talk  Sun Nov 22 10:15:35 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id KAA15102
+	for suif-talk-doit; Sun, 22 Nov 1998 10:14:15 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from minuet.das.harvard.edu (minuet.das.harvard.edu [140.247.50.251])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id KAA15098
+	for <suif-talk@corsica.Stanford.EDU>; Sun, 22 Nov 1998 10:14:14 -0800 (PST)
+Received: from gigue.eas.harvard.edu (gigue.eas.harvard.edu [140.247.51.194])
+	by minuet.das.harvard.edu (8.9.1/8.9.1) with ESMTP id NAA22339;
+	Sun, 22 Nov 1998 13:14:02 -0500 (EST)
+Received: (from holloway@localhost)
+	by gigue.eas.harvard.edu (8.9.1/8.9.1) id NAA20812;
+	Sun, 22 Nov 1998 13:14:02 -0500 (EST)
+From: Glenn Holloway <holloway@deas.harvard.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <13912.21609.745868.509731@gigue.eas.harvard.edu>
+Date: Sun, 22 Nov 1998 13:14:01 -0500 (EST)
+To: suif-talk@corsica.Stanford.EDU
+CC: Shashank Gupta <shashank@cse.iitd.ernet.in>
+Subject: Re: suif 2 installation on linux
+In-Reply-To: <Pine.LNX.3.96.981120150757.601A-100000@ssen.cse.iitd.ernet.in>
+References: <19981113163017.A1315@cs.wisc.edu>
+	<Pine.LNX.3.96.981120150757.601A-100000@ssen.cse.iitd.ernet.in>
+X-Mailer: VM 6.46 under Emacs 19.34.1
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Glenn Holloway <holloway@deas.harvard.edu>
+</A>
+</B></PRE>
+<PRE>
+
+Shashank Gupta writes:
+> 
+> hello, 
+> 
+> i am currently trying to install suif2 with egcs1.1b on linux (pentium).
+> in the tv package, i get the following eror -
+> 
+> --------------------------------------------------------------------
+> tv_exprset.h: In method `void tv_rc_exprset<elem_t>::make_modifiable()':
+> In file included from tv_exprset.cc:31:
+> tv_exprset.h:260: use of class template `template <class elem_t>
+> tv_exprset<elem_t>' as expression
+> gmake[7]: *** [tv_exprset.o] Error 1
+> gmake[6]: *** [tv_exprset.o] Error 2
+> gmake[5]: *** [real-reinstall-keep-src] Error 2
+> gmake[4]: *** [reinstall-keep-src] Error 2
+> gmake[3]: *** [install-keep-src] Error 2
+> gmake[3]: Nothing to be done for `install-verdata'.
+> --------------------------------------------------------------------
+> 
+> The line under question in the file tv_exprset.h (260) is 
+> 
+>             tv_exprset &old_exprset = _block->exprset();
+> 
+> 
+> What can be done. Any help will be appreciated,
+> 
+> thanks,
+> shashank
+> 
+> -------------------------------------------
+> Shashank Gupta
+> Project Associate, Embedded Systems Project, 
+> Deptt. of Comp.Sc.& Engg., IIT Delhi.
+
+
+David Heine of Stanford pointed out to me the other day that
+the line in question should read:
+
+            tv_exprset<elem_t> &old_exprset = _block->exprset();
+
+Glenn
+
+<A NAME="line_no_3055">
+<PRE><B>
+>From owner-suif-talk  Wed Nov 25 20:44:09 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id UAA25200
+	for suif-talk-doit; Wed, 25 Nov 1998 20:43:01 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from grm94.polymtl.ca (jtalon.grm94.polymtl.ca [132.207.108.4])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id UAA25196
+	for <suif-talk@corsica.stanford.edu>; Wed, 25 Nov 1998 20:42:59 -0800 (PST)
+Received: from bourassa.grm94 (bourassa [132.207.108.9])
+	by grm94.polymtl.ca (8.9.1a/8.9.1) with SMTP id XAA00318
+	for <suif-talk@suif.stanford.edu>; Wed, 25 Nov 1998 23:42:14 -0500 (EST)
+Received: by bourassa.grm94 (SMI-8.6/SMI-SVR4)
+	id XAA10165; Wed, 25 Nov 1998 23:42:11 -0500
+Date: Wed, 25 Nov 1998 23:42:11 -0500
+From: doucet@grm94.polymtl.ca (Frederic Doucet)
+Message-Id: <199811260442.XAA10165@bourassa.grm94>
+To: suif-talk@corsica.Stanford.EDU
+Subject: CFGs in Suif2
+X-Sun-Charset: US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: doucet@grm94.polymtl.ca (Frederic Doucet)
+</A>
+</B></PRE>
+<PRE>
+
+Hello,
+
+	This question is for Suif 2 alpha 784.
+
+	According to the Introductory Manual by Holger M. Kienle,
+a chunk of executable code can be represented either as a cfg, 
+instruction_list or a statement_list. In the document, it is 
+said that Suif provides conversion passes that transform between
+any of the cfo representation. 
+
+	I've looked in the documentation and in the src/basesuif
+hierarchy, and haven't found these passes. Could anybody point
+me to the right file (or submodule) for cfg related conversions 
+and analysis?
+
+Regards,
+
+
+Frederic Doucet
+--
+(three weeks from B. Eng CE)
+Ecole Polytechnique de Montreal,
+Montreal, Qc
+Canada
+
+	
+
+	
+
+<A NAME="line_no_3111">
+<PRE><B>
+>From owner-suif-talk  Thu Nov 26 05:30:05 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id FAA26237
+	for suif-talk-doit; Thu, 26 Nov 1998 05:29:15 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from ifi.informatik.uni-stuttgart.de (ifi.informatik.uni-stuttgart.de [129.69.211.1])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id FAA26233
+	for <suif-talk@corsica.Stanford.EDU>; Thu, 26 Nov 1998 05:29:02 -0800 (PST)
+Date: Thu, 26 Nov 1998 14:30:04 +0100 (MET)
+Message-Id: <199811261330.OAA23307@tick.informatik.uni-stuttgart.de>
+Received: by tick.informatik.uni-stuttgart.de; Thu, 26 Nov 1998 14:30:04 +0100 (MET)
+From: Holger Kienle <kienle@trick.informatik.uni-stuttgart.de>
+To: suif-talk@corsica.Stanford.EDU
+In-reply-to: <199811260442.XAA10165@bourassa.grm94> (doucet@grm94.polymtl.ca)
+Subject: Re: CFGs in Suif2
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Holger Kienle <kienle@trick.informatik.uni-stuttgart.de>
+</A>
+</B></PRE>
+<PRE>
+
+
+# Hello,
+# 
+# 	This question is for Suif 2 alpha 784.
+# 
+# 	According to the Introductory Manual by Holger M. Kienle,
+# a chunk of executable code can be represented either as a cfg, 
+# instruction_list or a statement_list. In the document, it is 
+# said that Suif provides conversion passes that transform between
+# any of the cfo representation. 
+
+The conversion passes have not been implemented yet (as far as I
+know). The document doesn't mention this explicitly because it was
+planned to implement them "in the near future." ;-)
+
+Holger
+
+
+# 	I've looked in the documentation and in the src/basesuif
+# hierarchy, and haven't found these passes. Could anybody point
+# me to the right file (or submodule) for cfg related conversions 
+# and analysis?
+# 
+# Regards,
+# 
+# 
+# Frederic Doucet
+# --
+# (three weeks from B. Eng CE)
+# Ecole Polytechnique de Montreal,
+# Montreal, Qc
+# Canada
+# 
+
+-- 
+Holger M. Kienle	
+kienle@cs.ucsb.edu	fone: +49-7142-940077
+www.cs.ucsb.edu/~kienle  fax: +49-7142-940043
+
+<A NAME="line_no_3173">
+<PRE><B>
+>From owner-suif-talk  Thu Nov 26 07:09:55 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id HAA26355
+	for suif-talk-doit; Thu, 26 Nov 1998 07:09:42 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from campino.informatik.rwth-aachen.de (campino.Informatik.RWTH-Aachen.DE [137.226.116.240])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id HAA26350
+	for <suif-talk@corsica.stanford.edu>; Thu, 26 Nov 1998 07:09:37 -0800 (PST)
+Received: from ert.rwth-aachen.de (sun2.ert.RWTH-Aachen.DE [134.130.36.2])
+	by campino.informatik.rwth-aachen.de (8.9.1a/8.9.1/1) with SMTP id QAA16112
+	for <suif-talk@corsica.stanford.edu>; Thu, 26 Nov 1998 16:10:15 +0100 (MET)
+Received: from fixwienix by ert.rwth-aachen.de (4.1/ERT-REL-1)
+	id AA13805; Thu, 26 Nov 98 16:10:13 +0100
+Message-Id: <365D6F53.4EB7F823@ert.rwth-aachen.de>
+Date: Thu, 26 Nov 1998 16:10:11 +0100
+From: Andreas Ropers <ropers@ert.rwth-aachen.de>
+Organization: ISS
+X-Mailer: Mozilla 4.07 [en] (X11; I; SunOS 5.5.1 sun4u)
+Mime-Version: 1.0
+To: suif-talk@corsica.Stanford.EDU
+Subject: Problems compiling: make_resource_database_entry
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7bit
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Andreas Ropers <ropers@ert.rwth-aachen.de>
+</A>
+</B></PRE>
+<PRE>
+
+Hy,
+
+I have problems compiling the SUIF-Package make_resource_database_entry.
+My System is: Sun Sparc Solaris 2.5.1
+Compiler: Egcs 1.1b
+The First packages are compiling fine (scripts up to dynasty)
+Package make_resource_database_entry produces the following error:
+
+-------part of error messages-----------
+g++ -o make_resource_database_entry -g -pedantic -Wchar-subscripts
+-Wcomment -Wformat
+-Wimplicit -Wreturn-type -Wswitch -Wtrigraphs -Wreorder -Wpointer-arith
+-Wstrict-prototypes
+-Wmissing-prototypes -Wnested-externs -DINLINE_ALL_TEMPLATES -frepo
+-fno-exceptions
+-DGCC_REPO_BUG_WORK_AROUND -DSUIF_STRIPPED_HEADERS  
+-I/tools/home2/dspcomp/suif/include  
+make_resource_database_entry.o start_sty.o \
+-L/tools/home2/dspcomp/suif/sparc_sun_solaris2.51/solib
+-L/tools/home2/dspcomp/suif/sparc_sun_solaris2.51/lib  -ldynasty -lsty
+prog_ver.cc
+prog_ver.cc:0: warning: -frepo must be used with -c
+collect: recompiling make_resource_database_entry.cc
+collect: relinking
+collect: recompiling make_resource_database_entry.cc
+collect: relinking
+Undefined			first referenced
+ symbol  			    in file
+cdlist_tos_base<auto_init_library_record *,
+cdlist_e_tos<auto_init_library_record *>
+>::clear(void) /tools/home2/dspcomp/suif/sparc_sun_solaris2.51/solib/libsty.so
+
+[a lot of error messages with undefined Symbols following]
+---------end of error messages------------
+
+Does anybody of you had the same problems ? How did you solve them ?
+
+
+Thanks a lot
+
+Andreas
+
+<A NAME="line_no_3247">
+<PRE><B>
+>From owner-suif-talk  Thu Nov 26 08:24:54 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id IAA26439
+	for suif-talk-doit; Thu, 26 Nov 1998 08:24:40 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from empty.Stanford.EDU (cm2081664040.cableco-op.com [208.166.40.40])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id IAA26435
+	for <suif-talk@corsica.Stanford.EDU>; Thu, 26 Nov 1998 08:24:39 -0800 (PST)
+Received: (from brm@localhost)
+	by empty.Stanford.EDU (8.8.7/8.8.7) id IAA18188;
+	Thu, 26 Nov 1998 08:24:43 -0800
+Date: Thu, 26 Nov 1998 08:24:43 -0800
+Message-Id: <199811261624.IAA18188@empty.Stanford.EDU>
+From: Brian Murphy <brm@cs.stanford.edu>
+To: ropers@ert.rwth-aachen.de
+CC: suif-talk@corsica.Stanford.EDU
+In-reply-to: <365D6F53.4EB7F823@ert.rwth-aachen.de> (message from Andreas
+	Ropers on Thu, 26 Nov 1998 16:10:11 +0100)
+Subject: Re: Problems compiling: make_resource_database_entry
+References:  <365D6F53.4EB7F823@ert.rwth-aachen.de>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Brian Murphy <brm@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+
+egcs-1.1b introduces a bug in the template handling which was not in
+egcs-1.0.3.
+
+The "-frepo" template mechanism which egcs uses is a hack.  Each
+"relinking" step finds out what template specializations are missing
+by just trying to link and seeing what errors occur.  Each
+"recompiling" step adds those specializations to the file and
+recompiles.  Multiple steps are necessary one new template
+specialization may cause the need for another one, which is discovered
+only by relinking and failing.
+
+egcs 1.1b, for some reason, will not try more than 2 such steps,
+before its "final" relinking which looks for real errors.
+
+The make_resource_database_entry.cc code involves more than 2 levels
+of templates, so the "final" relinking step fails.
+
+egcs 1.0.3 did not have this problem, so you might just revert to that
+version.  Alternately, manually add explicit declarations of the
+missing specializations, e.g.:
+	template cdlist_tos_base<auto_init_library_record *,
+		cd_e_tos<auto_init_library_record *>>;
+
+You should also complain to the egcs bug list; I've already done so,
+but more voices may provoke a faster response.  I don't think they
+have a test case with as much template uses as suif2-alpha.
+
+			       -Brian
+
+<A NAME="line_no_3305">
+<PRE><B>
+>From owner-suif-talk  Thu Nov 26 18:52:00 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id SAA27123
+	for suif-talk-doit; Thu, 26 Nov 1998 18:51:18 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from Xenon.Stanford.EDU (Xenon.Stanford.EDU [171.64.66.201])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id SAA27119
+	for <suif-talk@corsica.Stanford.EDU>; Thu, 26 Nov 1998 18:51:17 -0800 (PST)
+Received: (from cwilson@localhost)
+	by Xenon.Stanford.EDU (8.9.1/8.9.1) id SAA28264;
+	Thu, 26 Nov 1998 18:51:32 -0800 (PST)
+Date: Thu, 26 Nov 98 18:51:32 PST
+From: Chris Wilson <cwilson@cs.stanford.edu>
+To: Holger Kienle <kienle@trick.informatik.uni-stuttgart.de>
+Cc: suif-talk@corsica.Stanford.EDU
+Subject: Re: CFGs in Suif2
+In-Reply-To: Your message of Thu, 26 Nov 1998 14:30:04 +0100 (MET)
+Message-ID: <CMM.0.90.4.912135092.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Chris Wilson <cwilson@cs.stanford.edu>
+</A>
+</B></PRE>
+<PRE>
+
+> # Hello,
+> # 
+> # 	This question is for Suif 2 alpha 784.
+> # 
+> # 	According to the Introductory Manual by Holger M. Kienle,
+> # a chunk of executable code can be represented either as a cfg, 
+> # instruction_list or a statement_list. In the document, it is 
+> # said that Suif provides conversion passes that transform between
+> # any of the cfo representation. 
+> 
+> The conversion passes have not been implemented yet (as far as I
+> know). The document doesn't mention this explicitly because it was
+> planned to implement them "in the near future." ;-)
+> 
+> Holger
+
+Back when I was involved, it was decided (not by me) that the
+conversion passes were not a high priority.  It was later decided that
+since the conversion passes hadn't been written, nobody was using CFG
+form, so nobody wanted it, so it's going to be dropped.  That's the
+last I had heard.  Instead, there will be one or more CFG
+implementations that sit on the side, next to an instruction list or
+statement list.
+
+        --Chris
+
+<A NAME="line_no_3357">
+<PRE><B>
+>From owner-suif-talk  Fri Nov 27 06:24:43 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id GAA28326
+	for suif-talk-doit; Fri, 27 Nov 1998 06:23:41 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from apple3.eecs.harvard.edu (apple3.eecs.harvard.edu [140.247.60.178])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with SMTP id GAA28322
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 27 Nov 1998 06:23:39 -0800 (PST)
+Received: by apple3.eecs.harvard.edu; id JAA25465; Fri, 27 Nov 1998 09:24:19 -0500
+Date: Fri, 27 Nov 1998 09:24:19 -0500
+Message-Id: <199811271424.JAA25465@apple3.eecs.harvard.edu>
+From: Mike Smith <smith@apple3.eecs.harvard.edu>
+To: kienle@trick.informatik.uni-stuttgart.de, suif-talk@corsica.Stanford.EDU
+In-reply-to: <CMM.0.90.4.912135092.cwilson@Xenon.Stanford.EDU> (message from
+	Chris Wilson on Thu, 26 Nov 98 18:51:32 PST)
+Subject: Re: CFGs in Suif2
+References:  <CMM.0.90.4.912135092.cwilson@Xenon.Stanford.EDU>
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: Mike Smith <smith@apple3.eecs.harvard.edu>
+</A>
+</B></PRE>
+<PRE>
+
+
+Just so that there is not any confusion, there has long been a
+mechanism for constructing and manipulating CFGs in SUIF.  At Harvard,
+we have used and extended the cfg package from SUIF 1 in much of our
+work.  We have ported the cfg package to Machine SUIF 2.  Both Rice
+and Harvard are using this package (along with some control-flow and
+dataflow packages) to implement scalar and machine-specific
+optimizations.  Our home page contains a document describing the cfg
+package (http://www.eecs.harvard.edu/machsuif).
+
+Mike
+
+> Date: Thu, 26 Nov 98 18:51:32 PST
+> From: Chris Wilson <cwilson@cs.stanford.edu>
+> Cc: suif-talk@corsica.Stanford.EDU
+> 
+> > # Hello,
+> > # 
+> > # 	This question is for Suif 2 alpha 784.
+> > # 
+> > # 	According to the Introductory Manual by Holger M. Kienle,
+> > # a chunk of executable code can be represented either as a cfg, 
+> > # instruction_list or a statement_list. In the document, it is 
+> > # said that Suif provides conversion passes that transform between
+> > # any of the cfo representation. 
+> > 
+> > The conversion passes have not been implemented yet (as far as I
+> > know). The document doesn't mention this explicitly because it was
+> > planned to implement them "in the near future." ;-)
+> > 
+> > Holger
+> 
+> Back when I was involved, it was decided (not by me) that the
+> conversion passes were not a high priority.  It was later decided that
+> since the conversion passes hadn't been written, nobody was using CFG
+> form, so nobody wanted it, so it's going to be dropped.  That's the
+> last I had heard.  Instead, there will be one or more CFG
+> implementations that sit on the side, next to an instruction list or
+> statement list.
+> 
+>         --Chris
+
+<A NAME="line_no_3424">
+<PRE><B>
+>From owner-suif-talk  Fri Nov 27 08:46:02 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id IAA28479
+	for suif-talk-doit; Fri, 27 Nov 1998 08:45:48 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from desh.cse.iitd.ernet.in (cse.iitd.ernet.in [202.141.68.3])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id IAA28475
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 27 Nov 1998 08:45:18 -0800 (PST)
+Received: from saveri.cse.iitd.ernet.in (csu95153@saveri.cse.iitd.ernet.in [10.20.14.13])
+	by desh.cse.iitd.ernet.in (8.8.7/8.8.7) with SMTP id WAA30505
+	for <suif-talk@corsica.Stanford.EDU>; Fri, 27 Nov 1998 22:15:22 +0530
+Date: Fri, 27 Nov 1998 22:15:26 +0530 (IST)
+From: "T.Vinod Kumar Gupta" <csu95153@cse.iitd.ernet.in>
+To: suif-talk@corsica.Stanford.EDU
+Subject: Function Call graph in SUIF-1.1.2 
+Message-ID: <Pine.LNX.3.96.981127221107.6710D-100000@saveri.cse.iitd.ernet.in>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: "T.Vinod Kumar Gupta" <csu95153@cse.iitd.ernet.in>
+</A>
+</B></PRE>
+<PRE>
+
+Dear all,
+	I would like to know  - Is there any way of getting the function
+call graph from the suif files, using any of the library routines provided
+by SUIF-1.1.2 ? 
+	Even if there is a roundabout way of doing this, please let me
+know. 
+ 
+	Eagerly waiting to hear, (as the information is urgently required)
+bye all,
+
+T.Vinod
+B.Tech. (Final year),
+C.S.E. Dept.,
+IIT-Delhi.
+Email :- csu95153@cse.iitd.ernet.in
+	 tvinod78@hotmail.com
+
+
+
+<A NAME="line_no_3469">
+<PRE><B>
+>From owner-suif-talk  Sat Nov 28 13:39:50 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id NAA00964
+	for suif-talk-doit; Sat, 28 Nov 1998 13:38:12 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from grm94.polymtl.ca (jtalon.grm94.polymtl.ca [132.207.108.4])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id NAA00960
+	for <suif-talk@corsica.stanford.edu>; Sat, 28 Nov 1998 13:38:10 -0800 (PST)
+Received: from bourassa.grm94 (bourassa [132.207.108.9])
+	by grm94.polymtl.ca (8.9.1a/8.9.1) with SMTP id QAA15968;
+	Sat, 28 Nov 1998 16:37:27 -0500 (EST)
+Received: by bourassa.grm94 (SMI-8.6/SMI-SVR4)
+	id QAA17833; Sat, 28 Nov 1998 16:37:25 -0500
+Date: Sat, 28 Nov 1998 16:37:25 -0500
+From: doucet@grm94.polymtl.ca (Frederic Doucet)
+Message-Id: <199811282137.QAA17833@bourassa.grm94>
+To: kienle@trick.informatik.uni-stuttgart.de, suif-talk@corsica.Stanford.EDU,
+        smith@apple3.eecs.harvard.edu
+Subject: Re: CFGs in Suif2
+X-Sun-Charset: US-ASCII
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: doucet@grm94.polymtl.ca (Frederic Doucet)
+</A>
+</B></PRE>
+<PRE>
+
+
+> 
+> Just so that there is not any confusion, there has long been a
+> mechanism for constructing and manipulating CFGs in SUIF.  At Harvard,
+
+Thanks, this is the that I was looking for.
+
+> we have used and extended the cfg package from SUIF 1 in much of our
+> work.  We have ported the cfg package to Machine SUIF 2.  Both Rice
+> and Harvard are using this package (along with some control-flow and
+> dataflow packages) to implement scalar and machine-specific
+> optimizations.  Our home page contains a document describing the cfg
+> package (http://www.eecs.harvard.edu/machsuif).
+> 
+
+I've looked through the Hube ftp archive, and haven't found these software
+packages (cfg, cfa, and dfa for Suif2). Are they available?
+
+Fred
+
+<A NAME="line_no_3517">
+<PRE><B>
+>From owner-suif-talk  Sun Nov 29 12:24:24 1998
+Received: by corsica.Stanford.EDU (8.9.1/8.9.1) id MAA02633
+	for suif-talk-doit; Sun, 29 Nov 1998 12:22:20 -0800 (PST)
+X-Authentication-Warning: corsica.Stanford.EDU: majordom set sender to owner-suif-talk@suif.stanford.edu using -f
+Received: from rio.cos.ufrj.br (rio.cos.ufrj.br [146.164.34.1])
+	by corsica.Stanford.EDU (8.9.1/8.9.1) with ESMTP id MAA02620;
+	Sun, 29 Nov 1998 12:20:12 -0800 (PST)
+Received: from angra.ufrj.br (angra.cos.ufrj.br [146.164.34.36])
+	by rio.cos.ufrj.br (8.8.5/8.8.5) with SMTP id SAA29069;
+	Sun, 29 Nov 1998 18:21:46 -0200 (EDT)
+Received: by angra.ufrj.br (SMI-8.6/SMI-SVR4)
+	id SAA01908; Sun, 29 Nov 1998 18:20:05 -0200
+Date: Sun, 29 Nov 1998 18:20:05 -0200
+From: silviotc@cos.ufrj.br (Silvio Tadeu Canola)
+Message-Id: <199811292020.SAA01908@angra.ufrj.br>
+To: suif-bugs@corsica.Stanford.EDU, suif-talk@corsica.Stanford.EDU
+Subject: named_lin_ineq intersection fail
+Sender: owner-suif-talk@corsica.stanford.edu
+Precedence: bulk
+Reply-To: silviotc@cos.ufrj.br (Silvio Tadeu Canola)
+</A>
+</B></PRE>
+<PRE>
+
+Hi,
+
+
+I am intersecting two named_lin_ineqs, actually I have created 
+a named_lin_ineq and intersect it with itself, so the result
+would be the original named_lin_ineq. 
+Unfortunately, the result is corrupted! :-(
+Is it a bug?
+Is it a know bug?
+or I wrote the code in a wrong way???
+
+Thanks in advance
+
+	SilvioTC
+
+
+Here is the code, Makefile, output, and verdata files contents:
+PS: my $MACHINE sparc-sun-solaris2.5.1
+    Suif compiled with
+    Reading specs from /usr/local/gnu/lib/gcc-lib/sparc-sun-solaris2.5.1/2.7.2.1/specs
+    gcc version 2.7.2.1
+
+
+---------------code file: bug1.cc---------------
+#include <stdlib.h>
+#include "suif.h"
+#include "useful.h"
+#include "dependence.h"
+
+
+void doteste(void){
+
+
+name_table_entry nte1("DIM1");
+name_table_entry nte2("ALPHA");
+name_table nt1;
+nt1.insert(nte1,1);
+nt1.insert(nte2,2);
+printf("\nName Table: ");fflush(stdout);
+nt1.print(stdout);
+
+lin_ineq La(3,3);
+La[0][0]=1968;   La[0][1] = 0; La[0][2]=-256;
+La[1][0]=-30;    La[1][1]=+1; La[1][2]=-2;
+La[2][0]=1998;   La[2][1]=-1; La[2][2]=0;
+
+
+named_lin_ineq nli1(nt1,La); 
+printf("The original named_lin_ineq\n");fflush(stdout);nli1.print();
+
+named_lin_ineq nli2;
+
+printf("Now intersecting...\n1st test\n");fflush(stdout);
+named_lin_ineq *S=new named_lin_ineq;
+*S=nli1&nli1; S->print();
+
+printf("\n2nd test\n");fflush(stdout);
+nli2=nli1&nli1;nli2.print();
+
+printf("\n3rd test\n");fflush(stdout);
+nli1&=nli1; nli1.print();
+
+
+};
+
+
+
+/***************************************************************************
+ * Initialize and iterate over all the procedures.                         *
+ ***************************************************************************/
+main(int argc, char * argv[])
+{
+
+    start_suif(argc, argv);
+//TTTTTTTTEEEEEEEEEEEEEEEESSSSSSSSSSSSSSTTTTTTTTTTTIIIIIINNNNNNNNNGGGGGGGGGGGG
+doteste();
+}
+
+--------------end code -----------
+
+---------------MAKEFILE-----------
+TARGET =	bug1
+LIBS =		-ldependence -lsuifmath -lbuilder -luseful -lsuif  -lm 
+SRCS =		bug1.cc
+OBJS =		bug1.o
+
+all:		bug1
+
+include $(SUIFHOME)/Makefile.std
+
+---------------END MAKEFILE------- 
+
+
+-------------output---------------
+Name Table: DIM1 ALPHA 
+The original named_lin_ineq
+          DIM1  ALPHA     [ ss]
+   1968      0   -256
+    -30      1     -2
+   1998     -1      0
+ 
+Now intersecting...
+1st test
+          DIM1  ALPHA     [ ss]
+   1968      0 -65536
+    -30      1     -2
+   1998     -1      0
+ 
+ 
+2nd test
+          DIM1  ALPHA     [ ss]
+   1968      0 -65536
+    -30      1     -2
+   1998     -1      0
+ 
+ 
+3rd test
+          DIM1  ALPHA     [ ss]
+   1968      0 -65536
+    -30      1     -2
+   1998     -1      0
+ 
+exatas% 
+
+-------------end output-----------
+
+----------- verdata files contents ----------------
+::::::::::::::
+baseparsuif
+::::::::::::::
+1.0.0.beta.1
+1.0.0.beta.2
+::::::::::::::
+basesuif
+::::::::::::::
+1.1.0
+1.1.1
+1.1.2
+::::::::::::::
+fortback
+::::::::::::::
+1.0.0.beta.1
+1.0.0.beta.2
+::::::::::::::
+simplesuif
+::::::::::::::
+1.0.0.beta.1
+::::::::::::::
+suifbuilder
+::::::::::::::
+1.0.0.beta.1
+::::::::::::::
+suifcallgraph
+::::::::::::::
+1.0.0.beta.1
+::::::::::::::
+suifcookbook
+::::::::::::::
+1.0.0.beta.1
+1.0.0.beta.2
+::::::::::::::
+suifps
+::::::::::::::
+1.0.0.beta.1
+::::::::::::::
+suifvbrowser
+::::::::::::::
+1.0.0.beta.1
+
+----------- end verdata files contents ------------
+

@@ -1,0 +1,85 @@
+Received: from darwin.psy.fsu.edu (root@darwin.psy.fsu.edu [128.186.66.5])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id UAA06857
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 27 Nov 2000 20:03:00 -0700
+Received: from kline.psy.fsu.edu (psy111a [128.186.66.78])
+	by darwin.psy.fsu.edu (8.9.3/8.9.3) with ESMTP id WAA18555;
+	Mon, 27 Nov 2000 22:02:30 -0500
+Message-Id: <5.0.1.4.0.20001127220452.01b5d970@darwin.psy.fsu.edu>
+Date: Mon, 27 Nov 2000 22:10:20 -0500
+To: DMDX@psy1.psych.arizona.edu, DMDX@psy1.psych.arizona.edu
+From: "John P. Kline" <kline@darwin.psy.fsu.edu>
+Subject: [DMDX] Re: PIO / Sound latency slop
+In-Reply-To: <5.0.0.25.2.20001127185421.009d9bf0@psy1.psych.arizona.edu>
+References: <5.0.1.4.0.20001127184347.022ec6b0@darwin.psy.fsu.edu>
+ <5.0.1.4.0.20001116125134.02319180@psy.fsu.edu>
+ <5.0.0.25.2.20001107091102.009dbe10@psy1.psych.arizona.edu>
+ <3.0.32.20001106215854.0106ddd8@darwin.psy.fsu.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+After trying everything that made sense (e.g. interrupt changes so the 
+sound card doesn't share IRQ with other PCI devices, CD cable), I stumbled 
+onto a possible solution.  The card stops popping if you disable the 3D 
+stuff on the driver (the card ships with this ability).   I am not sure 
+whether or not this will affect timings... I'll test this possibility 
+Wednesday.
+
+JK
+
+
+At 07:01 PM 11/27/00 -0700, j.c.f. wrote:
+>At 06:45 PM 11/27/00 -0500, you wrote:
+>
+>>We seem to have found a glitch in this sound card, i.e. it appears to 
+>>"pop" sometimes when images appear on the screen.  Has anyone else 
+>>noticed this problem, and does anyone have suggestions on how to get rid of it?
+>
+>   No problems like you mentioned have been noticed here.  This is while 
+> you are playing a wave file and then displaying an image?  Unless you are 
+> displaying huge items with large number of frames in them there shouldn't 
+> be any data travelling over the PCI bus as it should all be buffered 
+> before the item begins displaying.  It could be your video card or some 
+> other component in your machine, as always when you get these kinds of 
+> things get new versions of the drivers and see if the problem goes 
+> away.  I have had trouble with the Montego in my Athlon system, never 
+> could get it to work (can't remember what was broken though) even with 
+> the latest drivers.  OTOH, the Diamond MX300, another Aureal based card 
+> works fine in my Athlon system at home.  Perhaps it's a power supply 
+> problem, when the machine's state changes abruptly you get a power supply 
+> sag that none of the digital hardware cares about but that the analog 
+> stuff on the sound card is susceptible to.
+>
+>
+>-jonathan (j.c.f.)
+>
+>  /"\
+>  \ /
+>   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+>  / \
+>
+>   What is the use of running when we are not on the right road.
+>                                                 - German proverb
+>
+>
+>====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+
+
+___________________________________________________________________
+John P. Kline, Ph.D.                    Office Phone:      850-644-9363
+Assistant Professor                     Lab Phone:         850-644-2049
+Department of Psychology                Fax:               850-644-7739
+Florida State University                        Mailto:kline@psy.fsu.edu
+Tallahassee, FL  32306-1051             http://klinelab.psy.fsu.edu
+___________________________________________________________________
+
+
+

@@ -1,0 +1,52 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iAO1OXFJ011076
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 23 Nov 2004 18:24:33 -0700
+Received: from anybodyi.u.arizona.edu (ppp393.broadband01.tus.dakotacom.net [69.9.25.137])
+	by breaker.dakotacom.net (8.12.2/8.12.2) with ESMTP id iAO1OWpg010556
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 23 Nov 2004 18:24:33 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041123181947.00ba46e0@psy1.psych.arizona.edu>
+Date: Tue, 23 Nov 2004 18:24:27 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: RE: DMDX 3.1.1.3
+In-Reply-To: <200411232308.iANN8KFJ010752@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20041123111405.00ba4b78@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 06:09 PM 11/23/2004 -0500, you wrote:
+>You've done it again. You solved my image quality problem.
+>
+>I was using
+>
+>^001  *<jpeg 0.25,0.25,0.75,0.75> "Amusement Park 014"/;
+>^002 * <jpeg 0.25,0.25,0.75,0.75> "Amusement Park 027"/;
+>
+>your hint of the g, that is,
+>
+>^001 * g "Amusement Park 014.jpg"/;
+>^002 * g "Amusement Park 027.jpg"/;
+>
+>cleared up the image problem.
+
+   G is equivalent to <bmp> or <jpeg>, it just doesn't offer any 
+scaling.  The reason G fixes your artifacts is that it isn't scaling 
+anything, you're seeing the image as it is.  When you use <jpeg 
+0.25,0.25,0.75,0.75> DMDX scales the image to fit on half the screen 
+centered in the middle.  The scaling is done by GDI, the Graphics Device 
+Interface of Windows and it's a little rough and ready when it comes to 
+scaling things.  If Microsoft ever add a nice re-sampler to GDI then DMDX's 
+scaling of bitmaps will get nicer too.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   A mind is like a steel trap: Rusty, and illegal in 37 states.
+
+
+

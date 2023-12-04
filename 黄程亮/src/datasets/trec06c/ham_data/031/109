@@ -1,0 +1,84 @@
+Received: from wmailz.wt.net (sys48.hou.wt.net [205.230.159.48])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id JAA15680
+	for <handyboard@media.mit.edu>; Fri, 8 Jan 1999 09:08:18 -0500 (EST)
+Received: from wt.net (sys48.hou.wt.net [205.230.159.48])
+	by wmailz.wt.net (8.8.7/8.8.7) with SMTP id HAA03046;
+	Fri, 8 Jan 1999 07:50:49 -0600 (CST)
+	(envelope-from michaelj@wt.net)
+From: "Mike Jones"<michaelj@wt.net>
+Sender: michaelj@wt.net
+Reply-To: michaelj@wt.net
+To: r.farnhill@bssl.co.uk, <handyboard@media.mit.edu>
+Date: Fri, 8 Jan 1999 07:50:49 +600
+Subject: Re: hexapod walker
+X-Mailer: DMailWeb Web to Mail Gateway 2.0n, http://netwinsite.com/top_mail.htm
+Message-Id: <36960d39.be3.0@wt.net>
+X-User-Info: 149.58.101.253
+
+I have been researching this exact topic for almost a year now. I started off
+looking at the Handyboard do to its popularity and strong robotic application
+design but ultimately I've decided to use one or more Atmel processors do to
+their speed and variety of models. I am seriously looking at using one of their
+20 pin versions to control each pair of legs where each leg has 3 degrees of
+freedom instead of your thoughts of only 2 DOF. If you were to adopt a similar
+approach of designing intelligent leg controllers this would move much of the
+tedious (read "CPU hog") process off the Handyboard and then it could be a better
+central brain and leg "coordinator."
+
+Since it looks like you are near the beginning of your research and design I'll
+share some of my personal views. The leg lift motors must be very strong but
+not as fast as the swing motor. This is because in the fastest gait, an alternateing
+tripod gait, each middle leg must support half of the weight of the robot and
+this is cantilevered thus amplifying the weight. If you never plan to do an
+alternating tripod gait then you can reduce the strength of the lift motor because
+each side of the hexapod will always have 2 legs on the ground at the same time
+and so must only support one forth the weight of the bot, BUT it will travel
+at 1/3 the speed of the tripod gait.
+
+I am opting to try to put all my actuators (motor) at the hip joint to reduce
+the moments of inertia. This should let me move the legs somewhat quicker than
+if some of the motors were located at the knee. This choice also increases the
+weight that the lift motors must deal with so it is a trade-off.
+
+Hobby style servos can get very expensive to match the speed and torque reqirements
+of even a very small walker. In my case I think I can use 2 standard (42 oz.inch)
+servos (cost $10 each for cheapos and $20 each for brandname ball bearing variety)
+and 1 high torque (90-100 oz,inch costing about $60). If I want the high speed
+versions (.12 sec for 60 degrees instead of .22 sec) it will almost double the
+cost of the servos but will also double the walking speed. My original goal
+was for an 18-22 inch hexapod to have a max speed of about 2 mph which equates
+to 6 six inch steps every second! there are NO hobby style servos that can come
+even close. So the next best option is about 1/3 my orginal goal and plan to
+redesign the legs in the future using geared DC motors instead of hobby servos
+which lets me gear them to fit the need and use really fast motors.
+
+If you care to discuss this topic any further contact me directly since we may
+be staying somewhat off topic, unless there is enough interest on this list
+to continue and the powers that be, Fred(?), think it would be appropriate to
+discuss this here. I am interested in communicating with anyone out there that
+may be doing anything even remotely associated with this.
+
+Mike
+
+>Hi all
+>
+>Iam thinking about making a six legged walking robot using servos and
+>wondered if anybody has already built one.
+>I want to use two servos per leg one for lifting and another for the
+>sweeping action so giving 12 in total. One thing i want to know is how do
+>you control twelve servos? i have seen some serial servo controllers that
+>control upto 256, is  it possible to control them with just the handyboard.
+
+>also does the HB have enough proccessing power to control all these servos
+
+>and still have enough spare for obstical avoidance etc.
+>
+>
+>
+>Any thoughts, tips etc.
+>
+>Thanks Russ....
+>
+>
+
+

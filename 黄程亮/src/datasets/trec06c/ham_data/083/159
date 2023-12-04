@@ -1,0 +1,60 @@
+Received: from duke.cs.duke.edu (duke.cs.duke.edu [152.3.140.1])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8JEBWh02915
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 10:11:32 -0400 (EDT)
+Received: from localhost (larry.cs.duke.edu [152.3.140.75])
+	by duke.cs.duke.edu (8.9.3/8.9.3) with ESMTP id KAA06946
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 10:11:31 -0400 (EDT)
+From: kwalsh@CS.Cornell.EDU
+Received: from 132.236.150.81 ( [132.236.150.81])
+	as user walsh@imap.cs.duke.edu by login.cs.duke.edu with HTTP;
+	Thu, 19 Sep 2002 10:11:31 -0400
+Message-ID: <1032444691.3d89db138c854@login.cs.duke.edu>
+Date: Thu, 19 Sep 2002 10:11:31 -0400
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 13
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: Internet Messaging Program (IMP) 3.0
+X-Originating-IP: 132.236.150.81
+
+
+
+Conserving Transmission Power in Wireless Ad Hoc Networks
+PARO is a power-aware routing algirhtm based on the observation that many short 
+hops are often more power efficient (in terms of transmission power only) than 
+fewer long hops. Standard ad hoc routing protocols exarcerbate the power 
+problems of mobile devices by using hop count, as opposed to power consumption, 
+as the routing metric.
+In this paper, the authors assume that all nodes are within transmission range 
+of each other under maximum transmission power. In networks where this is not 
+the case, a heirarchical scheme might be adopted, with PARO conserving power 
+locally, and a more traditional routing protocol ensuring long-range 
+connectivity. This is not discussed in detail. The auhors further assume, for 
+the purposes of estimating minimum transmission cost to nearby nodes, that 
+links are bidirectional and are essentially symmetric in terms of power 
+requirements. 
+
+In PARO, the primary route discovery mechanism nodes overhear data 
+transmissions of nearby hosts. Each transmitted packet contains the power level 
+at which the packet was sent. Nearby nodes, upon overhearing the packet, can 
+essentially "subtract" the local recieve power from the transmitted power 
+(according to a propagation model), and thereby detirmine the power needed to 
+send to the originating node. Using this method, each node builds a cost table 
+for nearby nodes.
+
+During route initialization, a source will send directly to a destination at 
+full power. Intermediate nodes, upon overhearing the transmission, can 
+detirmine if it would be cost (power) efficient to insert themselves in the 
+route. If so, then the node informs both sender and reciever of this fact. 
+Source and dest can choose the most efficient neighbor as the next hop. This 
+process is repeated until some threshold of improvement can no longer be met.
+
+The most critical weakness of this paper, as usual, is in the evaluation. A 
+simple simulation compares PARO to a modification of LSR (using power as the 
+cost metric, rather than hops). Here, the modified LSR appears to find 
+identical (if not better) power-aware routes. The disadvantage, the authors 
+claim, is that LSR takes more broadcasts, which are quite expensive, to do so. 
+PARO's advantage might dissapear, however, by using a routing algorithm less 
+costly than LSR.
+

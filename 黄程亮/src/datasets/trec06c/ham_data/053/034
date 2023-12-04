@@ -1,0 +1,86 @@
+Received: from devrychicago.edu (na-216-214-9-4.corecomm.net [216.214.9.4] (may be forged))
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA21968
+	for <Handyboard@media.mit.edu>; Sat, 25 Sep 1999 16:04:54 -0400 (EDT)
+Received: from cislab (180.168.100.153 [180.168.100.153]) by vader.chi.devry.edu with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2232.9)
+	id RJ28L38N; Sat, 25 Sep 1999 15:01:39 -0500
+Message-Id: <3.0.1.32.19990925152639.006b35ec@chi.devry.edu>
+X-Sender: gt4025@chi.devry.edu
+X-Mailer: Windows Eudora Light Version 3.0.1 (32)
+Date: Sat, 25 Sep 1999 15:26:39 -0500
+To: Handyboard@media.mit.edu
+From: Giang Tran <gt4025@chi.devry.edu>
+Subject: Re: Using 12V supply with Expansion Board?
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 12:13 AM 9/25/99 -0700, you wrote:
+
+I've look at the electrical schematic for both the Handy Board and
+Expansion and this is what I got.
+
+Because the expansion board only share the handy board's motor output for
+its Servo outputs, I don't think you would have a problem with the new
+motor power source modication unless you're planning to use the Servo motor
+supply and LEGO sensor outputs on the Expansion board. 
+
+If you want to use the Servo outputs on the expansion board, than you would
+need to do some minor modifications. Since the original supply of 6V to the
+servo motors on the Expansion board was from the 5 series diodes (used to
+step down from 9.6v to 6v), you can either add 3 or 4 (each diode require
+~.7v to conduct) more diodes to it to get the equivalent 6v from the new
+12V or you can just use a different power source. I think using a different
+power source would be a much wiser thing to do since adding the required
+diodes would means you have to de-solder the last one and added the others
+to it. And since servo motors are made to operate from around 4.8v to 6v
+which means that if you intended to use it, you would have to cut the old
+Servo Motors power trace on the Expansion Board and connect the new servo
+motor source (a different 6V supply) onto it. The back of the Expansion
+board labelled where to cut the trace for the new servo motors source. 
+
+Also, if you were to look at the Expansion board's electrical diagram, you
+will also notice that the 3906 transistor with the series 47 ohms resistor
+conneted to it, you would see that it share the Handy Board's motor supply
+also. I am assuming since the 3906 collector input can handle the voltage
+increase, I think the LEGO sensor input would also be ok though(not sure),
+I am sure it wont get fried but not sure if it would still work with the
+LEGO Sensors.
+
+Words of wisdom, this is what I am assuming from my logical point of view.
+I may be wrong so I suggest before making the modification, you should use
+an external variable power source to test the sensor outputs first. I
+suggest starting from 9.6V and slowly increasing it to 12V and check to see
+if any components is getting hot.
+
+Reference:
+Expansion Board electrical schematic:
+http://lcs.www.media.mit.edu/groups/el/projects/handy-board/hbexp30/expsch30
+.gif
+
+Handy Board motor trace cut: 
+http://lcs.www.media.mit.edu/groups/el/projects/handy-board/mods/hbmcut.html
+
+Rob
+
+>Hi - -
+>It's NOT a stupid question ... I've been wondering the same thing.
+>I'd like to have separate supplies both for the motors and for servo
+>power.  When you find the solution, please let me know what you
+>discover.
+>Thanks,
+> - Nick -
+>
+>Giang Tran wrote:
+>> 
+>> Hello 'Botter,
+>> 
+>> I think I am about to ask a stupid question but as a precaution, will the
+>> Expansion board be "ok" with a new 12V motor supply rather than the 9.6V
+>> connected to the Power Expansion header (J13)on the HB since the Expansion
+>> board and HB share the same header? Also, I'd be very appreciated for any
+>> tips on how to modify the Expansion board to work with a the new 12V power
+>> supply, if needed (does it?). Thanks alot guys.
+>> 
+>> G. Tran
+>
+
+

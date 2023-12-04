@@ -1,0 +1,83 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id NAA01605
+	for <handyboard@media.mit.edu>; Wed, 21 Apr 1999 13:33:10 -0400 (EDT)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Wed, 21 Apr 1999 10:33:07 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id KAA29740;
+	Wed, 21 Apr 1999 10:33:07 -0700 (PDT)
+Date: Wed, 21 Apr 1999 10:33:06 -0700 (Pacific Daylight Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Andre Philippi <philippi@earthlink.net>
+Cc: handyboard@media.mit.edu, stamps@parallax.inc
+Subject: Re: Mobile Robot Question
+In-Reply-To: <199904202055.NAA07735@siberia.it.earthlink.net>
+Message-Id: <Pine.WNT.3.96.990421101238.61j-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Tue, 20 Apr 1999, Andre Philippi wrote:
+
+> I'm building a mobile robot using an R/C car with an Electronic Speed 
+> Controller (ESC) as the mobile platform, the Handyboard for sensorial data 
+> aquisition, and servo control; and a Linux "box" for GPS, videoconferencing, 
+> wireless communications, high level autonomous behavior, and remote control...
+> 
+> My question is...
+> 
+> How much are the GPS, the ultrasound radar, the electronic compass, the 
+> stepper motor (that holds and rotates a "turret" containing the ultrasound 
+> transducer, the video camera, some IR sensors, and eventually a Laser 
+> range-finder), the servo motors (that control the car), the video camera (I'm 
+> NOT using a wireless video transmitter), the ESC, and the packet modem going 
+> to cause electromagnetic interference to each other?  Should I expect any 
+> other type of interference ? Which devices are not gonna be affected or cause 
+> any type of interference ? Which devices generate interference, and what are 
+> my options accessing the problem ?
+> 
+> Wow! If someone is able to answer all that, we should post the answers in some 
+> FAQ...:)
+
+Can anyone answer all that?  I think the answer is "it depends". 
+Unfortunately it depends on so many variables that you'll just have to
+implement one system at a time, checking each thoroughly and modifying as
+you go.  Make sure to go back and re-verify each previous system as best
+you can each time you implement something new.  I suspect it'll be a long
+process.
+
+The GPS shouldn't get much interference from anything else unless it gets
+something coming in on its power lines.  Keep the GPS away from your
+motors though.  If you use a DGPS receiver (300Khz), expect great amounts
+of interference from your other equipment on that radio.  Depending on how
+the ESC is designed, it may throw out a lot of noise which could affect
+your wireless comm link or some of your sensors. Any motors and some
+metals can affect your compass.  You comm-link could be affected
+drastically by all of the other noise sources. 
+
+If (when?) you start having troubles, look at power-supply filtering for
+each system, and try locating them in different orientations and at
+different distances to try to determine which system is affecting which.
+
+GPS is running the 1.5GHz range, Ultrasonics around 40KHz, Comm link ?? 
+(probably low KHz if anything), DGPS around 300KHz, ESC could be in the
+KHz range if it is a chopper, Linux box would generate multiple
+frequencies, Handyboard 8MHz and many frequencies below, packet modem
+(separate unit from comm radio?) could generate lots of frequencies. 
+Servos, steppers, and motors in the video camera possibly?  can generate a
+wide range of frequencies. 
+
+I had a packet modem (TNC) interfering with the radio it was attached to
+at 144.99 MHz at one point.  It threw a spur up right on that frequency.
+The packet modem had a Z80 processor in it.  Gives you a clue as to what
+you might expect.
+
+Have I scared you enough yet?   ;-)
+
+Good luck.  Wish I had the time and money to do that.  Sounds like fun.
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

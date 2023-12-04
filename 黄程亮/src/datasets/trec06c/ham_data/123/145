@@ -1,0 +1,131 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.13.6/8.13.6) with ESMTP id k41JDF2k023910
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 1 May 2006 14:13:16 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.36) with SMTP id k41JDE5f025254;
+	Mon, 1 May 2006 14:13:14 -0500 (CDT)
+Received: from ironlung.mail.utexas.edu (ironlung.mail.utexas.edu [128.83.32.54])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.36) with ESMTP id k41JCwJh025213
+	for <cs352-swk@lists.cc.utexas.edu>; Mon, 1 May 2006 14:12:58 -0500 (CDT)
+Received: from nobodaddy.cs.utexas.edu ([128.83.120.154])
+  by ironlung.mail.utexas.edu with ESMTP; 01 May 2006 14:12:54 -0500
+X-IronPort-MID: 7032092
+X-SBRS: 5.5
+X-BrightmailFiltered: true
+X-Brightmail-Tracker: AAAAAQAAA+k=
+X-IronPort-AV: i="4.04,169,1144040400"; 
+   d="scan'208"; a="7032092:sNHT19107736"
+Received: from silver.cs.utexas.edu (madhavi@silver.cs.utexas.edu [128.83.144.136])
+	by nobodaddy.cs.utexas.edu (8.13.6/8.13.6) with ESMTP id k41JCrRI028948
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <cs352-swk@lists.cc.utexas.edu>; Mon, 1 May 2006 14:12:53 -0500 (CDT)
+Received: (from madhavi@localhost)
+	by silver.cs.utexas.edu (8.13.6/8.13.6/Submit) id k41JCrdN021141;
+	Mon, 1 May 2006 14:12:53 -0500
+Newsgroups: utexas.class.cs352-swk
+Date: Mon, 1 May 2006 14:12:49 -0500 (CDT)
+From: Madhavi Krishnan <madhavi@cs.utexas.edu>
+To: cs352-swk@lists.cc.utexas.edu
+Subject: Output format and order of cache lines
+In-Reply-To: <e3426n$dh1$1@geraldo.cc.utexas.edu>
+Message-ID: <Pine.LNX.4.63.0605011354150.18920@silver.cs.utexas.edu>
+References: <e33egi$3ub$1@geraldo.cc.utexas.edu> <e3426n$dh1$1@geraldo.cc.utexas.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Reply-To: madhavi@cs.utexas.edu
+Sender: owner-cs352-swk@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+I suggest the following for the output format .(Note: java5 supports
+System.out.printf where the formatting is similar to C)
+
+Cache contents
+~~~~~~~~~~~~~~~
+
+for ( set = 0; set < nsets; set++)
+     for( a =0 ; a < assoc; a ++)
+     {
+         System.out.printf(""%5d %c %6x %c\t",set, valid, tag, modified);
+         for( i = 0; i < words_per_block; i++)
+             System.out.printf("%08x\t", word[i]);
+     }
+
+Example:
+CACHE CONTENTS:
+     0 T     26 T        00009800        00009804
+     0 T      0 T        00000000        00000004
+     1 T      1 T        0000040b        0000040c
+     1 T      6 T        00001808        0000180c
+
+
+Main memory
+~~~~~~~~~~~
+
+for( ....)
+{
+     System.out.printf("%5x: ", address);
+     for(jj = 0; jj < 8; jj++)
+         System.out.printf("%08x  ", Mem[..]);
+}
+
+Example:
+
+  1000: 00001000  00001004  00001008  0000100c  00001010  00001014  00001018  0000101c
+  1020: 00001023  00001026  00001028  0000102c  00001030  00001034  00001038  0000103e
+  1040: 00001040  00001044  00001048  0000104c  00001050  00001054  0000105a  0000105c
+
+I will update the output files to reflect this format.
+
+Also note the following about the order in which cache lines are printed
+to output file.
+
+When you have multiple invalid cache lines within a set, I choose the last
+line for replacement. This is purely implementation dependent and has no
+design issues. For example, initial cache status
+
+Set Valid Tag Modified Data
+0    F    0    F        0 
+0    F    0    F        0
+
+Command: Load 1000
+
+Say, address 1000 matches to index 0. Now I can load 1000 in the first line 
+or the second line (since it is a two
+way set associative cache. My implementation chooses the second one. Hence
+the output is:
+
+Set Valid Tag  Modified Data
+0    F    0      F        0 
+0    T    100    F        1000
+
+
+Make sure, you print the cache lines in the order that matches with the 
+output files so
+that "diff" will not give any differences.
+
+Madhavi
+
+
+On Sun, 30 Apr 2006, Kenneth Pfile wrote:
+
+> This is an important question, depending on how it will be graded.  If it is 
+> going to be graded using "diff", I think that we need a little more help on 
+> the exact output format because it looks like there is a combination of 
+> spaces and tabs in the output files that is kinda confusing.
+>
+> Elton Pinto wrote:
+>> On Madhavi's printouts, she seems to get all her data in the cache and 
+>> memory to be aligned to the right. How is she doing this? I'm just using /t 
+>> to tab, but she must be doing something else. My answers are all correct, 
+>> but for memory, the alignment gets out of wack when the data becomes big.
+>> 
+>> Probably not important, but just thought I'd see if anyone knew how to do 
+>> this.
+>> 
+>> Thanks,
+>> 
+>> Elton
+>
+
+

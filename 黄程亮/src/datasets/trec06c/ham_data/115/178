@@ -1,0 +1,80 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1N6XGt18518
+	for <egs@cs.cornell.edu>; Thu, 23 Feb 2006 01:33:16 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1N6XFA8016999
+	for <egs@cs.cornell.edu>; Thu, 23 Feb 2006 01:33:15 -0500 (EST)
+Received: from 24.59.114.243
+        by webmail.cornell.edu with HTTP;
+        Thu, 23 Feb 2006 01:33:15 -0500 (EST)
+Message-ID: <1412.24.59.114.243.1140676395.squirrel@webmail.cornell.edu>
+Date: Thu, 23 Feb 2006 01:33:15 -0500 (EST)
+Subject: paper 9
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+The two papers discussed both measure certain aspects of a few popular P2P
+File  Sharing applications, as those were the most common use of
+large-scale P2P  networks.
+The first paper measures the bandwidth (reported and/or actual estimates),
+session  durations, and number of shared files in Gnutella and Napster
+networks. They found  that the two networks shared many similar features.
+For one, a large fraction of  the users in both networks were behind
+broadband connections with downstream  bandwidths of 1000 kbps. However,
+many of the users were behind asynchronous  connections with lower
+upstream bandwidth, resulting in a significant difference  between total
+available upstream and downstream bandwidth in the network. They also 
+noticed the CDF of the session time of users resembles a log scale, with
+over half  the users with session times under an hour and 80% under 3
+hours, and that a small  percentage of the users account for a large
+percentage of the files shared.
+They also note some differences between the two networks. One is that
+Gnutella has  a far smaller percentage of <64kbps bandwidth users, and
+another is that the size  of files on Gnutella varies much more than
+Napster where nearly all the files are  <10MB audio files. They also note
+that Gnutella can be vulnerable to organized  attacks on nodes with
+especially high degrees, which can cause large-scale  partitioning of the
+network overlay.
+The second paper takes a look at Kazaa, and focuses on the distribution of
+queries  over time. The major point to note is because of the
+"fetch-at-most-once" property  of the media files shared in the P2P
+network, the distribution of requests does not  follow a Zipf-like
+distribution that is commonplace when viewing Web traffic. Even  assuming
+an initial Zipf-like distribution, opular objects are downloaded quickly, 
+but once each user has fetched it, there is no need for it to request it
+again and  the number of requests for it decreases as the age of the
+object increases. Influx  of new popular objects can bring the
+distribution closer to the Zipf distribution,  but it still quickly falls
+off. New clients that do not have the object provide a  marginal gain, as
+they represent merely a small percentage of the population,  unless the
+influx of clients is on an exponential scale.
+
+While it is likely true that most users in the studied P2P networks are 
+free-riders, the first paper has a flaw in that it doesn't take into
+account  POPULARITY of files each user is sharing. If you consider that
+the most popular  files are the most often downloaded, and by default the
+program will share the  files a user downloads, there is a chance that
+this could serve as a crude form of  replication. Thus, a user with a
+small number of files could be serving some of the  more popular ones.
+Conversely, a user with a large number of files might not  necessarily be
+satisfying more queries if the objects it is serving are not as  popular.
+A possible extension would to be combine the two studies: examine the 
+popularity and number of files shared on users as a function of time. As
+objects  age, do users replace the files they are sharing with newer
+popular objects? Or do  they keep sharing the old objects, possibly in
+addition to newer ones?
+
+For the second paper, they also only looked at the most popular requests
+in the  first and last 30 days. 6 months is quite a long turn-around
+period for files; a  more informative experiment would be to take
+snapshots of popular files every 30  days. Then they could look at the
+lifetime of different file types/sizes, and also  see how the request
+fall-off for popular objects looks compared to the fall-off of  less
+popular objects.
+

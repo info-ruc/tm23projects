@@ -1,0 +1,179 @@
+Received: from smtp3.tcd.ie (smtp3.tcd.ie [134.226.1.158])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j1E9mYFJ006206
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 14 Feb 2005 02:48:34 -0700
+Received: from smtp3.tcd.ie (smtp3.tcd.ie [134.226.1.158])
+	by smtp3.tcd.ie (Postfix) with ESMTP id BB2F414C01B
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 14 Feb 2005 09:48:28 +0000 (GMT)
+Received: from smtp3.tcd.ie
+	by localhost.localdomain (VaMailArmor-2.0.1.16) id 07230-6F4F2260;
+	Mon, 14 Feb 2005 09:48:28 +0000
+Received: from PSY169071 (psy169071.psy.tcd.ie [134.226.169.71])
+	by smtp3.tcd.ie (Postfix) with ESMTP id 5D42E14C01B
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 14 Feb 2005 09:48:28 +0000 (GMT)
+From: "Andy" <woodsat@tcd.ie>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] Arman Abrahamyan [a.abrahamyan@uws.edu.au]
+Date: Mon, 14 Feb 2005 09:49:00 -0000
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <200502140928.j1E9SuwF000532@cooper.uws.edu.au>
+Message-Id: <20050214094828.5D42E14C01B@smtp3.tcd.ie>
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi Arman, 
+
+In the DMDX help file, under DMDX help, input, I found the below info.
+Looks like the space bar is already been mapped as a "REQUEST".  
+
+   KEYBOARD
++Space REQUEST 
++Left Shift NEG_RESP 
++Right Shift POS_RESP
+
+Not entirely sure what a request is, but try unmapping it first (in the
+header code at top of dmdx script) using the below function.
+
+Un-Map Request Keyword
+
+<UnMapRequest>
+<umr>
+
+    Parameter and switch to unmap all button mappings to the request input.
+
+
+Cheers, Andy. 
+
+
+
+
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of Arman Abrahamyan
+Sent: 14 February 2005 09:29
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] RE: RE: Trouble mapping Spacebar for a response
+
+Andy, 
+
+I have tried to replace <mnr +Space> with <mnr +SpaceBar> and got the
+following error message
+"Button name <+SpaceBar> not found on input devices". Apparently, the name
+of space bar on the laptop is "Space".
+When I use <mnr +Space> DMDX doesn't complain and executes the code.
+However, when I press the space bar I get "No Response" message, indicating
+that the DMDX doesn't register pressing the space bar due to some reason. I
+assume that space bar has a special function in DMDX and doesn't get mapped
+easily, if at all. 
+
+If there are no other suggestions I will try to use your code as a last
+resort. 
+
+Thank you, 
+Arman
+
+
+ 
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of Andy
+Sent: Monday, February 14, 2005 6:31 PM
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] RE: Trouble mapping Spacebar for a response
+
+Dear Arman,  try changing your <mnr +Space> bit to <mnr +SpaceBar> .  I find
+it odd though that your space bar is called SpaceBar, something to do with
+the external keyboard?  Also, here's some incredibly ugly (and probably
+incredibly inefficient) code I put together a while back that allowed me to
+remap responses to the buttons of a mouse. I bet there are much nicer
+examples on the DMDX list archive though. Best, Andy. 
+
+<ep> F2 <vm 800 600 600 16 0 > <cr> <nfb> d7 <ntl>  <id "keyboard"> <zil>
+<zor> <vzk  +Up Arrow> <vzk +Down Arrow> <vzk +Right Arrow> <vzk +Left
+Arrow> <vzk +Enter><mpr  +Up Arrow> <mpr +Down Arrow> <mpr +Right Arrow>
+<mpr +Left Arrow> <mpr +Enter> <DBC 0> <DWC 0002510000> </ep> 
+
+.
+
++1 * <xy 305,210.5> <bmp> "y", <XY 0,116.6> <bmp> "top", <XY 124.85,0> <bmp>
+"left" <mwb "+Up Arrow",2, "+Down Arrow",1, "+Left Arrow",12, "+Right
+Arrow",1, "+Enter",500>;
+
+
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of Arman Abrahamyan
+Sent: 14 February 2005 00:54
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Trouble mapping Spacebar for a response
+
+Greetings !
+
+I was trying to map a SpaceBar on computer keyboard for a response. However,
+it doesn't work. I could successfully map few other buttons (e.g. Left and
+Right Arrows, Backspace), but not the SpaceBar (I got the SpaceBar button
+name from TimeDX).
+I am using Acer TravelMate 8000 laptop with an external keyboard. I have
+tried to disconnect the external keyboard, but it didn't help either. 
+Any ideas what could be a possible cause? 
+
+Thank you for your help, 
+Arman
+
+
+Here is an example of a code I am using:
+----
+<ep> <s 1> <cr> <t 4000> <id keyboard> <dbc 255255255> <vm
+640,480,480,32,60> <eop>
+
+$
+! HERE IS THE MAPPING PART;
+! Here BackSpace works, but Space doesn't
+1 <umpr> <umnr> <mpr +Backspace> <mnr +Space>;
+$
+\
++111 "Get ready !" <ms% 500> //  * <wav> "111.wav"; 
++112 "Get ready !" <ms% 500> //  * <wav> "112.wav";
++113 "Get ready !" <ms% 500> //  * <wav> "113.wav";
+
++121 "Get ready !" <ms% 500> //  * <wav> "121.wav"; 
++122 "Get ready !" <ms% 500> //  * <wav> "122.wav"; 
++123 "Get ready !" <ms% 500> //  * <wav> "123.wav"; 
+
++131 "Get ready !" <ms% 500> //  * <wav> "131.wav"; 
++132 "Get ready !" <ms% 500> //  * <wav> "132.wav"; 
++133 "Get ready !" <ms% 500> //  * <wav> "133.wav"; 
+\
+$
+0 "THAT IS IT, THANK YOU" l; 
+$
+-----
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+

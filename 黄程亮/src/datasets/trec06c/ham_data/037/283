@@ -1,0 +1,82 @@
+Received: from mail.ptd.net (srv1.ptd.net [204.186.0.131])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id QAA32579
+	for <handyboard@media.mit.edu>; Mon, 1 Mar 1999 16:43:28 -0500 (EST)
+Received: (qmail 1467 invoked from network); 1 Mar 1999 21:43:26 -0000
+Received: from cable032207.cable.str.ptd.net (HELO softech.ptdprolog.net) (204.186.32.207)
+  by mail.ptd.net with SMTP; 1 Mar 1999 21:43:26 -0000
+Reply-To: "Carlos Fernandez" <softech@ptdprolog.net>
+From: "Carlos Fernandez" <softech@ptdprolog.net>
+To: "Handy Board" <handyboard@media.mit.edu>
+Subject: Bipolar Stepper Motors
+Date: Mon, 1 Mar 1999 16:41:57 -0500
+Message-Id: <01be642c$54bd8e00$cf20bacc@softech.ptdprolog.net>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.71.1712.3
+X-Mimeole: Produced By Microsoft MimeOLE V4.71.1712.3
+
+Hi, everyone.  I was wondering if somebody could help me.
+I am trying to control a 2 phase bipolar stepper motor.
+I found a web page at :
+http://laguna.fmedic.unam.mx/~daniel/handy_bipolar.html
+that talks about controlling bipolar stepper motors.  But I just can't seem
+to make it work.
+When I use the code from the page the motors just vibrates, move forward,
+backward and stop.
+
+The stepper motors have four wires.  Brown +A, Red -A, Blue +B, Yellow -B.
+I connect them on the HB motor header:  Brown, Skip,Red,Blue,Skip,Yellow
+
+With the stepper motors I received a paper that says:
+    Step        +A        +B        -A        -B
+        1            +          +           -           -
+        2            -           +          +           -
+        3            -            -          +           +
+        4            +           -          -            +
+        5            +          +          -            -
+
+I was not sure how to read this, but hey whats the worst that could
+happened.I wrote a small program trying to interpret this:
+    void Stepper(void);
+        int intSteps=30;
+        int intStep;
+        long lngDelay = 5L;
+        for (intStep = 0; intStep < intSteps; intStep++)    {
+            /* step 1 */
+            fd(0);
+            fd(1);
+            msleep(lngDelay);
+            /* step 2 */
+            fd(1);
+            bk(0);
+            msleep(lngDelay);
+            /* step 3 */
+            bk(0);
+            bk(1);
+            msleep(lngDelay);
+            /* step 4 */
+            fd(0);
+            bk(1);
+            msleep(lngDelay);
+            /* step 5 */
+            fd(0);
+            fd(1);
+            }
+    ao();
+}
+The program does not work.  The stepper motor does the same thing, it
+varibrates, moves forward a little, moves back a little and stops.
+
+If anybody could help me, I would really appreciate it.
+
+Thanks
+
+
+
+
+
+

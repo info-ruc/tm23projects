@@ -1,0 +1,68 @@
+Received: from freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with SMTP id NAA24955
+	for <handyboard@media.mit.edu>; Wed, 26 Jan 2000 13:33:01 -0500 (EST)
+Received: (qmail+freegate 21116 invoked by alias); 26 Jan 2000 18:32:29 -0000
+Received: from ws16-n0.hq.freegate.com (HELO drpepper) (208.226.86.144)
+  by hq.freegate.com with SMTP; 26 Jan 2000 18:32:29 -0000
+Message-Id: <4.1.20000126094616.04172dd0@mailhost.hq.freegate.com>
+X-Sender: cmcmanis@mcmanis.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Wed, 26 Jan 2000 10:34:34 -0800
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+From: Chuck McManis <cmcmanis@mcmanis.com>
+Subject: Re: colour sensor
+In-Reply-To: <9FDFD60B9F3AD311A1400008C79F4B54110FD2@bham-eee-fs4.bham.a
+ c.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 02:43 PM 1/26/00 +0000, E158 (M.FAZAL) wrote:
+>hi chuck
+>i tried using the photocells i got with the gleason research sensor motor
+>kit. i used red green and blue filter, but the values are almost same (with
+>a variation of 1 or 2). the variation is much more sensitive to the distance
+>between the sensor and the surface. what am i doing wrong?
+>
+>you also mentioned optical sensor. is that the same as the photocell?
+>
+>cheers
+>fazal
+
+I have typically used phototransistors rather than CDS photocells but both
+will work depending on the application.
+
+Sensors are like computer programs, when they do one thing they are fairly
+easy, if they do multiple things they are more complicated.
+
+The problem you are having with the photocells relates to their optical
+sensitivity.
+
+CDS photo cells are sensitive to light intensity, so you can think of the
+light intensity at a given "distance" from the cell as the DC bias. Now you
+subtract that bias from the base line and you get the variation due to
+color on top of it. In circuit terms you require an "ac" connection. 
+
+Now in my circuit that I used to locate colored "area" on a playfield, the
+bias level was set by reading a known "white" area. I used a DC bias on an
+op-amp to generate a zero reading on white. Then a magnitude comparator to
+locate the "colored" area (red/green/grey). The output was essentially 1
+"bit" (yes/no) on whether or not I was over a particular color. 
+
+In the early 80's there was a company that used four photodiodes attached
+to a the top of a dot matrix printer print head that could "scan" color
+pictures at approximately 100 dots per inch. Their sensor was, in my mind,
+quite clever in that it used one of the diodes with no filter, and then one
+each covered by red, green, and blue. The diode with no filter would set
+the bias level and then they would extract the color information from the
+other three. If you wanted to try something similar you could use a CDS
+photocell without a filter in the negative feedback path of an opamp and
+the filtered cell on the input. Such a set up should be able to get you
+several levels of color information.
+
+The bottom line is, specify what you need to detect, figure out ways to
+eliminate as much background noise as possible, then amplify only enough to
+get a detection. (to much amplification re-introduces noise)
+
+--Chuck
+
+

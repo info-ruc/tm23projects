@@ -1,0 +1,140 @@
+Received: from panther.bsc.edu (panther.bsc.edu [137.220.1.6])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id JAA20811
+	for <handyboard@media.mit.edu>; Wed, 13 Jan 1999 09:36:52 -0500 (EST)
+Received: from lpnt (lpnt.bsc.edu [137.220.2.23])
+	by panther.bsc.edu (8.9.1/8.9.1) with SMTP id IAA18123
+	for <handyboard@media.mit.edu>; Wed, 13 Jan 1999 08:36:22 -0600 (CST)
+From: "Lewis Patterson" <lewis@bsc.edu>
+To: <handyboard@media.mit.edu>
+Subject: GP2D02 Interface Question?
+Date: Wed, 13 Jan 1999 08:34:53 -0600
+Message-Id: <000701be3f01$e33a5280$1702dc89@lpnt.bsc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.2106.4
+Importance: Normal
+
+Attached below is IC code for a GP2D02 rangefinder. This is a slightly
+enhanced version of code from Bjorn Astrand. My question relates to
+the use of TMSK1 in the code. From reading various M69HC11 documents,
+I think (???) that I know what bits are being set but I do NOT understand
+why this is being done. If someone would help me understand the
+necessity of using TMSK1 for this routine, I would be grateful. If you
+see other problems in the code, please let me know. Thanks!
+
+/*----------------------------------------------------------------------*/
+/* sharp.c - Interface for Sharp GP2D02 infrared rangefinder. This
+   routine is a modification of code written by Bjorn Astrand (see
+   http://www.hh.se/staff/bjorn/download/).
+
+   The GP2D02 must be connected with Vin attached to MISO and Vout
+   attached to MOSI (port D pins).
+
+   Note: Vin is connected to MISO through a simple voltage divider
+   network to insure that it does not exceed 3 volts. A crude picture
+   of the network is shown below.
+
+     MISO -------R1(1K)---------------------- Vin (GP2D02)
+                              |
+                              |
+                             R2(1K)
+                              |
+                              |
+                              |
+                            -----
+                             ---
+                              -
+
+*/
+/*---------------------------------------------------------------------*/
+#undef DEBUG
+
+int sharp(){
+#define TMSK1 0x1022
+#define PORTD 0x1008
+#define DDRD  0x1009
+  int result;
+  int mask= 8;
+  int bit0,bit1,bit2,bit3,bit4,bit5,bit6,bit7;
+  long t;
+
+  /* Define D port output pin which is connected to Vin of GP2D02. */
+  poke(DDRD,0b00000100);
+
+  /* Raise Vin to reset the GP2D02. */
+  poke(PORTD,0b00000100);
+
+  /* Let that signal remain high for a short interval (safety). */
+  msleep(2L);
+
+  /* Drop Vin to trigger a measurement by GP2D02. */
+  poke(PORTD,0b00000000);
+
+  /* Wait a max of 70 msecs or until Vout from GP2D02 goes high. */
+  t= mseconds()+70L;
+  while(mseconds() < t){
+    /* Break the delay loop if we see an input signal. */
+    if((peek(PORTD)&mask) == 1)break;
+    msleep(2L);
+  }
+
+  /* Setup the TMSK1 register. */
+  poke(TMSK1,0b00001100);                /* ??? */
+
+  /* Repeatedly raise and lower Vin to gate the 8 bits
+     of data from the GP2D02; save each bit.           */
+  poke(PORTD,0b00000100);
+  poke(PORTD,0b00000000);
+  bit0= peek(PORTD);
+  poke(PORTD,0b00000100);
+  poke(PORTD,0b00000000);
+  bit1= peek(PORTD);
+  poke(PORTD,0b00000100);
+  poke(PORTD,0b00000000);
+  bit2= peek(PORTD);
+  poke(PORTD,0b00000100);
+  poke(PORTD,0b00000000);
+  bit3= peek(PORTD);
+  poke(PORTD,0b00000100);
+  poke(PORTD,0b00000000);
+  bit4= peek(PORTD);
+  poke(PORTD,0b00000100);
+  poke(PORTD,0b00000000);
+  bit5= peek(PORTD);
+  poke(PORTD,0b00000100);
+  poke(PORTD,0b00000000);
+  bit6= peek(PORTD);
+  poke(PORTD,0b00000100);
+  poke(PORTD,0b00000000);
+  bit7= peek(PORTD);
+
+  /* Restore Vin to HIGH state. */
+  poke(PORTD,0b00000100);
+
+  /* Reset the TMSK1 register. */
+  poke(TMSK1,0b00011100);                   /* ??? */
+
+  /* Combine those bits into an integer result. */
+  result= (bit0&mask)*16+(bit1&mask)*8+(bit2&mask)*4+(bit3&mask)*2+
+          (bit4&mask)+(bit5&mask)/2+(bit6&mask)/4+(bit7&mask)/8;
+
+#ifdef DEBUG
+  printf("%b\n",result);
+#endif
+
+  /* Return the result. */
+  return result;
+}
+
+void sharp_testing(){
+  while(!stop_button()){
+    printf("%d\n",sharp());
+  }
+  beep();
+}
+

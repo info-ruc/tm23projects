@@ -1,0 +1,106 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.12.10/8.12.10) with ESMTP id h9KEaBwT014516;
+	Mon, 20 Oct 2003 09:36:11 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.9.3p2/8.9.3/cc-lists.mc-1.30) with SMTP id JAA26196;
+	Mon, 20 Oct 2003 09:33:29 -0500 (CDT)
+Received: from mail.cs.utexas.edu (root@mail.cs.utexas.edu [128.83.139.10])
+	by iceman.cc.utexas.edu (8.9.3p2/8.9.3/cc-lists.mc-1.30) with ESMTP id JAA26184
+	for <cs352h@lists.cc.utexas.edu>; Mon, 20 Oct 2003 09:33:25 -0500 (CDT)
+From: skeckler@cs.utexas.edu
+Received: from fuller.cs.utexas.edu (skeckler@fuller.cs.utexas.edu [128.83.120.177])
+	by mail.cs.utexas.edu (8.12.10/8.12.10) with ESMTP id h9KEXNNl011801;
+	Mon, 20 Oct 2003 09:33:23 -0500 (CDT)
+Received: (from skeckler@localhost)
+	by fuller.cs.utexas.edu (8.12.10/8.12.9/Submit) id h9KEXNeg028207;
+	Mon, 20 Oct 2003 09:33:23 -0500 (CDT)
+Date: Mon, 20 Oct 2003 09:33:23 -0500 (CDT)
+Message-Id: <200310201433.h9KEXNeg028207@fuller.cs.utexas.edu>
+To: cs352h@lists.cc.utexas.edu
+Subject: Questions on the LC3.5 ISA
+Reply-To: skeckler@cs.utexas.edu
+Sender: owner-cs352h@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+
+CS352H-ers,
+
+There have some questions about the LC3.5 ISA:
+
+> For LD, LEA, ST and BR I am assuming that we are to
+> use the top 7 bits of op1 ( op1[15:9] ) and append it
+> to the bottom 9 bits of op2 ( op2[8:0] ). Is that
+> correct? I am assuming that op1 is the PC and op2 is
+> the offset extended.(Special case : JSR op1[15:11]
+> appended to op2[10:0])
+
+This assumption is incorrect.  All addresses in the LC3.5 are computed
+relative to the PC and do not use the funny LC2 page concatenated with
+offset.  Thus for LD, LEA, ST, and BR you are to add the sign extended
+9 bit offset to the PC (*no concatenation*).
+
+For JSR, you are to add the sign extended 11 bit offset to the PC
+(again no concatenation).
+
+
+> For LDR and STR, I am assuming that op1 represents the
+> base register value and op2 contains the offset and
+> hence we just add them both together to get the
+> address. Is that correct?
+
+Yes this is correct.
+
+> For JMP, we assume that op1 contains the base register
+> value. So out = op1. Is that correct?
+
+Yes.
+
+> For TRAP, I am assuming that the trapvector value is
+> stored in op1. So we just do out = op1. Is that
+> correct?
+
+It is probably more convenient to make out = op2, since all other
+immediate values that come from the IR use op2.  Also note that you
+need to force the top 8 bits to zero in order to properly index the
+trap table.
+
+> Problem 4:
+> 
+> If we have received 40 cents and the user puts in more
+> coins, then what is to be done? I am assuming that
+> once we hit 40, the machine sends a vend signal, but
+> if the user is dumb enough to put in more coins then
+> what are we supposed to do? Do we give a vend signal
+> and then start from the initial state again?? or does
+> the machine assume that once we hit 40 or more from
+> the last coin, it stops taking more coins...
+
+You can assume that when the machine reaches 40 cents it gives the
+vend signal and resets to the initial state.
+
+> If we have 50 cents or 55 cents after the last coin,
+> can we assume that we always return nickels?
+
+I suppose - but I'd rather you return the minimum number of coins.
+
+
+> Problem 2:
+> 
+> How detailed do you want our block diagram to be? We
+> have a d-flip flop, 2 muxes, an adder and a sign
+> nextended mechanism for now. Is that what you require?
+
+This is a good start and the right level of detail.  Make sure you
+have it all connected up correctly.
+
+Cheers,
+
+Steve Keckler                     Computer Architecture and Technology Lab
+Assistant Professor               Tel:    (512) 471-9763
+Department of Computer Sciences   Dept:   (512) 471-7316
+1 University Station C0500        Fax:    (512) 232-1413
+The University of Texas at Austin E-mail:  skeckler@cs.utexas.edu
+Austin, TX 78712-1188             http://www.cs.utexas.edu/users/skeckler
+                                  
+
+

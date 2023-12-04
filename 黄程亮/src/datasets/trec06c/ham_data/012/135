@@ -1,0 +1,62 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA13277
+	for <handyboard@media.mit.edu>; Wed, 11 Mar 1998 15:55:59 -0500 (EST)
+Received: from Daddy.4Mercier (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id PAA04063; Wed, 11 Mar 1998 15:54:53 -0500 (EST)
+Message-Id: <3506F987.BBB0A51@cam.org>
+Date: Wed, 11 Mar 1998 15:52:24 -0500
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.0 [en] (Win95; I)
+Mime-Version: 1.0
+To: MAR ERICSON <mar@cooper.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: Assembler
+X-Priority: 3 (Normal)
+References: <Pine.GSO.3.95.980310181845.206A-100000@zeus.cooper.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+MAR ERICSON wrote:
+
+> Can assembler access an integer variable
+> declared in IC?
+
+No, however IC can access an integer value
+declared in assembler, which amounts to the same
+thing.
+
+Just precede the definitition with the line
+variable_C_name, where "C_name" is what you want
+the variable to be called in IC.  I usually make
+the C name the same as the assembler name as in
+this example:
+
+
+variable_global_variable
+global_variable   FDB   0
+.
+.
+.
+    LDX       global_variable
+    INX
+    STX       global_variable
+
+----------------
+
+int silly_routine ()
+{
+    global_variable = global_variable + 1;
+    return(global_variable);
+}
+
+
+-----------------
+
+...Of course you have to load your ICB file before
+your C file when you're doing this.
+
+/Max
+
+
+

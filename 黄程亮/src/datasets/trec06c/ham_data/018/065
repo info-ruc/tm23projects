@@ -1,0 +1,62 @@
+Received: from hoser (root@in221.inetnebr.com [199.184.119.221])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id VAA09107
+	for <handyboard@media.mit.edu>; Wed, 10 Jun 1998 21:41:45 -0400 (EDT)
+From: bill_r@inetnebr.com (Bill Richman)
+To: handyboard@media.mit.edu
+Subject: Re: Question about Sharp IR demodulators
+Date: Thu, 11 Jun 1998 01:41:44 GMT
+Message-Id: <35ba3401.1057356217@hoser>
+References: <Pine.SUN.3.95.980610133748.3968E-100000@sawbill.cs.umn.edu>
+In-Reply-To: <Pine.SUN.3.95.980610133748.3968E-100000@sawbill.cs.umn.edu>
+X-Mailer: Forte Agent 1.5/32.451
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+
+I had a similar experience, except that all my IR demodulators were
+from Radio Shack; two were some I'd gotten in a "grab bag" quite a few
+years ago, and the others were brand new.  The original one reacted to
+40KHz the way you describe yours doing - whenever it "sees" 40KHz, the
+output goes active.  On the new ones that I had, though, the behavior
+was more like what you describe for the ISU160; they go active when
+they first see 40KHz, but then they quickly go inactive again, until
+you pulse the 40KHz.  I ended up modulating the transmitter at 200Hz
+and putting a 567 tone-decoder set up to look for 200Hz on the output.
+Perhaps you could do something similar?  The 40KHz is just a carrier,
+and is modulated by the 200Hz signal.  The IR demodulator strips out
+the 40KHz, leaving just the original 200Hz modulation at its output.
+At least one person tried to convice me I was crazy, but I swear that
+Radio Shack's detectors have changed over the years, even though they
+sell them under the same RS part number.  The case style, as well as
+the markings of the devices themselves, have changed slightly; I have
+ot believe the characteristics have as well...
+
+On Wed, 10 Jun 1998 14:13:13 -0500 (CDT),  "Paul E. Rybski"
+<rybski@cs.umn.edu> wrote:
+
+>	I'm working on a project where I've got robots hunting targets
+>equipped with a 40 kHz oscillator circuit which is continuously pulsing
+>an IR LED. I was using the Sharp GP1U52 IR demodulator, which is the one
+>that you can get from Radio Shack (the alumimum box version).  We were
+>able to get a very strong signal from this component.  However, when we
+>switched to the IS1U60 IR demodulator (the one that you get with the
+>Handyboard from Gleason--the little green one), we found that we could
+>only get a signal when we first turned on the 40 kHz transmitter.  If =
+the
+>transmitter continuously bathed the IS1U60 in 40 kHz light, the receiver
+>returned nothing.  If we switched the transmitter on and off, we got a
+>single pulse from the receiver whenever power was applied.
+>
+>	So... it seems that the IS1U60 is designed to receive IR pulses
+>in a communications mode like from a VCR remote or another handyboard.
+>It does not seem to respond to continuous transmission.  Has anybody =
+else
+>had this problem?  It's a whole lot easier to obtain the IS1U60s instead
+>of the GP1U52s (Radio Shacks only stock 2 or 3 at a time!) and it seems
+>that the GP1U52 is the only way to go.
+
+                            -Bill Richman
+                             bill_r@inetnebr.com
+                             http://incolor.inetnebr.com/bill_r
+                             (Home of the COSMAC Elf Simulator!)
+

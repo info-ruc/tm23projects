@@ -1,0 +1,49 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA21358
+	for <handyboard@media.mit.edu>; Sat, 24 Apr 1999 14:17:26 -0400 (EDT)
+Received: from cam.org (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id OAA02806; Sat, 24 Apr 1999 14:17:04 -0400 (EDT)
+Message-Id: <37220AEC.B530ED6F@cam.org>
+Date: Sat, 24 Apr 1999 14:18:21 -0400
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.5 [en] (Win95; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: babylongod@usa.net
+Cc: Handy Board Mailing List <handyboard@media.mit.edu>
+Subject: Re: IR test reports "Rubbish" when I run test.c
+References: <3720919F.CA7C1D86@att.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Test.c expects to see both short and long pulses of IR, and it tries to
+accept timings from any remote.  It times the signals it receives and
+records the lengths of the shortest and longest pulse.  It then uses the
+midpoint of these values as a threshold to decide which pulses are short or
+long regardless of the actual timings of your remote.
+
+Once it decides on a threshold, it double checks it to see if it makes
+sense.  In your case it didn't... the threshold was such a small number
+that it couldn't possibly be a correct reading for any known remote.  It's
+as if the IR input signal was oscillating rapidly rather than recording a
+real signal of long and short pulses.
+
+Possible causes are:
+  Too much sunlight during the test.
+  Insufficiently charged HB batteries (IR reception is the 1st thing to go
+flaky under low power conditions).
+  Other sources of IR interfering with the test.
+  Hardware problems in your IR detection circuit.
+  Using an incredibly unusual remote (either really really new or really
+really old).
+
+I suggest you fully charge your HB and then redo the test in darkness with
+a different remote.  If you still have the same problem, then almost
+certainly there is something wrong with your IR detection circuit.
+
+Good Luck,
+/Max
+
+
+

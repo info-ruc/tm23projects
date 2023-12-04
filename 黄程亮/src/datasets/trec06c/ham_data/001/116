@@ -1,0 +1,45 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3013>; Mon, 7 Feb 1994 21:07:19 -0500
+Received: from minster.york.ac.uk ([144.32.128.41]) by psuvax1.cse.psu.edu with SMTP id <293760>; Mon, 7 Feb 1994 20:52:23 -0500
+From:	forsyth@minster.york.ac.uk
+Date:	Mon, 7 Feb 1994 20:08:44 -0500
+To:	9fans@cse.psu.edu
+Message-ID: <swordfish.760672323@minster.york.ac.uk>
+subject: memory
+
+>>	8-16 megs should be adequate.  More is better.
+
+it depends on what you are doing.  on a standalone machine
+at home, i have 32 Mb but rarely use more than 5 Mbytes, if that.
+you need 8-12 Mbytes to link the pc cpu/terminal kernels quickly.
+i've linked one on a 4 Mbyte 386sx16, but it takes a long time
+with much paging.
+
+on a shared CPU server, or especially a file server, more is better.
+the catch is that on an ISA bus machine, you can't DMA above 16 Mbytes,
+so the system must copy the data below 16 Mbytes & DMA from there.
+
+at work, i use a 4 Mb 386sx16 as a terminal, which runs 8-1/2 but
+i run cpu in most windows (except sam -r and seemail).
+note that unlike most X11 implementations, the editing in each window
+including mouse handling is done locally, so i'm not affected by load
+on the network or CPU server.
+
+i currently run special-purpose CPU servers (DNS servers, ftp servers)
+on lots of things that haven't got a lot of memory.
+for instance, a DNS service runs happily on a 386sx16 with 4 Mbytes
+running a pc cpu kernel.  (in case you wondered, we have a lot of 386sx16
+4Mbyte machines about the place.)
+i am planning to upgrade the CPU on that, but i'll keep it with 4 Mbytes --
+that's plenty.
+
+on a PC, if you are going to use /dev/bitblt, you have to allow some extra
+space for the shadow copy of the screen.  it's a modest amount at 1 bit-per-pixel,
+but rather more for 8-bit colour.
+perhaps one day, with PCI, some of this waste will go away.
+
+anyhow, i didn't want anyone to get the wrong idea: plan 9 runs very well
+on configurations that SunOS, Solaris, Windows/NT and even OS/2 would disdain.
+remember that you can take advantage of the ease of distribution that
+the system gives you.
+
+

@@ -1,0 +1,55 @@
+Received: from localhost (steward@localhost)
+	by ajax.cs.uga.edu (8.9.3/8.9.3) with ESMTP id QAA06037;
+	Tue, 3 Sep 2002 16:33:56 -0400 (EDT)
+Date: Tue, 3 Sep 2002 16:33:56 -0400 (EDT)
+From: Nathan Steward <steward@cs.uga.edu>
+To: Nathan Steward <steward@cs.uga.edu>
+Subject: gcc and g++ on ajax 
+Message-ID: <Pine.GSO.4.33.0209031421510.3324-100000@ajax.cs.uga.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+Content-Length: 1174
+Lines: 40
+
+Hello all,
+
+We recommend the following changes to your .cshrc for gcc compiler use:
+
+#Please note that a # is a comment symbol
+#Begin
+###################################################################
+setenv LD_LIBRARY_PATH /opt/sfw/lib:/usr/lib:/usr/local/lib:/usr/openwin/lib
+
+set path=( /bin /opt/sfw/bin /usr/local/bin /usr/bin /usr/ucb /usr/bin /sbin /bin /usr/openwin/bin /usr/ccs/bin  . )
+###################################################################
+#End
+
+This will allow you to use the /opt/sfw/bin/gcc and the
+/opt/sfw/bin/g++ compilers.
+
+A example of how to do this would be:
+
+NOTE: '%' mean type at your console
+
+log into a workstation
+  --ignore this step if remotely logging in
+log into ajax
+  --this is important because this is where the /opt/sfw directories are
+% pico .cshrc
+  --use your favorite text editor (vi,emacs,pico,ed . . .)
+  --change your lines to look like the ones above
+  --NOTE: make sure that the set path command is
+  --      all on one (1) line in your .cshrc
+% source .cshrc
+  --this command rereads your configuration file
+% g++ yourfile.cc
+  --try it out
+
+If you need help, please ask at the 307 desk.
+
+thanks,
+
+System Support
+
+

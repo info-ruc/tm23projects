@@ -1,0 +1,109 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id RAA30369
+	for <handyboard@media.mit.edu>; Fri, 13 Feb 1998 17:40:06 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id RAA08707;
+	Fri, 13 Feb 1998 17:39:57 -0500 (EST)
+Message-Id: <199802132239.RAA08707@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: veenjs@cs.utwente.nl (Jan-Sipke van der Veen)
+Cc: handyboard@media.mit.edu
+Subject: Re: Interrupt for serial data 
+In-Reply-To: Your message of "Fri, 13 Feb 98 15:28:53 +0100."
+             <199802131428.PAA08947@hypnos.cs.utwente.nl> 
+Date: Fri, 13 Feb 98 17:39:57 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+Jan-Sipke,
+
+You're really pretty far away from having this work.  It's not just a
+matter of redirecting the serial interrupt; when you get there, you
+have to:
+
+* store incoming character in a buffer
+* advance the buffer pointer
+* check the buffer for overruns
+
+then you need a separate subroutine which fetches the character from
+the buffer (checking first if there is anything there), and decrements
+the buffer point.
+
+learning how to write interrupt code is probably the hardest part of
+assembly programming.  my best advice to you is to simply write code
+on the PC side to slow down your transmit character rate until things
+work. and make sure on the HB side, you're in a tight loop receiving
+characters when communications are in progress.
+
+fred
+
+
+
+
+
+
+
+
+In your message you said:
+> I've decided to write an interrupt routine for the handling of serial data on
+ 
+> the Handy Board. An example of an interrupt routine is given in the Handy Boa
+rd 
+> technical reference. This works like a charm. I've modified it to use the SCI
+ 
+> interrupt. The code is listed below.
+> 
+> No interrupts seem te occur. The test is like this:
+> 
+> * Start IC
+> * load myfile.icb
+> * load myfile.c  (* in main : *)
+>   poke (0x3c, 1);
+>   printf ("%d", foo);
+>   int_init (0);
+>   start_press ();
+>   printf ("%d", foo);
+> * Exit IC
+> * reset Handy Board
+> * it prints: 55
+> * send a character to the Handy Board (in Borland Pascal)
+> * press Start button
+> * it prints: 55
+> 
+> 
+> Can anyone see the mistake here?
+> Hope I'm not too annoying with all my questions.
+> 
+> Jan Sipke van der Veen
+> 
+> 
+> 
+> #include "include\6811regs.asm"
+> 
+> subroutine_int_init:
+> #include "include\findx.asm"
+>    LDD   SCIINT,X
+>    STD   interrupt_code_exit+1
+>    
+>    LDD   #interrupt_code_start
+>    STD   SCIINT,X
+>    
+> * Receive Enable (bit 2) +
+> * Transmit Enable (bit 3) +
+> * Receive Interrupt Enable (bit 5) = $2C
+>    LDAA  #$2C
+>    STAA  SCCR2,X
+>    
+>    RTS
+> 
+> variable_foo:
+>    FDB   55
+>    
+> interrupt_code_start:
+>    LDD   #42
+>    STD   variable_foo
+> 
+> interrupt_code_exit:
+>    JMP   $0000
+> 
+

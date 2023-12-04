@@ -1,0 +1,84 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3010>; Fri, 27 May 1994 10:08:30 -0400
+Received: from cannon.ecf.toronto.edu ([128.100.8.5]) by psuvax1.cse.psu.edu with SMTP id <292641>; Fri, 27 May 1994 09:39:13 -0400
+Received: by cannon.ecf.toronto.edu id <12910>; Fri, 27 May 1994 09:15:09 -0400
+From:	Steve Kotsopoulos <steve@ecf.toronto.edu>
+To:	9fans@cse.psu.edu
+Subject: fileserver performance [small benchmark results]
+Cc:	tg@utstat.toronto.edu
+Message-Id: <94May27.091509edt.12910@cannon.ecf.toronto.edu>
+Date:	Fri, 27 May 1994 09:15:01 -0400
+
+Some time ago, I asked:
+
+> Has anyone benchmarked a Plan 9 file server vs. a u9fs file server?
+> If so, how do they compare?
+
+I only had 2 machines, and I couldn't decide whether to sacrifice a cpu
+server or file server for my setup (I knew I wanted a terminal).
+
+I didn't get any replies, so I thought I'd do some small benchmarks to
+see for myself. I did 2 tests, for the first one I copied /lib/image/*
+to /tmp, for the second, I cat'ed all the images to /dev/null.
+For all tests, /tmp was not ramfs, it was ~/tmp (same disk as /lib/image).
+
+For the u9fs tests, the file server was an SGI INDY running IRIX 5.2,
+serving a Seagate ST3610N to a MIPS Magnum 3000 plan 9 terminal.
+
+For the plan 9 file server tests, the file server was a MIPS Magnum 3000,
+with a Seagate ST11200N disk (same Magnum 3000 terminal).
+
+For each test, I repeated it 4 times, and used SGI's NetVisualizer to see
+how busy the ethernet was during the test (LAN was otherwise idle).
+
+bench u9fs:
+  cd /lib/image; time cp * /tmp
+	0.00u 3.70s 19.04r 	 cp dna.3c mandrill.3c swan.3 table.3c ...
+	0.02u 3.70s 20.52r 	 cp dna.3c mandrill.3c swan.3 table.3c ...
+	0.04u 4.30s 20.20r 	 cp dna.3c mandrill.3c swan.3 table.3c ...
+	0.00u 4.64s 19.78r 	 cp dna.3c mandrill.3c swan.3 table.3c ...
+	(using 30% of ethernet bandwidth)
+
+  cd /lib/image; time cat * > /dev/null
+	0.00u 0.42s 4.54r 	 cat dna.3c mandrill.3c swan.3 table.3c ...
+	0.00u 0.32s 4.76r 	 cat dna.3c mandrill.3c swan.3 table.3c ...
+	0.02u 0.30s 4.56r 	 cat dna.3c mandrill.3c swan.3 table.3c ...
+	0.02u 0.32s 4.54r 	 cat dna.3c mandrill.3c swan.3 table.3c ...
+	(using 80% of ethernet bandwidth)
+
+bench plan 9 file server:
+  cd /lib/image; time cp * /tmp
+	0.02u 3.12s  8.00r       cp dna.3c mandrill.3c swan.3 table.3c ...
+	0.02u 3.14s  7.88r       cp dna.3c mandrill.3c swan.3 table.3c ...
+	0.00u 3.18s  7.78r       cp dna.3c mandrill.3c swan.3 table.3c ...
+	0.02u 3.10s  8.14r       cp dna.3c mandrill.3c swan.3 table.3c ...
+	(using 45% of ethernet bandwidth)
+
+  cd /lib/image; time cat * > /dev/null
+	0.02u 0.56s 4.04r 	 cat dna.3c mandrill.3c swan.3 table.3c ...
+	0.00u 0.72s 4.06r 	 cat dna.3c mandrill.3c swan.3 table.3c ...
+	0.00u 0.70s 4.10r 	 cat dna.3c mandrill.3c swan.3 table.3c ...
+	0.00u 0.68s 4.02r 	 cat dna.3c mandrill.3c swan.3 table.3c ...
+	(using 40% of ethernet bandwidth)
+
+So, it seems that for the first test (reading & writing to the same disk
+at the same time) u9fs took 2.5 times as long as a real Plan 9 file server.
+Since the ethernet utilization was not 2.5 times greater, that should be
+an indication of the efficiency of il vs. tcp.
+
+For the second test, the times were closer together, but I'm not sure why.
+Maybe the main problem with u9fs is when writing, so in the read-only test it
+does much better. Again, we see that u9fs/tcp gobbles up the network (80%).
+
+I was surprised that I didn't notice any caching effects. The times were
+the same for a newly rebooted system as for re-running the benchmarks
+over and over again right away.
+
+Overall, it seems like the performance penalty of using u9fs isn't
+that bad unless you do a lot of concurrent reading & writing.
+
+Any other opinions or explanations?
+
+	Steve
+
+ps. Should I be using 'disc' instead of 'disk', as in the Plan 9 papers?
+

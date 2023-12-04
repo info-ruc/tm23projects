@@ -1,0 +1,63 @@
+Received: from trifid.u.arizona.edu (trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA26372
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 2 Feb 2000 09:24:30 -0700
+Received: from homebox (uofa-dsl-17.dakotacom.arizona.edu [150.135.175.17])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with SMTP id JAA11476;
+	Wed, 2 Feb 2000 09:24:29 -0700
+Message-Id: <3.0.1.32.20000202092430.00690078@psy1.psych.arizona.edu>
+Date: Wed, 02 Feb 2000 09:24:30 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] refused flips
+Cc: jforster@u.arizona.edu
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+  There is one thing you can do to try and remove the refused flips errors
+and this is to dicker with the the timing parameters for that video mode in
+TimeDX / Advanced / Vertical Retrace Sync Thread.  Essentially what is
+happening is that DMDX needs to setup the flip for the next retrace to
+display the next frame, however the video card is complaining that it can't
+do it at that time.  In my experience it can't do it for one of two
+reasons, either DMDX has waited too long to ask for the flip and because
+it's a wretched video card it can't accept commands to flip when it's
+within a few milliseconds of the next retrace (most video cards have no
+problem with this) or it can't accept the command because it's busy
+blitting data to a video buffer, but this is much less likely as DMDX in
+most instances has so many video pages that it's likely to have moved
+everything into video memory long before the frames are going to be needing
+flipping to be displayed.
+  So the first thing is to reduce the Sleeping Time, this is the amount of
+time that DMDX spends doing other things besides tending to the vertical
+retrace before the next retrace, so the longer this value is the closer to
+the next retrace DMDX will ask for a flip.  Be careful however, reducing
+this value means DMDX has less time for other tasks.  The other thing you
+can do is reduce the maximum number of lines to blit at once, this will
+make DMDX do less blitting in a single chunk and therefore tie the video
+card up for less time at a time and therefore possibly reducing the chance
+of a refused blit, but this assumes that you have a video card with little
+memory or are using a video mode that uses an enormous amount of memory --
+you can see how likely this is to be the cause of your problem by looking
+at the diagnostics DMDX displays, at the start of running an item file
+there will be a line displaying the number of video memory buffers using
+the requested video mode for that item file, if there are more buffers than
+you have frames in an item this is unlikely to be the cause of your trouble.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+  I haven't a particle of confidence in a man who has no
+redeeming petty vices.
+                                                    - Mark Twain
+                                     "Answers to Correspondents"
+
+
+

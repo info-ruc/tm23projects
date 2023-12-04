@@ -1,0 +1,66 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k22GV9t14541
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:31:09 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k22GV8op001900
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:31:08 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060228214208.02fbc128@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Thu, 02 Mar 2006 11:29:06 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 11
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+DNS using Peer-to-Peer lookup:
+         The authors attempted a more-or-less naive implementation of DNS 
+via a distributed hash table (built on Chord).  They measured the 
+performance of their system, and showed that it increased average latency 
+by over a factor of 8.  Moveover, their system does not support any of the 
+more interesting uses of DNS, such as dynamic server choice.  They conclude 
+that something much more clever would need to be done to support DNS via a 
+distributed hash table.
+         It seems as though the authors were setting themselves up for 
+failure.  Chord is by no means the best available DHT for performance, and 
+the caching system their system implemented was not designed for this 
+specific problem.  Showing that the most naive implementation imaginable 
+performed poorly does not provide strong evidence that moderate 
+optimization might not have improved performance drastically.  As the 
+CoDoNS result shows, using a DHT with better caching performance can 
+greatly alter the conclusion.
+
+
+Next Generation Name service [CoDoNS]
+         The CoDoNS authors first demonstrate that the current domain name 
+system has serious architectural flaws.  The TTL based caching and 
+hierarchical resolution is inflexible, concentrates load at the root, and 
+performs badly with dynamic server selection.  Moreover, DNS servers are 
+often configured badly, suggesting that the process should be automated to 
+reduce human error.  The authors suggest using Beehive to ensure O(1) 
+lookup.  (In fact, they suggest sufficient replication that the expected 
+number of hops per lookup is .5 -- that is, half the queries will hit the 
+cache immediately.  The system should thus give reliable and flexible 
+resolution for DNS queries--all without breaking existing clients.  They 
+ensure trust by leveraging existing work on DNSSEC; essentially replacing 
+the DNS server hierarchy with a public key hierarchy.
+         One of the consequences of using Beehive/Pastry is that the home 
+node for a given DNS record might be located at some distant server on the 
+internet.  This is doubtless upsetting to IT staff, as well as a likely 
+performance penalty.  The authors propose to handle malicious servers by 
+using the Castro et al secure routing algorithm; this seems both 
+excessively costly, and possibly inadequate.  A malicious home node might 
+return NXDOMAIN messages for a live domain name; to prevent this, every 
+query would need to use the Castro algorithm (or at least every query that 
+didn't return a valid domain name record).
+
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

@@ -1,0 +1,57 @@
+Received: from obiwan.customnet.net (obiwan.customnet.net [208.196.180.12])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id JAA12972
+	for <handyboard@media.mit.edu>; Sun, 31 Jan 1999 09:21:32 -0500 (EST)
+Received: from kott.my.domain (root@as5200-2-41.customnet.net [208.196.182.170])
+	by obiwan.customnet.net (8.9.1/8.9.1) with ESMTP id JAA15147;
+	Sun, 31 Jan 1999 09:20:32 -0500
+Received: from kott.my.domain (dakott@kott.my.domain [192.168.0.1])
+	by kott.my.domain (8.8.8/8.8.5) with ESMTP id JAA02320;
+	Sat, 30 Jan 1999 09:27:43 -0500 (EST)
+Date: Sat, 30 Jan 1999 09:27:42 -0500 (EST)
+From: David Kott <dakott@customnet.net>
+Sender: dakott@kott.my.domain
+To: BMajik5127@aol.com
+Cc: handyboard@media.mit.edu
+Subject: Re: ** voltage dropping and current limitting**
+In-Reply-To: <732fc428.36b1e173@aol.com>
+Message-Id: <Pine.BSF.4.05.9901300908430.13460-100000@kott.my.domain>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Fri, 29 Jan 1999 BMajik5127@aol.com wrote:
+
+> 
+>   I have a transformer, when powered by 110 vac I get 16 vac out.
+> I put it through a bridge rectifier and the problem is when I put a cap say
+> 20v 1000uf
+> across the +  -  of the rectifier, the voltage jumps to about 20 vdc.
+> If I omit the cap and attach a small dc motor I get the same effect. WHY???
+> Any info would be much appreciated.
+> -Mike
+> 
+> 
+
+Well, just off the top of my head, when you say "get 16 vac out" how are
+you determining this, a volt meter set for "Volts AC" or some such?  Not,
+say, an oscilloscope?  You will note that almost all meters render "AC
+Voltage" as the RMS (Root Mean Square) voltage.  That is to say, it is
+sqrt(2)/2 the peak to peak voltage.  However, when you rectify and low
+pass an AC waveform without any much load, you get approximately the peak
+to peak voltage of the AC waveform as a DC level, minus twice the forward
+voltage drop of the particular diodes you have chosen for your rectifier.
+
+For example, 16 VAC = (16 / (sqrt(2)/2)) = 22.7 VDC.  Assuming you are
+using a rectifier built with silicon diodes, (which have a .7 volt forward
+drop across them) you would measure 22.7 - (2 * .7 ) = 21.3 volts DC.
+Now, as to why you are getting lower then that, I would have to suggest
+that the cap you are using has a high leakage current, and thus tends to
+pull down your output voltage.  It might also have been damaged with the
+application of more then it's rated voltage.
+Is it perhaps one of those light blue bodied Panasonic electrolytics?
+They are awful, but cheap.
+
+							-d
+
+# rsh -l God universe.all find / -name '*windows*' -exec rm -rf {} \;
+
+

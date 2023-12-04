@@ -1,0 +1,149 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f69K8mF04341;
+	Mon, 9 Jul 2001 13:08:49 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id NAA16657;
+	Mon, 9 Jul 2001 13:35:09 -0400 (EDT)
+Date: Mon, 9 Jul 2001 13:35:09 -0400 (EDT)
+Received: by canaveral.red.cert.org; Mon, 9 Jul 2001 13:30:01 -0400
+Message-Id: <CA-2001-17.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-17
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: ced08c93acc5a0ee91a60ec8d33b2d05
+Status: RO
+X-Status: $$$$
+X-UID: 0000000013
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-17 Check Point RDP Bypass Vulnerability
+
+   Original release date: July 09, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Systems Affected
+
+     * Check Point VPN-1 and FireWall-1 Version 4.1
+
+Overview
+
+   A vulnerability in Check Point FireWall-1 and VPN-1 may allow an
+   intruder to pass traffic through the firewall on port 259/UDP.
+
+I. Description
+
+   Inside Security GmbH has discovered a vulnerability in Check Point
+   FireWall-1 and VPN-1 that allows an intruder to bypass the firewall.
+   The default FireWall-1 management rules allow arbitrary RDP (Reliable
+   Data Protocol) connections to traverse the firewall. RFC-908 and
+   RFC-1151 describe the Reliable Data Protocol (RDP). Quoting from
+   RFC-908:
+
+     The Reliable Data Protocol (RDP) is designed to provide a reliable
+     data transport service for packet-based applications such as remote
+     loading and debugging.
+
+   RDP was designed to have much of the same functionality as TCP, but it
+   has some advantages over TCP in certain situations. FireWall-1 and
+   VPN-1 include support for RDP, but they do not provide adequate
+   security controls. Quoting from the advisory provided by Inside
+   Security GmbH:
+
+     By adding a faked RDP header to normal UDP traffic any content can
+     be passed to port 259 on any remote host on either side of the
+     firewall.
+
+   For more information, see the Inside Security GmbH security advisory,
+   available at
+
+          http://www.inside-security.de/advisories/fw1_rdp.html
+
+   Although the CERT/CC has not seen any incident activity related to
+   this vulnerability, we do recommend that all affected sites upgrade
+   their Check Point software as soon as possible.
+
+II. Impact
+
+   An intruder can pass UDP traffic with arbitrary content through the
+   firewall on port 259 in violation of implied security policies.
+
+   If an intruder can gain control of a host inside the firewall, he may
+   be able to use this vulnerability to tunnel arbitrary traffic across
+   the firewall boundary.
+
+   Additionally, even if an intruder does not have control of a host
+   inside the firewall, he may be able to use this vulnerability as a
+   means of exploiting another vulnerability in software listening
+   passively on the internal network.
+
+   Finally, an intruder may be able to use this vulnerability to launch
+   certain kinds of denial-of-service attacks.
+
+III. Solutions
+
+   Install a patch from Check Point Software Technologies. More
+   information is available in Appendix A.
+
+   Until a patch can be applied, you may be able to reduce your exposure
+   to this vulnerability by configuring your router to block access to
+   259/UDP at your network perimeter.
+
+Appendix A
+
+Check Point
+
+   Check Point has issued an alert for this vulnerability at
+
+          http://www.checkpoint.com/techsupport/alerts/
+
+   Download the patch from Check Point's web site:
+
+          http://www.checkpoint.com/techsupport/downloads.html
+
+Appendix B. - References
+
+    1. http://www.inside-security.de/advisories/fw1_rdp.html
+    2. http://www.kb.cert.org/vuls/id/310295
+    3. http://www.ietf.org/rfc/rfc908.txt
+    4. http://www.ietf.org/rfc/rfc1151.txt
+     _________________________________________________________________
+
+   Our thanks to Inside Security GmbH for the information contained in
+   their advisory.
+     _________________________________________________________________
+
+   This document was written by Ian A. Finlay. If you have feedback
+   concerning this document, please send email to:
+
+          mailto:cert@cert.org?Subject=Feedback CA-2001-17 [VU#310295]
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+July 09, 2001: Initial Release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBO0njBQYcfu8gsZJZAQHOCAP+L8JEWTsWqvWjZQaVpHPb6GHn7D837lzc
+rE/ef50+6xSzRZyBPXQ8+3N6JqYk8PBufYCcqtiqL1PfNJw3YfrGJ5irzS4ENXTg
+mupUNTfdG0UhEAOWJbsjykfB0K/PPaeFrtf1jod1zd9uKPIFytHLAzMHWzUwTTtW
+4qSlIxoiHEQ=
+=v8vs
+-----END PGP SIGNATURE-----
+

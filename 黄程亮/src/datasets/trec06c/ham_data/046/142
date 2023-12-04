@@ -1,0 +1,65 @@
+Received: from atlrel2.hp.com (atlrel2.hp.com [156.153.255.202])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA24484
+	for <handyboard@media.mit.edu>; Tue, 15 Jun 1999 12:41:40 -0400 (EDT)
+From: BART_SCHRIJVER@HP-Sonoma-om2.om.hp.com
+Received: from boi164.boi.hp.com (boi164.boi.hp.com [15.56.8.78])
+	by atlrel2.hp.com (8.8.6 (PHNE_17135)/8.8.5tis) with ESMTP id MAA28606;
+	Tue, 15 Jun 1999 12:41:28 -0400 (EDT)
+Received: from localhost (root@localhost) by boi164.boi.hp.com with SMTP (8.7.1/8.7.3 TIS 5.0 Openmail) id JAA13193; Tue, 15 Jun 1999 09:41:36 -0700 (PDT)
+X-Openmail-Hops: 1
+Date: Tue, 15 Jun 1999 09:41:31 -0700
+Message-Id: <H0000e110ef1074a@MHS>
+In-Reply-To: <H0000e110ef10749@MHS>
+Subject: Re: Inductor
+Mime-Version: 1.0
+To: denn@technologist.com
+Cc: handyboard@media.mit.edu
+Content-Type: text/plain; charset=US-ASCII; name="Inductor"
+Content-Disposition: inline; filename="Inductor"
+Content-Transfer-Encoding: 7bit
+
+     Denn:
+     
+     If I am not mistaken, and please correct me if I am wrong (anybody), 
+     but I think the inductor is in the circuit to protect the NiCd battery 
+     pack and rest of circuit against possible reverse electro-mechanical 
+     induction by the DC motors.
+     
+     Motor power is on the unregulated side of the power circuit.
+     
+     A DC motor is to convert DC power into mechanical energy, but it can 
+     also do the reverse, in this case the polarity would be opposite and 
+     be harmful to the battery pack.
+     
+     An inductor has an impedance that rises with frequency, so at 
+     f=infinity Z=high and at f=0 (DC) Z=0. 
+     
+     So if the motor generate electricity the coil will short them out to 
+     ground and makes them stop as soon as power is removed by the L293D. 
+     IC has PWM routines in it to regulate power to the motor, so there 
+     will be a lot of on/off transitions, which can (and will) cause 
+     electro-mechanical induction.
+     
+     If you plan to use motors on your handyboard, you should use a coil to 
+     protect your circuit and battery against this phenomenon and the value 
+     is probably chosen  based on the PWM frequencies and I would stay 
+     close to this value.
+     
+     Best regards, Bart Schrijver.
+
+
+______________________________ Reply Separator _________________________________
+Subject: Inductor
+Author:  Non-HP-denn (denn@technologist.com) at HP-PaloAlto,mimegw2
+Date:    6/14/99 9:54 PM
+
+
+Hi, 
+I see the HB circuit and found the 1uH that connect the GND Batteries and 
+GND.
+I want to know the purpose of this inductor. Can I replace it with other 
+value or not use it .
+     
+Thanks
+
+

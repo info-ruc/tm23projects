@@ -1,0 +1,63 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j9TEFP5L011999
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 29 Oct 2005 07:15:25 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 3AFE1B9F569
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 29 Oct 2005 07:15:25 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-7.dsl.arizona.edu [128.196.237.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 05FF7B8883A
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 29 Oct 2005 07:15:24 -0700 (MST)
+Message-Id: <5.1.0.14.2.20051029065018.00ba48d0@psy1.psych.arizona.edu>
+Date: Sat, 29 Oct 2005 07:15:17 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] millisecond timer
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   I'm seeing reports on the developers list server again of timing 
+inaccuracies in the function that DMDX uses for it's millisecond clock, 
+namely QueryPerformanceCounter().  This time around it would appear that 
+some systems that use AMD's X2 dual core CPUs have the 
+problem.  QueryPerformanceCounter() can use a number of different sources 
+as it's clock, notably either the 3.5Mhz PCI clock or the RTDSC that's part 
+of the CPU whose frequency these days tends to be in the GHz range as it's 
+tied to the CPU's clock frequency.  And therein lies the original problem 
+on laptops as today's CPUs change their frequency to control their 
+temperature so the frequency of our timers change too -- way bad.  Now we 
+have these dual core CPUs where there are two RTDSC counters and they are 
+not synchronized so the timer can leap ahead billions of counts (a second 
+or two) and then leap back.  Which is why the TimeDX Millisecond Timer Test 
+is there so there's a chance people will detect the problem.  A lot of 
+machines seems to forgo using the RTDSC and instead use the 3579545 Hz PCI 
+based one which as far as we know is stable so if you see TimeDX reporting 
+that frequency you're golden.  If you see a much higher frequency and you 
+have a desktop that's not a dual core machine you're still fine, otherwise 
+you need to check that the millisecond timer test doesn't report something 
+along these lines:
+
+Performance Counter went backwards by 1234.5678ms!
+This machine will not be able to run DMDX at all well.
+
+   It's possible I can add code to DMDX to handle this but I don't want to 
+as it will add a significant performance penalty -- I'm certainly not going 
+to do it till someone reports having a machine with the problem (it's not 
+all AMD X2 machines).   There's a good bit of pressure being put on MS both 
+from within and without to fix this so hopefully I won't have to resort to 
+chicanery, right now it's wait and see.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+If you want to know what god thinks of money, just look at the people
+he gave it to.
+
+                                                 -  Dorthy Parker
+
+
+

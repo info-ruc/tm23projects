@@ -1,0 +1,415 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id fA5MgJg32277;
+	Mon, 5 Nov 2001 14:42:19 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA15382;
+	Mon, 5 Nov 2001 14:34:23 -0500 (EST)
+Date: Mon, 5 Nov 2001 14:34:23 -0500 (EST)
+Received: by canaveral.red.cert.org; Mon, 5 Nov 2001 14:29:06 -0500
+Message-Id: <CA-2001-30.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-30 Multiple Vulnerabilities in lpd
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: e8a6578e38cab29ec61df4c649be694e
+Status: RO
+X-Status: $$$$
+X-UID: 0000000026
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-30 Multiple Vulnerabilities in lpd
+
+   Original release date: November 05, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * BSDi BSD/OS Version 4.1 and earlier
+     * Debian GNU/Linux 2.1 and 2.1r4
+     * FreeBSD   All   released   versions   FreeBSD  4.x,  3.x,  FreeBSD
+       4.3-STABLE, 3.5.1-STABLE prior to the correction date
+     * Hewlett-Packard  HP9000  Series  700/800  running  HP-UX  releases
+       10.01, 10.10, 10.20, 11.00, and 11.11
+     * IBM AIX Versions 4.3 and AIX 5.1
+     * Mandrake Linux Versions 6.0, 6.1, 7.0, 7.1
+     * NetBSD 1.5.2 and earlier
+     * OpenBSD Version 2.9 and earlier
+     * Red Hat Linux 6.0 all architectures
+     * SCO OpenServer Version 5.0.6a and earlier
+     * SGI IRIX 6.5-6.5.13
+     * Sun Solaris 8 and earlier
+     * SuSE Linux Versions 6.1, 6.2, 6.3, 6.4, 7.0, 7.1, 7.2
+
+Overview
+
+   There  are  multiple vulnerabilities in several implementations of the
+   line  printer  daemon  (lpd).  The line printer daemon enables various
+   clients to share printers over a network. Review your configuration to
+   be  sure  you have applied all relevant patches. We also encourage you
+   to restrict access to the lpd service to only authorized users.
+
+I. Description
+
+   There  are  multiple vulnerabilities in several implementations of the
+   line  printer  daemon  (lpd), affecting several systems. Some of these
+   problems  have been publicly disclosed previously. However, we believe
+   many system and network administrators may have overlooked one or more
+   of  these  vulnerabilities.  We are issuing this document primarily to
+   encourage  system and network administators to check their systems for
+   exposure to each of these vulnerabilities, even if they have addressed
+   some lpd vulnerabilities recently.
+
+   Most  of  these vulnerabilities are buffer overflows allowing a remote
+   intruder  to  gain  root  access to the lpd server. For the latest and
+   most  detailed information about the known vulnerabilities, please see
+   the vulnerability notes linked to below.
+
+ VU#274043 - BSD line printer daemon buffer overflow in displayq()
+
+   There is a buffer overflow in several implementations of in.lpd, a BSD
+   line  printer  daemon.  An intruder can send a specially crafted print
+   job  to  the  target  and then request a display of the print queue to
+   trigger  the  buffer  overflow.  The  intruder  may  be  able use this
+   overflow  to  execute  arbitrary commands on the system with superuser
+   privileges.
+
+   The  line  printer  daemon  must be enabled and configured properly in
+   order for an intruder to exploit this vulnerability. This is, however,
+   trivial  as  the  line  printer  daemon is commonly enabled to provide
+   printing  functionality.  In order to exploit the buffer overflow, the
+   intruder  must  launch  his attack from a system that is listed in the
+   "/etc/hosts.equiv" or "/etc/hosts.lpd" file of the target system.
+
+ VU#388183   -   IBM   AIX  line  printer  daemon  buffer  overflow  in
+                 kill_print()
+
+   A  buffer  overflow  exists  in  the kill_print() function of the line
+   printer  daemon  (lpd)  on AIX systems. An intruder could exploit this
+   vulnerability  to obtain root privileges or cause a denial of service
+   (DoS).   The  intruder  would  need  to  be  listed  in  the  victim's
+   /etc/hosts.lpd  or  /etc/hosts.equiv  file,  however,  to exploit this
+   vulnerability.
+
+ VU#722143   -   IBM   AIX  line  printer  daemon  buffer  overflow  in
+                 send_status()
+
+   A  buffer  overflow  exists  in the send_status() function of the line
+   printer  daemon  (lpd)  on AIX systems. An intruder could exploit this
+   vulnerability  to  obtain root privileges or cause a denial of service
+   (DoS).   The  intruder  would  need  to  be  listed  in  the  victim's
+   /etc/hosts.lpd  or  /etc/hosts.equiv  file,  however,  to exploit this
+   vulnerability.
+
+ VU#466239 - IBM AIX line printer daemon buffer overflow in chk_fhost()
+
+   A  buffer  overflow  exists  in  the  chk_fhost() function of the line
+   printer  daemon  (lpd)  on AIX systems. An intruder could exploit this
+   vulnerability  to  obtain root privileges or cause a denial of service
+   (DoS).  The  intruder  would need control of the DNS server to exploit
+   this vulnerability.
+
+ VU#39001 - line printer daemon allows options to be passed to sendmail
+
+   There  exists  a vulnerability in the line printer daemon that permits
+   an  intruder  to send options to sendmail. These options could be used
+   to  specify  another  configuration  file allowing an intruder to gain
+   root access.
+
+ VU#30308  -  line printer daemon hostname authentication bypassed with
+              spoofed DNS
+
+   A  vulnerability  exists in the line printer daemon (lpd) shipped with
+   the printer package for several systems. The authentication method was
+   not  thorough  enough.  If a remote user was able to control their own
+   DNS  so  that  their  IP address resolved to the hostname of the print
+   server, access would be granted when it should not be.
+
+ VU#966075 - Hewlett-Packard HP-UX line printer daemon buffer overflow
+
+   A  buffer  overflow  exists in HP-UX's line printer daemon (rlpdaemon)
+   that  may  allow  an intruder to execute arbitrary code with superuser
+   privilege  on the target system. The rlpdaemon is installed by default
+   and  is active even if it is not being used. An intruder does not need
+   any  prior  knowledge,  or privileges on the target system, in order to
+   exploit this vulnerability.
+
+II. Impact
+
+   All of these vulnerabilities can be exploited remotely. In most cases,
+   they  allow  an intruder to execute arbitrary code with the privileges
+   of  the  lpd  server. In some cases, an intruder must have access to a
+   machine  listed  in  /etc/hosts.equiv  or  /etc/hosts.lpd, and in some
+   cases, an intruder must be able to control a nameserver.
+
+   One vulnerability (VU#39001) allows you to specify options to sendmail
+   that  can  be  used  to  execute arbitrary commands.  Ordinarily, this
+   vulnerability is only exploitable from machines that are authorized to
+   use the lpd server. However, in conjunction with another vulnerability
+   (VU#30308), permitting  intruders  to  gain access to the lpd service,
+   this vulnerability can be used by intruders not normally authorized to
+   use the lpd service.
+
+   For   specific   information  about  the  impacts  of  each  of  these
+   vulnerabilities,  please consult the CERT Vulnerability Notes Database
+   (http://www.kb.cert.org/vuls).
+
+III. Solution
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   As  vendors report new information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not  listed  below,  we  have not received their comments.
+   Please contact your vendor directly.
+
+   This  table  represents  the status of each vendor with regard to each
+   vulnerability. Please be aware that vendors produce multiple products;
+   if they are listed in this table, not all products may be affected. If
+   a vendor is not listed in the table below, then their status should be
+   considered  unknown. For specific information about the status of each
+   of  these vulnerabilities, please consult the CERT Vulnerability Notes
+   Database (http://www.kb.cert.org/vuls).
+
++ = Affected
+- - = Not Affected
+? = Unknown
+   
+VU# ->  |274043 |388183 |722143 |466239 |39001  |30308  |966075
+Vendors ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Apple   |   -   |   ?   |   ?   |   ?   |   ?   |   ?   |   -
+BSDI    |   +   |   ?   |   ?   |   ?   |   ?   |   ?   |   ?
+Caldera |   -   |   -   |   -   |   -   |   -   |   -   |   -
+Cray    |   ?   |   -   |   -   |   -   |   -   |   ?   |   -
+Debian  |   ?   |   ?   |   ?   |   ?   |   +   |   +   |   ?
+Engarde |   -   |   -   |   -   |   -   |   -   |   -   |   -
+FreeBSD |   +   |   -   |   -   |   -   |   -   |   -   |   -
+Fujitsu |   -   |   -   |   -   |   -   |   -   |   -   |   -
+HP      |   ?   |   ?   |   ?   |   ?   |   ?   |   ?   |   +
+IBM     |   -   |   +   |   +   |   +   |   -   |   +   |   -
+Mandrake|   ?   |   ?   |   ?   |   ?   |   +   |   ?   |   ?
+NetBSD  |   +   |   ?   |   ?   |   ?   |   ?   |   ?   |   ?
+OpenBSD |   +   |   ?   |   ?   |   ?   |   ?   |   ?   |   ?
+Red Hat |   ?   |   ?   |   ?   |   ?   |   +   |   +   |   ?
+SCO     |   +   |   ?   |   ?   |   ?   |   ?   |   ?   |   ?
+SGI     |   +   |   ?   |   ?   |   ?   |   ?   |   ?   |   ?
+SuSE    |   +   |   ?   |   ?   |   ?   |   ?   |   ?   |   ?
+Sun     |   -   |   -   |   -   |   -   |   +   |   -   |   -
+
+
+Restrict access to the lpd service
+
+   As  a  general  practice, we recommend disabling all services that are
+   not  explicitly  required.  You  may  wish to disable the line printer
+   daemon if there is not a patch available from your vendor.
+
+   If  you  cannot  disable  the  service, you can limit your exposure to
+   these vulnerabilities by using a router or firewall to restrict access
+   to port 515/TCP (printer). Note that this does not protect you against
+   attackers from within your network.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+Apple Computer, Inc.
+
+   Mac  OS  X  does not have the line printer daemon vulnerability issues
+   described in these advisories.
+
+Berkeley Software Design, Inc. (BSDI)
+
+   Some  (older)  versions are affected. The current (BSD/OS 4.2) release
+   is  not  vulnerable.  Systems are only vulnerable to attack from hosts
+   which  are  allowed  via  the  /etc/hosts.lpd  file (which is empty as
+   shipped).
+   BSD/OS  4.1  is  the only vulnerable version which is still officially
+   supported  by  Wind  River Systems. A patch (M410-044) is available in
+   the  normal  locations, ftp://ftp.bsdi.com/bsdi/patches or via our web
+   site at http://www.bsdi.com/support
+
+Compaq
+
+   Compaq  has not been able to reproduce the problems identified in this
+   advisory  for TRU64 UNIX. We will continue testing and address the LPD
+   issues if a problem is discovered and provide patches as necessary.
+
+Cray
+
+   Cray,  Inc. has been unable to prove an lpd vulnerability. However, it
+   was  deemed  that a buffer overflow may be possible and so did tighten
+   up the code. See Cray SPR 721101 for more details.
+
+Debian
+
+   http://www.debian.org/security/2000/20000109
+
+FreeBSD, Inc.
+
+ ftp://ftp.freebsd.org/pub/FreeBSD/CERT/advisories/FreeBSD-SA-01%3A58.lpd.asc
+
+Hewlett-Packard Company
+
+   Hewlett-Packard has released
+   HPSBUX0108-163 Sec. Vulnerability in rlpdaemon
+   Bulletin and patches available from http://itrc.hp.com
+   Details  to  access http://itrc.hp.com are include at the last half of
+   any HP Bulletin.
+
+IBM Corporation
+
+ http://www-1.ibm.com/services/continuity/recover1.nsf/4699c03b46f2d4f68525678c006d45ae/85256a3400529a8685256ac7005cf00a/$FILE/oar391.txt
+
+Mandrake Software
+
+   http://www.linux-mandrake.com/en/updates/2000/MDKSA-2000-054.php3
+
+NetBSD
+
+   If  lpd has been enabled, this issue affects NetBSD versions 1.5.2 and
+   prior  releases,  and  NetBSD-current prior to August 30, 2001. lpd is
+   disabled by default in NetBSD installations.
+   
+   Detailed information will be released subsequent to the publication of
+   this CERT advisory.
+   
+   An up-to-date PGP signed copy of the release will be maintained at
+
+   ftp://ftp.netbsd.org/pub/NetBSD/security/advisories/NetBSD-SA2001-018.txt.asc
+   
+   Information   about  NetBSD  and  NetBSD  security  can  be  found  at
+   http://www.NetBSD.ORG and http://www.NetBSD.ORG/Security/.
+
+OpenBSD
+
+   http://www.openbsd.org/errata29.html#lpd
+
+RedHat Inc.
+
+   http://www.redhat.com/support/errata/RHSA2000002-01.6.0.html
+
+Santa Cruz Operation, Inc. (SCO)
+
+   ftp://stage.caldera.com/pub/security/openserver/CSSA-2001-SCO.20/
+
+SGI
+
+   ftp://patches.sgi.com/support/free/security/advisories/20011003-01-P
+
+SuSE
+
+ http://lists2.suse.com/archive/suse-security-announce/2001-Oct/0000.html
+     _________________________________________________________________
+
+   The  CERT Coordination Center thanks Internet Security Systems and IBM
+   for the information provided in their advisories.
+     _________________________________________________________________
+
+   Feedback  on  this  document  can  be directed to the author, 
+   Jason A. Rafail
+     _________________________________________________________________
+
+   References
+     * http://www.kb.cert.org/vuls/id/274043
+     * http://www.kb.cert.org/vuls/id/388183
+     * http://www.kb.cert.org/vuls/id/722143
+     * http://www.kb.cert.org/vuls/id/466239
+     * http://www.kb.cert.org/vuls/id/39001
+     * http://www.kb.cert.org/vuls/id/30308
+     * http://www.kb.cert.org/vuls/id/966075
+     * http://www.kb.cert.org/vuls
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-30.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+November 05, 2001:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBO+boKKCVPMXQI2HJAQFLWgP/R8K+kw9GrKp0rF5hdrsiowPOBaO716OM
+M4dRX+5Ek+svlY9/P948FfU4CyKG1c4M9FzSMgoKTUmvsnB+NVFgln/d0+jMfAy0
+IyzHxyp5bSbF6pbfEyyr7gy8S3xaaVyDbAmhuLAW0Kiwy1xMmOFjZLu0W+A99rf7
+XMm+KQhJe6o=
+=pB53
+-----END PGP SIGNATURE-----
+

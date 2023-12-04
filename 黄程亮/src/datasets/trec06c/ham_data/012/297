@@ -1,0 +1,46 @@
+Received: from listmail.cc.uga.edu (listmail.cc.uga.edu [128.192.232.10])
+ by water.ucns.uga.edu (8.8.8/8.8.8) with ESMTP id TAA10254
+ for <happy@water.ucns.uga.edu>; Thu, 19 Mar 1998 19:36:26 GMT
+Received: from archa3.cc.uga.edu (128.192.95.103) by listmail.cc.uga.edu (LSMTP for Windows NT v1.1a) with SMTP id <0.5FECADF0@listmail.cc.uga.edu>; Thu, 19 Mar 1998 14:36:16 -0500
+Received: (from happy@localhost)
+ by archa3.cc.uga.edu (8.8.8/8.8.8) id OAA87354
+ for happy@water.ucns.uga.edu; Thu, 19 Mar 1998 14:35:57 -0500
+Received: from Tomobiki-Cho.CAC.Washington.EDU (rodriguez@tomobiki-cho.cac.washington.edu [128.95.135.58])
+ by archa3.cc.uga.edu (8.8.8/8.8.8) with ESMTP id OAA85508
+ for <happy@arches.uga.edu>; Thu, 19 Mar 1998 14:35:36 -0500
+Sender: Mark Crispin <mrc@Ikkoku-Kan.Panda.COM>
+In-Reply-To: <m33ege358p.fsf@water.ucns.uga.edu>
+Message-ID: <MailManager.890334250.22165.mrc@Ikkoku-Kan.Panda.COM>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+Lines: 29
+Xref: water.ucns.uga.edu mail.uw-imap:1055
+
+On 19 Mar 1998 13:28:06 -0500, Mark Plaksin wrote:
+> Will there be any trouble with imapd and Y2K?  A quick grep through the
+> source makes it looks like there will be no problems.
+
+I can only speak about the c-client based imapd (UW imapd) that I wrote.
+There are other imapd implementations in the world, and you will have to get
+information about that from their vendors.
+
+There are not now, and never have been, any known Y2K problems with my imapd.
+There are three known timebombs in imapd:
+ 1) the clock on most UNIX systems is signed, and will expire in 40 years.
+    imapd treats its own time longs as unsigned, but it uses the UNIX system's
+    time_t for the values from time() so you'll want to recompile imapd when
+    your system's time_t changes.
+ 2) all two-digit years with values between 70 and 99 are interpreted as being
+    in the 20th century (1970-1999) and two-digit years with values between 00
+    and 69 are interpreted as being in the 21st century (2000-2069).  So,
+    after 2069, you won't be able to use a two-digit year for the current
+    year.  Basically, this affects the SEARCH command.  It's hard for me to
+    have much sympathy.
+ 3) imapd's internal date representation expires on January 1, 2098.  This
+    can be expanded by a change in a .h file and rebuild (no mail files are
+    affected).
+
+I'm not worried about any of these.  I may still be alive when the first
+timebomb goes off, but I'll be retired.  Only the third timebomb necessitates
+code change.  If someone is still running my code in 2098, they should be able
+to figure out the trivial change to this antique piece of software.

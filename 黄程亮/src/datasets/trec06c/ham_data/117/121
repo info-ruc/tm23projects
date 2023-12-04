@@ -1,0 +1,135 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k2B08Ug1002270
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Mar 2006 17:08:30 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id CC255D4C811
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Mar 2006 17:08:30 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 12541D4C931
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Mar 2006 17:08:29 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060310170138.00bb4290@psy1.psych.arizona.edu>
+Date: Fri, 10 Mar 2006 17:08:27 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Intel i845 chipset
+In-Reply-To: <4411BA32.3020904@bham.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 05:41 PM 3/10/2006 +0000, you wrote:
+>Dear all,
+>
+>I have tried to run an experiment on a new computer and received 
+>repeatedly the following type of error message *Display error at ms %d, 
+>tick %d in %d, frame "%s" moved into video memory %d ticks late *(see end 
+>of mail for full error message).
+>
+>The new computer has the following motherboard:
+>
+>Gigabyte GA-8I945G Pro
+>
+>Which has the following chipset
+>
+>Intel i845 chipset
+>
+>I am using the onboard graphics (Intel 82845G), which states that a 
+>minimum 64MB and a maximum 128MB of memory is available.
+>
+>The experiment runs fine on older computers (which have different chipsets).
+>
+>This is what we tried to do to solve the problem, but with no success:
+>
+>1. Turned off hyperthreading
+>2. Updated the chipset drivers
+>3. Updated the video drivers
+>4. Disabled all start-up programs and non-windows services
+>5. Turned off screen saver and power management
+>
+>What else can we do to try to solve the problem?
+
+   Could be the hard disk is failing or hopelessly screwed up, you might 
+want to check it and do a full scan of the thing.
+
+   You could put another video card in to at least see if the problem goes 
+away if not as a permanent solution.
+
+   You can scan it for viruses and malware.  We like the Microsoft Defender 
+beta for the malware.
+
+   You can also try a clean install of the OS on another hard disk and see 
+if there's something screwed up with the OS (like malware).
+
+   Perhaps a different video mode, say a 32 bit will speed things up.
+
+
+> From previous messages on the mailing list (august 2003), I understand 
+> that the Intel i845 chipset might be at the origin of the problem...
+
+   Maybe but loading an image in 4 ticks is going to strain a lot of machines.
+
+
+>Note that if I increase the value of <d x> (e.g. from <d 4> to <d 76>), I 
+>have no error message anymore, but this is not a solution for me really.
+>
+>
+>For your information,
+>
+>here the full error messages:
+>
+>Subject 9, 03/10/2006 16:30:51 on PSG-DS-02, refresh 13.31ms
+>  Item       RT       COT
+>  9003    452.64      0.00
+>!  Display error at msec 5293.64, tick 387 in item 9053, frame ""
+>!    moved into video memory 31 ticks late
+>!     (previous frame's duration will have been longer)
+>  9053    445.01   2422.42
+>!  Display error at msec 7715.50, tick 569 in item 9028, frame ""
+>!    moved into video memory 31 ticks late
+>!     (previous frame's duration will have been longer)
+>  9028   -468.79   4844.84
+>!  Display error at msec 10164.72, tick 753 in item 9026, frame ""
+>!    moved into video memory 33 ticks late
+>!     (previous frame's duration will have been longer)
+>
+>
+>
+>and here some details of the expe:
+>
+><n 180> <cr> <rcot> <s 180> <nfb> <azk> <t 2000> <fd 34> <d 4> <id 
+>"keyboard"> <umr> <mr +space> <mpr +d> <mnr +l> <vm 1024,768,768,16,75> 
+><bgc 198198198>
+>
+>$
+>0 <ln -3> "*BLUE* = left    *GREEN* = right", "Ready? Press SPACEBAR to 
+>continue";
+>
+>250 <ms% 1000>/;
+>
+>$
+>
+>+9001 <fd 112> / "+" / * <ColorKey> <bmp> "FrontL_LeftB"  ;
+>
+>+9002 <fd 112> / "+" / * <ColorKey> <bmp> "FrontL_LeftB" ;
+>
+>+9003 <fd 112> / "+" / * <ColorKey> <bmp> "FrontL_LeftB" ;
+>
+>-9026 <fd 112> / "+" / * <ColorKey> <bmp> "FrontR_RightG" ;
+
+   Seeing as you don't care about rigid ISIs though I'd just go with <Delay 
+0> in the parameter line and let DMDX stuff the thing up whenever it can.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+The plot was designed in a light vein that somehow became varicose.
+
+                                                 -  David Lardner
+
+
+

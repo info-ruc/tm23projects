@@ -1,0 +1,96 @@
+Received: from travelers.mail.cornell.edu (travelers.mail.cornell.edu [132.236.56.13])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id gAC4I1Q24157
+	for <egs@cs.cornell.edu>; Mon, 11 Nov 2002 23:18:01 -0500 (EST)
+Received: from travelers.mail.cornell.edu (travelers.mail.cornell.edu [132.236.56.13])
+	by travelers.mail.cornell.edu (8.9.3/8.9.3) with SMTP id XAA19310;
+	Mon, 11 Nov 2002 23:17:59 -0500 (EST)
+Date: Mon, 11 Nov 2002 23:17:59 -0500 (EST)
+From: bd39@cornell.edu
+X-Sender: bd39@travelers.mail.cornell.edu
+To: egs@CS.Cornell.EDU
+cc: bd39@cornell.edu
+Subject: 615 PAPER 63
+Message-ID: <Pine.SOL.3.91.1021111203335.29755A-100000@travelers.mail.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+PAPER 63
+
+Small-World Phenomenon
+
+This paper gives an theoretical basis to the performance of peer to
+peer routing systems which exhibit local clustering along with
+knowledge of routes to neighbors which are topologically
+distant. The theoretical result of this paper is that given a
+k-dimensional space, maintaining a uniform distribution of long
+distance links between a node and a node at each distance scale (a
+node at distance k^i, for i=0 to log N), the expected routing length
+is logarithmic to number of nodes. It is also surprising that if the
+distribution is not uniform, then the performance quickly degrades
+from logarithmic, both for big and small network diameters. The
+important aspect with respect to peer-to-peer network routing is that
+routing must be able to traverse the network topology on different
+scales in order to efficiently find paths to destination nodes in an
+efficient manner.
+
+Performance of Freenet and Gnutella
+
+This paper (book chapter) gives an overview of a performance evaluation
+between Freenet and Gnutella. The Freenet portion we have seen before
+in the Freenet paper itself. In Freenet, we see that efficient routing
+is dependent on the existance of highly connected nodes which
+effectively present a shortcut routes. The Gnutella evaluation shows
+that gnutella queries can quickly saturate network links. Gnutella
+also does not have the small world highly connected nodes of Freenet,
+and thus queries into the network require contacting a large (50)
+number of nodes. Gnutella also scales linearly in bandwidth with the
+number of nodes in the system, which places an effective cap on the
+network size/query size.
+
+Measurement of Peer-to-Peer File sharing Systems
+
+This paper looks at the distribution of clients types in the
+peer-to-peer networks of Napster and Gnutella. The paper measures
+network bandwidth, latency, number of shared files and uptime of the
+peers of these peer to peer network. These measurements were taken by
+crawling both networks with queries and contacting their respective IP
+addresses to measure bandwidth, latency and uptime. These measurements
+show that a) the download capacity of the network exceeds the
+uploading capacity of the network b) few of the "peers" can fit in the
+high-availability, high-bandwidth profile of a server, while many of
+the clients are simply freeloaders on the network (especially
+Gnutella, where 7% of the peers serve more files than all other users
+combined). In terms of load balancing, most of the p2p "peers" behave
+in a client/server manner, rather than a peer to peer relationship.
+
+Can unstructured P2P systems perform as well as, or better than, more
+structured P2P networks ? What are the design constraints of P2P
+systems?
+
+>From the small world paper, it can be seen that if an unstructured p2p
+system has a uniform distribution of links among different routing
+distance scales, then it is possible to perform just as well as the
+structured routing schemes we have examined. It may be difficult to
+enforce this however, and from the theorectical result we can also see
+that performance depends on the uniformity of the choice of
+routes.
+
+The small world phenomenon also leads to an issue of load
+balancing. For those servers who happen to be highly connected, it
+seems that they would be a performance bottleneck for routing in the
+system. Because they lie on the prefered routes of many nodes, their
+resources to service requests could be exhausted by the amount of
+queries directed to them.
+
+Also, the selfish behavior of the users of a p2p network causes load
+imbalance in of itself. There must be some kind of quota of use system
+which balances what users give and take from the system. It seems that
+p2p systems need to have a mechanism to guarrantee the two P's, which
+is difficult to maintain given the heterogenaity of clients
+interacting in the network.
+
+Design constraints in a p2p network would be constant amount of
+bandwidth to work with (limiting scaling), support for many
+underfeatured clients and freeloaders with very few superpeers, (or
+some way to ensure this doesn't quite behave as badly).
+

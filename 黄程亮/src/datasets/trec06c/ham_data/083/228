@@ -1,0 +1,64 @@
+Received: from dhcp99-233.cs.cornell.edu (dhcp99-233.cs.cornell.edu [128.84.99.233])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OErWh20247
+	for <egs@CS.Cornell.EDU>; Tue, 24 Sep 2002 10:53:32 -0400 (EDT)
+Received: (from tmroeder@localhost)
+	by dhcp99-233.cs.cornell.edu (8.11.6/8.11.6) id g8OErWA30536;
+	Tue, 24 Sep 2002 10:53:32 -0400
+From: Thomas Roeder <tmroeder@CS.Cornell.EDU>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <15760.31851.947805.355755@dhcp99-233.cs.cornell.edu>
+Date: Tue, 24 Sep 2002 10:53:31 -0400
+To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+Subject: 615 PAPER #19
+X-Mailer: VM 7.07 under Emacs 21.2.1
+
+CEDAR seeks to be an algorithm which will allow Quality of Service
+paths to be quickly discovered and maintained in the network, so that
+those nodes which need good paths can find and use them, and that the
+low-bandwidth paths will not be overused.  Because of this goal, QoS
+is the main metric they consider in the paper. They are also setting
+up a unique core structure which routes packets for all the non-core
+nodes in their neighborhood.  In contrast to some other papers that we
+have read, I find this paper to be clearly laid out and well-written;
+I understood quickly and easily most of their points.
+
+One point, however, was the complaint about broadcasts: "broadcasts
+are highly unreliable in ad-hoc networks", which is based on the
+authors' experience, and is mainly a complaint about the
+hidden-terminal problem.  I agree to a certain extent, but would not
+that in the wireless medium, even unicasts are broadcast, and so you
+avoid flooding, at least, but not some inherent hidden-terminal
+issues.  Furthermore, you will not be able to avoid some level of
+local broadcast to establish the initial topology of the network, as
+is noted in the paper (they claim that you can use any of the standard
+routing protocols for the core, all of which use some sort of
+broadcast, and try to avoid the hidden terminal problem in other
+ways). 
+
+Another concern of mine is that the approximation algorithm that they
+are using to get the MDS of the graph is not proven, in this paper, at
+least (it might be well know to have this property), to get near the
+MDS for some definition of near, but is rather simply claimed to do
+so.  Given that their QoS routing depends for its quality on having a
+good approximation to the MDS, I would have thought it important to
+address the approximation very carefully.
+
+There are at least two parameters which I would also like to see
+addressed in greater detail.  The first is the speed at which the
+increase waves propagate through the network.  It seems to me that the
+choice of this value will greatly determine the stability of the
+route calculations.  The second is the function used to calculate the
+ttl sent out for a given link.  It is likely that the naive choice of
+linearity in the available bandwidth is not the optimal choice.
+
+Further work could look at these parameters in CEDAR and try to
+discover how their choice affects the performance and availability of
+high-bandwidth links.  Two other quick points to examine: what happens
+in very sparse graphs where every node is in the core?  Should there
+be some way to determine that the graph is wonky? ie. what if there
+are no particularly high-bandwidth links, and everything is fairly
+bad?  There ought to be a way to detect that CEDAR is not going to buy
+us much and drop to a simpler protocol.
+

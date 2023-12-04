@@ -1,0 +1,345 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g5SNJYtq015690;
+	Fri, 28 Jun 2002 16:19:34 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.12) with SMTP id RAA03318;
+	Fri, 28 Jun 2002 17:19:29 -0400 (EDT)
+Date: Fri, 28 Jun 2002 17:19:29 -0400 (EDT)
+Received: by canaveral.red.cert.org; Fri, 28 Jun 2002 17:13:32 -0400
+Message-Id: <CA-2002-19.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-19 Buffer Overflow in Multiple DNS Resolver Libraries
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 371
+Status: RO
+X-Status: $$$$
+X-UID: 0000000054
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-19 Buffer Overflow in Multiple DNS Resolver Libraries
+
+   Original release date: June 28, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   Applications  using  vulnerable  implementations  of  the  Domain Name
+   System  (DNS)  resolver  libraries, which include, but are not limited
+   to:
+
+     * Internet  Software  Consortium (ISC) Berkeley Internet Name Domain
+       (BIND) DNS resolver library (libbind)
+
+     * Berkeley Software Distribution (BSD) DNS resolver library (libc)
+
+
+Overview
+
+   A  buffer overflow vulnerability exists in multiple implementations of
+   DNS  resolver  libraries.  Operating  systems  and  applications  that
+   utilize  vulnerable  DNS  resolver libraries may be affected. A remote
+   attacker who is able to send malicious DNS responses could potentially
+   exploit this vulnerability to execute arbitrary code or cause a denial
+   of service on a vulnerable system.
+
+
+I. Description
+
+   The  DNS  protocol provides name, address, and other information about
+   Internet   Protocol   (IP)   networks   and  devices.  To  access  DNS
+   information,  a  network  application uses the resolver to perform DNS
+   queries  on its behalf. Resolver functionality is commonly implemented
+   in libraries that are included with operating systems.
+
+   Multiple  implementations of DNS resolver libraries contain a remotely
+   exploitable  buffer  overflow  vulnerability  in  the way the resolver
+   handles  DNS  responses.  Both  BSD  (libc) and ISC (libbind) resolver
+   libraries share a common code base and are vulnerable to this problem;
+   any DNS resolver implementation that derives code from either of these
+   libraries  may also be vulnerable. Network applications that makes use
+   of  vulnerable resolver libraries are likely to be affected, therefore
+   this problem is not limited to DNS or BIND servers.
+
+   Vulnerability   Note  VU#803539  lists  the  vendors  that  have  been
+   contacted about this vulnerability:
+
+     http://www.kb.cert.org/vuls/id/803539
+
+   This  vulnerability is not the same as the Sendmail issue discussed in
+   Vulnerability Note VU#814627:
+
+     http://www.kb.cert.org/vuls/id/814627
+
+
+II. Impact
+
+   An attacker who is able to send malicious DNS responses could remotely
+   exploit this vulnerability to execute arbitrary code or cause a denial
+   of  service  on  vulnerable systems. Any code executed by the attacker
+   would run with the privileges of the process that calls the vulnerable
+   resolver function.
+
+   Note that an attacker could cause one of the victim's network services
+   to  make  a  DNS request to a DNS server under the attacker's control.
+   This would permit the attacker to remotely exploit this vulnerability.
+
+
+III. Solution
+
+   Upgrade to a corrected version of the DNS resolver libraries
+
+     Note   that   DNS  resolver  libraries  can  be  used  by  multiple
+     applications  on  most  systems.  It may be necessary to upgrade or
+     apply   multiple  patches  and  then  recompile  statically  linked
+     applications.
+
+     Applications  that  are  statically linked must be recompiled using
+     patched  resolver  libraries.  Applications  that  are  dynamically
+     linked do not need to be recompiled; however, running services need
+     to be restarted in order to use the patched resolver libraries.
+
+     System  administrators  should  consider the following process when
+     addressing this issue:
+
+    1. Patch or obtain updated resolver libraries.
+
+    2. Restart  any  dynamically  linked  services  that  make use of the
+       resolver libraries.
+
+    3. Recompile  any statically linked applications using the patched or
+       updated resolver libraries.
+
+   Use a local caching DNS server
+
+     Using  a  local  caching DNS server that reconstructs DNS responses
+     will  prevent  malicious  responses  from  reaching  systems  using
+     vulnerable DNS resolver libraries. For example, BIND 9 reconstructs
+     responses  in this way, with the exception of forwarded dynamic DNS
+     update  messages.  Note  that  BIND  8  does  not  reconstruct  all
+     responses;  therefore  this  workaround  may  not be effective when
+     using BIND 8 as a caching DNS server.
+
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  When  vendors  report  new  information  to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+Compaq
+
+     SOURCE:  Compaq  Computer Corporation, a wholly-owned subsidiary of
+     Hewlett-Packard  Company  and  Hewlett-Packard  Company HP Services
+     Software Security Response Team
+
+     x-ref:SSRT2270
+
+     At   the  time  of  writing  this  document,  Compaq  is  currently
+     investigating  the  potential impact to Compaq's released Operating
+     System software products.
+
+     As further information becomes available Compaq will provide notice
+     of  the  completion/availibility  of  any necessary patches through
+     standard   product  and  security  bulletin  announcements  and  be
+     available from your normal HP Services support channel.
+
+Cray, Inc.
+
+     The  DNS  resolver  code  supplied  by  Cray,  Inc.  in  Unicos and
+     Unicos/mk  is  vulnerable. SPR 722619 has been opened to track this
+     problem.
+
+FreeBSD
+
+     See
+     ftp://ftp.FreeBSD.org/pub/FreeBSD/CERT/advisories/FreeBSD-SA-02:28.
+     resolv.asc
+
+GNU adns
+
+     adns  is  not derived from BIND libresolv. Furthermore, it does not
+     support  a  gethostbyname-like interface (which is where the bug in
+     BIND libresolv is). Therefore, it is not vulnerable.
+
+     For more information on GNU adns, see:
+
+     http://www.gnu.org/software/adns/
+     http://www.chiark.greenend.org.uk/~ian/adns/
+
+Internet Software Consortium
+
+     All  versions  of  BIND  4  from  4.8.3  prior  to  BIND  4.9.9 are
+     vulnerable.
+     All versions of BIND 8 prior to BIND 8.2.6 are vulnerable.
+     All versions of BIND 8.3.x prior to BIND 8.3.3 are vulnerable.
+     BIND versions BIND 9.2.0 and BIND 9.2.1 are vulnerable.
+     BIND version 4.8 does not appear to be vulnerable.
+     BIND versions BIND 9.0.x and BIND 9.1.x are not vulnerable.
+     'named' itself is not vulnerable.
+     Updated releases can be found at:
+
+     ftp://ftp.isc.org/isc/bind/src/4.9.9/
+     ftp://ftp.isc.org/isc/bind/src/8.2.6/
+     ftp://ftp.isc.org/isc/bind/src/8.3.3/
+     ftp://ftp.isc.org/isc/bind/contrib/ntbind-8.3.3/
+
+     BIND  9  contains  a  copy  of  the  BIND  8.3.x  resolver  library
+     (lib/bind).  This  will  be  updated  with the next BIND 9 releases
+     (9.2.2/9.3.0)  in  the  meantime  please  use  the original in BIND
+     8.3.3.
+
+     In  addition  the  BIND  9 'named' can be used to prevent malformed
+     answers reaching vulnerable clients.
+
+     Vendors     wishing     additional     patches    should    contact
+     bind-bugs@isc.org.
+     Query   about   BIND   4   and   BIND  8  should  be  addressed  to
+     bind-bugs@isc.org.
+     Query about BIND 9 should be addressed to bind9-bugs@isc.org.
+
+Microsoft
+
+     Microsoft  products do not use the libraries in question. Microsoft
+     products are not affected by this issue.
+
+OpenBSD
+
+     [T]he  resolver libraries in question got copied far and wide. They
+     used to have a hell of a lot of bugs in them.
+
+     Now  might  be  a  good  time  for  people  to compare each others'
+     libraries  to  each other. I would urge them to compare against the
+     OpenBSD  ones, where we've spent a lot of time on, but of course we
+     still  missed  this. But perhaps people can then share some around.
+     Not  everyone is going to move to the bind9 stuff, since it is very
+     different.
+
+NetBSD
+
+     See
+     ftp://ftp.NetBSD.ORG/pub/NetBSD/security/advisories/NetBSD-SA2002-0
+     06.txt.asc
+
+Network Appliance
+
+     Some  NetApp  systems  are  vulnerable  to  this problem. Check NOW
+     (http://now.netapp.com)  for  information on whether your system is
+     vulnerable  and  the  appropriate  patch  release  that  you should
+     install.
+
+SGI
+
+     SGI is looking into the matter.
+
+
+     _________________________________________________________________
+
+   The  CERT  Coordination  Center  thanks Joost Pol of PINE-CERT and the
+   FreeBSD Project for their analysis of these vulnerabilities.
+     _________________________________________________________________
+
+   Feedback  can  be  directed  to  the  authors: Art Manion and Jason A.
+   Rafail
+     _________________________________________________________________
+
+
+Appendix B. - References
+
+    1. http://www.pine.nl/advisories/pine-cert-20020601.asc
+
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-19.html
+   ______________________________________________________________________
+
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+    Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+    Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+       http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+       subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+
+Revision History
+
+   June 28, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPRzRIKCVPMXQI2HJAQFUUAP+JrIx1x3vF0BL7zFcURQSOOIsmEoGzqAP
+B+xs5kf4Oy5uYRRLASvYFh/XjnyGXIA5v8ECWx00B52PBKi7aPQS5o4Kiz1rxkFf
++c5oziLDXNwy4Vj2ArUjdzM47Ghrq8QXHBOoHaK5OWAF6tywbOklHt50T61OWzGu
+5WGow8NNw9I=
+=PbO6
+-----END PGP SIGNATURE-----
+

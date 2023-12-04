@@ -1,0 +1,68 @@
+Received: from mailer3.bham.ac.uk (mailer3.bham.ac.uk [147.188.128.54])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with ESMTP id KAA29090
+	for <handyboard@media.mit.edu>; Thu, 3 Feb 2000 10:51:08 -0500 (EST)
+Received: from bham.ac.uk ([147.188.128.127])
+	by mailer3.bham.ac.uk with esmtp (Exim 3.02 #16)
+	id 12GOX4-0000nN-00
+	for handyboard@media.mit.edu; Thu, 03 Feb 2000 15:50:58 +0000
+Received: from bham-eee-fs4.bham.ac.uk ([147.188.147.167])
+	by bham.ac.uk with esmtp (Exim 3.10 #1)
+	id 12GOX4-00015M-00
+	for handyboard@media.mit.edu; Thu, 03 Feb 2000 15:50:58 +0000
+Received: by bham-eee-fs4.bham.ac.uk with Internet Mail Service (5.5.2448.0)
+	id <DWJH83F2>; Thu, 3 Feb 2000 15:50:58 -0000
+Message-Id: <9FDFD60B9F3AD311A1400008C79F4B54110FDD@bham-eee-fs4.bham.ac.uk>
+From: "E158 (M.FAZAL)" <M.FAZAL@bham-eee-fs4.bham.ac.uk>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: stepper motor sequence
+Date: Thu, 3 Feb 2000 15:50:57 -0000 
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain
+
+hi all
+
+i was trying to connect a uni polar stepper motor with the hb. i was using
+the stepping sequence given in peter harrison page.
+
+A   B   C   D
+1   0   0   0
+0   0   1   0
+0   1   0   0
+0   0   0   1
+
+This sequence means that each coil will be energised one by one. and at no
+time will A and B or C and D will be energised at the same time. this works
+out fine since A and B are on one motor channel and C and D are on another
+motr channel
+
+  ---------      ----------
+         A |   	| C
+(+V)-------	 ---------- (+V)
+         B |	| D
+  ---------	 ----------	
+
+when both motor channel are off current will flow from the supply through
+both coils. this will consume a lot of current. when the first sequence is
+applied (i.e. A is ON) the circuit will look like as below
+
+ +V--------      ----------
+         A |   	| D
+(+V)-------	 ---------- (+V)
+         B |	| C
+  ---------	 ----------	
+
+thus no current will flow in coil A. but coils B C and D will be on. thus
+the actual sequence effectively becomes
+
+A   B   C   D
+0   1   1   1
+1   1   0   1
+1   0   1   1
+1   1   1   0
+
+is my analysis correct or am i missing something? 
+
+cheers
+fazal
+

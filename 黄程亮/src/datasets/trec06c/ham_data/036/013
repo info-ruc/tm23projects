@@ -1,0 +1,79 @@
+Received: from mtiwmhc04.worldnet.att.net (mtiwmhc04.worldnet.att.net [204.127.131.39])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA17801
+	for <handyboard@media.mit.edu>; Tue, 16 Feb 1999 13:53:47 -0500 (EST)
+Received: from star-fury ([12.78.198.43]) by mtiwmhc04.worldnet.att.net
+          (InterMail v03.02.07 118 124) with SMTP
+          id <19990216185316.FXRS22890@star-fury>
+          for <handyboard@media.mit.edu>; Tue, 16 Feb 1999 18:53:16 +0000
+Received: by localhost with Microsoft MAPI; Tue, 16 Feb 1999 13:45:55 -0500
+Message-Id: <01BE59B2.AD15F260.eacmen@postoffice.worldnet.att.net>
+From: Peter Eacmen <eacmen@postoffice.worldnet.att.net>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Serial Communication between HBs HELP!!! (Again)
+Date: Tue, 16 Feb 1999 13:45:46 -0500
+X-Mailer: Microsoft Internet E-mail/MAPI - 8.0.0.4211
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I am trying to get communication working between two HBs via the RJ11 
+serial port.  I read the FAQ on the HB web site and I have the right cable. 
+ On the trans.  HB the power LED blinks which indicates it is transmitting. 
+ Also whenever I turn on the Trans. HB the recieving HB says 255.  Below is 
+the code I am running on both HBs.
+
+Thanks
+
+-Peter
+
+Here's the code I am running the recieving HB:
+void disable_pcode_serial()     /* disable board handshaking with IC   */
+                                /* on the host computer, allowing user */
+                                /* programs to receive serial data     */
+{
+    poke(0x3c, 1);
+}
+
+int serial_getchar()            /* read a serial character.  Note:  the */
+                                /* program hangs until a character is   */
+                                /* received!  There is no timeout!      */
+{
+    while (!(peek(0x102e) & 0x20));     /* wait until a character arrives 
+*/
+    return (peek(0x102f));              /* return it as an int */
+}
+void main()
+{
+int x=0;
+disable_pcode_serial();
+
+while(1)
+{
+	printf("\n%d",serial_getchar());
+}
+}
+
+The transmitting HB:
+void serial_putchar(int c)      /* send a serial character.  Note:  the */
+                                /* program hangs until the character is */
+                                /* sent!  There is no timeout!          */
+{
+    while (!(peek(0x102e) & 0x80));     /* wait until it's okay to send */
+    poke(0x102f, c);                    /* send the character */
+}
+
+void main()
+{
+int x=0;
+
+while(x < 250)
+{
+	serial_putchar(x);
+	x++;
+}
+}
+
+
+

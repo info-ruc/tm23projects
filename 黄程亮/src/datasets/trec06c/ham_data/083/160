@@ -1,0 +1,77 @@
+Received: from postoffice2.mail.cornell.edu (postoffice2.mail.cornell.edu [132.236.56.10])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8JETnh07187
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 10:29:49 -0400 (EDT)
+Received: from sangeeth.cornell.edu (syr-24-58-36-135.twcny.rr.com [24.58.36.135])
+	by postoffice2.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id KAA06091
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 10:29:47 -0400 (EDT)
+Message-Id: <5.1.0.14.2.20020919102800.00b06438@postoffice2.mail.cornell.edu>
+X-Sender: sc329@postoffice2.mail.cornell.edu (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Thu, 19 Sep 2002 10:29:46 -0400
+To: egs@CS.Cornell.EDU
+From: Sangeeth Chandrakumar <sc329@cornell.edu>
+Subject: 615 PAPER 13
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+Submitted by - Sangeeth Chandrakumar
+
+Conserving Transmission Power in wireless Ad Hoc Networks
+
+This paper introduces PARO, a power-aware routing optimization that results 
+in the reduction in power expended in transmissions from a source to 
+destination among ad hoc networks. Developing efficient architectures and 
+protocols that increase the operational lifetime of network enabled 
+services. PARO uses a packet forwarding technique where intermediate nodes 
+can elect to be "re-directors" between a source destination pair with the 
+goal of reducing the transmission power required. PARO is a node-to-node 
+based routing technique, thus geting rid of the inefficiencies of having to 
+send out too many signalling packets as in a broadcast flooding technique.
+
+Efficient routes are discovered using data packets itself, other than using 
+signalling packets. In this protocol, every nodes updates its packet header 
+to indicate the power required to transmit the packet. Any node which 
+overhears both source and destination can compute whether packet forwarding 
+can result in power savings. If an intermediate node elects to become a 
+re-director it sends a route-redirect message to source and destination 
+informing them of the new node. If a node does not have information on 
+power requirements to the destination, it just sends it out with the 
+maximum power. Every node maintains a overhear cache where it stores the 
+triple(ID, time, Power) required for each destination. In dense networks, 
+multiple redirect messages could be generated, in which case the redirect 
+request with the best power optimization is chosen. PARO deals with the 
+mobility of nodes by transmitting at a power level slightly greater than 
+the recorded value to increase the probability of reaching the next hop on 
+the first attempt.
+
+The authors also present an evaluation of the protocol proving the fact it 
+results in power reduction when there are sufficient number of 
+re-directors. But these simulations also reveals much of the drawbacks of 
+the protocol. Having more than three re-directors does not result in more 
+saving of power and only results in creating a longer route, increasing the 
+end-to-end delay. Though the simulation gives good results with static 
+networks, ina  more mobile environment data packets transmitted are likely 
+to be lost. IN comparison to MLSR, the power savings achecived by PARO is 
+significantly better.
+
+Comments:
+
+PARO addresses a significant issue with mobile ad hoc networks. But the 
+main drawbacks of the paper are the strong assumptions it make.
+- It assumes dynamic power transmission power and interference-free MAC.
+
+- PARO does route optimization one step at a time. SO it would require 
+several iterations before it would converge into the most optimal route. 
+Also it is possible that the first iteration, which seemed optimal could 
+result in a final route which is not the route achieving the minimum 
+transmission power.
+
+- PARO tries to minimize the power by redirecting through intermediate 
+routes. But a re-director could chose to be one for many transmissions, 
+thus depleting its energy source much earlier.
+
+- Simulations does not take into account the effects of control packet 
+overheads. This could have a significant impact on the power savings as the 
+RTS/CTS packets are sent with maximum power.
+
+

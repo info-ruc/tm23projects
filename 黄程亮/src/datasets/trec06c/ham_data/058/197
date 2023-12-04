@@ -1,0 +1,131 @@
+Received: from web801.mail.yahoo.com (web801.mail.yahoo.com [128.11.23.61])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with SMTP id UAA09098
+	for <handyboard@media.mit.edu>; Mon, 20 Dec 1999 20:13:49 -0500 (EST)
+Received: (qmail 16292 invoked by uid 60001); 21 Dec 1999 01:13:48 -0000
+Message-Id: <19991221011348.16291.qmail@web801.mail.yahoo.com>
+Received: from [158.252.97.131] by web801.mail.yahoo.com; Mon, 20 Dec 1999 17:13:48 PST
+Date: Mon, 20 Dec 1999 17:13:48 -0800 (PST)
+From: raj k <robo_helpmate@yahoo.com>
+Subject: Motor driver circute problem Using L298N
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="0-1804289383-945738828=:16250"
+
+--0-1804289383-945738828=:16250
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Hi guys,
+
+        I built a Hbridge motor driver using the IC 
+ L298N.  But it is not working properly.  It is
+swithcing properly with the inputs but it is not
+drawing the current required for the motor.  I am
+sensing the out Voltage as 8v but when i connect the
+motor it is dropping to 0v . and the current drawn by
+the motor is very less(0.9ma).   I don't know why it
+is 
+not supplying the current for the motors. 
+        i am giving the circuit as a text attachment.
+Please help me with this. Logically circuit is working
+
+properly, and it is switching the out voltages
+acourding to the inputs but it is not drawing
+sufficiant current from the power source and not
+suppliing to the motors.
+       any help is appreciated.
+      thank you,
+
+Robo.
+
+Robo_helpmate@yahoo.com
+
+
+
+
+
+
+
+
+
+
+
+__________________________________________________
+Do You Yahoo!?
+Thousands of Stores.  Millions of Products.  All in one place.
+Yahoo! Shopping: http://shopping.yahoo.com
+--0-1804289383-945738828=:16250
+Content-Type: text/plain; name="L298N.txt"
+Content-Description: L298N.txt
+Content-Disposition: inline; filename="L298N.txt"
+
+
+
+
+Heare is the circute :
+
+                
+        +Vs (12v)    _______________________
+                                |             |               |                  |
+                                |          ===         -----             -----
+                                |             |100nf    / \ D1          / \  D2
+                                |             |              ---               ---
+                                |           ----             |                  |
+                                |                     |------|------M------|------|
+                                |                     |       |                  |        |
+                                |                     |     -----            -----     |
+                                |                     |      / \ D3          / \D4 |  
+                                |                     |      ---               ---      |
+                                |                     |       |                  |        |
+                                |                     |     ----              ----     |
+                                |                     |                                  |
+                                |                     |____            ______|
+                                |                              |           |
+                                |                              |           |
+                                |          c,  10          | 13      | 14                D, 12
+                                |      ___|_______|_____|____________|___
+                                |     |                                                                      |       9
+                                |     |                                                                      |______ +Vss  5v
+                                |__| 4                 1/2  l298N                                 |      |
+                                     |                				 |    ==
+                                     |________________________________|     |
+                                             | 15                 | 8                   |                     -----Gnd
+               to control        -----|                      |                       |
+                 circute                /                   ___ Gnd        Ven  11     
+                                             \
+                                             /  Rs
+                                             \
+                                             |
+                                           __ Gnd               
+
+
+
+The     operation should be as fallows:
+
+
+                                Inputs                                                          function
+
+     Ven  =  H                          C = H ;  D = L                             forward
+                                               C = L ;   D= H                             reverse
+                                               C = D                                          fast motor stop
+      Ven =  L                           C = X,  D = X                             free running motor stop
+
+
+
+
+
+               
+
+
+               
+
+
+
+
+
+
+
+  
+  
+--0-1804289383-945738828=:16250--
+

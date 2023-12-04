@@ -1,0 +1,98 @@
+Received: from aquila.its.unimelb.EDU.AU (smtp1.unimelb.edu.au [128.250.20.111])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j6J5rZ5L019139
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 18 Jul 2005 22:53:39 -0700
+Received: from CONVERSION-DAEMON.SMTP.UNIMELB.EDU.AU by SMTP.UNIMELB.EDU.AU
+ (PMDF V6.2 #30995) id <01LQTB425174ATUN95@SMTP.UNIMELB.EDU.AU> for
+ DMDX@psy1.psych.arizona.edu; Tue, 19 Jul 2005 15:10:50 +1000
+Received: from Peterpc.psych.unimelb.edu.au
+ (peterpc.psych.unimelb.edu.au [128.250.173.146])
+ by SMTP.UNIMELB.EDU.AU (PMDF V6.2 #30995)
+ with ESMTP id <01LQTB40OB1AB3SZYS@SMTP.UNIMELB.EDU.AU> for
+ DMDX@psy1.psych.arizona.edu; Tue, 19 Jul 2005 15:10:49 +1000
+Date: Tue, 19 Jul 2005 15:10:48 +1000
+From: Peter Straffon <p.straffon@psych.unimelb.edu.au>
+Subject: [DMDX] Re: DMDX setup for default user ? (Win XP Pro)
+In-reply-to: <5.1.0.14.2.20050718185152.00ba4808@psy1.psych.arizona.edu>
+To: DMDX@psy1.psych.arizona.edu
+Message-id: <6.2.1.2.2.20050719145125.02958638@mail.unimelb.edu.au>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii; format=flowed
+References: <5.1.0.14.2.20050718172338.00bcbf30@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718082358.00ba4820@psy1.psych.arizona.edu>
+ <6.2.1.2.2.20050718121101.028d7ed0@mail.unimelb.edu.au>
+ <5.1.0.14.2.20050718082358.00ba4820@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718172338.00bcbf30@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718185152.00ba4808@psy1.psych.arizona.edu>
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+jonathan,
+         Very interesting and possibly very useful.  Is the structure of 
+the of the DMDX and TimeDX entries in HKLM\Software and HKLU\Software 
+supposed to be or normally the same?  I am thinking that it may be possible 
+to just copy the HKLU\Software DMDX and TimeDX sections to 
+HL_Users\.Default as a way of setting up the default user.  Up to now I had 
+assumed that the HKLM entry was the most important as I have not seen the 
+HKLU\Software entries getting much stored in them.  This is probably 
+because I normally have DMDX run under a user with administrator rights 
+(what I am avoiding this time).
+
+Am I right that the entries dont actually store any timing 
+information?  Its just video and audio mode details.
+
+Thanks - I know you are busy but please keep the information flowing, I 
+feel I'm getting somewhere.
+Peter
+
+At 11:59 AM 19/07/2005, you wrote:
+>At 10:54 AM 7/19/2005 +1000, you wrote:
+>>jonathan,
+>>         I'm not going to be able to setup for each user, we run classes 
+>> with 100+ students over a week.  In the past we have setup a single 
+>> "DMDX user" that they all used but we found that things go wrong when 
+>> "helpful" students change things.  I had wanted a setup that I could 
+>> apply as the "default user" so each time a student logs in they get a 
+>> new copy.  If you dont think this is possible then maybe we will have to 
+>> us the "EZ" mode.  I have till Thursday to work on this, if you can make 
+>> any suggestions it would be a great help.
+>>
+>>I've found that I need to give everybody permissions to the registry DMDX 
+>>and TimeDX keys, write permissions to the DMDX program directory and am 
+>>trying to get a working set of defaults to copy into the per user 
+>>(current user) settings.
+>
+>   DMDX tries to access the HKLM tree of the registry for all keys, if it 
+> can't get the permissions it needs it then tries the HKLU 
+> branch.  There's one HKLM (the local machine) and there's a HKLU (local 
+> user) branch per user.  So by default you shouldn't have to do any 
+> tinkering with registry permissions as long as you're using a really 
+> recent version of DMDX (as I fixed some detail to do with this a short 
+> while ago).  Theoretically you should be able to set things up for the 
+> administrator and then the less privileged users won't be able to change 
+> those things if you don't give them permissions to run TimeDX but should 
+> be able to save settings on a per user basis.
+>
+>   Only stuff in addition to the changes in the code for registry keys is 
+> that I've had to do is to give write permissions to everyone so DMDX can 
+> create it's intermediate files in / Program Files / DMDX.  Guess one day 
+> I'll change the code to try a different location for those if it fails to 
+> get write access too.
+>
+>                                                /"\
+>  -jonathan (j.c.f.)                            \ /
+>                                                 X
+>     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+>
+>So, what's with this guy Gideon, anyway?  And why can't he ever
+>remember his Bible?
+>
+>
+>====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+

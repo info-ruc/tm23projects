@@ -1,0 +1,65 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iBGM3AFJ010458
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Dec 2004 15:03:11 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id EC2D7A3AF2F
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Dec 2004 15:03:10 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 92991A3874F
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Dec 2004 15:03:10 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041216143908.00ba4af0@psy1.psych.arizona.edu>
+Date: Thu, 16 Dec 2004 15:03:04 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: PIO output issue
+In-Reply-To: <54183d546112.54611254183d@wiscmail.wisc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:38 AM 12/16/2004 -0600, you wrote:
+
+>Is he correct that DMDX writes to  port C in two sets of 4 bits rather
+>than the full byte?
+
+   Yep, that's the way the original 8255 hardware was and the way InstaCal 
+still represent that port.  DMDX has no choice when it is writing to it as 
+it's two devices.  Historical reasons are there but it's still a little 
+irritating and in your case a liability.
+
+>   If so, I agree with him that this could be the
+>source of our trigger problem with the synamps.  In fact, the specific
+>trigger errors are all consistent with his assessment.
+>
+>If he is correct, is it possible to have new PIO devices that write
+>the full byte to Port C rather than two successive nibbles?  I have
+>sponsored changes in the past but if needed would be willing to
+>sponsor another if you are willing to make such a change.
+
+   Don't think so.  Not unless they've written a new version of the 
+Universal Library that represents port C as one device and not two like the 
+version I have does (unlikely).  Best bet for you is to use the DMDX 16 bit 
+output device and use port B instead of port C.  Of course you'll have to 
+multiply all your codes by 256 but those higher 8 bits of output will be 
+synchronous.  Usually one tries to build a paradigm that doesn't rely on 
+synchronous changes though, things like one line being a strobe that's 
+toggled after the data bits have been set up.
+
+   Then again you could always use Keithley Crap, at least that stuff has 8 
+bit output (even if it is delayed by hundreds of microseconds).  But I'm 
+willing to bet you don't want to buy new interface cards.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Man usually avoids attributing cleverness to somebody else -- unless it
+is an enemy.
+
+                                               -  Albert Einstein
+
+
+

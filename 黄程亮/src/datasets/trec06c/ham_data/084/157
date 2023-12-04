@@ -1,0 +1,130 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id g9VKQ5P20982
+	for <ggilfoyl@facstaff.richmond.edu>; Thu, 31 Oct 2002 15:26:05 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id g9VKOs409227
+	for <ggilfoyl@richmond.edu>; Thu, 31 Oct 2002 15:24:54 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002103115245302255
+ for <ggilfoyl@richmond.edu>; Thu, 31 Oct 2002 15:24:53 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id g9VKOrw07418
+	for <ggilfoyl@richmond.edu>; Thu, 31 Oct 2002 15:24:53 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id g9V8NmG21918;
+	Thu, 31 Oct 2002 03:23:48 -0500
+Date: Thu, 31 Oct 2002 03:23:48 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: gilfoyle <ggilfoyl@richmond.edu>
+Subject: Re: upgrading the University of Richmond cluster
+In-Reply-To: <3DC00E04.653AF4B1@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0210310255230.12972-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+X-Mozilla-Status: 9013
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb26730000410a
+
+Greetings,
+
+
+For minimum disruption, I propose that the upgrade proceed in several
+steps.
+
+1. Secondary master shut down and disconnected from cluster (ethernet
+cable).
+
+2. re-configure BIOS to boot from CDROM, then hard drive
+
+3. Install RedHat 7.2 (later versions not advised at this time)
+
+4. Make sec. master available on public network for access by LinuxLabs.
+
+5. I will install Nimbus enhancements on secondary master and do
+preliminary configuration.
+
+6. back up all user data on master and compute nodes to fileserver.
+
+7. Primary master shut down. re-designated as secondary master
+
+8. Secondary master connected to cluster and re-designated as master.
+
+9. Final configuration. Some local intervention will be needed to boot
+compute nodes. 
+
+10. new sec master set for PXE boot in BIOS and booted.
+
+11. I will re-configure sec master. Primary's image will be copied to
+secondary.
+
+For step 3 (RedHat install), a special partitioning will be required.
+
+use fdisk to partition hda! Partition as follows (order IS important!)
+hda3 500M
+hda2 500M
+hda1 (as desired for scratch, not less than 1G)
+hda4 extended, rest of drive
+
+hda5 3G
+hda6 rest of drive
+
+Note that 5 and 6 are extended partitions inside hda4.
+
+The partitions should be created in the order listed here in order to make
+sure booting will work! Druid will tend to get it wrong.
+
+Then, edit the partitions to specify filesystem and mountpoint as follows:
+
+hda1 ext3fs /scratch
+hda2 swap
+hda3 ext3fs /
+hda5 ext3fs /var
+hda6 ext3fs /usr
+
+Package installation:
+Select Custom install.
+Keep all default selected packages except for dialup
+
+In addition, select:
+
+NFS server
+development tools
+kernel development
+firewall/router
+
+You may also select any other task/package sets desired.
+
+In firewall setup, allow at least ssh (others as you see fit)
+eth2 MUST be set as a trusted interface.
+
+Continue with installation as usual. Send me and Markus IP address and
+(temporary) root password when ready (step 4).
+
+G'day,
+sjames
+
+
+
+On Wed, 30 Oct 2002, gilfoyle wrote:
+
+> Hi Steven,
+> 
+>    What would be a good to arrange for an upgrade of the University
+> of Richmond cluster to the Nimbus system?
+> 
+> cheers,
+> 
+> jerry gilfoyle
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

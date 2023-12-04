@@ -1,0 +1,34 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k19G0st20090
+	for <egs+summary>; Thu, 9 Feb 2006 11:00:55 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k19G0rIf010274
+	for <egs+summary>; Thu, 9 Feb 2006 11:00:53 -0500 (EST)
+Message-ID: <329903805.1139500853018.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 9 Feb 2006 11:00:53 -0500 (EST)
+From: Huang Shiang-Jia <sh366>
+To: egs+summary
+Subject: PAPER 5
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k19G0st20090
+
+<Paper Summary: One-Hop>
+* One-Hop enables routing lookup queries in one hop by maintaining complete routing tables in each node. It superimposes a hierarchy, by dividing the identifier space to ‘slices’ and ‘units’, to notify every node the events of membership changes.
+* According to the fraction of failed queries, total number of nodes and the rate of membership changes, One-Hop tunes the time period to deliver notifications, by adjusting the number of slices (k) and units (u), to minimize bandwidth consumption.
+* One-Hop is attractive in small systems that can’t tolerate the delay of multi-hop routing.
+
+<Comments on One-Hop>
+* One-Hop imposes a hierarchical structure, which intuitively contradict the principle of peer-to-peer system.
+* The slice leaders and unit leaders serve as single point of failures. They may be replaced when failed, but once compromised they can disguise the routing information in a region that nodes in the region can't detect.
+
+
+<Paper Summary: Kelips>
+* Kelips uses O(n^(1/2)) space per node, a larger memory usage (than Pastry/Chord/Tapestry), along with constant background communication overheads, to resolve lookups in O(1) time and message complexity in normal cases.
+* Kelips is loosely-structured; it consists of virtual affinity groups. It differs from Pastry/Chord/Tapestry in that: Multiple nodes in an affinity group, rather than one single node, are responsible for a file/object’s information. Consistency and freshness of information is achieved by the heartbeating mechanism that originates at the responsible nodes and disseminates through an epidemic-style (gossip-style) protocol.
+
+<Comments on Kelips>
+* The memory storage, S(k,n), and background overheads don’t scale well to a very large system.
+

@@ -1,0 +1,86 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id NAA21234
+	for <handyboard@media.mit.edu>; Fri, 28 Apr 2000 13:18:05 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id NAA01639; Fri, 28 Apr 2000 13:18:03 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7780
+From: "Dennis Clark" <dlc@verinet.com>
+X-Real-Life-Name: Dennis Clark
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: problems met in my project
+Posted-Date: Fri, 28 Apr 2000 17:17:25 GMT
+Date: Fri, 28 Apr 2000 17:17:25 GMT
+Organization: none
+Message-Id: <FtqLD1.z1@lugnet.com>
+References: <Ft657J.pD@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+In lugnet.robotics.handyboard, Lo Veng Cheong writes:
+>Dear Sir,
+>  I am a student who is doing a mobile robot project. Since I am really
+>a freshman in Robotics. So, I would like to ask you to help me to solve
+>some problems met in my project. Please forgive me if my questions are
+>too simple!
+
+  There are no simple questions, only simple people!  Apologies to whomever
+originated the quote that I just butchered. ;-)
+
+>  And now, my problem is that I have no idea on how the robot can identify
+>the target objects. I do haven't any basic concept on that. Can you please
+>first teach me so basic knowledge on object identification first.
+
+  Our robots do not have the rich sensory input that we enjoy.  We have to
+help them along quite often by making their environment understandable to
+their limited sensors.  This is especially so if we lack the funding of a
+DARPA project!  So, lets lean back and think about what our 'bots can actually
+see on our budgets.  We have IR sensors, heat sensors, ferrous metal
+sensors and SONAR sensors that are economical for us to use.
+
+  SONAR has so many problems when used for something other than simple range
+finding that we can rule them out right away.  Specular reflections,
+temperature boundries and even air pressure and "soft" surfaces goof them up
+and will make them unreliable for object detection and recognition, especially
+recognition!  That leaves IR, heat and metal detectors.  Lets look at the
+pros and cons of these choices:
+
+IR:
+Pros
+- a beacon can be installed on the objects to recognize.  Each object having
+  a different beacon message can further differentiate them.
+- Using a highly directional beacon searcher can locate an object pretty well.
+Cons
+- There is a lot of IR in our environment, need to modulate and error correct
+  for this.
+- Can be finicky getting the proper range for the beacon
+- Can be finicky getting a highly directional sensor!
+
+Heat:
+Pros
+- PIR sensors are common, work well and are inexpensive
+- PIR can be very directional if desired
+Cons
+- How to make the target warmer than its environment?
+- How do you sort out different temperature signatures?
+
+Metal:
+Pros
+- There are a LOT of Hall-effect sensors of many sensitivities
+- A plastic or non-ferrous field with metal objects will work well
+- Non Hall-effect, simple conduction may be all that is required
+Cons
+- Range of Hall-effect devices is usually not large.
+- Difficulty in finding a work area without conflicting metal signatures
+
+Any other comments?  When designing a robotic application you have to
+consider the design of the robot, environment, and purpose - change any one
+and you render the system inoperable.  My favorite is the IR beacon, cheap,
+simple and mostly reliable, IMO.
+
+YMMV,
+DLC
+

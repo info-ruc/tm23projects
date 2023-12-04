@@ -1,0 +1,184 @@
+Received: from leo (pomuhn02193.netvigator.com [208.151.78.193])
+by nersp.nerdc.ufl.edu (8.9.3/8.9.3/2.1.0) with SMTP id MAA74438;
+Wed, 25 Apr 2001 12:23:04 -0400
+Date: Wed, 25 Apr 2001 12:23:04 -0400
+Message-Id: &lt;200104251623.MAA74438@nersp.nerdc.ufl.edu&gt;
+From: mailcentre@sinatown.com
+To: USERNAME@nersp.nerdc.ufl.edu
+Subject: HK$280 or US$35 to get 30,000,000 e-mail address
+X-Mailer: snEtV2AhorANevsNdOCTyW
+Content-Type: text/plain;
+X-Priority: 3
+X-MSMail-Priority: Normal
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from Quoted-Printable to 8bit 
+by nersp.nerdc.ufl.edu id MAA74438
+
+200,000 Fax number of Hong Kong Enterprises
+1,500,000 E-mail list for Hong Kong
+1,000,000 E-mail list for China
+2,000,000 E-mail list for Taiwan
+25,000,000 E-mail list for the world.
+
+This is your best way to get the above information to promote your
+product.
+
+Only HK$280 or US$35 can get it. (Postage excluded if outside Hong Kong)
+
+If you only got the hit rate only 0.5%, there is
+(200,000+1,500,000+1,000,000+2,000,000+25,000,000)*0.5/100=148500
+customers. If you got only USD1.00 from each customer, you can earn
+USD148,5000.00 from here.
+
+Give us a e-mail for your contact information.
+</pre>
+
+<h3><a name="process">Process</a></h3>
+Now that we've got the full source of a spam message that was sent to us,
+let's look at it to try and figure out where email originated from and see
+how we can alert the system administrator of the spam.<br><br>
+
+Note that the first three lines of the above source show the path the
+email took.  In some messages, multiple hops will be made, but they will
+almost always be composed of three line blocks such as this.  In those
+cases, you will want to go to the last block on the list to find the first
+email server that received the message.  See the below examples for more
+on this.<br><br>
+
+Notice that the message claims that:
+<pre>
+Received: from leo (pomuhn02193.netvigator.com [208.151.78.193])
+by nersp.nerdc.ufl.edu (8.9.3/8.9.3/2.1.0) with SMTP id MAA74438;
+Wed, 25 Apr 2001 12:23:04 -0400
+</pre>
+Meaning a machine named leo who claimed to be pomuhn02193.netvigator.com
+with an IP address of 208.151.78.193 sent a message through
+nersp.nerdc.ufl.edu to the user on Wed, 25 Apr 2001.  The machine name is
+configured by the user and so we can't trust that, and the name
+pomuhn02193.netvigator.com can be faked easily, but it's harder to fake
+the IP address.  So 208.151.78.193 is our first bit of information that
+will lead us to our spam report.<br><br>
+
+Now it's time for us to find out where to send our complain based on the
+IP.  Our first stop is <a
+href="http://swhois.net/">http://swhois.net/</a>.  Swhois is a smart whois
+query that will recursively try whois servers until it has the right server
+for a given IP address.  When we try our suspect IP, we're told that it is from:
+<pre>
+Cable &amp; Wireless USA (NETBLK-CW-10BLK) 
+	CW-10BLK  208.128.0.0 - 208.175.255.255
+Hong Kong Telephone, Inc. MIAA 28/F TELECOM TOWER (NETBLK-CW-208-151-64) 
+	CW-208-151-64 208.151.64.0 - 208.151.95.255
+</pre>
+The descriptions in parenthesis are links to more detailed information for
+each of those records, so we're going to click on both of those to find
+the email address we need to send the complaint to.<br><br>
+
+The second link gives us the email sellect@netvigator.com, and the first
+one gives ipadmin@cw.net.  The best emails to send the spam report to
+would first be: sellect@netvigator.com, abuse@netvigator.com,
+and postmaster@netvigator.com.  If we don't receive a reply from them, or
+if we think that our complaint might be better heard by the first
+provider, we can always send it to those addresses as well (abuse@cw.net,
+postmaster@cw.net). 
+
+<h3><a name="ae">Additional Examples</a></h3> Here are some additional
+examples to demonstrate how to locate the correct source IP from an email.  
+Note that even the source IP on the first connection can be spoofed,
+however, it requires an insecure mail server to send through to do that,
+and, in that case, often going to the second server the mail was sent to
+and complaining that their mail server is misconfigured can be a positive
+step to take.
+
+<pre>
+EMAIL #1
+
+Received: from smtp.ufl.edu (sp28fe.nerdc.ufl.edu [128.227.128.108])
+  by mail.grove.ufl.edu (8.9.3/8.9.3/h3) with ESMTP id LAA20364
+  for <USER@grove.ufl.edu>; Mon, 26 Feb 2001 11:56:56 -0500 (EST)
+From: toner4@e247.com
+Received: from clas.ufl.edu (fury.clas.ufl.edu [128.227.148.247])
+  by smtp.ufl.edu (8.11.2/8.11.2/2.2.1) with ESMTP id f1QGt5H58750
+  for <USER@grove.ufl.edu>; Mon, 26 Feb 2001 11:55:05 -0500
+Received: from marble.rexelusa.com ([12.18.100.217])
+  by clas.ufl.edu (8.9.3+Sun/8.9.1/dna) with ESMTP id LAA05138
+  for <writing@honors.ufl.edu>; Mon, 26 Feb 2001 11:55:04 -0500
+(EST)
+Message-Id: &lt;200102261655.LAA05138@clas.ufl.edu&gt;
+Received: from ddcfirewall.Rexelusa.com (firewall1.rexelusa.com
+[10.1.1.25]) by marble.rexelusa.com with SMTP 
+(Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+  id FQ6A5WAG; Sun, 25 Feb 2001 16:19:12 -0600
+To: happyguy@republic.com
+Date: Sun, 25 Feb 01 15:33:35 EST
+Subject: toner supplies
+X-UIDL: 7a187e738164a673124e17e6bfb3ac77
+
+
+-----Original Message-----
+From: toner4@e247.com [mailto:toner4@e247.com]
+Sent: Sunday, February 25, 2001 3:34 PM
+To: happyguy@republic.com
+Subject: toner supplies
+
+
+PLEASE FORWARD TO THE PERSON
+RESPONSIBLE FOR PURCHASING
+YOUR LASER PRINTER SUPPLIES
+
+</pre>
+The source IP appears to be: <b>12.18.100.217</b>
+<hr noshade size=1>
+
+<pre>
+EMAIL #2
+
+Received: from post.cnt.ru (post.cnt.ru [212.15.122.243])
+  by nersp.nerdc.ufl.edu (8.9.3/8.9.3/2.1.0) with ESMTP id AAA56716
+  for <USER@nersp.nerdc.ufl.edu>; Thu, 26 Apr 2001 00:00:08 -0400
+Received: from mail.com (ppp1-43.dial-up.cnt.ru [212.15.118.43])
+  by post.cnt.ru (8.11.3/8.11.1) with SMTP id f3Q3vtA01460;
+  Thu, 26 Apr 2001 07:57:56 +0400
+Message-Id: &lt;200104260357.f3Q3vtA01460@post.cnt.ru&gt;
+From: &quot;Altervest-Nara&quot; <altervestnara@yandex.ru>
+To:
+Subject:=?Windows-1251?Q?=EA=EE=F2=F2=E5=E4=E6=E8!?=
+Date: Thu, 26 Apr 2001 07:58:34 Москов? (лето)
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset=&quot;windows-1251&quot;
+Content-Transfer-Encoding: 8bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: post
+
+ООО &quot
+Лице
+</pre>
+As this shows, many spam messages are in a foreign language.  The source IP appears to be: <b>212.15.118.43</b>
+
+
+		</div></td></tr></table></center></td><td width="200" align="left" valign="top"><br><br><table width=180 border=0 cellspacing=0 cellpadding=2>
+<tr><th bgcolor=#cccccc><small>Security Alerts</small></th></tr>
+</table><br>
+<table width="180"
+		    border="0"
+		    cellspacing="0"
+		    cellpadding="0"><tr><td class="boldtext" bgcolor="#CCCCCC">WMF Vulnerability</td></tr><tr><td><table width="100%"
+		    border="1"
+		    cellspacing="1"
+		    cellpadding="6"
+		    bordercolor="#CCCCCC"><tr><td>There is a critical vulnerability in most versions of windows that is being actively exploited.  Patches are now available from <a href="http://windowsupdate.microsoft.com">Windows Update</a>, or <a href=http://www.microsoft.com/technet/security/Bulletin/MS06-001.mspx>Security Bulletin MS06-001</a>.<br><br>The UF Security Team has an <a href="http://infosec.ufl.edu/wmf/">informational site</a> with details and a check to see if you are vulnerable.</td></tr></table></td></tr></table><br><table width="180"
+		    border="0"
+		    cellspacing="0"
+		    cellpadding="0"><tr><td class="boldtext" bgcolor="#CCCCCC">Lupper Worm</td></tr><tr><td><table width="100%"
+		    border="1"
+		    cellspacing="1"
+		    cellpadding="6"
+		    bordercolor="#CCCCCC"><tr><td>The Lupper Worm is scanning and attempting to compromise Linux web servers running vulnerable web applications. For more information please read the <a href="http://isc.sans.org/diary.php?storyid=823">SANS ISC</a> and <a href="http://securityresponse.symantec.com/avcenter/venc/data/linux.plupii.html">Symantec</a> write-ups.</td></tr></table></td></tr></table><br></td></tr></table><p align="center" class="footer">UF Network Services, (352) 392-2061<br>Please contact <a href="mailto:ufirt@ufl.edu">UFIRT</a> with any corrections or questions.<br>Visit our <a href="http://infosec.ufl.edu/athome/spam.shtml">spam information page</a> for help with spam/virus related questions<br>
+This file last modified Monday, 06-Mar-2006 16:22:36 EST
+    </p>
+</body>
+</html>
+
+

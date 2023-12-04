@@ -1,0 +1,243 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j3MLjN5L026078
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 22 Apr 2005 14:45:23 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 530EDA9DFDD
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 22 Apr 2005 14:45:23 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.Arizona.EDU [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id AD6EEA9E003
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 22 Apr 2005 14:45:19 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050422142655.00ba4cc0@psy1.psych.arizona.edu>
+Date: Fri, 22 Apr 2005 14:45:17 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Timing problem with a fast computer
+In-Reply-To: <200504220749.j3M7nvlE024520@cooper.uws.edu.au>
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="=====================_364169062==_.ALT"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+--=====================_364169062==_.ALT
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+   You aren't running the item file in a fixed ISI mode (<d 0> simply means 
+go as fast as possible which is anything but fixed) so the variance is 
+attributable to things like the speed that the laptops are reading your 
+bitmaps.  If you really wanted a fixed ISI you will have to use a value for 
+the delay parameter that is long enough for the machine to prepare them 
+item (see the preparation time help in the delay keyword help for 
+details).  You would also have to ensure that the display was longer than 
+any response gathered, currently "Your response !!!" will stay on the 
+screen till they respond and then the next item will commence.  You would 
+have to have another frame after that and make the "Your response 
+!!!"  frame longer than the timeout with something like this:
+
++1110100 <umnr><umpr><mpr +Left Arrow><mnr +Right Arrow><mnr +Down 
+Arrow>  * "Your response !!!" <%ms 3000> / ;
+
+At 05:49 PM 4/22/2005 +1000, you wrote:
+>Dear DMDX community,
+>
+>I have got a problem with DMDX experiment running in the continuous mode 
+>(<cr> parameter). In short, the experiment that should run 59.451 min (in 
+>diagnostic mode), finishes in about 46 min.
+>Here is the parameter line I have used:
+>
+>----
+><ep> <s 1> <g 11> <fd 1> <cr> <nfb> <t 3000> <d 0> <id keyboard> <dbc 
+>193193193> <vm 1024,768,768,16,60> <zil> <zor> <vzk +Left Arrow> <vzk 
+>+Right Arrow> <vzk +Down Arrow> <eop>
+>----
+>
+>and, an example of one trial:
+>-----
+>99 "Please count male face(s)" <ms% 2000> /;
+>1221 <bmp> cross.bmp <ms% 1200>/ ! <bmp 121, 20> 122.bmp <ms% 100> / <bmp> 
+>cross.bmp <ms% 1000> / ;
+>2111 <bmp> cross.bmp <ms% 1200>/ ! <bmp 14, 20> 211.bmp <ms% 100> / <bmp> 
+>cross.bmp <ms% 1000> / ;
+>1224 <bmp> cross.bmp <ms% 900>/ ! <bmp 633, 390> 122.bmp <ms% 100> / <bmp> 
+>cross.bmp <ms% 1000> / ;
+>2224 <bmp> cross.bmp <ms% 1100>/ ! <bmp 553, 390> 222.bmp <ms% 100> / 
+><bmp> cross.bmp <ms% 1000> / ;
+>1212 <bmp> cross.bmp <ms% 1100>/ ! <bmp 633, 20> 121.bmp <ms% 100> / <bmp> 
+>cross.bmp <ms% 1000> / ;
+>1213 <bmp> cross.bmp <ms% 1200>/ ! <bmp 121, 390> 121.bmp <ms% 100> / 
+><bmp> cross.bmp <ms% 1000> / ;
+>1224 <bmp> cross.bmp <ms% 900>/ ! <bmp 633, 390> 122.bmp <ms% 100> / <bmp> 
+>cross.bmp <ms% 1000> / ;
+>2111 <bmp> cross.bmp <ms% 1200>/ ! <bmp 14, 20> 211.bmp <ms% 100> / <bmp> 
+>cross.bmp <ms% 1000> / ;
+>  +1110100 <umnr><umpr><mpr +Left Arrow><mnr +Right Arrow><mnr +Down 
+> Arrow>  * "Your response !!!";
+>99 "Get ready for the next trial"  <ms% 1500>/;
+>----
+>
+>I am using Acer Travel Mate 8000 which has Pentium Mobile (Centrino) 2.2 
+>GHz processor, 1.5 Gb RAM, ATI Mobility Radeon 9700 with 128 MB DDR RAM 
+>(good laptop for gamers).
+>Didn't have any other problem running experiment on this machine until 
+>discovered the timing issue.
+>
+>In this experiment, the duration of one tick is 16.17 ms (determined by 
+>DMDX) and the vertical refresh rate is 60 Hz.
+>I have another laptop (60Hz, tick=16.680ms), where the experiment runs at 
+>the right pace. Running the experiment on both laptops simultaneously 
+>showed difference in the presentation time after the forth item (see the 
+>example trial above).
+>
+>Would appreciate any idea about what could be a possible cause, and, more 
+>importantly, how to solve the puzzle.
+>
+>All the best,
+>Arman
+>
+>--
+>Arman Abrahamyan
+>Doctoral Student
+>School of Psychology & MARCS Auditory Laboratories
+>University of Western Sydney - Bankstown Campus
+>Locked Bag 1797 Penrith South DC NSW 1797 Australia
+>Phone: (+612) 9772 6660; Fax: (+612) 9772 6326
+>E-mail: <mailto:a.abrahamyan@uws.edu.au>a.abrahamyan@uws.edu.au
+>WWW: 
+><http://marcs.uws.edu.au/people/abrahamyan/>http://marcs.uws.edu.au/people/abrahamyan/
+>
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Dickson's Gardening Rule: When weeding, the best way to make
+sure you are removing a weed and not a valuable plant is to pull
+on it. If it comes out of the ground easily, it is a valuable
+plant.
+
+
+--=====================_364169062==_.ALT
+Content-Type: text/html; charset="us-ascii"
+
+<html>
+<br>
+&nbsp; You aren't running the item file in a fixed ISI mode (&lt;d 0&gt;
+simply means go as fast as possible which is anything but fixed) so the
+variance is attributable to things like the speed that the laptops are
+reading your bitmaps.&nbsp; If you really wanted a fixed ISI you will
+have to use a value for the delay parameter that is long enough for the
+machine to prepare them item (see the preparation time help in the delay
+keyword help for details).&nbsp; You would also have to ensure that the
+display was longer than any response gathered, currently &quot;Your
+response !!!&quot; will stay on the screen till they respond and then the
+next item will commence.&nbsp; You would have to have another frame after
+that and make the &quot;Your response !!!&quot;&nbsp; frame longer than
+the timeout with something like this:<br><br>
++1110100 &lt;umnr&gt;&lt;umpr&gt;&lt;mpr +Left Arrow&gt;&lt;mnr +Right
+Arrow&gt;&lt;mnr +Down Arrow&gt;&nbsp; * &quot;Your response !!!&quot;
+&lt;%ms 3000&gt; / ;<br><br>
+At 05:49 PM 4/22/2005 +1000, you wrote:<br>
+<blockquote type=cite class=cite cite><font face="arial" size=2>Dear DMDX
+community, </font><br>
+&nbsp;<br>
+<font face="arial" size=2>I have got a problem with DMDX experiment
+running in the continuous mode (&lt;cr&gt; parameter). In short, the
+experiment that should run 59.451 min (in diagnostic mode), finishes in
+about 46 min. </font><br>
+<font face="arial" size=2>Here is the parameter line I have used:
+</font><br>
+&nbsp;<br>
+<font face="arial" size=2>----</font><br>
+<font face="arial" size=2>&lt;ep&gt; &lt;s 1&gt; &lt;g 11&gt; &lt;fd
+1&gt; &lt;cr&gt; &lt;nfb&gt; &lt;t 3000&gt; &lt;d 0&gt; &lt;id
+keyboard&gt; &lt;dbc 193193193&gt; &lt;vm 1024,768,768,16,60&gt;
+&lt;zil&gt; &lt;zor&gt; &lt;vzk +Left Arrow&gt; &lt;vzk +Right Arrow&gt;
+&lt;vzk +Down Arrow&gt; &lt;eop&gt;</font><br>
+<font face="arial" size=2>----</font><br>
+&nbsp;<br>
+<font face="arial" size=2>and, an example of one trial:</font><br>
+<font face="arial" size=2>-----</font><br>
+<font face="arial" size=2>99 &quot;Please count male face(s)&quot;
+&lt;ms% 2000&gt; /; <br>
+1221 &lt;bmp&gt; cross.bmp &lt;ms% 1200&gt;/ ! &lt;bmp 121, 20&gt;
+122.bmp &lt;ms% 100&gt; / &lt;bmp&gt; cross.bmp &lt;ms% 1000&gt; / 
+;<br>
+2111 &lt;bmp&gt; cross.bmp &lt;ms% 1200&gt;/ ! &lt;bmp 14, 20&gt; 211.bmp
+&lt;ms% 100&gt; / &lt;bmp&gt; cross.bmp &lt;ms% 1000&gt; / ;<br>
+1224 &lt;bmp&gt; cross.bmp &lt;ms% 900&gt;/ ! &lt;bmp 633, 390&gt;
+122.bmp &lt;ms% 100&gt; / &lt;bmp&gt; cross.bmp &lt;ms% 1000&gt; / 
+;<br>
+2224 &lt;bmp&gt; cross.bmp &lt;ms% 1100&gt;/ ! &lt;bmp 553, 390&gt;
+222.bmp &lt;ms% 100&gt; / &lt;bmp&gt; cross.bmp &lt;ms% 1000&gt; / 
+;<br>
+1212 &lt;bmp&gt; cross.bmp &lt;ms% 1100&gt;/ ! &lt;bmp 633, 20&gt;
+121.bmp &lt;ms% 100&gt; / &lt;bmp&gt; cross.bmp &lt;ms% 1000&gt; / 
+;<br>
+1213 &lt;bmp&gt; cross.bmp &lt;ms% 1200&gt;/ ! &lt;bmp 121, 390&gt;
+121.bmp &lt;ms% 100&gt; / &lt;bmp&gt; cross.bmp &lt;ms% 1000&gt; / 
+;<br>
+1224 &lt;bmp&gt; cross.bmp &lt;ms% 900&gt;/ ! &lt;bmp 633, 390&gt;
+122.bmp &lt;ms% 100&gt; / &lt;bmp&gt; cross.bmp &lt;ms% 1000&gt; / 
+;<br>
+2111 &lt;bmp&gt; cross.bmp &lt;ms% 1200&gt;/ ! &lt;bmp 14, 20&gt; 211.bmp
+&lt;ms% 100&gt; / &lt;bmp&gt; cross.bmp &lt;ms% 1000&gt; / ;<br>
+&nbsp;+1110100 &lt;umnr&gt;&lt;umpr&gt;&lt;mpr +Left Arrow&gt;&lt;mnr
++Right Arrow&gt;&lt;mnr +Down Arrow&gt;&nbsp; * &quot;Your response
+!!!&quot;;<br>
+99 &quot;Get ready for the next trial&quot;&nbsp; &lt;ms% 1500&gt;/;
+<br>
+----<br>
+</font>&nbsp;<br>
+<font face="arial" size=2>I am using Acer Travel Mate 8000 which has
+Pentium Mobile (Centrino) 2.2 GHz processor, 1.5 Gb RAM, ATI Mobility
+Radeon 9700 with 128 MB DDR RAM (good laptop for gamers). <br>
+Didn't have any other problem running experiment on this machine until
+discovered the timing issue. <br>
+</font>&nbsp;<br>
+<font face="arial" size=2>In this experiment, the duration of one tick is
+16.17 ms (determined by DMDX) and the vertical refresh rate is 60 Hz.
+</font><br>
+<font face="arial" size=2>I have another laptop (60Hz, tick=16.680ms),
+where the experiment runs at the right pace. Running the experiment on
+both laptops simultaneously showed difference in the presentation time
+after the forth item (see the example trial above).</font><br>
+&nbsp;<br>
+<font face="arial" size=2>Would appreciate any idea about what could be a
+possible cause, and, more importantly, how to solve the
+puzzle.</font><font face="arial"> </font><br>
+&nbsp;<br>
+<font face="arial" size=2>All the best, </font><br>
+<font face="arial" size=2>Arman</font><br>
+&nbsp;<br>
+<font face="arial" size=2>--<br>
+Arman Abrahamyan<br>
+Doctoral Student<br>
+School of Psychology &amp; MARCS Auditory Laboratories<br>
+University of Western Sydney - Bankstown Campus<br>
+Locked Bag 1797 Penrith South DC NSW 1797 Australia<br>
+Phone: (+612) 9772 6660; Fax: (+612) 9772 6326 <br>
+E-mail:
+<a href="mailto:a.abrahamyan@uws.edu.au">a.abrahamyan@uws.edu.au</a>
+<br>
+WWW: <a href="http://marcs.uws.edu.au/people/abrahamyan/">http://marcs.uws.edu.au/people/abrahamyan/</a></font><br>
+&nbsp;</blockquote><br>
+<br>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /&quot;\</div>
+<div>&nbsp;-jonathan (j.c.f.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \ /</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X </div>
+<div>&nbsp;&nbsp;&nbsp; ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL&nbsp; / \ </div>
+<br>
+<div>&nbsp; Dickson's Gardening Rule: When weeding, the best way to make</div>
+<div>sure you are removing a weed and not a valuable plant is to pull</div>
+<div>on it. If it comes out of the ground easily, it is a valuable</div>
+<div>plant.</div>
+<br>
+</html>
+
+--=====================_364169062==_.ALT--
+
+

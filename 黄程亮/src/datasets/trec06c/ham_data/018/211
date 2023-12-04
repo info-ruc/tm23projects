@@ -1,0 +1,176 @@
+Received: from mailgw1a.lmco.com (mailgw1a.lmco.com [192.31.106.7])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id IAA19740
+	for <handyboard@media.mit.edu>; Thu, 18 Jun 1998 08:44:05 -0400 (EDT)
+Received: from emss02g01.ems.lmco.com (emss02g01.ems.lmco.com [198.7.15.39])
+	by mailgw1a.lmco.com (8.8.8/8.8.8) with ESMTP id GAA16393;
+	Thu, 18 Jun 1998 06:44:03 -0600 (MDT)
+Received: from ims2.hop.hou.lmsg.lmco.com ([138.114.17.110]) by lmco.com (PMDF V5.1-10 #20543)
+ with ESMTP id <0EUQ00B7GZDACZ@lmco.com>; Thu, 18 Jun 1998 06:44:00 -0600 (MDT)
+Received: by IMS2 with Internet Mail Service (5.0.1460.8) id <J94G4JN8>; Thu, 18 Jun 1998 07:34:42 -0500
+Content-Return: allowed
+Date: Thu, 18 Jun 1998 07:38:12 -0500
+From: "Ross, Michael" <michael.ross@lmco.com>
+Subject: RE: System interupt problems?
+To: handyboard@media.mit.edu, "Timothy B. Gold" <goldt@ee.byu.edu>
+Message-Id: <31889D453C9BD111A13600805FEA1B3EB787E4@lm23mailb.hop.hou.lmsg.lmco.com>
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.0.1460.8)
+Content-Type: text/plain; charset="iso-8859-1"
+
+Tim,
+
+I just scanned your code, so I might have missed it, but don't you have to
+clear (or set) a flag in your interrupt routine to reenable the TOC4
+interrupt?
+
+Mike
+
+
+	----------
+	From:  Timothy B. Gold[SMTP:goldt@ee.byu.edu]
+	Sent:  Wednesday, June 17, 1998 5:11 PM
+	To:  handyboard@media.mit.edu
+	Cc:  goldt@ee.byu.edu
+	Subject:  System interupt problems?
+
+	I need some help! We have a handy board hooked up to some decoders,
+	which we will use to help track our robot as it moves across the
+floor.
+	We have to do a few pokes and a peek to read the decoders, but we've
+got
+	it all set up and it works beautifully if you do it manually.
+
+	  However, because the encoders have a very high resolution, we need
+to
+	constantly read the decoders so that their counters don't overflow
+and
+	wrap-around.  I figured that I'd write an assembly routine and have
+it
+	triggered by the system interrupt (TOC4) so that it is constantly
+	reading the decoders and keeping a total of how much they have
+changed.
+
+	  I successfully wrote an assembly routine that works just fine if
+it is
+	called from a C program.  To test it, I have a simple loop that runs
+the
+	motor forward and the backward (for a specified amount of time),
+calling
+	my assembly routine to update the value and the displaying the
+global
+	counter each time.
+
+	  However, if I take the EXACT same piece of code and link it in to
+the
+	TOC4 interrupt, it doesn't work correctly.  While before I read
+approx.
+	80 (forward) and -80 (reverse) for each turn of the motor, now it
+reads
+	approx. -6 (forward) and -1100 (reverse) for each turn.
+
+	  I'll attach the code I'm using below.  Does anyone have any ideas
+as
+	to what might be causing the problem?  Are there some other things
+going
+	on with the interrupt that I should be aware of?  I have tried
+slowing
+	it down a little (keeping a count and only reading the decoders once
+	every 200 TOC4 interrupts or so), but the results are identical.
+
+	  Any help would be appreciated -- this one's had me stumped all day
+and
+	I have't been making any progress with it.  Thanks!
+
+	----------------------------CODE:--------------------------------
+
+	/* Assembly routine(s) use to read the decoder
+	   and update a global counter. This piece of code
+	   will actually only read one decoder -- reading
+	   the other one will be added when this is debugged */
+		
+	#include "/usr/local/ic/libs/6811regs.asm"
+
+	        ORG MAIN_START
+
+	variable_COUNT: /* this is the total count from the decoder */
+		FDB 00
+
+	variable_TCOUNT: /* this is used to store the value just read
+			    from the decoder */
+		FDB 00
+
+	subroutine_initialize_module:
+	#include "/usr/local/ic/libs/ldxibase.asm"
+
+	        ldd     TOC4INT,X
+	        std     interrupt_code_exit+1
+	        ldd     #interrupt_code_start
+	        std     TOC4INT,X
+		rts
+
+	/* This is the interrupt routine that doesn't work... */
+		
+	interrupt_code_start:
+
+		ldd #$c
+		stab $4000 /* poke(0x4000,0x0c) -- latch internal decoder
+counter
+		              on ouput */
+		ldd #$1
+		stab $4000 /* poke (0x4000,0x01) -- pull reset for decoder
+high */
+		ldd #$d
+		stab $4000 /* poke (0x4000,0x0d) -- pull reset for decoder
+			       back down */
+		ldab $4000 /* peek (0x4000) -- get value from decoder */
+		clra       /* clear upper byte of variable */
+		tba        /* copy regb to rega */
+		anda #$80  /* check to see if number is negative */
+		cmpa #0 
+		beq skip_pos /* skip ahead if number if positive */
+		ldaa #$ff    /* sign extend upper byte of count if negative
+*/
+	skip_pos:	
+		std variable_TCOUNT  /* store read value (from decoder) to
+TCOUNT */
+		ldd variable_COUNT   /* load count into double accum. */
+		addd variable_TCOUNT /* add TCOUNT to COUNT */
+		std variable_COUNT   /* store COUNT to memory */ 
+
+	interrupt_code_exit:
+	        jmp     $0000
+
+
+	/* This is the stand-alone routine that DOES work...
+	   (same piece of code, except for one changed label and
+	    an RTS at the end instead of a JMP) */
+		
+	subroutine_mytest:
+
+		ldd #$c
+		stab $4000 /* poke(0x4000,0x0c) -- latch internal decoder
+counter
+		              on ouput */
+		ldd #$1
+		stab $4000 /* poke (0x4000,0x01) -- pull reset for decoder
+high */
+		ldd #$d
+		stab $4000 /* poke (0x4000,0x0d) -- pull reset for decoder
+			       back down */
+		ldab $4000 /* peek (0x4000) -- get value from decoder */
+		clra       /* clear upper byte of variable */
+		tba        /* copy regb to rega */
+		anda #$80  /* check to see if number is negative */
+		cmpa #0 
+		beq skip   /* skip ahead if number if positive */
+		ldaa #$ff    /* sign extend upper byte of count if negative
+*/
+	skip:	
+		std variable_TCOUNT  /* store read value (from decoder) to
+TCOUNT */
+		ldd variable_COUNT   /* load count into double accum. */
+		addd variable_TCOUNT /* add TCOUNT to COUNT */
+		std variable_COUNT   /* store COUNT to memory */ 
+		rts
+	
+

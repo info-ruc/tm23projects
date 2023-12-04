@@ -1,0 +1,48 @@
+Received: from watfast.uwaterloo.ca (slegon@watfast.uwaterloo.ca [129.97.172.120])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id LAA18426
+	for <handyboard@media.mit.edu>; Wed, 27 May 1998 11:59:26 -0400 (EDT)
+Received: (from slegon@localhost)
+	by watfast.uwaterloo.ca (8.8.8/8.8.8) id LAA06908
+	for handyboard@media.mit.edu; Wed, 27 May 1998 11:57:52 -0400 (EDT)
+From: Skye Legon <slegon@watfast.uwaterloo.ca>
+Message-Id: <199805271557.LAA06908@watfast.uwaterloo.ca>
+Subject: IC persistent globals?
+To: handyboard@media.mit.edu (MIT Handyboard List)
+Date: Wed, 27 May 1998 11:57:52 -0400 (EDT)
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Hello all,  
+
+I am using neural nets to control my robot, and currently have to 
+download the weights to the handyboard every time I power on.  This is 
+a perfect application for using persistent global variables, but alas 
+I am having troubles.  
+
+My smallest network consists of 21 floats (84 bytes), but if I try to 
+make more than 14 or 15 floats (56-60 bytes) persistent (it seems to 
+depend on whether they are arrays or not) I get the friendly message 
+"Board Syncronization Error", which I interpret as "Out of Persistent 
+Global Space."
+
+Does anybody know the size of this persistent global space?  If indeed
+it is about 60 bytes, are there any known workarounds?  (e.g. can I
+write the weights to an unused part of RAM and somehow grab the values 
+when I start up?)
+
+Cheers, Skye.
+
+
++-----------------------------------------+----------------------------+
+| Skye Legon                              |   University of Waterloo   |
+| Systems Design Engineering              | __/   __/  __/         __/ |
+| Pattern Analysis & Machine Intelligence | __/   __/  __/   __/   __/ |
+| 143 Columbia St. West, Unit E-4         | __/   __/  __/  ____/  __/ |
+| Waterloo Ontario CANADA  N2L 3L2        | __/__/__/   __/__/\__/__/  |
+| +1(519)888-9249                         |  ______/     ___/  \___/   |
+| slegon@uwaterloo.ca                     |  DC 2620, 888-4567 x5192   |
++-----------------------------------------+----------------------------+
+
+

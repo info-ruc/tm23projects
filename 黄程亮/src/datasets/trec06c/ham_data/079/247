@@ -1,0 +1,408 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g2CMVKb20332;
+	Tue, 12 Mar 2002 14:31:21 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id NAA21249;
+	Tue, 12 Mar 2002 13:50:48 -0500 (EST)
+Date: Tue, 12 Mar 2002 13:50:48 -0500 (EST)
+Received: by canaveral.red.cert.org; Tue, 12 Mar 2002 13:45:21 -0500
+Message-Id: <CA-2002-07.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-07 Double Free Bug in zlib Compression Library
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 112
+Status: RO
+X-Status: $$$$
+X-UID: 0000000042
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-07 Double Free Bug in zlib Compression Library
+
+   Original release date: March 12, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Any  software  that  is  linked  to  zlib  1.1.3 or earlier may be
+       affected
+     * Data  compression libraries derived from zlib 1.1.3 or earlier may
+       contain a similar bug
+
+Overview
+
+   There  is  a  bug  in  the  zlib compression library that may manifest
+   itself  as a vulnerability in programs that are linked with zlib. This
+   may  allow  an  attacker to conduct a denial-of-service attack, gather
+   information, or execute arbitrary code.
+
+   It  is important to note that the CERT/CC has not received any reports
+   of  exploitation of this bug. Based on the information available to us
+   at  this  time,  it  is difficult to determine whether this bug can be
+   successfully  exploited.  However,  given the widespread deployment of
+   zlib, we have published this document as a proactive measure.
+
+I. Description
+
+   There is a bug in the decompression algorithm used by the popular zlib
+   compression   library.   If   an   attacker   is   able   to   pass  a
+   specially-crafted  block  of invalid compressed data to a program that
+   includes  zlib,  the  program's attempt to decompress the crafted data
+   can  cause  the  zlib routines to corrupt the internal data structures
+   maintained by malloc.
+
+   The  bug  results  from  a  programming  error that causes segments of
+   dynamically  allocated  memory  to  be  released more than once (i.e.,
+   "double-freed"). Specifically, when inftrees.c:huft_build() encounters
+   the   crafted   data,   it   returns   an  unexpected  Z_MEM_ERROR  to
+   inftrees.c:inflate_trees_dynamic().  When a subsequent call is made to
+   infblock.c:inflate_blocks(), the inflate_blocks function tries to free
+   an internal data structure a second time.
+
+   Because   this   bug   interferes   with  the  proper  allocation  and
+   deallocation  of dynamic memory, it may be possible for an attacker to
+   influence  the  operation  of  programs  that  include  zlib.  In most
+   circumstances,  this influence will be limited to denial of service or
+   information  leakage, but it is theoretically possible for an attacker
+   to  insert  arbitrary  code into a running program. This code would be
+   executed with the permissions of the vulnerable program.
+
+   The CERT/CC is tracking this issue as VU#368819. This reference number
+   corresponds to CVE candidate CAN-2002-0059.
+
+II. Impact
+
+   This  bug may introduce vulnerabilities into any program that includes
+   the  affected  library. Depending upon how and where the zlib routines
+   are  called  from  the  given program, the resulting vulnerability may
+   have  one  or  more  of  the  following  impacts:  denial  of service,
+   information leakage, or execution of arbitrary code.
+
+III. Solution
+
+Upgrade your version of zlib
+
+   The  maintainers  of  zlib have released version 1.1.4 to address this
+   vulnerability.  Upgrade any software that is linked to or derived from
+   an earlier version of zlib. The latest version of zlib is available at
+   http://www.zlib.org
+
+   These are the MD5 checksums for zlib version 1.1.4:
+
+     abc405d0bdd3ee22782d7aa20e440f08 zlib-1.1.4.tar.gz
+     9bf1d36ced334b0cf1f996f5c8171018 zlib114.zip
+
+Apply a patch from your vendor
+
+   The  zlib  compression  library  is  freely available and used by many
+   vendors   in  a  wide  variety  of  applications.  Any  one  of  these
+   applications  may  contain vulnerabilities that are introduced by this
+   vulnerability.
+
+   Appendix A contains information provided by vendors for this advisory.
+   As  vendors report new information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not  listed  below,  we  have not received their comments.
+   Please contact your vendor directly.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+Apple Computer, Inc.
+
+   Mac OS X and Mac OS X Server do not contain this vulnerability.
+
+Compaq Computer Corporation
+
+   COMPAQ COMPUTER CORPORATION
+   -----------------------------
+   x-ref: SSRT0818 zlib
+
+   At  the  time  of  writing this document, Compaq continues to evaluate
+   this potential problem and impacts to Compaq released software. Compaq
+   will implement solutions based on the conclusion of this evaluation as
+   necessary.  Compaq  will provide notice of any new patches as a result
+   any  required  solution through standard patch notification procedures
+   and be available from your normal Compaq Services support channel.
+   COMPAQ COMPUTER CORPORATION
+   -----------------------------
+
+Conectiva Linux
+
+   Conectiva  Linux  supported  versions (5.0, 5.1, 6.0, 7.0, ferramentas
+   graficas and ecomerce) are affected by the zlib vulnerability. Updates
+   will be sent to our security mailing lists and be available at our ftp
+   site  and  mirrors.  The  updates  will  include a new version of zlib
+   itself and also other packages which include their own version of zlib
+   or are linked statically to the system-wide copy of zlib.
+
+Engarde
+
+   EnGarde Secure Linux Community and Professional are both vulnerable to
+   the  zlib  bugs.  Guardian  Digital  addressed  this  vulnerability in
+   ESA-20020311-008 which may be found at:
+
+     http://www.linuxsecurity.com/advisories/other_advisory-1960.html
+
+   EnGarde  Secure Professional users may upgrade their systems using the
+   Guardian Digital Secure Network.
+
+FreeBSD
+
+   FreeBSD  is  not  vulnerable,  as  the  FreeBSD  malloc implementation
+   detects  and complains about several programming errors including this
+   kind of double free.
+
+Fujitsu
+
+   Fujitsu's   UXP/V  operating  system  is  not  affected  by  the  zlib
+   vulnerability because it does not support zlib.
+
+Hewlett-Packard Company
+
+   HP is not vulnerable.
+
+IBM Corporation
+
+   IBM's   AIX   operating   system,   version   5.1,   ships  with  open
+   source-originated  zlib  that  is used with the Redhat Package Manager
+   (rpm)  to  install  applications  that  are  included in the AIX-Linux
+   Affinity Toolkit. zlib (libz.a) is a shared library in AIX. AIX 5.1 is
+   susceptible  to  the  described vulnerability. AIX 4.3.x does not ship
+   with zlib, but customers who install zlib and use it will be similarly
+   vulnerable.  IBM  will  make  the patched version of zlib available as
+   soon as it is made available to us.
+
+OpenBSD
+
+   OpenBSD  is  not vulnerable as OpenBSD's malloc implementation detects
+   double freeing of memory. The zlib shipped with OpenBSD has been fixed
+   in OpenBSD-current in January 2002.
+
+Openwall GNU/*/Linux
+
+   All  versions  of  Openwall  GNU/*/Linux (Owl) prior to the 2002/02/15
+   Owl-current   snapshot   are   affected   by   the   zlib  double-free
+   vulnerability.  Owl-current after 2002/02/15 includes the proper fixes
+   in  its  userland  packages.  In order to not place the users of other
+   vendors'  products  at  additional  risk,  we  have  agreed  to  delay
+   documenting  this  as a security change and including the fixes in Owl
+   0.1-stable  until  there's a coordinated public announcement. While we
+   don't  normally  support this kind of a policy (releasing a fix before
+   there's an announcement), this time handling the vulnerability in this
+   way  was  consistent with the state of things by the time the (already
+   publicly known) bug was first realized to be a security vulnerability.
+
+   The  zlib bug could affect the following Owl packages: gnupg, openssh,
+   rpm,  texinfo  (not  necessarily  in  a security sense). Of these, the
+   OpenSSH  could potentially allow for an active remote attack resulting
+   in a root compromise. If only SSH protocol version 1 is allowed in the
+   OpenSSH  server  this is reduced to a local attack, but reverse remote
+   attack  possibilities  by a malicious server remain. Additionally, any
+   third-party software that makes use of the provided zlib library could
+   be affected.
+
+   Parts  of  the  Linux 2.2 kernel included in Owl were also affected by
+   the  vulnerability.  Fortunately,  those  parts  (Deflate  compression
+   support  for PPP and the experimental Deflate compression extension to
+   IrDA)  are  normally  not  used  by the Owl userland. The bug has been
+   corrected  starting  with  Linux 2.2.20-ow2 which has been made public
+   and  a part of both Owl-current and Owl 0.1-stable on 2002/03/03. This
+   change,  however,  will  only  be documented in the publicly-available
+   change logs on the coordinated public announcement date.
+
+Red Hat, Inc.
+
+   Red  Hat  Linux  ships  with a zlib library that is vulnerable to this
+   issue.  Although  most  packages  in Red Hat Linux use the shared zlib
+   library we have identified a number of packages that either statically
+   link to zlib or contain an internal version of the zlib code.
+
+   Updates  to  zlib  and these packages as well as our advisory note are
+   available from the following URL. Users of the Red Hat Network can use
+   the up2date tool to automatically upgrade their systems.
+
+     http://www.redhat.com/support/errata/RHSA-2002-026.html
+
+   Red  Hat  would  like  to thank CERT/CC for their help in coordinating
+   this issue with other vendors.
+
+SGI
+
+   SGI  acknowledges  the  zlib  vulnerabilities  reported by CERT and is
+   currently  investigating.  No further information is available at this
+   time.
+
+   For  the  protection  of  all  our  customers,  SGI does not disclose,
+   discuss  or  confirm  vulnerabilities  until  a full investigation has
+   occurred  and any necessary patch(es) or release streams are available
+   for all vulnerable and supported IRIX operating systems. Until SGI has
+   more  definitive  information  to provide, customers are encouraged to
+   assume   all   security   vulnerabilities   as  exploitable  and  take
+   appropriate  steps  according  to  local  site  security  policies and
+   requirements.  As  further  information  becomes available, additional
+   advisories  will  be  issued  via  the normal SGI security information
+   distribution   methods   including   the   wiretap   mailing  list  on
+   http://www.sgi.com/support/security/.
+
+XFree86
+
+   XFree86 versions 4.0 through 4.2.0 include zlib version 1.0.8. XFree86
+   3.x  includes  zlib version 1.0.4. The zlib code included with XFree86
+   is  only  used on some platforms. This is determined by the setting of
+   HasZlib   in  the  imake  config  files  in  the  xc/config/cf  source
+   directory.  If  HasZlib  is  set  to  YES  in the platform's vendor.cf
+   file(s),  then  the  system-provided  zlib  is  used  instead  of  the
+   XFree86-provided  version.  XFree86  uses  the system-provided zlib by
+   default only on the following platforms:
+
+     FreeBSD 2.2 and later
+     NetBSD 1.2.2 and later
+     OpenBSD
+     Darwin
+     Debian Linux
+
+   The  zlib  code in XFree86 has been fixed in the CVS repository (trunk
+   and  the  xf-4_2-branch branch) as of 14 February 2002. A source patch
+   for XFree86 4.2.0 will be available from
+   ftp://ftp.xfree86.org/pub/XFree86/4.2.0/fixes/.
+
+   The  following  XFree86 4.2.0 binary distributions provided by XFree86
+   include and use a vulnerable version of zlib:
+
+     Linux-alpha-glibc22
+     Linux-ix86-glibc22
+
+   When   updated   binaries   are  available,  it'll  be  documented  at
+   http://www.xfree86.org/4.2.0/UPDATES.html.
+
+   To  check  if  an  installation  of  XFree86 includes zlib, see if the
+   following file exists:
+
+     /usr/X11R6/lib/libz.a
+
+   To  check if an XFree86 X server is dynamically linked with zlib, look
+   for    a    line   containing   'libz'   in   the   output   of   'ldd
+   /usr/X11R6/bin/XFree86'.
+
+   Various vendors repackage and distribute XFree86, and may use settings
+   and configurations different from those described here.
+
+zlib.org
+
+   All  users  of zlib versions 1.1.3 or earlier should obtain the latest
+   version,  1.1.4  or later, from http://www.zlib.org, in order to avoid
+   this  vulnerability  as  well  as  other  possible  vulnerabilities in
+   versions prior to 1.1.3 when decompressing invalid data.
+
+Appendix B. - References
+
+     * http://bugzilla.gnome.org/show_bug.cgi?id=70594
+     * http://www.kb.cert.org/vuls/id/368819
+     * http://www.libpng.org/pub/png/pngapps.html
+     * http://www.redhat.com/support/errata/RHSA-2002-026.html
+     _________________________________________________________________
+
+   The  CERT/CC  thanks  Owen  Taylor  and  Mark Cox of Red Hat, Inc. for
+   reporting this vulnerability. We also thank Mark Adler of zlib.org for
+   contributing  to  our research and Matthias Clasen for contributing to
+   the discovery of this vulnerability.
+     _________________________________________________________________
+
+   This document was written by Jeffrey P. Lanza.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-07.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+Mar 12, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPI5JsqCVPMXQI2HJAQFAvAP/f380BKQqJmAVsjL/482b86Mw8RL5k+Ov
++ww1YfccKHTJdDlsqpIgX8LV59OII4KL31lAYrMrT2wJopY7wn7OSUvX7Z2aOLYE
+0XQyjm5rT2mP9IKybBsHkXwHlTWZOi9iGnd9zSDndBgEaBifolcOh87z4zkE+noS
+OzDiRjPbg7s=
+=zhZM
+-----END PGP SIGNATURE-----
+

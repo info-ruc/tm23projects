@@ -1,0 +1,140 @@
+Received: from mail-gw5.pacbell.net (mail-gw5.pacbell.net [206.13.28.23])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA15130
+	for <handyboard@media.mit.edu>; Sat, 26 Jun 1999 12:53:05 -0400 (EDT)
+Received: from pacbell.net (adsl-206-170-238-215.dsl.lsan03.pacbell.net [206.170.238.215])
+	by mail-gw5.pacbell.net (8.9.3/8.9.3) with ESMTP id JAA03528;
+	Sat, 26 Jun 1999 09:52:56 -0700 (PDT)
+Message-Id: <37750644.A85A3B88@pacbell.net>
+Date: Sat, 26 Jun 1999 09:56:37 -0700
+From: Gary Livick <glivick@pacbell.net>
+X-Mailer: Mozilla 4.51 (Macintosh; I; PPC)
+Mime-Version: 1.0
+To: Victor Lee <leetbvic@singnet.com.sg>, handyboard@media.mit.edu
+Subject: Re: IC question
+References: <003701be2662$5dcfc2e0$2c3d8489@omni200000>
+Content-Type: multipart/alternative;
+ boundary="------------85F3D4BF1B21657C9034ED5F"
+
+
+--------------85F3D4BF1B21657C9034ED5F
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+
+Dear Victor,
+
+I'll give you a few hints about what you are trying to do.
+
+1.  the "0x" in front of 0x0e is the same as "$" in regular C.  It just
+designates that the number following is in hex format.
+
+2.  Fred runs his motor driver chips using addresses that do not live on
+the board.  Specifically, he uses hex 7000 (0x7000, $7000, all meaning
+the same thing although you program in IC using 0x7000).  To understand
+what he is doing, you must first understand the concept of memory mapped
+I/O.  If you look on the Handy Board site under DOCS, and download the
+"The 6.270 Robot Builder's Guide, Appendix B" Fred explains memory
+mapped I/O.  The Y lines you refer to are decoded chip selects for you
+to use at addresses other than $7000.
+
+3.  Address 0x0e is the location of the free running sixteen bit timer
+that runs on the HC11, and is often used for all kinds of time related
+routines such as PWM.
+
+Good luck,
+
+Gary Livick
+
+
+
+
+
+Victor Lee wrote:
+
+>  Dear All,             I have a question on the operation of the Handy
+> Board motor outputs which i do not understand. As deduced from the
+> schematic diagram, I believe that the HC374 chip clock input is
+> connected to a Y6 terminal. This Y6 terminal is one of the outputs of
+> a 74'138 decoder which will trigger when a value is poked to the
+> address 0x0e. Based on the diagram, I would expect Y6 to be active
+> only when A15 is low while A14, A13 and A12 are high, but this doesn't
+> correspond to the address 0x0e right? Am I wrong in interpreting A15
+> as the most significant bit? Also, is the 0e (in hex) unique in IC
+> only? I can't seem to figure why is there a preceding 0.
+> Also, I am currently modifying the Handy Board to support more motor
+> outputs and is intending to tap Y0 terminal to a HC574 chip (clock
+> input) on the new board. What address should i poke to? Sorry, sounds
+> trivial but didnt manage to find any answers on the web.
+> Would appreciate help/advice of any kind. Thanks in
+> advance. Regards,Victor
+
+
+
+
+
+
+
+
+
+
+
+--------------85F3D4BF1B21657C9034ED5F
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<body bgcolor="#FFFFFF">
+Dear Victor,
+<p>I'll give you a few hints about what you are trying to do.
+<p>1.&nbsp; the "0x" in front of 0x0e is the same as "$" in regular C.&nbsp;
+It just designates that the number following is in hex format.
+<p>2.&nbsp; Fred runs his motor driver chips using addresses that do not
+live on the board.&nbsp; Specifically, he uses hex 7000 (0x7000, $7000,
+all meaning the same thing although you program in IC using 0x7000).&nbsp;
+To understand what he is doing, you must first understand the concept of
+memory mapped I/O.&nbsp; If you look on the Handy Board site under DOCS,
+and download the "The 6.270 Robot Builder's Guide, Appendix B" Fred explains
+memory mapped I/O.&nbsp; The Y lines you refer to are decoded chip selects
+for you to use at addresses other than $7000.
+<p>3.&nbsp; Address 0x0e is the location of the free running sixteen bit
+timer that runs on the HC11, and is often used for all kinds of time related
+routines such as PWM.
+<p>Good luck,
+<br>&nbsp;
+<br>Gary Livick
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p>Victor Lee wrote:
+<blockquote TYPE=CITE>&nbsp;<font color="#000000"><font size=-1>Dear All,</font></font>&nbsp;<font color="#000000"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+I have a question on the operation of the Handy Board motor outputs which
+i do not understand. As deduced from the schematic diagram, I believe that
+the HC374 chip clock input is connected to a Y6 terminal. This Y6 terminal
+is one of the outputs of a 74'138 decoder which will trigger when a value
+is poked to the address 0x0e. Based on the diagram, I would expect Y6 to
+be active only when A15 is low while A14, A13 and A12 are high, but this
+doesn't correspond to the address 0x0e right? Am I wrong in interpreting
+A15 as the most significant bit? Also, is the 0e (in hex) unique in IC
+only? I can't seem to figure why is there a preceding 0.</font></font><font color="#000000"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Also, I am currently modifying the Handy Board to support more motor outputs
+and is intending to tap Y0 terminal to a HC574 chip (clock input) on the
+new board. What address should i poke to? Sorry, sounds trivial but didnt
+manage to find any answers on the web.</font></font><font color="#000000"><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Would appreciate help/advice of any kind. Thanks in advance.</font></font>&nbsp;<font size=-1>Regards,</font><font size=-1>Victor</font></blockquote>
+
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>
+
+--------------85F3D4BF1B21657C9034ED5F--
+
+

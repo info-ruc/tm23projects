@@ -1,0 +1,156 @@
+Received: from postoffice6.mail.cornell.edu (postoffice6.mail.cornell.edu [132.236.56.21])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h82EbLj11478
+	for <egs+615@cs.cornell.edu>; Tue, 2 Sep 2003 10:37:21 -0400 (EDT)
+Received: from uportal0 (uportal0.cit.cornell.edu [132.236.229.130])
+	by postoffice6.mail.cornell.edu (8.12.9/8.12.6) with ESMTP id h82EbJWf015378
+	for <egs+615@cs.cornell.edu>; Tue, 2 Sep 2003 10:37:19 -0400 (EDT)
+Date: Tue, 2 Sep 2003 10:37:19 -0400 (EDT)
+Message-ID: <31344523.1062513439624.JavaMail.webber@uportal0>
+From: "Unrecognized person: de46" <de46@cornell.edu>
+To: egs+615@cs.cornell.edu
+Subject: 615 PAPER 1
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 2.10
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id h82EbLj11478
+
+	# Highly Dynamic Destination-Sequenced Distance-Vector Routing (DSDV) for Mobile Computers #
+
+The DSDV is designed basically as a Distance Vector (DV) algorithm with some additions to make it more suitable for 
+ad hoc networks. 
+The most important addition is the usage of sequence numbers (published by "destination") to avoid loops.
+The main reason of loops in a DV protocol is updating routing tables based on incorrect (old) information. However, by 
+giving a number to each update packet, hosts can determine which packets are up-to-date and which are not. These numbers 
+are given in a sequence way. On every update advertisement for an active link, the sequence number is incremented
+and only even numbers can be used. If a broken link is occurred, the sequence number is incremented to make it an odd 
+number. By using the sequence numbers routing tables can be updated in two situations:
+	1) Using update information with a newer (grater) number, which indicates that the new information 
+	is more up-to-date.
+	2) Using update information with the same sequence number but with a better metric.
+As a result, hosts use only the most up-to-date information and do not update their routing tables wrongly.
+
+Secondly, besides full dumps, routing information packages can also be broadcasted as incremental dumps, which decrease the 
+amount of broadcasted packets in certain situations. Moreover, the DSDV allows immediate route advertisement to decrease the 
+reaction time. On the other hand hosts can delay such advertisements to avoid fluctuations, which can occur because of 
+multiple advertisements from its neighbors.
+Due to the above-mentioned properties DSDV can be considered as a simple, loop free protocol for ad hoc networks. 
+However, distribution of route information to the whole network may produce unused route information.
+
+How DSDV ensures that routes are loop-free?
+
+Since DSDV is DV protocol every node has route information to other nodes in the network via its neighbors.
+>From this point of view the whole network can be seen as a directed tree.
+First, lets assume that the network is stable. At this point a change in the topology is required to form a loop. 
+There are two possible situations, which can lead a change in routing tables.
+
+1) By a broken link to a neighbor.
+	It is obvious that a broken link cannot form a loop in a directed tree, because only the next hope will be 
+	set to nil.
+
+2) By changing the next hope of an existing route to a different neighbor.
+	As mentioned above, there are two possible situations that can lead an update in a routing table.
+		
+	-By receiving a packet with a grater sequence number.
+		Lets assume that host i gets such an update information from its neighbor k about a route 
+		to host j. In this situation i will chose its next hope as k and sends its packets over k 
+		to reach j. In order to form a loop, the route from k to j has to include i, which implies 
+		that the k cannot has a greater (newer) sequence number without the knowledge of i.
+		As a result, if k sends its packets over i, it cannot have a greater sequence number than i, which
+		contradicts with the first assumption.
+			
+	-By receiving a packet with an equal sequence number but with a better metric.
+		According to the theorem proved by Jaffe and Moss (A responsive distributed algorithm for 
+		computer networks) the paths do not form loops when weights changes.
+
+
+
+			# Dynamic Source Routing (DSR) in Ad Hoc Wireless Networks #
+
+One weak side of the Distance Vector (DV) algorithms for Ad Hoc networks is the periodic broadcasts to update routing 
+tables. These periodic broadcasts can have negative effects over the limited resources (power, memory, CPU, etc.) of the 
+mobile hosts. Because of this reason DSR proposes a different route finding technique based on dynamic source routing.
+Here, the sender of a packet defines the destination in a dynamic way called “route discovery” or by using route cache.
+At the route discovery, a route is dynamically constructed using broadcast messages. When a broadcast message reaches 
+to the destination a “route reply” message (containing the “record of the route”) is sent to the initiator. The route 
+to the initiator can be obtained in three ways: 
+	1)From the cache of the destination,
+	2)By reversing the route in the route discovery packet. However, this requires bi-directional communication, which 
+	may not be possible.
+	3)By sending the route reply attached to a route discovery packet targeting the initiator.
+Moreover, multiple route discovery messages are avoided using initiator address and request id. 
+
+When the route information is obtained it is placed into the header of packets for the routing. This technique not only 
+decreases the usage of resources but also propose a more flexible way compared to DV to adapt itself to possible topology 
+changes. 
+Besides the route discovery technique, “route maintenance” is used to detect the errors in a route without the usage of 
+periodic broadcasts. When an error is detected the host sends a “route error” packet and the routes are truncated. The 
+route error package can be sent using by the three above-mentioned techniques, which are used for route reply packets. 
+Additionally, the error message can be buffered and then another route discovery can be implemented to send the route 
+error packet.  
+
+Some optimizations are implemented to develop the overall performance DSR. 
+The most important one is the usage of caches to complete route information before the broadcast reaches to the target. If 
+a host has an active route to the destination it can append the later part of the route from its cache instead of another 
+broadcast. However, there can be more than one reply, which can cause problems like collision. In order to avoid this 
+problem, hosts delay their replies and listen the network for a better route. If a better route cannot be found the route 
+reply is transmitted. Another optimization for the caches is the usage of hop numbers. By these numbers the unnecessary 
+propagation of route request packets can be avoided.
+
+There are other optimizations for error handling mechanisms, as well. First of all, route discovery messages are controlled 
+to decrease the overhead that they can bring in a portioned network. Moreover, hosts can listen the network for error 
+messages to update their route caches. Another optimization is used to inform relevant hosts about errors if the route error 
+packet comes from a different way then the route discovery packet.
+
+How DSR ensures that routes are loop-free?
+
+Possible situations that can form a loop are analyzed below.
+1) route request messages can create a loop.
+	By the help of initiator address and requet_id information, hosts descards multiple route 
+	requests, which avoids the formation of a loop.
+2) route reply messages can create a loop.
+	These packets can form a loop if their route is completed using a route cache. However, this problem
+	is avoided by an optimization. A host appends a route using its cache after checking whether it forms a loop or 
+	not.
+
+
+
+				# Ad hoc On Demand Distance Vector Routing #
+
+AODV combines the dynamic source routing of the DSR and the sequence number technique of the DSDV. 
+To find the route first the source node broadcasts a route request (RREQ) packet containing: broadcast_id, source sequence 
+number, destination sequence number. Broadcast_id is used to avoid redundant broadcasts. Sequence numbers are used to 
+indicate the freshness of the routes to the source and to the destination. During the travel of the packet to the 
+destination the “reverse path” (route to source) information is gathered. When the broadcast packet reaches to the 
+destination or to a node that can complete the path a route reply (RREP) message is sent back to the source. 
+During the travel of RREP the route back to the destination is constructed. There may be other nodes, which are not in 
+the path of the RREP. These nodes’ reverse pointer will be deleted after a certain period of time. If further RREPs come, 
+these messages will be taken into consideration regarding their destination sequence number. 
+The source host starts the communication as soon as it gets the first RREP, if other RREPs come, the route can be updated.
+AODV also checks the activeness of paths. A host can learn its neighbor’s situation from both broadcast messages and from 
+hello messages, which are just sent to neighbors. If a broken link is detected a special RREP is sent to the related hosts.
+Then a new RREQ can be sent by the hosts, which want to communicate to the destination. 
+
+In routing tables other information can also be stored to increase the efficiency of the AODV, like the list 
+of active neighbors.
+
+As a result AODV uses bandwidth effectively and can adapt itself to topology changes quicker than the DSDV. Furthermore, 
+since it is a DV algorithm, it uses the advantages of complete routing tables during route cache. 
+Last, route information is only gathered when there is a demand, which avoids production of unnecessary route 
+information. On the other hand it uses symmetric links between neighbors, which may not be possible in every situation.
+
+How AODV ensures that routes are loop-free?
+
+Since the routes have destination sequence numbers it is impossible to form loops in AODV.
+Lets assume that a loop is formed between the nodes X1 -> X2 -> .... -> XN -> X1...
+If we take Ti as the sequence number for the route of Xi, then we will come up with
+T1 <= T2 <= .... <= T(n - 1) <= Tn <= T1, which implies that all Ti values are equal. If the Ti values are equal then 
+they must be all set with same PREP. And lets take Mi as the metric to the destination for host Xi. 
+Because of the loop, the relation between the Mi values should be like Mi = M(i + 1) + 1, which implies that 
+M1 = Mn + (n - 1) and Mn = M1 + 1. Therefore n must zero, which is impossible under the usage of same PREP.
+
+
+DOGAN FAMER ENGIN
+
+
+

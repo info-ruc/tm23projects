@@ -1,0 +1,101 @@
+Received: from comp.uark.edu (dblank@comp.uark.edu [130.184.252.197])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id BAA01268
+	for <handyboard@media.mit.edu>; Thu, 6 Apr 2000 01:41:00 -0400 (EDT)
+Received: from localhost (dblank@localhost)
+	by comp.uark.edu (8.9.3/8.9.3) with ESMTP id AAA03785;
+	Thu, 6 Apr 2000 00:33:49 -0500 (CDT)
+Date: Thu, 6 Apr 2000 00:33:49 -0500 (CDT)
+From: Douglas Blank <dblank@comp.uark.edu>
+To: Tommy Thammavongsa <tthammav@yahoo.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: Output to file option for IC?
+In-Reply-To: <FsKorv.4rL@lugnet.com>
+Message-Id: <Pine.SOL.4.10.10004060025220.15500-100000@comp.uark.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+We have a system that was designed to let you run IC-like code on a host
+as if it were running on the HB. We use the HB as an extension to a larger
+mobile robot (the HB turns on lights, motors, etc. Our robot served
+candy via voice command at last year's AAAI Robot Competition.)
+
+The system consists of a listener that runs on the HB, and a program to
+send commands that runs on the Host. 
+
+The system works MOST of the time; there are some timing issues that I
+don't understand very well, and sometimes the communication gets off.
+(Maybe someone who understands the serial communication could take a
+look). 
+
+You can get the source from http://ai.uark.edu/hb/
+
+Works under Linux, and did under DOS at some point, but I haven't touched
+the DOS part for awhile.
+
+-Doug
+
+On Thu, 6 Apr 2000, Tommy Thammavongsa wrote:
+
+> It would be cool if IC can output results to a file.  well, since it can't
+> does anyone have code available for borland c++ which will receive data over
+> the serial port?  I found some code from earlier posts, but can't seem to find
+> one that works.
+> 
+> I think this came the closest.  I never get "98" back and connection between
+> IC and the board was lost every time I tried to read the data.
+> 
+> ANY HELP IS APPRECITED... THANKS!
+> 
+> Here's the code:
+> --------------------------------------------------------------
+> HB side:
+> void iotest(void)
+> {
+>   disable_pcode_serial();
+>   serial_putchar(98);
+>   reenable_pcode_serial();
+> }
+> 
+> --------------------------------------------------------------
+> Borland C++ code:
+> 
+> #include <stdio.h>
+> #include <dos.h>
+> #include <string.h>
+> #include <ctype.h>
+> 
+> #define PORT1 0x3F8 /* com1 */
+> 
+> 
+> void initialize_comport(void)
+> {
+>   outportb(PORT1+1,0); /* turn off interrupts */
+>   outportb(PORT1+3,0x80); /* set DLAB on */
+>   outportb(PORT1+0,0x0C); /* set baud rate - divisor latch low byte */
+>                                                 /* 0x01 = 115,200 BPS */
+>                                                 /* 0x02 = 56,700 BPS */
+>                                                 /* 0x03 = 38,400 BPS */
+>                                                 /* 0x06 = 19,200 BPS */
+>                                                 /* 0x0C = 9,600 BPS */
+>                                                 /* 0x18 = 4,800 BPS */
+>                                                 /* 0x30 = 2,400 BPS */
+>   outportb(PORT1+1,0x00); /* set baud rate - divisor latch high byte */
+>   outportb(PORT1+3,0x03); /* 8 bits, no parity, 1 stop bit */
+>   outportb(PORT1+2,0xC7); /* FIFO control register */
+>   outportb(PORT1+4,0x0B); /* turn on DTR, RTS, and OUT2 */
+> }
+> 
+> void main()
+> {
+>   initialize_comport();
+>   printf("%d",inportb( PORT1 ));
+> }
+> 
+
+=====================================================================
+dblank@comp.uark.edu            Douglas Blank, University of Arkansas
+Assistant Professor                                  Computer Science 
+=====================================================================
+
+

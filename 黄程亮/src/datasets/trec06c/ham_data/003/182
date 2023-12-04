@@ -1,0 +1,203 @@
+Received: from islander.whidbey.net (root@islander.whidbey.net [204.57.140.1]) by spam.ecst.csuchico.edu (8.7.3/8.7.3) with ESMTP id QAA23236 for <dranch@ecst.csuchico.edu>; Wed, 10 Apr 1996 16:02:02 -0700 (PDT)
+Received: from difilipp (asn101.whidbey.net [204.57.140.171]) by islander.whidbey.net (8.7.5/8.7.3) with SMTP id PAA24349 for <dranch@ecst.csuchico.edu>; Wed, 10 Apr 1996 15:57:24 -0700 (PDT)
+Message-Id: <2.2.32.19960410230156.00693b10@whidbey.net>
+X-Sender: difilipp@whidbey.net
+X-Mailer: Windows Eudora Pro Version 2.2 (32)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Wed, 10 Apr 1996 16:01:56 -0700
+To: "David A. Ranch" <dranch@ecst.csuchico.edu>
+From: John and Nellena Difilippo <difilipp@whidbey.net>
+Subject: Re: AMD 133(160Mhz) settings for odd ASUS GX4 motherboards w/
+  BENCHMARKS
+
+David,
+
+        I've had two people reply that they have successfully configured
+their system at 160 and 133 respectivly.  The systems have proven to have
+better performance with L2 set to write thru (auto), but both cases have had
+no problem with the write back setting for L1 cache.  The person running 160
+has cpu marks just below mine.  Are you sure that you are going to be able
+to settle for write thru with the cpu marks at the 120's?  Any thing I can
+do to help, let me know.
+
+John
+
+
+Date: Tue, 9 Apr 1996 23:03:29 -0400
+X-Sender: simon@magmacom.com
+To: John and Nellena Difilippo <difilipp@whidbey.net>
+From: Craig Simon <simon@magmacom.com>
+Subject: Re: AMD 133 in GX4 success story
+Content-Length: 883
+
+
+Hi,
+
+Just thought I would write to thank you for your information concerning the
+AMD-133.  I have now successfully updated to this processor and overclocked
+it. It is running stabley at 160 Mhz.
+
+WinBench 96 CPUmark16 and CPUmark32 are both at 172.  Comparable to your
+results.
+
+I updated my BIOS to 0401 before I started.  This led to an interesting
+observation.  I initially set the cache to write-back (the other option with
+this BIOS is auto) and this only gave me CPUmarks of 130-140.  When I
+changed the cache settings to AUTO my CPUmarks jumped to 172.  This seems to
+parallel your observation about setting the 0306 BOIS cache settings to
+write-through.
+
+Another minor note.  At start-up the bios reports the clock speed as 120 or
+150 for VLB settings of 33 and 40, respectively.  This appears to be
+meaningless as winbench detects the CPU correctly.
+
+Thanks again,
+Craig
+
+
+
+X-Sender: jscole@telalink.net
+Date: Sat, 06 Apr 1996 20:34:17 -0600
+To: John and Nellena Difilippo <difilipp@whidbey.net>
+From: "J. S. Cole" <jscole@telalink.net>
+Subject: Re: AMD 133 in GX4 overclocked to 160
+Content-Length: 595
+
+At 10:03 PM 4/4/96 -0800, you wrote:
+>Let me know if they work.
+>
+>
+Your  settings seem to work. I can't seem to find a good program that will
+report true clock speed. One program reported 140mhz while the other
+reported 236 mhz and the BIOS shows 120 mhz.
+
+I haven't bumped to 160 yet but you and I have exactly the same cards (EIDE
+2300 and Stealth 64) so I'll give it a shot later this week.
+
+What is the function of "Latch Local Bus" and "Local Bus Ready" ? I had mine
+set to T3 and Synchronize but changed it to T2 and Transparent based on your
+settings. I haven't noticed any difference.
+
+
+
+
+
+At 01:20 PM 4/10/96 -0700, you wrote:
+>David A. Ranch <dranch@ecst.csuchico.edu> wrote:
+>
+>>I had the EXACT same thing happen to me.  I will get the new jumper 
+>>settings to you as soon as I get home.  It took me -3- days to figure 
+>>these out!!
+>
+>####
+>
+>Ok, here are the jumper / BIOS settings and quick benchmarks that I found 
+>for a GX4 v2.0 board and v401 of the Award BIOS:
+>
+>	ASUS GX4 v2.0 board
+>	16MB FPM DRAM
+>	256K async cache
+>	Cirrus Logic 5429 VLB video w/ 2MB DRAM
+>	Adaptec 2842 SCSI-II-Fast Controller
+>	IBM UltraStar XP 2.2GB disk
+>	Gravis Ultrasound w/ 1MB DRAM
+>	Iomega Ditto 3200 tape drive
+>	
+>
+>
+>JP5 : 1+2	Intel setting
+>JP6 : 2+3	Intel setting
+>
+>JP11: 2+3	Intel 3.45v CPU
+>
+>JP16: 1+2,5+6	CPU setting
+>JP17: 1+2,5+6	CPU setting
+>JP18: 1+2,5+6	CPU setting
+>JP19: 1+2	CPU setting 
+>JP20: 1+2	4x clock setting (open for 3x clock)
+>JP21: 2+3	for Write Thru (3+4 for Write Back) 
+>		Note: I had to use WT cache because I have an Adaptec 2842
+>		      busmastering controller.  Try the WB setting first!
+>JP22: 1+2,4+5   CPU setting
+>
+>(for 160Mhz)
+>JP23: 2+3
+>JP24: 2+3
+>JP25: 1+2
+>
+>JP26: 1+2 	VLB delay
+>
+>JP28: 1+2	VLB 0ws
+>JP29: 1+2	VLB <33Mhz
+>
+>-----
+>
+>BIOS settings:  Note: these are pushed so mileage will vary.. you must
+>                tweak with these to get a stable system
+>
+>Auto config       : disbabled
+>AT BUS Clock      : 1/4 CLKIN (10Mhz AT BUS at 40Mhz system clock)
+>DRAM Speed        : Faster      (My machine won't run stable at FASTEST)
+>DRAM Write WS     : 0ws
+>DRAM Write CAS    : 1T
+>
+>DRAM Write Burst  : Enabled
+>Slow Refresh      : Enabled
+>Hidden Refresh    : Enabled
+>
+>L2 Cache scheme   : WB - for DOS  WT - for Windows   (see below)
+>L1 Cache scheme   : WT   (I had to use WT or my machine wouldn't boot)
+>Cache Burst Read  : 1T
+>Cache Write Cycle : 2T
+>Video Shadow      : non-cachable
+>Memory Hole       : Disabled
+>
+>Fast Reset Latency: 2 uS
+>Latch Local Bus   : T2
+>Local Bus Ready   : Syncronize
+>
+>
+>---
+>Note:  I'm not sure why but PCbench and DOS benchmarks run FASTER with the
+>       L2 cache sent to Auto (WT) caching.  Any ideas WHY?!?!?!  I've 
+>       left my machine in WT mode since I use Windows95 most of the time.
+>
+>L2-Write Through
+>
+>	PCBench9: 	CPU16: 128
+>			Video: 5662
+>			Disk : 224
+>
+>	Norton SI/95:	16.9	
+>	
+>	WinBench96:	CPU16: 129
+>			CPU32: 130
+>			
+>
+>L2-Write Back
+>
+>	PCBench9:	CPU16: 152
+>			Video: n/a
+>			Disk:  n/a
+>
+>	Norton SI/95:	n/a
+>
+>	WinBench96:	CPU16: 120
+>			CPU32: 116
+>			Video: 5675
+>			Disk:  223
+>-- 
+> +----------------------------------------------------------------------------+
+> |    David A. Ranch  - ISDN/Cablemodems/PCs      dranch@ecst.csuchico.edu    |
+> +----                                                                    ----+
+> +----- For more detailed info, check out: www.ecst.csuchico.edu/~dranch -----+
+>
+>
+
+
+
+John and Nellena Difilippo
+difilipp@whidbey.net
+
+

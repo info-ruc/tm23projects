@@ -1,0 +1,68 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id GAA05291
+	for <handyboard@media.mit.edu>; Thu, 9 Mar 2000 06:06:08 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id GAA09028; Thu, 9 Mar 2000 06:06:04 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7562
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Real-Life-Name: Fred G. Martin
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: "Fred G. Martin" <fredm@media.mit.edu>
+Subject: Re: HandyBoard Assembly
+Posted-Date: Thu, 9 Mar 2000 11:05:14 GMT
+Date: Thu, 9 Mar 2000 11:05:14 GMT
+Organization: None
+Message-Id: <200003091105.GAA22144@ml.media.mit.edu>
+References: <38C73825.B8B24156@polymail.calpoly.edu>
+Precedence: list
+
+it seems like the HB is not able to talk back to your PC.  make sure
+the TxD signal starting from the 'hc11 is leaving the HB properly at
+the RJ11, reaching the interface bd, and then being cvt'ed to -10v to
++10v levels out the interface bd on its way to your PC.
+
+f.
+
+
+
+
+In your message you said:
+>     I recently finished collecting all the parts for the handyboard and
+> started assembly. I went all the way through the i/c board setup without
+> a hitch. But when I got to assembling the serial comm circuit a few
+> things went wrong.
+> 
+>     I assembled the Serial Line and Stop Switch (4.4 if you're following
+> the online assembly instructions on the mit site).
+> The first part of the testing (4.4.2) went well: The BATT LED cycles on
+> and then off. The PWR LED turns off when the BATT LED turns off. I
+> connected the main board to I/C board through the phone cable.  The HB
+> goes into bootstrap mode - I turned it on while holding down the STOP
+> switch. The PWR & BATT LEDs came on for a moment and both turned off.
+> Tried downloading pcode_hb.s19, using hdbl but got an error. Typed dl
+> pcode_hb.s19 but it timed out on serial receive. (mentioned 256 bytes
+> remaining). IC tells me it cannot sync with the boardPlease press the
+> reset button.
+> 
+> Here's what I do know:
+> The cable I'm using has the 2 and 3 pins switched (as required) and
+> grounds connected. It's on COM1 of my pc (so no com problems).
+> When I run 'dl pcode_hb.s19 -ignore_input' the program will go through
+> and ignore all the serial echoes and so on and load into the HB. I
+> believe this is true because when I then reset the HB the piezo beeper
+> beeps at me (I went ahead and installed that as well) as it said it
+> would.
+> 
+> So basically, sending to the HB works, but getting anything transmitted
+> from the HB does not happen. I believe this is true because the lights
+> on both boards will blink as the program is loading into the HB, but
+> they do nothing when the downloaders ask the HB to send something back.
+> 
+> Has anyone run into this problem? Could it be a faulty MAX232 on the i/c
+> board not letting communications through?
+> Thanks for your help
+> 
+

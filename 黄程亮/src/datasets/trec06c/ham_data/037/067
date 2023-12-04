@@ -1,0 +1,46 @@
+Received: from urth.netco.com (new-urth.netco.com [206.103.221.15])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA21254
+	for <handyboard@media.mit.edu>; Tue, 23 Feb 1999 11:28:02 -0500 (EST)
+Received: from dm.wamnet.com([192.168.168.2]) (1840 bytes) by urth.netco.com
+	via sendmail with P:esmtp/R:inet_hosts/T:smtp
+	(sender: <tgb@cozy.wamnet.com>) 
+	id <m10FKfB-00DuPdC@urth.netco.com>
+	for <handyboard@media.mit.edu>; Tue, 23 Feb 1999 10:26:25 -0600 (CST)
+	(Smail-3.2.0.104 1998-Nov-20 #1 built 1998-Dec-7)
+Received: from cozy.wamnet.com(really [192.168.250.75]) by dm.wamnet.com
+	via sendmail with esmtp
+	id <m10FKfA-00eCHtC@dm.wamnet.com>
+	for <@mail-relay.wamnet.com:handyboard@media.mit.edu>; Tue, 23 Feb 1999 10:26:24 -0600 (CST)
+	(Smail-3.2 1996-Jul-4 #3 built 1996-Nov-12)
+Received: (from tgb@localhost) by cozy.wamnet.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id KAA01566; Tue, 23 Feb 1999 10:26:24 -0600
+Date: Tue, 23 Feb 1999 10:26:24 -0600
+Message-Id: <199902231626.KAA01566@cozy.wamnet.com>
+From: Tom Brusehaver <tgb@cozy.wamnet.com>
+To: hsu3@cooper.edu
+Cc: handyboard@media.mit.edu
+In-Reply-To: <Pine.GSO.3.95.990223100941.8343D-100000@zeus.cooper.edu>
+	(message from Chen Yung Hsu on Tue, 23 Feb 1999 10:12:20 -0500 (EST))
+Subject: Re: Tracking device
+Reply-To: tgb@wamnet.com
+References:  <Pine.GSO.3.95.990223100941.8343D-100000@zeus.cooper.edu>
+
+
+>hello everyone.  my team has been assigned to make a tracking device for
+>our robot making use of a video camera or the camera on this silicon
+>graaphics computer in the lab but i'm not exactly sure how to begin. any
+>suggestions or words of wisdom would be appreciated.
+
+If you are trying to track something moving, it is pretty simple, if
+you have a fixed camera.
+
+Take two images, separated by a reasonable amount of time (2
+subsequent frames may not be enough). XOR the two frames, everything
+the same will show as 0's everything that has changed will be 1's. 
+
+Sometimes edge detecting will be required, and allow you less data to
+XOR, but certainly if you are only trying to track something, B&W data
+will be enough.
+
+After enough frames are collected, you can start calculating direction
+and velocity.
+

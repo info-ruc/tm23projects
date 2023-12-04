@@ -1,0 +1,83 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j05NKGYl002922
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Wed, 5 Jan 2005 17:20:16 -0600 (CST)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id j05NKGPo002921
+	for reliable_computing-outgoing; Wed, 5 Jan 2005 17:20:16 -0600 (CST)
+Received: from mail.gmx.net (pop.gmx.net [213.165.64.20])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with SMTP id j05NK6GF002917
+	for <reliable_computing@interval.louisiana.edu>; Wed, 5 Jan 2005 17:20:13 -0600 (CST)
+Received: (qmail invoked by alias); 05 Jan 2005 23:19:57 -0000
+Received: from dialin-145-254-197-199.arcor-ip.net (EHLO gmx.net) (145.254.197.199)
+  by mail.gmx.net (mp009) with SMTP; 06 Jan 2005 00:19:57 +0100
+X-Authenticated: #5874409
+Message-ID: <41DC7608.5000806@gmx.net>
+Date: Thu, 06 Jan 2005 00:19:36 +0100
+From: Jens Maurer <Jens.Maurer@gmx.net>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624 Netscape/7.1
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: interval <reliable_computing@interval.louisiana.edu>
+CC: "Nelson H. F. Beebe" <beebe@math.utah.edu>,
+        Arnold Neumaier <Arnold.Neumaier@univie.ac.at>
+Subject: Re: Costs of floating-point rounding control and predecessor/successor
+        computation
+References: <CMM.0.92.0.1104415973.beebe@psi.math.utah.edu>
+In-Reply-To: <CMM.0.92.0.1104415973.beebe@psi.math.utah.edu>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Y-GMX-Trusted: 0
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+Status:  O
+X-Status: $$$$
+X-UID: 0000000021
+
+
+Nelson H. F. Beebe wrote:
+> While I cannot comment on the efficiency of Matlab's rounding mode
+> access in the Intlab package, I can supply fresh evidence that it
+> should have minimal cost.
+> 
+> On IA-32, rounding mode access is available via the floating-point
+> control word, which takes only one instruction to fetch or set.
+
+While I can't comment on the efficiency of rounding mode
+access in interpreted languages, I would like to point out that
+rounding mode changes usually cause a complete pipeline flush
+in modern processors, i.e. the processor waits until all previous
+operations have completed.  On a Pentium 4, this is much more
+visible than on a Pentium III due to much longer pipelines on
+the P4.
+
+The code
+
+   for (k = 1; k <= 100000000; ++k)
+     sum += BASE;
+
+takes 0.96 sec on my Pentium III 850 Mhz, compared to 2.3 sec
+for 1/100 the work in Nelson Beebe's interpreted language on
+his 600 MHz CPU.  (The overhead of the interpreted language
+is a factor of 200 in this particular case.)
+
+Adding another addition (here: subtraction)
+
+   for (k = 1; k <= 100000000; ++k) {
+     sum += BASE;
+     sum -= 0.5;
+   }
+
+now takes 1.32 sec on my machine, clearly showing the pipeline
+effects: We're doing twice the number of floating-point operations,
+but we need a meagre 30% additional time.
+
+Adding a setting of the rounding mode instead of the second addition,
+the loop now takes 2.87 sec on my machine, thus the differences
+are much larger than those visible in the interpreted language.
+
+My C library's nextafter() function is about 10 times slower
+on subnormals than on normals (using glibc 2.3.3).
+
+Jens Maurer
+
+

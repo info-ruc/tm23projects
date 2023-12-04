@@ -1,0 +1,130 @@
+Received: from sirius.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [193.63.252.1])
+	by psy1.psych.arizona.edu (8.12.4/8.12.4) with ESMTP id h1LALNdW011965
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 21 Feb 2003 03:21:24 -0700
+Received: from [193.63.253.227] (helo=PC195.mrc-cbu.cam.ac.uk)
+	by sirius.mrc-cbu.cam.ac.uk with esmtp (Exim 4.12)
+	id 18mASf-0000zN-00
+	for DMDX@psy1.psych.arizona.edu; Fri, 21 Feb 2003 10:31:21 +0000
+Message-Id: <5.1.1.6.2.20030221101753.0271ea08@193.63.253.1>
+Date: Fri, 21 Feb 2003 10:31:15 +0000
+To: DMDX@psy1.psych.arizona.edu
+From: Matt Davis <matt.davis@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Re: Multiway branching question
+In-Reply-To: <5.1.0.14.2.20030220151137.00b131e8@psy1.psych.arizona.edu>
+References: <5.1.1.6.2.20030220180601.02b3c118@193.63.253.1>
+ <5.2.0.9.0.20030220183056.009eeec0@post.psych.unimelb.edu.a u>
+ <5.2.0.9.0.20030220173718.009eec40@post.psych.unimelb.edu.a u>
+ <5.1.0.14.2.20030220084659.00b128d0@psy1.psych.arizona.edu>
+ <5.2.0.9.0.20030220105250.009f8b10@post.psych.unimelb.edu.a u>
+ <5.2.0.9.0.20030219114039.009efb40@post.psych.unimelb.edu.a u>
+ <3E525FE7.5070902@neuro.gu.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 15:12 20/02/2003 -0700, you wrote:
+>At 06:19 PM 2/20/2003 +0000, you wrote:
+>>Hi Jonathan,
+>>
+>>I've spent about two hours banging my head against a brick wall (aka the 
+>>multiway branch keyword) and wondered whether you could help.
+>>
+>>I'm trying to use multiway branching in conjunction with the <zil> and 
+>><zor> to do an auditory-response questionnaire task in which subjects get 
+>>multiple opportunities to hear one or other of a pair of stimuli.
+>>
+>>My aim was to have any of "s", "p" or "d" be classed as a correct answer 
+>>(mapped as a positive response). A correct response will move on to the 
+>>next item (via item zero at the end of each block). This bit works fine.
+>>
+>>Responses "m", "k" and "b" should be incorrect and will play either the 
+>>"m" file again (item 201) , the "k" file (item 401) or both files 
+>>(branching back to item 1). However, the multiway branch condition only 
+>>recognises "branch if correct" / "bic". My output files report the error 
+>>message "! No conditions met in multi-way branch" anytime I press "m", 
+>>"k" or "b".
+>>
+>>I've tried this a dozen ways, in DMDX 3.0.0.13 using different 
+>>combinations of button mappings, zillion keys, formatting etc. without 
+>>success. I'd be really grateful for some help.
+>
+>   So replace the bic condition with the three keys that are correct, s, 
+> p, and d.
+
+
+Hi Jonathan,
+
+Thanks for taking time to reply. Unfortunately, this doesn't seem to help.
+
+The <bic> is the only condition that is treated correctly by the <mwb> 
+keyword. Any time I try and use a specific response key in the multiway 
+branch (using the <mwb +M,201> syntax) I get the "no conditions met" error. 
+If add S,P and D to the multiway branch then these are also not recognised.
+
+I'm running out of ideas for things to try here. This is particularly 
+frustrating since this is the only thing that is keeping the script from 
+working.
+
+Here's a chunk of the script again:
+
+<brdiags 1> <id keyboard> <zil> <zor> <cr> <ntl> <nfb> f2 d20 <vm 1024, 
+768, 768, 16, 0> <vzk +s> <vzk +p> <vzk +d> <vzk +M> <vzk +K> <vzk +B> <mpr 
++s> <mpr +p> <mpr +d> <mnr +m> <mnr +m> <mnr +b> <dbc 0> <dwc 255255255>
+0 "press SPACE to start";
++1 <ln +2> "respond same / perhaps / different" , <ln +4> "or matt / kadia 
+/ both to repeat" / * <wav 2> "m_orchid" /! <% 20> "" / <wav 2> "k_orchid" ;
+~101 <mwb bic,0, +M,201, +K,401, +B,-1>;
++201 <ln +2> "respond same / perhaps / different", <ln +4> "or matt / kadia 
+/ both to repeat" / * <wav 2> "m_orchid";
+~301 <mwb bic,0, +M,-201, +K,401, +B,-1>;
++401 <ln +2> "respond same / perhaps / different", <ln +4> "or matt / kadia 
+/ both to repeat" / * <wav 2> "k_orchid";
+~501 <mwb bic,0, +M,-201, +K,-401, +B,-1>;
+0 <ln -1> "item 1 - orchid", <ln +2> "press SPACE to move on to the next item";
++2 <ln +2> "respond same / perhaps / different", <ln +4> "or matt / kadia / 
+both to repeat" / * <wav 2> "m_cousket" /! <% 20> "" / <wav 2> "k_cousket" ;
+etc.
+
+and the resulting zil output:
+
+**********************************************************************
+Subject 1, 02/21/2003 10:24:32 on PC195, refresh 13.33ms
+Item 1, -4000.00
+  2593.33,+K
+!  No conditions met in multi-way branch
+Item 201, -2606.95
+  2606.95,+B
+!  No conditions met in multi-way branch
+Item 401, 1504.79
+  1504.79,+S
+!  Response correct, multi-way branch to item 0
+Item 2, 1803.36
+  1803.36,+S
+!  Response correct, multi-way branch to item 0
+
+As you can see the script runs fine, recording responses as expected. 
+However, the multiway branch only handles "correct responses" such as "S" 
+using the "bic" condition. Responses such as +K or +B which are mapped as 
+negative (and hence incorrect) are not recognised by the multiway branch.
+
+I would be grateful for any other suggestions you can make.
+
+Cheers,
+
+Matt
+
+
+****************************************************
+  Matt Davis
+  MRC Cognition and Brain Sciences Unit
+  15 Chaucer Road, Cambridge, CB2 2EF
+
+  email: matt.davis@mrc-cbu.cam.ac.uk
+    tel: 01223 355 294 (#266)
+    Fax: 01223 359 062
+
+****************************************************
+
+

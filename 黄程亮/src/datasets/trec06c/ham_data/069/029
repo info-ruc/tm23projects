@@ -1,0 +1,51 @@
+Received: from madcap.apk.net (madcap.apk.net [207.54.158.16])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id PAA05125
+	for <handyboard@media.mit.edu>; Wed, 28 Jun 2000 15:13:23 -0400 (EDT)
+Received: from junior.apk.net (drushel@junior.apk.net [207.54.158.20]) by madcap.apk.net (8.9.3/8.9.3/apk.990812+rchk1.22+bspm1.13.1.5) with ESMTP id PAA21054 for <handyboard@media.mit.edu>; Wed, 28 Jun 2000 15:01:38 -0400 (EDT)
+Received: (from drushel@localhost)
+	by junior.apk.net (8.9.3/8.9.3) id PAA04933
+	for handyboard@media.mit.edu; Wed, 28 Jun 2000 15:01:36 -0400 (EDT)
+From: Richard Drushel <drushel@apk.net>
+Message-Id: <200006281901.PAA04933@junior.apk.net>
+X-Real-To: handyboard@media.mit.edu
+Subject: minor update to new random.c
+To: handyboard@media.mit.edu
+Date: Wed, 28 Jun 2000 15:01:36 -0400 (EDT)
+X-Mailer: ELM [version 2.5 PL1]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+	Field testing in a real class is the best way to get bugs out of
+code :-)  My summer robotics class discovered a couple of "misfeatures"
+in my new random.c pseudo-random number generator library:
+
+(1)	the rndrangei(), rndrangel(), and rnd() functions could not return
+	the upper bound of the range.  E.g., rndrangei(0,2,1) would return
+	only 0 or 1, never 2.
+
+(2)	Fred Martin's original random() function is already defined in
+	lib_hb.c, so Handy Board users would get a "function already
+	defined" error when trying to load random.c.  (The 6.270 board
+	standard library, lib_r22.c, doesn't have a random() function,
+	so I, running a 6.270-based course, included it in my random.c.)
+
+	I have fixed these errors and created a revised version 2.1 of
+random.c.  It is available via anonymous FTP at:
+
+	ftp://junior.apk.net/pub/users/drushel/rfd-ic/random.c
+
+Please update to the new version if you're using random.c.  If you edited
+your lib_hb.c to remove random() to avoid the duplicate definition, you'll
+have to put it back...fortunately, I just commented out the code in
+random.c, so you can cut/paste it back in.
+
+	As always, let me know if you have any problems or find any bugs.
+
+	*Rich*
+-- 
+Richard F. Drushel, Ph.D.            | "Aplysia californica" is your taxonomic
+Department of Biology, Slug Division | nomenclature.  /  A slug, by any other
+Case Western Reserve University      | name, is still a slug by nature.
+Cleveland, Ohio  44106-7080  U.S.A.  |     -- apologies to Data, "Ode to Spot"
+

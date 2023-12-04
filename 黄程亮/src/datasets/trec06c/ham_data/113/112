@@ -1,0 +1,41 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k129Lu414673
+	for <egs+summary>; Thu, 2 Feb 2006 04:21:56 -0500 (EST)
+Received: from [128.253.212.208] (r253212208.resnet.cornell.edu [128.253.212.208])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k129LuOq005692
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary>; Thu, 2 Feb 2006 04:21:56 -0500 (EST)
+Message-ID: <43E1CF35.90101>
+Date: Thu, 02 Feb 2006 04:21:57 -0500
+From: Ivan Stoyanov <ids3>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary
+Subject: PAPER 2
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=AWL,BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+The main idea of the paper is to organize peers in an multidimentional 
+virual space. Similar to Chord, keys to data are uniformly distributed 
+accross the participating peers using a hash function mapping. Nodes 
+need to maintain links for their immediate neighbors only, so the size 
+of the routing table is 2d. Routing in CAN takes O(n^1/d).
+
+Node joins affect only O(d) nodes. CAN uses soft-state routing table 
+updates. Absence of such update messages signals that the node has 
+failed. The system does not have a good way of handling crashed nodes 
+and can quickly become inconsistent when neighbors disagree on which 
+nodes and up or down. In addition, an attacker can repeatedly report its 
+neighbors as failed and thus easily disrupt the system.
+
+Another problem with the paper is that the parameter d cannot be 
+adjusted dynamically. The paper, however, provides good theoretical base 
+and does address locality issues, replication and caching.
+

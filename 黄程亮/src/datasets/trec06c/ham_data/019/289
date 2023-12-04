@@ -1,0 +1,58 @@
+Received: from mother.me.es.osaka-u.ac.jp (mother.me.es.osaka-u.ac.jp [133.1.54.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id IAA01551
+	for <handyboard@media.mit.edu>; Tue, 7 Jul 1998 08:43:55 -0400 (EDT)
+Received: from gull.me.es.osaka-u.ac.jp (gull.me.es.osaka-u.ac.jp [133.1.55.170])
+	by mother.me.es.osaka-u.ac.jp (8.8.8+2.7Wbeta7/3.6Wbeta7/me-server-98070318) with ESMTP id VAA23258
+	for <handyboard@media.mit.edu>; Tue, 7 Jul 1998 21:43:47 +0900 (JST)
+Received: (from kfm@localhost)
+	by gull.me.es.osaka-u.ac.jp (8.8.8/3.6Wbeta7/me-robotics-98070200) id VAA12345
+	for handyboard@media.mit.edu; Tue, 7 Jul 1998 21:43:52 +0900 (JST)
+Date: Tue, 7 Jul 1998 21:43:52 +0900 (JST)
+From: "K. F. MacDorman" <kfm@gull.me.es.osaka-u.ac.jp>
+Message-Id: <199807071243.VAA12345@gull.me.es.osaka-u.ac.jp>
+To: handyboard@media.mit.edu
+Subject: stepper motors: choosing an approach
+
+
+There appears to be much interest in using the handyboard to control
+stepper motors.  Choosing the right approach depends on what you want
+your robot to do.
+
+There are a number of specialized boards for controlling stepper
+motors, but they are generally expensive and, from the hobbiest/
+roboticist's perspective, over-built.  For example, to control just
+two stepper motors (typical for robot locomotion), you would need to
+buy three boards from, say, Pontech (http://www.pontech.com) and spend
+about $350.  The boards also consume more than 200 mA (at 5-15 V) even
+when the steppers are switched off (no sleep mode).  Although these
+boards have many features, they may not be versitile enough for your
+application, especially if they are not programmable.
+
+There are hacks that permit handyboards to be controlled with fd(0)
+and bk(1) commands; the approach taken by Peter Harrison at
+http://www.cctc.demon.co.uk/stepper.htm; the $10 EDE1200 unipolar
+stepper motor IC from E-Lab (http://www.elabinc.com); etc.
+
+The approach I was considering was to use a $49 Basic Stamp II in
+conjunction with Darlington arrays ULN 2003A, roughly based on the
+design in the Basic Stamp I Application Notes, No. 6, for unipolar
+stepper motors at http://www.parallaxinc.com.  The idea is that control
+of the steppers should occupy as few cycles as possible of the Handy
+Board's MC6811.  So the MC6811 can give short simple commands to the
+Stamp through a serial interface, which the Stamp buffers in memory.  
+Imagine this just being <motor number, direction, number of steps,
+step delay>.  The Stamp handles the rest, including acceleration
+and deceleration if necessary (CurrStepDelay = StepDelay + 
+MinStepDelayFactory - [AccelFactor * Steps] ).  If the signals sent
+to the Stamp describe movement along a path, it is important to be
+able to clear the Stamps memory buffer -- for example, if an object
+suddenly appears in the path and a new path must be calculated.
+
+I would be grateful to anyone who would point out what's wrong with
+this approach.
+
+Best wishes,
+Karl
+
+
+

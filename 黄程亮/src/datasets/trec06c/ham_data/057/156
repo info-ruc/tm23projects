@@ -1,0 +1,50 @@
+Received: from mta4.snfc21.pbi.net (mta4.snfc21.pbi.net [206.13.28.142])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA16496
+	for <handyboard@media.mit.edu>; Mon, 29 Nov 1999 13:52:22 -0500 (EST)
+Received: from pacbell.net ([206.170.238.215])
+ by mta4.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.09.16.21.57.p8)
+ with ESMTP id <0FLZ00FCO2RSCH@mta4.snfc21.pbi.net> for
+ handyboard@media.mit.edu; Mon, 29 Nov 1999 10:45:28 -0800 (PST)
+Date: Mon, 29 Nov 1999 10:44:55 -0800
+From: Gary Livick <glivick@pacbell.net>
+Subject: Re: evaluate inverse cosine, sine in IC
+To: Will <nepenthe@montana.com>
+Cc: Handyboard Mailing List <handyboard@media.mit.edu>
+Message-Id: <3842C9A4.9825A1FB@pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854";
+ x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+References: <2088964038.942686801@HPMENT33.ME.CMU.EDU>
+ <3830A216.6F10698D@cs.umt.edu>
+
+I've been trying to do this as well.  The problem I have found is that the Taylor series expansion needs to be developed near the solution to get accurate results.
+
+Some may wonder why finding the arcsine of a number might be of interest.  If one has a robot that is sitting at some angle to a wall, and by using a ranging device of some kind (SONAR, IR ranging) mounted on a servo is able to get two ranges to the wall, the first at one angle from the robot and the second at a different angle from
+the robot, then the angle of the robot axis to the wall can be determined.  In dead reckoning navigation, it is often necessary to update robot position from known landmarks.
+
+To do this calculation, the "law of cosines" is first used, and the interim results are then used in the "law of sines" to get the angle.  Arcsine is needed in the last calculation.
+
+One could generate a lookup table to go into in memory to find the angle, but what a waste of space.  It would be nice if Motorola had a freeware math function of arcsine, but they appear not to.  After days of head scratching, I have yet to turn up a simple algorithm to calculate arcsine from a random argument.  Any math majors out
+there with nothing to do?
+
+Thanks for any help,
+
+Gary Livick
+
+
+
+Will wrote:
+
+> bedirhan wrote:
+> >
+> > Hi, is there a way to evaluate inverse cosine and sine using IC? Thx
+>
+> The most efficient way to do it is to use Taylor Series approximations of the functions.  Decide how much precision you need, and then write functions that evaluate the first few terms in the appropriate series.
+>
+> Usually, a series will converge quite rapidly, and only half a dozen or so terms are needed.  For example, if the sixth term in the series is on the order of 1.0E-6, then you're getting close to the limit of single-precision arithmetic anyway (and certainly close enough for horse shoes, hand grenades, and tactical nuclear weapons).
+>
+> -- Will
+
+

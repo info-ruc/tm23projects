@@ -1,0 +1,81 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k19FbKt12134
+	for <egs+summary>; Thu, 9 Feb 2006 10:37:20 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k19FbI0j006758
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary>; Thu, 9 Feb 2006 10:37:19 -0500 (EST)
+Message-ID: <000301c62d8e$c2ab4cd0$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz>
+From: "Kevin" <km266>
+To: <egs+summary>
+Subject: PAPER 5
+Date: Thu, 9 Feb 2006 10:37:39 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+    One hop lookups works on the principle that most nodes can store O(n) 
+state without a problem, as long as updates are done without occupying too 
+much bandwidth.  If joins/leaves were disseminated through the network as 
+soon as they occurred, this would be unreasonable.  To overcome this, Gupta 
+et al propose a tree-like structure buried in a multi-tiered ring.  The 
+outermost ring will hold only those machines that are capable, in bandwidth 
+and cpu, of being supernodes.  Supernodes, or slice leaders, are the parent 
+of the tree structure.  Their main goal is to gather and, with a time delay, 
+update their children nodes called unit leaders and other roots (other slice 
+leaders).  These unit leaders then, once again with a time delay, update all 
+the nodes in their unit.  The regular units have pointers to their succ and 
+pred and can pass this information down to the next one with their normal 
+keep-alive heartbeat.  By breaking the entire population up into slices and 
+those slices into units and by imposing a hierarchy in the system that 
+allows them to not duplicate messages, they are able to do one hop routing 
+while maintaining O(n) state.
+    The paper focuses very heavily on making sure the slice leaders have 
+enough bandwidth and cpu to keep the system going.  While 350kpbs (in a 10^6 
+size system) is not trivial, a well-provisioned corporate or educational 
+institute should have no problem with that bandwidth.  Even newer cable 
+modems and in-home fiber systems handle this information without a hiccup. 
+I see the biggest issue at the regular nodes.  In a 10^6 size system, 
+regular nodes experience 38.4kbps just to keep the network up.  A regular 
+56k modem would not be able to handle that!  Since it is 38.4kpbs up and 
+down (76.8 total), no average user would be able to support this.  Even my 
+broadband connection at home with 1mbits/128kpbs usually maxes out at 
+100kpbs upload and the system takes up over a third of my bandwidth just for 
+updates.  Imagine what would happen with a latency spike!  Forgetting the 
+security and other concerns, the core of the paper seems flawed, it is 
+completely unpractical.
+
+    Kelips, like the above paper, also sacrifices state for lookup time. 
+The idea is to partition the entire space into sqrt(n) 'affinity groups,' 
+each containing sqrt(n) nodes. Each affinity group is responsible for a 
+certain subset of data and each node in an affinity group knows all the 
+other nodes and all the data being stored in the group.  A node is chosen at 
+random from the group to store the data.  A heartbeat and other information 
+are also stored about group members, along with a couple of pointers to 
+randomly selected nodes in each other affinity group.  In this way, using 
+consistent hashing, you can route a request to any affinity group in 2 hops: 
+1 to get to the affinity group with your group-pointer and then 1 more to 
+get to the actual node in the group that stores the information.  O(1) 
+routing is achieved using sqrt(n) space.
+    The biggest issue I saw with this paper is the slow dispersal of data. 
+Even the one-hop routing paper noted that Kelips takes nearly an hour to 
+update the routing tables.  While this keeps bandwidth usage low, it makes 
+for lots of miss-routed messages when the system is undergoing churn (which 
+a p2p system would be expected to have).  The other issue I seem to have 
+with this paper is they never detail how well the system scales past 10,000 
+nodes.  Almost all papers we have read which discuss empirical results use 
+node numbers 10 or 100 times that.  Overall, I think the paper is right in 
+saying that more state and fewer hops are better, but I don't think they hit 
+the nail on the head yet.
+
+--Kevin 
+

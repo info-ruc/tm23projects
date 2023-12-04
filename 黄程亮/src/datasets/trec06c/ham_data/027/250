@@ -1,0 +1,82 @@
+Received: from imo19.mx.aol.com (imo19.mx.aol.com [198.81.17.9])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA16774
+	for <handyboard@media.mit.edu>; Fri, 20 Nov 1998 09:56:13 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo19.mx.aol.com (IMOv16.10) id SCZAa18175
+	 for <handyboard@media.mit.edu>; Fri, 20 Nov 1998 09:55:20 -0500 (EST)
+Message-Id: <ed36cbd.365582d8@aol.com>
+Date: Fri, 20 Nov 1998 09:55:20 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: motor port problem .
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Philip
+In a message dated 98-11-19 21:05:04 EST, you write:
+
+<< hi,
+ I have a big problem. I followed the method of yours that just lift up pin
+ 8 of one L293 
+ and wirewrapped it. The positive supply is wirewrapped to pin 8 . How about
+ the negative supply of the batteries should insert or wirewrapped? I
+ inserted the negative supply in the bottom row of digital input as ground
+ together. >>
+
+  The negative supply attaches to ground and the pins on the digital I/O port
+are fine, looks like nice thick traces to me.
+
+
+<< Suddenly. after a short while, the L293 turn so hot. It burnt my hand.
+ Besides, the socket on the HD mounted with pin 4,5,12,13 of L293 has melted
+ in that particular area. Simply it is a plastic part. What is really
+ happens ?  >>
+
+[[Attached from the previous mail, I have already solved the problem listed
+below. It is the 7404 is damaged .What causes it? Any ideas? ]]
+
+     I don't know why your 7404 went bad, but I can see why that might cause
+trouble for the L293.  I also don't have spec sheet on the 293.  Anybody know
+what happens to a 293 if both inputs are turned on at the same time?  (Just
+turns on both outputs so no motor motion, right?)
+     Sounds like you are drawing too much current.  The 293 chips can be piggy
+backed to switch more current.  The pins you mention are the ground pins for
+the chip.  Most motor driver chips use the middle pins for grounding and LOW
+LEVEL cooling.  Inside the plastic, the silicon is mounted on a wide piece of
+metal, the same width as these pins.  This metal strip is cut to the shape of
+the pins outside the plastic body.  The idea is if this is soldered to a big
+fat ground plane on a printed circuit board, it can disapate some heat.
+Probably ehough heat to keep the part from distroying itself at the rated
+current.  As socket does not conduct heat like a solder joint, and even if it
+did the Handy Board does not have a ground plane to spread the heat out.  In
+the near term I strongly suggest that you glue some metal to the top of these
+chips.  I've seen penneys used, slugs from electrical socket boxes.  If you
+use glue, you might think of getting some heat sink compound in between the
+metal and the top of the chip.  They make special heat sinks that clip around
+chips of this size you might look for.
+
+ <<Should I also wirewrapped the negative supply to one of the grounding point
+ pin of L293 ?By the way, If I cut the trace on HD, is it only cut the
+ trace to the positive supply only . How about the negative supply trace ?
+ should I cut? BEsides, If I cut, it there any way to mend it back to
+ originally ?>>
+
+     On the component side to the left of the word START is a wide trace.
+This is the trace that elads from the switch (batter), to the motor supply
+pins.  Cut this trace and plug the other motor supply at the + and - connector
+(which is above and to the right of the STOP swtich).  If you cut exactly in
+the middle of exposed trace with a small gap (any gap is enough), you could
+repair the trace by scraping the green solder mask from the remaining trace
+and bridging the gap with solder and a little wire.    See page 56 of the
+Handy Board Technical REference to see this trace easily.  If you are really
+thinking of repairing this modification, I would really just consider using
+the lifted pin.  It is much simpler to impliment and recover from.  I would
+not go back and forth too often with either method.  Folding the pin up and
+down will make it fall off, heating the trace too often will cause it to
+delaminate (come off the board).
+ 
+Hope this helps
+Pherd
+

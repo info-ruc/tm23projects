@@ -1,0 +1,120 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.12.10/8.12.10) with ESMTP id hB8G7XKL024115;
+	Mon, 8 Dec 2003 10:07:34 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.9.3p2/8.9.3/cc-lists.mc-1.30) with SMTP id KAA05584;
+	Mon, 8 Dec 2003 10:06:04 -0600 (CST)
+Received: from deepthought.cs.utexas.edu (root@deepthought.cs.utexas.edu [128.83.120.2])
+	by iceman.cc.utexas.edu (8.9.3p2/8.9.3/cc-lists.mc-1.30) with ESMTP id KAA05572
+	for <cs352h@lists.cc.utexas.edu>; Mon, 8 Dec 2003 10:05:54 -0600 (CST)
+From: skeckler@cs.utexas.edu
+Received: from fuller.cs.utexas.edu (skeckler@fuller.cs.utexas.edu [128.83.120.177])
+	by deepthought.cs.utexas.edu (8.12.10/8.12.10) with ESMTP id hB8G5qc3026989
+	for <cs352h@lists.cc.utexas.edu>; Mon, 8 Dec 2003 10:05:53 -0600 (CST)
+Received: (from skeckler@localhost)
+	by fuller.cs.utexas.edu (8.12.10/8.12.9/Submit) id hB8G5qcP003771;
+	Mon, 8 Dec 2003 10:05:52 -0600 (CST)
+Date: Mon, 8 Dec 2003 10:05:52 -0600 (CST)
+Message-Id: <200312081605.hB8G5qcP003771@fuller.cs.utexas.edu>
+To: cs352h@lists.cc.utexas.edu
+Subject: project issues
+Reply-To: skeckler@cs.utexas.edu
+Sender: owner-cs352h@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+
+Folks,
+
+A small number of issues have come to my attention.  These are all
+problems that should have come to light 5 weeks ago when you had the
+assignment to help debug the assembler and simulators.  At this point,
+they will not be fixed for this semester, so you will all have to
+figure out ways to work around the problems.  This may mean altering
+your test programs so that the issue does not manifest itself.
+
+1) Bugs in the assembler or simulators:
+
+> We're havin trouble getting the assembler to compile JSRR
+> instructions.  To our understanding, the syntax was JSRR BaseR,
+> OFFSET. However, the assembler won't recognize "JSRR R0, #2". Is this
+> a bug or are we doing something wrong?
+
+The assembler has a bug such that it will not recognize the immediate
+offset for the JSRR instruction.  "JSRR R0" should work though.
+
+> Here's the repro of the bug we found in the simxlc3 code.
+>
+> .ORIG $3000
+>    LD R2, SecondValue           ;the value in R2 should be FFB3
+>    ASH R3, R2, #-3		;the value in R3 is reported to be FFD9,
+> 				;but it should be fff6
+> 				;in binary:
+> 				;ffb3 = 1111111110110011
+> 				;ffd9 = 1111111111011001
+> 				;fff6 = 1111111111110110
+>    HALT
+> SecondValue .FILL $ffb3
+> .END
+
+There appears to still be a problem in LC35 ISA simulator (not
+verilog) for ASH.
+
+> We have two problems.  First, the JSRR instruction does not work in the
+> simulator.  It jumps to PC+BaseReg instead of jumping to BaseReg+Offset.
+> 
+> EX: JSRR R3  	;Instruction at PC=3000, R3=3003
+> 		; After executing, PC = 6003
+
+Another apparent issue with the JSRR in the instruction simulator.
+
+> Also, there seems to be a specification error regarding branches.  In the
+> initial LC35 verilog code we got from you, all instructions, including
+> branches, wrote to the NZP registers.  For branches, the target branch
+> address was used to determine the bits of the NZP.  However, in many of
+> the test programs, it was assumed that the branch does not change the
+> value of the NZP.  Also, the simulator also assumes that the branches do
+> not change the value of the NZP registers.  What should we do with this
+> dilemma?
+
+The original LC35 verilog code was incorrect.
+
+
+2) There have been some minor problems uncovered in the test programs
+   submitted along with HW #4.  If your name is mentioned below, you
+   might want to take a look at the test program in question.  If you
+   don't have time until after finals, no problem.
+
+> I recieved an error attempting to compile the testbench.asm in the dustbin
+> folder.
+
+---------
+
+> We believe that the description in Mei-Mei and David's arith.asm is
+> incorrect.
+> 
+> Our value of R5 is 000a, or 10, which would be the result of shifting 42
+> to the right twice. Could you please look over it?
+> 
+> Also, I believe the description of my program (log2.asm) is incorrect it
+> should be "otherwise known as ceiling(log2(x))".
+
+-----
+
+> Joon Hao Chuah and Laurel Issen's program allinst test seems to have a
+> small problem in the description.
+> 
+> We believe that r4 should hold 301a following execution instead of
+> 3018. They must have gotten missed up with all the commenting it semms
+> like they did toward the end of the program.
+
+Cheers,
+
+Steve Keckler                     Computer Architecture and Technology Lab
+Assistant Professor               Tel:    (512) 471-9763
+Department of Computer Sciences   Dept:   (512) 471-7316
+1 University Station C0500        Fax:    (512) 232-1413
+The University of Texas at Austin E-mail:  skeckler@cs.utexas.edu
+Austin, TX 78712-0233             http://www.cs.utexas.edu/users/skeckler
+                                  
+
+

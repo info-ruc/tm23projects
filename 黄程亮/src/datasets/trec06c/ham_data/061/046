@@ -1,0 +1,387 @@
+Received: from mta3.snfc21.pbi.net (mta3.snfc21.pbi.net [206.13.28.141])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id OAA13603
+	for <handyboard@media.mit.edu>; Thu, 10 Feb 2000 14:39:49 -0500 (EST)
+Received: from pacbell.net ([206.170.238.215])
+ by mta3.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.09.16.21.57.p8)
+ with ESMTP id <0FPQ0096JBPQ9D@mta3.snfc21.pbi.net> for
+ handyboard@media.mit.edu; Thu, 10 Feb 2000 11:34:39 -0800 (PST)
+Date: Thu, 10 Feb 2000 11:34:55 -0800
+From: Gary Livick <glivick@pacbell.net>
+Subject: Re: IC routine for ranging and angle finding with the GP2D12
+To: handyboard@media.mit.edu
+Message-Id: <38A312DC.5DAE755F@pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854";
+ x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+References: <FppyvK.Fpw@lugnet.com>
+
+Following up on my challenge to get some things happening here.....
+
+Following is an IC routine that can be used to find angular displacement
+from and distance to a wall.  It uses the Sharp GP2D12 IR ranging module
+mounted on a servo to do the ranging.  At the end is a new library
+routine for finding ARCSINE.
+
+I hope from the comments that the application is clear and the methods
+transparent, but if there are questions, please post them here on the HB
+list server.
+
+Gary Livick
+
+
+
+
+
+/*           rangingRH.c
+
+General notes:  this code can be used to find both the angle from a wall
+located to the right side of a robot, as long as the
+angular deviation from parallel to the wall isn't too great, and also
+the distance from the sensor (located on the robot) to the
+wall.  The limitation is that neither of the two major readings (at 50
+degrees and 90 degrees left of the robot longitudinal axis)
+are >= 41 inches.  As the code stands, it will hang if either range is
+>= 41 degrees.  The user can modify the code for readings
+to the left.
+
+This code is used by my robot, DocBot, to update its position while
+using dead reckoning navigation in a grid-based navigation
+routine. Some global variables can be made local.  I keep them out
+sometimes for troubleshooting.
+
+This routine uses first the law of cosines, then carries the results
+into the law of sines to the final determination of deviation
+angle.  When using the law of sines, a new function is called that is
+not available in the HC11 library; arcsine().  This new
+fuction is included at the end of the program, and can be copied into
+your own library.
+
+The distance to the wall is determined by right angle trigonometry.
+
+I have tested this and found it to be quite accurate, although it is
+very sensitive to wall color or surface finish alterations from
+white painted drywall.  The program runs automatically on reset, with
+the functions being called by main() from within the printf
+function.
+
+The servo functions are used from the Handy Board site for the
+unexpanded board, using PA3 and PA5 to drive servos.  The
+.icb files for these routines must be loaded separately.  Note that this
+routine was written for a Super-TCOMP board, which has
+motor ports similar to a Rug Warrior board.  For this reason, PA3 is
+used for driving one of the servos, as PA5 is used for
+motor functions on the Super-T.  This will prohibit the use of the
+beeper on a Handy Board, so the HB user may prefer to use
+the PA5 port servo routine on the Handy Board site in lieu of the PA3
+driver located in the "software contributed" section of the
+site.
+
+
+Gary Livick, http://www.teleport.com/~raybutts, glivick@pacbell.net
+   original release 2/9/2000
+     Please email corrections or improvements, which will be
+incorporated      citing the name of the contributor.
+
+*/
+
+
+
+#define pan servo_a7_pulse /* the panning servo is connected to PA7 */
+#define tilt servo_a3_pulse /* if you have a tilt servo, connect to PA3
+*/
+#define range analog(4)  /* hook the signal line from a GP2D12 to PE4 */
+
+float deg_to_rad = 57.2957795131;
+
+
+/**************************************
+
+theta_deviation is the deviation of the longitudinal axis of the robot
+from the wall.    Note: + is ccw from the wall, meaning the
+robot is pointed away from the wall by an amount equal to the deviation
+angle.
+
+***************************************/
+
+int theta_deviation()
+
+{int deviation = wall_angle_B() - 90;
+ return deviation;}
+
+
+
+/*************************************
+
+wall_angle_B
+
+**************************************/
+
+int B;  /* Wall angle B */
+
+int wall_angle_B()
+{return B=140 - wall_angle_C();} /* was 150 */
+
+
+/********************************************
+
+wall_distance
+
+*********************************************/
+
+int wall_distance()
+
+{float B_rad = (float)(B)/deg_to_rad; /* convert angle B to radians */
+ float wall_offset;  /* distance to measured wall */
+ wall_offset = c * sin(B_rad);
+ return (int)(wall_offset);}
+
+
+/********************************************
+
+wall_angle_C
+
+********************************************/
+
+  int C = 0;
+  float arg_x=0.;
+  float a;
+  float b = 0.;
+  float c = 0.;
+  float d = 0.; /* used to determine if C > 90 degrees */
+  float A=40./deg_to_rad; /* A = included angle between readings */
+
+int wall_angle_C()
+ {int q;
+
+  int temp_range;
+
+  int temp_b=0;
+  int temp_c=0;
+  int temp_d=0; /*used to determine if C > 90 degrees*/
+
+  pan_deg(-50); /*look right 50 degrees */
+  for(q=1;q<41;q++)
+   {temp_range=report_range();
+    temp_b += temp_range;
+     if (temp_range==0)
+      q--;
+    }
+
+  pan_deg(-60); /*look right 60 degrees, used to find C > 90 degrees */
+  for(q=1;q<41;q++)
+   {temp_range=report_range();
+    temp_d += temp_range;
+     if (temp_range==0)
+      q--;
+    }
+
+  pan_deg(-90);
+  for(q=1;q<41;q++)
+   {temp_range=report_range();
+    temp_c += temp_range;
+     if (temp_range==0)
+      q--;}
+
+  pan_deg(0);
+
+
+  b=(float)(temp_b)/40.;
+  c=(float)(temp_c)/40.;
+  d=(float)(temp_d)/40.;
+
+  a=sqrt((b^2.) + (c^2.) - (2.*b*c*cos(A)));
+  arg_x=c*sin(A)/a; /*delete this later, for test only*/
+  C=(int)(arcsin(c*sin(A)/a));
+
+  if (d > b)  /* then C is more than 90 degrees */
+    {C=180-C;}
+
+  return C;}
+
+
+
+/********************************************
+
+note: inches = 460.8/(range reading-4.8)
+
+********************************************/
+
+void servo3_on() /* 4750=left,3075=ctr,1400 = right */
+ {servo_a3_init(1); /*18.61 pulses per degree of servo rotation */
+ }
+
+void servo3_off()
+ {servo_a3_init(0);}
+
+
+void servo7_on()  /*tilt, 4000=dn, 3550=ctr, 3000=up is what mine does,
+adjust for yours */
+
+  {servo_a7_init(1);
+  }
+
+void servo7_off()
+ {servo_a7_init(0);
+  pokeword(0x1016,0); /*do this to renable motor speed (for Rug Warrior
+or TCOMP users only) */
+}
+
+/* the following isn't used, just a demo for panning the servo for fun
+*/
+
+int panning_demo()
+ {int i;
+  pan = 1400;
+  sleep(1.);
+
+  for (i=1400; i<4751; i++)
+   {pan = i;
+    sleep(.001);
+
+    }}
+
+void pan_deg(int deg)
+  {float pan_temp;
+   servo3_on();
+   sleep(1.);
+   pan_temp=3075. + ((float)(deg)*18.61); /*adjust these numbers for
+your servo.  The 18.61 is a constant to make the servo
+move one degree on my servo.  3075 is the center position on my servo.
+It is critical that they be correctly entered for your
+servo, or else the results will not be accurate.  */
+
+   pan=(int)(pan_temp);
+   sleep(1.5);
+   servo3_off();}
+
+
+
+int report_range()
+ {float distance;
+   sleep(.04);
+
+ /*the following conversion works with the GP2D12 against WHITE walls */
+
+   distance=460.8/((float)(range)-4.8);
+
+    if (distance>41.|| distance<4.8) /* the reading is probably wrong */
+
+     {
+      return 0;
+      }
+    else
+      {
+       return (int)(distance);
+        }}
+
+
+void main()
+
+{servo3_on();
+servo7_on();
+ sleep(1.0);
+pan=3050; /* adjust for your servo  */
+tilt=3550;  /* adjust for your servo  */
+sleep(2.0);
+servo3_off();
+servo7_off();
+
+while(1)
+
+{printf("dev angle= %d : distance=
+%d\n",theta_deviation(),wall_distance());
+ sleep (1.0);}
+
+
+}
+
+/******************************
+*                             *
+* returns angles in degrees   *
+*                             *
+*  note: 0<x<1.               *
+*                             *
+******************************/
+
+
+
+
+float arcsin(float x) /*returns degrees*/
+        {float Pi= 3.14159265359;
+         float a0 = 1.5707963050;
+         float a1 = -.2145988016;
+         float a2 = .0889789874;
+         float a3 = -.0501743046;
+         float a4 = .0308918810;
+         float a5 = -.0170881256;
+         float a6 = .0066700901;
+         float a7 = -.0012624911;
+
+         float solution;
+
+         solution = (Pi/2. - (sqrt(1.0 - x))*(a0 + a1*x + a2*(x^2.) +
+a3*(x^3.) + a4*(x^4.) + a5*(x^5.) + a6*(x^6.) + a7*(x^7.)));
+
+
+         return solution* 57.2957795;}
+
+
+
+
+float Pi= 3.14159265359;
+
+float arcsin(float x) /*returns degrees*/
+        {float a1 = .1666666667;
+         float a2 = .075;
+         float a3 = .0446428571;
+         float a4 = .0303819444;
+         float a5 = .0223721599;
+         float a6 = .0173527644;
+         float a7 = .0139648437;
+         float a8 = .0115518009;
+         float a9 = .0097616095;
+         float a10 = .0083903358;
+         float solution;
+
+         solution = (x + (a1*(x^3.)) + (a2*(x^5.)) + (a3*(x^7.)) +
+(a4*(x^9.)) + (a5*(x^9.)) + (a6*(x^11.)) + (a7*(x^13.)) +
+(a8*(x^15.)) + (a9*(x^17.)) + (a10*(x^19.)));
+
+         return solution;}
+
+
+
+
+
+/******************************
+*                             *
+* returns angles in degrees   *
+*                             *
+*  note: 0<x<1.               *
+*                             *
+******************************/
+
+
+float Pi= 3.14159265359;
+
+float arcsin(float x) /*returns degrees*/
+        {float a0 = 1.5707963050;
+         float a1 = -.2145988016;
+         float a2 = .0889789874;
+         float a3 = -.0501743046;
+         float a4 = .0308918810;
+         float a5 = -.0170881256;
+         float a6 = .0066700901;
+         float a7 = -.0012624911;
+
+         float solution;
+
+         solution = (Pi/2. - (sqrt(1.0 - x))*(a0 + a1*x + a2*(x^2.) +
+a3*(x^3.) + a4*(x^4.) + a5*(x^5.) + a6*(x^6.) + a7*(x^7.)));
+
+
+         return solution* 57.2957795;}
+
+

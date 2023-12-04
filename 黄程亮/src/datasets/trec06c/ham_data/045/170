@@ -1,0 +1,81 @@
+Received: from parsifal.zhwin.ch (parsifal.zhwin.ch [160.85.128.4])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id FAA18203
+	for <handyboard@media.mit.edu>; Mon, 31 May 1999 05:47:51 -0400 (EDT)
+Received: from zhwin.ch (pchar.zhwin.ch [160.85.130.120]) by parsifal.zhwin.ch with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2448.0)
+	id L6WXZFXC; Mon, 31 May 1999 11:50:27 +0200
+Message-Id: <37525B6B.12B93755@zhwin.ch>
+Date: Mon, 31 May 1999 11:50:35 +0200
+From: Thomas Hauri <Thomas.Hauri@zhwin.ch>
+X-Mailer: Mozilla 4.6 [en] (WinNT; I)
+X-Accept-Language: de-CH,de-DE,en
+Mime-Version: 1.0
+To: "Kwang-Ju, Lee" <kjlee@scai.snu.ac.kr>
+Subject: Re: Sonar_closeup() doesn't work!
+References: <005b01beab46$901c8080$eb792e93@Neuron.snu.ac.kr>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+
+
+Hi
+
+resending a message posted a while ago.
+
+Hi all
+
+if anyone has problems using the 6500 series for distances below 35cm by
+using the binh signal I have a possible solution to the problem. We also
+expierienced problems using the sensors for distances between 15cm and
+40cm. We finally found out that the digital chip (TL851) on the 6500
+board gets huge voltage spikes making it detect an echo even if there
+was none.
+We solved the problem by adding an additional capacitior to the
+powersupply.
+
+THE REWORK
+Solder a tantal c (1uF) directly to pin 3(Gnd) and pin 1 (+) of chip U2
+(TL851).
+
+This will filter the spikes keeping them from droping below 2.5 V.
+If anyone has a better way of solving this problems please tell me.
+
+cu                      TOM
+
+hope this helps.
+
+
+> I've downloaded sonar.c in Software/Libraries in Handy board homepage,
+> and tested it with my H/B and Polarloid 6500 Sonar Module.
+> Function sonar_sample() works well. But sonar_closeup() doesn't work.
+> It always returns about 6700 regardless of Sonar's position while sonar_sample()
+> returns 6700~23000. So I modified the code, but the function -sonar_closeup()
+> always returns about 6700 until I make following changes:
+> I changes the gap between INIT high and BINH high signal. That is,
+> I rewrite following code in sonar_closeup() line 8
+>     while((peekword(0x100e) - start_time) < 1000 );
+> as
+>     -> while((peekwork(0x100e -start_time) < 4800 );
+> I change the gap 2000, 3000, and 4000, but It doesn't work till the value greater than
+> 4800 - it is 2.40 ms. which is no better than sonar_sample().
+>
+> Who knows how I can measure more closer distance with this sonar module?
+
+--
+Thomas Hauri
+
+ZHW Zuercher Hochschule Winterthur
+University of applied sciences
+
+IMS Institut of mechatronic systems
+
+Technikumstr.9 /PF
+CH-8401 Winterthur
+Switzerland
+
+Phone : +41 52 267 74 79
+Fax    :  +41 52 268 74 79
+Mail  :   Thomas.Hauri@zhwin.ch
+HP    :   http://www.zhwin.ch
+
+
+

@@ -1,0 +1,223 @@
+Received: from pproxy.gmail.com (pproxy.gmail.com [64.233.166.176])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2U65OY07561
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 01:05:25 -0500 (EST)
+Received: by pproxy.gmail.com with SMTP id i75so389865pye
+        for <egs+summary@cs.cornell.edu>; Wed, 29 Mar 2006 22:05:24 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=esfLewLjjYWXtSgj8gLISnb5rxmgWWl1JfuLQsx6e02+u8lOvk54m2dSRHp8Oc5rGawTV4+F7pSzHxWqyYBC+cfNWhVORLllXPK6kV0/Jr2hRmwmQbrY1DgilCMieZDF7avxQq9qQw1+4m/83Z7DYU0lj11u//70EuHZaZpL6no=
+Received: by 10.35.49.4 with SMTP id b4mr412016pyk;
+        Wed, 29 Mar 2006 22:05:24 -0800 (PST)
+Received: by 10.35.125.16 with HTTP; Wed, 29 Mar 2006 22:05:24 -0800 (PST)
+Message-ID: <9aa7a97d0603292205o579e8647we6e147d9e03c767d@mail.gmail.com>
+Date: Thu, 30 Mar 2006 01:05:24 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 17
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_121_24846656.1143698724329"
+
+------=_Part_121_24846656.1143698724329
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+I think I may have screwed up in sending my last few papers! Sorry! Would
+you like them to be resent? Or something? (I believe I got the paper #s
+wrong)
+
+Andrew Cunningham
+arc39
+
+    Incentives Build Robustness in BitTorrent
+    Bram Cohen
+
+    In classical peer-to-peer fashion, BitTorrent takes the classical
+client-server model and subverts it. What is more obvious in this domain
+than most is how shady the legality can become; by making certain services
+available only via bit-torrent, a provider may essentially dodge out on
+their entire upload bill, causing ISPs to essentially foot the bill for
+their content distribution. Thus, BitTorrent introduces stronger quality of
+service guarantees and much better qualities for introducing new content,
+and permits economic measurement of client behavior in order to discover
+freeloaders. It does this by slicing each object to be transfered into
+blocks of bits and then carefully downloading them "optimally" from all
+those offering them, while simultaneously advertising, and offering, the
+block-just-downloaded. It is a deployed technology.
+    What BitTorrent does not do is ensure good behavior after a file has
+been downloaded. A file must be seeded to be shared on this system, and
+after downloaded a peer should remain online and offering it, in order to
+help with the cost of upload. However, there is no incentive to do this,
+because this will create congestion on a peer's network to no personal
+benefit; a useful expansion might be to measure the performance of
+BitTorrent peers over time, and integrate the shorter term, per-object
+rules, to a peer whenever they're encountered. Also, it is something of a
+hybrid scheme (due to its real world deployment), and thus not purely
+peer-to-peer. This is relevant to the performance of BitTorrent in that it
+creates a single point of failure; while it is no longer necessary for the
+object to remain hosted by its author, it becomes necessary for the author
+to maintain the tracker; the cost is significantly lower but there exists a
+clear link between tracker and responsibility (legal, mostly!) of objects.
+
+    SplitStream: High Bandwidth Multicast in Cooperative Environments
+    Miguel Castro, Peter Druschel, Anne-Marie Kermarrec, Animesh Nandi,
+Antony Rowstron, Atul Singh
+
+    Solving a slightly different problem, SplitStream attempts to maximize
+not personal download while minimizing some central server's upload amounts=
+,
+but instead to maximize multicast throughput while minimizing reliance on
+fallible broadcast trees and attempting to enforce fairness. However, it
+uses a similar concept, splitting each object into stripes and to multicast
+each stripe along a separate broadcast tree whose interior points are
+disjoint with each other tree. The topology information is maintained by
+means of a Pastry ring, with groups treated much as objects around the ring=
+;
+membership broadcast trees can then be cheaply and easily built by routing =
+a
+response to the unit on the ring corresponding to the arbitrary point chose=
+n
+to represent a group.
+    Splitstream's algorithm is quite elegant, though requiring an amount of
+organizational overhead proportional to the size of the message being sent,
+in that it is related directly to the number of stripes being sent
+concurrently. This is not a problem, as it is done through pastry, which
+otherwise requires little overhead, but represents something of a stumbling
+block for other-than-longstanding connections, because since this setup and
+teardown work must be done per stripe to be sent, the model cannot easily b=
+e
+adapted (as BitTorrent) to include one-time downloads, but is instead bette=
+r
+suited for streaming video and so forth.
+
+    Bullet: High Bandwidth Data Dissemination Using an Overlay Mesh
+    Dejan Kostic, Adolfo Rodriguez, Jeannie Albrecht, and Amin Vahdat
+
+    Similar in some ways to Bittorrent's model, Bullet uses a broadcast tre=
+e
+to seed data into the network and then lateral links to ensure good coverag=
+e
+of all portions of a given file. The important operation here is to locate =
+a
+peer with slices of content we do not posess; the RanSub algorithm attempts
+to do this via collect and distribute messages over a tree in an epoch
+based, cyclical system. Each node thus receives a parent stream of data fro=
+m
+the broadcast tree, and some lateral perpendicular streams of data from
+other peers.
+    The improvements of this paper are an improvement over strict broadcast
+trees, and thus SplitStream in fact answers many of the flaws in this paper=
+;
+the most obvious of which is that it is somewhat unstructured, and thus
+suffers from higher coordination requirements; the problem of locating peer=
+s
+in possesion of new data is essentially one of serving all the nodes 'in th=
+e
+correct order' in this model, since it is intended for arbitrary broadcast,
+and so scales very well, but also must manage throughput more efficiently
+than strict trees. The unstructured nature hinders in this goal.
+
+------=_Part_121_24846656.1143698724329
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+I think I may have screwed up in sending my last few papers! Sorry!
+Would you like them to be resent? Or something? (I believe I got the
+paper #s wrong)<br>
+<br>
+Andrew Cunningham<br>
+arc39<br>
+<br>
+&nbsp;&nbsp;&nbsp; Incentives Build Robustness in BitTorrent<br>
+&nbsp;&nbsp;&nbsp; Bram Cohen<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; In classical peer-to-peer fashion, BitTorrent takes
+the classical client-server model and subverts it. What is more obvious
+in this domain than most is how shady the legality can become; by
+making certain services available only via bit-torrent, a provider may
+essentially dodge out on their entire upload bill, causing ISPs to
+essentially foot the bill for their content distribution. Thus,
+BitTorrent introduces stronger quality of service guarantees and much
+better qualities for introducing new content, and permits economic
+measurement of client behavior in order to discover freeloaders. It
+does this by slicing each object to be transfered into blocks of bits
+and then carefully downloading them &quot;optimally&quot; from all those of=
+fering
+them, while simultaneously advertising, and offering, the
+block-just-downloaded. It is a deployed technology.<br>
+&nbsp;&nbsp;&nbsp; What BitTorrent does not do is ensure good behavior
+after a file has been downloaded. A file must be seeded to be shared on
+this system, and after downloaded a peer should remain online and
+offering it, in order to help with the cost of upload. However, there
+is no incentive to do this, because this will create congestion on a
+peer's network to no personal benefit; a useful expansion might be to
+measure the performance of BitTorrent peers over time, and integrate
+the shorter term, per-object rules, to a peer whenever they're
+encountered. Also, it is something of a hybrid scheme (due to its real
+world deployment), and thus not purely peer-to-peer. This is relevant
+to the performance of BitTorrent in that it creates a single point of
+failure; while it is no longer necessary for the object to remain
+hosted by its author, it becomes necessary for the author to maintain
+the tracker; the cost is significantly lower but there exists a clear
+link between tracker and responsibility (legal, mostly!) of objects.<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; SplitStream: High Bandwidth Multicast in Cooperative Env=
+ironments<br>
+&nbsp;&nbsp;&nbsp; Miguel Castro, Peter Druschel, Anne-Marie Kermarrec, Ani=
+mesh Nandi, Antony Rowstron, Atul Singh<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; Solving a slightly different problem, SplitStream
+attempts to maximize not personal download while minimizing some
+central server's upload amounts, but instead to maximize multicast
+throughput while minimizing reliance on fallible broadcast trees and
+attempting to enforce fairness. However, it uses a similar concept,
+splitting each object into stripes and to multicast each stripe along a
+separate broadcast tree whose interior points are disjoint with each
+other tree. The topology information is maintained by means of a Pastry
+ring, with groups treated much as objects around the ring; membership
+broadcast trees can then be cheaply and easily built by routing a
+response to the unit on the ring corresponding to the arbitrary point
+chosen to represent a group.<br>
+&nbsp;&nbsp;&nbsp; Splitstream's algorithm is quite elegant, though
+requiring an amount of organizational overhead proportional to the size
+of the message being sent, in that it is related directly to the number
+of stripes being sent concurrently. This is not a problem, as it is
+done through pastry, which otherwise requires little overhead, but
+represents something of a stumbling block for other-than-longstanding
+connections, because since this setup and teardown work must be done
+per stripe to be sent, the model cannot easily be adapted (as
+BitTorrent) to include one-time downloads, but is instead better suited
+for streaming video and so forth.<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; Bullet: High Bandwidth Data Dissemination Using an Overl=
+ay Mesh<br>
+&nbsp;&nbsp;&nbsp; Dejan Kostic, Adolfo Rodriguez, Jeannie Albrecht, and Am=
+in Vahdat<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; Similar in some ways to Bittorrent's model, Bullet
+uses a broadcast tree to seed data into the network and then lateral
+links to ensure good coverage of all portions of a given file. The
+important operation here is to locate a peer with slices of content we
+do not posess; the RanSub algorithm attempts to do this via collect and
+distribute messages over a tree in an epoch based, cyclical system.
+Each node thus receives a parent stream of data from the broadcast
+tree, and some lateral perpendicular streams of data from other peers.<br>
+&nbsp;&nbsp;&nbsp; The improvements of this paper are an improvement
+over strict broadcast trees, and thus SplitStream in fact answers many
+of the flaws in this paper; the most obvious of which is that it is
+somewhat unstructured, and thus suffers from higher coordination
+requirements; the problem of locating peers in possesion of new data is
+essentially one of serving all the nodes 'in the correct order' in this
+model, since it is intended for arbitrary broadcast, and so scales very
+well, but also must manage throughput more efficiently than strict
+trees. The unstructured nature hinders in this goal.<br>
+
+------=_Part_121_24846656.1143698724329--
+

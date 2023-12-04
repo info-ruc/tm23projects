@@ -1,0 +1,96 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3HNa9212355
+	for <egs+summary@cs.cornell.edu>; Mon, 17 Apr 2006 19:36:09 -0400 (EDT)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k3HNa7iP017415
+	for <egs+summary@cs.cornell.edu>; Mon, 17 Apr 2006 19:36:08 -0400 (EDT)
+Received: from 128.84.98.251
+        by webmail.cornell.edu with HTTP;
+        Mon, 17 Apr 2006 19:36:09 -0400 (EDT)
+Message-ID: <3909.128.84.98.251.1145316969.squirrel@webmail.cornell.edu>
+Date: Mon, 17 Apr 2006 19:36:09 -0400 (EDT)
+Subject: paper 20
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+MACEDON
+
+provides an infrastructure to
+1) specify distributed algorithms in a concise domain-specific language
+2) generate code that executes in popular evaluation infrastructures and
+in live-networks
+3) enable consistent experimental evaluation
+
+it uses a FSM based approach for describing overlays.
+
+
+node state is represented by state variables.
+algorithms have system states that represent high-level phases of processing.
+
+it distinguishes b/w control and data operations - control operations
+modify node state and are exclusively serialized within
+
+a protocol instance. data operations simply read a node state, enabling
+shared protocol access ( a read/write lock is used for this purpose)
+
+messages provide the fundamental mechanism for coordinating distributed
+actions and transmitting data.
+it has a number of APIs which help in building robust networked systems.
+
+
+
+
+P2
+
+it is a system which uses declarative logic language to express overlay
+networks in a highly compact and reusable form.
+
+P2 requires less lines of code than MACEDON for systems in general.
+
+languages have been influenced by the protocol-centric approach or
+structure-centric approaches. P2 spans these 2 approaches and expands upon
+them.
+
+P2 models the overlay as a distributed data structure represented via a
+set of relations in a relational database. P2 employs 2 types of relations
+: soft-state tables and streams of transient tuples.
+the relational abstraction presents a natural way to reuse functionality
+and share routing state among different overlays.
+
+the language they use is termed as Overlog - based on the popular query
+language Datalog. Constructs are added to specify physical distribution
+properties.
+
+an Overlog program is largely composed of table declarations and rules.
+
+Adv compared to FSM based approaches
+1) reuse - automata interrelate possible events and states and thus are
+difficult to reuse in other contexts.
+2) typing is another advantage.
+
+the authors implemented PEL which was a small but powerful expression
+language for manipulating Values and Tuples.
+
+Dataflow framework
+P2 graphs need not be trees - cyclic dataflow is used for recursive queries.
+
+dropping of tuples due to queue overflow is undesirable in P2 and a
+blocking mechanism is used in this case.
+
+a planner is used for generating data flow graphs.
+
+
+
+
+
+
+
+
+
+

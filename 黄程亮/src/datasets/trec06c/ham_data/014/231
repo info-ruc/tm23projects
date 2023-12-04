@@ -1,0 +1,56 @@
+Received: from mailhub1.ncal.verio.com (mailhub1.ncal.verio.com [204.247.247.38])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id BAA05260
+	for <handyboard@media.mit.edu>; Tue, 14 Apr 1998 01:15:47 -0400 (EDT)
+Received: from 207.21.135.71 (paix-alg-gw11-8.ncal.verio.com [207.21.135.71])
+	by mailhub1.ncal.verio.com (8.8.7/8.8.7) with SMTP id WAA20697
+	for <handyboard@media.mit.edu>; Mon, 13 Apr 1998 22:15:45 -0700 (PDT)
+Message-Id: <3532FF0C.1574@aimnet.com>
+Date: Mon, 13 Apr 1998 22:15:41 -0800
+From: Ken Bullis <kbullis@aimnet.com>
+Reply-To: kbullis@aimnet.com
+X-Mailer: Mozilla 3.0 (Macintosh; U; PPC)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Re: analog encoders
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+MAR ERICSON wrote:
+> Hi, when I compile fencdr0.asm, I get
+> "xxxjunk.c"(68): Warning --- Value Truncated
+> "xxxjunk.c"(70): Warning --- Value Truncated
+> "xxxjunk.c"(68): Warning --- Value Truncated
+> "xxxjunk.c"(70): Warning --- Value Truncated
+
+Mar,
+
+I ran into these warnings when I was modifying sencdr0.asm.
+They do in fact show a bug in the assembly code, but it's
+harmless.  If you like gory details, here they are:
+
+Near the beginning, the file defines these constants:
+BASE	EQU	$1000
+ADCTL	EQU	$1030	; A/D Control/status Register
+
+BASE is the base address of the block of Handy Board registers;
+ADCTL is the address of the A/D control register.
+
+Later, to clear this register, the code does this:
+LDX		#BASE
+LDAA	#0
+STAA	ADCTL,X
+
+This loads the X index register with the base address and the A
+register with zero, then stores the A register into an address which
+is offset from the value of the X register.  The programmer gives
+ADCTL as that offset, *but the instruction only allows a one-byte
+offset.*  So instead of storing into $2030 (1000+1030), which is
+what was asked for, the assembler truncates the offset to one byte
+($30) and stores into $1030, which is what is wanted.
+
+You can safely remove the upper byte from ADCTL (and ADR1), or you
+can leave well enough alone and live with the warnings, as I did.
+
+Ken Bullis
+kbullis@aimnet.com
+

@@ -1,0 +1,35 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2GFwxt16805
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 10:58:59 -0500 (EST)
+Received: from localhost (cpe-69-207-49-126.twcny.res.rr.com [69.207.49.126])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2GFwwKv000375
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 10:58:58 -0500 (EST)
+Date: Thu, 16 Mar 2006 10:58:58 -0500
+From: Niranjan Sivakumar <ns253@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 15
+Message-Id: <20060316105858.92746a9b.ns253@cornell.edu>
+Organization: Cornell Law School
+X-Mailer: Sylpheed version 2.2.2 (GTK+ 2.8.13; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Niranjan Sivakumar
+Crowds:  Anonymity for Web Transactions
+The Dining Cryptographers Problem:  Unconditional Sender and Recipient Untraceability
+P5:  A Protocol for Scalable Anonymous Communication
+
+Crowds are based on forwarding queries through a number of nodes in a network such that it is difficult to tell whether the node from which a request is received is the source of the query.  The authors define different levels of anonymity in a system aiming for a minimum of "probably innocence".  The system is resilient at some level to eavesdropping on the local, end server, and collaborative level.  However, someone with a global view of the network would be able to trace queries.  The nodes, known as jondos, encrypt packets on the path to the ultimate destination, but the system does not rely on a public key infrastructure.  The system does not use constantly changing paths due to vulnerabilities in this approach.  There is some possibility of timing attacks against the crowd system.
+
+P5 bases its approach on the idea that it is difficult to tell who the intended recipient of a message is when it is broadcast.  The system takes this basic principle, which would be quite inefficient to implement on the Internet, and attempts to scale it by providing a hierarchical system to provide different levels of anonymity.  Lower levels in the tree-based hierarchy provide lower levels of anonymity in exchange for better efficiency.  Traffic is encrypted, and as in Crowds, a public key infrastructure is not assumed.  	There are some vulnerabilities in the system to a very powerful attacker.
+
+The dining cryptographers protocol is based on the idea that nodes in a ring can share a "coin-flip" secret with adjacent nodes and broadcast the XOR of the two secrets that they know to the group.  One participant can also embed a message into their announcement.  The message can be retrieved, but the participants in the network cannot determine who the sender is because of they can never know both of the secrets that the sender knew.  This general approach is expanded to use secret keys instead of a literal "coin flip" to implement the protocol.
+
+Herbivore is based on DC-Nets and works to improve inefficiencies.  Herbivore makes small DC-Net groups that are inserted into a Pastry network.  This approach means that the source group, or clique, of a request can be known, but it is not possible to determine who in the clique actually sent the message.  A system of crypto-puzzles is used to protect against Sybil attacks to some extent.  
+
+Some of the approaches that we have seen to do not seem to scale well to different kinds of Internet media.  There seems to be a problem of incentive to get nodes to forward large amounts of data to preserve anonymity, such as for redirecting a streaming video or audio broadcast.  The ethics section of P5 seems to be quite underdeveloped, in particular, it is not clear if they are claiming that the weakness of their protocol to a strong attacker is a "feature" or "benefit" or some kind, but they do raise the important issue of abuse of anonymity.  At another level, it seems that it may be important in some instances to mask that you are even a participant in an anonymity system.  This is particularly a problem in crowds, where participants are very clearly indicated.  Since there is certainly some performance loss when participating in these anonymity systems versus directly seeking data, it could be a problem if people only use such systems for activity that they want to hi!
+ de rather than for all of their usage.  If an anonymity system is used only for conduct that may be "questionable" in some sense, then all participants in a network may be held liable for facilitating such conduct by knowingly participating in the system.
+

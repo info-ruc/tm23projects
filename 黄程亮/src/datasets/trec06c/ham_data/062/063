@@ -1,0 +1,125 @@
+Received: from mailer3.bham.ac.uk (mailer3.bham.ac.uk [147.188.128.54])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id WAA31291
+	for <handyboard@media.mit.edu>; Fri, 25 Feb 2000 22:56:07 -0500 (EST)
+Received: from bham.ac.uk ([147.188.128.127])
+	by mailer3.bham.ac.uk with esmtp (Exim 3.02 #16)
+	id 12OYKd-0001hP-00
+	for handyboard@media.mit.edu; Sat, 26 Feb 2000 03:55:51 +0000
+Received: from bham-eee-fs4.bham.ac.uk ([147.188.147.167])
+	by bham.ac.uk with esmtp (Exim 3.10 #1)
+	id 12OYKd-0003JG-00
+	for handyboard@media.mit.edu; Sat, 26 Feb 2000 03:55:51 +0000
+Received: by bham-eee-fs4.bham.ac.uk with Internet Mail Service (5.5.2650.21)
+	id <10JTB7WY>; Sat, 26 Feb 2000 03:55:50 -0000
+Message-Id: <9FDFD60B9F3AD311A1400008C79F4B54110FFC@bham-eee-fs4.bham.ac.uk>
+From: "E158 (M.FAZAL)" <M.FAZAL@bham-eee-fs4.bham.ac.uk>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: colour sensor caliberation
+Date: Sat, 26 Feb 2000 03:55:47 -0000
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain
+
+Hi all
+
+I mailed the list a few weeks back about implementing a colour sensor.
+someone suggested using three photo resistors with red, green and blue
+filters over it.
+
+I have built the sensor with four photo resitors, three with the different
+filters and one without the filter. i have also written a caliberating
+software and a program to use the sensor.Anyway, the result is that
+sometimes the sensor gives the correct colour. But gets it wrong quite often
+too. usually it confuses green for blue or brown (and other way round). also
+if it is too closer than the calibertion distance it thinks the surface is
+black. below is the method i am using.
+
+struct surface
+{
+ char colour[5];  
+ int no_filter;          /* value from photoresistor with no filter */
+ int red_filter;          /* value from photoresistor with red filter */
+ int blue_filter;       /* value from photoresistor with blue filter */
+ int green_filter;     /* value from photoresistor with green filter */
+ float red_ratio;     /* red filter value / no filter */
+ float blue_ratio;    /* blue filter value / no filter */ 
+ float green_ratio;  /* green filter value / no filter */
+};
+
+persistent struct surface s1,s2,s3,s4,s5,s6;  /* 6 surfaces with different
+colours */
+struct surface* surf_no; /* pointer to surface */
+.
+.
+
+void cal_values()   /* function to caliberate the values */
+{
+printf("Caliberating.   Please wait...\n");    
+surf_no->no_filter=analog(2);        /*   \                             */ 
+surf_no->red_filter=analog(3);       /*    \  values from analog ports */
+surf_no->blue_filter=analog(0);       /*   /                          */
+surf_no->green_filter=analog(1);    /*  /                            */
+surf_no->red_ratio=(float)surf_no->red_filter/float)surf_no->no_filter; 
+surf_no->blue_ratio=(float)surf_no->blue_filter/float)surf_no->no_filter;  
+surf_no->green_ratio=(float)surf_no->green_filter/loat)surf_no->no_filter; 
+} 
+
+
+
+To determine the surface coulor after caliberation, the sensor is placed in
+from of a surface and the values are read, and compared with the values for
+each of the 6 surfaces in the caliberation. the colour with the closet value
+is the right colour. below is a pice of the code that does this.
+
+void get_colour(void)
+{ 
+     float err, prev_err=100.0;
+     no_filter=analog(2);
+     red_filter=analog(3);
+     blue_filter=analog(0);
+     green_filter=analog(1);
+     red_ratio = (float)red_filter / (float)no_filter;
+     blue_ratio = (float)blue_filter / (float)no_filter;
+     green_ratio = (float)green_filter / (float)no_filter;
+
+     surf_no=&s1;   
+     s=surf_no;    /* s is a pointer to surface which is the most likely
+colour */
+     err=compare();
+     if(err<prev_err){
+          s=surf_no;
+          prev_err=err;
+     }
+.         /* do same comparing for all other caliberated colours */
+.
+ printf("Surface colour is  %s \n",s->colour);
+
+}
+
+float compare()
+{
+float tot_err, red_err, blue_err, green_err;
+
+red_err = surf_no->red_ratio - red_ratio;  /* caliberated value - current
+surface value */
+if (red_err<0.0) red_err = 0.0 - red_err;  /* make value positive */
+
+blue_err = surf_no->blue_ratio - blue_ratio; /* caliberated value - current
+surface value */
+if (blue_err<0.0) blue_err = 0.0 - blue_err;  /* make value positive */
+
+green_err = surf_no->green_ratio - green_ratio;
+if (green_err<0.0) green_err= 0.0 - green_err;  /* make value positive */
+
+tot_err = red_err + blue_err + green_err;  /* sum of all errors */
+return tot_err;  /* return error value  */
+}
+
+
+I would be most grateful if you have any suggetsions about my method for
+caliberating and correlating the values. Any ideas most welcome.
+
+Many thanks
+M Fazal
+
+

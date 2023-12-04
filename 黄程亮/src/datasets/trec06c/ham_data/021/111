@@ -1,0 +1,70 @@
+Received: from sps1.phys.vt.edu (sps1.phys.vt.edu [128.173.176.53])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id LAA12381
+	for <handyboard@media.mit.edu>; Mon, 3 Aug 1998 11:16:53 -0400 (EDT)
+Received: from localhost (mwallace@localhost)
+	by sps1.phys.vt.edu (8.8.7/8.8.7) with SMTP id LAA20283;
+	Mon, 3 Aug 1998 11:16:50 -0400
+Date: Mon, 3 Aug 1998 11:16:50 -0400 (EDT)
+From: Mark Wallace <mwallace@sps1.phys.vt.edu>
+To: alf.kuchenbuch@usa.net
+Cc: handyboard@media.mit.edu
+Subject: Re: Polaroid trouble again
+In-Reply-To: <35C5C521.446B@eikon.e-technik.tu-muenchen.de>
+Message-Id: <Pine.LNX.3.96.980803105221.20258A-100000@sps1.phys.vt.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+	I had this same problem when I got mine a few weeks ago.  I ended up
+putting a capacitor from pin 1 to pin 3 on U2 of the sonar driver board.
+I also had to take out the 1k resistor from the BINH.  It kept
+BINH at 1 V instead of Zero and that seamed to cause problems.
+	As for the 6 ft problem,  it should be closer to 9 ft.  I think
+the problem there is the IC code you used.  If you used the code for
+SONAR.C from the HB web site then there is a problem with it.  What that
+program does is take the difference in time from the internal clock.  the
+problem is that in the code it says that if the difference between start
+time and currnet time is negative too much time has elapsed.  Well,  this
+has a 16 bit counter so when the difference is greater the about 32,700 it
+becomes negative.  If you do the math, that means at about 9 ft that
+happens so it tell you you are out of range.  
+	The way I fixed this was to slow the clock down.
+	
+I looked up information on the motorola web page and found where the
+prescalers were for the clock. 
+	If you want to slow it down by a factor of four you can just add
+this line to you program in sonar_init()
+
+	bit_set(0x1024, 1);
+
+I believe bit_set(0x1024, 2); will slow it down by a factor of 8 and
+bit_set(0x1024, 3); will slow it down by a factor of 16.  
+	There are better ways of fixing this problem but they appear much
+more complicated.  For example the motorola chip has an overflow flag that
+says when the internal clock flips.  You could incorporate that into your
+code instead of slowing the clock down.  Good luck and I hope this helps.
+
+Mark Wallace
+
+ e-mail  mawalla3@vt.edu
+         mwallace@sps1.phys.vt.edu
+Web page http://sps1.phys.vt.edu/~mwallace/index.html
+
+"What a waste it would be after 4 billion tortuous years of evolution if
+the dominant organism contrived its own self-destruction"
+                                        Carl Sagan
+
+On Mon, 3 Aug 1998, Alf Kuchenbuch wrote:
+
+> Hi!
+> I am having trouble with my Polaroid sonar: 
+> When I keep my HB hooked up
+> to external power, I will only get correct readings up to 20 inches. As
+> soon as I use battery power without hooking it up to external power, the
+> readings are correct up to 6 feet, not more! This sound like EMI, I
+> guess. I tried all the capacitor tricks from HB mailing list, but in
+> vain. Do you know a fix that works? 
+>  
+> Alf H. Kuchenbuch
+> 
+
+

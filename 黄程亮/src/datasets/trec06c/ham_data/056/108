@@ -1,0 +1,68 @@
+Received: from smyk.apk.net (smyk.apk.net [207.54.158.17])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id KAA09260
+	for <handyboard@media.mit.edu>; Sat, 13 Nov 1999 10:33:21 -0500 (EST)
+Received: from junior.apk.net (drushel@junior.apk.net [207.54.158.20]) by smyk.apk.net (8.9.3/8.9.3/apk.990812+rchk1.22+bspm1.13.1.5) with ESMTP id KAA20165 for <handyboard@media.mit.edu>; Sat, 13 Nov 1999 10:28:23 -0500 (EST)
+Received: (from drushel@localhost)
+	by junior.apk.net (8.9.3/8.9.3) id KAA29155
+	for handyboard@media.mit.edu; Sat, 13 Nov 1999 10:28:23 -0500 (EST)
+From: Richard Drushel <drushel@apk.net>
+Message-Id: <199911131528.KAA29155@junior.apk.net>
+X-Real-To: handyboard@media.mit.edu
+Subject: Re: IC trouble - function definition
+To: handyboard@media.mit.edu
+Date: Sat, 13 Nov 1999 10:28:23 -0500 (EST)
+In-Reply-To: <4.1.19991113090106.009a77c0@pop.mv.net> from "John Bachman" at Nov 13, 1999 09:04:32 AM
+X-Mailer: ELM [version 2.5 PL1]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+[John Bachman] spake unto the ether:
+
+> /* A simplified program to figure out what is wrong */
+> 
+> long time;
+> 
+> void start()
+> {
+>        phony();
+> 
+>        void phony()			/*  Line 9 syntax error is reported here */
+>        {
+>        		while (digital(2) == 1)
+>                       		{
+> 			 time = mseconds();              
+> 			}
+>        }
+> }
+> 
+> When I try to load it with IC I get a syntax error on line 9.  Can anyone tell me why?
+
+	You have the definition of phony() nested inside the definition
+of start().  I don't know what ANSI C and/or C++ let you do, but this is
+invalid IC.  You need something like:
+
+long time;
+
+void start()
+{
+	phony();
+}
+
+void phony()
+{
+	while (digital(2)==1)
+	{
+		time = mseconds();
+	}
+}
+
+Of course, somewhere you will need a main() to call start().
+
+	*Rich*
+-- 
+Richard F. Drushel, Ph.D.            | "Aplysia californica" is your taxonomic
+Department of Biology, Slug Division | nomenclature.  /  A slug, by any other
+Case Western Reserve University      | name, is still a slug by nature.
+Cleveland, Ohio  44106-7080  U.S.A.  |     -- apologies to Data, "Ode to Spot"
+

@@ -1,0 +1,54 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id MAA16461
+	for <handyboard@media.mit.edu>; Tue, 29 Sep 1998 12:38:23 -0400 (EDT)
+Received: from cs.umt.edu (mso1-11.montana.com [208.4.224.11])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id KAA20615
+	for <handyboard@media.mit.edu>; Tue, 29 Sep 1998 10:44:29 -0600 (MDT)
+Message-Id: <36110D18.12DD7938@cs.umt.edu>
+Date: Tue, 29 Sep 1998 10:38:48 -0600
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Multi dimentional Arrays
+References: <Pine.LNX.3.96.980929201627.14182A-100000@localhost>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Javaid Iqbal wrote:
+> Hi All,
+> I am trying to write a code for fuzzy logic and using Matrix havig a size
+> of 10X10, but it gives an error (stack overflow). When i reduce the size
+> of matrix to 6X6 it works perfectly.
+<snip>
+
+You might try using a one-dimensional array of size 100, along with a
+simple indexing function to simulate a two-dimensional array:
+
+    int myarray[ 100 ];
+
+    int index( int row, int col ) {
+        return 10 * row + col;
+    }
+
+    void main() {
+        int i = 0, j = 4;
+        myarray[ index( i, j ) ] = 30;
+        printf( "myarray( %d, %d ) = %d", i, j, myarray[ index( i, j ) ]
+);
+    }
+
+Perhaps the one-dimensional array would be more memory-efficient.  Good
+luck!
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,             Suburbia is where the developer bulldozes out
+Will Bain,                the trees, then names the streets after them.
+& Tatoosh                                                 --Bill Vaughn
+

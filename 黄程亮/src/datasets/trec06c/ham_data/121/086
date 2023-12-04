@@ -1,0 +1,35 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3B5pD219775
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 01:51:13 -0400 (EDT)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k3B5pDI5029363
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 01:51:14 -0400 (EDT)
+Message-ID: <1497899405.1144734672438.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 11 Apr 2006 01:51:12 -0400 (EDT)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 20
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+Publisher/Subscriber Event Notification Service:
+(1) A large scale system is generally developed and designed by means of the integration of components while the interaction among components is modeled with events.
+(2) Two kinds of clients: 'publishers' of events and 'subscribers' for notifications, are involved in such an event notification system.
+(3) An event notification service complements multicast systems by offering a many-to-many communication and integration facility.
+
+<Siena>
+* Siena (Scalable Internet Event Notification Architectures) is a scalable and distributed publish/subscribe event-notification service.
+* Due to the asynchrony and heterogeneity properties of applications in a wide-area network, the event notification service is advantageous to remote invocation mechanisms because it increases the degree of de-coupling among components, hence eliminating static dependencies and improving interoperability.
+* Siena is implemented as a set of servers that provide access points to clients. Clients use them (a) to advertise information about their events and publish related notifications and (b) to subscribe for notifications of interest. The service uses them to deliver notifications.
+* Two primary services are provided by Siena. The first is "notification selection": matching of the published events to the subscriptions. The second is "notification delivery": routing matching notifications from publishers to subscribers.
+* The challenge is 'expressiveness' in the selection mechanism: the ability to provide a data model with which to capture information about events, to express filters and patterns on notifications of interest, and to optimize the delivery of event notification based on that data model. The efficiency of the service is affected by the power of the language used to construct events and to express filters and patterns.
+* The experimental results show that the peer-to-peer architecture is superior to hierarchical architecture in the scenarios where the total cost is dominated by notifications, especially when the total number of notifications exceeds the number of consumed notifications. It is worse when there are low densities of clients that subscribe frequently.
+* Future work of the publish/subscribe service includes security and reliability of the system as well as mobility of clients, etc.
+
+<Scribe>
+* Scribe is an application-level multicast infrastructure layered on top of Pastry. In Scribe, multicast messages are delivered within a 'group'. A multicast tree is built per group, based on the self-organization, locality and fault tolerance properties of Pastry.
+* Each Scribe group had a groupId. The Scribe node whose nodeId is numerically closest to the groupId acts as a rendezvous point for that group. As the groupId is a hash and supposed to be uniformly distributed over the nodes, this scheme balances the load of multicast roots among all participants.
+* The message forwarder of a Scribe group may or may not be a member of the group. When a node issues a Join message to the rendezvous point of a Scribe group, the nodes along the routing path that is not a forwarder of that group now becomes a forwarder of it. Multicast messages are delivered to the rendezvous point and then disseminated by the forwarders to all members in this group. Pastry's randomization properties ensure that the forwarding load is evenly balanced across all nodes.
+

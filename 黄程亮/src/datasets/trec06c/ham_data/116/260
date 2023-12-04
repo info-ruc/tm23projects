@@ -1,0 +1,51 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k27ARNt06509
+	for <egs@unix.cucs>; Tue, 7 Mar 2006 05:27:23 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.28]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 7 Mar 2006 05:27:23 -0500
+Received: from [128.253.211.203] ([128.253.211.203]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 7 Mar 2006 05:27:23 -0500
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <45ED1FAF-5338-44FB-A799-07982201269F@cs.cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: Gun Sirer <egs@cs.cornell.edu>
+From: "Ryan S. Peterson" <ryanp@cs.cornell.edu>
+Subject: PAPER 12
+Date: Tue, 7 Mar 2006 05:27:22 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-OriginalArrivalTime: 07 Mar 2006 10:27:23.0462 (UTC) FILETIME=[B9037660:01C641D1]
+
+The first paper, by Rowstron and Druschel, presents PAST, a peer-to- 
+peer storage management system.  PAST provides users with an  
+interface that enables them to insert, remove, and lookup files from  
+a persistent distributed file system.  The system is built on top of  
+Pastry, which handles all the routing between nodes.  The nodes are  
+assumed to be normal desktop machines, probably owned by clients of  
+the system.  Consequently, nodes cannot be trusted in general since  
+their owners could potentially remove or corrupt files that they  
+hold.  The authors brush this issue aside.  The main contribution of  
+PAST is its replica management.  Users specify a parameter k when  
+inserting an object, which is the number of machines the file should  
+be replicated on.  After Pastry routes the file to the appropriate  
+home node, the node contacts k - 1 neighbors from its leaf set and  
+sends the file to them for backup storage.  As part of the  
+replication protocol, if a node does not have enough free space to  
+store a file, it selects a node in its leaf set or possibly a node in  
+a different part of the Pastry ring to store the file.  The original  
+node then stores a pointer to the file on the other machine.  As an  
+added feature, nodes cache files if they have sufficient free space  
+during lookups.
+
+The second paper, by Dabek et al., introduces another wide-area  
+storage system, CFS.  CFS, built on top of Chord, focuses primarily  
+on robustness, providing experimental results that show that files  
+are preserved even when as many as half of the nodes fail.  Unlike  
+PAST, CFS is read-only, meaning it does not allow users to insert  
+objects.  Instead, it follows something more like a publish-subscribe  
+paradigm, whereby there are content providers who insert objects, and  
+there are clients who download data from the system.  Like PAST, much  
+of CFS's complexity is in the load balancing techniques it employs.
+
+Ryan
+

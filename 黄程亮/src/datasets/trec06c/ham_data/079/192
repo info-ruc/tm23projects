@@ -1,0 +1,661 @@
+Received: from chmls05.mediaone.net (chmls05.ne.ipsvc.net [24.147.1.143])
+	by snail.ecs.umass.edu (8.12.1/8.12.1) with ESMTP id g1SEUrYr000920;
+	Thu, 28 Feb 2002 09:30:53 -0500 (EST)
+Received: from flex (h002078d40a50.ne.mediaone.net [24.91.228.96])
+	by chmls05.mediaone.net (8.11.1/8.11.1) with SMTP id g1SEUVu01192;
+	Thu, 28 Feb 2002 09:30:31 -0500 (EST)
+Message-ID: <01ac01c1c07d$1de3d500$0201000a@ecs.umass.edu>
+From: "Csaba Andras Moritz" <moritz@ecs.umass.edu>
+To: "RAKSIT ASHOK" <rashok@ecs.umass.edu>
+Cc: "Csaba Andras Moritz" <andras@ecs.umass.edu>
+Subject: Please forward to the ECE397A mailing list
+Date: Thu, 28 Feb 2002 09:24:04 -0800
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="multipart/alternative";
+	boundary="----=_NextPart_000_01A4_01C1C039.AAC9B820"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Scanned-By: MIMEDefang 2.1 (www dot roaringpenguin dot com slash mimedefang)
+X-UIDL: J<C"!?$<"!o)I"!L~V!!
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_01A4_01C1C039.AAC9B820
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_001_01A5_01C1C039.AAC9B820"
+
+
+------=_NextPart_001_01A5_01C1C039.AAC9B820
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Important process related Unix system calls=20
+and hints for HW1
+
+For HW1 use "sleep(seconds)" for sleeping a process. Read below for the=20
+other Unix calls. Use "kill(pid, signal_type)" to kill a process.=20
+Use the fork() call to create a process. Use the wait and waitpid()=20
+to wait inbetween the parent and children (see below).
+See below for more information related to UNIX calls that could be used =
+and examples.=20
+If you have questions please send email to me or the TAs.
+
+The fork() System Call
+To create a new process in UNIX the fork() system call is used. fork() =
+creates a new context based on the context of the calling process. The =
+fork() call is unusual in that it returns twice: It returns in both the =
+process calling fork() and in the newly created process.=20
+
+The synopsis for fork() is as follows:=20
+
+       #include <unistd.h>
+
+       pid_t fork(void);
+       pid_t vfork(void);
+
+If fork() is sucessful, it returns a number of type pid_t which is =
+greater than 0 and represents the PID of the newly created child =
+process. In the child process, fork() returns 0. If fork() fails then =
+its return value will be less than 0. vfork() is a more efficient =
+version of fork(), which does not duplicate the entire parent context. =
+vfork() is suitable for use with exec(), which will be described later.=20
+
+A trivial example of fork() follows. Here, the parent process prints =
+``Hello'' to stdout, and the new child process prints ``World.''. Note =
+that the order of printing is not guaranteed. Without some method of =
+synchronising the processes execution, ``Hello'' may or may not be =
+printed before ``World.''.=20
+
+
+        #include <unistd.h>
+        #include <stdio.h>
+=09
+        char string1[] =3D "Hello";
+        char string2[] =3D "World.\n";
+
+        int main(void)
+        {
+                pid_t PID;	=09
+
+                PID =3D fork();
+                if (PID =3D=3D 0)                   /* In the child =
+process? */
+                        printf("%s", string2);
+                else                            /* In the parent process =
+*/
+                        printf("%s", string1);
+                exit(0);                        /* Executed by both =
+processes */
+=20
+
+The exec() Family of System Calls
+Often we wish to spawn a different process as a child of the process =
+that is executing. In order to accomplish this, we must first create a =
+new process using fork() and then replace the image of the child process =
+with a new process image. The image of a new process is created by the =
+operating system from an executable binary file stored on disk.=20
+
+The exec() family of system calls replace the image of the calling =
+process with the image of a different process stored on disk. The =
+synopsis of the exec() family of system calls follows:=20
+
+
+       #include <unistd.h>
+
+       extern char **environ;
+
+       int execl( const char *path, const char *arg, ...);
+       int execlp( const char *file, const char *arg, ...);
+       int execle( const char *path, const char *arg , ..., char *const =
+envp[]);
+       int exect( const char *path, char *const argv[]);
+       int execv( const char *path, char *const argv[]);
+       int execvp( const char *file, char *const argv[]);
+
+Refer to the exec manual page for a detailed discription of these =
+functions. We shall only discuss execlp(). The listing below shows how =
+execlp() is used to execute the UNIX ls program as a child of the parent =
+process.=20
+
+
+        #include <unistd.h>
+        #include <stdio.h>
+
+        int main(void)
+        {
+                pid_t PID;
+
+                PID =3D vfork();
+                if (PID =3D=3D 0)                   /* In the child =
+process? */
+                        execlp("/bin/ls", "");  /* Execute ls as the =
+child */
+                wait((int *) 0);                /* Wait for the child */
+                printf("done!\n");
+                exit(0);
+        }
+
+When the child process executes execlp() its PID does not change, and =
+the operating system still recognises the child process as belonging to =
+the parent process. The child process terminates its execution as soon =
+as ls has finished executing. Should execlp() (or any other member of =
+the exec() family) fail to create a new process image then they will =
+return a number less than 0.=20
+
+
+
+
+The wait() System Call
+In the above example for execl(), the wait() system call is being used =
+to force the parent process to wait until its child process has =
+terminated before it resumes execution. Hence ``done!'' is always going =
+to be printed to the terminal after the output of ls has been displayed. =
+
+
+The synopsis for wait() is as follows:=20
+
+       #include <sys/types.h>
+       #include <sys/wait.h>
+
+       pid_t wait(int *status)
+       pid_t waitpid(pid_t pid, int *status, int options);
+
+The wait() system call suspends execution of the current process until a =
+child of that process has terminated. If the child exits before wait() =
+is executed then wait returns immediately. wait() accepts a single =
+call-by-reference argument in which wait() stores the child processes =
+exit value. If the argument to wait() is 0 then no attempt to return the =
+childs exit status is made.=20
+
+The waitpid() system call suspends execution of the current process =
+until the child with the specified PID terminates. This is useful if the =
+current process has spawned multiple children but is only required to =
+wait on a particular one. Refer to the on-line UNIX wait manual page for =
+further details of waitpid().=20
+
+
+
+The exit() System Call
+The purpose of the exit() system call is to gracefully terminate the =
+currently executing process. A status number is returned by exit() to =
+the parent of the terminating process. The status value is used to =
+indicate if the terminating process was successful or not. Typically =
+negative status values indicate an error occured, while 0 indicates =
+successful execution.=20
+
+The synopsis for exit() follows:=20
+
+       #include <stdlib.h>
+
+       void exit(int status);
+
+The use of exit() to terminate a process is not required, but is =
+encouraged to ensure that the status value of the terminating process is =
+explicitly set. exit() never returns to the calling process, so it's =
+return type is void. Any open streams and files belonging to the =
+terminating process are automatically flushed and closed during exit().=20
+
+
+
+Sending a Signal
+Unix supports the idea of sending software signals to a process. These =
+signals are ways for other processes to interact with a running process =
+outside the context of the hardware. The kill command is used to send a =
+signal to a process. In addition, it is possible to write a signal =
+handler in either C or the Shell that responds to a signal being sent. =
+For example, many system administration utilities, such as the name =
+server, respond to SIGHUP signal by re-reading their configuration file. =
+This can then be used to update the process while running without having =
+to terminate and restart the process.=20
+
+For many signals there is really nothing that can be done other than =
+printing an appropriate error message and terminating the process. The =
+signals that system administrators will use the most are the HUP, KILL, =
+and STOP signals. The HUP signal as mentioned previously is used by some =
+utilities as a way to notify the process to do something. The KILL =
+signal is used to abort a process. The STOP command is used to pause a =
+process.=20
+
+A common problem system administrators will see is one where a user made =
+a mistake and is continuely forking new processes. While all users have =
+some limit on the number of processes they can fork, as they reach that =
+limit they will wait, if you kill a process the system will resume =
+creating new processes on behalf of the user. The best way to handle =
+this is to send the STOP signal to all processes. In this way, all =
+processes are now suspended, then you can send a KILL signal to the =
+processes. Since the processes were first suspended they can't create =
+new processes as you kill the ones off.=20
+
+Signals available under Unix=20
+     SIGHUP     01       hangup
+     SIGINT     02       interrupt
+     SIGQUIT    03[1]    quit
+     SIGILL     04[1]    illegal instruction (not reset when caught)
+     SIGTRAP    05[1][5] trace trap (not reset when caught)
+     SIGABRT    06[1]    abort
+     SIGEMT     07[1][4] EMT instruction
+     SIGFPE     08[1]    floating point exception
+     SIGKILL    09       kill (cannot be caught or ignored)
+     SIGBUS     10[1]    bus error
+     SIGSEGV    11[1]    segmentation violation
+     SIGSYS     12[1]    bad argument to system call
+     SIGPIPE    13       write on a pipe with no one to read it
+     SIGALRM    14       alarm clock
+     SIGTERM    15       software termination signal
+     SIGUSR1    16       user-defined signal 1
+     SIGUSR2    17       user-defined signal 2
+     SIGCLD     18[2]    death of a child
+     SIGPWR     19[2]    power fail (not reset when caught)
+     SIGSTOP    20[6]    stop (cannot be caught or ignored)
+     SIGTSTP    21[6]    stop signal generated from keyboard
+     SIGPOLL    22[3]    selectable event pending
+     SIGIO      23[2]    input/output possible
+     SIGURG     24[2]    urgent condition on IO channel
+     SIGWINCH   25[2]    window size changes
+     SIGVTALRM  26       virtual time alarm
+     SIGPROF    27       profiling alarm
+     SIGCONT    28[6]    continue after stop (cannot be ignored)
+     SIGTTIN    29[6]    background read from control terminal
+     SIGTTOU    30[6]    background write to control terminal
+     SIGXCPU    31       cpu time limit exceeded [see setrlimit(2)]
+     SIGXFSZ    32       file size limit exceeded [see setrlimit(2)]
+ Sending a Signal to Another Process: System Call kill()  To send a =
+signal to another process, we need to use the Unix system kill(). The =
+following is the prototype of kill(): int  kill(pid_t pid, int sig)
+a.. System call kill() takes two arguments. The first, pid, is the =
+process ID you want to send a signal to, and the second, sig, is the =
+signal you want to send. Therefore, you have to find some way to know =
+the process ID of the other party. b.. If the call to kill() is =
+successful, it returns 0; otherwise, the returned value is negative. c.. =
+Because of this capability, kill() can also be considered as a =
+communication mechanism among processes with signals SIGUSR1 and =
+SIGUSR2. d.. The pid argument can also be zero or negative to indicate =
+that the signal should be sent to a group of processes. But, for =
+simplicity, we will not discuss this case.          =20
+
+
+------=_NextPart_001_01A5_01C1C039.AAC9B820
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2600.0" name=3DGENERATOR>
+<STYLE></STYLE>
+<title>unixcalls.html</title></HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D5><STRONG><U>Important process related =
+Unix system=20
+calls </U></STRONG></FONT></DIV>
+<DIV><FONT face=3DArial size=3D5><STRONG><U>and hints for=20
+HW1</U></STRONG></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>For HW1 use "sleep(seconds)" for =
+sleeping a=20
+process. Read below for the </FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>other Unix calls. Use "kill(pid, =
+signal_type)" to=20
+kill a process. </FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>Use the fork() call to create a =
+process. Use the=20
+wait and waitpid() </FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>to wait inbetween the parent and =
+children (see=20
+below).</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>See below for more information =
+</FONT><FONT=20
+face=3DArial size=3D2>related to UNIX calls that could be used and=20
+examples.</FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>If you have questions please send email =
+to me or=20
+the TAs.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;</DIV>
+<DIV>
+<H3><A name=3DSECTION00221100000000000000>The fork() System =
+Call</A></H3>
+<P>To create a new process in UNIX the <TT>fork()</TT> system call is =
+used.=20
+<TT>fork()</TT> creates a new context based on the context of the =
+calling=20
+process. The <TT>fork()</TT> call is unusual in that it returns =
+<EM>twice</EM>:=20
+It returns in both the process calling <TT>fork()</TT> and in the newly =
+created=20
+process.=20
+<P>The synopsis for <TT>fork()</TT> is as follows: <PRE>       #include =
+&lt;unistd.h&gt;
+
+       pid_t fork(void);
+       pid_t vfork(void);
+</PRE>
+<P>If <TT>fork()</TT> is sucessful, it returns a number of type =
+<EM>pid_t</EM>=20
+which is greater than 0 and represents the PID of the newly created=20
+<EM>child</EM> process. In the child process, <TT>fork()</TT> returns 0. =
+If=20
+<TT>fork()</TT> fails then its return value will be less than 0.=20
+<TT>vfork()</TT> is a more efficient version of <TT>fork()</TT>, which =
+does not=20
+duplicate the entire parent context. <TT>vfork()</TT> is suitable for =
+use with=20
+<TT>exec()</TT>, which will be described later.=20
+<P>A trivial example of <TT>fork()</TT> follows. Here, the parent =
+process prints=20
+``Hello'' to <TT>stdout</TT>, and the new child process prints =
+``World.''. Note=20
+that the order of printing is <EM>not</EM> guaranteed. Without some =
+method of=20
+synchronising the processes execution, ``Hello'' may or may not be =
+printed=20
+before ``World.''.=20
+<P><PRE>        #include &lt;unistd.h&gt;
+        #include &lt;stdio.h&gt;
+=09
+        char string1[] =3D "Hello";
+        char string2[] =3D "World.\n";
+
+        int main(void)
+        {
+                pid_t PID;	=09
+
+                PID =3D fork();
+                if (PID =3D=3D 0)                   /* In the child =
+process? */
+                        printf("%s", string2);
+                else                            /* In the parent process =
+*/
+                        printf("%s", string1);
+                exit(0);                        /* Executed by both =
+processes */</PRE><PRE>&nbsp;</PRE><PRE></PRE></DIV>
+<DIV><FONT face=3DArial size=3D2>
+<H3><A name=3DSECTION00221200000000000000>The exec() Family of System=20
+Calls</A></H3>
+<P>Often we wish to spawn a different process as a child of the process =
+that is=20
+executing. In order to accomplish this, we must first create a new =
+process using=20
+<TT>fork()</TT> and then <EM>replace</EM> the image of the child process =
+with a=20
+new process image. The image of a new process is created by the =
+operating system=20
+from an executable binary file stored on disk.=20
+<P>The <TT>exec()</TT> family of system calls replace the image of the =
+calling=20
+process with the image of a different process stored on disk. The =
+synopsis of=20
+the <TT>exec()</TT> family of system calls follows:=20
+<P><PRE>       #include &lt;unistd.h&gt;
+
+       extern char **environ;
+
+       int execl( const char *path, const char *arg, ...);
+       int execlp( const char *file, const char *arg, ...);
+       int execle( const char *path, const char *arg , ..., char *const =
+envp[]);
+       int exect( const char *path, char *const argv[]);
+       int execv( const char *path, char *const argv[]);
+       int execvp( const char *file, char *const argv[]);
+</PRE>
+<P>Refer to the <TT>exec</TT> manual page for a detailed discription of =
+these=20
+functions. We shall only discuss <TT>execlp()</TT>. The listing below =
+shows how=20
+<TT>execlp()</TT> is used to execute the UNIX <TT>ls</TT> program as a =
+child of=20
+the parent process.=20
+<P><PRE>        #include &lt;unistd.h&gt;
+        #include &lt;stdio.h&gt;
+
+        int main(void)
+        {
+                pid_t PID;
+
+                PID =3D vfork();
+                if (PID =3D=3D 0)                   /* In the child =
+process? */
+                        execlp("/bin/ls", "");  /* Execute ls as the =
+child */
+                wait((int *) 0);                /* Wait for the child */
+                printf("done!\n");
+                exit(0);
+        }
+</PRE>
+<P>When the child process executes <TT>execlp()</TT> its PID does not =
+change,=20
+and the operating system still recognises the child process as belonging =
+to the=20
+parent process. The child process terminates its execution as soon as=20
+<TT>ls</TT> has finished executing. Should <TT>execlp()</TT> (or any =
+other=20
+member of the <TT>exec()</TT> family) fail to create a new process image =
+then=20
+they will return a number less than 0.=20
+<P><BR></P>
+<H3><A name=3DSECTION00221300000000000000>The wait() System =
+Call</A></H3>
+<P>In the above example for <TT>execl()</TT>, the <TT>wait()</TT> system =
+call is=20
+being used to force the parent process to <EM>wait</EM> until its child =
+process=20
+has terminated before it resumes execution. Hence ``done!'' is always =
+going to=20
+be printed to the terminal <EM>after</EM> the output of <TT>ls</TT> has =
+been=20
+displayed.=20
+<P>The synopsis for <TT>wait()</TT> is as follows: <PRE>       #include =
+&lt;sys/types.h&gt;
+       #include &lt;sys/wait.h&gt;
+
+       pid_t wait(int *status)
+       pid_t waitpid(pid_t pid, int *status, int options);
+</PRE>
+<P>The <TT>wait()</TT> system call suspends execution of the current =
+process=20
+until a child of that process has terminated. If the child exits before=20
+<TT>wait()</TT> is executed then wait returns immediately. =
+<TT>wait()</TT>=20
+accepts a single call-by-reference argument in which <TT>wait()</TT> =
+stores the=20
+child processes exit value. If the argument to <TT>wait()</TT> is 0 then =
+no=20
+attempt to return the childs exit status is made.=20
+<P>The <TT>waitpid()</TT> system call suspends execution of the current =
+process=20
+until the child with the specified PID terminates. This is useful if the =
+current=20
+process has spawned multiple children but is only required to wait on a=20
+particular one. Refer to the on-line UNIX <TT>wait</TT> manual page for =
+further=20
+details of <TT>waitpid()</TT>. </P>
+<P>&nbsp;</P>
+<H3><A name=3DSECTION00223100000000000000>The exit() System =
+Call</A></H3>
+<P>The purpose of the <TT>exit()</TT> system call is to gracefully =
+terminate the=20
+currently executing process. A <EM>status</EM> number is returned by=20
+<TT>exit()</TT> to the parent of the terminating process. The status =
+value is=20
+used to indicate if the terminating process was successful or not. =
+Typically=20
+negative status values indicate an error occured, while 0 indicates =
+successful=20
+execution.=20
+<P>The synopsis for <TT>exit()</TT> follows: <PRE>       #include =
+&lt;stdlib.h&gt;
+
+       void exit(int status);
+</PRE>
+<P>The use of <TT>exit()</TT> to terminate a process is not required, =
+but is=20
+encouraged to ensure that the status value of the terminating process is =
+
+explicitly set. <TT>exit()</TT> <EM>never</EM> returns to the calling =
+process,=20
+so it's return type is <TT>void</TT>. Any open streams and files =
+belonging to=20
+the terminating process are automatically flushed and closed during=20
+<TT>exit()</TT>. </P>
+<P>&nbsp;</P>
+<H2>Sending a Signal</H2>
+<P>Unix supports the idea of sending software signals to a process. =
+These=20
+signals are ways for other processes to interact with a running process =
+outside=20
+the context of the hardware. The <B>kill</B> command is used to send a =
+signal to=20
+a process. In addition, it is possible to write a signal handler in =
+either C or=20
+the Shell that responds to a signal being sent. For example, many system =
+
+administration utilities, such as the name server, respond to SIGHUP =
+signal by=20
+re-reading their configuration file. This can then be used to update the =
+process=20
+while running without having to terminate and restart the process. </P>
+<P>For many signals there is really nothing that can be done other than =
+printing=20
+an appropriate error message and terminating the process. The signals =
+that=20
+system administrators will use the most are the <IT>HUP, KILL, </IT>and=20
+<IT>STOP</IT> signals. The HUP signal as mentioned previously is used by =
+some=20
+utilities as a way to notify the process to do something. The KILL =
+signal is=20
+used to abort a process. The STOP command is used to pause a process.=20
+<P>A common problem system administrators will see is one where a user =
+made a=20
+mistake and is continuely forking new processes. While all users have =
+some limit=20
+on the number of processes they can fork, as they reach that limit they =
+will=20
+wait, if you kill a process the system will resume creating new =
+processes on=20
+behalf of the user. The best way to handle this is to send the STOP =
+signal to=20
+all processes. In this way, all processes are now suspended, then you =
+can send a=20
+KILL signal to the processes. Since the processes were first suspended =
+they=20
+can't create new processes as you kill the ones off.=20
+<H3>Signals available under Unix </H3><PRE>     SIGHUP     01       =
+hangup
+     SIGINT     02       interrupt
+     SIGQUIT    03[1]    quit
+     SIGILL     04[1]    illegal instruction (not reset when caught)
+     SIGTRAP    05[1][5] trace trap (not reset when caught)
+     SIGABRT    06[1]    abort
+     SIGEMT     07[1][4] EMT instruction
+     SIGFPE     08[1]    floating point exception
+     SIGKILL    09       kill (cannot be caught or ignored)
+     SIGBUS     10[1]    bus error
+     SIGSEGV    11[1]    segmentation violation
+     SIGSYS     12[1]    bad argument to system call
+     SIGPIPE    13       write on a pipe with no one to read it
+     SIGALRM    14       alarm clock
+     SIGTERM    15       software termination signal
+     SIGUSR1    16       user-defined signal 1
+     SIGUSR2    17       user-defined signal 2
+     SIGCLD     18[2]    death of a child
+     SIGPWR     19[2]    power fail (not reset when caught)
+     SIGSTOP    20[6]    stop (cannot be caught or ignored)
+     SIGTSTP    21[6]    stop signal generated from keyboard
+     SIGPOLL    22[3]    selectable event pending
+     SIGIO      23[2]    input/output possible
+     SIGURG     24[2]    urgent condition on IO channel
+     SIGWINCH   25[2]    window size changes
+     SIGVTALRM  26       virtual time alarm
+     SIGPROF    27       profiling alarm
+     SIGCONT    28[6]    continue after stop (cannot be ignored)
+     SIGTTIN    29[6]    background read from control terminal
+     SIGTTOU    30[6]    background write to control terminal
+     SIGXCPU    31       cpu time limit exceeded [see setrlimit(2)]
+     SIGXFSZ    32       file size limit exceeded [see setrlimit(2)]
+<H1>&nbsp;</H1><H1>Sending a Signal to Another Process: System Call =
+<FONT face=3DHelvetica>kill()</FONT> </H1><IMG height=3D3 =
+src=3D%22http:/www.csl.mtu.edu/cs4411.ck/www/NOTES/signal/GrLine.gif%22 =
+width=3D700> <P><FONT face=3DArial size=3D3>To send a signal to another =
+process, we need to use the Unix system <B>kill()</B>. The following is =
+the prototype of <B>kill()</B>: </FONT><BLOCKQUOTE><FONT face=3DArial =
+color=3D#000000 size=3D3><PRE>int  kill(pid_t pid, int sig)
+</PRE></FONT></BLOCKQUOTE><UL><LI><FONT face=3DArial size=3D3>System =
+call <B>kill()</B> takes two arguments. The first, <B>pid</B>, is the =
+process ID you want to send a signal to, and the second, <B>sig</B>, is =
+the signal you want to send. </FONT><FONT face=3DArial =
+size=3D3>Therefore, you have to find some way to know the process ID of =
+the other party. </FONT><LI><FONT face=3DArial size=3D3>If the call to =
+<B>kill()</B> is successful, it returns 0; otherwise, the returned value =
+is negative. </FONT><LI><FONT face=3DArial size=3D3>Because of this =
+capability, <B>kill()</B> can also be considered as a communication =
+mechanism among processes with signals <B>SIGUSR1</B> and =
+<B>SIGUSR2</B>. </FONT><LI><FONT face=3DArial size=3D3>The <B>pid</B> =
+argument can also be zero or negative to indicate that the signal should =
+be sent to a group of processes. But, for simplicity, we will not =
+discuss this case. </FONT></LI></UL><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV><DIV><FONT face=3DArial =
+size=3D3></FONT>&nbsp;</DIV></PRE></FONT></DIV></FONT></BODY></HTML>
+
+------=_NextPart_001_01A5_01C1C039.AAC9B820--
+
+------=_NextPart_000_01A4_01C1C039.AAC9B820
+Content-Type: image/gif;
+	name="GrLine.gif"
+Content-Transfer-Encoding: base64
+Content-Location: http://www.csl.mtu.edu/cs4411.ck/www/NOTES/signal/GrLine.gif
+
+R0lGODlhAAIFAPf/AP/////OAP/WAP/eAP/nAP/vAP/3AP//APf/AO//AOf/AN7/ANb/AM7/AMb3
+AMb/AL33AL3/ALX3AK33AKX3AJz3AJT3AIz3AIT3AHv3AHP3AGv3AGP3AFr3AFL3AEr3AEL3ADn3
+ADH3ACn3ACH3ABj3ABjvABD3ABDvAAj3AAjvAADvAADvCADvEADvGADvIQDvKQDvMQDvOQDvQgDv
+SgDvUgDvWgDvYwDvawDvcwDvewDvhADvjADvlADnlADnnADnpQDnrQDntQDnvQDnxgDnzgDn1gDn
+3gDn5wDe5wDW5wDO5wDG5wC95wC15wCt5wCl5wCc5wCU3gCU5wCM3gCM5wCE3gB73gBz3gBr3gBj
+3gBa3gBS3gBK3gBC3gA53gAx3gAp3gAh3gAY3gAQ3gAI3gAA3ggA3ggA1hAA3hAA1hgA1iEA1ikA
+1jEA1jkA1kIA1koA1lIA1loA1mMA1msA1nMA1nsA1oQA1owA1pQA1pwA1pwAzqUA1qUAzq0A1q0A
+zrUAzr0AzsYAzs4Azs4Axs4Avc4Atc4Arc4Apc4AnM4AlM4AjM4AhM4Ae84Ac8YAa84Aa8YAY84A
+Y8YAWsYAUsYASsYAQsYAOcYAMcYAKQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAAAgUA
+QAj/ADUJHEhQU6aDBzEpVHip4SVLECFWmliJkkVKkyRphBQJ0qOPjxyJdNSoZCNGKBktWrlIkctE
+MBMhmonokM1DhnIW2lmIkE+fg4IOEkRUUKCjgQApBfTHTx8/fKLu4aOHap6rV/FovcP1jp2vduqI
+rUOnLJ05aOfIWRunbRw4cOG8mfvGjd02eNuw2ctmjd81adSoSYPmDBozhxOXWVyGjOMxkMeImSwm
+jGUwmMF82eyls5cuoLmI5rKltJbTWrKozoKl9ZXXVmJboUKlipTbUqJIgbIbCpQnwJ0Ib0K8CZPj
+S5IvUcI8iXMk0I9IP2KkupEi2IloJzKk+xAh4IOI/w8CpPyP8z96+FjPo/2O9zt0yM9BH4d9HDfy
+29hvo4Z/GgDSMMOAMhQYw4ExwKDgCwy+4MKDLUTIwoQsrGChhSqkoMIJKKBQggkfkiDiCCSKYKII
+IaQIwooftOjBix3E2AEHNG5gowY4ZqAjBjxicMGPFgRZwZAUFDnBkRNIIAEEEEQAwQMOPNDAlAxU
+ucCVCmSZwJYIdHmAAWAaUMCYBJRJwABoCqBmAGy26WYABxWUiUFzIoRJJgs55JBEFFVkkUYbdQTJ
+oCCFJJJJJ6XEUksuKRKTTDPdhFNOhvDUE1BCCTIUUUglpZQfoPqxh6hRVZUHH6fikYdWW3UFVlhj
+mf91FlpyqMWWW3HJNZddvObFV19/CaYGGsQWexhjjTlGRmSUVXZZGJhtJm1noFU7WmmmnbZaa669
+doVstNUmxRS4+WYucMENV9xxTCi3HHNHJBHvEUhIZ9112RWhnXffhTdeeeadt54PPbTHA3zxyacD
+ffXZl59++/lXQ4AzCEiggQgqCEODDkIo4YQXrqDCyCio0KEJKItIwggrj3BiiiGsyGKLH7zogYw0
+1rgBjjnqmAGPP14QpJBEGnmkkksy6cDSUzZQpZVYaslll12OSWaZaKa55ptcF+Q1QgkthImeEfE5
+0UUYAcqRRyCNRJJJKanEUqOP0lTTTZRa+hOmQRX/ZRRSSzHlFFRSUWUVVqu2ytWrY5FlVlq2yuHW
+W3HRVdddvvL1F2CCEWYYYqCjgayykUlGmWXQZjatZ9Zem62223b7Lbji4qYbb+em60RxxiGnHHNK
+OJcEdPVOdy92+m7HL3hCjEdewOepx5578CnM8H34QRzxfxRfLAOCCS7Y4IMuRNgChRWGnOGGHX4Y
+4oglvqzizDXDiLPOO/f8c49BDz1kBUWiAJKSlDQnQUlKVILaArKkgC0lgGpfCpPVzHQmrQmAa2/y
+mpzAJrax7alsfUJbRgLFto+4DVFxWxTdYmI3SeWNJ3sjhFA2xSnALaUpT4kKH6ZSFT0gLnF46IpX
+/8DSOFlBbi2Sw1Xl6NKrzO1lc4EZTGESE7rRPYZZp7uM6jjDutC4bguoSU3ssOAt2cymdre5XW9+
+ozvesctdwBMe8aZDHesgbzvc8Q7znAcw9KRnYAZDmPUa5jDt9Yd7ABrQDAr0vYyJj0HkMx/6QiYy
+DXHIQyAygcpI5DL5xYx+NpPRjPDHM5/1yEdAIhoAjXa0Aj4pSk172pUWKLUHeilMYroa1iyIQTeB
+7Zd26qAHG2KJh5jtbBeRREY6IqhCnRBuKFHhSxzFwkjh7YWX4hsN/2bDT4GqDzssFapQhRVWCXGI
+XyliWSAXuTgkMVeW65UbnLiGvqRhDYMZ1hSJhaIYK5LOdJNBXeo0I60vdLELoyENGMEIO9Zwy1uz
+OyNtyIWbNbLxCcJRF3GQ067kAC9ew6Pj8bKjPD3uUTwAA4IfARnI9yhsYYTMHsRqcMgAWcx74Htk
+xzx2PpBdaGQm6xAmNQm/+KEIZiwCgYvsF6MaceBGpdwR0FJpgf9RAIADRBqTIrA0B8RSlrRsYAML
+8EADIKAAZyVAAiiYNTVdsJdtCggAOw==
+
+------=_NextPart_000_01A4_01C1C039.AAC9B820--

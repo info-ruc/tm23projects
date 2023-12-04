@@ -1,0 +1,172 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id g9A3w2P31904
+	for <ggilfoyl@facstaff.richmond.edu>; Wed, 9 Oct 2002 23:58:02 -0400
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id g9A3ub319625
+	for <ggilfoyl@richmond.edu>; Wed, 9 Oct 2002 23:56:37 -0400
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002100923563612982
+ for <ggilfoyl@richmond.edu>; Wed, 09 Oct 2002 23:56:36 -0400
+Received: from maynard.mail.mindspring.net (maynard.mail.mindspring.net [207.69.200.243])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id g9A3uaw26564
+	for <ggilfoyl@richmond.edu>; Wed, 9 Oct 2002 23:56:36 -0400
+Received: from user-11fabej.dsl.mindspring.com ([66.245.45.211] helo=mindspring.com)
+	by maynard.mail.mindspring.net with esmtp (Exim 3.33 #1)
+	id 17zUR4-0005z1-00; Wed, 09 Oct 2002 23:56:30 -0400
+Sender: gilfoyle@polyester.richmond.edu
+Message-ID: <3DA523FE.EFF6BA95@mindspring.com>
+Date: Wed, 09 Oct 2002 23:53:50 -0700
+From: gilfoyle <ggilfoyl@mindspring.com>
+Reply-To: ggilfoyl@richmond.edu
+Organization: University of Richmond Physics Department
+X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.12 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: pyro@linuxlabs.com
+CC: markus@linuxlabs.com
+Subject: problem with University of Richmond cluster
+Content-Type: multipart/mixed;
+ boundary="------------55C59DF9790C5C98BD60B91A"
+Status: RO
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300003ec2
+
+This is a multi-part message in MIME format.
+--------------55C59DF9790C5C98BD60B91A
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi Steven,
+
+   I am one of the physicists from the University of Richmond (along 
+with Mike Vineyard) that is using the cluster you delivered to us 
+earlier this year. We have recently run into a problem which is 
+limiting our ability to make full use of the cluster. The problem is 
+the following. Until a couple of days ago we have never tried to run 
+multiple jobs on each slave node in the entire cluster. On Tuesday, 
+for the first time, I submitted 148 jobs evenly distributed among the 
+48 slave nodes. After about 4-5 hours no more jobs were running, but I 
+noticed that only about 1/3 of the submitted jobs produced any usable 
+output. Today, I was running another large set of jobs and found I 
+could no longer run any new processes even from the command line of a 
+shell. For example, I would type in 'ls' and get back 'no more 
+processes'. It appears there is an upper limit on the number of 
+processes that can be run on the master. Once you exceed that limit it 
+looks like any new attempts to start a process are essentially 
+ignored. In submitting the full set of 148 jobs many were not run 
+because they would have exceeded this upper limit on the allowed 
+number of processes. Right now I can run no more than about 40 jobs on 
+the cluster without encountering this problem. This is fewer than one 
+job per slave node. Each job I submit starts three separate processes 
+so I am starting 120 processes. In searching the web, there are 
+discussions of this limitation and a solution (which involves building 
+a new kernel). The urls are below. I have also attached the scripts I 
+am using to do the data analysis (one shell script and one perl 
+script). Any help you can provide would be greatly appreciated.
+
+Thanks-in-advance,
+
+Jerry Gilfoyle
+
+http://www.ltsp.org/documentation/lts_ig_v2.4/lts_ig_v2.4-14.html
+
+http://www.geocrawler.com/archives/3/61/1998/10/0/2207294/
+
+-- 
+Dr. Gerard P. Gilfoyle
+Physics Department                e-mail: ggilfoyl@richmond.edu
+University of Richmond, VA 23173  phone:  804-289-8255
+USA                               fax:    804-289-8482
+--------------55C59DF9790C5C98BD60B91A
+Content-Type: application/octet-stream;
+ name="submit_eod3b.pl"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="submit_eod3b.pl"
+
+IyEvdXNyL2Jpbi9wZXJsCiMKIyBzY3JpcHQgdG8gYW5hbHl6ZSBFNSByb290IGZpbGVzIG9u
+IHRoZSBSaWNobW9uZCBjbHVzdGVyLgojICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgLSBncGcKIwojIHJ1biB0aGlzIGJlIGV4ZWN1dGluZyAnc3VibWl0X2Vv
+ZDNiLnBsJyBhdCB0aGUgCiMgY29tbWFuZCBsaW5lLgojCiMgaXQgY2FsbHMgcnVuX3Jvb3Rf
+b25fbm9kZTIuc2guCiMKIyBob3VzZWtlZXBpbmcgLSBmaXJzdCBzZXQgZmlyc3Qgc2xhdmUg
+YW5kIG51bWJlciBvZgojIG5vZGVzLCBhbmQgY2xlYW4gb3V0IGRpcmVjdG9yeSB0aGF0IHdp
+bGwKIyBob2xkIHRoZSBmaW5hbCBoaXN0b2dyYW0gZmlsZXMuIHRoZSB0cmFuc2Zlcl9kYXRh
+CiMgdmFyaWFibGUgaXMgMS10cnVlICh0cmFuc2ZlciByb290IGRhdGEgZmlsZXMpIG9yCiMg
+MC0gZmFsc2UgKGRvbid0IHRyYW5zZmVyIHRoZSBkYXRhIHNpbmNlIGl0IGlzIHByZXN1bWFi
+bHkKIyBhbHJlYWR5IG9uIHRoZSBjbHVzdGVyKS4KIwojIHVzZSB0aGUgdmFyaWFibGUgZGF0
+YV9jaHVuayB0byBwaWNrIG9uZSBvZiBzZXZlcmFsIGlucHV0CiMgZmlsZXMgdGhhdCBjb250
+YWluIGEgbGlzdCBvZiB0aGUgcmF3IGRhdGEgdG8gYmUgYW5hbHl6ZWQuCiMgdGhpcyBpcyBh
+IGtsdWRnZSBiZWNhdXNlIG9mIHRoZSBsaW1pdCBvbiB0aGUgbnVtYmVyIG9mCiMgcHJvY2Vz
+c2VzLgojCiRudW1iZXJfb2Zfbm9kZXM9NDg7CiRmaXJzdF9ub2RlPTA7CiR0cmFuc2Zlcl9k
+YXRhID0gMDsgCiRkYXRhX2NodW5rID0gMTsKaWYgKCRkYXRhX2NodW5rID09IDEpIHsKICAg
+IHN5c3RlbSgicm0gL2hvbWUvZ2lsZm95bGUvZW9kL3J1bi9yZXN1bHRzLyoiKTsKICAgIHN5
+c3RlbSgicm0gL3NjcmF0Y2gvZ2lsZm95bGUvZTUvZW9kKiIpOwogICAgc3lzdGVtKCJybSAt
+ciAvc2NyYXRjaC9naWxmb3lsZS9lNS8yNCoiKTsKfQojCiMgcmVhZCB0aGUgZmlsZSB3aXRo
+IHRoZSBydW4gbnVtYmVycyBhbmQgcmVhZCB0aGUgbnVtYmVycyBpbnRvIGFuIGFycmF5Lgoj
+CiRydW5fbnVtYmVyc19maWxlPSJFNV80LjIzMl9ydW5fbnVtYmVycyRkYXRhX2NodW5rLmRh
+dCI7Cm9wZW4oUlVOUywiJHJ1bl9udW1iZXJzX2ZpbGUiKSB8fCBkaWUgIkZhaWxlZCB0byBv
+cGVuIHJ1biBudW1iZXJzIGZpbGUuXG4iOwpAcnVubm89PFJVTlM+OwpjbG9zZShSVU5TKTsK
+IwojIGNvbnN0cnVjdCB0aGUgZmlsZW5hbWUgd2l0aCB0aGUgaW5wdXQgZGF0YSBmaWxlbmFt
+ZXMgYW5kIHJlYWQgdGhhdAojIGZpbGUgdG8gZ2V0IHRoZSBkYXRhIGZpbGVuYW1lcy4KIwok
+am9iPTA7CiRza2lwcGVkX25vZGVzPTA7CmZvcmVhY2ggJGxpbmUgKEBydW5ubykgewogICAg
+Y2hvbXAoJGxpbmUpOwogICAgJHJ1bmZpbGUgPSAiZmlsZXNfNC4yMzIvcnVuJGxpbmVcX2Zp
+bGVzLmRhdCI7CiAgICBwcmludCAiXG5ydW4gZmlsZXM6ICRydW5maWxlLCBydW4gbnVtYmVy
+OiAkbGluZS5cbiI7CiAgICBvcGVuKEZJTEVTLCIkcnVuZmlsZSIpIHx8IGRpZSAiRmFpbGVk
+IHRvIG9wZW4gZmlsZW5hbWUgZmlsZS5cbiI7CiAgICBAZmlsZW5hbWVzPTxGSUxFUz47CiAg
+ICBjbG9zZShGSUxFUyk7CiMKIyBnZXQgdGhlIG5vZGUgbnVtYmVyIGFuZCBiZSBjYXJlZnVs
+IGFib3V0IHNraXBwaW5nIHRoZSBiYWQgb25lcy4KIwogICAgJG5vZGU9KCRqb2IrJHNraXBw
+ZWRfbm9kZXMpICUgJG51bWJlcl9vZl9ub2RlczsKIwojIHNraXAgYmFkIG5vZGVzICh0aGVz
+ZSBoYXZlIGJlZW4gZml4ZWQsIGJ1dCBoYXZlbid0IG1vdmVkIGFueQojIGRhdGEgdGhlcmUg
+eWV0KS4KIwogICAgaWYgKCRub2RlID09IDEyKSB7Cgkkbm9kZSsrOwoJJHNraXBwZWRfbm9k
+ZXMrKzsKCXByaW50KCJTa2lwcGluZyBub2RlIDEyLlxuIik7CiAgICB9CiAgICBpZiAoJG5v
+ZGUgPT0gNDUpIHsKCSRub2RlKys7Cgkkc2tpcHBlZF9ub2RlcysrOwoJcHJpbnQoIlNraXBw
+aW5nIG5vZGUgNDUuXG4iKTsKICAgIH0KIwojIG1ha2UgdGhlIHNsYXZlIGRpcmVjdG9yeSBh
+bmQgY29weSB0aGUgZGF0YSB0byBpdC4KIwogICAgc3lzdGVtKCJicHNoICRub2RlIG1rZGly
+IC1wIC9zY3JhdGNoL2dpbGZveWxlL2U1LyRsaW5lLyIpOwogICAgaWYgKCR0cmFuc2Zlcl9k
+YXRhID09IDEpIHsKCWZvcmVhY2ggJGxpbmUyIChAZmlsZW5hbWVzKSB7CgkgICAgY2hvbXAo
+JGxpbmUyKTsKCSAgICBwcmludCAiY29weSAvZGF0YTIvZTUvcm9vdC80LjIzMi8kbGluZTIg
+dG8gJG5vZGU6L3NjcmF0Y2gvZ2lsZm95bGUvZTUvJGxpbmUvJGxpbmUyLlxuIjsKCSAgICBz
+eXN0ZW0oImJwY3AgL2RhdGEyL2U1L3Jvb3QvNC4yMzIvJGxpbmUyICRub2RlOi9zY3JhdGNo
+L2dpbGZveWxlL2U1LyRsaW5lLyRsaW5lMiIpOwoJfQogICAgfQojCiMgY29weSBvdGhlciBz
+dHVmZiB0byBzbGF2ZSBkaXJlY3RvcnkuCiMKICAgIHN5c3RlbSgicm0gZGF0YV9maWxlbmFt
+ZXMuZGF0Iik7CiAgICBzeXN0ZW0oImNwICRydW5maWxlIGRhdGFfZmlsZW5hbWVzLmRhdCIp
+OwogICAgc3lzdGVtKCJicGNwIGRhdGFfZmlsZW5hbWVzLmRhdCAkbm9kZTovc2NyYXRjaC9n
+aWxmb3lsZS9lNS8kbGluZS9kYXRhX2ZpbGVuYW1lcy5kYXQiKTsKICAgIHN5c3RlbSgiYnBj
+cCAvaG9tZS9naWxmb3lsZS9lb2Qvcm9vdC9lb2QzLkMgJG5vZGU6L3NjcmF0Y2gvZ2lsZm95
+bGUvZTUvJGxpbmUvIik7CiAgICBzeXN0ZW0oImJwY3AgL2hvbWUvZ2lsZm95bGUvZW9kL3Jv
+b3QvZW9kMy5oICRub2RlOi9zY3JhdGNoL2dpbGZveWxlL2U1LyRsaW5lLyIpOwogICAgc3lz
+dGVtKCJicGNwIC9ob21lL2dpbGZveWxlL2VvZC9yb290L3VzZXJfZW9kMy5oICRub2RlOi9z
+Y3JhdGNoL2dpbGZveWxlL2U1LyRsaW5lLyIpOwogICAgc3lzdGVtKCJicGNwIC9ob21lL2dp
+bGZveWxlL2VvZC9yb290L3J1bl9lb2QzLkMgJG5vZGU6L3NjcmF0Y2gvZ2lsZm95bGUvZTUv
+JGxpbmUvIik7CiAgICAkam9iKys7CiAgICAgICAgICAgIH0KIwokdG90YWxfam9icz0kam9i
+LTE7CiMKIyBub3cgbG9vcCBvdmVyIHRoZSBub2RlcyBhbmQgc2VuZCB0aGUKIyBkYXRhIGZy
+b20gb25lIHJ1biBudW1iZXIgdG8gb25lIG5vZGUuCiMKJGpvYj0wOwokc2tpcHBlZF9ub2Rl
+cz0wOwp3aGlsZSAoJGpvYiA8PSAkdG90YWxfam9icykgewogICAgJG5vZGU9KCRqb2IgKyAk
+c2tpcHBlZF9ub2RlcykgJSAkbnVtYmVyX29mX25vZGVzOwojCiMgc2tpcCBidXN0ZWQgbm9k
+ZXMuCiMKICAgIGlmICgkbm9kZSA9PSAxMikgewoJJG5vZGUrKzsKCSRza2lwcGVkX25vZGVz
+Kys7CglwcmludCgiU2tpcHBpbmcgbm9kZSAxMi5cbiIpOwogICAgfQogICAgaWYgKCRub2Rl
+ID09IDQ1KSB7Cgkkbm9kZSsrOwoJJHNraXBwZWRfbm9kZXMrKzsKCXByaW50KCJTa2lwcGlu
+ZyBub2RlIDQ1LlxuIik7CiAgICB9CiMKIyBnZXQgdGhlIGJhdGNoIGNvbW1hbmQgZmlsZSBy
+ZWFkeSB0byBzdWJtaXQgdGhlIGpvYiBhbmQgbGV0J3JlIHJpcC4gCiMgY2xlYW4gdXAgaXMg
+ZG9uZSBpbiBydW5fcm9vdF9vbl9ub2RlMi5zaCBzaW5jZSB3ZSBoYXZlIHRvIHdhaXQgZm9y
+IAojIHJvb3QgdG8gZ2V0IGRvbmUgb24gdGhlIHNsYXZlLgojCiAgICBvcGVuKE9VVCwiPnJ1
+bl9qb2IiKTsKICAgIHByaW50ICAgICAiLi9ydW5fcm9vdF9vbl9ub2RlMi5zaCAkbm9kZSAk
+cnVubm9bJGpvYl1cbiI7CiAgICBwcmludCBPVVQgIi4vcnVuX3Jvb3Rfb25fbm9kZTIuc2gg
+JG5vZGUgJHJ1bm5vWyRqb2JdXG4iOwogICAgY2xvc2UoT1VUKTsKICAgIHN5c3RlbSgiYmF0
+Y2ggLWYgcnVuX2pvYiIpOwogICAgcHJpbnQgIlN1Ym1pdCBvbiBub2RlICRub2RlIHJ1biAk
+cnVubm9bJGpvYl0gZm9yIGFuYWx5c2lzLlxuIjsKIwojIGdvIHRvIHRoZSBuZXh0IG5vZGUg
+YW5kIG5leHQgcnVuIG51bWJlci4KIwogICAgJG5vZGUrKzsKICAgICRqb2IrKzsKfQo=
+--------------55C59DF9790C5C98BD60B91A
+Content-Type: text/plain;
+ name="DELETED0.TXT"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="DELETED0.TXT"
+
+RmlsZSBhdHRhY2htZW50OiBydW5fcm9vdF9vbl9ub2RlMi5zaA0KDQpUaGUgZmlsZSBhdHRh
+Y2hlZCB0byB0aGlzIGVtYWlsIHdhcyByZW1vdmVkIGJlY2F1c2UgZmlsZXMgb2YgdGhpcyB0
+eXBlIGFyZSBub3QgYWNjZXB0ZWQgZm9yIGRlbGl2ZXJ5IGJ5IHlvdXIgZW1haWwgZ2F0ZXdh
+eS4NCg==
+--------------55C59DF9790C5C98BD60B91A--
+

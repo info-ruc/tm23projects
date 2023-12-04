@@ -1,0 +1,105 @@
+Received: from kirkwood.hoosier.net (IDENT:root@kirkwood.hoosier.net [206.106.64.12])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id HAA17744
+	for <handyboard@media.mit.edu>; Tue, 2 Nov 1999 07:48:44 -0500 (EST)
+Received: from mooreba.crane.navy.mil (a033-051.crane.navy.mil [164.227.33.51])
+	by kirkwood.hoosier.net (8.9.3/8.8.7) with ESMTP id HAA05727
+	for <handyboard@media.mit.edu>; Tue, 2 Nov 1999 07:48:43 -0500
+Message-Id: <199911021248.HAA05727@kirkwood.hoosier.net>
+From: "Bruce Moore" <bamoore@bloomington.in.us>
+To: <handyboard@media.mit.edu>
+Subject: Re: Time available during 1 kHz system interrupt?
+Date: Tue, 2 Nov 1999 07:47:39 -0500
+X-Msmail-Priority: Normal
+X-Priority: 3
+X-Mailer: Microsoft Internet Mail 4.70.1155
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+Interesting discussion but it raises a few more questions.
+
+Are there any (bad) side effects when user code that is inserted in the ISR
+takes longer to execute than the 1 msec interrupt cycle.  From experience
+it appears that the ISR runs on the next interrupt following the completion
+of the current cycle.  The only thing I noticed is that the PWM routines
+don't always calculate their next transition correctly but i figure that
+there are plenty of other things that are going on that I'm not watching
+(and that may eventually bite me).
+
+Chris:  How do you turn off the things like IR and quad shaft decoding to
+get rid of the little overhead.
+
+
+----------
+> From: Christopher Prosser <cprosser@acm.org>
+> To: Greg Starr <starr@unm.edu>; handyboard@media.mit.edu
+> Subject: Re: Time available during 1 kHz system interrupt?
+> Date: Monday, November 01, 1999 8:48 PM
+> 
+> Hi Greg,
+>   It all depends. Various features of the HB can be turned on and off to
+> change the amount of work done in the main ISR. By default the code uses
+> 300ms to execute. The file lib_hb.c provides the following:
+> 
+> /********************************/
+> /*** System Interrupt Control ***/
+> /********************************/
+> 
+> /*
+> 
+>     These functions allow you to turn on and off various features
+>     controlled by the system interrupt routines.  The more features
+>     you turn off, the faster your code will run.
+> 
+>     On reset, the features have the following state:
+>        pulse width modulation ON
+>        infrared decoding      ON
+>        LCD printing           ON
+>        quad shaft decoding    OFF
+>        IR tranmission       OFF
+> 
+>     This uses approx. 30% of total CPU time.
+> 
+>     Approximate benchmarks:
+> 
+> x    Feature  % of CPU
+>     -------  --------
+>     PWM       3
+>     IR decode     11
+>     LCD printing (active)   8
+>     LCD printing (inactive) 1
+>     quad shaft decode     5
+>     IR transmission     1
+> 
+> */
+> 
+> 
+> 
+> -chris prosser
+> 
+> 
+> ----- Original Message -----
+> From: Greg Starr <starr@unm.edu>
+> To: <handyboard@media.mit.edu>
+> Sent: Monday, November 01, 1999 7:19 AM
+> Subject: Time available during 1 kHz system interrupt?
+> 
+> 
+> > Does anyone know the approximate amount of time available for user
+> > assembler programs which "add on" to the existing 1 kHz HB interrupt?
+> >
+> > Another way of stating that is...how much time is used by the 1kHz HB
+ISR
+> code?
+> >
+> > --greg
+> >
+> > *****************************************************************
+> > * Greg Starr, Professor                                         *
+> > * Department of Mechanical Engineering        ph (505) 277-6298 *
+> > * University of New Mexico, Albuquerque NM 87131   FAX 277-1571 *
+> > * email- starr@unm.edu  WWW- http://www.me.unm.edu/~starr/      *
+> > *****************************************************************
+> >
+> >
+

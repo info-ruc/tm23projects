@@ -1,0 +1,136 @@
+Received: from saffron.cc.columbia.edu (saffron.cc.columbia.edu [128.59.59.102])
+	by jalapeno.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0CNv7vX002797;
+	Thu, 12 Jan 2006 18:57:07 -0500 (EST)
+Received: from saffron.cc.columbia.edu (localhost [127.0.0.1])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0CNmtQW020625
+	for <cuflow-users-outgoing@columbia.edu>; Thu, 12 Jan 2006 18:48:55 -0500 (EST)
+Received: (from majordom@localhost)
+	by saffron.cc.columbia.edu (8.13.0/8.12.8/Submit) id k0CNmsQW020624
+	for cuflow-users-outgoing; Thu, 12 Jan 2006 18:48:54 -0500 (EST)
+Received: from jujube.cc.columbia.edu (jujube.cc.columbia.edu [128.59.28.170])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0CNmsQd020619
+	for <majordom+cuflow-users@saffron.cc.columbia.edu>; Thu, 12 Jan 2006 18:48:54 -0500 (EST)
+Received: from smtp.tronicplanet.de (smtp.tronicplanet.de [217.74.1.11])
+	by jujube.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0CNmoWd019850
+	for <cuflow-users@columbia.edu>; Thu, 12 Jan 2006 18:48:53 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.tronicplanet.de (Postfix) with ESMTP id 744CC82425;
+	Fri, 13 Jan 2006 00:49:03 +0100 (CET)
+Received: from smtp.tronicplanet.de ([217.74.1.11])
+	by localhost (sanchotng [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 05453-06; Fri, 13 Jan 2006 00:49:03 +0100 (CET)
+Received: from [192.168.110.83] (p5491A06D.dip0.t-ipconnect.de [84.145.160.109])
+	by smtp.tronicplanet.de (Postfix) with ESMTP id 86E46823DB;
+	Fri, 13 Jan 2006 00:49:02 +0100 (CET)
+Message-ID: <43C6EAD6.4030005@tronicplanet.de>
+Date: Fri, 13 Jan 2006 00:48:38 +0100
+From: Thomas Stegbauer <thomas.stegbauer@tronicplanet.de>
+User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050317)
+X-Accept-Language: de-DE, de, en-us, en
+MIME-Version: 1.0
+To: cuflow-users@columbia.edu
+Subject: cuflow on debian sarge running motorola powerstack (ppc-architecture)
+X-Enigmail-Version: 0.92.0.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigE0DC1E152BCC1652472510B0"
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at relay.tronicplanet.de
+X-Spam-Score: 0.5 () CU_TAGGED_LINK
+X-Scanned-By: MIMEDefang 2.48 on 128.59.29.5
+X-Scanned-By: MIMEDefang 2.48 on 128.59.28.170
+Sender: owner-cuflow-users@columbia.edu
+Precedence: bulk
+X-No-Spam-Score: Local
+
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigE0DC1E152BCC1652472510B0
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 7bit
+
+hi ml,
+
+i am new to this list and cuflow.
+
+i am running
+a linksys wrt54gl with dd-wrt v23 12/25/2005 and started rflow on this
+router to a flow-tools 0.67.8 from debian sarge.
+this flow-capture does capture the databases fine. imho without nexthop
+and outif. a flow-print file looks like:
+
+
+srcIP            dstIP            prot  srcPort  dstPort  octets     
+packets
+193.27.253.47    192.168.0.98   6     8080     1188     126         2
+192.168.0.98   193.27.253.47    6     1188     8080     110         2
+193.27.253.2     192.168.0.98   6     80       1216     3979        10
+192.168.0.98   193.27.253.2     6     1216     80       2695        10
+
+when i run flowscan with the CUFlow report i get:
+
+2006/01/13 00:35:24 working on file
+/var/flow/test/ft-v05.2006-01-13.000000+0100...
+/var/flow/test/ft-v05.2006-01-13.000000+0100: Invalid index in cflowd
+flow file: 0xCF100203! Version 5 flow-export is required with *all*
+fields being saved.
+2006/01/13 00:35:24 flowscan-1.020 CUFlow: Cflow::find took  0 wallclock
+secs ( 0.01 usr +  0.00 sys =  0.01 CPU) for 10136 flow file bytes, flow
+hit ratio: 0/0
+2006/01/13 00:35:24 flowscan-1.020 CUFlow: report took  0 wallclock secs
+( 0.00 usr  0.00 sys +  0.03 cusr  0.04 csys =  0.07 CPU)
+2006/01/13 00:35:24 rename
+"/var/flow/test/ft-v05.2006-01-13.000000+0100",
+"/var/flow/test/saved/ft-v05.2006-01-13.000000+0100": Permission denied
+2006/01/13 00:35:24 unlink
+"/var/flow/test/ft-v05.2006-01-13.000000+0100": Permission denied
+
+cause i had before some other troubles and got:
+
+ERROR updating /var/flow/rrd/total.rrd: illegal attempt to update using
+time 1137106800 when last update time is 1137106800 (minimum one second
+step)
+ERROR updating /var/flow/rrd/total.rrd: illegal attempt to update using
+time 1137106800 when last update time is 1137106800 (minimum one second
+step)
+ERROR updating /var/flow/rrd/total.rrd: illegal attempt to update using
+time 1137106800 when last update time is 1137106800 (minimum one second
+step)
+
+i tried running flowscan with a user without the privilege to delete the
+file, cause somebody said the file got deleted by something while
+getting processed by CUFlow. 
+https://www1.columbia.edu/sec/bboard/mj/cuflow-users/archive/2005_08/msg00005.html
+
+but with this i saw the problem with not having a complete version 5
+flow-export
+
+is there a way to get CUFlow running without the complete flow-file?
+cause it is enough for me, to get the packets/time/bytes for some subnet
+as a graphical output?
+
+greetings
+thomas
+
+-- 
+# Thomas Stegbauer
+# https://keyserver1.pgp.com/vkd/DownloadKey.event?keyid=0x65CEC0FC275931BF
+# Key fingerprint = 984E D4B1 E91E F349 5057  B6AC 65CE C0FC 2759 31BF
+
+
+
+
+--------------enigE0DC1E152BCC1652472510B0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFDxuraZc7A/CdZMb8RAp66AKC182L3lIKrxSpsxZrsB7DTFnQI8gCgyoci
+Zazk+NvKkWgq4sfAXQlDycA=
+=4ILx
+-----END PGP SIGNATURE-----
+
+--------------enigE0DC1E152BCC1652472510B0--
+

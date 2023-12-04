@@ -1,0 +1,60 @@
+Received: from iago.cs.cornell.edu (iago.cs.cornell.edu [128.84.96.10])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k3668St03385
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 02:08:28 -0400 (EDT)
+Received: from authusersmtp.mail.cornell.edu ([128.253.83.141]) by iago.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 6 Apr 2006 02:07:24 -0400
+Received: from [10.0.1.3] (cpe-69-207-37-155.twcny.res.rr.com [69.207.37.155])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k3667NXl011791
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 02:07:24 -0400 (EDT)
+Mime-Version: 1.0 (Apple Message framework v749.3)
+Content-Transfer-Encoding: 7bit
+Message-Id: <5F5C3C9A-EB0C-4322-A9F5-E98D72883D7B@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 19
+Date: Thu, 6 Apr 2006 02:07:25 -0400
+X-Mailer: Apple Mail (2.749.3)
+X-OriginalArrivalTime: 06 Apr 2006 06:07:24.0392 (UTC) FILETIME=[5FA2C680:01C65940]
+
+OVERCAST
+
+The primary purpose of the Overcast overlay network is to provide an  
+efficient and better alternative to IP Multicast.  As it is  
+implemented as an overlay, it does not require changes to network  
+routers or other hardware, and thus can be deployed incrementally.   
+Also, it is designed for the multicast of content which must be  
+delivered in its entirety, rather than dynamically shaping content to  
+ensure real time delivery like some other multicast schemes.   
+Overcast also differs from IP multicast in that it allows only single- 
+source multicast.
+
+Overcast was implemented as a linux app with a single source and  
+multiple clients, distributing video content.  The distribution tree  
+is identified by a url, allowing clients to contact the root through  
+the url, which then directs the requester to download from the  
+nearest client machine with the content.  When a node joins the  
+system, it must know the address of an overcast root, which it  
+contacts to receive information indicating which nodes it should  
+contact and what area of the internet it should serve.
+
+Nodes attempt to organize themselves in as deep a distribution tree  
+as possible which does not sacrifice their bandwidth connecting them  
+to the source.  The root is eliminated as a single point of failure  
+by replicating the root and using traditional DNS resolution  
+techniques to spread request over the replicas.
+
+The system has been implemented on 10s of nodes, and so is tested for  
+larger networks (600 nodes) through simulation.  They find that if  
+Overcast nodes are placed as if they are part of an IP Multicast  
+backbone, the system is most effective, but achieves 80% of that  
+bandwidth if nodes are randomly placed.  However, they have no  
+simulation results to indicate how effective the system may actually  
+seem to the end user.  Although the system is self configuring, they  
+simulate nodes placed on relatively high speed links (T1, T3).  This  
+indicates that care must be taken when deploying the system, and that  
+it cannot be adopted by "standard users" of the internet who do not  
+have multi-megabit connections.
+

@@ -1,0 +1,67 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1E1CGt15922
+	for <egs+summary@cs.cornell.edu>; Mon, 13 Feb 2006 20:12:16 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1E1CF3h006670
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Mon, 13 Feb 2006 20:12:16 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060212161233.034e6fb8@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Mon, 13 Feb 2006 20:14:23 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 6
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+"Search and Replication in Unstructured P2P networks"
+
+         Whereas most DHT papers leave replication to the application 
+layer, this paper discusses the proper number and placement of replicas in 
+unstructured networks, and also the best way to do queries across these 
+networks.  The authors show that flood searches, and expanding ring, are 
+both very network-intensive, and that controlled random walk is much more 
+frugal with bandwidth for equivalent search quality.  The authors also 
+propose a new replication scheme, with the number of replicas of an object 
+proportional to the square root of the query frequency.  They show that 
+this scheme is optimal in terms of search size (and thus total network 
+load).  They also show that path replication can achieve this replication, 
+and greatly improve performance.
+         Square-root replication is only valid insofar as the assumptions 
+are valid.  Gnutella is substantially a file-sharing system, and users do 
+not delete files randomly.  Controlled Random-walk, while a good idea, is 
+probably not practical for gnutella since the installed systems do not 
+support it.  If we're going to be altering the existing gnutella installed 
+base, why not go to a structured system in the first place?
+
+Beehive:
+         Beehive is in many ways the counterpart for structured P2P 
+systems.  It offers a mathematical analysis, and an optimal replication 
+scheme under certain assumptions: In particular, the authors assume that 
+object replication has a fixed cost.  The Beehive authors show that the 
+optimum replication degree can be computed analytically given the item 
+frequency and the zipf-law parameter; they show that these can be measured 
+efficiently at runtime by aggregating statistics, and then doing linear 
+regression.  Beehive then pushes the updated objects out along the routing 
+trees in the logical way; the authors show that this can easily be tweaked 
+to allow mutable objects.
+         The beehive scheme in only optimal if object replication has a 
+fixed cost.  This is not true in all applications.  The authors suggest 
+replicating only pointers, but this is not always suitable: replication may 
+be employed either to speed queries or to improve reliability, and 
+replicating only pointers does not improve reliability.  Moreover, Beehive 
+is actually quite slow to adapt to changes in frequency, taking many hours 
+to adapt to sudden changes in object usage.  Also, Beehive is geared to 
+users who know how many hops they would like searches to take in the 
+average case; in practice, the users are more likely to specify total 
+resources to be used, and the challenge is to tune the system to use them 
+optimally.
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

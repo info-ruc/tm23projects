@@ -1,0 +1,84 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB5NFu610009
+	for <egs@cs.cornell.edu>; Wed, 5 Dec 2001 18:15:56 -0500 (EST)
+Received: from photon.ece.cornell.edu (photon.ece.cornell.edu [128.84.81.138])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fB5NCRM26864
+	for <egs@cs.cornell.edu>; Wed, 5 Dec 2001 18:12:27 -0500
+Date: Wed, 5 Dec 2001 18:12:27 -0500 (EST)
+From: Edward Hua <eyh5@ece.cornell.edu>
+X-X-Sender:  <eyh5@photon.ece.cornell.edu>
+To: <egs@CS.Cornell.EDU>
+Subject: 615 Paper # 70 
+Message-ID: <Pine.LNX.4.33.0112051812010.11307-100000@photon.ece.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+A Scalable Content-Addressable Network
+
+Sylvia Ratnasamy, Paul Francis, Mark Handley, Richard Karp, Scott Shenker
+
+	
+	This paper proposes an algorithm designed to improve the indexing 
+scheme used to map file names to their locations in a scalable 
+peer-to-peer file distribution system. The Content-Addressable Network, or 
+CAN, acts as a hash table, whose main function is name resolution, in a 
+decentralized fashion. It performs insertion, lookup, and deletion of 
+<key, value> pairs in the network. CAN does not limit its application to 
+peer-to-peer networks; it may also be implemented in wide-area name 
+resolution services that decouple the naming scheme from the name 
+resolution process. 
+
+	The namespace of CAN is built in a d-dimensional Cartesian 
+coordinate space on a d-torus. The design partitions this space into n 
+zones, corresponding to the n hosts in the network. Each host maintains a 
+neighbor map. The nodes send out periodic update messages to their 
+neighbors reporting the zone coordinates and neighbor lists. These 
+periodic updates manifest their importance when node joins and departures 
+take place in the coordinate space. The joining of a node to the network 
+involves identifying a node currently in the network and acquiring half of 
+the zone it oversees. Likewise, the departure of the node involves giving 
+its zone to one of its neighbors. In either case, the neighbor nodes will 
+learn the change in the topology by the exchange of periodic updates.
+
+	The researchers of CAN also propose some design improvements on 
+top of the base operations it carries out. The first one is to have 
+multiple dimensions (beyond the conventional 3-dimensionality) in 
+constructing the coordinate space. The second is to have multiple 
+coordinate spaces, or realities so that each node occupies a different 
+zone in these different spaces. Both techniques achieve a smaller path 
+length, although for the same number of neighbors, increasing the 
+dimensions of the space yields short path lengths than increasing the 
+number of realities. However, the trade-off for the advantage of 
+multi-dimensionality over multi-reality is the increase in the average 
+per-node neighbor state. 
+
+	Further design improvements are also proposed to enhance 
+performance of the CAN. First, the routing metric, which was purely based 
+on the distance from a client to a destination, is now weighted with 
+round-trip time (RTT). Also, Instead of having one node occupy a zone in 
+the coordinate space, multiple nodes can occupy the same zone, forming a 
+peer-ship amongst themselves. This zone overloading technique does not 
+increase the amount of neighbor information an individual node must carry, 
+but does require to hold additional states for its own peers. Other 
+techniques, such as using multiple hash functions, topologically-sensitive 
+construction of CAN overlay network, uniform portioning of coordinate 
+zones, and caching and replication for hotspot management are being 
+explored.
+
+	Some of the prices to pay for enhanced functionality in CAN are 
+listed below. First, there is a constant need for all nodes in the CAN to 
+periodically send update messages to their neighbors, even though if the 
+topology is relatively constant over a long period of time, as is often 
+the case in wired networks. This incurs a substantial consumption of the 
+network bandwidth. Second, the use of multiple realities inevitably 
+demands an increase in the disk space in the nodes. Third, it seems that 
+the scheme is rather computationally intensive, demanding a lot of CPU 
+power on each of the nodes. While experiencing reduction in routing delay 
+with the design enhancements, some of that reduction may be offset by the 
+internal computing power (e.g., the power to send periodic updates with 
+multiple realities). Therefore, more accurate measurements of the amount 
+of delay saved are needed to strike a balance between the overall system 
+complexity and reduced routing delay. 
+
+
+

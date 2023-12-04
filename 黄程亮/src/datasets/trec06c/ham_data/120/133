@@ -1,0 +1,59 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k34FQ8RI026402
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 4 Apr 2006 08:26:08 -0700
+Received: from localhost (gimli.email.arizona.edu [10.0.0.223])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 07B4ADC9A46
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  4 Apr 2006 08:26:08 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.Arizona.EDU [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id E63A6DC37A4
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  4 Apr 2006 08:26:06 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060404081821.00ba48d0@psy1.psych.arizona.edu>
+Date: Tue, 04 Apr 2006 08:26:05 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: dmdx not running on new pc
+In-Reply-To: <443252D6.8030306@nat.uni-magdeburg.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 01:04 PM 4/4/2006 +0200, you wrote:
+>we recently installed a new pentium 4 pc with asus board down in the lab 
+>for handling stimulus presentation.
+>unfortunatelly it turns out, that even when running a syntax check on a 
+>simple test script
+>for the pio card (just to see if triggers will be send correctly to the 
+>eeg amplifier connected to it)
+>processor use by dmdx will rise to 100% and the computer will freeze.
+>setting default values and so on with time-dx worked fine so far.
+>any suggestions ???
+
+   My immediate suspicion would be the PIO drivers, particularly if it's 
+got a Keithley card in it.  If it doesn't happen when the PIO isn't used 
+then it's the PIO drivers.  If you aren't using the QPIO devices then try 
+them, ie <id qpio12>.
+
+   It's not too surprising to see DMDX peg the CPU at 100% on a syntax 
+check as it's processing things as fast as it can and there are certain 
+conditions that can whack a syntax check such as missing the last 
+semi-colon in an item file.
+
+   Other things include updating all the drivers you can, go to the ASUS 
+page and download the latest system drivers, get new video drivers and so on.
+
+   If it doesn't go away you'll have to start removing elements from the 
+item file to determine which is tossing the machine for a loop.  I'd start 
+commenting out all the PIO stuff, then the sound stuff if it's used, then 
+digital video and so on.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   The world wants to be deceived.
+
+
+

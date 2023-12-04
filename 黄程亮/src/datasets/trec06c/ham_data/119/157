@@ -1,0 +1,61 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2SGNQY17341
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 11:23:26 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-246.twcny.res.rr.com [69.207.37.246])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2SGNPhM019385
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 11:23:26 -0500 (EST)
+Message-ID: <000001c65284$06a86de0$f625cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 16
+Date: Tue, 28 Mar 2006 11:23:37 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+EigenTrust is an algorithm to assign reputation to peers in a p2p network. 
+The motivation behind the paper is that many papers prior to it require 
+global knowledge or need to query every node in the system, making the 
+systems impractical for modern p2p systems.  To fix this problem, they have 
+a notion of trusted peers.  Trusted peers are nodes in the network with whom 
+you have already worked with (downloaded from, in the case of file sharing) 
+and therefore you assume that they are trustworthy.  This seems like a 
+reasonable assumption: if someone is willing to send you their files and you 
+received them without any problems then they are likely to be honest in 
+their reptutation management as well.  Because peers are seeking out the 
+trusts from their trusted neighbors, the opinions on peers will eventually 
+converge.  Because of this, you do not have to survey the entire network, 
+only a small portion of it.  In secure eigentrust, "score managers" computer 
+the trust value of a certain peer.  When someone requests the trust value, 
+the score managers give their results and the requesting node takes a vote 
+on the responses.  Score managers are assigned by using a DHT: the IP 
+address of the peer that is trying to be contacted is hashed and the node 
+responsible for that value is assigned responsibility as a score manager as 
+well.  One of the negatives of the system is the pre-trusted peers.  The 
+theory is that when the network was first forming, the first nodes to have 
+joined are likely to be honest.  These nodes are then put into the trusted 
+list of all peers.  This seems very ineffective.  It sounds like a 
+central-server: a single point of failure and all the responsibility is 
+brushed onto it to take care of.
+
+In the Bayesian paper, a trust and reputation system are modelled.  Each 
+node trusts itself and therefore makes great use of its own ratings.  When 
+querying a peer to find out what rating they assigned to a certain node, it 
+only accepts that rating if that rating is close to what it thought the 
+rating should be.  In this way, you trust your own data and do not trust 
+other peers.  Ratings fade over time in order to not allow malicious peers 
+to build reputation and then start misbehaving suddenly.  It seems easy to 
+launch an attack that constantly lowers ratings of peers, although you will 
+have to be clever about it, making sure to start at a level close to what 
+the originating peer thinks of the askee. 
+

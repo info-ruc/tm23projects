@@ -1,0 +1,64 @@
+Received: from panorama.Covad.COM (panorama.covad.com [207.240.203.29])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id LAA27334
+	for <handyboard@media.mit.edu>; Mon, 16 Oct 2000 11:46:18 -0400 (EDT)
+Received: from ix.netcom.com (bhayward-148.sfo.covad.com [172.17.14.148])
+	by panorama.Covad.COM (8.9.3/8.8.7) with ESMTP id IAA11740;
+	Mon, 16 Oct 2000 08:45:38 -0700 (PDT)
+Message-Id: <39EB2281.ECAAB4E4@ix.netcom.com>
+Date: Mon, 16 Oct 2000 08:45:06 -0700
+From: Greg Hayward <ghayward@ix.netcom.com>
+Organization: Cisco Systems
+X-Mailer: Mozilla 4.7 [en] (Win98; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: handyboard@media.mit.edu, ghayward@cisco.com
+Subject: Problem with expansion board or code
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I have taken a program for the basic hadyboard analog port and converted
+it over to us the expasion board analog ports. The only problem is it
+only read the first port. I have tried it on three of my handyboard with
+the same result.
+I have recheck the lib_hb.lst file to make sure it included everthing
+and I beleive it does. I built all three board at the same time so there
+could be some bad components but port 16 works. So I believe it is the
+code.
+Any help would be greatly appreciated.
+
+void main()
+{
+ int i,j,dark,dark1,light[7],t;
+ i=16;/*used to get values from port 16 and above*/
+ while(!start_button() + !stop_button())
+ {
+  printf("press start button\n");
+  while(!start_button());
+  while(start_button());
+  while(!stop_button())
+   {
+   /*printf("press stop button \n");*/
+    for(j=0;j<7;j++){
+     for(t=0;t<900;t++){} /*used for debugging values*/
+     light[j]=_exp_analog(i);
+     printf("%d %d %d \n",j,light[j],i);
+      i=i+1;
+     }
+    i=16;
+    dark=0;
+    dark1=3;
+     for(j=0;j<7;j++){
+      if(light[j]>dark){
+       dark=light[j];
+       dark1=j;
+      }
+     }
+    printf("%d %d %d\n",dark1,light[dark1],i); /*output the hiest
+value*/
+    }
+   }
+}
+
+Greg
+
+

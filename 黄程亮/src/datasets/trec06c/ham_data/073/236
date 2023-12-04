@@ -1,0 +1,100 @@
+Received: from ipal.telmat-net.fr (ipal.telmat-net.fr [212.208.122.33])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id IAA06724
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 25 Oct 2000 08:16:13 -0700
+Received: from internet-serv.forenap.asso.fr (forenap.telmat-net.fr [212.208.122.242])
+	by ipal.telmat-net.fr (8.9.3/8.8.7) with ESMTP id RAA18946
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 25 Oct 2000 17:02:21 +0200
+Received: from URANUS.forenap.asso.fr (smtp.intranet.loc [193.107.111.103])
+	by internet-serv.forenap.asso.fr (8.11.0/8.8.7) with SMTP id e9PFJaq19389
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 25 Oct 2000 17:19:36 +0200
+Received: from forenap.asso.fr (YODA [193.107.110.108]) by URANUS.forenap.asso.fr (8.6.12/8.6.12) with ESMTP id QAA21943 for <DMDX@psy1.psych.arizona.edu>; Wed, 25 Oct 2000 16:10:53 GMT
+Message-ID: <39F70E8A.6D801311@forenap.asso.fr>
+Date: Wed, 25 Oct 2000 18:47:07 +0200
+From: Jean-Francois Nedelec <jnedelec@forenap.asso.fr>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] PreciseTimingAgain
+Content-Type: multipart/mixed;
+ boundary="------------6ACB1BCE75DB891F852C2834"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+This is a multi-part message in MIME format.
+--------------6ACB1BCE75DB891F852C2834
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Dear all,
+
+I am back with the following code (example)
+(the TTL from the scanner is triggering DMDX)
+
+0  "TTL Puse 1"  ;
+250 <bmp> <ms% 3000> "Image1"/;
+250 <bmp> <ms% 6000> "Frame1"/;
++001 <bmp> <ms% 3000> *"Image2"/;
+250 <bmp> <ms% 6000> "Frame2"/;
+
+and so on for 24 loops (96 images) ==> delays adding up !!!
+
+I am recording 1 set of images every 3s.
+The sequence is stopping earlier than DMDX !!!
+
+I did put  (1 tick is 13.4 ms here) 30 tick means
+
+250 <d 30><bmp> <ms% 2598> "Image1"/;
+250 <d 30><bmp> <ms% 5598> "Frame1"/;
++001 <d 30><bmp> <ms% 2598> *"Image2"/;
+250 <d 30><bmp> <ms% 5598> "Frame2"/;
+
+Still the same (not right ending both scannerand DMDX);
+
+Has somebody some trick to do so (is DMDX usefull with FMRI?)
+Is the only solution to trigger each loop on even each image display ??
+How experienced FMRI people handle DMDX ??
+
+I thought that any videocard had 2 pages memory.
+Is ther a possible way to upload
+Frame1 on page 2 when displaying Image1 on page 1
+Then
+Then upload
+Image2 on page 1 when displaying Frame1 on page 2
+and so on
+
+This is EXPE6 stratgy to avoid this black waiting time
+in between bmps related to PreparationA and Preparation B
+
+Thanks for help, suggestions and comments
+and even thinking of usefull nodification in timing
+management to better fit DMDX into FMRI field.
+
+Sorry to focused so hardly on timing handling
+
+Jean-Francois
+
+--------------6ACB1BCE75DB891F852C2834
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="jnedelec.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Jean-Francois Nedelec
+Content-Disposition: attachment;
+ filename="jnedelec.vcf"
+
+begin:vcard 
+n:Nedelec;Jean-Francois J.
+tel;fax:33.(0)3.89.78.51.24
+tel;work:33.(0)3.89.78.70.18 / 71.65 / 71.70
+x-mozilla-html:FALSE
+org:Forenap;MR Centre
+version:2.1
+email;internet:jnedelec@forenap.asso.fr
+title:Ph.D.
+adr;quoted-printable:;;Hospital Center=0D=0A27, rue 4eme R.S.M.;ROUFFACH;;68250;France
+x-mozilla-cpt:;12896
+fn:Jean-Francois J. Nedelec
+end:vcard
+
+--------------6ACB1BCE75DB891F852C2834--
+
+

@@ -1,0 +1,158 @@
+Received: from web26605.mail.ukl.yahoo.com (web26605.mail.ukl.yahoo.com [217.146.176.55])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with SMTP id j8E79D5L009058
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 14 Sep 2005 00:09:13 -0700
+Received: (qmail 41790 invoked by uid 60001); 14 Sep 2005 07:09:07 -0000
+Message-ID: <20050914070907.41788.qmail@web26605.mail.ukl.yahoo.com>
+Received: from [163.26.142.112] by web26605.mail.ukl.yahoo.com via HTTP; Wed, 14 Sep 2005 08:09:07 BST
+Date: Wed, 14 Sep 2005 08:09:07 +0100 (BST)
+From: Yu-cheng Sieh <daphsieh@yahoo.co.uk>
+Subject: [DMDX] interrupt device didn't work!
+To: DMDX@psy1.psych.arizona.edu
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1215454116-1126681747=:41567"
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+--0-1215454116-1126681747=:41567
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+Hi,
+ 
+I am a new user of DMDX. I learned to write the script file and corrected most of the errors by referring to the postings on the ListServ and the DMDX Help. However, when I tested myself (using a Compaq Presario 2800 laptop), I found the mice (both touchpad and USB) didn't work. The mice work in all other conditions but they seem to go to sleep when I run the experiment. The strange thing is the SpaceBar works. When all means failed, I tried to map the Shift buttons on the keyboard, instead of using a mouse. But they didn't work either. It appears that only the SpaceBar works. 
+ 
+I am not sure if it's caused by any mistakes I made in the script.  The laptop I use is one with some button names in Chinese. I found out the button names by doing the input test in the TimeDX. The number (#0, #1, #2) of the two input devices' buttons was not found on input devices when I ran a syntax check. 
+ 
+Here is part of my script. 
+<ep> <n 30> <d 20> <cr> <azk> <nfb> <fd 120> <t 7000> <id "Œ®”Õ"> <mr +Space> <id "ŠŠ‘l"> <umnr> <umpr> <mnr +ˆÂçä0> <mpr ˆÂçä+1> <dbc 255255255> <dwc 0> <vm 800,600,600,16,0> <eop>
+0 "Press SPACEBAR to start.";
++1 <ms% 500> / * <wav 2> <svp start> "sun" / <bmp> "sun" / <ms% 1000> / ; 
+-2 <ms% 500> / * <wav 2> <svp start> "lip"/ <bmp> "book" / <ms% 1000> / ; 
+-3 <ms% 500> / * <wav 2> <svp start> "banana"/ <bmp> "apple" / <ms% 1000> / ;
++4 <ms% 500> / * <wav 2> <svp start> "ice cream"/ <bmp> "ice cream" / <ms% 1000> /; 
+....
+....
+ 
+I suspect something might have gone wrong so I ran the diagnostics. Here's the info I've got. 
+....
+....
+EXPERIMENT READY
+24 video memory buffers at 800x600 16 bpp
+Preparation A 48.63ms, B 0.00ms
+0 "Press SPACEBAR to start.";
+Display error at msec 544.36, tick 32 in item 0, frame "Press SPACEBAR to start."
+moved into video memory 12 ticks late
+(previous frame's duration will have been longer)
+-- possibly caused by another process taking 1 tick
+Preparation A 0.18ms, B 3.26ms
++1 <wav 2> <svp start> "sun" / * <bmp> "sun" /! <ms% 1000> /;
+DQ adjusted by 1 ticks to allow for sound
+Item  1 RT -7000.00 -- Error Rate 100%
+Preparation A 235.44ms, B 97.73ms
+-2 <wav 2> <svp start> "lip" / * <bmp> "book" /! <ms% 1000> /;
+DQ adjusted by 1 ticks to allow for sound
+Item  2 RT -7000.00 -- Error Rate 100%
+Display error at msec 21590.50, tick 1317 in item 2, frame "book"
+moved into video memory 250 ticks late
+(previous frame's duration will have been longer)
+-- possibly caused by another process taking 5 ticks
+Preparation A 310.88ms, B 129.13ms
+-3 <wav 2> <svp start> "banana" / * <bmp> "apple" /! <ms% 1000> /;
+DQ adjusted by 1 ticks to allow for sound
+Item  3 RT -7000.00 -- Error Rate 100%
+Display error at msec 29072.37, tick 1772 in item 3, frame "apple"
+moved into video memory 250 ticks late
+(previous frame's duration will have been longer)
+-- possibly caused by another process taking 5 ticks
+...
+...
+ 
+I noticed that both the display error and tick increased as the experiment went on. But the number of ticks-late when a frame moved into video memory was ranged between 234 and 251. 
+ 
+Later I changed the header parameters to
+<ep> <n 30> <d 250> <cr> <azk> <nfb> <fd 120> <t 10000> <id "Œ®”Õ"> <mr +Space> <id "ŠŠ‘l"> <umnr> <umpr> <mnr +ˆÂçä0> <mpr ˆÂçä+1> <dbc 255255255> <dwc 0> <vm 800,600,600,16,0> <eop>
+thinking that it might help. But it didn't. The result of running a diagnostics is about the same as mentioned above. Could anyone tell me what to do? Thanks a lot.  
+ 
+Cheers,
+Daphne
+
+
+
+
+
+
+
+		
+---------------------------------
+Yahoo! Messenger  NEW - crystal clear PC to PC calling worldwide with voicemail 
+--0-1215454116-1126681747=:41567
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+<DIV>
+<DIV>
+<DIV>Hi,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I am a new user of DMDX. I learned to write the script file and corrected most of the errors by referring&nbsp;to the postings on the ListServ and the DMDX Help. However, when I tested myself (using a Compaq Presario 2800 laptop), I found the&nbsp;mice (both touchpad and USB) didn't work.&nbsp;The mice work in all other conditions but they seem to go to sleep when I run the experiment. The strange thing is the SpaceBar works. When all means failed, I tried to map the Shift buttons on the keyboard, instead of using a mouse. But they didn't work either. It appears that only the SpaceBar works. </DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I am not sure if it's caused by any mistakes I made in the script.&nbsp; The laptop I use is&nbsp;one with some&nbsp;button names in Chinese. I found out the button names by doing the input test in the TimeDX. The number (#0, #1, #2) of the two input devices' buttons&nbsp;was not found on input devices when I ran a syntax check. </DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Here is part of my script. </DIV>
+<DIV><FONT color=#0000ff>&lt;ep&gt; &lt;n 30&gt; &lt;d 20&gt; &lt;cr&gt; &lt;azk&gt; &lt;nfb&gt; &lt;fd 120&gt; &lt;t 7000&gt; &lt;id "Œ®”Õ"&gt; &lt;mr +Space&gt; &lt;id "ŠŠ‘l"&gt; &lt;umnr&gt; &lt;umpr&gt; &lt;mnr +ˆÂçä0&gt; &lt;mpr ˆÂçä+1&gt; &lt;dbc 255255255&gt; &lt;dwc 0&gt; &lt;vm 800,600,600,16,0&gt; &lt;eop&gt;<BR>0 "Press SPACEBAR to start.";<BR>+1 &lt;ms% 500&gt; / * &lt;wav 2&gt; &lt;svp start&gt; "sun" / &lt;bmp&gt; "sun" / &lt;ms% 1000&gt; / ; <BR>-2 &lt;ms% 500&gt; / * &lt;wav 2&gt; &lt;svp start&gt; "lip"/ &lt;bmp&gt; "book" / &lt;ms% 1000&gt; / ; <BR>-3 &lt;ms% 500&gt; / * &lt;wav 2&gt; &lt;svp start&gt; "banana"/ &lt;bmp&gt; "apple" / &lt;ms% 1000&gt; / ;<BR>+4 &lt;ms% 500&gt; / * &lt;wav 2&gt; &lt;svp start&gt; "ice cream"/ &lt;bmp&gt; "ice cream" / &lt;ms% 1000&gt; /; <BR></FONT>....</DIV>
+<DIV>....</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I suspect something might have gone wrong so I ran&nbsp;the diagnostics. Here's the info I've got. </DIV>
+<DIV>....</DIV>
+<DIV>....</DIV>
+<DIV><FONT color=#800000>EXPERIMENT READY</FONT></DIV>
+<DIV><FONT color=#800000>24 video memory buffers at 800x600 16 bpp</FONT></DIV>
+<DIV><FONT color=#800000>Preparation A 48.63ms, B 0.00ms</FONT></DIV>
+<DIV><FONT color=#800000>0 "Press SPACEBAR to start.";</FONT></DIV>
+<DIV><FONT color=#800000>Display error at msec 544.36, tick 32 in item 0, frame "Press SPACEBAR to start."</FONT></DIV>
+<DIV><FONT color=#800000>moved into video memory 12 ticks late</FONT></DIV>
+<DIV><FONT color=#800000>(previous frame's duration will have been longer)</FONT></DIV>
+<DIV><FONT color=#800000>-- possibly caused by another process taking 1 tick</FONT></DIV>
+<DIV><FONT color=#800000>Preparation A 0.18ms, B 3.26ms</FONT></DIV>
+<DIV><FONT color=#800000>+1 &lt;wav 2&gt; &lt;svp start&gt; "sun" / * &lt;bmp&gt; "sun" /! &lt;ms% 1000&gt; /;</FONT></DIV>
+<DIV><FONT color=#800000>DQ adjusted by 1 ticks to allow for sound</FONT></DIV>
+<DIV><FONT color=#800000>Item&nbsp; 1 RT -7000.00 -- Error Rate 100%</FONT></DIV>
+<DIV>
+<DIV><FONT color=#800000>Preparation A 235.44ms, B 97.73ms</FONT></DIV>
+<DIV><FONT color=#800000>-2&nbsp;&lt;wav 2&gt; &lt;svp start&gt; "lip" / * &lt;bmp&gt; "book" /! &lt;ms% 1000&gt; /;</FONT></DIV>
+<DIV><FONT color=#800000>DQ adjusted by 1 ticks to allow for sound</FONT></DIV>
+<DIV><FONT color=#800000>Item&nbsp;&nbsp;2 RT -7000.00 -- Error Rate 100%</FONT></DIV>
+<DIV>
+<DIV><FONT color=#800000>Display error at msec 21590.50, tick&nbsp;1317 in item 2, frame "book"</FONT></DIV>
+<DIV><FONT color=#800000>moved into video memory&nbsp;250 ticks late</FONT></DIV>
+<DIV><FONT color=#800000>(previous frame's duration will have been longer)</FONT></DIV>
+<DIV><FONT color=#800000>-- possibly caused by another process taking&nbsp;5 ticks</FONT></DIV>
+<DIV>
+<DIV><FONT color=#800000>Preparation A 310.88ms, B 129.13ms</FONT></DIV>
+<DIV><FONT color=#800000>-3&nbsp;&lt;wav 2&gt; &lt;svp start&gt; "banana" / * &lt;bmp&gt; "apple" /! &lt;ms% 1000&gt; /;</FONT></DIV>
+<DIV><FONT color=#800000>DQ adjusted by 1 ticks to allow for sound</FONT></DIV>
+<DIV><FONT color=#800000>Item&nbsp;&nbsp;3 RT -7000.00 -- Error Rate 100%</FONT></DIV>
+<DIV>
+<DIV><FONT color=#800000>Display error at msec 29072.37, tick&nbsp;1772 in item 3, frame "apple"</FONT></DIV>
+<DIV><FONT color=#800000>moved into video memory&nbsp;250 ticks late</FONT></DIV>
+<DIV><FONT color=#800000>(previous frame's duration will have been longer)</FONT></DIV>
+<DIV><FONT color=#800000>-- possibly caused by another process taking&nbsp;5 ticks</FONT></DIV>
+<DIV>...</DIV>
+<DIV>...</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I noticed that both the display error and tick increased&nbsp;as the experiment went on. But the number of ticks-late when a frame moved into video memory was ranged between 234 and 251. </DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Later I changed the header parameters to</DIV>
+<DIV><FONT color=#0000bf>&lt;ep&gt; &lt;n 30&gt; &lt;d 250&gt; &lt;cr&gt; &lt;azk&gt; &lt;nfb&gt; &lt;fd 120&gt; &lt;t 10000&gt; &lt;id "Œ®”Õ"&gt; &lt;mr +Space&gt; &lt;id "ŠŠ‘l"&gt; &lt;umnr&gt; &lt;umpr&gt; &lt;mnr +ˆÂçä0&gt; &lt;mpr ˆÂçä+1&gt; &lt;dbc 255255255&gt; &lt;dwc 0&gt; &lt;vm 800,600,600,16,0&gt; &lt;eop&gt;<BR></FONT>thinking that it might help. But it didn't. The result of running a diagnostics is about the same as mentioned above.&nbsp;Could anyone tell me what to do? Thanks a lot.  </DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Cheers,</DIV>
+<DIV>Daphne</DIV></DIV></DIV></DIV></DIV></DIV></DIV><p>
+		<hr size=1><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><a href="http://us.rd.yahoo.com/mail/uk/taglines/default/messenger/*http://uk.messenger.yahoo.com 
+">Yahoo! Messenger</a> 
+ <font color="red">NEW</font> - crystal clear PC to PC 
+<a href="http://us.rd.yahoo.com/mail/uk/taglines/default/messenger/*http://uk.messenger.yahoo.com 
+">calling worldwide with voicemail 
+</a></font>
+--0-1215454116-1126681747=:41567--
+

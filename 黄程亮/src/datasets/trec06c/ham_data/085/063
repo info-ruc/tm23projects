@@ -1,0 +1,242 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id gAQ4FCIY008519;
+	Mon, 25 Nov 2002 20:15:13 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id gAQ1CRN14700;
+	Mon, 25 Nov 2002 20:12:27 -0500
+Date: Mon, 25 Nov 2002 20:12:27 -0500
+Message-Id: <CA-2002-34.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-34 Buffer Overflow in Solaris X Window Font Service
+Precedence: bulk
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 1915
+Status: RO
+X-Status: $$$$
+X-UID: 0000000068
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-34 Buffer Overflow in Solaris X Window Font Service
+
+   Original release date: November 25, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Sun Microsystems Solaris 2.5.1 (Sparc/Intel)
+     * Sun Microsystems Solaris 2.6 (Sparc/Intel)
+     * Sun Microsystems Solaris 7 (Sparc/Intel)
+     * Sun Microsystems Solaris 8 (Sparc/Intel)
+     * Sun Microsystems Solaris 9 (Sparc)
+
+Overview
+
+   The  Solaris  X  Window Font Service (XFS) daemon (fs.auto) contains a
+   remotely exploitable buffer overflow vulnerability that could allow an
+   attacker to execute arbitrary code or cause a denial of service.
+
+I. Description
+
+   A  remotely  exploitable  buffer  overflow vulnerability exists in the
+   Solaris  X Window Font Service (XFS) daemon (fs.auto). Exploitation of
+   this   vulnerability  can  lead  to  arbitrary  code  execution  on  a
+   vulnerable  Solaris  system.  This vulnerability was discovered by ISS
+   X-Force.
+
+   The  Solaris X Window Font Service (XFS) serves font files to clients.
+   Sun describes the XFS service as follows:
+
+     The X Font Server is a simple TCP/IP-based service that serves font
+     files  to  its  clients. Clients connect to the server to request a
+     font  set,  and  the  server  reads the font files off the disk and
+     serves  them to the clients. The X Font Server daemon consists of a
+     server binary /usr/openwin/bin/xfs.
+
+   The  XFS daemon is installed and running by default on all versions of
+   the   Solaris   operating   system.  Further  information  about  this
+   vulnerability may be found in VU#312313.
+
+     http://www.kb.cert.org/vuls/id/312313
+
+   This vulnerability is also being referred to as CAN-2002-1317 by CVE.
+
+   Note  this  vulnerability  is in the X Window Font Server, and not the
+   filesystem of a similar name.
+
+II. Impact
+
+   A  remote  attacker  can execute arbitrary code with the privileges of
+   the  fs.auto daemon (typically nobody) or cause a denial of service by
+   crashing the service.
+
+III. Solution
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   As  vendors report new information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not  listed  below,  we  have not received their comments.
+   Please contact your vendor directly.
+
+Disable vulnerable service
+
+   Until  patches  can be applied, you may wish to disable the XFS daemon
+   (fs.auto).  As  a  best practice, the CERT/CC recommends disabling all
+   services  that  are  not  explicitly  required.  On  a typical Solaris
+   system,  it  should  be  possible  to  disable  the  fs.auto daemon by
+   commenting  out  the  relevant  entries  in  /etc/inetd.conf  and then
+   restarting the inetd process.
+
+Workarounds
+
+   Block  access  to  port  7100/TCP at your network perimeter. Note that
+   this will not protect vulnerable hosts within your network perimeter.
+
+Appendix A. - Vendor Information
+
+NetBSD
+
+   NetBSD  ships  the  xfs  from  XFree86,  though  its not on or used by
+   default.
+
+OpenBSD
+
+   We do not have XFS.
+
+SGI
+
+   We're not vulnerable to this.
+
+Sun Microsystems
+
+   The  Solaris  X  font  server (xfs(1)) is affected by VU#312313 in the
+   following supported versions of Solaris:
+
+   Solaris 2.6
+   Solaris 7
+   Solaris 8
+   Solaris 9
+
+   Patches  are  being generated for all of the above releases.  Sun will
+   be  publishing  a  Sun  Alert for this issue at the following location
+   shortly:
+
+   http://sunsolve.Sun.COM/pub-cgi/retrieve.pl?doc=fsalert/48879
+
+   The patches will be available from:
+
+   http://sunsolve.sun.com/securitypatch
+
+Appendix B. - References
+
+    1. ISS  X-Force  Security Advisory: Solaris fs.auto Remote Compromise
+       Vulnerability -
+       http://bvlive01.iss.net/issEn/delivery/xforce/alertdetail.jsp?oid=
+       21541
+
+    2. Sun  Cluster  3.0  U1  Data Services Developer's Guide, Chapter 6:
+       Sample DSDL Resource Type Implementation -
+       http://docs.sun.com/db/doc/806-7072/6jfvjtg1l?q=xfs&a=view
+
+    3. CERT/CC Vulnerability Note: VU#312313 -
+       http://www.kb.cert.org/vuls/id/312313
+
+    4. CVE   reference   number  CAN-2002-1317.  Information  available  at
+       http://cve.mitre.org
+     _________________________________________________________________
+
+   Internet Security Systems publicly reported this vulnerability.
+     _________________________________________________________________
+
+   Authors: Ian A. Finlay and Shawn V. Hernan.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-34.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+November 25, 2002: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPeK49WjtSoHZUTs5AQHV5wP7BzZtllAnLIcz88VnsMZmC8PB8X1stQDx
+aNnrPLhgQ7SWXZM/ESAsBBU+ieQodPJlmxy3yb00812uJmaO9wJPMoRnJnrZPkvU
+6iSVJpo3nP85sS+mzpneavM7EuFr7BvJ0+jqhl/21GgMCaJz8zul0rVjUWDOBHl1
+NNaWQi2Urb8=
+=L7NC
+-----END PGP SIGNATURE-----
+

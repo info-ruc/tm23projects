@@ -1,0 +1,60 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3I0W7225068
+	for <egs+summary@cs.cornell.edu>; Mon, 17 Apr 2006 20:32:08 -0400 (EDT)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k3I0W729024627
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Mon, 17 Apr 2006 20:32:07 -0400 (EDT)
+Message-Id: <6.2.1.2.2.20060417000812.01de43a0@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Mon, 17 Apr 2006 20:32:07 -0400
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 22
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+
+Implementing Declarative Overlays:
+         The authors define a declarative language, OverLog, for specifying 
+distributed algorithms, and in particular, overlay networks.  They 
+demonstrate that even a substantial system such as Chord can be specified 
+in a few dozen lines, with performance comparable to the reference C++ 
+implementation.  (Moreover, as our experience with databases has shown, 
+sometimes coding at a higher level allows for automatic optimization 
+resulting in better performance than hand-crafted code)
+         The chief benefit of OverLog is compactness of code.  However, 
+most programmers seem resistant to using Prolog, which offers similar 
+compactness in non-distributed contexts. Moreover, the compactness of 
+OverLog is bought at the expense of reduced flexibility.  Designers often 
+want to specify message formats at the byte level, or the details of the 
+underlying transport layer; OverLog makes this difficult to do.
+
+
+Macedon:
+
+         Macedon is designed to output efficient C++ implementations of 
+overlay algorithms from finite-state-machine descriptions.  This allows 
+quite compact descriptions of complex algorithms in a modular way.  Macedon 
+results in compact, efficient executable code from short descriptions at a 
+higher level.
+         The evaluation of Macedon left a lot to be desired.  Counting 
+lines of code gives only a very loose sense how complex a piece of code is, 
+and counting  semicolons is, if anything, worse.  Moreover, it's not clear 
+that writing hundreds of lines of FSM description, takes less time than 
+writing a few thousand lines of java.  Moreover, it may be easier to debug 
+a conventinonal language than an FSM description.  Lastly, like OverLog, 
+there is the danger of constraining programmers who wish to use underlying 
+components other than the one Macedon offers: for instance, suppose a Chord 
+user truly wanted 128-bit rings, rather than the 32-bit identifier space 
+that Macedon supplies.
+
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

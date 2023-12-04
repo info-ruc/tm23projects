@@ -1,0 +1,83 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA13326
+	for <handyboard@media.mit.edu>; Thu, 3 Dec 1998 13:30:37 -0500 (EST)
+Received: from cs.umt.edu (mso4-184.montana.com [208.4.224.184])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id LAA13980
+	for <handyboard@media.mit.edu>; Thu, 3 Dec 1998 11:29:31 -0700 (MST)
+Message-Id: <3666D867.11933671@cs.umt.edu>
+Date: Thu, 03 Dec 1998 11:28:55 -0700
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: 2sonar
+References: <19981201162144.10172.qmail@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+patcharin sumretsin wrote:
+> 
+>  i use circuit on 2sonar.jpg .
+>  if i use sonar.c program, how i adjust this program for 2 sonar
+>  trasducers. ?(a picture on 2sonar.jpg)
+>  i want to 1 sonar working single , don't together.or to alternate.
+> Sonar number 1(#1)is  working until check distance is nearly
+>  thing(*********), cleosed to thing.
+>  So sonar #2 will work later.
+
+I haven't used the transducer multiplexor myself; I decided to just hook
+up a second sonar module to the HB in the same manner as the first is
+hooked up.  It looks like using the multiplexor ought to be fairly
+simple, though.
+
+First off, in the drawing you have the 9 pins on the sonar module board
+backwards.  Pin 1 is at the edge of the board and pin 9 is toward the
+middle of the board.
+
+It looks like the multiplexor uses pins PD2 and PD3 of the SPI port,
+each to switch on one of the tranducers (although it seems like a
+circuit could be designed to use just *one* digital output to toggle
+between the two!)
+
+To enable PD2 through PD5 as digital outputs, do a bit_set( 0x1009, 0x3C
+) toward the top of your program.  Note that this is a little different
+from the bit_set( 0x1009, 0x30 ) that's used in the original sonar.c,
+since that only required PD4 & PD5.
+
+The PD2 through PD5 pins are mapped to the middle four bits of byte
+0x1008.  Here's how to activate them:
+
+               SONAR
+SPI PIN        FUNCTION        SEND HIGH (TURN ON)
+----------     -----------     -----------------------
+PD2 (MISO)     transducer1     bit_set( 0x1008, 0x04 )
+PD3 (MOSI)     transducer2     bit_set( 0x1008, 0x08 )
+PD4 (SCK)      binh            bit_set( 0x1008, 0x10 )
+PD5 (SS)       init            bit_set( 0x1008, 0x20 )
+
+To send a pin low (turn it off) simply do a bit_clear with the
+appropriate arguments in place of the bit_set.
+
+First, switch the first transducer on by sending PD2 (MISO) high.  Then
+ping the sonar by sending PD5 high and wait for the echo as usual (see
+the sonar.c code on the HB web site).
+
+To switch to the other transducer, switch the first transducer off by
+sending PD2 low and then immediately switch the other transducer on by
+sending PD3 high.  Ping as before.  Make sure you don't initiate the
+ping without first switching one of the two transducers on!
+
+I hope my explanation isn't too confusing and that I didn't make any
+mistakes.  Good luck!
+
+-- Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,           The real problem is not whether machines think,
+Will Bain,                                          but whether men do.
+& Tatoosh                                               --B. F. Skinner
+

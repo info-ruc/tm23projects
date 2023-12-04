@@ -1,0 +1,100 @@
+Received: from lh2.rdc1.bc.home.com (ioracle@ha2.rdc1.bc.wave.home.com [24.2.10.67])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id XAA18492
+	for <handyboard@media.mit.edu>; Wed, 6 Oct 1999 23:52:41 -0400 (EDT)
+Received: from cr905507b ([24.113.107.28]) by lh2.rdc1.bc.home.com
+          (InterMail v4.01.01.00 201-229-111) with SMTP
+          id <19991007035240.TQWX2095.lh2.rdc1.bc.home.com@cr905507b>;
+          Wed, 6 Oct 1999 20:52:40 -0700
+From: "Sean Verret" <verret@ee.ualberta.ca>
+To: "Bob Baxley" <tiexchange@earthlink.net>, <handyboard@media.mit.edu>
+Subject: RE: Retrieving data from the handyboard
+Date: Wed, 6 Oct 1999 20:59:06 -0700
+Message-Id: <NDBBLMDGGLCFFHHADFFFEELDCAAA.verret@ee.ualberta.ca>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+In-Reply-To: <FJ7GCC.FoH@lugnet.com>
+X-Mimeole: Produced By Microsoft MimeOLE V5.00.2615.200
+
+Interactive C can't handle 2D or 3D arrays.... instead another method needs
+to be used..
+
+If your matrix was a 3X3
+
+789
+456
+123
+
+and rows went from bottom to top and columns from left to right
+
+then you'd have to come up with a formula using the row and column numbers
+to access each cell
+
+for example in this configuration you can access any of the cells using the
+formula
+
+let the row# = j
+let the col# = i
+
+total number of rows = J
+total number of cols = I
+
+cell# = (j-1)*J+i
+
+or if the matrix is like so
+
+369
+258
+147
+
+cell# = (i-1)*I+j
+
+I've never tried for a 3D array but assuming that there was a layer on top
+of the second matrix shown, with the same pattern...
+
+depth# = k
+total depths = K
+
+cell# = (i-1)*I+j+(I*J)*(k-1)
+
+Hope that helps if you can follow the variables....
+
+.-----Original Message-----
+.From: news-gateway@lugnet.com [mailto:news-gateway@lugnet.com]On Behalf
+.Of Bob Baxley
+.Sent: Wednesday, October 06, 1999 4:39 PM
+.To: handyboard@media.mit.edu
+.Subject: Retrieving data from the handyboard
+.
+.
+.I need to transfer the data in a matrix on the HB to my win98 PC?  I know a
+.special program is necessary to interpret the signals going to the
+.COM port.
+.Does anyone have such a program or have the have some code that I
+.can compile
+.with VS 6.0?  Here is the function I am using:
+.
+.
+.int map[15][15][5];
+.void output()
+.	{
+.
+.		int v=0;
+.		int h=0;
+.		int o=0;
+.		for(v = 0; v<15; v++) {
+.			for(h=0; h<15; h++) {
+.				for(o=0; o<5; o++){
+.		                      serial_putchar(map[v][h][o]);
+.				}
+.			}
+.		}
+.	}
+.
+
+

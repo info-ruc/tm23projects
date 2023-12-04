@@ -1,0 +1,101 @@
+Received: from eikonwww.eikon.e-technik.tu-muenchen.de (root@eikonwww.eikon.e-technik.tu-muenchen.de [129.187.240.7])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id MAA28855
+	for <handyboard@media.mit.edu>; Mon, 13 Apr 1998 12:35:01 -0400 (EDT)
+Received: from mchr-41005361 (dial0068.lrz-muenchen.de [129.187.25.68])
+	by eikonwww.eikon.e-technik.tu-muenchen.de (8.8.5/8.8.5) with SMTP id SAA26643;
+	Mon, 13 Apr 1998 18:34:55 +0200 (METDST)
+Message-Id: <35323F80.361D@eikon.e-technik.tu-muenchen.de>
+Date: Mon, 13 Apr 1998 18:38:25 +0200
+From: Alf Kuchenbuch <alfk@eikon.e-technik.tu-muenchen.de>
+Reply-To: alfk@eikon.e-technik.tu-muenchen.de
+Organization: TU M|nchen
+X-Mailer: Mozilla 3.02Gold (Win95; I)
+Mime-Version: 1.0
+To: Ameen Suleman <suleman@mhv.net>
+Cc: handyboard@media.mit.edu
+Subject: Re: Vector V2x Compass
+References: <01bd6688$f381d700$3f29e5ce@guy>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi Armeen,
+I have the same problem as you. I thought my HB was faulty or it doesn't
+work with the 68hc11E processor I use or something.
+So what I did was: I wrote a very simple IC-Routine. You have to load
+this program with "load v2x.c" and call the routine with "v2x();"
+It is very basic but it has one advantage: it works ;) !!
+
+This is how to connect the V2X to HB (referring to Tom's diagram):
+
+V2X		HB
+
+GND		GND of SPI
++5V		+5V of SPI
+SS		SCK/PD4 of SPI
+P/C		MISO/PD2 of SPI
+SCLK		MOSI/PD3 of SPI
+SDO		Digital input #7
+
+Save this following program under v2x.c:
+/* HB V2X-commands */
+/* Alf Kuchenbuch 1/1998 */
+/* SS=16=yellow; SCLK=8=green; PC=4=orange;;; SDO=blue=dig7 */ 
+int head=0;
+int v2x()
+{
+	int dat[18];
+	int i;
+	poke (0x1009,0x3c);
+	/*request*/
+	poke (0x1008,8+16);
+	sleep(.1);
+	poke (0x1008,4+8+16);
+	sleep(.1);
+	poke (0x1008,4+8);
+	for (i=0; i<16 ;i++)
+	{
+	sleep(.0001);   
+	poke (0x1008,4);
+	poke (0x1008,4+8);
+	dat[i]=1-digital(7);
+	}
+	poke (0x1008,4+8+16);
+head=-1+dat[15]+dat[14]*2+dat[13]*4+dat[12]*8+dat[11]*16+dat[10]*32+dat[9]*64+dat[8]*128+dat[7]*256;
+	printf("Heading: %d\n",head);
+	return head;
+}
+
+
+Hopefully someone has solved the problem so we can use Tom's routines
+soon!
+CU
+Alf
+
+Ameen Suleman wrote:
+> 
+> Hello:
+> I have a V2x compass and I was trying to hook it into my handyboard
+> using Tom Brusehaver's .icb, .c and instructions as described in the
+> contributed section.
+> 
+> I have also grounded the M/S pin on the compass.  The EOC
+> pin is sent to the HB thru the npn transistor.
+> 
+> All this is discussed in the mail archive and in Tom's
+> description.  I still can't get the compass to work.
+> With V2x(), I get a constant heading of 0.
+> I changed the value of the global head_word to 10 and then
+> 10 appears constantly on the LCD.  Does this mean, I am
+> not getting any SPI interrupts?  I don't have a logic probe,
+> but I did reset the Compass by grounding the reset pin for
+> a moment after running comp_disable(1).  There are no
+> improvements.
+> I checked the eoc line - it always reads .76 V, the SS line
+> (through the transistor, at its collector) reads .1 - .2 V.
+> I don't know if the compass is sending out any clock signals.
+> What am I doing wrong?  Do I have a bad compass?
+> Thanks for your help.
+> Regards,
+> ...Ameen Suleman
+
+

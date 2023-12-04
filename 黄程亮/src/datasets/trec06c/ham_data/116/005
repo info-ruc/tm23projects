@@ -1,0 +1,52 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1S5T5t09951
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 00:29:05 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1S5T4XS028371
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 00:29:05 -0500 (EST)
+Message-ID: <635318788.1141104542552.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 28 Feb 2006 00:29:03 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 10
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1S5T5t09951
+
+Recent studies show that participants in peer-to-peer systems behave selfish – they consume more resources than what they contribute. A distributed resource management is thus needed to coordinate shared resources. The four papers present different approaches to solve these problems of resource exchange in distributed manner.
+
+<Samsara: summary>
+* Smasara is an infrastructure for enforcing fairness in peer-to-peer storage systems. It manufactures symmetric storage relationships by constructing 'claims': each contributing node creates a claim that the corresponding consuming node has to store, and they check each other to ensure that data are correctly stored.
+* Nodes unresponsive to messages are punished (replicas being discarded) with a probability in proportion to the number of consecutively failed query. This makes dishonest and chronically unavailable nodes unable to maintain data while nodes suffering a transient failure only have to restore several replicas from surviving copies in the system.
+<Samsara: issues>
+* Samsara nodes may forward claims to reduce storage overhead, but they are responsible for these claims: they will be penalized if the node storing their claims cheats. This is a dilemma more than a tradeoff.
+* Behaviors of malicious nodes, such as promise to store data but immediately drop it, can't be prevented in Samsara. Besides, Samsara can't stop nodes from refusing to store data other than for the claims. Many data may never be stored in that case.
+
+<SHARP: summary>
+* SHARP is an architecture for secure distributed resource management across sites and trusted domains. Its key construct is a resource 'claim' – a promise or right to possess resources for designated time interval. It allows principals to formulate and exchange unforgeable assertions about control over resources.
+* Resources at each site are controlled by a "site authority". They delegate control over their resources to "agents". Programs run within a slice – a partition or share of global resources. The "service managers" contact agents to obtain resources on behalf of the guests, bind the resources to slices, and instantiate the service with the slice.
+* The resources are obtained during a two-phase process. First, the service manager requests a 'ticket', which represents a soft claim, from an agent. Second, the service manager redeems the ticket with the site authority to for a 'lease', which is a hard claim over concrete resources. A ticket only suggests resource ownership whereas a lease guarantees it. The distinction between them allows coordinated resource management while preserving site autonomy and local control over resources.
+* With the self-certifying and self-describing property of tickets and secure mechanisms to subdivide and delegate claims, sites may trade their resources with peering partners according to local policies (resource peering). Moreover, agents may over-subscribe resources to improve resource efficiency and availability when claims are lost or left idle.
+<SHARP: issues>
+* Even if SHARP eliminates a centralized trusted authority in its framework, the principals that exchange resource claims need to authenticate one another off-line to establish faith in one another’s public keys.
+* Freeloader-like behaviors are possible in SHARP, since the resource exchanges between sites can be asymmetric.
+
+<PPay: summary>
+* PPay is a micro-payment system which exploits characteristics in peer-to-peer systems to improve performance while maintaining security properties. The concept of floating, self-managed currency, a transferable 'coin', is proposed in PPay protocol to reduce involvement of the centralized broker. Its security properties are basically ensured by the serial number and public key cryptography among the broker and the users.
+* As claimed in the paper, micro-payments are payments of small amount, so its mechanism should be lightweight, whose costs don't outweigh value of the payment. Therefore only security where fraud is detectable, traceable and unprofitable is guaranteed in this system.
+* Several extensions, along with their security considerations, to the basic protocol that improve system performance are described, such as 'limit certificate' from the broker which specifies the number of coins a user is authorized to print, 'layered coins' that can be reassigned among the users, 'coin renewal' to decrease the state users have to keep, and the use of 'soft credit windows' to make pico-payments faster.
+* The experimental results show that PPay outperforms existing micro-payment schemes in terms of broker load. They also illustrate the settings of parameter values to tune PPay performance.
+<PPay: issues>
+* Even though rarely, the centralized broker is still required in PPay, for users to open and close accounts, for arbitration, and for performing service on behalf of offline peers.
+
+<KARMA: summary>
+* KARMA is a secure economic framework to avoid freeloaders in peer-to-peer systems. Its main component is "karma", a scalar value which captures the amount of resources a peer has contributed and consumed. Each peer has a bank-set that keeps track of its karma balance.
+* The KARMA file exchange works as follows: consumer A sends to provider B a signed message authorizing bank-set-A to transfer a certain amount of karma to B. B forwards it to bank-set-B, in which each node talks to nodes of bank-set-A to check if A has sufficient karma for that transaction. If yes, the amount is deducted from A's account and credited to B's account. B then has to proceed with the file-transfer to A.
+* Security issues are addressed. (1) Replay attacks are ruled out in KARMA by the use of sequence number and signatures. (2) An atomic transaction scheme is deployed: the provider sends the consumer the file encrypted with a secret key; the consumer gets the key to decrypt the file if and only if simultaneously the provider gets a certificate of receipt. Malicious provider (accepts payment but fails to complete the transaction) and malicious consumer (receives a resource but claims they didn't) behaviors thus can't happen.
+* KARMA obviates expensive consensus/agreement protocols in its transfer protocol by (1) secure routing that ensures reliable message delivery and (2) transmission between a k-to-k mapping (majority voting) of the consumer's and provider's bank-set.
+* To offset inflation and deflation, the outstanding karma is periodically re-valued according to the number of nodes in the system and a correction factor. In addition, the probability of bank-set corruption is very low due to the secure entry algorithm.
+<KARMA: issues>
+It would be better if experimental results could be provided in this paper to support the design and development of KARMA.
+

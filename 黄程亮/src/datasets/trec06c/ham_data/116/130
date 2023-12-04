@@ -1,0 +1,67 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k22Gs0t21429
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:54:00 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k22Grxix028319
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:53:59 -0500 (EST)
+Message-ID: <000501c63e19$e736a360$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 11
+Date: Thu, 2 Mar 2006 11:53:59 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+Serving DNS using a Peer-to-Peer lookup system a look at many of the 
+problems the current DNS system has and tries to fix it using a p2p network. 
+The problem with their approach is that they broke a lot of good things 
+current DNS has going for it.  The paper talks extensively about the 
+misconfiguration of current DNS servers and how difficult it is to get them 
+correct.  The claim is that a DHT based p2p system will be able to scale 
+better and provide far more security due to less misconfiguration.  The 
+protocol they use signs messages received from the CHORD implementation 
+(which is log[2](n) unlike pastry and others which are log[16](n)) to verify 
+security.  For the sake of latency, one node sends out multiple RRSets with 
+its response in order to cut down on lookup time.  The system uses passive 
+caching along the path the message traveled (this is where CoDoNS comes in 
+to help) but this does not help latency.  Another problem the paper fixes 
+with current DNS is the slow response time of servers to update their 
+entries: because of the caching scheme they currently use, entries might not 
+be updated for days.
+    In the end, the system is significantly slower than current DNS.  The 
+problem they are trying to solve is security (by not having a single point 
+of failure) and stability but they crippled the system's responsiveness, 
+basically making it unusable (taking the average DNS response time up over 
+7x).  Furthermore, it seems odd that they are writing a paper to say that 
+stability is a problem because of a software issue.  Either new software 
+needs to be written or an easier way to manage it needs to be thought up, 
+switching over to a p2p infrastructure does not make total sense just for 
+stability.
+
+    CoDoNS ([Co]operative[Do]main[N]ame[S]ervice) uses a Pastry network with 
+Beehive active replication in order to speed up delivery of content.  Using 
+beehive makes it possible to have sub-1 hop average lookup times, 
+significantly decreasing the latency of the p2p content delivery.  As a 
+matter of fact, in their tests on PlanetLab, CoDoNS gets better performance 
+than the current DNS system.  The system therefore fixes many things wrong 
+with current DNS: single point of failure is no longer a problem.  Latency 
+is less of an issue with the reduced lookup times and more active caching. 
+Flash crowds and popular nodes are handled (load balanced and locally 
+cached) quickly.  Security is handled by DNSSEC, signing records that are 
+sent out can be verified without even needing to keep public keys online. 
+The only issue I see is the question of motivation at this point.  Would 
+ISPs and others want to switch their current systems over to a CoDoNS 
+system.  Free loaders would be an issue with this system (although 
+solvable). 
+

@@ -1,0 +1,106 @@
+Received: from jcf.u.arizona.edu (jcf.Psych.Arizona.EDU [128.196.98.7])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id LAA17942
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 11 Apr 2000 11:25:02 -0700
+Message-Id: <4.3.1.0.20000411111043.00a78ed0@psy1.psych.arizona.edu>
+Date: Tue, 11 Apr 2000 11:25:02 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Zillion configuration for ratings pre-test
+In-Reply-To: <3.0.5.32.20000411190720.0091fc50@pophost.mrc-cbu.cam.ac.uk
+ >
+References: <4.3.1.0.20000328164629.00a7e790@psy1.psych.arizona.edu>
+ <38E13131.6F7D15AE@indiana.edu>
+ <4.3.1.0.20000328090053.00a7d8f0@psy1.psych.arizona.edu>
+ <3.0.1.32.20000328105613.006879a8@pop.fau.edu>
+ <4.3.0.20000324121637.00a73be0@psy1.psych.arizona.edu>
+ <4.3.1.0.20000328113017.00a79b90@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 07:07 PM 4/11/00 +0100, you wrote:
+>I would like to use DMDX for a ratings pre-test where participants give a
+>numerical response to auditory stimuli.
+>
+>I've managed to set up the screen display and item presentation without any
+>trouble, but am having a problems getting various <zillion> response
+>options to behave as I would like. What I want to achieve is the following:
+>
+>Subject types a number to make a response (between 1 and 7). DMDX then
+>moves on to the next item either:
+>1) immediately after the subject presses a number between 1 and 7 (but not
+>after pressing any other key) or
+>2) after pressing return (but only if the subject has put in a single digit
+>as a response)
+>
+>Both 1 or 2 are acceptable to me. I would rather use 2 (since it allows the
+>subjects to correct their responses) but don't really have a strong
+>preference either way. However, I've failed to get either of these options
+>and could do with some assistance.
+
+   For (1) you want to look at <ZillionOneResponse> and for (2) you want to 
+look at <ZillionEnterKey>.
+
+
+>(1) Accept only first key press:
+>
+><zil 1> to set up zillion mode to accept the first response only.
+><vzk +1> <vzk +2> etc. to set up only number keys 1-7 as being valid
+>responses.
+>
+>However, I am then unable to get DMDX to move on only after the subject
+>responds. DMDX waits for a time out and then moves onto the next item,
+>whereas I would like to give the subject as much time as they want to
+>respond - and for DMDX to move on as soon as they have responded (to
+>encourage them to keep moving through the items). I have tried using <mpr>
+>to treat the number keys as positive responses, but that still doesn't move
+>on to the next item after a response (even though I'm using <cr> and <clfb>
+>which I *think* would operate in this fashion if I were using <azk>
+>output). How do I get DMDX to accept a single key press as a cue to move
+>onto the next item in zillion mode?
+
+   See <zor>.
+
+
+>(2) Type number and press enter:
+>
+>I've tried using <zil> to set up zillion mode and <zek> to use typed
+>responses followed by enter (with <notimelimit> and <FBOnlyClearBehind> to
+>retain typed responses on the screen). However, I then don't seem able to
+>use <vzk +1> etc. to allow subjects to only type digits - I get an error
+>about not recognising button names 1,2,3, etc. I also couldn't figure out
+>how to get DMDX to reject responses outside of the 1 to 7 range (i.e.
+>rejecting responses like 11, 12, etc.). Could this be done? Is there a
+>straightforward way of doing this with branching?
+>
+>I would be grateful for any help you could give me in getting either of
+>these alternatives working.
+
+   You might have to unmap all the zillion buttons with <izk> first, 
+there's code that allows multiple attempts to map the same button but it's 
+possible that something's broke.  You'll also have to map the enter key as 
+a valid zillion key.  If it actually doesn't recognize them then my guess 
+is you somehow forgot to specify the keyboard as an input device as <zek> 
+has code that maps +1 etc. as valid zillion keys.  That or, as I say, 
+something has broken, not sure anyone has rigorously tested <zek> since I 
+gave it feedback.  There is no way to reject 11 or 12 with <zek>, you'd 
+have to use <zor> and forget about the enter key (which is the way ratings 
+are gathered here so I know it works).
+
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Nothing recedes like success.
+
+                                               -  Walter Winchell
+
+
+

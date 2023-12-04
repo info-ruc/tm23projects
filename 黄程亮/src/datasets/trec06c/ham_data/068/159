@@ -1,0 +1,93 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id QAA02355
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 30 May 2000 16:17:27 -0700
+Received: from kif.u.arizona.edu (cg6.psych.arizona.edu [128.196.98.27])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with ESMTP id QAA26946
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 30 May 2000 16:17:27 -0700
+Message-Id: <4.3.1.1.20000530155527.00ca1b20@pop.u.arizona.edu>
+Date: Tue, 30 May 2000 16:07:21 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: Kenneth Forster <kforster@u.arizona.edu>
+Subject: [DMDX] Re: Moving window display
+In-Reply-To: <39342080.F47C366C@ruccs.rutgers.edu>
+References: <4.3.2.7.0.20000529092253.00aa4410@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Irina,
+
+At 04:11 PM 5/30/00 -0400, you wrote:
+>Dear List Members,
+>
+>I am trying to figure out how to set up an .rtf file for a word-by-word 
+>self-paced
+>moving window experiment. Here is a fragment of the file:
+>
+>N830 <azk> f30 <cr><wfbo><t 9000> <id "propad 6"> <mr +button 3> <mpr 
+>+button 5>
+><mnr +button 4><vm 800 600 600 8 0>
+>...
+>53 "=== === === ======== == === ======."<ms% 1000>;
+>+54 "The === === ======== == === ====== ."*;
+>+55 "=== car === ======== == === ======."*;
+>+56 "=== === was ========  == === ======."*;
+>+56 "=== === === returned == === ======."*;
+>+57 "=== === === ======== by === ======."*;
+>+58 "=== === === ======== == the ====== ."*;
+>+59 "=== === === ======== == === driver."*;
+>+60 "Was the car back in its place?"*;
+>800 <ms% 1000>/;
+
+
+Here is a version that seemed to work OK for me.  Note that I have taken 
+<cr> out of the parameter line, and I include it in the item only when I 
+want it to go onto the next item without waiting for a request.
+
+N830 f30 <wfbo><t 9000> d0
+0 "=== === === ======== == === ======.";
++54 "The === === ======== == === ====== ."* <cr>;
++55 "=== car === ======== == === ======."* <cr>;
++56 "=== === was ======== == === ======."* <cr>;
++56 "=== === === returned == === ======."* <cr>;
++57 "=== === === ======== by === ======."* <cr>;
++58 "=== === === ======== == the ====== ."* <cr>;
++59 "=== === === ======== == === driver."* <cr>;
++60 %10/"Was the car back in its place?"* ;
+
+0 "=== === === ======== == === ======.";
++54 "The === === ======== == === ====== ."* <cr>;
++55 "=== car === ======== == === ======."* <cr>;
++56 "=== === was ======== == === ======."* <cr>;
++56 "=== === === returned == === ======."* <cr>;
++57 "=== === === ======== by === ======."* <cr>;
++58 "=== === === ======== == the ====== ."* <cr>;
++59 "=== === === ======== == === driver."* <cr>;
++60 %10/"Was the car back in its place?"* ;
+
+         The first display is an instruction only (itemno zero), and the 
+subject presses the request key to get the first word.  The "d0" on the 
+parameter line means that the next item is displayed as quickly as possible 
+after the response.  The %10 at the beginning of the question introduces a 
+variable delay between the response to "driver" and the display of the 
+question.  You can make that delay whatever you want by changing the 
+value.   After this response, the instruction is displayed, and a request 
+is required before the first word is presented.  I have removed details of 
+your input device, which of course, you should put back in.   Thus your 
+parameter line should read:
+
+>N830 <azk> f30 d0 <wfbo><t 9000> <id "propad 6"> <mr +button 3> <mpr 
+>+button 5>
+><mnr +button 4><vm 800 600 600 8 0>
+
+
+         I hope this helps.
+
+         --Ken Forster
+
+
+
+
+

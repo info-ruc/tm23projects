@@ -1,0 +1,49 @@
+Received: from Altitude.CAM.ORG (Altitude.CAM.ORG [198.168.100.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id TAA14599
+	for <handyboard@media.mit.edu>; Tue, 5 May 1998 19:40:21 -0400 (EDT)
+Received: from Daddy.4Mercier (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Altitude.CAM.ORG (8.8.4/8.8.4) with ESMTP
+	  id TAA09365 for <handyboard@media.mit.edu>; Tue, 5 May 1998 19:40:20 -0400 (EDT)
+Message-Id: <354FA313.46906F99@cam.org>
+Date: Tue, 05 May 1998 19:38:59 -0400
+From: Max Davies <mdavies@cam.org>
+X-Mailer: Mozilla 4.0 [en] (Win95; I)
+Mime-Version: 1.0
+To: Virtual Friends <handyboard@media.mit.edu>
+Subject: HandyBoard 10-16 Servo support
+X-Priority: 3 (Normal)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I am trying to develop simple Hardware/Software to support up to 16 servos from
+the HandyBoard.
+A theoretical constraint of my plans is that only about 10 of the 16 connected
+servos will be able to actively hold position at one time.
+
+I plan to do this by multiplexing control signals for all of the servos onto one
+timer output line such as TOC3 or TOC4 which are available on the expansion
+port.
+
+This requires some demultiplexing hardware, and I have a tentative schematic to
+do this which uses a 73HC374 (for additional digital outs) and a 73HC154 (for
+the de-multiplexing).
+
+Being a hardware novice, my question/problem is this:  the 73HC154 demultiplexor
+provides "active-low" outputs in that all non-selected output lines are high
+rather than low as the servo's require.  To use this chip then I will have to
+add 16 inverters which seems a waste.
+
+Is there a different demultiplexor that I can use to get "active-high" outputs
+to avoid the requirement of all the inverters?
+
+Thanks,
+/Max
+
+
+PS:  what does the HC in the middle of things like 73HC374 mean?  How does it
+compare to things like 73LS374?  Should all components on an HB expansion board
+be of the HC type?
+
+
+
+

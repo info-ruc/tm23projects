@@ -1,0 +1,62 @@
+Received: from bach.graphics.cornell.edu (bach.graphics.cornell.edu [128.84.247.50])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OFBJh23345
+	for <egs@cs.cornell.edu>; Tue, 24 Sep 2002 11:11:19 -0400 (EDT)
+Received: from envy.graphics.cornell.edu (envy.graphics.cornell.edu [128.84.247.206])
+	by bach.graphics.cornell.edu (8.12.1/8.12.1) with ESMTP id g8OFBA0k082645
+	for <egs@cs.cornell.edu>; Tue, 24 Sep 2002 11:11:14 -0400 (EDT)
+Date: Tue, 24 Sep 2002 11:03:15 -0400 (EDT)
+From: Adam Kravetz <adam@graphics.cornell.edu>
+To: egs@CS.Cornell.EDU
+Subject: 615 paper 19
+Message-ID: <Pine.BSF.4.44.0209241011220.91860-100000@envy.graphics.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+CEDAR is a an algorithm that tries to provide QoS routing in ad hoc
+networks.  The three key components of it are the core, increase/decrease
+waves, and QoS route computation.  The goals of the alg is to have
+distributed route computation, local state route computation (not global),
+few nodes in state propogation, nodes only care about routes w/
+destinations, stale routes need detection, avoidance, elimination,
+broadcasts must be avoided, stable routes should converge to optimal
+routes, backup routes when possible.  These lofty goals are somewhat
+accomplished in CEDAR.
+
+The idea behind CEDAR is to build this 'core' which is a dominant set S of
+the connected graph G.  These special nodes that makeup the set S carry
+the burden of establishing, routing, and managing traffic over the air
+waves.  They are put in place by a self election system, implemented in a
+slightly clever way.  Once the core is established then messages are sent
+to each nodes dominator in order to be passed across the network.  The
+RTS/CTS system allows the dominant (core) nodes to manage the traffic
+across the network.  Further as more or less bandwidth is available
+for a node, a message is propogated (as a wave, that dies w/ a TTL bit)
+through the network by the dominated nodes.  Finally the QoS of the system
+is enforced by the dominants noticing the links go down, and finding a way
+to reroute (dynamically) to the nodes new location.
+
+I think this paper has a bunch of very good ideas.  The broadcast storm
+problem has been adressed, by limiting the alg to have only local
+broadcasts, there are very few (if any) floods of the entire network
+(unless the entire network is just one dominant node, in which the network
+is simply peer-to-peer anyways).  The performance evaluation is nice and
+shows that under at least some conditions CEDAR can perform well.
+
+Despite the many good contributions to this paper, I think there are some
+major problems.  It addresses the flooding problem, but it doesn't address
+the bit about reliability of networks.  Ad-hoc needs a fall back system...
+if one RTS/CTS sequence gets missed, that's a problem.  Second I what
+happens if a dominant node moves?  Won't whole chunks of the network get
+potentially cut off from each other?  What about power efficiency?  If the
+dominant node is getting hammered w/ transmissions and work is that
+"fair"?  How long does it take to establish a dominant system?  What
+happens w/ contention and rapid network movement?  This alg seems to work
+for mostly stagnant ad-hoc networks, but not something where people would
+be moving fast (like on a conference floor).
+
+I think that a good next step would be to add some sort of robustness, and
+allowance for dropped packets in this system.  I don't think any ad-hoc
+network will be able to truly successful w/ out the admittance that there
+will be loss, potentially lots of it.
+
+

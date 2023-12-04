@@ -1,0 +1,53 @@
+Received: from anchor-post-34.mail.demon.net (anchor-post-34.mail.demon.net [194.217.242.92])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id DAA08750
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 03:50:16 -0400 (EDT)
+From: nigel@9fs.org
+Received: from cotswold.demon.co.uk ([194.222.75.186] helo=cpu.9fs.org)
+	by anchor-post-34.mail.demon.net with smtp (Exim 2.12 #1)
+	id 13V846-000Pba-0Y
+	for 9fans@cse.psu.edu; Sat, 2 Sep 2000 08:50:15 +0100
+To: 9fans@cse.psu.edu
+Subject: [9fans] rfork(), getss() etc etc
+Date: Sat, 2 Sep 2000 08:50:00 0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Message-Id: <E13V846-000Pba-0Y@anchor-post-34.mail.demon.net>
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+Hmm.
+
+clone() not splitting the stack is a feature of Linux, and probably not
+worth wasting brain power over. The fact that rfork() in FreeBSD copied
+clone() semantics, but the Plan 9 manual page is hard to
+believe. I did get some indication recently that the FreeBSD manual page
+would be changed to own up to the fact that it was rfork() by name
+but clone() by nature! FreeBSD does not split either because of the way
+the VM works (reading between the lines, allegedly).
+
+Now, what is the problem with this? Firslty, the only way to tell whether
+you are parent or child after the split is to check the return result from
+the system call. The inevitable conclusion is that assembly code is
+required to establish a new stack. This is a retrograde step, and I am
+staggered to find open source systems promoting the use of assembly
+code by including system call variants which cannot be sensibly used
+without.
+
+Secondly, the stack now established is not managed or protected by
+the kernel. Good grief, this is what we all criticise Win9x and MacOS
+for.
+
+Thirdly, you can only identify which process you are by calling getpid(),
+rather than referencing a data structure in your own stack. This is
+expensive, as it involves a system call, plus some form of mapping
+(?hash table?) from pid to per process data structure.
+
+This is might be why gettss() was used. It produces a number with
+a smaller range that getpid(), allowing a simple index to per process
+data.
+
+The Vita Nuova FreeBSD port of the Inferno emu uses rfork() and getpid().
+
+

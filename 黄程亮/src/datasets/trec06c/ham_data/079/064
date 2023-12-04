@@ -1,0 +1,41 @@
+Received: from zinger.cs.cornell.edu (zinger.cs.cornell.edu [128.84.96.55])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4JfA603810
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 14:41:10 -0500 (EST)
+From: Indranil Gupta <gupta@CS.Cornell.EDU>
+Received: (from gupta@localhost)
+	by zinger.cs.cornell.edu (8.11.3/8.11.3/C-3.2) id fB4JfAv19107
+	for egs@cs.cornell.edu; Tue, 4 Dec 2001 14:41:10 -0500 (EST)
+Message-Id: <200112041941.fB4JfAv19107@zinger.cs.cornell.edu>
+Subject: 615 PAPER 69
+To: egs@CS.Cornell.EDU
+Date: Tue, 4 Dec 2001 14:41:10 -0500 (EST)
+X-Mailer: ELM [version 2.5 PL3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Bayeux: an architecture for scalable and fault-tolerant wide-area data
+dissemination, Zhuang, Zhao, Joseph, Katz, and Kubiaowitz.
+
+Reviewer: Indranil Gupta
+
+This paper discusses multicast overlay schemes on top of the Tapestry
+routing framework. The algorithm is very similar to multicast routing
+in Pastry, where objects are associated with an id in the name space,
+and trees are constructed from receivers by including all nodes on the
+path to the root. The major deviation from Pastry's algorithms are
+that multiple roots are used in Bayeux, and that Bayeux talks about
+fault-tolerant packet delivery.
+
+Comments:
+
+- The Bayeux schemes for 'fault-resilient' routing (by using backup
+  paths) tolerate only a certain number of failures (message losses,
+  node crashes) in the network. In that sense, it only seems to be
+  'best-effort' fault-tolerance. There is no analysis of the behavior
+  of Bayeux for applications that require *reliable* delivery of
+  packets. Ack-based or nak-based protocols, such as SRM and RMTP,
+  that are typically used for Internet multicast groups, are known to
+  have scalability problems, in terms of message implosion with rising
+  multicast group size.
+

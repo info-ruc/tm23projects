@@ -1,0 +1,57 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i9FNYfFJ004413
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 15 Oct 2004 16:34:41 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id AC0819B1609
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 15 Oct 2004 16:34:41 -0700 (MST)
+Received: from 666-devel.u.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 680FC9B14F4
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 15 Oct 2004 16:34:41 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041015160844.00ba52f8@psy1.psych.arizona.edu>
+Date: Fri, 15 Oct 2004 16:31:40 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] DMDX 3.1.1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   To facilitate fixed time experiments the timeout value can now bet set 
+with a counter.
+
+Timeout Keyword
+
+<Timeout N1>
+<t N1>
+<Timeout counterN2>
+<t counterN2>
+<Timeout cN2>
+<t cN2>
+
+     T parameter and switch alternative.  Sets the subject response timeout 
+in milliseconds to N1 or the switch version can take the value of counter 
+N2 (at item parsing time), default value is 4000ms.
+
+    The ability to use a counter exists primarily to facilitate fixed time 
+experiments where the subject only gets a certain time to respond to as 
+many items as they can:
+
++250 <set c1=50000> <t c1> "#########"/*"RELUCTANT"/;
++250 <set c1=c1-lastrt> <t c1> "#########"/*"LANDSCAPE"/ <bi 999,c1 .le. 0>;
+-250 <set c1=c1-lastrt> <t c1> "#########"/*"CORTINDON"/ <bi 999,c1 .le. 0>;
+-250 <set c1=c1-lastrt> <t c1> "#########"/*"SPORINTIC"/ <bi 999,c1 .le. 0>;
+...
+999 L "End of Experiment";
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   All things are possible except skiing thru a revolving door.
+
+
+

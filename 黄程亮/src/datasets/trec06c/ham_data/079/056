@@ -1,0 +1,51 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4HCL608110
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 12:12:21 -0500 (EST)
+Received: from aquinas.ee.cornell.edu (aquinas.ee.cornell.edu [128.84.236.57])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fB4H8xM16447
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 12:08:59 -0500
+Date: Tue, 4 Dec 2001 12:10:43 -0500 (EST)
+From: Prince Samar <samar@ece.cornell.edu>
+X-Sender: samar@aquinas.ee.cornell.edu
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 68
+Message-ID: <Pine.GSO.4.21.0112041210130.14862-100000@aquinas.ee.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Tapestry: An Infrastructure for Fault-tolerant Wide-area Location and
+Routing
+
+Tapestry is an object location and routing scheme for large,
+fault-tolerant peer-to-peer networks. It is quite similar to Pastry and
+the scheme proposed by Plaxton et al. Messages locate objects and are
+routed across the network, while using a routing map with size logarithmic
+to the network namespace at each hop. The main goals of Tapestry are
+adaptivity, self-management and fault-resilience in the presence of
+failures.
+
+Neighbor maps are used at each node to incrementally route overlay
+messages to the destination ID digit by digit. Neighbor maps are organized
+into routing levels and each level contains entries that point to a set of
+nodes closest in network distance that matches the suffix for that level.
+Tapestry does not replicate and cache the objects at numerous locations in
+the network. Instead, pointers to the location of the object are
+distributed in the network. This reduces the need for external load
+balancing techniques, though it also reduces the redundancy and thus
+fault-tolerance in the network.
+
+Tapestry addresses fault-tolerance by using soft-state to maintain cached
+content, rather than provide reliable guarantees for hard state. Caches
+are updated by periodic update messages or are expired if none is
+received. These periodic messages have the potential of consuming a
+considerable fraction of the bandwidth, affecting the scalability of the
+scheme. To circumvent the presence of faults in the network, TCP timeouts
+are used and two backup neighbors in addition to the primary neighbor in
+the neighbor map are maintained. Tapestry adds "salt" values to maintain
+multiple roots to each object. Surrogate routing is used to incrementally
+and deterministically compute a unique root node. tapestry uses some
+algorithms to support dynamic operations in the network in a distributed
+way.
+
+

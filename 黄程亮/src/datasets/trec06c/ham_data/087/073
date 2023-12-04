@@ -1,0 +1,45 @@
+Received: from sirius.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [193.63.252.1])
+	by psy1.psych.arizona.edu (8.12.8/8.12.4) with ESMTP id h2CKfkIA008263
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 12 Mar 2003 13:41:46 -0700
+Received: from [193.63.253.89] (helo=pc057.mrc-cbu.cam.ac.uk)
+	by sirius.mrc-cbu.cam.ac.uk with esmtp (Exim 4.12)
+	id 18tDBS-0001b9-00
+	for DMDX@psy1.psych.arizona.edu; Wed, 12 Mar 2003 20:50:42 +0000
+Message-Id: <5.1.0.14.2.20030312203910.01c31bd8@pophost.mrc-cbu.cam.ac.uk>
+Date: Wed, 12 Mar 2003 20:50:32 +0000
+To: DMDX@psy1.psych.arizona.edu
+From: Mike Ford <mike.ford@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Re: Progressive demasking problem...
+In-Reply-To: <5.1.0.14.2.20030309213843.00b128e8@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20030309222647.01c04838@pophost.mrc-cbu.cam.ac. uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi.  Thanks for the help with the script.  It works great.  I am going to 
+stick an annotated version of this on my web pages.  However, I am not 
+wholly certain of what item 1003 is doing and I don't want to end up 
+writing gibberish about it.  When there is a response is made before the 
+loop over 1002 has run its' course, then DMDX moves onto the next 
+item....and this is where I get stuck.  Why can't I just have item 1004 
+alone?  Why do I need 1003 as well?  Sorry to be thick about this.
+
+Thanks - Mike
+
+>  To handle the looping you could use <BranchIfNoResponse> to continue the 
+> loop and a <bicGT> to break out but of course you can't have two branches 
+> in the same item and you can't have counter branches in a <mwb> so you'll 
+> have to have something like this (assuming <delay 2>):
+>
+>~1000 <set 1,29> <set 2, 26> <set 3,1>;
+>~1001 <bicLT 1,4,1005>;
+>+1002 <%ctr 2> * "########" / <%ctr 3>  * " house " <dec 1> <inc 2> <dec 
+>3> <binr -1001> / "########";
+>~1003 <binr 1005> <! can't have BranchIfNotNoResponse...>;
+>~1004 <bu 2000>;
+>+1005 %3  "########" / * %27 " house " / %2  "########" /  %28 " house " / 
+>%1  "########" /  %29 " house " / ;
+
+

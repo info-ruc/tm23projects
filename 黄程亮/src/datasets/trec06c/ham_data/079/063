@@ -1,0 +1,45 @@
+Received: from zinger.cs.cornell.edu (zinger.cs.cornell.edu [128.84.96.55])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4Jeg603780
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 14:40:42 -0500 (EST)
+From: Indranil Gupta <gupta@CS.Cornell.EDU>
+Received: (from gupta@localhost)
+	by zinger.cs.cornell.edu (8.11.3/8.11.3/C-3.2) id fB4JegO17932
+	for egs@cs.cornell.edu; Tue, 4 Dec 2001 14:40:42 -0500 (EST)
+Message-Id: <200112041940.fB4JegO17932@zinger.cs.cornell.edu>
+Subject: 615 PAPER 68
+To: egs@CS.Cornell.EDU
+Date: Tue, 4 Dec 2001 14:40:42 -0500 (EST)
+X-Mailer: ELM [version 2.5 PL3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Tapestry: an infrastructure for fault-tolerant wide-area location and
+routing, Zhao, Kubiaowitz, Joseph.
+
+Reviewer: Indranil Gupta
+
+This paper describes Tapestry, a large-scale routing
+infrastructure. Tapestry's underlying infrastructure is very similar
+to Pastry, with nodes choosing random id's based on a hash with
+SHA-1. The routing infrastructure relies on the neighbor table, which
+is the same as in Pastry. The only major differences with Pastry are
+1) object replication is not done across neighbors in the namespace,
+but by using salts to hash the object id, and 2) that objects are not
+cached at intermediate nodes (between requesting node and root) in
+Tapestry - only pointers to the root are.
+
+Comments:
+
+- Tapestry is subject to a lot of the same criticisms as Pastry and
+  Chord. Several researchers have raised the issue of whether such
+  systems might actually be inherently unscalable due to several
+  reasons, such as excessive copying due to pathological node
+  failures. 
+
+- Heartbeating across sets of nodes holding the same replicated object
+  can impose a large load on the network (each node has to heartbeat
+  to a subgroup of nodes for each object replica it holds), leading to
+  either a compromise of the object availability properties, or a high
+  load on core routers.
+

@@ -1,0 +1,173 @@
+Received: from avalon.imagixx.net (IDENT:root@avalon.imagixx.net [208.246.18.17])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id AAA12582
+	for <handyboard@media.mit.edu>; Tue, 9 Mar 1999 00:36:02 -0500 (EST)
+Received: from eleather (1Cust2.tnt1.morgantown.wv.da.uu.net [63.10.89.2]) by avalon.imagixx.net (8.8.7/8.7.3) with SMTP id AAA00775; Tue, 9 Mar 1999 00:35:58 -0500
+From: "Edgar Leatherman" <eleather@imagixx.net>
+To: "rmtmd" <rmt@lvcm.com>, <handyboard@media.mit.edu>
+Subject: RE: Polaroid 6500 Sonar Problem
+Date: Tue, 9 Mar 1999 00:40:34 -0500
+Message-Id: <000001be69ef$5a9b9b00$4d01a8c0@eleather.xyz.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+Importance: Normal
+In-Reply-To: <09fce5644030939PRIME-FE2@lvcablemodem.com>
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+
+Hi,
+
+	On this page
+(http://lcs.www.media.mit.edu/groups/el/projects/handy-board/software/sonar.
+html)
+it says to install a .1uF capacitor at C7 on the sonar board. My team
+basically did everything you are talking about, plus install the cap, and
+everything seems to work fine for us... hope this helps, I'm not sure what
+the capacitor does though.
+
+E Leatherman
+
+> -----Original Message-----
+> From: rmtmd [mailto:rmt@lvcm.com]
+> Sent: Monday, March 08, 1999 10:40 PM
+> To: handyboard@media.mit.edu
+> Subject: Polaroid 6500 Sonar Problem
+>
+>
+> I'm having difficulty getting my sonar rangefinder to work properly.
+>
+> I've got a fully operational Handy Board with a fully operational
+> Expansion Board plugged into it (both purchased assembled from Gleason
+> and used extensively already without difficulty).  I've soldered the nine
+> pin flex cable adapter into the appropriate place on the top of the
+> expansion board, and I've got the flex cable plugged into it and into the
+> adapter on the sonar driver board I purchased assembled from Wirz.  I've
+> soldered a solid core wire to pad J12 on the expansion board and plugged
+> the other end into the digital input numbered "7" on the Handy Board
+> itself (first hole on right in the single row header next to the power
+> expansion header).
+>
+> Running Interactive C 3.1 (commercial version from Newton Labs), I loaded
+> "sonar.c" (Fred Martins' driver code) to test everything.  When I invoked
+> the "sonar_display();" function, I heard the transducer clicking rapidly.
+>  The LCD display updated in sync with the clicks.  So far so good.
+>
+> The display, however, did not change significantly, when, holding the
+> transducer by it's wires, not by its body, I pointed it at flat surfaces
+> at varying distances from it ranging from a few feet to five or ten feet
+> away.  I kept getting a number around 1450 to 1460 on the LCD as the
+> value of "result," which holds the result of the call to the ranging
+> function, "sonar_closeup();".  Occasionally numbers up to 1800 or so
+> flash on momentarily, but for the most part the numbers being
+> continuously updated run in the 1450s to 1460s.
+>
+> I've tried substituting "sonar_sample();" for the call to
+> "sonar_closeup();" in the "sonar_display();" function's body, to no
+> avail.  If the returned value on the LCD represents the number of half
+> milliseconds elapsed, then, I seem to be reading a constant distance of
+> about .3 feet (1450 ticks / 2000 ticks/ms = 0.725 ms; 0.725 ms / 2 = .362
+> ms, or the time for sound to travel ONE way to target; .362 ms / 1.1
+> ft/ms {speed of sound} = .33 ft).
+>
+> HELP!
+>
+> Ross M. Tonkens, M.D.
+> Medical Director
+> Primary Care of Nevada
+> 100 North Green Valley Parkway
+> Suite 240
+> Henderson, NV 89014
+>
+> 702 914-7120  VOICE
+> 702 914-7129  FAX
+>
+> I've reproduced Fred Martin's driver code below rather than referring
+> everyone to the URL where I downloaded it.
+>
+> /*
+> 	sonar.c
+> 	Polaroid 6500 routines for Handy Board / Interactive C
+> 	by Fred Martin, fredm@media.mit.edu
+> 	Sat Nov 22 13:57:35 1997
+>
+>  	echo signal is connected to tic3/pa0;
+>  	init signal is pd5 (SS);
+>  	binh signal is pd4 (SCK)
+> */
+>
+> void sonar_init() {
+> 	bit_set(0x1009, 0x30);		/* ddrd */
+> 	bit_set(0x1021, 1);			/* at tctl2, */
+> 	bit_clear(0x1021, 2);		/* set tic3 for rising edge */
+> }
+>
+>
+> int sonar_sample() {
+> 	int start_time;
+>
+> 	poke(0x1023, 1);				/* clear
+> tic3 flag */
+>
+> 	start_time= peekword(0x100e);	/* capture start time */
+> 	bit_set(0x1008, 0x20);			/* trigger pulse */
+>
+> 	while (!(peek(0x1000) & 0x1)) {	/* wait until receive echo */
+> 		if ((peekword(0x100e) - start_time) < 0) {
+> 			/* if too much time has elapsed, abort */
+> 			bit_clear(0x1008, 0x20);
+> 			return -1;
+> 		}
+> 		defer();					/*
+> let others run while waiting */
+> 	}
+>
+> 	bit_clear(0x1008, 0x20);		/* clear pulse trigger */
+>
+> 	return peekword(0x1014) - start_time;	/* tic3 has time of echo */
+> }
+>
+> int sonar_closeup() {
+> 	int start_time;
+>
+> 	poke(0x1023, 1);				/* clear
+> tic3 flag */
+> 	start_time= peekword(0x100e);
+> 	poke(0x1008, 0x20);
+>
+> 	while ((peekword(0x100e) - start_time) < 1000);
+>
+> 	bit_set(0x1008, 0x30);			/* turn on BINH */
+>
+> 	while (!(peek(0x1000) & 0x01)) {
+> 		if ((peekword(0x100e) - start_time) < 0) {
+> 			/* if too much time has elapsed, abort */
+> 			bit_clear(0x1008, 0x30);
+> 			return -1;
+> 		}
+> 		defer();
+> 	}
+>
+> 	bit_clear(0x1008, 0x30);
+>
+> 	return peekword(0x1014) - start_time;	/* 0x1014 is tic3 */
+> }
+>
+> void sonar_display() {
+>
+>     int result;
+>
+>     sonar_init();
+>
+> 	while (1) {
+> 		result= sonar_closeup();
+> 		if (result != -1) printf("%d\n", result);
+> 		else printf("*******\n");
+> 		msleep(50L);
+> 	}
+> }
+>
+
+

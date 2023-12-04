@@ -1,0 +1,107 @@
+Received: from urban.iinet.net.au (urban.iinet.net.au [203.59.24.231])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id MAA05982
+	for <handyboard@media.mit.edu>; Sat, 8 Apr 2000 12:11:41 -0400 (EDT)
+Received: from mule.wantree.com.au (mule.wantree.com.au [203.27.235.6])
+	by urban.iinet.net.au (8.8.7/8.8.7) with ESMTP id AAA01694
+	for <handyboard@media.mit.edu>; Sun, 9 Apr 2000 00:11:31 +0800
+Received: from adam (p56H-37.wantree.com.au [203.17.62.37]) by mule.wantree.com.au (8.8.7/8.6.9) with SMTP id AAA12553 for <handyboard@media.mit.edu>; Sun, 9 Apr 2000 00:11:17 +0800
+Message-Id: <00cb01bfa175$43467600$0500a8c0@wantree.com.au>
+From: "Adam Oliver" <oli@wantree.com.au>
+To: "'Handyboard Mailing List'" <handyboard@media.mit.edu>
+Subject: Time measuring problems
+Date: Sun, 9 Apr 2000 00:12:21 +0800
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+X-Mimeole: Produced By Microsoft MimeOLE V5.00.2615.200
+
+Hi all,
+
+I hope someone out there can help me with this, I'm going nutz (actually i
+think i'm already there).
+
+I am trying to measure a short period of time. Ultimately this will measure
+ultrasonic ping/echo using Kam Leang's ultrasonic circuit. Right now I just
+have a 555 timer in monostable mode trying to get it working. I have the 555
+working fine using various RC values, and I trigger it using the SPI port
+(SS pin I believe). The "echo" is fed into digital input 7 (i believe that
+is TIC3?)
+
+I have used the sonar code on the handyboard web site and changed it to do
+the job. I am getting no consistent readings.
+
+With no output from the 555 (ie LOW, checked with multimeter), the reading I
+get from typing digital(7) is 1. Am I missing something? I would have
+thought this should be 0. If I put a wire between the input and +5V, the
+value read from digital(7) is 0. It seems to me that these results are
+inverted. Could I have done somethign to the board?
+
+Assuming these values are correct, I use
+bit_set( 0x1021, 2 ); bit_clear( 0x1021, 1 );
+and
+bit_set( 0x1021, 1 ); bit_clear( 0x1021, 2 );
+to set for rising or falling edges. I only use one at a time, but I tried
+both just in case.
+
+Regardless, the values I get are completely random. Here is the rest of the
+code I am using. (Sorry, I hate pasting so much)
+
+**********************
+void ping()
+{
+poke( 0x1008, 0x00 );
+msleep(5L);                            /* this generates the pulse to
+trigger the 555 */
+poke( 0x1008, 0x20 );
+}
+
+void init()
+{
+ bit_set( 0x1009, 0x30 );                                   /* Set pins SS &
+SCK for output */
+
+ bit_set( 0x1021, 2 ); bit_clear( 0x1021, 1 );
+
+}
+
+int son() {
+ int start_time;
+
+ poke(0x1023, 1);    /* clear tic3 flag */
+
+ start_time= peekword(0x100e); /* capture start time */
+
+ ping();   /* trigger pulse */
+
+ while (!(peek(0x1000) & 0x1)) { /* wait until receive echo */
+  if ((peekword(0x100e) - start_time) < 0) {
+   /* if too much time has elapsed, abort */
+   bit_clear(0x1008, 0x00);
+   return -1;
+  }
+  defer();     /* let others run while waiting */
+ }
+
+ poke(0x1023, 1);    /* clear tic3 flag */
+
+ return peekword(0x1014) - start_time; /* tic3 has time of echo */
+}
+
+***************
+
+Can someone tell me what the line "while (!(peek(0x1000) & 0x1)) " does? I
+know it waits for the echo, but what are those bits doing?
+
+Any suggestions on what I could be doing wrong would be GREATLY appreciated.
+Unfortuanly my understanding of the bit-level processes are fairly limited,
+so I'm having a bit of a hard time with this.
+
+Thanks in advance
+
+Adam
+
+

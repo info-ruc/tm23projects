@@ -1,0 +1,235 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id h0O0YZX3251549;
+	Thu, 23 Jan 2003 16:34:35 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id h0NLM8806004;
+	Thu, 23 Jan 2003 16:22:08 -0500
+Date: Thu, 23 Jan 2003 16:22:08 -0500
+Message-Id: <CA-2003-03.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2003-03 Buffer Overflow in Windows Locator Service
+Precedence: bulk
+Status: RO
+X-Status: $$$$
+X-UID: 0000000074
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-03 Buffer Overflow in Windows Locator Service
+
+   Original issue date: January 23, 2003
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Systems Affected
+
+     * Microsoft Windows NT 4.0
+     * Microsoft Windows NT 4.0, Terminal Server Edition
+     * Microsoft Windows 2000
+     * Microsoft Windows XP
+
+Overview
+
+   A  buffer  overflow  vulnerability  in  the  Microsoft Windows Locator
+   service  could  allow  a  remote attacker to execute arbitrary code or
+   cause the Windows Locator service to fail. This service is enabled and
+   running  by  default on Windows 2000 domain controllers and Windows NT
+   4.0 domain controllers.
+
+I. Description
+
+   A  buffer overflow in the Windows Locator service may make it possible
+   for a remote attacker to execute arbitrary code on a vulnerable system
+   by  sending  an  overly  large request to the Windows Locator service.
+   Microsoft  describes  the  Windows  Locator service as "a name service
+   that maps logical names to network-specific names." From MS03-001: 
+   
+     A  client  that  is going to make a Remote Procedure Call (RPC) can
+     call  the  Locator  service to resolve a logical name for a network
+     object  to a network-specific name for use in the RPC. For example,
+     if  a  print  server  has  the  logical name "laserprinter", an RPC
+     client   could   call   the   Locator   service  to  find  out  the
+     network-specific name that mapped to "laserprinter". The RPC client
+     uses  the  network-specific  name when it makes the RPC call to the
+     service.
+
+   Further information about this vulnerability can be found in Microsoft
+   Security Bulletin MS03-001 and in CERT/CC Vulnerability Note VU#610986, 
+   which correspond to CVE candidate CAN-2003-0003.
+
+II. Impact
+
+   A  remote  attacker  may  be  able  to  execute  arbitrary  code  on a
+   vulnerable  system,  or  cause the Windows Locator service to fail. An
+   attacker  who  is able to compromise a domain controller might be able
+   to  cause  the  compromised  domain controller to trust the attacker's
+   domain.
+
+III. Solution
+
+Apply a patch
+
+
+
+Disable vulnerable service
+
+   Until  a  patch  can  be  applied, you may wish to disable the Windows
+   Locator  service.  To  determine  if  the  Windows  Locator service is
+   running, Microsoft recommends the following:
+
+     * The  status  of  the "Remote Procedure Call (RPC) Locator" service
+       and how it is started (automatically or manually) can be viewed in
+       the  Control  Panel.  For Windows 2000 and Windows XP, use Control
+       Panel  |  Administrative  Tools | Services, and on Windows NT 4.0,
+       use Control Panel | Services.
+
+     * It is also possible to determine the status of the Locator service
+       from the command line by entering: net start
+
+     * A  list  of  services will be displayed. If "Remote Procedure Call
+       (RPC)  Locator"  appears  in the list, then the locator service is
+       running.
+
+   To  disable  the  Windows  Locator  service,  Microsoft recommends the
+   following:
+
+     * An  administrator  can  disable the Locator service by setting the
+       RpcLocator  service  status  to "disabled" in the services control
+       panel.
+
+     * The  service  can  also  be stopped via the command line using the
+       sc.exe  program,  which  ships  with Windows XP and is included as
+       part  of the Windows 2000 Resource Kit. The following command will
+       stop the service: sc stop RpcLocator
+
+     * To  disable  the  service  using  the  command  line tool, use the
+       following: sc config RpcLocator start= disabled
+
+Restrict access to NetBIOS
+
+   You  may  wish  to  block  access to NetBIOS from outside your network
+   perimeter. This will limit your exposure to attacks. However, blocking
+   at  the  network  perimeter  would  still  allow  attackers within the
+   perimeter  of  your  network  to  exploit  the  vulnerability.  It  is
+   important  to  understand  your  network's  configuration  and service
+   requirements before deciding what changes are appropriate.
+
+   As a best practice, the CERT/CC recommends disabling all services that
+   are  not  explicitly  required. Before deciding to disable the Windows
+   Locator  service, carefully consider your service requirements. Please
+   also  note  that  Microsoft is actively deploying the patches for this
+   vulnerability via Windows Update.
+
+Appendix A. Vendor Information
+
+   This  appendix  contains information provided by vendors. When vendors
+   report  new  information,  this section is updated and the changes are
+   noted  in  the  revision  history. If a vendor is not listed below, we
+   have not received their comments.
+
+Microsoft Corporation
+
+     Please see Microsoft Security Bulletin MS03-001.
+
+Appendix B. References
+
+     * Microsoft Security Bulletin MS03-001 -
+http://www.microsoft.com/technet/treeview/default.asp?url=/technet/security/bulletin/ms03-001.asp
+
+     * CERT/CC Vulnerability Note VU#10986 -
+http://www.kb.cert.org/vuls/id/610986
+     _________________________________________________________________
+
+   This   vulnerability  was  discovered  by  David  Litchfield  of  Next
+   Generation Security Software Ltd and was first described in MS03-001.
+     _________________________________________________________________
+
+   Author: Ian A. Finlay.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2003-03.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2003 Carnegie Mellon University.
+
+   Revision History
+
+   January 23, 2003: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPjBbdGjtSoHZUTs5AQHgQAQAs9YLndDSDvjZKBTpDPAFK9FjQzUjlNRR
+p0xIrC8o3R7u1LG+YnBiisUXdvv9S9nnp5TBPfeYVllDkQMsCkgsWSKNNuRclhNN
+RtQUlYVpt+AGWB7RCQpn9jENpG7M3dbaFcQVFksYQWNE9OLhU7bGSzHBc3wg++Uv
+IGfitgzC2MA=
+=1PxZ
+-----END PGP SIGNATURE-----
+

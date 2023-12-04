@@ -1,0 +1,224 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id iA2Fp7Te028903
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Tue, 2 Nov 2004 09:51:07 -0600 (CST)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id iA2Fp69T028902
+	for reliable_computing-outgoing; Tue, 2 Nov 2004 09:51:06 -0600 (CST)
+Received: from lakermmtao02.cox.net (lakermmtao02.cox.net [68.230.240.37])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id iA2FovM6028898
+	for <reliable_computing@interval.louisiana.edu>; Tue, 2 Nov 2004 09:51:03 -0600 (CST)
+Received: from Inspiron-8200 ([68.226.133.93]) by lakermmtao02.cox.net
+          (InterMail vM.6.01.04.00 201-2131-117-20041022) with SMTP
+          id <20041102155041.FIXB9087.lakermmtao02.cox.net@Inspiron-8200>
+          for <reliable_computing@interval.louisiana.edu>;
+          Tue, 2 Nov 2004 10:50:41 -0500
+Message-Id: <2.2.32.20041102155117.00a19374@pop.louisiana.edu>
+X-Sender: rbk5287@pop.louisiana.edu
+X-Mailer: Windows Eudora Pro Version 2.2 (32)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Tue, 02 Nov 2004 09:51:17 -0600
+To: reliable_computing@interval.louisiana.edu
+From: "R. Baker Kearfott" <rbk@louisiana.edu>
+Subject: A "classroom" example
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+Status:  O
+X-Status: $$$$
+X-UID: 0000000005
+
+Dear Colleagues,
+
+I recently formulated an example in a "Mathematica" proficiency exam that,
+although mathematically very elementary, reveals much about  the "naive"
+interval arithmetic approach and, perhaps, about prejudices (and sources
+thereof) against interval arithmetic.  I present my example and correspondence
+with the student (without names, to protect confidentiality).  I have also
+edited some of the comments.
+
+People are welcome to use this example in elementary texts (should they be
+writing one) or in courses and tutorials.
+
+My conclusion is that, although it is possible to "oversell" interval
+arithmetic, we still haven't reached everyone we should, especially
+at an elementary level.  That is, using
+business language, the market for intervals still isn't "saturated".
+A second conclusion is that one should be careful, even with
+simple problems :-)
+
+Best regards,
+
+Baker
+
+==============================================================================
+The exam question:
+
+A. A petroleum storage tank in the shape of a circular cylinder has an
+   inner radius of between 4.95 and 5.05 meters, and a height of between
+   7.95 meters and 8.05 meters.  The thickness of the vertical walls
+   varies between 1.99cm and 2.01cm, and the density of the wall material
+   (steel) is between 7.85 and 7.91 grams per cubic centimeter.
+
+   Use Mathematica's interval arithmetic capability to compute lower
+   and upper bounds, sharp to within "roundout" error, to the following:
+
+      (1) the total volume of the tank;
+
+      (2) the weight of the vertical walls in kilograms.
+
+   Although the actual computations are relatively simple, present the
+   computations in an organized way, and place your explanation and report
+   directly in the Mathematica notebook.  Format the notebook, including
+   the comments, in a way that makes it easy and pleasing to read.
+
+
+==============================================================================
+The student's initial solution (with some of the explanation omitted):
+
+r1 = 100*Interval[{4.95, 5.05}]
+
+h = 100*Interval[{7.95, 8.05}]
+
+thick = Interval[{1.99, 2.01}]
+
+r2 = r1 + thick
+
+\!\(Volume1\  = \ \[Pi]*\((r1)\)\^2*h\)
+
+\!\(Volume2\  = \ \[Pi]*\((r2)\)\^2*h\)
+
+VolumeWall = Volume2 - Volume1
+
+ (output) : \!\(Interval[{\(-2.8057162558073882`*^7\), 3.813181213445664`*^7}]\)
+
+d = 0.001* Interval[{7.85, 7.91}]
+
+ weight = VolumeWall*d
+
+ (output): Interval[{-221932., 301623.}]
+
+(student's comment): We see that the interval solution is too wide to be
+meaningful.
+
+==============================================================================
+
+My response to the student:
+
+Your knowledge of Mathematica seems to be OK, but your use of interval
+arithmetic is naive, since there is interval dependency;  additional
+thought leads to a better  result.  In particular, the volume of the wall is
+
+\pi * (r2^2 - r1^2) * h
+
+You should get the exact range of volume, within roundout error,
+if you evaluate the above expression with interval arithmetic.
+
+The way you did it was to evaluate
+
+\pi*r2^2 h - \pi*r1^2 h.
+
+There is interval dependency in this second expression, since h
+occurs twice in it.
+
+Please redo this part of the project, using the correct formula
+for the range of the volume of the vertical walls.
+
+==============================================================================
+The student's response:
+
+    I still don't understand the term "roundout
+error". I was serching in mathematica handbook for
+that but I didn't see anything. I don't know also the
+meaning of "exact range". Do you mean that after we
+have got the interval of volume of the wall(by using
+the formula pi*r2^2 h - \pi*r1^2 h) we have to use the
+command in mathematica to find the exact range of the
+volume?
+I did check the lecture notes about interval
+arithmetic and I didn't see anything about exact
+range. I also searched for that term in many books,
+and I still have no idea about that.
+
+After I have used the formula pi*(r2^2-r1^2)* h,
+I still got an interval with very big width.
+
+==============================================================================
+My second response:
+
+Suppose you have a function f(x_1...,x_n), and evaluate it with interval
+arithmetic.  Then the interval value \f(\x_1,...,\x_n) will always give
+bounds on the range of the function, and will give the exact
+range, in general, if and only if each symbol x_i occurs only once
+in the expression.  If such a "single use expression" is evaluated
+with floating point arithmetic, the result is not exactly the
+range, since the lower end points are "rounded down" and the
+upper end points are "rounded up".  That is "roundout error."
+Some of this is explained in the introductory sections of my
+book "Rigorous Global Search: Continuous Problems" (QA402.5 .K388 1996).
+
+
+The problem is that there is still interval dependency, since
+you defined
+
+r2 = r1+thick,
+
+so
+
+    \pi *( r2^2 - r1^2) h = \pi ( (r1 + thick)^2 - r1^2) h
+
+and r1 occurs more than once in the expression.  Rewrite
+the parenthesized expression as
+
+   (r1 + thick)^2 - r1^2) = 2*r1*thick + thick^2
+                          = thick*(2*r1+thick)
+
+(Please try that.)
+
+You will get a better result, but it still won't give the exact
+range to within roundout error.
+
+To get the exact range, note that the minimum possible volume
+corresponds to using
+
+     \tilde r1 = sup(r1)
+
+and
+
+     \tilde r2 = min(r2)
+
+and that the maximum possible volume corresponds to using
+
+     \hat r1 = inf(r1)
+
+and
+
+     \hat r2 = sup(r2)
+
+Storing \tilde r1 and \tilde r2 in intervals (whose endpoints are
+the same), you will then use interval arithmetic to compute
+
+inf(\pi (\tilde r2^2 - \tilde r1^2) h)
+
+and
+
+sup(\pi *\hat r2^2 - \hat r1^2) h).
+
+These values will give lower and upper bounds on the range of volume that are
+exact to within roundout error.
+
+(Please also try this second scheme and submit to me.)
+
+==============================================================================
+
+
+---------------------------------------------------------------
+R. Baker Kearfott,    rbk@louisiana.edu   (337) 482-5346 (fax)
+(337) 482-5270 (work)                     (337) 993-1827 (home)
+URL: http://interval.louisiana.edu/kearfott.html
+Department of Mathematics, University of Louisiana at Lafayette
+(Room 217 Maxim D. Doucet Hall, 1403 Johnston Street)
+Box 4-1010, Lafayette, LA 70504-1010, USA
+---------------------------------------------------------------
+
+
+

@@ -1,0 +1,53 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2SGY6Y19860
+	for <egs@cs.cornell.edu>; Tue, 28 Mar 2006 11:34:06 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2SGY4HS012182
+	for <egs@cs.cornell.edu>; Tue, 28 Mar 2006 11:34:05 -0500 (EST)
+Received: from 128.84.153.83
+        by webmail.cornell.edu with HTTP;
+        Tue, 28 Mar 2006 11:34:05 -0500 (EST)
+Message-ID: <1147.128.84.153.83.1143563645.squirrel@webmail.cornell.edu>
+Date: Tue, 28 Mar 2006 11:34:05 -0500 (EST)
+Subject: paper 16
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+EigenTrust is a reputation calculation that computes the steady-state of
+the trust matrix C of all of the nodes, where c_ij is the local trust
+value that node i places in node j. To prevent trust inflation, the local
+trust values are normalized (normalizing the sum over j of c_ij for each
+i), which unavoidable removes absolute information on trust and makes each
+value an unknown relative value. A major drawback of their scheme lies in
+the assumption of pre-trusted nodes. They use these to accelerate
+convergence and argue that it is not necessary for other nodes to know
+which nodes are pre-trusted; however, the entire notion makes it extremely
+vulnerable to attackers at the start where the trust tables are mostly
+empty.
+In a more general sense, to prevent malicious nodes from vouching for and
+second-handidly raising the reputation of other malicious nodes, the
+authors propose implementing it on top of a DHT of some sort. Each node is
+assigned multiple random score managers. The score managers use several
+randomly assigned "daughters" to compute the trust value of the node they
+are responsible for.
+
+The second paper proposes using Bayesian learning to compute reputation
+and trust ratings. It discounts the learned values over time to give more
+weight to recent observations, and uses the trustworthiness of a node as a
+guide whether or not to accept a second-hand reputation report. The
+trustworthiness of a node is itself modified by the perceived accuracy of
+received reports (the deviation from the expected values based on the
+current reputation values).
+
+A major question I have about these is their performance with the presence
+of churn. Previous measurement studies have shown a high churn rate in
+popular P2P file exchange programs (Gnutella, Napster). Both Bayesian
+learning and EigenTrust rely on convergence over time, which makes them
+seem unsuitable for a high churn rate.
+

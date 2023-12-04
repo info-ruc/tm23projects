@@ -1,0 +1,85 @@
+Received: from dire.bris.ac.uk (dire.bris.ac.uk [137.222.10.60])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h379qBoh010035
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 7 Apr 2003 02:52:12 -0700
+Received: from sis.bris.ac.uk by dire.bris.ac.uk with SMTP-PRIV with ESMTP;
+          Mon, 7 Apr 2003 11:01:25 +0100
+Received: from bris.ac.uk (psy170.psy.bris.ac.uk [137.222.60.170])	by sis.bris.ac.uk (8.11.6p2/8.11.6) 
+          with ESMTP id h379xJL20913	for <DMDX@psy1.psych.arizona.edu>;
+          Mon, 7 Apr 2003 10:59:19 +0100 (BST)
+Message-ID: <3E914BFC.2090009@bris.ac.uk>
+Date: Mon, 07 Apr 2003 10:59:24 +0100
+From: Markus Damian <m.damian@bristol.ac.uk>
+MIME-Version: 1.0
+To: dmdx <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] typed responses and deadline
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hello everyone,
+
+I would appreciate help on a problem that I have in setting up an 
+experiment in DMDX. I have two pieces of code that work separately, but 
+I can't seem to be able to combine them for my purposes.
+
+I would like to run an experiment that requires touch-typed responses, 
+with separate latencies for each keystroke. No problem - <zil> does 
+exactly what I want. The following script records, for one second per 
+stimulus, anything that was typed:
+
+
+n3<zil><t 1000><nfb><cr>
+=1 * "dog";
+=2 * "cat";
+=3 * "mouse";
+
+
+Now I would like to add a response deadline that displays a message 
+after the trial if the FIRST key stroke was later than a certain time 
+interval. I have implemented response deadlines before, but only with 
+"normal" (i.e., two-alternative) responses. For instance, the following 
+script (which I believe was posted in similar form to this list some 
+time ago) requires one of the two shift keys as a response, and if the 
+key press did not occur within 500 ms after stimulus onset, the message 
+"Too slow!" is displayed after the trial. The sole purpose of the "0 <bu 
+70>" line is to skip the "60" and "69" lines when the file is read by DMDX.
+
+
+n3<nfb><cr>
+0 <bu 70>;
+60 <set 1, LastRT><bicLE 1, 500, 69>;
+0 <ms% 500> "Too slow!" / c;
+69 <ret>;
+70 ;
+=1 * "dog" /  ! <call -60>;
+=2 * "cat" / ! <call -60>;
+=3 * "mouse" / ! <call -60>;
+
+
+So here is my question: is there a way to access the FIRST rt (out of 
+many) that is recorded with the <zil> option, and make a response 
+deadline dependent on it?
+
+Many thanks,
+
+
+Markus
+
+-- 
+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+Markus Damian
+University of Bristol
+Department of Experimental Psychology
+8 Woodland Road, 5D5
+Bristol BS8 1TN
+United Kingdom
+Tel: (+44) (0)117 - 954 6840
+Fax: (+44) (0)117 - 928 8588
+Email: m.damian@bristol.ac.uk
+http://eis.bris.ac.uk/~psmfed
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+

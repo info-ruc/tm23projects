@@ -1,0 +1,151 @@
+Received: from exchfe1.cs.cornell.edu (exchfe1.cs.cornell.edu [128.84.97.27])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h82EOSj07029
+	for <egs@unix.cucs>; Tue, 2 Sep 2003 10:24:28 -0400 (EDT)
+Received: from EXCHVS1.cs.cornell.edu ([128.84.97.23]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 2 Sep 2003 10:24:11 -0400
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6375.0
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Subject: 615 PAPER 1
+Date: Tue, 2 Sep 2003 10:24:11 -0400
+Message-ID: <40E631F174C41E4DBE52727E137AF9278C4B63@EXCHVS1.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 PAPER 1
+Thread-Index: AcNxXeeQ/lI7mPcuQyS5QJSASujEWw==
+From: "Bernard Wong" <bwong@cs.cornell.edu>
+To: <egs+615@cs.cornell.edu>
+X-OriginalArrivalTime: 02 Sep 2003 14:24:11.0932 (UTC) FILETIME=[E11F2DC0:01C3715D]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id h82EOSj07029
+
+DSDV:
+
+The paper "Highly Dynamic Destination-Sequenced Distance-Vector Routing
+(DSDV) for Mobile Computers" introduces the use of sequence numbers to
+adapt the traditional Distributed Bellman-Ford (DBF) algorithm for use
+in an ad-hoc network. The problem of using DBF in an ad-hoc network is
+the formation of both short-lived and long-lived loops, both of which
+are possible due to stale routing information being present in the
+routing table of each node caused by movement of the nodes. DSDV
+introduces a monotonically increasing sequence number created for each
+of its routes by the destination node, which is used in determining
+whether a received update is fresh or stale. As DSDV will always choose
+the shortest path update from the set of updates that contain the
+largest sequence number, routing loops are avoided without the need for
+internodal coordination. 
+
+DSDV works by requiring each node to broadcast to its current neighbors
+its routing table, which consists of the destination node, the next hop
+node, the distance metric, the sequence number, and other path related
+data. As each node receives this broadcast, it will update its own
+routing table given that the sequence number is larger or that the
+sequence number has not changed but the distance metric has been
+reduced. Transmitting packets is accomplished by having each of the next
+hop nodes on the route forward the packets along on behave of the source
+node.
+
+DSDV's main weakness is its high bandwidth usage. Periodic updates sent
+by each individual node might not be that bandwidth intensive given a
+reasonably large period and modest nodal movement. However, each time
+nodal movement is sufficiently large such that the path distances
+between nodes are changed, the channel may be flooded as updates are
+triggered due to the path length changes. Power usage is also
+significant as each node regardless of whether the network is being used
+sends the periodic updates. This can be especially damaging if the
+periodic updates interferes with the power management of the wireless
+devices (i.e. prevents the device from entering sleep mode).
+
+
+DSR:
+
+The Dynamic Source Routing (DSR) protocol was designed to eliminate the
+need for nodes to periodically send updates to other nodes. This greatly
+eliminates the bandwidth and power issues associated with Distributed
+Bellman-Ford (DBF) based protocols, as bandwidth and power is only
+consumed when there is actual network traffic. Furthermore, DBF based
+protocols require each node to know the distance to every other node,
+which is normally unnecessary and increases the size of the routing
+updates. In DSR, routes are discovered as they are needed.  
+
+DSR works by having the sender include the complete sequence of nodes
+through which to forward the packet from the source to the destination
+inside the packet's header. If a route to the destination node is not
+known, a route discovery protocol is initiated. The route discovery
+protocol works by having a route request packet broadcasted by the
+sender. If a node other than the desired destination node receives this
+request for the first time, the request is modified by having the node
+sequence appended with the current host and the request is
+re-broadcasted.  When the destination node receives the route request, a
+route reply is sent back with a copy of the route from the route request
+packet. Routing loops can be avoided by discarding route requests where
+the host's address is already listed in the route record, as this
+guarantees that no single copy of the request will propagate in a loop. 
+
+A weakness in the DSR protocol is its dependence on including the entire
+node sequence in the packet header. This can lead to scaling issues as
+the size of the ad-hoc network increases, where the header size may
+become excessively large thereby reducing the efficiency of the channel.
+The is further accentuated by the fact that many wireless devices have a
+relatively small Maximum Transmission Unit (MTU) size compared with
+wired network devices in order to reduce latency.  Another weakness is
+the increased route acquisition latency compared to DBF based protocols,
+as data packets can no longer be sent until the route discovery protocol
+completes. 
+
+A result of using a node discovery protocol instead of using periodic
+update advertisement is the inability to know which nodes are currently
+operational on the network. Only by sending a packet to a targeted host
+or by promiscuously listening to packet traffic can DSR determine which
+hosts are currently in the network. This can become a problem if a user
+node enters a foreign network and do not know what other nodes are on
+this network.
+
+
+AODV:
+
+The paper "Ad-hoc On-Demand Distance Vector (AODV) Routing" introduces a
+distance vector routing algorithm that does not require global periodic
+advertisements of routing updates. Instead, a broadcast route discovery
+mechanism similar to the one found in Dynamic Source Routing (DSR) is
+used. However, unlike DSR, AODV relies on dynamically establishing route
+table entries at the forwarding nodes, which removes the need to store
+the entire sequence of nodes for a particular route in the packet
+header. In order to achieve loop-free routing while relying on routing
+information found in the forwarding nodes, the concept of the
+destination sequence number is borrowed from Destination-Sequenced
+Distance Vector (DSDV) routing. Therefore, similar to DSDV, route
+information of a forwarding node is only updated when it receives a
+route reply packet where either the destination sequence number is
+larger than the previously recorded number or the destination sequence
+number is the same as the recorded number but the path length is
+smaller. 
+
+The operation of AODV is as follows: If a route from a source node to a
+destination node is unknown, a path discovery process is initiated. A
+route request packet is sent to its neighbors, where each neighbor
+either sends a route reply back to the source or rebroadcasts the route
+request. As the route request packet travels from source to destination,
+a reverse path route is created in the forwarding nodes, and similarly,
+a forward path route is created by the request reply. Once the route is
+known, then a data packet can simply be broadcasted from the source node
+with the desired destination node set in the header, and the packet
+should be routed correctly through the forwarding nodes to the
+destination node, given the nodes configuration has remained the same
+since the last path discovery.
+
+A potential weakness of AODV is the flooding of route requests that can
+occur during path discovery. Without the promiscuously snooping of
+packets and random reply delays as is done by DSR, a route request can
+be re-broadcasted over multiple hops even if a cached route was quickly
+found in the first hop from another node. Implementing either
+promiscuous snooping of packets or a multi-level and multi-try route
+request (i.e. first attempt allows for maximum of one hop, second
+attempt allows for two hops, etc.) can be used to overcome this
+weakness.
+
+
+Bernard Wong
+

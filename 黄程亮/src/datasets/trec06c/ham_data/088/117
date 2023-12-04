@@ -1,0 +1,47 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h47GZBoh023577
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 7 May 2003 09:35:11 -0700
+Received: from anybodyi.u.arizona.edu (uofa-dsl-118.dakotacom.arizona.edu [150.135.175.118])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h47GhnVl012328
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 7 May 2003 09:43:49 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030507093915.00b12830@psy1.psych.arizona.edu>
+Date: Wed, 07 May 2003 09:43:02 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Timing problem - my error or something else?
+In-Reply-To: <3EB8CC71.9010407@ua.ac.be>
+References: <seb8dd2a.052@mira.ufsia.ac.be>
+ <seb8dd2a.052@mira.ufsia.ac.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:05 AM 5/7/2003 +0200, you wrote:
+>I don't understand the exact mechanics, but putting the frame duration in 
+>each of your frames and putting a frame delimiter at the end of the item 
+>solves the problem (in dmdx 3.0.1.5).
+>
+>0 <d 0> <%ms 4000> <ln -2> "Line one?", <%ms 4000> <ln 2> "Line two"/<c>;
+
+
+   The mechanics are that the comma frame delimiter is exactly equivalent to:
+
+                 %0 / !
+
+   So in any series of comma delimited frames only the duration of the last 
+frame has any significance.  The usage should be:
+
+0 <d 0> <ln -2> "Line one?", <%ms 4000> <ln 2> "Line two"/<c>;
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Isn't it strange that the same people that laugh at gypsy fortune
+tellers take economists seriously?
+
+
+

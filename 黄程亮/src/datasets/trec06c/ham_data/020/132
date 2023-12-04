@@ -1,0 +1,56 @@
+Received: from flight.uchicago.edu (flight.uchicago.edu [128.135.52.35])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id RAA01447
+	for <handyboard@media.mit.edu>; Thu, 16 Jul 1998 17:56:16 -0400 (EDT)
+Received: from localhost (ilya@localhost)
+	by flight.uchicago.edu (8.8.7/8.8.7) with SMTP id QAA19537
+	for <handyboard@media.mit.edu>; Thu, 16 Jul 1998 16:51:10 -0500
+Date: Thu, 16 Jul 1998 16:51:10 -0500 (CDT)
+From: Ilya <ilya@flight.uchicago.edu>
+To: handyboard@media.mit.edu
+Subject: SPI problems
+Message-Id: <Pine.LNX.3.96.980716161407.19280A-100000@flight.uchicago.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+
+I am trying to connect my Handyboard with a Motorola 68HC11A1FN chip
+inside with a AD7858L- 12-bit ADC.
+
+In my IC code I first write to the DDRD (Port D Data Direction Register) 
+($1009) and activate SCK(bit4), MOSI(bit3), MISO(bit2).  
+Then I write to SPCR (SPI Control Register  and set bits 7(SPIE), 6(SPE),
+4(MSTR), 2(CPHA), 1(SPR1). 
+Following I use serial_putchar() from the serialio.c library to initialize
+the ADC... so far so good... no errors reported...
+The ADC then is supposed to make a conversion and relay the data back to
+the Handyboard via SPI. I use serial_getchar() 
+
+v1 =(float)serial_getchar(); 
+
+and the Handyboard crashes.. at least the heart on the LCD stops beating.. 
+serialio.c is loaded on my handyboard! Was the serialio.c library written
+for SPI?!?! If not then I guess I found my problem.. but if it is for SPI,
+what am I doing wrong? Are my addresses correct? 
+
+Can someone please tellme the right addresses for the following: 
+DDRD, SPCR SPSR, SPDR. 
+
+I have read various Motorola documentations and have not came out with a
+distinct answer for my HC11A1FN chip. I have also found contradicting
+values for the HC11 family so I am completly lost! The program did not
+work when I tried to manually receive/send data through SPI. 
+
+Please help!
+
+
+All of the requests will be kindly appreciated!
+
+Thanks in advance
+
+Ilya
+
+
+
+
+

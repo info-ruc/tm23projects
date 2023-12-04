@@ -1,0 +1,77 @@
+Received: from web1603.mail.yahoo.com (web1603.mail.yahoo.com [128.11.23.203])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with SMTP id OAA27398
+	for <handyboard@media.mit.edu>; Thu, 17 Feb 2000 14:22:17 -0500 (EST)
+Received: (qmail 1331 invoked by uid 60001); 17 Feb 2000 19:22:16 -0000
+Message-Id: <20000217192216.1330.qmail@web1603.mail.yahoo.com>
+Received: from [199.2.139.183] by web1603.mail.yahoo.com; Thu, 17 Feb 2000 11:22:16 PST
+Date: Thu, 17 Feb 2000 11:22:16 -0800 (PST)
+From: William Bain <montanawill@yahoo.com>
+Subject: Re: Sonar Sensor problems
+To: "Handy Board mailing list" <handyboard@media.mit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+
+Did your team solder the proper capacitor into the sonar board
+in accordance with the instructions on the HB web site? I was
+just wondering, because others who forgot the capacitor have
+reported similar problems.
+
+Also, you may want to try tweaking the blanking interval from
+1000 to 1200 in the sonar_closeup() function in order to get
+good readings; my sonar wouldn't reliably read quite as close
+as some others, I guess.
+
+It's important to realize that occasionally you're supposed to
+get a -1 back from the function; it means that an error
+occurred -- typically that no echo was received before the
+timer counter maxed out.
+
+Even when I got my Polaroid sonar operating well, I still got
+noisy readings. I almost completely eliminated the problem by
+writing a new sonar sample function that always takes three
+sonar readings, but returns only the median (middle) value. You
+need only two or three comparison (if) statements to do this,
+so it's pretty fast, and it works extremely well in practice.
+There are almost never going to be two noisy readings out of
+three. Some others have suggested using the average of three
+readings, but I found that not to work very well at all (e.g.,
+what's the average of 99, 101, and -1,000?). Best of luck!
+
+-- Will
+
+
+--- Jyotirmayi Jogdand <jyotirmayij@yahoo.com> wrote:
+> Hi,
+> 
+> Our team is using the Polaroid Sonar Ranging Module
+> for our collision avoidance system. 
+> 
+> We used the code from sonar.c to find the time
+> elapsed. However we get readings ranging from negative
+> to positive numbers... Could you explain why this is
+> so.
+> 
+> Next we tried to incorporate the distance equation but
+> it wouldn't give us the values.. could you please
+> guide us to the right source code so that we can get
+> the distance measurements as well?
+> 
+> Your help is really appreciated. Iwould also
+> appreciate it if you could reply as soon as possible
+> 
+> Thanks
+> 
+> Jodi
+
+
+
+
+=====
+Any sufficiently advanced technology
+is indistinguishable from magic.
+-- Arthur C. Clark
+__________________________________________________
+Do You Yahoo!?
+Talk to your friends online with Yahoo! Messenger.
+http://im.yahoo.com
+

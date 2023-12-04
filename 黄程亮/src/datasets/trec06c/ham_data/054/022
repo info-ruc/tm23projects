@@ -1,0 +1,55 @@
+Received: from mta2.snfc21.pbi.net (mta2.snfc21.pbi.net [206.13.28.123])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA17305
+	for <handyboard@media.mit.edu>; Wed, 13 Oct 1999 20:03:18 -0400 (EDT)
+Received: from pacbell.net ([206.170.238.215])
+ by mta2.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.09.16.21.57.p8)
+ with ESMTP id <0FJK00LFDG3CZ3@mta2.snfc21.pbi.net> for
+ handyboard@media.mit.edu; Wed, 13 Oct 1999 17:03:09 -0700 (PDT)
+Date: Wed, 13 Oct 1999 17:01:00 -0700
+From: Gary Livick <glivick@pacbell.net>
+Subject: interfacing the GP2D12
+To: handyboard@media.mit.edu
+Message-Id: <38051D34.461A3457@pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854";
+ x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+References: <FJJtH3.5w1@lugnet.com>
+
+Somebody asked the other day about a problem interfacing the Sharp
+GP2D12.  I didn't see an answer, and I just did it myself and solved the
+problem, so here is how to do it.
+
+For those who don't know, Sharp just came out with an IR ranging sensor
+good out to about 30 inches that provides an analog signal related to
+range.  The signal is not linear, but that can be dealt with in
+software.  The area examined by the sensor is very narrow, so by
+mounting it on a small servo and sweeping it while gathering range data,
+a lot if information can be obtained about the immediate surroundings.
+
+The GP2D12 has a few advantages over sonar; 1. it is good down to about
+5",  2. it is less than $15.00, 3. it refreshes about every 32 ms, and
+4. it does not require a driver, you just plug it in and start reading
+data.
+
+Hooking it up has one small gotcha with the HandyBoard and probably most
+of the other MIT-spawned boards as well.  The output of the sensor wants
+to see a floating pin, but the analog inputs on the HandyBoard are
+pulled high by RP3, a 47k resistor pack.  To connect the sensor to the
+HandyBoard, you have to cut a trace so the input can float on that pin.
+That is easy enough to do, as the traces on the main board are easy to
+identify, and easy to repair if you change your mind later and want to
+restore the pin to normal.  However, some care must be taken to choose a
+pin for an input.  If you just cut a trace for a pin at random, due to
+the way the circuit is layed out you may just isolate the input pin from
+the HC11 instead of removing the pull-up voltage.  Unless you want to
+figure out what I'm talking about, use analog 5 to connect your GP2D12.
+Trimming the trace between RP3 and that pin has the anticipated result.
+
+The sensors are available at http://www.acroname.com  Check out some of
+my robots in the gallery while you are there.
+
+Gary Livick
+
+

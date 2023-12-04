@@ -1,0 +1,44 @@
+Received: from smyk.apk.net (smyk.apk.net [207.54.158.17])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id PAA24113
+	for <handyboard@media.mit.edu>; Sun, 14 Nov 1999 15:36:01 -0500 (EST)
+Received: from junior.apk.net (drushel@junior.apk.net [207.54.158.20]) by smyk.apk.net (8.9.3/8.9.3/apk.990812+rchk1.22+bspm1.13.1.5) with ESMTP id PAA20273 for <handyboard@media.mit.edu>; Sun, 14 Nov 1999 15:24:24 -0500 (EST)
+Received: (from drushel@localhost)
+	by junior.apk.net (8.9.3/8.9.3) id PAA16799
+	for handyboard@media.mit.edu; Sun, 14 Nov 1999 15:24:24 -0500 (EST)
+From: Richard Drushel <drushel@apk.net>
+Message-Id: <199911142024.PAA16799@junior.apk.net>
+X-Real-To: handyboard@media.mit.edu
+Subject: Re: mixing variable types in IC
+To: handyboard@media.mit.edu
+Date: Sun, 14 Nov 1999 15:24:24 -0500 (EST)
+In-Reply-To: <199911141723.MAA27145@l-slide.mit.edu> from "Ben Davis" at Nov 14, 1999 12:23:20 PM
+X-Mailer: ELM [version 2.5 PL1]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+[Ben Davis] spake unto the ether:
+
+> int x, y;
+> float c;
+> 
+> float divide ( int x, int y)
+> {
+>         c = (float) (x/y);
+>         return c;
+> }
+
+	Hmm, I think you want
+
+	c = ((float)(x))/((float)(y));
+
+Otherwise, the division will be done first as integers, giving an integer
+quotient, which you're then turning into a float.
+
+	*Rich*
+-- 
+Richard F. Drushel, Ph.D.            | "Aplysia californica" is your taxonomic
+Department of Biology, Slug Division | nomenclature.  /  A slug, by any other
+Case Western Reserve University      | name, is still a slug by nature.
+Cleveland, Ohio  44106-7080  U.S.A.  |     -- apologies to Data, "Ode to Spot"
+

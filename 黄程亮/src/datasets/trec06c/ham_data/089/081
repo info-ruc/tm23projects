@@ -1,0 +1,56 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h6F3UXil001981
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 14 Jul 2003 20:30:33 -0700
+Received: from anybodyi.u.arizona.edu (ppp868.broadband01.tus.dakotacom.net [69.9.27.100])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h6F3W4oe003440
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 14 Jul 2003 20:32:04 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030714202717.00b31b30@psy1.psych.arizona.edu>
+Date: Mon, 14 Jul 2003 20:30:27 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: coupling subject's responses with experimenter's
+  responses
+In-Reply-To: <000001c34a4b$2ebc2270$5d5ef78c@cn918>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 05:02 PM 7/14/2003 -0400, you wrote:
+>In the familiarization phase of a picture naming exp., I'd like
+>subject's responses to be treated just like they will be in the actual
+>experiment (same voice key triggering, same feedback, etc.), but I'd
+>like the experimenter to be able to control whether or not the subject
+>continues onto the next item -- i.e., if the subject produces the wrong
+>name, I'd like it if the experimenter could give them the correct name
+>and then have them name the same pic again.  I can see how to do this
+>(using call and return), except for the fact that <return> returns to
+>the *next* item.  Is there a way to immediately repeat a particular
+>item?
+
+
+   Use a macro that expands to a test that jumps back to a stub item if it 
+needs to:
+
+0 "Instructions"
+mT+ some test condition that branches to -555 if the item needs doing over+;
+
+
+~555;
++1 item that gathers response;
+~556 ~T;
+
+~555;
++2 another item that gathers response;
+~556 ~T;
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Success is a journey, not a destination.
+
+
+

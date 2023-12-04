@@ -1,0 +1,74 @@
+Received: from exchfe1.cs.cornell.edu (exchfenlb-1.cs.cornell.edu [128.84.97.33])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1EHlDt17144
+	for <egs@unix.cucs>; Tue, 14 Feb 2006 12:47:14 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.34]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 14 Feb 2006 12:47:13 -0500
+Received: from [128.84.223.148] ([128.84.223.148]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 14 Feb 2006 12:47:13 -0500
+Message-ID: <43F217A0.7040309@cs.cornell.edu>
+Date: Tue, 14 Feb 2006 12:47:12 -0500
+From: Tudor Marian <tudorm@cs.cornell.edu>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 6
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 14 Feb 2006 17:47:13.0258 (UTC) FILETIME=[AFE204A0:01C6318E]
+
+Search and Replication in Unstructured P2P Networks - is a detailed 
+study of more scalable alternatives to existing unstructured 
+decentralized p2p systems with respect to the search and replication 
+aspects. The paper compares the impact of various algorithms for several 
+network topologies, query distribution and replication. Authors show 
+that flooding even with controlled TTL incurs unacceptable overhead, and 
+compare it to expanding ring and random walks, concluding that the 
+latter coupled with the checking adaptive termination scheme and message 
+duplicate suppression works best amongst the methods tried; authors do 
+admit that the goal of the paper was not an exhaustive study of all 
+search algorithms, nor do they claim that k-random walk is optimal.
+
+It is shown that the search size is minimized for replication 
+proportional to the square root of the query relative popularity 
+(basically the number of queries issued for objects) and that uniform 
+and proportional distributions are significantly suboptimal. The 
+square-root replication is approximated by finding the fixed point of a 
+differential equation, yet there's no in depth analysis of the viable 
+methods for solving it.
+
+The paper notes that the random replication improves upon path 
+replication, and it's not clear why this happens, moreover there is no 
+explanation for this behavior.
+
+
+Beehive considers taking the analytical approach to solving the 
+replication problem on top of any DHT that has prefix matching routing 
+like Pastry. Beehive uses proactive replication to yield constant lookup 
+time for power law query distributions. Objects can be replicated at all 
+nodes k hops backwards from the home node (of the objects in question), 
+thus reducing the lookup latency by k hops. The replication process is 
+iterative, starting with the home node and continuing to the nodes with 
+ID's that have largest common prefix ids. The decision of which object 
+to replicate and at which level is taken by running a distributed 
+algorithm and solving a minimization problem that requires continuously 
+estimating the popularity of objects and the power law \alpha parameter.
+
+Power law distributions may work well for some particular type of 
+queries like DNS, but what about non-Zipf distributions. Most p2p file 
+sharing systems have queries that cannot be fitted appropriately by any 
+power laws. Also the scheme works for fixed cost replication - while 
+this might be true for small DNS entries, it is definitely not for 
+regular file content. Moreover the minimization problem is posed in 
+terms of reducing storage requirements at the peers, and hence lower 
+*not minimize* the communication traffic - arguably, minimizing the 
+communication is considerably more important, especially for entries 
+that do not have fixed cost of replication.
+
+Paper doesn't mention how computationally expensive is the linear 
+regression, also response to flash crowd effect might be acceptable for 
+DNS, but it is not clear how the response time is perceived for other 
+type of content distribution.
+
+
+Tudor
+

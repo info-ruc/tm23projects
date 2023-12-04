@@ -1,0 +1,80 @@
+Received: from nproxy.gmail.com (nproxy.gmail.com [64.233.182.201] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29Hdft03556
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 12:39:41 -0500 (EST)
+Received: by nproxy.gmail.com with SMTP id x4so402520nfb
+        for <egs+summary@cs.cornell.edu>; Thu, 09 Mar 2006 09:39:40 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=RpxAj2UoM2gaVBvnlX4P3SQVLNdhWVg68avVSzBFfRYmqJ4zKNQ7+Yt8ELCJhxJ6JoySztH8TQ/2lnDKdh++NRw9kRHnNctHNeH/FJH8vRv2xjKXboem6u3s9VxnERQzk+0HpOrbZlx/8vup4Br+YrUO0qVg6XciRWAzNcFbsdA=
+Received: by 10.48.199.10 with SMTP id w10mr1002532nff;
+        Thu, 09 Mar 2006 09:39:39 -0800 (PST)
+Received: by 10.48.246.18 with HTTP; Thu, 9 Mar 2006 09:39:39 -0800 (PST)
+Message-ID: <9302f1e20603090939t37a9dd3etd11130968469a21a@mail.gmail.com>
+Date: Thu, 9 Mar 2006 12:39:39 -0500
+From: "Ymir Vigfusson" <ymir.vigfusson@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 13
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k29Hdft03556
+
+RON (Resilient Overlay Network) is an application-layer overlay
+network designed to detect and recover from network failures
+(namely link failures and performance failures) quickly. While
+the underlying AS/BGP architecture of the Internet is designed
+for the same purpose, the reroute recovery time is in the order of
+several minutes due to scalability issues whereas RON does this
+in the order of several seconds (namely 18 seconds on average
+in the experiment with 12/16 RON nodes and 132/240 distinct paths).
+This agility is accomplished by aggresive probing and monitoring
+of the paths that connects the RON nodes. The paper cites results
+from Labovitz et al. that 10% of considered routes on the Internet
+were available less than 95% of the time, and 35% of all routes
+were unavailable more than 99.99% of the time. Furthermore,
+40% of path outages take longer than 30 minutes to repair.
+RON nodes exchange information about the quality of the paths they know.
+The authors present results where at most one intermediate RON node is
+sufficient to improve routing paths. RON, unlike BGP-4, is capable of
+expressive fine-grained policies aimed at users or hosts.
+Another feature of RON is integration with applications, since they
+may prioritize different metrics over others (e.g. latency, low loss
+or throughput) of which RON enables simultaneous optimization.
+
+The implementation of RON was explicitly designed to be limited
+in size, and an underlying assumption in the paper is that RON
+is small relative to the Internet. There is a huge amount of background
+data and paths that needs to be recorded so its scalability seems to be
+a large drawback. Additionally, it provides a means of 'selfish
+routing' which may be suspect to downsides like the Braess' paradox
+where adding a cheap link to the network slows down traffic.
+However, Tim Roughgarden and Eva Tardos showed that this should only
+make latency 4/3 times the best coordinated routing.
+
+
+The second paper "Improving the Reliability of Internet Path with
+One-hop Source Routing" starts off by investigating path failures
+on the Internet. From a 7 day data of probing paths from PlanetLab
+servers to a set of destination hosts, it turns out that the vast
+majority of paths suffered at least one failure. Many failures
+(16% of failures to servers and 60% of failures to broadband hosts)
+occurred close to the destination (last-hop), so alternative
+routing/overlay schemes may not work to alleviate them.
+The paper then proposes a 'one-hop source routing' scheme called SOSR
+where a node tries to reroute packets through one or more
+intermediaries after it discovers a path failure. If the paths are
+disjoint and the intermediary also avoids faults, end-to-end
+communication is restored. It turns out that the most effective policy
+is to pick the intermediaries at random (smarter policies don't buy
+much extra), and the paper in particular picks 4 intermediaries as a
+good value deduced by the failure sample. If all of the intermediaries
+fail, the policy is to wait for the default path to recover itself.
+Notice how the policy does not need to keep track of state.
+The paper concludes by evaluating an implementation of SOSR on Linux
+which was able to reduce recovable failures by 56%, close to the
+predicted value. The paper does not give any theoretical insight into
+the failures observed or theoretical basis for why one-hop source
+routing may be viable.
+

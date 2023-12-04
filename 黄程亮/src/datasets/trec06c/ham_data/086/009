@@ -1,0 +1,361 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id h0N2n8X3446374;
+	Wed, 22 Jan 2003 18:49:09 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id h0MNvoM19085;
+	Wed, 22 Jan 2003 18:57:50 -0500
+Date: Wed, 22 Jan 2003 18:57:50 -0500
+Message-Id: <CA-2003-02.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2003-02 Double-Free Bug in CVS Server
+Precedence: bulk
+Status: RO
+X-Status: $$$$
+X-UID: 0000000073
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-02 Double-Free Bug in CVS Server
+
+   Original issue date: January 22, 2003
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+
+Systems Affected
+
+     * Systems running CVS Home project versions of CVS prior to 1.11.5
+     * Operating system distributions that provide CVS
+     * Source code repositories managed by CVS
+     * For detailed vendor status information, see VU#650937:
+
+         <http://www.kb.cert.org/vuls/id/650937#systems>
+
+
+Overview
+
+   A  "double-free" vulnerability in the Concurrent Versions System (CVS)
+   server  could allow an unauthenticated, remote attacker with read-only
+   access  to  execute  arbitrary  code,  alter  program  operation, read
+   sensitive information, or cause a denial of service.
+
+
+I. Description
+
+   CVS  is a version control and collaboration system that is widely used
+   by   open-source   software  development  projects.  CVS  is  commonly
+   configured  to  allow  public,  anonymous,  read-only  access  via the
+   Internet.
+
+   The  CVS  server component contains a "double-free" vulnerability that
+   can  be  triggered  by  a set of specially crafted directory requests.
+   While processing these requests, an error-checking routine may attempt
+   to  free()  the same memory reference more than once. Deallocating the
+   already freed memory leads to heap corruption, which an attacker could
+   leverage to execute arbitrary code, alter the logical operation of the
+   CVS server program, or read sensitive information stored in memory. In
+   most  cases,  heap  corruption  will  result  in a segmentation fault,
+   causing a denial of service.
+
+   The  CVS  server process is typically started by the Internet services
+   daemon  (inetd) and runs with root privileges. Arbitrary code inserted
+   by an attacker would therefore run with root privileges.
+
+   The CERT/CC is tracking this issue as VU#650937:
+
+     <http://www.kb.cert.org/vuls/id/650937>
+
+   This reference number corresponds to CVE candidate CAN-2002-0059:
+
+     <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2003-0015>
+
+   This issue was researched and reported by Stefan Esser of
+   e-matters:
+
+     <http://security.e-matters.de/advisories/012003.html>
+
+
+II. Impact
+
+   Depending   on   configuration,   operating   system,   and   platform
+   architecture,  a remote attacker with anonymous, read-only access to a
+   vulnerable   CVS  server  could  execute  arbitrary  code,  alter  the
+   operation  of the server program, read sensitive information, or cause
+   a  denial of service. There is also a significant secondary impact. An
+   attacker  who  is  able  to  compromise  a  CVS  server  could  modify
+   source-code repositories to contain Trojan horses, backdoors, or other
+   malicious code.
+
+
+III. Solution
+
+Apply a patch or upgrade
+
+   Apply  the  appropriate  patch or upgrade as specified by your vendor.
+   See  Appendix  A.  below and the Systems Affected section of VU#650937
+   for further information:
+
+     <http://www.kb.cert.org/vuls/id/650937#systems>
+
+Disable or restrict anonymous CVS access
+
+   As  a  temporary solution until patches or upgrades can be applied, or
+   to  improve the security of CVS servers in the long term, consider the
+   following workarounds and configurations:
+
+     * Disable anonymous CVS server access completely.
+
+     * Block  or  restrict access to CVS servers from untrusted hosts and
+       networks.  Anonymous  access  to CVS servers using :cvspserver: is
+       typically provided on port 2401/tcp.
+
+     * Configure CVS servers to run in restricted (chroot) environments.
+
+     * Host CVS servers on single-purpose, secured systems.
+
+   These  workarounds  and  configurations are not complete solutions and
+   will  not  prevent  exploitation of this vulnerability. Other features
+   inherent  in  CVS  may  give anonymous users the ability to gain shell
+   access.
+
+
+Appendix A. Vendor Information
+
+   This  appendix  contains information provided by vendors. When vendors
+   report  new  information,  this section is updated and the changes are
+   noted  in  the  revision  history. If a vendor is not listed below, we
+   have  not  received  their  comments.  The Systems Affected section of
+   VU#650937 contains additional vendor status information:
+
+    <http://www.kb.cert.org/vuls/id/650937#systems>
+
+Conectiva
+
+     Conectiva  Linux is affected by this issue and updated packages are
+     available at <ftp://atualizacoes.conectiva.com.br/>:
+     
+     6.0/SRPMS/cvs-1.10.8-5U60_3cl.src.rpm
+     6.0/RPMS/cvs-1.10.8-5U60_3cl.i386.rpm
+     6.0/RPMS/cvs-doc-1.10.8-5U60_3cl.i386.rpm
+     7.0/SRPMS/cvs-1.11-7U70_2cl.src.rpm
+     7.0/RPMS/cvs-1.11-7U70_2cl.i386.rpm
+     7.0/RPMS/cvs-doc-1.11-7U70_2cl.i386.rpm
+     8/SRPMS/cvs-1.11-9U80_2cl.i386.rpm
+     8/RPMS/cvs-1.11-9U80_2cl.i386.rpm
+     8/RPMS/cvs-doc-1.11-9U80_2cl.i386.rpm
+     
+     An official announcement is pending and will show up in our updates
+     website at  <http://distro.conectiva.com.br/atualizacoes?idioma=en>
+     shortly.
+
+Cray Inc.
+
+     Cray  Inc.  supports  CVS  through  their  Cray Open Software (COS)
+     package.  COS  3.3  and  earlier  is  vulnerable. A new CVS will be
+     available   shortly.   Please   contact  your  local  Cray  service
+     representative if you need this new package.
+
+CVS Home
+
+     CVS  release  1.11.5  addresses  this  issue  for  CVS servers. CVS
+     clients are not affected.
+
+Debian
+
+     Debian has updated their distribution with DSA 233.
+     <http://www.debian.org/security/2003/dsa-233>
+
+     For  the stable distribution (woody) this problem has been fixed in
+     version 1.11.1p1debian-8.1.
+
+     For  the  old  stable  distribution  (potato) this problem has been
+     fixed in version 1.10.7-9.2.
+
+     For  the  unstable  distribution  (sid)  this problem will be fixed
+     soon.
+
+Hewlett-Packard
+
+     SOURCE:  Hewlett-Packard Company and Compaq Computer Corporation, a
+     wholly-owned subsidiary of Hewlett-Packard Company
+     
+     RE: x-reference SSRT3463
+     
+     Not Vulnerable:
+     
+     HP-UX
+     HP-MPE/ix
+     HP Tru64 UNIX
+     HP NonStop Servers
+     HP OpenVMS
+     
+     To  report  any  security  issue  for any HP software products send
+     email to <security-alert@hp.com>
+
+IBM
+
+     The  AIX  operating  system does not ship with CVS. However, CVS is
+     available for installation on AIX from the Linux Affinity Toolbox.
+
+     CVS  versions  1.11.1p1-2  and earlier are vulnerable to the issues
+     discussed  in  CERT Vulnerability Note VU#650937 and any advisories
+     which follow.
+
+     Users are advised to download CVS 1.11.1p1-3 from:
+
+     <ftp://ftp.software.ibm.com/aix/freeSoftware/aixtoolbox/RPMS/ppc/
+     cvs/cvs-1.11.1p1-3.aix4.3.ppc.rpm>
+     
+     Please note that the above address was wrapped to two lines.
+
+     CVS  1.11.1p1-3  contains  the security fixes made in CVS 1.11.5 to
+     address these issues.
+
+     This software is offered on an "as-is" basis.
+
+Openwall GNU/*/Linux
+
+     We  don't  yet  re-distribute  CVS  in Openwall GNU/*/Linux. We do,
+     however,  provide  public  anonymous  CVS  access  to a copy of our
+     repository,  hosted  off  a  separate machine and in a chroot jail.
+     This  kind  of vulnerabilities in CVS was expected, and our anoncvs
+     setup  is  mostly  resistant  to  them:  read-only  access  to  the
+     repository  is  achieved  primarily  with  the  use of regular Unix
+     permissions,  not  controls  built  into CVS. CVS LockDir option is
+     used  to  direct  CVS  lock  files  to  a  separate directory tree,
+     actually  writable  to  the  pseudo-user. Nevertheless, the anoncvs
+     server  has  been  upgraded  to CVS 1.11.5 a few hours after it was
+     released.
+
+Red Hat, Inc.
+
+     Red  Hat Linux and Red Hat Linux Advanced Server shipped with a cvs
+     package  vulnerable  to  these  issues.  New  cvs  packages are now
+     available  along  with our advisory at the URLs below. Users of the
+     Red Hat Network can update their systems using the 'up2date' tool.
+
+     Red Hat Linux Advanced Server:
+
+     <http://rhn.redhat.com/errata/RHSA-2003-013.html>
+
+     Red Hat Linux:
+
+     <http://rhn.redhat.com/errata/RHSA-2003-013.html>
+
+Sun Microsystems Inc.
+
+     Sun  does not include CVS with Solaris and therefore Solaris is not
+     affected by this issue.
+
+     Sun  Linux,  versions  5.0.3 and below, does ship with a vulnerable
+     CVS  package.  Sun  recommends  that  CVS  services  be disabled on
+     affected  Sun  Linux  systems  until patches are available for this
+     issue.
+
+     Sun  will  be  publishing  a Sun Alert for Sun Linux describing the
+     patch information which will be available from:
+
+     <http://sunsolve.Sun.COM>
+
+
+Appendix B. References
+
+     * CERT/CC Vulnerability Note VU#650937 -
+       <http://www.kb.cert.org/vuls/id/650937>
+     * e-matters Advisory 01/2003 -
+       <http://security.e-matters.de/advisories/012003.html>
+
+     _________________________________________________________________
+
+   This vulnerability was reported by Stefan Esser of e-matters.
+     _________________________________________________________________
+
+   Author: Art Manion.
+   ______________________________________________________________________
+
+   This document is available from:
+   <http://www.cert.org/advisories/CA-2003-02.html>
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: <cert@cert.org>
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   <http://www.cert.org/CERT_PGP.key>
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   <http://www.cert.org/>
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to <majordomo@cert.org>. Please include in the body of
+   your message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2003 Carnegie Mellon University.
+
+   Revision History
+
+   January 22, 2003: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPi8vSmjtSoHZUTs5AQGr2wQAwBNBUDgbiDbXzF3CsqmOgzQUKrgKYWHJ
+wbeH8Y+6Eiuha2bu/2JDBxYWOPdPUhu11USaa8fwg9k73yjVUCVeT+mRBTjVsw9k
+9jwT96JtKj2aNyRT+KR4YAme0JzQCqgJD88B8Z6vCWdsMJXPKg1acjou2qNwbaqz
+UCRRY26e5dk=
+=FBp0
+-----END PGP SIGNATURE-----
+

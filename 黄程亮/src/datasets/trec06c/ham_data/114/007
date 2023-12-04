@@ -1,0 +1,67 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k19FFSt06259
+	for <egs+summary>; Thu, 9 Feb 2006 10:15:28 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k19FFQ86009068
+	for <egs+summary>; Thu, 9 Feb 2006 10:15:27 -0500 (EST)
+Received: from 128.253.122.16
+        by webmail.cornell.edu with HTTP;
+        Thu, 9 Feb 2006 10:15:27 -0500 (EST)
+Message-ID: <1314.128.253.122.16.1139498127.squirrel@webmail.cornell.edu>
+In-Reply-To: 
+     <103627068.1138897326162.JavaMail.webber@orpheus3.dataserver.cornell.e
+     du>
+References: 
+    <103627068.1138897326162.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 9 Feb 2006 10:15:27 -0500 (EST)
+Subject: PAPER 5
+From: "Gopal Parameswaran" <gp72>
+To: egs+summary
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+ One Hop lookup is a peer to peer algorithm where all lookups are done in
+one hop by storing all node lookup information at all nodes and where
+node information is propagated to all the other nodes at regular interval
+in a compact way to avoid excessive bandwidth usage. This results in a
+one hop lookup for a destination node and hence the search algorithm is
+faster since the latency is greatly reduced. For updation of all the
+nodes with regards to a node joining or leaving the system the ring is
+broken up into k equal contiguous intervals called slices and each slice
+is broken up into units. A super node is chosen at each slice called
+slice leader and similary unit leaders are chosen grouped under slice
+leaders. A slice leader gets updated at certain specified intervals by
+the units in it and each unit gets updated at certain intervals by the
+nodes that are contained in the unit. Thus information regarding changes
+in the nodes in the slice  is propagated to the slices and each slice
+sends the information out to all the slices at a certain interval and in
+a compact manner. This helps keep all the nodes routing tables updated
+with the latest node states at the expense of pressure on the bandwidth.
+However since the information is send in a compact manner the bandwidth
+usage is not that high as it appears but as the number of nodes is
+increased beyond a million nodes it becomes higher.  However the system
+is not really fault tolerant since if a set of  local units go down then
+all nodes associated with the unit leader would be lost since each unit
+leader only maintains a list of pointers to its child nodes. There would
+be no way in this system to recover from such failures. This failure
+would take on a much higher proportion if any of the slice leaders fail.
+Also an assumption is made that failures at the splice leader and node
+leader level will not occur frequently which might not be the case unless
+they are highly reliable nodes and in a real application it would be
+essential to have a reliable splice leader since if it goes down it would
+bring down a portion of the network with itself till the particular slice
+leader is restored back or the alternate splice leader has taken over.
+Node additions to this network would be simple and when new nodes are
+added to the system then the node information is passed on via the same
+layers of slice leader and unit leader to all nodes.
+To conclude this network while reducing the overheads on an average for
+searching at the cost of increased overheads to maintain the network is an
+effective way for one hop routing though its performance at high level of
+nodes of 10^10 etc would be slow since the effect on bandwidth would be
+high. Similarly, the pressure of maintaing the networks are on a few nodes
+which if they go down would bring the network down with them.
+

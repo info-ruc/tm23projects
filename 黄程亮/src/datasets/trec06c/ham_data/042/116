@@ -1,0 +1,59 @@
+Received: from urth.netco.com (new-urth.netco.com [206.103.221.15])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id RAA04225
+	for <handyboard@media.mit.edu>; Mon, 19 Apr 1999 17:09:13 -0400 (EDT)
+Received: from dm.wamnet.com([192.168.168.2]) (2747 bytes) by urth.netco.com
+	via sendmail with P:esmtp/R:inet_hosts/T:smtp
+	(sender: <tgb@cozy.core.wamnet.com>) 
+	id <m10ZLHT-00EAxcC@urth.netco.com>
+	for <handyboard@media.mit.edu>; Mon, 19 Apr 1999 16:08:39 -0500 (CDT)
+	(Smail-3.2.0.104 1998-Nov-20 #1 built 1998-Dec-7)
+Received: from cozy.core.wamnet.com.wamnet.com(really [192.168.250.75]) by dm.wamnet.com
+	via sendmail with esmtp
+	id <m10ZLHT-00j7wmC@dm.wamnet.com>
+	for <@mail-relay.wamnet.com:handyboard@media.mit.edu>; Mon, 19 Apr 1999 16:08:39 -0500 (CDT)
+	(Smail-3.2 1996-Jul-4 #3 built 1996-Nov-12)
+Received: (from tgb@localhost) by cozy.core.wamnet.com.wamnet.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id QAA23999; Mon, 19 Apr 1999 16:08:39 -0500
+Date: Mon, 19 Apr 1999 16:08:39 -0500
+Message-Id: <199904192108.QAA23999@cozy.core.wamnet.com.wamnet.com>
+From: Tom Brusehaver <tgb@cozy.core.wamnet.com>
+To: yonatan@andrew.cmu.edu
+Cc: handyboard@media.mit.edu
+In-Reply-To: <Pine.SOL.3.96L.990419153618.17719B-100000@unix8.andrew.cmu.edu>
+	(message from Yonatan Mittlefehldt on Mon, 19 Apr 1999 15:43:02 -0400
+	(EDT))
+Subject: Re: Vector Compass problem
+Reply-To: tgb@wamnet.com
+References:  <Pine.SOL.3.96L.990419153618.17719B-100000@unix8.andrew.cmu.edu>
+
+
+>1)  occasionally the compass doesn't produce a clock signal until i reset
+>it a couple of times.  any thoughts?
+
+I have seen that too.  maybe have you main call comp_disable, do some
+stuff, and call comp_init. It may fix the problem. The compass should
+reset properly on it's own, but doesn't always.
+
+>2)  it seems to be inaccurate by plus or minus 20 degrees.  what i have
+>found is that 360 degrees is actually 360 degrees, but 90 degrees doesn't
+>usually come up as 90 degrees. (i have the compass on a protyping board,
+>and position it with the tiles on the floor to try and get 90 degrees)
+>what happens is that the error alternates every quadrant.  so odd
+>quadrants might be minus 20 degrees, but even ones plus 20 degrees.
+
+Check you environment with a regular old compass, even a $0.49 you can
+sometimes get at a drug store, or convenience store (the cheaper the
+better, they are usually more affected by environment).  There is
+re-bar in concrete floors that will affect a compass.  I have mine
+over 9 inches from the floor for that reason.  Drag your compass
+across the floor, if you see the needle wiggling, you are probably
+passing near re-bar. 
+
+Watch for screws and other metallic objects in your robot base. The
+top of my robot has all aluminium screws, and velcro to hold
+everything else on (including the compass).  Watch the aluminium, some
+alloys have steel in them, I have some standoffs that seem aluminium
+like, but definatly affect a compass. How far is the compass from the
+motors in your base.  If it is too close (depends on motors) you will
+probably get a wrong reading all the time. 
+
+

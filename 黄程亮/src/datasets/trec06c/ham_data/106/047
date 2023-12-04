@@ -1,0 +1,194 @@
+Received: from web26609.mail.ukl.yahoo.com (web26609.mail.ukl.yahoo.com [217.146.176.59])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with SMTP id j8F38V5L016016
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 14 Sep 2005 20:08:31 -0700
+Received: (qmail 91336 invoked by uid 60001); 15 Sep 2005 03:08:20 -0000
+Message-ID: <20050915030820.91334.qmail@web26609.mail.ukl.yahoo.com>
+Received: from [163.26.142.112] by web26609.mail.ukl.yahoo.com via HTTP; Thu, 15 Sep 2005 04:08:20 BST
+Date: Thu, 15 Sep 2005 04:08:20 +0100 (BST)
+From: Yu-cheng Sieh <daphsieh@yahoo.co.uk>
+Subject: [DMDX] Re: interrupt device didn't work!
+To: DMDX@psy1.psych.arizona.edu
+In-Reply-To: <5.1.0.14.2.20050914080316.00ba4840@psy1.psych.arizona.edu>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-390757293-1126753700=:88553"
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+--0-390757293-1126753700=:88553
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+Hello Jonathan,
+ 
+Thank you for your suggestion. All display errors were solved after I removed the delay parameter as you suggested. However, the mapping is still not working. I followed your suggestion and changed the input device to #. But the syntax check told me that the <#3> was not found on input devices. 
+ 
+I once suspected that the signal sent by the mouse was not received probably because the .bmp and the .wav take up too much video memory. So I wrote another script using only text. However, the mouse still failed to function. Not even when I used # in mapping the positive and negative responses. The RTs in all items all showed the timeout ms and 100% error rate. 
+ 
+Here are the header parameters and test items. 
+<ep> <n 5> <cr> <azk> <nfb> <fd 38> <t 2500> <id "&#37749;&#30436;"> <mr +Space> <id "&#28369;&#40736;"> <umnr> <umpr> <mnr +#3> <mpr +#4> <dbc 255255255> <dwc 0> <vm 800,600,600,16,0> <eop>
+0 "Press SPACEBAR to start." ;
++1 * "rabbit" /;
++2 * "tool" /;
+-3 * "rubid" /;
+-4 * "stopograttic" /;
++5 * "mouse" /;
+0 "The end.  Thank you." <end>;
+
+I am at my wits' end. Could you help me to solve the mapping problem? Thanks a lot.
+ 
+Daphne
+
+
+"j.c.f." <jforster@psy1.psych.arizona.edu> wrote:
+
+Your display errors will be fixed by removing the delay parameter 
+altogether. Unless you have a real need for a fixed ISI don't use D.
+
+As for the input devices if you turn on there will be a 
+whole bunch of information in diagnostics.txt helping us determine what's 
+gone wrong. Pretty odd that we're not getting errors about mappings that 
+aren't found but I'm betting it's related to your positive response mapping 
+not having a + in front of it, should be .
+
+Typically with non-english input devices its best to use the # versions 
+of them instead of their named versions, instead of "&#352;&#352;&#8216;l">. Then you can use things like -- but be careful if you use 
+more than one # input device as you'll have two #0 buttons and won't be 
+able to map buttons on the second device...
+
+
+At 08:09 AM 9/14/2005 +0100, you wrote:
+>Hi,
+>
+>I am a new user of DMDX. I learned to write the script file and corrected 
+>most of the errors by referring to the postings on the ListServ and the 
+>DMDX Help. However, when I tested myself (using a Compaq Presario 2800 
+>laptop), I found the mice (both touchpad and USB) didn't work. The mice 
+>work in all other conditions but they seem to go to sleep when I run the 
+>experiment. The strange thing is the SpaceBar works.
+
+Because you only unmap the positive and negative response keys but not 
+the requests.
+
+> When all means failed, I tried to map the Shift buttons on the keyboard, 
+> instead of using a mouse. But they didn't work either. It appears that 
+> only the SpaceBar works.
+>
+>I am not sure if it's caused by any mistakes I made in the script. The 
+>laptop I use is one with some button names in Chinese. I found out the 
+>button names by doing the input test in the TimeDX. The number (#0, #1, 
+>#2) of the two input devices' buttons was not found on input devices when 
+>I ran a syntax check.
+>
+>Here is part of my script.
+> >+Space> >255255255> 
+>0 "Press SPACEBAR to start.";
+>+1 / * "sun" / "sun" / / ;
+>-2 / * "lip"/ "book" / / ;
+>-3 / * "banana"/ "apple" / / ;
+>+4 / * "ice cream"/ "ice cream" / >1000> /;
+>....
+>....
+>
+>I suspect something might have gone wrong so I ran the diagnostics. Here's 
+>the info I've got.
+>....
+>....
+>EXPERIMENT READY
+>24 video memory buffers at 800x600 16 bpp
+>Preparation A 48.63ms, B 0.00ms
+>0 "Press SPACEBAR to start.";
+>Display error at msec 544.36, tick 32 in item 0, frame "Press SPACEBAR to 
+>start."
+>moved into video memory 12 ticks late
+>(previous frame's duration will have been longer)
+>-- possibly caused by another process taking 1 tick
+>Preparation A 0.18ms, B 3.26ms
+>+1 "sun" / * "sun" /! /;
+>DQ adjusted by 1 ticks to allow for sound
+>Item 1 RT -7000.00 -- Error Rate 100%
+>Preparation A 235.44ms, B 97.73ms
+>-2 "lip" / * "book" /! /;
+>DQ adjusted by 1 ticks to allow for sound
+>Item 2 RT -7000.00 -- Error Rate 100%
+>Display error at msec 21590.50, tick 1317 in item 2, frame "book"
+>moved into video memory 250 ticks late
+>(previous frame's duration will have been longer)
+>-- possibly caused by another process taking 5 ticks
+>Preparation A 310.88ms, B 129.13ms
+>-3 "banana" / * "apple" /! /;
+>DQ adjusted by 1 ticks to allow for sound
+>Item 3 RT -7000.00 -- Error Rate 100%
+>Display error at msec 29072.37, tick 1772 in item 3, frame "apple"
+>moved into video memory 250 ticks late
+>(previous frame's duration will have been longer)
+>-- possibly caused by another process taking 5 ticks
+>...
+>...
+>
+>I noticed that both the display error and tick increased as the experiment 
+>went on. But the number of ticks-late when a frame moved into video memory 
+>was ranged between 234 and 251.
+>
+>Later I changed the header parameters to
+> >+Space> >255255255> 
+>thinking that it might help. But it didn't. The result of running a 
+>diagnostics is about the same as mentioned above. Could anyone tell me 
+>what to do? Thanks a lot.
+>
+>Cheers,
+>Daphne
+>
+>
+>NEW - crystal clear PC to PC
+
+/"\
+-jonathan (j.c.f.) \ /
+X
+ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL / \
+
+Integrity has no need for rules.
+
+
+
+====================================================================
+Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+'unsubscribe' by itself with no quotes in the body of the email
+to be removed from the list. The list archive is available here:
+http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+		
+---------------------------------
+Yahoo! Messenger  NEW - crystal clear PC to PC calling worldwide with voicemail 
+--0-390757293-1126753700=:88553
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+<DIV>Hello Jonathan,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Thank you for your suggestion. All display errors were solved after I removed the delay parameter as you suggested. However, the mapping is still not working. I followed your suggestion and changed the input device to #. But the syntax check told me that the &lt;#3&gt; was not found on input devices. </DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I once suspected that&nbsp;the signal sent by the mouse was not received probably because&nbsp;the .bmp and the .wav take up too much video memory. So I wrote another script using only text. However, the mouse still failed to function. Not even when I used # in mapping the positive and negative responses. The RTs in all items all showed the timeout ms and 100% error rate. </DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Here are&nbsp;the header parameters and test items. </DIV>
+<DIV>&lt;ep&gt; &lt;n 5&gt; &lt;cr&gt; &lt;azk&gt; &lt;nfb&gt; &lt;fd 38&gt; &lt;t 2500&gt; &lt;id "&#37749;&#30436;"&gt; &lt;mr +Space&gt; &lt;id "&#28369;&#40736;"&gt; &lt;umnr&gt; &lt;umpr&gt; &lt;mnr +#3&gt; &lt;mpr +#4&gt; &lt;dbc 255255255&gt; &lt;dwc 0&gt; &lt;vm 800,600,600,16,0&gt; &lt;eop&gt;<BR>0 "Press SPACEBAR to start." ;<BR>+1 * "rabbit" /;<BR>+2 * "tool" /;<BR>-3 * "rubid" /;<BR>-4 * "stopograttic" /;<BR>+5 * "mouse" /;<BR>0 "The end.&nbsp; Thank you." &lt;end&gt;;<BR></DIV>
+<DIV>I am at my wits' end. Could you help me to solve the mapping problem? Thanks a lot.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Daphne</DIV>
+<DIV><BR><BR><B><I>"j.c.f." &lt;jforster@psy1.psych.arizona.edu&gt;</I></B> wrote:</DIV>
+<BLOCKQUOTE class=replbq style="BORDER-LEFT: #1010ff 2px solid; MARGIN-LEFT: 5px; PADDING-LEFT: 5px"><BR>Your display errors will be fixed by removing the delay parameter <BR>altogether. Unless you have a real need for a fixed ISI don't use D.<BR><BR>As for the input devices if you turn on <TESTMODE 10>there will be a <BR>whole bunch of information in diagnostics.txt helping us determine what's <BR>gone wrong. Pretty odd that we're not getting errors about mappings that <BR>aren't found but I'm betting it's related to your positive response mapping <BR>not having a + in front of it, <MPR &#710;Âçä+1>should be <MPR +&#710;Âçä+1>.<BR><BR>Typically with non-english input devices its best to use the # versions <BR>of them instead of their named versions, <ID ?#&#352;&#352;&#8216;l?>instead of <ID <br>"&#352;&#352;&#8216;l"&gt;. Then you can use things like <MR #0>-- but be careful if you use <BR>more than one # input device as you'll have two #0 buttons and won't be <BR>able to map
+ buttons on the second device...<BR><BR><BR>At 08:09 AM 9/14/2005 +0100, you wrote:<BR>&gt;Hi,<BR>&gt;<BR>&gt;I am a new user of DMDX. I learned to write the script file and corrected <BR>&gt;most of the errors by referring to the postings on the ListServ and the <BR>&gt;DMDX Help. However, when I tested myself (using a Compaq Presario 2800 <BR>&gt;laptop), I found the mice (both touchpad and USB) didn't work. The mice <BR>&gt;work in all other conditions but they seem to go to sleep when I run the <BR>&gt;experiment. The strange thing is the SpaceBar works.<BR><BR>Because you only unmap the positive and negative response keys but not <BR>the requests.<BR><BR>&gt; When all means failed, I tried to map the Shift buttons on the keyboard, <BR>&gt; instead of using a mouse. But they didn't work either. It appears that <BR>&gt; only the SpaceBar works.<BR>&gt;<BR>&gt;I am not sure if it's caused by any mistakes I made in the script. The <BR>&gt;laptop I use is one with some button names
+ in Chinese. I found out the <BR>&gt;button names by doing the input test in the TimeDX. The number (#0, #1, <BR>&gt;#2) of the two input devices' buttons was not found on input devices when <BR>&gt;I ran a syntax check.<BR>&gt;<BR>&gt;Here is part of my script.<BR>&gt;<EP> <N 30><D 20><CR><AZK><NFB><FD 120><T 7000><ID ?&#338;®&#8221;Õ?><MR <br>&gt;+Space&gt; <ID ?&#352;&#352;&#8216;l?><UMNR><UMPR><MNR +&#710;Âçä0><MPR &#710;Âçä+1><DBC <br>&gt;255255255&gt; <DWC 0><VM 800,600,600,16,0><EOP><BR>&gt;0 "Press SPACEBAR to start.";<BR>&gt;+1 <MS% 500>/ * <WAV 2><SVP start>"sun" / <BMP>"sun" / <MS% 1000>/ ;<BR>&gt;-2 <MS% 500>/ * <WAV 2><SVP start>"lip"/ <BMP>"book" / <MS% 1000>/ ;<BR>&gt;-3 <MS% 500>/ * <WAV 2><SVP start>"banana"/ <BMP>"apple" / <MS% 1000>/ ;<BR>&gt;+4 <MS% 500>/ * <WAV 2><SVP start>"ice cream"/ <BMP>"ice cream" / <MS% <br>&gt;1000&gt; /;<BR>&gt;....<BR>&gt;....<BR>&gt;<BR>&gt;I suspect something might have gone wrong so I ran the diagnostics. Here's <BR>&gt;the info I've
+ got.<BR>&gt;....<BR>&gt;....<BR>&gt;EXPERIMENT READY<BR>&gt;24 video memory buffers at 800x600 16 bpp<BR>&gt;Preparation A 48.63ms, B 0.00ms<BR>&gt;0 "Press SPACEBAR to start.";<BR>&gt;Display error at msec 544.36, tick 32 in item 0, frame "Press SPACEBAR to <BR>&gt;start."<BR>&gt;moved into video memory 12 ticks late<BR>&gt;(previous frame's duration will have been longer)<BR>&gt;-- possibly caused by another process taking 1 tick<BR>&gt;Preparation A 0.18ms, B 3.26ms<BR>&gt;+1 <WAV 2><SVP start>"sun" / * <BMP>"sun" /! <MS% 1000>/;<BR>&gt;DQ adjusted by 1 ticks to allow for sound<BR>&gt;Item 1 RT -7000.00 -- Error Rate 100%<BR>&gt;Preparation A 235.44ms, B 97.73ms<BR>&gt;-2 <WAV 2><SVP start>"lip" / * <BMP>"book" /! <MS% 1000>/;<BR>&gt;DQ adjusted by 1 ticks to allow for sound<BR>&gt;Item 2 RT -7000.00 -- Error Rate 100%<BR>&gt;Display error at msec 21590.50, tick 1317 in item 2, frame "book"<BR>&gt;moved into video memory 250 ticks late<BR>&gt;(previous frame's duration will have
+ been longer)<BR>&gt;-- possibly caused by another process taking 5 ticks<BR>&gt;Preparation A 310.88ms, B 129.13ms<BR>&gt;-3 <WAV 2><SVP start>"banana" / * <BMP>"apple" /! <MS% 1000>/;<BR>&gt;DQ adjusted by 1 ticks to allow for sound<BR>&gt;Item 3 RT -7000.00 -- Error Rate 100%<BR>&gt;Display error at msec 29072.37, tick 1772 in item 3, frame "apple"<BR>&gt;moved into video memory 250 ticks late<BR>&gt;(previous frame's duration will have been longer)<BR>&gt;-- possibly caused by another process taking 5 ticks<BR>&gt;...<BR>&gt;...<BR>&gt;<BR>&gt;I noticed that both the display error and tick increased as the experiment <BR>&gt;went on. But the number of ticks-late when a frame moved into video memory <BR>&gt;was ranged between 234 and 251.<BR>&gt;<BR>&gt;Later I changed the header parameters to<BR>&gt;<EP> <N 30><D 250><CR><AZK><NFB><FD 120><T 10000><ID ?&#338;®&#8221;Õ?><MR <br>&gt;+Space&gt; <ID ?&#352;&#352;&#8216;l?><UMNR><UMPR><MNR +&#710;Âçä0><MPR &#710;Âçä+1><DBC
+ <br>&gt;255255255&gt; <DWC 0><VM 800,600,600,16,0><EOP><BR>&gt;thinking that it might help. But it didn't. The result of running a <BR>&gt;diagnostics is about the same as mentioned above. Could anyone tell me <BR>&gt;what to do? Thanks a lot.<BR>&gt;<BR>&gt;Cheers,<BR>&gt;Daphne<BR>&gt;<BR>&gt;<BR>&gt;NEW - crystal clear PC to PC<BR><BR>/"\<BR>-jonathan (j.c.f.) \ /<BR>X<BR>ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL / \<BR><BR>Integrity has no need for rules.<BR><BR><BR><BR>====================================================================<BR>Send mail to DMDX-request@psy1.psych.arizona.edu with the word<BR>'unsubscribe' by itself with no quotes in the body of the email<BR>to be removed from the list. The list archive is available here:<BR>http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread<BR>====================================================================<BR></BLOCKQUOTE><p>
+		<hr size=1><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><a href="http://us.rd.yahoo.com/mail/uk/taglines/default/messenger/*http://uk.messenger.yahoo.com 
+">Yahoo! Messenger</a> 
+ <font color="red">NEW</font> - crystal clear PC to PC 
+<a href="http://us.rd.yahoo.com/mail/uk/taglines/default/messenger/*http://uk.messenger.yahoo.com 
+">calling worldwide with voicemail 
+</a></font>
+--0-390757293-1126753700=:88553--
+

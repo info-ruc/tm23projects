@@ -1,0 +1,60 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id NAA22207
+	for <handyboard@media.mit.edu>; Wed, 28 Oct 1998 13:37:19 -0500 (EST)
+Received: from cs.umt.edu (mso1-36.montana.com [208.4.224.36])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id LAA28134
+	for <handyboard@media.mit.edu>; Wed, 28 Oct 1998 11:34:50 -0700 (MST)
+Message-Id: <36376457.8639651D@cs.umt.edu>
+Date: Wed, 28 Oct 1998 11:37:11 -0700
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Sonar Sensor Problems
+References: <Pine.A41.3.96.981027215817.10936I-100000@ben09.unm.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+michael lang kee wrote:
+<snip> 
+>         The problem is I am getting readings from the handy board, which
+> is from the sonar.  The reading I am getting are ranging from -25000 to
+> +25000.  Some of the sample readings that I am getting are as follows;
+> 200, 1400, 1800, 5000, 12000, 2400, 3000, -500, -3000, -14000, -24000,
+> -500, 13000, 23000. <snip>
+
+An occasional sporadic reading is normal and can best be handled by
+returning the median of three readings.  Very noisy sonar data like
+yours might be attributable to noisy power to the board, a weak
+connection, or running motors, etc. at the same time.  The Polaroid
+manual says that it's a good idea to make sure there are no other
+electromechanical components operating while listening for a ping. 
+Also, make sure you soldered the correct capacitor into the C7 position
+on the sonar module board (see the HB web page) and that your solder
+joints are clean.
+
+>         Another problem I am having is the connection from the Polaroid
+> 9-pin Connector to the 6500 Series Sonar Ranging Module.  I am using a
+> Polaroid ribbon wire, between these two.  The problem is, the ribbon is
+> bending a lot and the connection is not that good. <snip>
+
+The solution that worked best for me was to replace the female flat flex
+connector on the sonar module board with .100" female header strips--a
+1x4 and a 1x5 superglued together.  I glued up a 9-pin male header plug
+to match, and used rainbow ribbon cable to connect the sonar module to
+my custom dual sonar interface board (with the six diodes and the
+resistor on it).  I also doubled up on the power and ground wires to
+ensure adequate current flow.  It works great.  Anyone who wants more
+details should feel free to e-mail me directly.  Good luck!
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,             If you can find something everyone agrees on,
+Will Bain,                                                  it's wrong.
+& Tatoosh                                                    --Mo Udall
+

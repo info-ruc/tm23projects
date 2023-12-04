@@ -1,0 +1,116 @@
+Received: from penguin.cs.cornell.edu (penguin.cs.cornell.edu [128.84.96.11])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3DG3Z215422
+	for <egs+summary@cs.cornell.edu>; Thu, 13 Apr 2006 12:03:35 -0400 (EDT)
+Received: from postoffice10.mail.cornell.edu ([132.236.56.14]) by penguin.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 13 Apr 2006 12:03:05 -0400
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k3DG33Yw026282
+	for <egs+summary@cs.cornell.edu>; Thu, 13 Apr 2006 12:03:04 -0400 (EDT)
+Received: from 128.84.98.131
+        by webmail.cornell.edu with HTTP;
+        Thu, 13 Apr 2006 12:03:04 -0400 (EDT)
+Message-ID: <3196.128.84.98.131.1144944184.squirrel@webmail.cornell.edu>
+Date: Thu, 13 Apr 2006 12:03:04 -0400 (EDT)
+Subject: paper 19
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-OriginalArrivalTime: 13 Apr 2006 16:03:05.0296 (UTC) FILETIME=[BFC42D00:01C65F13]
+
+DIGITAL FOUNTAIN APPROACH
+
+a limitation of the  current mirroring technology is that a user must
+choose a single mirror site from which to access the entire data.
+performance can be improved substantially if the users are able to
+download disjoint data (as far as possible) from multiple mirror sites in
+parallel.
+
+erasure codes are utilized for this purpose as this allows an initial file
+consisting of k packets to be encoded into n packets such that receiving
+any k of them can reconstruct the original file.
+
+
+CONSTRAINTS:
+bandwidth on the back-channel (i.e. client sending response to server) is
+extremely limited.thus, approaches based on renegotiation are not good as
+they require feedback from the client.
+
+
+ASSUMPTIONS:
+1) set of paths from client to mirror sites are bottleneck disjoint
+
+
+TORNADO CODES:
+they tradeoff a small increase in decoding efficiency for a substantial
+decrease in decoding and encoding times.
+each server encodes the file using Tornado codes and then randomly
+permutes the packets before sending.
+
+This random permutation prevents (to a certain extent) duplicate packets
+at the client when it receives from multiple servers.the stretch factor (
+n/k) is chosen sufficiently large so that cycling does not occur (i.e.
+receiving
+duplicate packets from server)
+
+duplicate packet recieval can be prevented by the client negotiating with
+each server.
+
+Requirements of an ideal protocol : minimize network traffic , reliable ,
+efficient, on-demand , tolerant.
+
+the authors also suggest a layering scheme for multiple multicasts based
+on synchronization points.
+(the layers are ordered by increasing transmission rate)
+
+
+
+
+
+NETWORK CODING
+
+this approach allows intermediate nodes to encode packets.
+the authors point out that multiple copies of a packet may arrive
+repeatedly at the client through
+
+different paths. this is prevent using network encoding.
+
+content propagation : the algorithm to decide which block to transfer is
+based only on local information. the possible policies are : random block,
+local rarest.
+
+
+
+BASIC IDEA :
+
+each node picks a random set of co-efficients for all its blocks. each
+element of each block is multiplied with the corresponding co-efficient
+and all such results (for all blocks) are added together
+in a finite field.
+
+a node can recover the original file after receiving k blocks for which
+associated coefficient vectors are linearly independent to each other.
+
+
+the only time that a block is not useful is when the receiver has all
+blocks which were used to combine into the sent block. thus, each node
+must know its neighbors coefficients to determine if the block is
+"innovative" or not.
+
+
+incentive mechanisms can be used to prevent free-riding.
+
+
+
+
+BOTH THE SCHEMES DO NOT PREVENT MALICIOUS NODES FROM FORWARDING JUNK
+PACKETS AND THUS PROBABLY DESTROYING THE MULTICAST.
+detecting whether a node is malicious seems also very difficult.
+
+
+
+

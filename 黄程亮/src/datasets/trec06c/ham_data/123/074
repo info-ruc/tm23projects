@@ -1,0 +1,159 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k3T0HSlT012056
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 28 Apr 2006 17:17:28 -0700
+Received: from localhost (legolas.email.arizona.edu [10.0.0.224])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 23879DF6B40
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 28 Apr 2006 17:17:28 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 5ED88DF91AE
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 28 Apr 2006 17:17:27 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060428170924.00ba4e68@psy1.psych.arizona.edu>
+Date: Fri, 28 Apr 2006 17:17:25 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Timing of mwc continued
+In-Reply-To: <6.2.3.4.2.20060428153831.043d4dc0@popmail.ucsd.edu>
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="=====================_25590796==_.ALT"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+--=====================_25590796==_.ALT
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+At 04:09 PM 4/28/2006 -0700, you wrote:
+>Dear Sir,
+>
+>   I just have some further questions related to call keyword. In the 
+> following script (tick length = 16.65ms):
+>
+><zil> <zor> <cr> <d 20> <t 1500> <nfb>
+>
+>0 "Press Spacebar to begin";
+>
+>1 <% 60> "GO"/<% 39>/<bu 1>
+>m1#<umnr><umpr><mpr +Left Arrow><mpr +Right Arrow>#
+>m2#<umnr><umpr><mnr +Left Arrow><mnr +Right Arrow>#
+>mC#<mwc "+Left Arrow", -991, "+Right Arrow", -991, cinr, -999>#
+>mW#<mwc "+Left Arrow", -992, "+Right Arrow", -992, cinr, -999>#;
+>
+>999 <ocb> d2 "Time Out" <% 12>/ <return>;
+>991 <ocb> d2 "CORRECT" <% 12>/<return>;
+>992 <ocb> d2 "WRONG" <% 12>/<return>;
+>
+>+1<% 12> g "fix_white"/ ~1 ~C*<% 36> g "noise1"/<% 36>/!;
+>-2<% 12> g "fix_white"/ ~2 ~C*<% 36> g "noise2"/<% 36>/!;
+>
+>at which point the time out text 999 is called? I think it is called right 
+>after the time-out point 1500ms set by the count-on asterisk, so the total 
+>duration of one trial should be 12+36+20+(36+1)+(2+12+1)=120 ticks.
+
+   The D parameter delay is the inter item delay, there is no inter frame 
+delay.  It's 12 + 36 + 36 + 1 + (2 + 12 + 1).  Slashes are frame 
+delimiters, semicolons are item delimeters.
+
+>  However, DMDX told me there was a 16-ticks delay. This delay only 
+> disappeared after I set time-out=1200.
+
+   The 16 tick delay is an error, your machine is not able to get the Time 
+Out item displayed within the time specified and is late by 16 ticks.  This 
+is caused by your timeout being longer than the remaining display duration 
+from the clock on, 36 + 36 + 1 ticks.  1500ms is going to be at least 90 ticks.
+
+
+>The second question is DMDX also reported a delay of 5 ticks for the 
+>instruction "Press Spacebar to begin" which varied from time to time. This 
+>did not get improved by varying the time-out limit.
+
+   This is normal behavior for the first item in a run to be late, various 
+machines are doing house keeping at different rates and it's not at all 
+uncommon to see the first frame late.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Flugg's Law:
+         When you need to knock on wood is when you realize that the
+world is composed of vinyl, naugahyde and aluminum.
+
+
+--=====================_25590796==_.ALT
+Content-Type: text/html; charset="us-ascii"
+
+<html>
+At 04:09 PM 4/28/2006 -0700, you wrote:<br>
+<blockquote type=cite class=cite cite>Dear Sir,<br><br>
+&nbsp; I just have some further questions related to call keyword. In the
+following script (tick length = 16.65ms):<br><br>
+&lt;zil&gt; &lt;zor&gt; &lt;cr&gt; &lt;d 20&gt; &lt;t 1500&gt;
+&lt;nfb&gt; <br><br>
+0 &quot;Press Spacebar to begin&quot;; <br><br>
+1 &lt;% 60&gt; &quot;GO&quot;/&lt;% 39&gt;/&lt;bu 1&gt;<br>
+m1#&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +Left Arrow&gt;&lt;mpr +Right
+Arrow&gt;#<br>
+m2#&lt;umnr&gt;&lt;umpr&gt;&lt;mnr +Left Arrow&gt;&lt;mnr +Right
+Arrow&gt;#<br>
+mC#&lt;mwc &quot;+Left Arrow&quot;, -991, &quot;+Right Arrow&quot;, -991,
+cinr, -999&gt;#<br>
+mW#&lt;mwc &quot;+Left Arrow&quot;, -992, &quot;+Right Arrow&quot;, -992,
+cinr, -999&gt;#;<br><br>
+999 &lt;ocb&gt; d2 &quot;<font color="#000080">Time Out</font>&quot;
+&lt;% 12&gt;/ &lt;return&gt;;<br>
+991 &lt;ocb&gt; d2 &quot;<font color="#00FF00">CORRECT</font>&quot; &lt;%
+12&gt;/&lt;return&gt;;<br>
+992 &lt;ocb&gt; d2 &quot;<font color="#FF0000">WRONG</font>&quot; &lt;%
+12&gt;/&lt;return&gt;;<br><br>
++1&lt;% 12&gt; g &quot;fix_white&quot;/ ~1 ~C*&lt;% 36&gt; g
+&quot;noise1&quot;/&lt;% 36&gt;/!;<br>
+-2&lt;% 12&gt; g &quot;fix_white&quot;/ ~2 ~C*&lt;% 36&gt; g
+&quot;noise2&quot;/&lt;% 36&gt;/!;<br><br>
+at which point the time out text 999 is called? I think it is called
+right after the time-out point 1500ms set by the count-on asterisk, so
+the total duration of one trial should be 12+36+20+(36+1)+(2+12+1)=120
+ticks.</blockquote><br>
+&nbsp; The D parameter delay is the inter item delay, there is no inter
+frame delay.&nbsp; It's 12 + 36 + 36 + 1 + (2 + 12 + 1).&nbsp; Slashes
+are frame delimiters, semicolons are item delimeters.<br><br>
+<blockquote type=cite class=cite cite>&nbsp;However, DMDX told me there
+was a 16-ticks delay. This delay only disappeared after I set
+time-out=1200. </blockquote><br>
+&nbsp; The 16 tick delay is an error, your machine is not able to get the
+Time Out item displayed within the time specified and is late by 16
+ticks.&nbsp; This is caused by your timeout being longer than the
+remaining display duration from the clock on, 36 + 36 + 1 ticks.&nbsp;
+1500ms is going to be at least 90 ticks.<br><br>
+<br>
+<blockquote type=cite class=cite cite>The second question is DMDX also
+reported a delay of 5 ticks for the instruction &quot;Press Spacebar to
+begin&quot; which varied from time to time. This did not get improved by
+varying the time-out limit.</blockquote><br>
+&nbsp; This is normal behavior for the first item in a run to be late,
+various machines are doing house keeping at different rates and it's not
+at all uncommon to see the first frame late.<br>
+<br>
+<br>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/&quot;\</div>
+<div>&nbsp;-jonathan
+(j.c.f.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+\ /</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+X </div>
+<div>&nbsp;&nbsp;&nbsp; ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL&nbsp; /
+\ </div>
+<br>
+<div>Flugg's Law:</div>
+<div><x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>When
+you need to knock on wood is when you realize that the</div>
+<div>world is composed of vinyl, naugahyde and aluminum.</div>
+<br>
+</html>
+
+--=====================_25590796==_.ALT--
+
+

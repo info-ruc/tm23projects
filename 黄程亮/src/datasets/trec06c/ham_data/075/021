@@ -1,0 +1,69 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id WAA02237
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 7 Dec 2000 22:46:54 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.39) by phobos.email.Arizona.EDU (5.1.046)
+        id 3A1F0EE600103EDD for DMDX@psy1.psych.arizona.edu; Thu, 7 Dec 2000 22:46:53 -0700
+Message-Id: <5.0.0.25.2.20001207222647.009db340@psy1.psych.arizona.edu>
+Date: Thu, 07 Dec 2000 22:46:52 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: IF...THEN in DMDX and others
+In-Reply-To: <3A3036DB.BA253938@ccunix.ccu.edu.tw>
+References: <5.0.0.25.2.20001206092025.009d5860@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 09:18 AM 12/8/00 +0800, you wrote:
+> >    No, decisions can only be made on an item by item basis, nothing can be
+> > done as an item is executing.  And before you ask, no, DMDX will never have
+> > this capability.  All you could do would be to provide some sort of warning
+> > after the fact and even that would require a new keyword to store the RT in
+> > a counter so a comparison can be made against it, however adding that
+> > keyword would be pretty trivial.
+>
+>That's exactly what I need. What's the keyword?
+
+   Usually for a specific modification made to DMDX for a non UofA person I 
+would ask for a donation to the UofA Psychology Hardware Fund, however the 
+current device I want is a digital camera that has a zoom on it so I can 
+take closeups of things and retail on a device like the Epson 3000Z is over 
+$700US and unless things are amazingly cheap in Taiwan I feel that is a 
+little steep for this particular modification.  So, unless you have a 
+second hard digital camera that has a zoom on it lying around the place 
+that you wouldn't mind giving to me you get this one for nada.
+
+   The keyword you want is a new wrinkle on the <set> keyword in the latest 
+version of DMDX, 2.3.03, specifically <set N,LastRT>.  This will allow you 
+to store the last RT gathered in a counter and then do a test on that 
+counters value.  For a really neat item file you can stuff the test in a 
+subroutine, something like the following, assuming 4000ms is your warning 
+level and 8000ms the cut off:
+
+F30 T8000
+0 "instructions" <bu 1000>;
+100 d0 ! %0 <set 1,LastRT> <bicLE 1,3999,110>;
+0 "You are taking too long";
+110 d0 ! %0 <ret>;
+1000 * "target 1" / <call -100>;
+1001 * "target 2" / <call -100>;
+0 "Done"L;
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+"What George Washington did for us was to throw out the British, so
+that we wouldn't have a fat, insensitive government running our
+country. Nice try anyway, George."
+
+                                              -  D.J. on KSFO/KYA
+
+
+

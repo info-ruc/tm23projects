@@ -1,0 +1,132 @@
+Received: from up.univ-mrs.fr (mail.up.univ-mrs.fr [147.94.113.16])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jAU64I5L006185
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 29 Nov 2005 23:04:19 -0700
+Received: from localhost (localhost [127.0.0.1])
+	by up.univ-mrs.fr (Postfix) with ESMTP id EC5FF480AFE
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 30 Nov 2005 07:04:16 +0100 (CET)
+Received: from up.univ-mrs.fr ([127.0.0.1])
+ by localhost (mailup.univ-mrs.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 448118-09 for <DMDX@psy1.psych.arizona.edu>;
+ Wed, 30 Nov 2005 07:04:16 +0100 (CET)
+Received: from webmail.up.univ-mrs.fr (webmail.up.univ-mrs.fr [IPv6:2001:660:5403::113:22])
+	by up.univ-mrs.fr (Postfix) with ESMTP id 160934840F6
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 30 Nov 2005 07:04:16 +0100 (CET)
+Received: from 82.224.162.71
+        (SquirrelMail authenticated user alario)
+        by webmail.up.univ-mrs.fr with HTTP;
+        Wed, 30 Nov 2005 07:04:12 +0100 (CET)
+Message-ID: <1278.82.224.162.71.1133330652.squirrel@webmail.up.univ-mrs.fr>
+In-Reply-To: <b758b9390511291832o168b128es43d364c0379718a2@mail.gmail.com>
+References: <b758b9390511291832o168b128es43d364c0379718a2@mail.gmail.com>
+Date: Wed, 30 Nov 2005 07:04:12 +0100 (CET)
+Subject: [DMDX] Re: Recording reaction times & having the picture clear 
+     after voice response
+From: "F.-Xavier ALARIO" <Francois-Xavier.Alario@up.univ-mrs.fr>
+To: DMDX@psy1.psych.arizona.edu
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+hello
+
+I do exactly what you need with the following script (you may need to play
+around with the record vocal parameters)
+
+Incidentaly: if someone knows how to get yet another picture to appear on
+the screen when the response is detected (instead of blanck screenào I
+would be interested)
+
+xavier
+
+
+<ExtendedParameters>
+<AzkiiResponses>
+<ContinuousRun>
+<InputDevice DigitalVOX>
+<InputDevice "RecordVocal">
+<InputDevice "keyboard">
+<MapRequest +space>
+<MapPositiveResponse +DigitalVox>
+<Timeout 2000>
+<BackgroundColor 000000000>
+<WritingColor 255255255>
+<NoFeedback 0>
+<ClearFeedback>
+<id recordvocal 1000>
+<VideoMode 800,600,600,8,0>
+<EndOfParameters>
+
++99999 / <ms% 300><bmp>"vide.bmp" / <ms% 500><bmp>"fixation.bmp" /
+*<bmp>"F3-PL-BROOM.bmp"  ;
++99999 / <ms% 300><bmp>"vide.bmp" / <ms% 500><bmp>"fixation.bmp" /
+*<bmp>"F2-SG-STRAWBER.bmp"  ;
+
+
+
+> Hello,
+>
+> I am trying to get my program to display a picture until it detects a
+> vocal response.  Then, the screen should clear and move on.  Or, if
+> there is no response after 2 seconds, it should clear and move on.
+> Also, it should record the reaction time from when the picture is
+> displayed to when the vocal response is detected.
+>
+> As it stands now, I can only get it to display the picture until it
+> detects a vocal response (but the reaction times all come out as 1.00
+> in the azk file) OR I can get it to record the reaction times in ms
+> but it just displays the picture for 2 seconds no matter what.
+>
+> Here is some of the script where it displays the picture until it
+> detects voice, but the reaction times all read 1.00 in the azk:
+>
+> <ep> <ntl><d 0><cr><id digitalVOX><id RecordVocal 0, 2000><id
+> keyboard><wc 000255000> <dbc 000000000><dfs 36><vm
+> 1024,768,768,16,75><ClearFeedback><eop>
+>
+> +1111 g"+2" <% 75> / <bmp> * "picture1";
+> 0 <ms% 2000> /c;
+> +1112 g"+2" <% 75> / <bmp> * "picture2";
+> 0 <ms% 2000> /c;
+>
+> Here is some of the script where it displays the picture for 2 seconds
+> irrespective of when it picks up the vocal response but it records
+> different reaction times in ms in the azk file:
+>
+> <ep><fd 160><d 79><cr><t 1990><id digitalVOX><id RecordVocal 0,
+> 2000><id keyboard><wc 000255000> <dbc 000000000><dfs 36><vm
+> 1024,768,768,16,75><nfb><eop>
+>
+> +1111 g"+2" <% 75> / * g"picture1" / !;
+> 0 <ms% 2000> /c;
+> +1112 g"+2" <% 75> / * g"picture2" / !;
+> 0 <ms% 2000> /c;
+>
+> Can someone please help me?
+>
+> Thanks,
+> Jillian Lee
+>
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+>
+>
+
+
+	F.-Xavier ALARIO
+	Laboratoire de Psychologie Cognitive
+	CNRS & Université de Provence
+	3, place Victor Hugo - Case 66
+	13003 Marseille, France
+
+	+33 4 91 10 67 91
+	alario@up.univ-mrs.fr
+	www.up.univ-mrs.fr/~wlpc/pagesperso/alario/
+
+

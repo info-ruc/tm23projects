@@ -1,0 +1,67 @@
+Received: from mail.montana.com (mailA.montana.com [199.2.139.116])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA10418
+	for <handyboard@media.mit.edu>; Mon, 18 Jan 1999 12:11:57 -0500 (EST)
+Received: from cs.umt.edu (mso4-166.montana.com [208.4.224.166])
+	by mail.montana.com (8.9.2.Beta4/8.9.2) with ESMTP id KAA20324
+	for <handyboard@media.mit.edu>; Mon, 18 Jan 1999 10:13:07 -0700 (MST)
+Message-Id: <36A36AFE.73E8B695@cs.umt.edu>
+Date: Mon, 18 Jan 1999 10:10:22 -0700
+From: Will Bain <willbain@cs.umt.edu>
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: digital and analog port on HD
+References: <199901181020.SAA23400@iron.singnet.com.sg>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+phillip chia wrote:
+> I want to use the digital port as an  analog port input.  How should I
+> convert the digital port to analog in using programming way ?
+
+A digital port can't have the capability of an analog port, since it has
+only one bit of information with which to work.  (A 256-value analog
+port has eight bits.)  You could perhaps hook an analog sensor up to a
+digital port using some sort of thresholding circuit (a voltage
+divider/transistor combination), but you would have to preset the
+threshold to a constant value, and the HB would then see it as a digital
+device.
+
+> if possible, how to convert the analog port to digital port also using
+> programming .
+
+Using an analog port as a digital, on the other hand, is easy.
+
+> if (analog (12) <127)
+> { ..............
+>   .............
+> }
+
+The above will not work (although I don't know what sort of error you
+will get).
+
+> else if  (digital (3)  == 1)
+> {  .................
+>   '..................
+> }
+
+The above would work ok, although it's a little more terse to say:
+
+     else if( digital( 3 ) ) {...}
+
+It's the same as "if( analog( 3 ) > 127 )".  It basically just throws
+away the other seven bits of information.
+
+Note that with an 8-bit D-A convertor circuit, one ought to be able to
+use one analog port for up to eight digital inputs at a time.
+
+-- Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                   There's a fine line between fishing and
+Will Bain,                    just standing on the shore like an idiot.
+& Tatoosh                                               --Steven Wright
+

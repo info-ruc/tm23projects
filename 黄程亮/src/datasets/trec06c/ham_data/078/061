@@ -1,0 +1,43 @@
+Received: from travelers.mail.cornell.edu (travelers.mail.cornell.edu [132.236.56.13])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9NJ3Bo03927
+	for <egs@cs.cornell.edu>; Tue, 23 Oct 2001 15:03:11 -0400 (EDT)
+Received: from travelers.mail.cornell.edu (travelers.mail.cornell.edu [132.236.56.13])
+	by travelers.mail.cornell.edu (8.9.3/8.9.3) with SMTP id PAA11706
+	for <egs@cs.cornell.edu>; Tue, 23 Oct 2001 15:03:07 -0400 (EDT)
+From: jcb35@cornell.edu
+Date: Tue, 23 Oct 2001 15:03:07 -0400 (EDT)
+X-Sender: jcb35@travelers.mail.cornell.edu
+To: egs@CS.Cornell.EDU
+Subject: 615 paper 26
+Message-ID: <Pine.SOL.3.91.1011023144541.25896B@travelers.mail.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Performance Comparison of AODV and DSR
+
+This paper presents a comparison of the aodv and dsr routing protocols.  
+They specifically want to look at how the differences in the two 
+protocols contribute to their performance on ad-hoc networks.  
+
+DSR uses source routing, so the nodes are able to obtain more information 
+by listening to other routes and peeking at the source routes on 
+packets.  Contrary to DSR, AODV only really sees routes in terms of it 
+successor.  Because of this, DSR uses caching quit agressivley and may see 
+multiple replies to a route, but a node in AODV will only receive one 
+reply from the destination for each route request. Finally, DSR doesn't 
+expire stale routes, leading to misleading state being kept around on nodes.
+
+
+For the simulator, they used ns-2 like the other paper we read.  They 
+also use a random waypoint mobility model in a rectangular field with 50 
+and 100 nodes.  The results indicate that with high mobility, the route 
+caches used in DSR hinder its ability to find routes and so AODV performs 
+better.  But with low mobility, AODV is affected every time a link fails, 
+but DSR is unaffected by these link failures, and so it performs better 
+at lower mobility rates.  DSR consistantly had fewer routing packets 
+overall in the simulations, but it generated more unicast routing packets, 
+which were expensive in the MAC layer simulator they used, and did not 
+translate to smaller network load. They claimed that the combination of 
+MAC layer and on-demand routing hinders the network capacity, and 
+mention this as a point for future work.
+

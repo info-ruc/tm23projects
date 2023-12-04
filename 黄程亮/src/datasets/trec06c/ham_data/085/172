@@ -1,0 +1,330 @@
+Received: from alnilam.ccs.neu.edu (alnilam.ccs.neu.edu [129.10.117.107])
+	by amber.ccs.neu.edu (Postfix) with ESMTP
+	id 3B8AC6B4D0; Mon, 16 Dec 2002 16:59:12 -0500 (EST)
+Received: by alnilam.ccs.neu.edu (Postfix, from userid 111)
+	id 5112639; Mon, 16 Dec 2002 16:59:11 -0500 (EST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <15870.19630.697783.146039@alnilam.ccs.neu.edu>
+X-Mailer: VM 6.95 under Emacs 19.34.1
+X-Spam-Status: No, hits=-12.6 required=5.0
+	tests=AWL,EMAIL_ATTRIBUTION,QUOTED_EMAIL_TEXT,SPAM_PHRASE_00_01
+	version=2.43
+X-Spam-Level: 
+From: Mitchell Wand <wand@ccs.neu.edu>
+To: Types dist list <types@cis.upenn.edu>
+Subject: LaTeX resources
+Date: Mon, 16 Dec 2002 16:59:10 -0500
+
+Back in November, I wrote:
+
+> I'm about to initiate a group of 1st-year graduate students into the
+> mysteries of LaTeX, and in particular to the mysteries of writing
+> semantics equations, proof rules, etc., in LaTeX.  
+
+> I have my own body of LaTeX2e macros and the source code for my papers
+> that they can look at, but I'm looking for other resources they could
+> use.  In particular:
+
+> (1) What packages do you find helpful for writing semantics papers?
+>     Please comment on usability, documentation, etc.
+
+> (2) Do you know of any guides to good TeX coding style, particularly
+>     with respect to the difficulties of typesetting semantics?
+
+Here are some of the replies I received, in some cases with comments
+from me.  
+
+Thanks to all who contributed-- I now have several different packages
+to investigate.
+
+Enjoy!
+
+--Mitch 
+
+----------------
+
+> From: Vijay Saraswat <vijay@saraswat.org>
+
+> Would love to know what you come up with. Also, are your macros 
+> available for others to use?
+
+No, alas. I have not made the effort to organize them into a form
+other folks can use.  If I do so, I'll post an announcement here.
+
+----------------
+
+> From: Philip Wadler <wadler@research.avayalabs.com>
+
+> I use Benjamin Pierce's macros for inference rules,
+> and Paul Taylor's macros for proofs.
+
+------------------------------
+
+> From: Didier Remy <Didier.Remy@inria.fr>
+
+> I have written my own package for typechecking inference rules.  Its main
+> feature is to enable typesettnig the rules independently of the page layout.
+
+>  - Premisses can be written as a list and newlines will automatically be
+>    inserted so as to fit as many premisses on the same line (explicit new
+>    lines are also possible).
+
+>  - Rules can be written as a list and new lines will automatically be
+>    inserted so as to fit as many rules as possible on the same line. 
+
+> The package is documented. The basic features are (I think) quite simple to
+> use. Advanced typesetting options may be less easy, but can be ignored.
+
+> See the url:
+
+>         http://cristal.inria.fr/~remy/latex
+>         [Typesetting Type Inference Rules]
+
+> By the way, you may want to tell your students about whizzytex as well,
+> which (I did not think about it before) might be also useful when learning
+> Latex:
+
+>     WhizzyTeX provides a minor mode for Emacs or XEmacs, a (bash)
+>     shell-script daemon and some LaTeX macros. It works under Unix with gv
+>     and xdvi viewers, but the Active-DVI viewer will provided much better
+>     visual effects and will offer more functionalities.
+
+> See the Url:
+
+>         http://pauillac.inria.fr/whizzytex/
+
+I don't use a wysiwyg viewer, but I typically use an xterm window
+running a script like
+
+while (1) 
+  make latest.ps
+  sleep 2
+end
+
+along with a Makefile that says things like
+
+.SUFFIXES: .dvi .tex .ps
+
+.tex.dvi:
+	latex $*
+
+.dvi.ps:
+	dvips $*.dvi
+
+TARGET = paper    # or whatever
+
+latest.ps: $(TARGET).ps
+	cp $(TARGET).ps latest.ps
+
+I can then run ghostview on latest.ps.  The last Makefile recipe makes
+sure that latest.ps is almost always a valid file.
+
+---------------------------
+
+> From: "Christian Skalka" <skalka@emba.uvm.edu>
+
+> I like Didier Remy's mathpartir package, which is very 
+> well-documented at:
+
+>   http://pauillac.inria.fr/~remy/latex/
+
+> I mainly use it to typeset inference rules, it does the job very
+> well.
+
+------------------------------
+
+> From: John.Reynolds@cs.cmu.edu
+
+> In the mid-eighties, I wrote a collection "diagmac.tex" of macros
+> for producing category-theoretic diagrams, and a collection
+> "catmac.tex" for various notations of category theory and
+> programming language semantics.  I've been using them ever since,
+> and would recommend them to anyone who likes the appearance of
+> of my papers.  Surprisingly, they work with modern Latex2e as
+> well as they ever did.  The biggest defect is that lines in the
+> diagrams must have slopes printable by the Latex picture facility.
+> These macros are available from my ftp directory, which is pointed
+> to by my web page at www.cs.cmu.edu/~jcr.  (Read the README in the
+> ftp directory.)
+
+> As long as I am on this subject, I'll air a few of my prejudices.
+> An underlying theme in programming language semantics is that
+> programming languages are mathematical in nature - yet we often
+> see texts in semantics in which excerpts from programing languages
+> (even theoretical languages that have never bee implemented) are
+> set in typewriter font.  In contrast, I believe one should make the
+> language text look as much like mathematical material as possible.
+> For example, programs become much more readable when expressions
+> use operators such as \times, \wedge, or \vee, and are spaced the
+> same way as in mathematics.  It is also very helpful to use several
+> sizes of parentheses.
+
+> However, there is one problem.  It is vital in the exposition of
+> semantics to make clear the distinction between object languages
+> and metalanguage.  For this reason, it is strongly advisable to set
+> object-language variables in a different font than metalanguage
+> variables.  I usually set object-language variables in sans serif
+> and metavariables in italics, which makes the distinction clear
+> but not obtrusive.
+
+> When I wrote "Theories of Programming Languages" for Cambridge
+> University Press, I did my own typesetting, and as a consequence,
+> got a free course in proper mathematical typesetting of mathematics
+> from my editor and copyeditor.  Probably the most important things
+> I learned were:
+
+>    (1) To align sequences of formulas on their main operator.
+
+>    (2) To leave less vertical space between lines of a multi-line
+>    formula than between formulas.
+
+> The advanced features of arrays in Latex are very useful for (1).
+> As for (2), it is useful to define standard end-of-lines with
+> different spacing for use in arrays.
+
+Bob Tennant offered an endorsement of John's macros.
+
+------------------------------
+
+> From: "Vincent Danos" <danos@logique.jussieu.fr>
+
+> I'm using this little known (i think) package
+> attached for typing derivations and the like.
+
+Vincent included a copy of bussproofs.sty, which is available at
+http://math.ucsd.edu/~sbuss/ResearchWeb/bussproofs .  Yiannis
+Moschovakis recommends this package in his "Document Preparation for
+ASL Publications".  He says it is "simple to use (and to debug)
+and produces very good output.  There are, however, many other
+excellent packages which some authors may prefer."
+
+------------------------------
+
+> From: Dan Grossman <danieljg@cs.cornell.edu>
+
+> A draft of my dissertation is available at:
+> http://www.cs.cornell.edu/home/danieljg/tldi_draft.pdf
+> There you can see dozens of figures full of operational semantics and 
+> typing judgments.
+
+> I would be happy to share my sources with you and your students.  I've 
+> been pretty pleased with my ability to write latex that is usually still 
+> readable, at least to me.
+
+> I'm not sure I've developed any guidelines or style other than:
+> (a) define a macro for each judgement.  For example, write
+>    \typecheck{\Gamma}{e}{\T} instead of \G\vdash e : \T
+> (b) Give the different judgments names.  I've been happy with:
+>    \newcommand \proves[1] {\vdash_{\!\!\!\mbox{\tiny{\textup{{#1}}}}}}
+
+I'd endorse these guidelines enthusiastically.  Using a macro means
+that the spacing will be the same for all the instances of a
+judgement-- something that's almost impossible to get right manually.
+
+And I'd write {\typecheck {\Gamma} {e} {\T}}  -- the extra braces help
+with missing or extra arguments and the like, and the extra spaces
+help readability.
+
+Another trick I've used is to have series of variables, eg
+
+\newcommand\exp[1]{e_{#1}}
+
+That way I can write \exp1, \exp2, or \exp{}, and if I decide to
+switch from e to E or G or whatever I can do it in one place.
+
+----------------
+
+> From: Ken Shan <ken@digitas.harvard.edu>
+
+> I find AMS-LaTeX immensely useful; more specifically, the mathematical
+> typesetting macros in the amsmath package are a lot better implemented
+> than the default ones in LaTeX.  For example, the eqnarray environment
+> in LaTeX for lining up equations generate way too much whitespace; the
+> align environment in AMS-LaTeX does it right.  Also useful are \text and
+> \DeclareMathOperator.
+
+> The Comprehensive LaTeX Symbol List is great browsing (procrastination?)
+> when you're looking for just the right notation.
+
+> The url package deals with line breaking and tildes in file names and
+> URLs -- useful in citations.
+
+> If you use Times instead of Computer Modern for body text, be sure that
+> your math font is also Times instead of Computer Modern, or the
+> combination would look quite ugly.  Use either mathtime or txfonts; as a
+> bonus, txfonts has more symbols.
+
+> If you ever need a bibliography in the Chicago Manual of Style format,
+> my mcbride.bst bibliography style does it better than alternatives
+> (http://www.digitas.harvard.edu/cgi-bin/wiki/ken/McBride).
+
+------------------------------
+
+> From: Pierre Lescanne <Pierre.Lescanne@ens-lyon.fr>
+
+> Good topics indeed.  Til last summer I used macros of the form
+
+>  \newcommand{\inferSideLabel}[4]{
+>  {#1} \;\;
+>   \begin{array}{c}
+>   #2 \\
+>   \hline \noalign{\vskip 1pt}#3
+>   \end{array}
+>   \quad {#4}}
+
+> one for each kind of semantic rule, which my coauthor told me was due
+> to some third person.
+
+> Since I changed co-author (only for scientific reasons) and I have
+> been convinced to uses "prooftree" style and I am happy, I can tell
+> you why, if you wish.
+
+> Since I made a try with LyX, which is nice in other respects, but I
+> was disappointed with prooftree in this environment.
+
+------------------------------
+
+> From: Andrei Sabelfeld <andrei@CS.Cornell.EDU>
+
+> > (1) What packages do you find helpful for writing semantics papers?
+> >     Please comment on usability, documentation, etc.
+
+> My typical paper uses stmaryrd (especially for
+> denotational semantics) and amsmath plus sometimes latexsym
+> and amssymb. These are all for semantic notation, so
+> the documentation doesn't have to be complicated -
+> simple tables with commands and their output are enough.
+
+> I also use pstricks and pst-node with their original documentation
+> available online - quite useful for drawing simple charts.
+> For more complicated charts I use more advanced graphic
+> editors and then plug eps-figures using the epsfig package.
+
+> > (2) Do you know of any guides to good TeX coding style, particularly
+> >     with respect to the difficulties of typesetting semantics?
+
+> Not really. It seems there are many special-purpose
+> packages and self-coded macros, but I'm not aware
+> of a single authoritative source.
+
+------------------------------
+
+> From: Viktor Kuncak <vkuncak@mit.edu>
+
+> I would just like to mention my very recent positive
+> experience in using preview-latex package for Linux.
+
+> The advantage of the package is that it allows editing the
+> text in emacs as usual, but then allows selectively
+> previewing parts of latex code.  The important thing is that
+> it work with multiple latex files and it works with
+> user-defined macros.
+
+> You may find a quick description of how I got it to work
+> properly here:
+
+> http://www.cag.lcs.mit.edu/~vkuncak/pac/resource/auctex.txt
+
+---- End of Digest ---

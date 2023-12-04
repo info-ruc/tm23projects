@@ -1,0 +1,58 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3B3sH226049
+	for <egs+summary@cs.cornell.edu>; Mon, 10 Apr 2006 23:54:17 -0400 (EDT)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k3B3sG8M000435
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Mon, 10 Apr 2006 23:54:16 -0400 (EDT)
+Message-Id: <6.2.1.2.2.20060410214339.01e7ed70@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Mon, 10 Apr 2006 23:54:16 -0400
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 20
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+         Scribe is an application-layer multicast system layered on top of 
+pastry.  A single node is chosen as the rendesvous point for a multicast 
+group.  Nodes build routes to the rendezvous; due to the structure of 
+pastry, these routes will tend to converge well before the rendezvous 
+point, keeping the outdegree of the rendezvous bounded.  To multicast to 
+the group, a message is sent directly to the rendezvous, which then 
+broadcasts it down the tree.  Scribe thus elegantly leverages the locality 
+and routing properties of the underlying Pastry.
+         Scribe comes with no guarantees about performance--the fact that 
+Pastry works well is purely shown by empirical testing, and may not be true 
+under all circumstances. The Scribe system is nearly useless for any 
+application where Pastry is unsuitable.  No provision is made for strong 
+reliability guarantees--including tolerating failure of the rendezvous node 
+and including global ordering guarantees. The rendezvous node cannot be 
+easily chosen, and may be overloaded if a given group has high traffic.
+
+
+
+         Siena is a broad outline for a peer-to-peer pub-sub system.  The 
+Siena architecture is applicable to both hierarchic and unstructured 
+systems, though the authors give a convincing argument for why a 
+peer-to-peer system would be expected to perform better under many 
+circumstances: information about what requests are available is pushed 
+closer to the message senders, rather than having the root be in the path 
+for almost every notification.  Siena is agnostic both to lower-level 
+protocol and to details of topology: it is the outline of a system, rather 
+than an actually-developed system.  It does, however, include a fairly 
+powerful language for describing events and filters for them.
+         Siena is wrong to assume that the only options are a single 
+hierarchy and an unstructured mesh--structuring the overlay might buy 
+important dividends.  Siena provides only best-effort, without any 
+guarantees about delivery or ordering.  The system does not include robust 
+failure-handing mechanisms, nor does it actively load-balance.
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone 
+

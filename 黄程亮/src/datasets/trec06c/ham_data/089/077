@@ -1,0 +1,232 @@
+Received: from lassen.berkeley.edu (lassen.berkeley.edu [128.32.25.102])
+	by uclink4.berkeley.edu (8.12.9/8.12.3) with ESMTP id h6ELU0fU072306;
+	Mon, 14 Jul 2003 14:30:00 -0700 (PDT)
+Received: from uclink4.berkeley.edu (localhost [127.0.0.1])
+	by lassen.berkeley.edu (8.12.9/8.12.9) with ESMTP id h6ELTwg3027843;
+	Mon, 14 Jul 2003 14:29:59 -0700 (PDT)
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.9/8.12.3) with ESMTP id h6ELTu0t072830;
+	Mon, 14 Jul 2003 14:29:57 -0700 (PDT)
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/1.27) with ESMTP id h6EL7qu7023573;
+	Mon, 14 Jul 2003 17:28:16 -0400
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/Submit/1.1) with SMTP id h6EKQDWK021602;
+	Mon, 14 Jul 2003 16:26:13 -0400
+Date: Mon, 14 Jul 2003 16:26:13 -0400
+Message-Id: <CA-2003-14.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2003-14 Buffer Overflow in Microsoft Windows HTML
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000083
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-14 Buffer Overflow in Microsoft Windows HTML
+Conversion Library
+
+   Original issue date: July 14, 2003
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+
+Systems Affected
+
+     * Windows 98 and 98 Second Edition (SE)
+     * Windows NT 4.0 and 4.0 Terminal Server Edition (TSE)
+     * Windows Millennium Edition (Me)
+     * Windows 2000
+     * Windows XP
+     * Windows Server 2003
+
+
+Overview
+
+   A  buffer  overflow  vulnerability  exists in a shared HTML conversion
+   library  included in Microsoft Windows. An attacker could exploit this
+   vulnerability to execute arbitrary code or cause a denial of service.
+
+
+I. Description
+
+   Microsoft   Windows   includes   a   shared  HTML  conversion  library
+   (html32.cnv).  According to Microsoft Security Bulletin MS03-023, "The
+   HTML  converter  is  an extension which allows applications to convert
+   HTML data into Rich Text Format (RTF) while maintaining the formatting
+   and  structure  of  the  data  as well as the text. The converter also
+   supports the conversion of RTF data into HTML."
+
+   The  HTML  conversion library contains a buffer overflow vulnerability
+   that  can  be  triggered  by a specially crafted align attribute in an
+   <HR>  element.  The  library  can  be loaded by any application on the
+   system. For example, Internet Explorer (IE) uses the library to handle
+   HTML data stored in the clipboard. Using script, an attacker can cause
+   IE  to  copy  a  crafted  <HR> element into the clipboard and load the
+   library.  The attacker could accomplish this by convincing a victim to
+   view  an  HTML  web  page  or  HTML email message with IE, Outlook, or
+   Outlook  Express  in  a  zone  where  Active scripting and Allow paste
+   operations via script are enabled.
+
+   This  vulnerability is not limited to IE, Outlook, or Outlook Express.
+   Any   program,  including  non-Microsoft  applications,  can  use  the
+   vulnerable library and may present other vectors of attack.
+
+   Further  information is available in VU#823260. Common Vulnerabilities
+   and Exposures (CVE) refers to this issue as CAN-2003-0469.
+
+
+II. Impact
+
+   An  attacker  could  execute arbitrary code with the privileges of the
+   process  that  loaded  the HTML conversion library. The attacker could
+   also crash the process, causing a denial of service.
+
+
+III. Solution
+
+Apply a patch
+
+   Apply  the  appropriate  patch  as  specified  by  Microsoft  Security
+   Bulletin MS03-023.
+
+Modify Internet Explorer security zone configuration
+
+   Modify  one  or both of the following IE security zone settings in the
+   Internet  zone  and  the zone(s) used by Outlook, Outlook Express, and
+   any  other  application  that uses Internet Explorer or the WebBrowser
+   ActiveX control to render HTML:
+
+     * Set Allow paste operations via script to Disable
+
+     * Set Active scripting to Disable
+
+   Either  of these changes will prevent attacks that depend on scripting
+   in  the  IE  HTML  rendering  engine.  However,  these changes are not
+   complete  solutions,  and  they  do not prevent attacks that use other
+   vectors.
+
+   Note  that  disabling  Active scripting provides defense against other
+   attacks that are outside the scope of this document.
+
+   Instructions for modifying IE 5 security zone settings can be found in
+   the CERT/CC Malicious Web Scripts FAQ. In IE 6, the High security zone
+   setting includes both of these changes.
+
+
+Appendix A. Vendor Information
+
+   This  appendix  contains information provided by vendors. When vendors
+   report  new  information,  this section is updated and the changes are
+   noted  in  the  revision  history. If a vendor is not listed below, we
+   have not received their comments.
+
+Microsoft
+
+     Please see Microsoft Security Bulletin MS03-023.
+
+
+Appendix B. References
+
+     * CERT/CC Vulnerability Note VU#823260 -
+       <http://www.kb.cert.org/vuls/id/823260>
+     * Microsoft Security Bulletin MS03-023 -
+       <http://microsoft.com/technet/security/bulletin/MS03-023.asp>
+
+     _________________________________________________________________
+
+   This vulnerability was publicly reported by Digital Scream.
+     _________________________________________________________________
+
+   Feedback can be directed to the author, Art Manion.
+   ______________________________________________________________________
+
+   This document is available from:
+   <http://www.cert.org/advisories/CA-2003-14.html>
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   
+     <http://www.cert.org/CERT_PGP.key>
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   
+     <http://www.cert.org/>
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2003 Carnegie Mellon University.
+
+   Revision History
+
+   July 14, 2003: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPxMNQ2jtSoHZUTs5AQFCcgP/bpRDdnHMt9g2IQAzo34qx12ZX4DKsOkd
++UYIZptj7ds/PsQ/icA0JhQITnjsbv8QuXZh8rJ/msapEMs8e/S/cb8OXVM+iDKM
+I+OHgaoZF57X9waGIx7cqvaRQbC9C7y9agz7QCckteAut0qbxZewOVv0EktUR6mH
+pszPcxmnuC0=
+=ajV8
+-----END PGP SIGNATURE-----
+

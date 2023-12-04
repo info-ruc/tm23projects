@@ -1,0 +1,99 @@
+Received: from smtpout.mac.com (smtpout.mac.com [17.250.248.84] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k26MDTt26327
+	for <egs+summary@cs.cornell.edu>; Mon, 6 Mar 2006 17:13:29 -0500 (EST)
+Received: from mac.com (smtpin02-en2 [10.13.10.147])
+	by smtpout.mac.com (Xserve/8.12.11/smtpout08/MantshX 4.0) with ESMTP id k26MDSKs018581
+	for <egs+summary@cs.cornell.edu>; Mon, 6 Mar 2006 14:13:28 -0800 (PST)
+Received: from [128.84.98.36] (dhcp98-36.cs.cornell.edu [128.84.98.36])
+	(authenticated bits=0)
+	by mac.com (Xserve/smtpin02/MantshX 4.0) with ESMTP id k26MDPDJ023620
+	for <egs+summary@cs.cornell.edu>; Mon, 6 Mar 2006 14:13:28 -0800 (PST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <141E1EA2-9D1A-4BB4-98DA-8100888C4A89@mac.com>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Oliver Kennedy <xthemage@mac.com>
+Subject: PAPER 12
+Date: Mon, 6 Mar 2006 17:13:31 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+We've already seen how to create Distributed Hash Tables, where nodes  
+in the system can store and retrieve small bits of data in a  
+distributed manner.  Two major drawbacks of these systems were that  
+their load balancing assumptions began to break down in the face of  
+varying data sizes, and that persistence was guaranteed only by the  
+data's source continually re-publishing the data.  ie: If a node  
+failed, all data stored on that node would be lost.  As data objects  
+were usually small, this was simple.  This week's papers explore how  
+to expand on this DHT concept to store whole files.
+
+First, we have PAST.  PAST is based off of the popular Pastry DHT  
+framework, and takes a very care-free approach to storage.  The  
+entire file is stored as if it were the value being stored in the  
+DHT.  The k nodes nearest to the host node are used for replication.   
+As node ID locality is uncorrelated with node spacial locality, data  
+loss becomes unlikely (as long as k is sufficiently large).  However,  
+since the whole file must be stored at this node (and its k nearest  
+neighbors), a region of the node space may be clobbered in the  
+unlucky case that several large files are stored with overlapping  
+replication regions.  PAST allows a limited amount of indirection in  
+this replication storage; if a node is unable to store the data it  
+will try to forward it to one of its nearby nodes.  Even here  
+however, the overlapping regions case will cause difficulty.
+
+CFS takes a more general approach, attempting to model their  
+filesystem on a more traditional filesystem.  Files are broken up  
+into blocks and these blocks are stored in the database.  A block is  
+identified by a hash of its contents, much like in a previous project  
+by a related group called FFS.  Inodes store these hashes as pointers  
+to the blocks, and are in turn treated as normal blocks; directories  
+store inode hashes as pointers.  This chain continues all the way up  
+to the root block which is signed by a PKI style key (who's hash is  
+the root block's key).  As there is a direct correlation between the  
+block contents and the block's key, the filesystem's consistency may  
+be maintained.  Every PKI entity using the system may keep its own  
+filesystem in this way, and only the owner entity may change its  
+contents.  This changing process is one of the most serious  
+weaknesses of CFS, as even the smallest change requires updates to  
+every block representing a directory all the way from the root block  
+to the file itself.  Similarly, file reads require an extraordinary  
+amount of system traffic.  They use an 8 megabyte file with an 8k  
+block size as an example.  In this example, it would take on the  
+order of 100 separate lookups to obtain the file contents, as opposed  
+to just 1 in PAST.
+
+One thing both papers gloss over is the security of the underlying  
+system.  Both Chord and Pastry are subject to a large number of  
+attacks.  PAST attempts to avoid this issue via an implicit trust in  
+nodes that have access to a smart card.  While this does remove an  
+attacker's ability to supply false data, it doesn't close any number  
+of denial of service attacks.  Furthermore, it somewhat defeats the  
+distributed nature of the system.  If only authority signed data is  
+implicitly trusted, then why bother re-inventing the wheel.  Lastly,  
+PAST's smart card is supposed to keep track of quotas.  The way it  
+does this is somewhat mysterious, as it can not be assured that space  
+revocation requests (when a node informs the card that it no longer  
+needs space it has been allocated) will be transmitted to the  
+network.  Timeouts may be used, but they are messy in a number of  
+ways.  CFS ensures file validity by using a file-tree, and ensuring  
+that the root node is always signed by its owner.  Assuming the  
+public key of an entity may be trusted, everything in the filesystem  
+signed by that key should also be trusted.  The potential for denial  
+of service attacks, both in the realm of negative responses, and the  
+realm of overwhelming the network with data or requests is not  
+addressed either.
+
+- Oliver Kennedy
+
+There cannot be a crisis next week.  My schedule is already full.
+                 -- Henry Kissinger
+
+
+
+-Oliver Kennedy
+
+Computer science isn't about computers any more than astronomy is about
+telescopes.
+                 -- Dijkstra
+

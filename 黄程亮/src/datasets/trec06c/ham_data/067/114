@@ -1,0 +1,139 @@
+Received: from va.cs.wm.edu (va.cs.wm.edu [128.239.2.31])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id NAA04585
+	for <handyboard@media.mit.edu>; Wed, 3 May 2000 13:19:57 -0400 (EDT)
+Received: from nc.cs.wm.edu (nc.cs.wm.edu [128.239.2.4])
+	by va.cs.wm.edu (8.9.3/8.9.1) with ESMTP id NAA20496
+	for <handyboard@media.mit.edu>; Wed, 3 May 2000 13:19:57 -0400 (EDT)
+Received: from nc (localhost [127.0.0.1])
+	by nc.cs.wm.edu (8.9.3/8.9.1) with ESMTP id NAA07278
+	for <handyboard@media.mit.edu>; Wed, 3 May 2000 13:19:56 -0400
+Message-Id: <200005031719.NAA07278@nc.cs.wm.edu>
+To: handyboard@media.mit.edu
+Subject: Problem with analog() proc using IC 2.81
+Date: Wed, 03 May 2000 13:19:56 -0400
+From: Bill Bynum <bynum@CS.WM.EDU>
+
+Hello, everyone: 
+
+   I have 18 HandyBoard/LEGObugs and I'm in the process of building
+18 expansion boards with 9 completed so far.  I use the public
+domain IC 2.81 (for William & Mary, like most schools, the price is
+right) on a LINUX platform.  I have edited the smooth PWM routines
+of Julian Skidmore into libhb.c.
+
+   I have run into a weird inconsistency problem with the analog()
+proc in testing the new expansion boards.  All 9 completed expansion
+boards have the problem.  I don't think that I'm making any errors
+in constructon, but I'm afraid to make any more expansion boards
+until I know what is causing the problem.  I can illustrate the
+problem with a few analog() calls.
+
+   I have an IR sensor that is taped to a LEGO jig that is taped to
+my desk.  This is to ensure that the sensor doesn't move and that
+the value returned by the sensor stays constant.  The sensor is
+pointed away from any IR reflectors.  In normal usage, its readings
+range from 8 to 244.
+
+   First, I'll plug the sensor into analog port 6 to test the
+value of the sensor (_raw_analog() has never failed me yet), then
+I'll move the sensor to port 16 on the expansion board and take
+several readings.  Nothing is plugged into analog port 17.
+
+----------------------------------------------------------------------
+       Interactive C for 6811.  Version 2.860 BETA (Jul  1 1996)
+
+IC written by Randy Sargent and Anne Wright.  Copyright 1994.
+    (uses board pcode by R. Sargent, F. Martin, and A. Wright)
+WARNING: this version is under construction and may not work!
+
+
+This program is freeware and unsupported.  It is provided as a service to
+hobbyists and educators.  Type 'about' for information about support
+and obtaining newer versions of IC.
+
+Attempting to link to board on port /dev/ttyS1
+Synchronizing with board
+Pcode version 2.81 present on board
+Loading /home/mom4/bynum/lib/ic/lib_hb.lis.
+Loading lib_hb.c.
+Loading lib_hb.icb.
+Loading libexpbd.icb.
+Loading expsens.c.
+Loading expservo.icb.
+Loading sonar.c.
+Initializing interrupts
+Downloading 2052 bytes (addresses 8000-8803):  2052 loaded
+Globals initialized.
+Type 'help' for help
+C> analog(6);
+Downloading 9 bytes (addresses C200-C208):  9 loaded
+Returned <int> 236      <<<<< the "trusted" value of the sensor
+C> analog(16);
+Downloading 9 bytes (addresses C200-C208):  9 loaded
+Returned <int> 234      <<<<< sensor moved to port 16, value probably OK
+C> analog(17);
+Downloading 9 bytes (addresses C200-C208):  9 loaded
+Returned <int> 251      <<<<< OK, empty port
+C> analog(16);
+Downloading 9 bytes (addresses C200-C208):  9 loaded
+Returned <int> 19       <<<<<<<<<<<< the inconsistent reading
+C> analog(16);
+Downloading 9 bytes (addresses C200-C208):  9 loaded
+Returned <int> 234      <<<<< probably OK
+C> bye
+----------------------------------------------------------------------
+
+   The problem appears every time an analog(16) call is preceded
+by an analog(17) (or analog(anything_else) call to exercise the mux).
+
+   To try to locate the problem, I looked for something in the
+libexpbd.asm file and I found what I think is a teeny error 
+that unfortunately has nothing to do with the problem.
+
+   One possible error could be in the last of the following three
+lines from libexpbd.asm.  I think that the statement should
+probably be "anda #7" instead of what is shown.
+
+         * A has mux#, B has A/D port#
+         subroutine__exp_analog:
+                 andb    #7              ; keep in range
+
+   The _exp_analog() calls in analog() are either:
+
+       return _exp_analog((port-16)<<8);         (for ports 16-23)
+
+or
+       
+       return _exp_analog(((port-24)<<8)+1);   (for ports 24-31)
+
+   As I understand it, the 8-bit left shift will move the A/D port
+number (between 0..7) into the A register.  The first call leaves
+0 in the B register, while the second leaves 1 in the B register.
+Thus, A contains the mux number (between 0..7), and B contains the
+A/D port number (0 or 1).  The rest of the _exp_analog code seems
+to assume this placement of values, too.
+
+    I propose substituting the "anda #7" for "andb #7", because
+I am assuming that the mux value is being kept in range.  The A/D
+port# is either 0 or 1, so the masking statement for the A/D port#,
+if there is one, should be "andb #1".
+
+   However, in the case of the analog(16) call, the call in
+analog() translates into the statement
+
+       return _exp_analog((16-16)<<8);         (for ports 16-23)
+
+This is an _exp_analog(0) call, so that in this case, both A and
+B are zero, and my two changes above have no effect whatsoever.
+
+   I've tried adding a delay loop after the "bsr setmux" call in
+_exp_analog, hoping that allowing the mux a little more time
+would help.  It didn't.  I lengthened the delay loop waiting for
+the A/D reading to 67 cycles  (with an ldaa #13), but this didn't
+help, either.
+
+   I am stumped.  Does anyone have an idea of what is going wrong
+here?
+
+      Bill Bynum
+

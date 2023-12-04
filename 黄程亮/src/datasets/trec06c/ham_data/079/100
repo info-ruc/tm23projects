@@ -1,0 +1,370 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id fBDLh4I10605;
+	Thu, 13 Dec 2001 13:43:04 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA28577;
+	Thu, 13 Dec 2001 14:33:31 -0500 (EST)
+Date: Thu, 13 Dec 2001 14:33:31 -0500 (EST)
+Received: by canaveral.red.cert.org; Thu, 13 Dec 2001 14:27:52 -0500
+Message-Id: <CA-2001-35.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-35 Recent Activity Against Secure Shell Daemons
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: ab7e122fa8e7b76a312a759dbaf81ce7
+Status: RO
+X-Status: $$$$
+X-UID: 0000000032
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-35 Recent Activity Against Secure Shell Daemons
+
+   Original release date: December 13, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   Systems running implementations of the Secure Shell (SSH) protocol
+
+Overview
+
+   There  are  multiple vulnerabilities in several implementations of the
+   Secure  Shell  (SSH)  protocol.  The  SSH  protocol  enables  a secure
+   communications channel from a client to a server. We are seeing a high
+   amount  of  scanning  for SSH daemons, and we are receiving reports of
+   exploitation. System administrators should review their configurations
+   to  ensure  that  they  have applied all relevant patches prior to the
+   holiday break.
+
+I. Description
+
+   There  are  multiple vulnerabilities in several implementations of the
+   Secure Shell (SSH) protocol. While these problems have been previously
+   disclosed,  we believe many system and network administrators may have
+   overlooked  one  or more of these vulnerabilities. We are issuing this
+   document  primarily  to encourage system and network administrators to
+   check  their systems, prior to the holiday break, for exposure to each
+   of  these vulnerabilities. The CERT/CC is still seeing active scanning
+   and exploitation of vulnerabilities related to SSH.
+
+   We  also  believe  that  it  is important for system administrators to
+   realize  that  several implementations of SSH version 2 will use their
+   implementation  of SSH version 1 if it is present and requested by the
+   client.  Therefore,  upgrading  to  SSH version 2 is not necessarily a
+   sufficient  means to patch vulnerabilities that are present in the SSH
+   version 1 implementation.
+
+   The  following  vulnerability note and incident note describe activity
+   regarding  the  SSH  CRC32  attack  detection  code  integer  overflow
+   vulnerability.
+
+   VU#945216  -  SSH  CRC32 attack detection code contains remote integer
+   overflow
+
+   There   is   a   remote  integer  overflow  vulnerability  in  several
+   implementations of the SSH1 protocol. This vulnerability is located in
+   a  segment  of code that was introduced to defend against exploitation
+   of  CRC32  weaknesses  in the SSH1 protocol (see VU#13877). The attack
+   detection function (detect_attack, located in deattack.c) makes use of
+   a  dynamically  allocated  hash  table to store connection information
+   that  is  then  examined  to  detect  and respond to CRC32 attacks. By
+   sending  a  crafted  SSH1  packet to an affected host, an attacker can
+   cause  the SSH daemon to create a hash table with a size of zero. When
+   the   detection  function  then  attempts  to  hash  values  into  the
+   null-sized  hash  table, these values can be used to modify the return
+   address  of  the  function  call,  thus causing the program to execute
+   arbitrary code with the privileges of the SSH daemon, typically root.
+
+   IN-2001-12 - Exploitation of vulnerability in SSH1 CRC-32 compensation
+   attack detector
+
+   In  reports  received  by  the  CERT/CC,  systems compromised via this
+   vulnerablity  have  exhibited  the  following  pattern  in  system log
+   messages:
+
+hostname sshd[xxx]: Disconnecting: Corrupted check bytes on input.
+hostname sshd[xxx]: Disconnecting: crc32 compensation attack: network attack detected
+hostname sshd[xxx]: Disconnecting: crc32 compensation attack: network attack detected
+..
+
+   Some  exploits  for  this  vulnerability  appear  to use a brute force
+   method, so many messages of this type may be logged before a system is
+   successfully compromised.
+
+   The  following  artifacts  have  been  discovered on systems that were
+   successfully compromised:
+
+     * Installation  of rootkits that modify standard system utilities to
+       hide the intruder's actions
+     * Installation  of  Trojan  horse  versions  of  the  SSH  software,
+       compiled    from    the    latest   OpenSSH   source   code   plus
+       intruder-supplied modifications
+     * Installation  of  tools  to  scan  large  network blocks for other
+       systems  that  are vulnerable to compromise. Log files left behind
+       from  these  tools  indicate  that they operate by looking for the
+       banner displayed upon connection to the sshd service.
+
+   For  a  list  of  vulnerability  notes related to SSH vulnerabilities,
+   please see the References section.
+
+II. Impact
+
+   The  CRC32  attack  detection  code integer overflow vulnerability, as
+   well  as some of the vulnerabilities listed in the References section,
+   can  be  exploited  remotely. In some cases, they allow an intruder to
+   execute  arbitrary  code  with  the  privileges of the SSH application
+   daemon, usually root. In some cases, an intruder must be an authorized
+   user of the system.
+
+   For   specific   information  about  the  impacts  of  each  of  these
+   vulnerabilities,  please consult the CERT Vulnerability Notes Database
+   (http://www.kb.cert.org/vuls).
+
+III. Solution
+
+Update to the latest version
+
+   If  possible, update your implementation of SSH to the latest release.
+   If  you are unable to update to the latest version, apply all relevant
+   patches  to your current version. It is also recommended that you look
+   at the security or support section on each vendor's site.
+
+   Note  that  it  is important for system administrators to realize that
+   several implementations of SSH version 2 will use their implementation
+   of  SSH  version  1  if  it  is  present  and requested by the client.
+   Therefore,  upgrading to SSH version 2 is not necessarily a sufficient
+   means  to  patch vulnerabilities that are present in the SSH version 1
+   implementation.
+
+   Current   versions  for  Data  Fellows  (F-Secure)  can  be  found  at
+   http://www.f-secure.com/products/ssh/.
+
+   Current  versions  for  SSH  Communications  Security  can be found at
+   http://www.ssh.com/products/ssh/download.cfm.
+
+   Current versions for OpenSSH can be found at http://www.openssh.com.
+
+   Please visit your vendor's web site for the latest version.
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   As  vendors report new information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not  listed below, we have not received their comments for
+   the  advisory.  Please  review  the  CERT Vulnerability Notes Database
+   (http://www.kb.cert.org/vuls) or contact your vendor directly.
+
+Restrict access to the SSH service
+
+   As  a  general  practice, we recommend disabling all services that are
+   not  explicitly  required.  You  may wish to disable the SSH access if
+   there is not a patch available from your vendor.
+
+   If  you  cannot  disable  the  service, you can limit your exposure to
+   these vulnerabilities by using a router or firewall to restrict access
+   to  port  22/TCP  (SSH).  Use  tcp wrappers or a program that provides
+   similar  functionality, or use the key-based IP restriction offered by
+   your  implementation.  Note  that  this  does  not protect you against
+   attackers from within your network.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments  for the advisory. Please review the CERT Vulnerability Notes
+   Database   (http://www.kb.cert.org/vuls)   or   contact   your  vendor
+   directly.
+
+Berkeley Software Design, Inc. (BSDI)
+
+   The current 3.0.2p1 version of OpenSSH is available for BSD/OS version
+   4.2  in  patch  M420-018 and for BSD/OS 4.3 in patch M430-001. Patches
+   are  available via ftp from ftp://ftp.bsdi.com/bsdi/patches or via our
+   web site at http://www.bsdi.com/support.
+
+Fujitsu
+
+   Fujitsu's  UXP/V  operating system is not affected by the SSH security
+   vulnerabilities because it does not support the SSH package.
+
+Hewlett-Packard Company
+
+   This issue does not apply to HP-UX. HP does not ship SSH.
+
+IBM Corporation
+
+   IBM's  AIX  operating  system  does  not  ship  with OpenSSH; however,
+   OpenSSH  isavailable  for  installation  on AIX via the Linux Affinity
+   Toolkit.  The  version  included  on  the CD containing the Toolkit is
+   vulnerable  to  the  latest  discovered  vulnerability discussed here,
+   VU#157447,  as  was  the  version of OpenSSH available for downloading
+   from  the  IBM Linux Affinity website. We have updated this version on
+   the  website  to one that is not vulnerable to this security exposure.
+   This  version  also  fixes the other vulnerabilities described in this
+   advisory. Customers can download this version by going to:
+
+   http://www6.software.ibm.com/dl/aixtbx/aixtbx-p
+
+   This    site   contains   Linux   Affinity   applications   containing
+   cryptographic  algorithms,  and  new  users  of this site are asked to
+   register first.
+
+NetBSD
+
+   The  CRC32  attack  vulnerability  was  patched  in  NetBSD-current on
+   October  30,  2000.  NetBSD  1.5  and later already include the patch.
+   Users  maintaining  earlier  revisions  of  NetBSD should update their
+   systems  using the security/openssh package from NetBSD pkgsrc if they
+   have not already done so.
+
+   Up   to   date   NetBSD   security   information  on  SSH,  and  other
+   vulnerabilities is available from http://www.netbsd.org/Security/
+
+Sun Microsystems
+
+   Sun does not ship the Secure Shell (SSH), thus Solaris is not affected
+   by this issue.
+     _________________________________________________________________
+
+   The  CERT  Coordination Center thanks Markus Friedl of OpenSSH for the
+   technical assistance he provided.
+     _________________________________________________________________
+
+   Feedback  on  this  document  can be directed to the authors, 
+   Jason A. Rafail and Chad Dougherty
+     _________________________________________________________________
+
+References
+
+   ID     Date Public               Name
+
+VU#19124  01/20/98    SSH authentication agent follows symlinks via a UNIX domain socket
+
+VU#13877  06/11/98    Weak CRC allows packet injection into SSH sessions encrypted with block ciphers
+
+VU#40327  06/09/2000  OpenSSH UseLogin option allows remote execution of commands as root
+
+VU#363181 12/07/2000  OpenSSH  disregards  client  configuration  and allows server access to ssh-agent and/or X11 after session negotiation
+
+VU#850440 01/16/2001  SSH1  may  generate  weak passphrase when using Secure RPC
+
+VU#684820 01/18/2001  SSH-1  allows  client  authentication  to  be forwarded by a malicious server to another server
+
+VU#565052 01/18/2001  Passwords sent via SSH encrypted with RC4 can be easily cracked
+
+VU#786900 01/18/2001  SSH host key authentication can be bypassed when DNS is used to resolve localhost
+
+VU#25309  01/18/2001  Weak CRC allows RC4 encrypted SSH1 packets to be modified without notice
+
+VU#118892 01/18/2001  Older SSH clients do not allow users to disable X11 forwarding
+
+VU#665372 01/18/2001  SSH   connections   using  RC4  and  password authentication can be replayed
+
+VU#315308 01/18/2001  Weak CRC allows last block of IDEA-encrypted SSH packet to be changed without notice
+
+VU#945216 02/08/2001  SSH CRC32 attack detection code contains remote integer overflow
+
+VU#596827 03/19/2001  Weaknesses   in  the  SSH  protocol  simplify brute-force attacks against passwords typed in an existing SSH session
+
+VU#655259 06/12/2001  OpenSSH  allows  arbitrary  file  deletion  via symlink redirection of temporary file
+
+VU#737451 07/20/2001  SSH  Secure  Shell  sshd2  does  not adequately authenticate   logins  to  accounts  with  encrypted  password  fields containing two or fewer characters
+
+VU#279763 11/19/2001  RhinoSoft  Serv-U  remote administration client transmits password in plaintext
+
+VU#157447 12/04/2001  OpenSSH  UseLogin  directive  permits privilege escalation
+   
+______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-35.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+December 13, 2001:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPBj+TqCVPMXQI2HJAQGKugP9E50mOcpH0e83E5O2iblG69TRcrlHrtd8
+R2lsxc/DMr9Yeh4/+WUG020wSsOBFD1EiCnnW4L8YOowkRQgaYu2xyFh33N3cPXY
+0c24NL13UlMydkBb3fLkSSKDmhurzK+ewuFif3fCREReuQrFVaVdYRWSgzG3l4wq
+r9w81K9rgbY=
+=8koV
+-----END PGP SIGNATURE-----
+

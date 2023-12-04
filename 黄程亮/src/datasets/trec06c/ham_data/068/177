@@ -1,0 +1,147 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id XAA23305
+	for <handyboard@media.mit.edu>; Thu, 1 Jun 2000 23:30:03 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id XAA28096; Thu, 1 Jun 2000 23:30:03 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7877
+From: Gary Livick <glivick@pacbell.net>
+X-Real-Life-Name: Gary Livick
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: glivick@pacbell.net
+Subject: Re: Got my Handy, now what?
+Posted-Date: Fri, 2 Jun 2000 03:29:11 GMT
+Date: Fri, 2 Jun 2000 03:29:11 GMT
+Organization: None
+Message-Id: <39372A03.588DE8DA@pacbell.net>
+References: <FvIA40.E3K@lugnet.com>
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+Daniel Weatherford wrote:
+
+> I ordered my Handy Board today, and am going to install it in
+> an ice cream bucket named "BucketBot." (Better name? Please?)
+> Well I know that I'll be hooking up my GP2D12 to it, and a sonar
+> module (Polaroid 6500 hacked out of a Polaroid Sun 660 One
+> Step), but I have a few questions:
+>
+> Does ANYONE know of a good way to make cheap encoders?
+> I have wheels hooked onto servo motors with no electronics
+> (Use a L293D) and need encoders. Should I use a Hall Effect
+> sensor for this and a magnet or two per wheel, or an optical
+> thingie, or what? I really need this sensor, and have NO clue
+> whatsoever about how to implement it.
+
+The The Handy Board Technical Reference has encoder information for
+you.  The ones I use are the QRB1114, and they are just two or three
+dollars each.  The Reference shows you how to wire them.  See
+http://lcs.www.media.mit.edu/groups/el/projects/handy-board/techdocs/index.html.
+
+The encoders mentioned provide an analog signal.  If you are handy with
+electronics, you can digitize the signal with a Schmidt trigger.  Here
+is how the QRB1114 is wired digitally.
+
+Diode is wired as normal.  E (emitter) is wired to ground.  5V supply
+hooked to 47kb resistor which
+is hooked to C (collector).  C is the hooked into the input of a hex
+Schmidt trigger (74HCT14) output
+of Schmidt trigger goes into MCU port.  It is suggested that a .01 to .1
+capacitor be put from
+Schmidt trigger input to ground to eliminate spikes from triggering
+Schmidt trigger.  (This information came to me via Doug Leppard.  I've
+done it and it works, but it isn't necessary.)
+
+The software to use these encoders already exists as well.  See the
+"shaft encoder" link at
+http://lcs.www.media.mit.edu/groups/el/projects/handy-board/software/libs.html.
+You can use the slow ones and probably have no problem.  I you want to
+speed things up, since the encoder runs in the system interrupt, you can
+rewrite the .asm file to collect all the encoder data at one time with
+one read, and leave off the velocity part to decrease the time used in
+the system interrupt.  While you are about it, you can add a way to shut
+off the encoder data gathering all together while the wheels are not
+turning, and that makes things much faster.  If you need a hint how to
+do this, email me privately and I'll send along my code that runs four
+sensors.
+
+Keep in mind that when you make encoder targets, the black stripes need
+to be .10 wide, while the white ones can be much narrower.  My white
+ones are .04 wide, and everything looks fine on an oscilloscope.
+
+>
+> Is there anyway to modify the Handy to take a pre-regulated
+> +5v supply? I have a couple LM2596T-5.0 5Volt 3A Simple
+> Switcher regulators (Order today! They're great! Get samples
+> at www.national.com and a 100uf cap and a 66uh - 100uh
+> inductor, and you're ready to go!) and have had bad luck with
+> the 7805 regulators (which happens to be on the handy...).
+> I MELTED a 7805 once, it got SOFT to the prodding sharp
+> object and ceased to provide 5 volts. And I was running only
+> a HC11, L293D (Logic only, not motor power), Max232, and
+> a HS300 servo.
+
+I have used a whole bunch of different boards, including two Handy
+Boards, and I've never heard of anyone burning one of these things up.
+I broke one once by dropping something on it, but that doesn't count.
+If you are worried about overloading yours, either heat sink the thing
+or provide a separate regulator board for your high current devices.
+Just keep the grounds hooked together and you should be fine (you know
+about Vrl and Vrh, so you won't have a problem dealing with that).
+Other than that, since it isn't broke, don't fix it.
+
+> Thanks to that, I tried hooking up my servo
+> to the +12v rail, and poof... no more servo, even screwed up
+> the motor (doesn't turn with any voltage now - didnt think
+> that possible). Well, enough rambling, is it possible?
+
+Nope.  Impossible :-).
+
+> I don't
+> really want to cut traces or anything (besides the pullups on
+> the analog input, and I will probably end up desoldering that
+> whole resistor network).
+
+You can just cut a trace for the GP2D12.  The pullups don't hurt
+anything else that I know of.  Here is one site that talks about that
+(off the Handy Board site):
+http://condor.informatik.uni-oldenburg.de/stueker/GP2D12/ and here is
+another:
+http://www.acroname.com/robotics/info/examples/GP2D12-1/GP2D12-1.html.
+
+
+
+>
+>
+> What pyro sensor would you recommend for a fire-fighting bot?
+
+Don't know for sure how it would work on finding candle flames, but the
+Eltec sensor on this page comes in a kit that includes a fresnel lens.
+http://www.acroname.com/robotics/parts/R3-PYRO1.html  Here is the page
+on the same site that shows how to hook it up:
+tp://www.acroname.com/robotics/info/examples/eltec-1/eltec-1.html.
+Beware however of the sample code.  Steve (owner of Acroname) writes in
+C, not IC, so he doesn't know that C++ comments are not recognized by
+IC.  Use /* instead of //. and close with */.
+
+
+
+>
+> I want to cruise by a room, point the sensor at it, and see whether
+> or not the candle's in there. One sensor pack on Acroname said
+> that it could do that, but I can't remember what it's called, and
+> was wondering if there were any suggestions. I am NOT going
+> with the Eltec, it just won't work for me.
+
+Oops.  Well, maybe others have an idea how the Eltec works, or know of
+other sensors.
+
+Gary Livick
+
+Tiny HC11 products for your robot
+http://www.teleport.com/~raybutts/
+

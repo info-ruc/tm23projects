@@ -1,0 +1,143 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3BFgT205145
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 11:42:29 -0400 (EDT)
+Received: from KEVSTOY (cpe-69-207-37-246.twcny.res.rr.com [69.207.37.246])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k3BFgSLp002480
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 11:42:29 -0400 (EDT)
+Message-ID: <002701c65d7e$9e4014a0$f625cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 20
+Date: Tue, 11 Apr 2006 11:43:02 -0400
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0024_01C65D5D.16CCCCA0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0024_01C65D5D.16CCCCA0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Scribe is an application level multicast system and pub/sub system.  =
+Scribe is seems like an addition to pastry and offers best-effort =
+reliability with communication.  Packet ordering and other reliability =
+issues are not gauranteed unless certain (reasonable, but not always =
+present) conditions are met on the network.  Scribe is organized into =
+(possibly many) groups with (possibly many) members in each group.  =
+Built upon Pastry, a group is the hash of the group's name concatenated =
+with the creator's name.  The node that the hash is closest to is =
+responsible for being the parent of this group.  This information is =
+replicated over k nearest neighbors for reliability's sake.  Each member =
+of the group has a set of credentials that allows that member to =
+multicast to everyone in the group or perform other security-needed =
+operations, such as group destruction.  A multicast tree is built when a =
+node joins the network.  It first routes a message to the parent node of =
+the group, hash(groupName+creator), and every node along the way adds =
+the new node as a child.  When the parent broadcasts a message, it is =
+sent down this tree to people who are possibly not in the group =
+(forwarders) to get down to the child.  When a node fails, a new join =
+message is sent to the parent of the tree.  The tree, because of =
+Pastry's properies, is likely to not have more than log(n) depth and =
+children are likely to share non-root parents.
+    Performance seems to be alright, but nothing fantastic.  The =
+implementation of this algorithm is simple compared to many of the =
+others we have read before, but the performance is laking.  Overhead and =
+speed seem to be 1.5-2x less/slower than other systems we have read =
+about before.
+
+Siena confused me a bit.  It seems to wander off in its own direction, =
+which is away from the focus of the paper, for large expanses.  The =
+general aim of Siena is to implement filters and events, which can be =
+grouped together, which allow you to save bandwidth when you multicast.  =
+The multicast itself is possibley cached along the semi-unstructured p2p =
+system.  While the paper says it can be built upon a structured network, =
+they never go into that fully.
+------=_NextPart_000_0024_01C65D5D.16CCCCA0
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<DEFANGED_META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<DEFANGED_META content=3D"MSHTML 6.00.5296.0" name=3DGENERATOR>
+ <!-- <DEFANGED_STYLE> --> </DEFANGED_STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>Scribe is an application level =
+multicast system and=20
+pub/sub system.&nbsp; Scribe is seems like an addition to pastry and =
+offers=20
+best-effort reliability with communication.&nbsp; Packet ordering and =
+other=20
+reliability issues are not gauranteed unless certain (reasonable, but =
+not always=20
+present) conditions are met on the network.&nbsp; Scribe is organized =
+into=20
+(possibly many) groups with (possibly many) members in each group.&nbsp; =
+Built=20
+upon Pastry, a group is the hash of the group's name concatenated with =
+the=20
+creator's name.&nbsp; The node that the hash is closest to is =
+responsible for=20
+being the parent of this group.&nbsp; This information is replicated =
+over k=20
+nearest neighbors for reliability's sake.&nbsp; Each member of the group =
+has a=20
+set of credentials that allows that member to multicast to everyone in =
+the group=20
+or perform other security-needed operations, such as group =
+destruction.&nbsp; A=20
+multicast tree is built when a node joins the network.&nbsp; It first =
+routes a=20
+message to the parent node of the group, hash(groupName+creator), and =
+every node=20
+along the way adds the new node as a child.&nbsp; When the parent =
+broadcasts a=20
+message, it is sent down this tree to people who are possibly not in the =
+group=20
+(forwarders) to get down to the child.&nbsp; When a node fails, a new =
+join=20
+message is sent to the parent of the tree.&nbsp; The tree, because of =
+Pastry's=20
+properies, is likely to not have more than log(n) depth and children are =
+likely=20
+to share non-root parents.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; Performance seems to =
+be alright,=20
+but nothing fantastic.&nbsp; The implementation of this algorithm is =
+simple=20
+compared to many of the others we have read before, but the performance =
+is=20
+laking.&nbsp; Overhead and speed seem to be 1.5-2x less/slower than =
+other=20
+systems we have read about before.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Siena confused me a bit.&nbsp; It seems =
+to wander=20
+off in its own direction, which is away from the focus of the =
+paper,&nbsp;for=20
+large expanses.&nbsp; The general aim of Siena is to implement filters =
+and=20
+events, which can be grouped together, which allow you to save bandwidth =
+when=20
+you multicast.&nbsp; The multicast itself is possibley cached along the=20
+semi-unstructured p2p system.&nbsp; While the paper says it can be built =
+upon a=20
+structured network, they never go into that =
+fully.</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0024_01C65D5D.16CCCCA0--
+

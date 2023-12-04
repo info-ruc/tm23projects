@@ -1,0 +1,76 @@
+Received: from wilkes.csl.cornell.edu (wilkes.csl.cornell.edu [132.236.71.69])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9NDoio25349
+	for <egs@cs.cornell.edu>; Tue, 23 Oct 2001 09:50:44 -0400 (EDT)
+Received: (from daehyun@localhost)
+	by wilkes.csl.cornell.edu (8.9.3/8.9.2) id JAA09366
+	for egs@cs.cornell.edu; Tue, 23 Oct 2001 09:50:38 -0400 (EDT)
+	(envelope-from daehyun)
+From: Daehyun Kim <daehyun@csl.cornell.edu>
+Message-Id: <200110231350.JAA09366@wilkes.csl.cornell.edu>
+Subject: 615 PAPER 25
+To: egs@CS.Cornell.EDU
+Date: Tue, 23 Oct 2001 09:50:38 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL54 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+This paper compares four ad hoc network routing protocols - DSDV, TORA,
+DSR and AODV. They extended the ns-2 network simulator to model the MAC
+and physical layer of IEEE 802.11 and wireless transmission channel.
+And they presented a detailed packet level simulation result for 50
+mobile nodes.
+
+They performed the simulations with two different node nobilities -
+a maximum speed of 20 m/s and 1 m/s. The followings are interesting
+observations.
+
+For 20 m/s;
+1. DSR and AODV show better performance than TORA and DSDV, especially
+   in higher mobility. 
+2. DSDV fails to converge at pause times less than 300 seconds. It is 
+   mainly because of a stale routing table entry.
+3. TORA shows bad performance for 30 sources. It is due to congestion.
+4. DSR shows better performance than AODV even in higher mobility.
+   This is contradict with the result of another paper I have reviewed
+   this week.
+5. DSR has the least overhead and TORA has the most. AODV and DSDV cross
+   as mobility changes. AODV is better in lower mobility and DSDV in
+   higher.   
+6. DSR and AODV shows almost same shape of curves, because they both use 
+   on-demand and similar mechanisms.
+7. The overhead of DSDV does not change with respect to mobility, because
+   it is periodic routing protocol. But the overhead of the others decrease
+   as mobility gets lower.
+8. DSR and DSDV find the shortest path effectively. But AODV and TORA
+   have a significant tail up to 4 or more hops longer.
+
+For 1 m/s;
+1. DSDV converges in this case.
+2. TORA shows a strange curve, which is not explained in this paper.
+3. DSR and AODV show much lower protocol overhead than DSDV and TORA,
+   due to their on-demand characteristic.
+
+Generally, DSR shows best performance and AODV is almost as good as DSR.
+DSDV and TORA are worse than the above two. However, this paper does not
+say this fact definitly, because this is just a case study.
+
+I think, the fairness is the most important in this kind of study, and 
+in that sense, this paper did good work. They analyzed the protocols
+very carefully and implemented them in detail, even with help from the
+designers of each protocol. They also modeled lower layers accurately
+, which usually has not been done in other papers. The simulation settings
+and metrics were also well defined. Overally, this paper gives credibility
+to readers.
+
+I think, the simulation size is not so practical - 50 nodes, 1500mX300m
+space and 900 second simulation time. This might reflect some situations
+such as wireless notebook networks inside a library. But it is not a 
+suitable model for situations such as battle field and sensor networks.
+In addition, DSR might have more overhead than the other protocols as
+the networks scale up. So, we need to be careful in comparing the protocols.
+
+This paper is excellent in comparing the protocols. But, it will be good
+to propose new ideas based on this study. I think there might have been
+following papers after this.
+

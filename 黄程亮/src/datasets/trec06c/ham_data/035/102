@@ -1,0 +1,91 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id VAA10671
+	for <handyboard@media.mit.edu>; Thu, 11 Feb 1999 21:51:30 -0500 (EST)
+Received: from cam.org (Dialup-395.HIP.CAM.ORG [199.84.44.143])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id VAA18252; Thu, 11 Feb 1999 21:49:19 -0500 (EST)
+Message-Id: <36C396A7.F06FEAAA@cam.org>
+Date: Thu, 11 Feb 1999 21:49:12 -0500
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.5 [en] (Win95; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Keith Hearn <khearn@icp.siemens.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: IR remote problem
+References: <199902111927.LAA12823@raptor.eng.pyramid.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Keith Hearn wrote:
+
+> I picked up a surplus remote control at Halted Specialties
+>   (http://www.halted.com/) and am trying to use Max Davies' IRINT.ICB,
+>   IR.C and TEST.C, and I'm not having any luck.
+>
+> I'm seeing two main problems.
+>
+> 1) Some keys give 35 bits of data, and some give 38 bits.
+
+I have seen this occasionally.  As long as it's consistent for each key, I
+think the best bet is to just assume the data size is the larger of the two
+with trailing 0's for the shorter one.  I can't promise this works though,
+as I've only had a single hands-on example of this case.
+
+> 2) The raw data for any given key changes between subsequent presses,
+>   switching back and forth between two values.
+>
+> For instance, the "1" key gives 38 bits, with 8004002000 on one
+>   press, then 4002001000 on the next, and then back to 8004002000.
+>
+> The "2" key gives 35 bits, cylcing between  8020828020 on one press
+>   and 4024024020 on the next.
+>
+
+This is really bizarre.  Because it is consistent it doesn't look like a
+hardware problem, it's more likely I have a bug in the software somewhere.
+
+> Am I dealing with RC-5 coded remotes? If so, is there any software
+>   for the Handy Board that will decode RC-5? Or am I facing some other
+>   issue?
+
+My routines do not currently support RC-5 because I do not own a remote
+using RC-5 to use for test purposes.  However, based on feedback from other
+users, I have tried to include a warning message in the software if it
+SEEMS that the remote is using the RC-5 standard.  I cannot guarantee that
+the warning message will really work because I have no test device, but if
+you repeatedly get the message "RC-5 NOT SUPPORTED" that should give you a
+hint.  Note though, that this message might also appear in error if any
+'garbage' signal is received due to excessive sunlight, low battery
+conditions, etc.
+
+>
+> Here are typical values that TEST.C is giving me for pulse widths:
+>
+> Pulse_mode:     1               Bits:   38 or 35
+> Lpulse:         1150            Lspace: 630
+> 1pulse:         2000            1space: 700
+> 0pulse:         1000            0space: 700
+> Tpulse:         1030            Tspace: 1030
+>
+
+It is very interesting that you mention a result of Pulse_mode 1.  This is
+unusual, and again is not a case that I can test with the remotes that I
+own.  I have recently (within the past few weeks) tried to correct apparent
+bugs regarding the pulse mode.  Please contact me privately at
+mdavies@cam.org and tell me what version of my IR routines you are using,
+and we can try to hammer out the problem.
+
+> BTW, the Tpulse and Tspace are always identical. Looking in TEST.C,
+>   they are both set to the same value. Is this a bug?
+
+No, this is normal.  In real life, the "trailer space" is what happens
+after the signal is finished, and is potentially infinite in length.  The
+only reason a trailer space is included in the settings is to help separate
+one signal from another should you transmit more than one button press in a
+row.
+
+/Max
+
+
+

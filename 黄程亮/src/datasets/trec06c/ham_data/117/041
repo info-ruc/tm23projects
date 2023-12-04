@@ -1,0 +1,62 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k295UGt01279
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 00:30:16 -0500 (EST)
+Received: from [128.253.212.208] (r253212208.resnet.cornell.edu [128.253.212.208])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k295UFEb024033
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 00:30:15 -0500 (EST)
+Message-ID: <440FBD68.70107@cornell.edu>
+Date: Thu, 09 Mar 2006 00:30:16 -0500
+From: Ivan Stoyanov <ids3@cornell.edu>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 13
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Resilient Overlay Networks
+
+Lower level routing algorithms like BGP are sometimes slow to respond to 
+failures and reconfigure themselves to use alternative paths. The paper 
+proposes a "do-it-yourself" solution to this problem, where nodes in a 
+distributed application form an overlay which can be used as an 
+alternative routing substrate. Nodes monitor the state of the links 
+between themselves and choose an alternative path when an outage occurs. 
+This happens much faster then the adaptation of the underlying routing. 
+Since the system keeps n^2 number of links only a single node is enough 
+to form an alternative path.
+
+The tight coupling between the client application and the routing 
+provides additional benefits like the ability to choose a specific path 
+metric for each application, as well as application specific notions of 
+what constitutes a network failure. Overlay routing also allows routes 
+to use private peering paths between different autonomous systems that 
+are unavailable for traditional routing.
+
+The paper presents a great and simple idea. The biggest drawback is that 
+it proposes that every node knows every other node, which does not scale 
+well.
+
+
+Improving the Reliability of Internet Paths with One-hop Source Routing
+
+The paper presents optimization over RON. Its main point is that 
+maintaining n^2 links is unnecessary. Instead, the authors suggest 
+keeping a smaller number of links would be enough because the source 
+node can try its peers in sequence until it find a path to the destination.
+
+The problem that the papers solves seems very much like searching in an 
+unstructured p2p network. Perhaps a simple flood will be much more 
+efficient. It is not expensive in this case, because it will happen 
+rarely. In addition, it guarantees that the destination will be reached 
+in the shortest possible time. The path found will also most likely be 
+the one with lowest latency.
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k274SEt02029
+	for <egs+summary@cs.cornell.edu>; Mon, 6 Mar 2006 23:28:14 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k274SD9B001795
+	for <egs+summary@cs.cornell.edu>; Mon, 6 Mar 2006 23:28:14 -0500 (EST)
+Message-ID: <76814523.1141705691907.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Mon, 6 Mar 2006 23:28:12 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 12
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+<Comments on PAST>
+* Load balance can't be guaranteed in PAST. Although a caching scheme is proposed to balance the query load for popular files, (1) it is infeasible to cache large files; (2) caches begin to replace files as the storage utilization increases, so the cache hit ratio drops.
+* The overhead of data migration is quite large if nodes join and leave system frequently (or said, the k numerically closest nodes change frequently). According to the migration scheme given in the section of 'Maintaining replicas', when a node joins and becomes one of the k numerically closest nodes, a pointer pointing to it is installed and then the file is transferred to it in the background. Imagine that it soon leaves the system. The file has to be transferred to another node again. If nodes joins and leaves frequently, the cost to transfer the file among the nodes is high.
+
+<Comments on CFS>
+* While allowing parallel blocks access to improve performance, CFS requires a lot of messages to locate a file, especially when the file size is very large. The granularity of block sizes should be well designed to fit the file sizes.
+* Server selection (concerning latency) is supported in CFS by including the function find_predecessor() in Chord protocol. As the latencies are measured at the predecessor, people may doubt if they exactly reflect the latencies from the client to those nodes.
+
+<Summary of PAST>
+* PAST is a peer-to-peer storage utility layered on top of Pastry. This paper presents and evaluates (1) storage management and (2) caching in PAST.
+* Three operations: Insert, Lookup, and Reclaim are provided by PAST. Each file, along with its file certificate, is stored at k nodes. This is confirmed by the store receipts returned by these nodes. The required storage is debited against the file owner's quota. When a lookup request is issued, it is routed until the closest node storing that file responds. The file owner can also issue a reclaim certificate and check the credit against quota upon receiving the reclaim receipts.
+* The primary goal of storage management is to allow high global storage utilization and gracefully degradation as the system approaches its maximal utilization. Generally, a file is stored at the k numerically closest nodes, but load imbalance may occur due to different size of each file and different storage capacity of each node.
+* The 'replica diversion' is therefore proposed to balance the remaining free storage space among nodes in the system: if one of the k nodes can't accommodate the file, it chooses a node form its leaf set to store the file instead and keeps a pointer to that node. The 'replica diversion' is also necessary for maintenance of the invariant that each file is stored at k nodes. To accept a replica or to divert it depends on policies based on a metric SD/FN, where SD is the size of a file and FN is the free storage space of a node.
+* File diversion: if the root node of the file can't accommodate the file, a negative acknowledgement is returned to the client. The client has to generate another node ID (with another salt). If the same situation occurs three times, the owner has to consider splitting the file to smaller sizes.
+* The primary goal of caching is to minimize client access latencies, to maximize query throughput and to balance query load in the system. Nodes may use unused portion of their storage space to cache files. Cache copies may be discarded when necessary (to store a new replica, for example). GreedyDual-Size policy is used here for cache replacement.
+
+<Summary of CFS>
+* CFS is a peer-to-peer ready-only block-oriented storage system. It is structured as a collection of servers that provide block-level storage. The file system semantics can be layered on top of this block store.
+* CFS consists of two layers: The Chord layer maintains the routing table to locate blocks. The DHash layer is responsible for storing keyed blocks and maintaining replications and caching of them.
+* CFS stores data for an agree-upon interval; servers may discard data whose guaranteed period has expired. This prevents, to some degree, malicious behaviors of keeping inserting data, since they are automatically deleted when attackers stop refreshing them.
+* DHash places a block's replicas at the k servers immediately after the block's successor. Blocks are cached along the lookup path and replaced in least-recently-used order.
+* Multiple virtual servers may be run on a physical server, for load balance, in proportion to the server's storage and network bandwidth. Virtual servers can take short-cut through each other's routing table to compensate for the increased number of hops (resulting from the increased number of servers) in the lookup.
+* The experimental results show that the pre-fetch scheme improves the performance depending on the pre-fetch window size for different cases. To decide the right size is a future research. Besides, a keyword search engine is under development for CFS.
+

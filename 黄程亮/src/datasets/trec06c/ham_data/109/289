@@ -1,0 +1,64 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.194])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jAU2Wr5L004965
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 29 Nov 2005 19:32:54 -0700
+Received: by zproxy.gmail.com with SMTP id l1so1372947nzf
+        for <DMDX@psy1.psych.arizona.edu>; Tue, 29 Nov 2005 18:32:50 -0800 (PST)
+Received: by 10.65.137.7 with SMTP id p7mr2980758qbn;
+        Tue, 29 Nov 2005 18:32:50 -0800 (PST)
+Received: by 10.65.114.2 with HTTP; Tue, 29 Nov 2005 18:32:50 -0800 (PST)
+Message-ID: <b758b9390511291832o168b128es43d364c0379718a2@mail.gmail.com>
+Date: Tue, 29 Nov 2005 20:32:50 -0600
+From: Jillian Lee <jillian.a.lee@gmail.com>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Recording reaction times & having the picture clear after voice response
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hello,
+
+I am trying to get my program to display a picture until it detects a
+vocal response.  Then, the screen should clear and move on.  Or, if
+there is no response after 2 seconds, it should clear and move on. 
+Also, it should record the reaction time from when the picture is
+displayed to when the vocal response is detected.
+
+As it stands now, I can only get it to display the picture until it
+detects a vocal response (but the reaction times all come out as 1.00
+in the azk file) OR I can get it to record the reaction times in ms
+but it just displays the picture for 2 seconds no matter what.
+
+Here is some of the script where it displays the picture until it
+detects voice, but the reaction times all read 1.00 in the azk:
+
+<ep> <ntl><d 0><cr><id digitalVOX><id RecordVocal 0, 2000><id
+keyboard><wc 000255000> <dbc 000000000><dfs 36><vm
+1024,768,768,16,75><ClearFeedback><eop>
+
++1111 g"+2" <% 75> / <bmp> * "picture1";
+0 <ms% 2000> /c;
++1112 g"+2" <% 75> / <bmp> * "picture2";
+0 <ms% 2000> /c;
+
+Here is some of the script where it displays the picture for 2 seconds
+irrespective of when it picks up the vocal response but it records
+different reaction times in ms in the azk file:
+
+<ep><fd 160><d 79><cr><t 1990><id digitalVOX><id RecordVocal 0,
+2000><id keyboard><wc 000255000> <dbc 000000000><dfs 36><vm
+1024,768,768,16,75><nfb><eop>
+
++1111 g"+2" <% 75> / * g"picture1" / !;
+0 <ms% 2000> /c;
++1112 g"+2" <% 75> / * g"picture2" / !;
+0 <ms% 2000> /c;
+
+Can someone please help me?
+
+Thanks,
+Jillian Lee
+
+

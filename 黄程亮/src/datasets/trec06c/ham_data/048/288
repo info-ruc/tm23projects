@@ -1,0 +1,55 @@
+Received: from easy.stallion.com (easy.stallion.com [204.31.184.2])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id QAA32456
+	for <handyboard@media.mit.edu>; Thu, 29 Jul 1999 16:59:13 -0400 (EDT)
+Received: from stallion.stallion.oz.au by easy.stallion.com id aa03666;
+          29 Jul 99 13:58 PDT
+Received: from gweepery.stallion.oz.au by stallion.stallion.oz.au id aa05823;
+          30 Jul 99 6:58 AEST
+Received: by stallion.oz.au
+	via sendmail from stdin
+	id <m119xHV-000839C@gweepery.stallion.oz.au> (Debian Smail3.2.0.102)
+	for handyboard@media.mit.edu; Fri, 30 Jul 1999 07:00:01 +1000 (EST) 
+Sender: chris@gweepery.stallion.oz.au
+To: handyboard mailist <handyboard@media.mit.edu>
+Subject: Re: Reading Serial Port
+References: <37A0025F.E2C562AC@mail.arc.nasa.gov>
+From: Christopher Biggs <chris@stallion.oz.au>
+Date: 30 Jul 1999 07:00:01 +1000
+In-Reply-To: David Boosalis's message of "Thu, 29 Jul 1999 03:27:27 -0400"
+Message-Id: <sak8rjtbn2.fsf@gweepery.stallion.oz.au>
+Lines: 30
+User-Agent: Gnus/5.070083 (Pterodactyl Gnus v0.83) Emacs/20.3
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+
+David Boosalis <dboosalis@mail.arc.nasa.gov> moved upon the face of the 'Net and spake thusly:
+
+> This is not really a HB question, but I am hoping someone here has
+> experience in it anyway.  My question is in how do you read the Serial
+> port under Linux.  The Linux HOWTO's give an example, which I show
+
+"Use The Source, Luke".   Check the source code of the downloader in
+the Unix port of Interactive C.
+
+> #included by <termios.h> */
+> #define BAUDRATE B921600
+
+I think you want 9600, not 921kbaud (unless you're running your 6811 E
+clock at 500 MHz).
+
+>   newtio.c_cflag = BAUDRATE | CRTSCTS | CS8 | CLOCAL | CREAD;
+
+No point turning on RTS/CTS flow control--those pins are not driven by
+the handyboard.  Depending on your cabling, this may be causing your
+problem (lack of CTS-high at the PC end).
+
+See also the Linux "Serial-Programming-HOWTO".
+
+cjb.
+
+-- 
+ ------------------ Linux hackers do it in protected mode -------------------
+ | Christopher Biggs - Software Engineer, Stallion Technologies, Australia  |
+ | chris@stallion.oz.au - CEO, J.Random Deadguy Institute for Weird Studies |
+ ------- Mathematics and alcohol don't mix --- Never drink and derive -------
+

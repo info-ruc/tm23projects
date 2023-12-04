@@ -1,0 +1,42 @@
+Received: from hq.freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id NAA09337
+	for <Handyboard@media.mit.edu>; Thu, 8 Apr 1999 13:24:46 -0400 (EDT)
+Received: (qmail+freegate 3065 invoked by alias); 8 Apr 1999 17:24:35 -0000
+Received: from ws52-n0.hq.freegate.com (HELO drpepper) (208.226.86.180)
+  by hq.freegate.com with SMTP; 8 Apr 1999 17:24:35 -0000
+Message-Id: <4.1.19990408102525.03d34100@mailhost.hq.freegate.com>
+X-Sender: cmcmanis@mcmanis.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Thu, 08 Apr 1999 10:30:22 -0700
+To: Handyboard List <Handyboard@media.mit.edu>
+From: Chuck McManis <cmcmanis@mcmanis.com>
+Subject: Re: GCC 2.8.1 for HC11 
+Cc: Curt Mills <hacker@tc.fluke.com>, Curt Mills <BowHunt@iname.com>
+In-Reply-To: <Pine.WNT.3.96.990408054223.113G-100000@wapiti.tc.fluke.com
+ >
+References: <199904021853.KAA07613@mail.Legato.COM>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 06:36 AM 4/8/99 -0700, Curt Mills, WE7U wrote:
+>Oh yea, did you know that if you create code which is located in the first
+>page of memory that the loader will give you an error while trying to load
+>it?  ;-)  I guess the running loader code has to live somewhere...
+...
+>I located the LCD code into 0x0100-0x01ff to get around this (I have an
+>E1/E9 chip - 512 bytes RAM).  I'll change it later so the code is moved
+>into first page memory from somewhere else when the program starts.  That
+>way it'll run on the A-series HC11 chips as well.
+
+Curt, may I suggest that rather than re-invent the wheel you take the LCD
+code out of the Handyboard libraries I wrote that are on the icc11 site.
+They should pretty much compile out of the box and I know they work :-)
+They are also about 75% more efficient than the IC version as they don't
+spend anytime busy waiting on the LCD (this really helps multiple servo
+performance!) The interface isn't exactly the same as IC (there are things
+like cursor positioning routines and support for other LCD sizes) but they
+are useful.
+
+--Chuck
+
+

@@ -1,0 +1,57 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4GmK604095
+	for <egs@popsrv.cs.cornell.edu>; Tue, 4 Dec 2001 11:48:20 -0500 (EST)
+Subject: cs615 PAPER 69
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Tue, 4 Dec 2001 11:48:20 -0500
+content-class: urn:content-classes:message
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
+Message-ID: <706871B20764CD449DB0E8E3D81C4D4301E7F29E@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: cs615 PAPER 69
+Thread-Index: AcF843riIpowh89MSBG6AU1pcntBrQ==
+From: "Venu Ramasubramanian" <ramasv@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id fB4GmK604095
+
+Bayeux: An architecture for scalable and fault-tolerant wide are data
+dissemincation.
+
+	Bayeux is a tree based multicast protocol desgined for streaming
+multimedia on top of tapestry routing protocol. Streaming multi-media
+applications have the property of having several consumers of
+information while a singe source.  This fits neatly on top of the
+tapestry architecture since the source can be considered to be the root
+server for the media-files and the consumers, the different client of
+tapestry.  As shown in the paper it is quite trivial to establish a
+logical tree of routing from source to multiple destinations based on
+the tapestry architecture.  Such a tree would have a very short depth
+(10 for 160-bit node ids) and a constant fan-out (16).  
+
+	The quality of multi-media streams relies extremely upon a
+metric called jitter - that measures the inter-arrival time between
+succesive packets.  Since tapestry architecture has a constant
+tree-rebuilding process in the background upon node and link failures,
+it would be extremely difficult to guarantee low jitter. Further
+tapestry assumes an underlying overlay network routing architecture
+(internet) that does not guarantee any bound for the jitter.  These
+restrictions may prove tapestry an unsuitable solution for the proposed
+problem.
+
+  	Bayeux proposes to overcome this problem partly by routing
+duplicate packets through secondary neighbors in the routing tree.
+While the paper claims that such duplicate paths taken would soon
+converge (thus limiting the overhead) it is not clear why as contrary to
+what is stated in the paper the multicast tree is rooted at the source
+and not the destination.  In addition to that the tapestry routing
+algorithm relies on timeouts when routing through secondary neighbors
+and hence might increase the jitter quite high.  Further, bayeux
+proposes to make nodes proximal in the physical topology also to be
+proximal in the virtual topology. This might weaken the fault tolerance
+and robustness gurantees of tapestry.
+
+

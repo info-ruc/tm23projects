@@ -1,0 +1,76 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id AAA27515
+	for <handyboard@media.mit.edu>; Sat, 25 Jul 1998 00:04:39 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id AAA05067;
+	Sat, 25 Jul 1998 00:04:38 -0400 (EDT)
+Message-Id: <199807250404.AAA05067@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Raphael Carter <anagram@chaparraltree.com>
+Cc: HandyBoard List <handyboard@media.mit.edu>
+Subject: Re: motor power problems 
+In-Reply-To: Your message of "Fri, 24 Jul 1998 19:43:29 CDT."
+             <199807250048.UAA26956@aleve.media.mit.edu> 
+Date: Sat, 25 Jul 1998 00:04:37 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+in short, the answer is:  
+
+  "you can't use 3 to 4v motors with the Handy Board."
+
+basically, these motors are cheap toy motors that are incredibly noisy
+from an electrical standpoint, plus they want to draw far more current
+than the Handy Board's motor drivers can deliver.
+
+your options are:
+
+1.  get better motors, ones rated for 9 to 12v with 1 ampere of
+current draw (e.g., LEGO motors)
+
+2.  design your own motor driver circuit and run your 3 to 4.5v motors
+from that.
+
+just reducing the HB's batt voltage wont' do it, as you have found,
+because of the noise problem inherent in these cheap motors.
+
+fred
+
+In your message you said:
+> Hi, everyone.  I recently bought a preassembled handyboard from the Robot
+> Store in Hong Kong, and I'm having trouble with motor power.  My robot
+> frame has two motors that can run at 3-4.5V.  I was planning to use 5AA
+> Nicads as a power supply for the whole board (as suggested in the list
+> archives), which should give about 5V or so to the motors.  I'd planned on
+> using PWM to run the motors at 3.5V or so for a good cruising speed.
+> 
+> Here's what I found:
+> 
+> - Any PWM setting high enough to run the motors at full speed was also
+> enough to light the "battery" light and reset the Handy Board.  I can run
+> the motors at an unsatisfactory crawl -- about 2.25 V, according to my
+> voltmeter -- but anything higher makes the board reset.  This problem
+> occurs even if I switch to an 8AA power supply.  
+> 
+> - Even though my program waits for the start button to be pressed before
+> doing anything, sometimes the Handy Board starts up with both motors
+> running, apparently at full power with no PWM.  Since this leaves the CPU
+> without enough power to run, the robot gets stuck in a full-speed-ahead
+> state.  This heats up the L293Ds and is probably terrible for the motors,
+> especially when I'm trying to run the board off 8AA batteries.  The robot
+> is also liable to jump off my desk while I'm trying to program it.
+> 
+> Has anyone had similar problems, and if so how did you solve them?  I know
+> there's a way to provide a separate power supply for the motors, but I'd
+> rather not cut traces on the board except as a last resort.
+> 
+> If I do have to use separate power supplies, would the Handy Board itself
+> run OK with a 9V battery?  At least that way I wouldn't have two bulky
+> power packs to deal with.
+> 
+> 
+> -- 
+> Raphael Carter <anagram@chaparraltree.com>
+> 
+> 
+

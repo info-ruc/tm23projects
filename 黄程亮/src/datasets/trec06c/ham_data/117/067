@@ -1,0 +1,97 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29HFCt26474
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 12:15:12 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k29HFA5h029537
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 12:15:10 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Thu, 9 Mar 2006 12:15:11 -0500 (EST)
+Message-ID: <4719.128.84.98.90.1141924511.squirrel@webmail.cornell.edu>
+Date: Thu, 9 Mar 2006 12:15:11 -0500 (EST)
+Subject: paper 13 - routing
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+RON
+
+the main goal of a RON is to enable a group of nodes to communicate with
+each other in the face of problems with the underlying Internet paths
+connecting them.
+
+RON nodes exchange information about the quality of the path among
+themselves via a link-state routing protocol and build forwarding tables
+on a variety of metrics. In order to constrain the amount of bandwidth
+overhead, the authors suggest limiting the RON to less than 50 nodes.
+This scheme is not scalable for networks with very large peers.
+it also requires each node or a local group of nodes to create databases
+to store samples related to various metrics. the databases ( in case of a
+group of nodes) serve as a single point of failure and attack.
+
+
+It assumes that nodes in a RON will not be malicious since malicious
+behavior could be easily detected in a such small world. the paper does
+not explicitly deal with such detection mechanisms especially in the case
+of nodes who might forward garbage information (related to path quality).
+
+
+Optimizations are achieved using flow-cache entries.
+
+
+
+One-hop Source Routing
+
+the paper carries out experiments to determine the location of path
+failures while routing. the authors distinguish between a true pah failure
+and short-lived congestion using multiple probes. TCP-ACK packets were
+used instead of UDP for various reasons such as firewalls and routers
+dropping them.
+
+
+ basic idea:
+once a node detects a path failure, it selects k intermediaries and
+attempts to reroute packets through them. If the new indirect path is
+sufficiently disjoint from the older direct path, the faulty component
+will be avoided resulting in successful communication.
+
+better policies:
+maintain a history of the intermediary that correctly forwarded to a
+particular destination and set this intermediary as the k th intermediary
+for subsequent routing to the same destination.
+(although the authors do not discuss as to how a node detects that a
+particular intermediary was successful given that it forwards to all the
+intermediaries in parallel - does the response returned from the
+destination indicate this intermediary ?  - or does the intermediary
+himself inform about successful routing ?)
+
+experiments show that for 3000 nodes random-4 (k=4 here) provides good
+results and it should be invoked after having observed just a single
+packet drop.
+
+
+the value of the k would be different for different sized networks. The
+authors have not provided mathematical equations for the value of k and
+the frequency/eagerness of invoke for different sized networks.
+k should be set based on the number of nodes in the network for optimal
+performance.
+(randomly choosing k will improve performance by a small amount only)
+Knowing the number of nodes in the network (since it can change
+dynamically) seems difficult.
+
+
+
+
+
+
+
+
+
+
+
+

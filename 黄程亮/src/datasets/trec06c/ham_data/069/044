@@ -1,0 +1,51 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id GAA22059
+	for <handyboard@media.mit.edu>; Fri, 30 Jun 2000 06:50:04 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id GAA17730; Fri, 30 Jun 2000 06:50:04 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7909
+From: "Martin Ziegler" <maziegler@swissonline.ch>
+X-Real-Life-Name: Martin Ziegler
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: sonar and overflow
+Posted-Date: Fri, 30 Jun 2000 10:49:13 GMT
+Date: Fri, 30 Jun 2000 10:49:13 GMT
+Organization: none
+Message-Id: <FwyrE1.DGz@lugnet.com>
+References: <007501bfe240$5a602d20$0500a8c0@iinet.net.au>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Hi
+
+I think that the longest distance your able to measure is about 2.7m. The
+counter is 16 bit long and has no sign. But the integer is has a sign, so you
+can only use 15 bits, which is 32768. The counter increases each 0.5ns (pink
+book). Sound travels at approximatly 340m/s.
+
+32768*0.0000005*340/2=2.78m
+
+If you need longer distances, you need do handle with the overflow bit. I
+wasn't successful until no. The next few month i will not have the time to get
+one with that. So if you find a solution, please let me know.
+
+Bye
+
+Martin
+
+
+In lugnet.robotics.handyboard, Adam Oliver writes:
+>Has anyone managed to work out some code which checks the overflow bit =
+>for the counter used in the polaroid sonar code? At the moment mine =
+>distance readings seem to be maxing out around 1.5m or so, and I'm not =
+>sure if it's the timer running out or if it's my circuit not having =
+>enough gain to receive a signal from further than that.
+>
+>I've had two conflicting answers with regards to the maximum time that =
+>can be measured - one which says about 1.5m and another which says =
+>somewhere closer to 8-10m.
+

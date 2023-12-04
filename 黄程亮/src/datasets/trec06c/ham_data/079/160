@@ -1,0 +1,1179 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g1CMXLZ05866;
+	Tue, 12 Feb 2002 14:33:21 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA21304;
+	Tue, 12 Feb 2002 14:41:02 -0500 (EST)
+Date: Tue, 12 Feb 2002 14:41:02 -0500 (EST)
+Received: by canaveral.red.cert.org; Tue, 12 Feb 2002 14:35:35 -0500
+Message-Id: <CA-2002-03.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-03 Multiple Vulnerabilities in Many Implementations
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 49
+Status: RO
+X-Status: $$$$
+X-UID: 0000000037
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-03: Multiple Vulnerabilities in Many
+Implementations of the Simple Network Management Protocol (SNMP)
+
+   Original release date: February 12, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   Products  from  a  very  wide  variety of vendors may be affected. See
+   Vendor Information for details from vendors who have provided feedback
+   for this advisory.
+
+   In  addition to the vendors who provided feedback for this advisory, a
+   list  of  vendors  whom  CERT/CC contacted regarding these problems is
+   available from
+   http://www.kb.cert.org/vuls/id/854306
+   http://www.kb.cert.org/vuls/id/107186 
+
+   Many  other systems making use of SNMP may also be vulnerable but were
+   not specifically tested.
+
+Overview
+
+   Numerous  vulnerabilities have been reported in multiple vendors' SNMP
+   implementations.   These   vulnerabilities   may   allow  unauthorized
+   privileged   access,  denial-of-service  attacks,  or  cause  unstable
+   behavior.  If  your  site  uses  SNMP  in  any  capacity,  the CERT/CC
+   encourages you to read this advisory and follow the advice provided in
+   the Solution section below.
+
+   In addition to this advisory, we also have an FAQ available at
+   http://www.cert.org/tech_tips/snmp_faq.html
+
+I. Description
+
+   The  Simple  Network  Management  Protocol (SNMP) is a widely deployed
+   protocol  that is commonly used to monitor and manage network devices.
+   Version  1  of  the  protocol  (SNMPv1)  defines several types of SNMP
+   messages  that  are  used  to  request  information  or  configuration
+   changes,  respond  to  requests,  enumerate  SNMP  objects,  and  send
+   unsolicited  alerts.  The  Oulu  University  Secure  Programming Group
+   (OUSPG,  http://www.ee.oulu.fi/research/ouspg/)  has reported numerous
+   vulnerabilities in SNMPv1 implementations from many different vendors.
+   More information about SNMP and OUSPG can be found in Appendix C
+
+   OUSPG's  research  focused  on  the  manner in which SNMPv1 agents and
+   managers  handle  request  and  trap  messages. By applying the PROTOS
+   c06-snmpv1 test suite
+   (http://www.ee.oulu.fi/research/ouspg/protos/testing/c06/snmpv1/0100.h
+   tml)  to  a  variety  of  popular  SNMPv1-enabled  products, the OUSPG
+   revealed the following vulnerabilities:
+
+   VU#107186 - Multiple vulnerabilities in SNMPv1 trap handling 
+
+     SNMP trap messages are sent from agents to managers. A trap message
+     may  indicate  a warning or error condition or otherwise notify the
+     manager about the agent's state. SNMP managers must properly decode
+     trap  messages  and  process  the resulting data. In testing, OUSPG
+     found multiple vulnerabilities in the way many SNMP managers decode
+     and process SNMP trap messages.
+
+   VU#854306 - Multiple vulnerabilities in SNMPv1 request handling 
+
+     SNMP  request  messages  are  sent from managers to agents. Request
+     messages  might be issued to obtain information from an agent or to
+     instruct  the  agent to configure the host device. SNMP agents must
+     properly decode request messages and process the resulting data. In
+     testing,  OUSPG found multiple vulnerabilities in the way many SNMP
+     agents decode and process SNMP request messages.
+
+   Vulnerabilities  in  the  decoding  and  subsequent processing of SNMP
+   messages  by  both managers and agents may result in denial-of-service
+   conditions,  format string vulnerabilities, and buffer overflows. Some
+   vulnerabilities  do  not  require  the SNMP message to use the correct
+   SNMP community string.
+
+   These   vulnerabilities   have   been  assigned  the  CVE  identifiers
+   CAN-2002-0012 and CAN-2002-0013, respectively.
+
+II. Impact
+
+   These  vulnerabilities may cause denial-of-service conditions, service
+   interruptions,  and in some cases may allow an attacker to gain access
+   to  the  affected  device.  Specific impacts will vary from product to
+   product.
+
+III. Solution
+
+   Note  that  many  of  the  mitigation steps recommended below may have
+   significant  impact on your everyday network operations and/or network
+   architecture.  Ensure  that  any  changes  made based on the following
+   recommendations  will  not  unacceptably  affect  your ongoing network
+   operations capability.
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   Please  consult this appendix to determine if you need to contact your
+   vendor directly.
+
+Disable the SNMP service
+
+   As  a  general  rule,  the CERT/CC recommends disabling any service or
+   capability   that   is   not   explicitly  required,  including  SNMP.
+   Unfortunately,  some  of  the  affected  products exhibited unexpected
+   behavior  or  denial  of  service conditions when exposed to the OUSPG
+   test  suite  even  if  SNMP was not enabled. In these cases, disabling
+   SNMP should be used in conjunction with the filtering practices listed
+   below to provide additional protection.
+
+Ingress filtering
+
+   As a temporary measure, it may be possible to limit the scope of these
+   vulnerabilities  by  blocking  access  to SNMP services at the network
+   perimeter.
+
+   Ingress  filtering  manages the flow of traffic as it enters a network
+   under  your  administrative  control.  Servers  are typically the only
+   machines that need to accept inbound traffic from the public Internet.
+   In  the  network usage policy of many sites, there are few reasons for
+   external hosts to initiate inbound traffic to machines that provide no
+   public  services.  Thus,  ingress filtering should be performed at the
+   border   to   prohibit   externally   initiated   inbound  traffic  to
+   non-authorized  services. For SNMP, ingress filtering of the following
+   ports  can  prevent  attackers  outside of your network from impacting
+   vulnerable  devices  in  the  local  network  that  are not explicitly
+   authorized to provide public SNMP services.
+
+   snmp     161/udp     # Simple Network Management Protocol (SNMP)
+   snmp     162/udp     # SNMP system management messages
+
+   The  following  services  are  less  common,  but  may be used on some
+   affected products
+
+   snmp               161/tcp     #  Simple  Network  Management Protocol
+   (SNMP)
+   snmp               162/tcp     # SNMP system management messages
+   smux               199/tcp     # SNMP Unix Multiplexer
+   smux               199/udp     # SNMP Unix Multiplexer
+   synoptics-relay    391/tcp     # SynOptics SNMP Relay Port
+   synoptics-relay    391/udp     # SynOptics SNMP Relay Port
+   agentx             705/tcp     # AgentX
+   snmp-tcp-port     1993/tcp     # cisco SNMP TCP port
+   snmp-tcp-port     1993/udp     # cisco SNMP TCP port
+
+   As  noted  above, you should carefully consider the impact of blocking
+   services that you may be using.
+
+   It  is  important  to note that in many SNMP implementations, the SNMP
+   daemon may bind to all IP interfaces on the device. This has important
+   consequences  when  considering  appropriate packet filtering measures
+   required  to  protect  an  SNMP-enabled device. For example, even if a
+   device  disallows  SNMP  packets  directed  to the IP addresses of its
+   normal  network  interfaces, it may still be possible to exploit these
+   vulnerabilities  on that device through the use of packets directed at
+   the following IP addresses:
+     * "all-ones" broadcast address
+     * subnet broadcast address
+     * any  internal  loopback  addresses  (commonly  used in routers for
+       management purposes, not to be confused with the IP stack loopback
+       address 127.0.0.1)
+
+   Careful  consideration  should  be  given  to  addresses  of the types
+   mentioned  above  by  sites  planning  for packet filtering as part of
+   their mitigation strategy for these vulnerabilities.
+
+   Finally,  sites may wish to block access to the following RPC services
+   related to SNMP (listed as name, program ID, alternate names)
+
+   snmp               100122  na.snmp snmp-cmc snmp-synoptics snmp-unisys
+   snmp-utk
+   snmpv2             100138  na.snmpv2     # SNM Version 2.2.2
+   snmpXdmid          100249
+
+   Please  note  that  this workaround may not protect vulnerable devices
+   from internal attacks.
+
+Filter SNMP traffic from non-authorized internal hosts
+
+   In  many networks, only a limited number of network management systems
+   need to originate SNMP request messages. Therefore, it may be possible
+   to configure the SNMP agent systems (or the network devices in between
+   the  management  and  agent systems) to disallow request messages from
+   non-authorized systems. This can reduce, but not wholly eliminate, the
+   risk  from  internal attacks. However, it may have detrimental effects
+   on  network  performance  due  to  the  increased  load imposed by the
+   filtering, so careful consideration is required before implementation.
+   Similar  caveats  to  the  previous workaround regarding broadcast and
+   loopback addresses apply.
+
+Change default community strings
+
+   Most  SNMP-enabled  products  ship  with  default community strings of
+   "public"  for read-only access and "private" for read-write access. As
+   with   any   known  default  access  control  mechanism,  the  CERT/CC
+   recommends  that network administrators change these community strings
+   to  something  of  their  own  choosing.  However, even when community
+   strings  are changed from their defaults, they will still be passed in
+   plaintext and are therefore subject to packet sniffing attacks. SNMPv3
+   offers additional capabilities to ensure authentication and privacy as
+   described in RFC2574.
+
+   Because  many of the vulnerabilities identified in this advisory occur
+   before  the  community  strings are evaluated, it is important to note
+   that  performing  this  step  alone  is not sufficient to mitigate the
+   impact  of  these vulnerabilities. Nonetheless, it should be performed
+   as part of good security practice.
+
+Segregate SNMP traffic onto a separate management network
+
+   In  situations  where  blocking  or  disabling  SNMP  is not possible,
+   exposure  to  these  vulnerabilities may be limited by restricting all
+   SNMP  access  to  separate,  isolated management networks that are not
+   publicly  accessible.  Although  this would ideally involve physically
+   separate networks, that kind of separation is probably not feasible in
+   most environments. Mechanisms such as virtual LANs (VLANs) may be used
+   to  help  segregate  traffic  on  the same physical network. Note that
+   VLANs  may  not  strictly  prevent  an  attacker from exploiting these
+   vulnerabilities,  but  they may make it more difficult to initiate the
+   attacks.
+
+   Another  option  is  for  sites  to  restrict SNMP traffic to separate
+   virtual private networks (VPNs), which employ cryptographically strong
+   authentication.
+
+   Note  that  these  solutions may require extensive changes to a site's
+   network architecture.
+
+Egress filtering
+
+   Egress  filtering  manages  the flow of traffic as it leaves a network
+   under your administrative control. There is typically limited need for
+   machines providing public services to initiate outbound traffic to the
+   Internet.  In  the  case  of  SNMP  vulnerabilities,  employing egress
+   filtering on the ports listed above at your network border can prevent
+   your network from being used as a source for attacks on other sites.
+
+Disable stack execution
+
+   Disabling  executable  stacks  (on systems where this is configurable)
+   can  reduce  the  risk  of  "stack  smashing"  attacks  based on these
+   vulnerabilities. Although this does not provide 100 percent protection
+   against exploitation of these vulnerabilities, it makes the likelihood
+   of a successful exploit much smaller. On many UNIX systems, executable
+   stacks can be disabled by adding the following lines to /etc/system:
+
+   set noexec_user_stack = 1 set noexec_user_stack_log = 1
+
+   Note  that  this  may  go  against the SPARC and Intel ABIs and can be
+   bypassed  as required in programs with mprotect(2). For the changes to
+   take effect you will then need to reboot.
+
+   Other  operating  systems and architectures also support the disabling
+   of executable stacks either through native configuration parameters or
+   via  third-party  software.  Consult  your  vendor(s)  for  additional
+   information.
+
+Share tools and techniques
+
+   Because  dealing with these vulnerabilities to systems and networks is
+   so  complex, the CERT/CC will provide a forum where administrators can
+   share  ideas  and  techniques  that  can  be  used  to  develop proper
+   defenses.  We  have created an unmoderated mailing list for system and
+   network administrators to discuss helpful techniques and tools.
+
+   You  can  subscribe to the mailing list by sending an email message to
+   majordomo@cert.org. In the body of the message, type
+
+   subscribe snmp-forum
+
+   After you receive the confirmation message, follow the instructions in
+   the message to complete the subscription process.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+AdventNet
+
+     This  is in reference to your notification regarding [VU#107186 and
+     VU#854306]  and  OUSPG#0100.   AdventNet  Inc.  has reproduced this
+     behavior  in  their  products and coded a Service Pack fix which is
+     currently   in   regression   testing   in  AdventNet  Inc.'s  Q.A.
+     organization.    The  release  of  AdventNet  Inc's.  Service  Pack
+     correcting  the  behavior  outlined in VU#617947, and OUSPG#0100 is
+     scheduled  to  be  generally  available  to all of AdventNet Inc.'s
+     customers by February 20, 2002.
+
+Avaya
+
+     Avaya  Inc.  acknowledges the potential of SNMP vulnerabilities and
+     is
+     currently   investigating   whether  these  vulnerabilities  impact
+     Avaya's products
+     or solutions. No further information is available at this time.
+
+CacheFlow
+
+     The  purpose of this email is to advise you that CacheFlow Inc. has
+     provided a software update. Please be advised that updated versions
+     of  the  software  are  now  available  for all supported CacheFlow
+     hardware  platforms,  and may be obtained by CacheFlow customers at
+     the following URL:
+
+          http://download.cacheflow.com/
+
+   The  specific reference to the software update is contained within the
+   Release  Notes  for  CacheOS  Versions 3.1.22 Release ID 17146, 4.0.15
+   Release ID 17148, 4.1.02 Release ID 17144 and 4.0.15 Release ID 17149.
+
+   RELEASE NOTES FOR CACHEFLOW SERVER ACCELERATOR PRODUCTS:
+     * http://download.cacheflow.com/release/SA/4.0.15/relnotes.htm
+
+   RELEASE NOTES FOR CACHEFLOW CONTENT ACCELERATOR PRODUCTS:
+     * http://download.cacheflow.com/release/CA/3.1.22/relnotes.htm
+     * http://download.cacheflow.com/release/CA/4.0.15/relnotes.htm
+     * http://download.cacheflow.com/release/CA/4.1.02/relnotes.htm
+
+     * SR   1-1647517,   VI  13045:  This  update  modified  a  potential
+     vulnerability by using an SNMP test tools exploit.
+
+3Com Corporation
+
+     A  vulnerability to an SNMP packet with an invalid length community
+     string  has  been  resolved  in  the  following products. Customers
+     concerned  about  this  weakness should ensure that they upgrade to
+     the following agent versions:
+     PS Hub 40
+     2.16 is due Feb 2002
+     PS Hub 50
+     2.16 is due Feb 2002
+     Dual Speed Hub
+     2.16 is due Jan 2002
+     Switch 1100/3300
+     2.68 is available now
+     Switch 4400
+     2.02 is available now
+     Switch 4900
+     2.04 is available now
+     WebCache1000/3000
+     2.00 is due Jan 2002
+
+Caldera
+
+     Caldera   International,  Inc.  has  reproduced  faulty behavior in
+     Caldera SCO OpenServer 5, Caldera UnixWare 7, and Caldera Open UNIX
+     8.  We have coded a software fix for  supported versions of Caldera
+     UnixWare  7  and  Caldera  Open UNIX 8 that will  be available from
+     our   support   site  at  http://stage.caldera.com/support/security
+     immediately  following the publication of this CERT announcement. A
+     fix  for  supported versions of OpenServer 5 will be available at a
+     later date.
+
+Cisco Systems
+
+     Cisco  Systems  is  addressing  the  vulnerabilities  identified by
+     VU#854306  and VU#107186 across its entire product line. Cisco will
+     publish    a    security   advisory   with   further   details   at
+     http://www.cisco.com/go/psirt/.
+
+Compaq Computer Corporation
+
+     x-ref: SSRT0779U SNMP
+     At  the time of writing this document, COMPAQ continues to evaluate
+     this potential problem and when new versions of SNMP are available,
+     COMPAQ  will implement solutions based on the new code. Compaq will
+     provide  notice  of  any  new  patches  as  a result of that effort
+     through  standard  patch  notification  procedures and be available
+     from your normal Compaq Services support channel.
+
+Computer Associates
+
+     Computer  Associates  has  confirmed Unicenter vulnerability to the
+     SNMP  advisory identified by CERT notification reference [VU#107186
+     &   VU#854306]   and   OUSPG#0100.   We  have  produced  corrective
+     maintenance  to  address  these  vulnerabilities,  which  is in the
+     process  of publication for all applicable releases / platforms and
+     will  be  offered  through the CA Support site.  Please contact our
+     Technical    Support   organization   for   information   regarding
+     availability / applicability for your specific configuration(s).
+
+COMTEK Services, Inc.
+
+     NMServer  for  AS/400  is  not  an SNMP master and is therefore not
+     vulnerable.  However  this  product  requires the use of the AS/400
+     SNMP  master  agent  supplied  by  IBM.  Please  refer  to  IBM for
+     statements of vulnerabilities for the AS/400 SNMP master agent.
+
+     NMServer   for  OpenVMS  has  been  tested  and  has  shown  to  be
+     vulnerable.  COMTEK  Services  is  preparing  a new release of this
+     product  (version  3.5)  which will contain a fix for this problem.
+     This  new  release  is  scheduled to be available in February 2002.
+     Contact COMTEK Services for further information.
+
+     NMServer  for VOS has not as yet been tested; vulnerability of this
+     agent  is  unknown.  Contact for further information on the testing
+     schedule of the VOS product.
+
+Covalent Technologies
+
+     Covalent Technologies ERS (Enterprise Ready Server), Secure Server,
+     and  Conductor  SNMP module are not vulnerable according to testing
+     performed   in   accordance  with  CERT  recommendations.  Security
+     information for Covalent products can be found at www.covalent.net
+
+Dartware, LLC
+
+     Dartware,  LLC  (www.dartware.com)  supplies  two products that use
+     SNMPv1  in  a  manager  role,  InterMapper  and SNMP Watcher. These
+     products  are not vulnerable to the SNMP vulnerability described in
+     [VU#854306  and  VU#107186].  This statement applies to all present
+     and past versions of these two software packages.
+
+DMH Software
+
+     DMH  Software  is  in  the  process of evaluating and attempting to
+     reproduce this behavior.
+     It  is  unclear at this point if our snmp-agent is sensitive to the
+     tests described above.
+     If  any  problems  will  be  discovered,  DMH  Software will code a
+     software fix.
+     The  release of DMH Software OS correcting the behavior outlined in
+     VU#854306, VU#107186, and OUSPG#0100 will be generally available to
+     all of DMH Software's customers as soon as possible.
+
+EnGarde Secure Linux
+
+     EnGarde  Secure  Linux  did  not  ship any SNMP packages in version
+     1.0.1 of our distribution, so we are not vulnerable to either bug.
+
+FreeBSD
+
+     FreeBSD  does  not  include any SNMP software by default, and so is
+     not vulnerable.  However, the FreeBSD Ports Collection contains the
+     UCD-SNMP   /   NET-SNMP   package.    Package   versions  prior  to
+     ucd-snmp-4.2.3  are  vulnerable.   The upcoming FreeBSD 4.5 release
+     will  ship  the  corrected  version  of  the  UCD-SNMP  /  NET-SNMP
+     package.   In  addition,  the  corrected version of the packages is
+     available from the FreeBSD mirrors.
+
+     FreeBSD   has   issued  the  following  FreeBSD  Security  Advisory
+     regarding the UCD-SNMP / NET-SNMP package:
+     ftp://ftp.freebsd.org/pub/FreeBSD/CERT/advisories/FreeBSD-SA-02:09.
+     snmp.asc.
+
+Hewlett-Packard Company
+
+     SUMMARY - known vulnerable:
+     ========================================
+     hp procurve switch 2524
+     NNM  (Network Node Manager)
+     JetDirect Firmware (Older versions only)
+     HP-UX Systems running snmpd or OPENVIEW
+     MC/ServiceGuard
+     EMS
+     Still under investigation:
+     SNMP/iX (MPE/iX)
+     ========================================
+     _________________________________________________________
+     ---------------------------------------------------------
+     hp procurve switch 2524 
+     ---------------------------------------------------------
+     hp procurve switch 2525 (product J4813A) is vulnerable to some
+     issues, patches in process. Watch for the associated HP
+     Security Bulletin.
+     ---------------------------------------------------------
+     NNM  (Network Node Manager)
+     ---------------------------------------------------------
+     Some problems were found in NNM product were related to
+     trap handling. Patches in process. Watch for the
+     associated HP Security Bulletin.
+     ---------------------------------------------------------
+     JetDirect Firmware (Older versions only)
+     ---------------------------------------------------------
+     ONLY some older versions of JetDirect Firmware are
+     vulnerable to some of the issues.  The older firmware
+     can be upgraded in most cases, see list below.
+     JetDirect Firmware Version    State
+     ==========================    =====
+        X.08.32 and higher     NOT Vulnerable
+        X.21.00 and higher     NOT Vulnerable
+     JetDirect Product Numbers that can be freely
+     upgraded to X.08.32 or X.21.00 or higher firmware.
+     EIO (Peripherals Laserjet 4000, 5000, 8000, etc...)
+     J3110A 10T
+     J3111A 10T/10B2/LocalTalk
+     J3112A Token Ring (discontinued)
+     J3113A 10/100 (discontinued)
+     J4169A 10/100
+     J4167A Token Ring
+     MIO (Peripherals LaserJet 4, 4si, 5si, etc...)
+     J2550A/B 10T (discontinued)
+     J2552A/B 10T/10Base2/LocalTalk (discontinued)
+     J2555A/B Token Ring (discontinued)
+     J4100A 10/100
+     J4105A Token Ring
+     J4106A 10T
+     External Print Servers
+     J2591A EX+ (discontinued)
+     J2593A EX+3 10T/10B2 (discontinued)
+     J2594A EX+3 Token Ring (discontinued)
+     J3263A 300X 10/100
+     J3264A 500X Token Ring
+     J3265A 500X 10/100
+     ----------------------------------------------------------
+     HP-UX Systems running snmpd or OPENVIEW
+     ----------------------------------------------------------
+     The following patches are available now:
+       PHSS_26137 s700_800 10.20 OV EMANATE14.2 Agent Consolidated Patch
+       PHSS_26138 s700_800 11.X  OV EMANATE14.2 Agent Consolidated Patch
+       PSOV_03087 EMANATE Release 14.2 Solaris 2.X  Agent Consolidated
+     Patch
+     All three patches are available from:
+     http://support.openview.hp.com/cpe/patches/
+     In addition PHSS_26137 and PHSS_26138 will soon be available from:
+     http://itrc.hp.com
+     ================================================================
+     NOTE: The patches are labeled OV(Open View). However, the patches
+     are also applicable to systems that are not running Open View.
+     =================================================================
+     Any   HP-UX  10.X  or  11.X  system  running  snmpd  or  snmpdm  is
+     vulnerable.
+     To determine if your HP-UX system has snmpd or snmpdm installed:
+       swlist -l file | grep snmpd
+     If a patch is not available for your platform or you cannot install
+     an  available  patch,  snmpd and snmpdm can be disabled by removing
+     their
+     entries  from  /etc/services  and  removing the execute permissions
+     from
+     /usr/sbin/snmpd and /usr/sbin/snmpdm.
+     ----------------------------------------------------------------
+     Investigation completed, systems vulnerable.
+     ----------------------------------------------------------------
+     MC/ServiceGuard
+     Event Monitoring System  (EMS)
+     ----------------------------------------------------------------
+       Still under investigation:
+     ----------------------------------------------------------------
+     SNMP/iX (MPE/iX)
+
+Hirschmann Electronics GmbH & Co. KG
+
+     Hirschmann  Electronics  GmbH  &  Co.  KG supplies a broad range of
+     networking  products,  some  of  which  are  affected  by  the SNMP
+     vulnerabilities  identified by CERT Coordination Center. The manner
+     in  which they are affected and the actions required to avoid being
+     impacted  by  exploitation  of  these  vulnerabilities,  vary  from
+     product to product. Hirschmann customers may contact our Competence
+     Center (phone +49-7127-14-1538, email:
+     ans-support@nt.hirschmann.de)     for    additional    information,
+     especially  regarding  availability  of  latest  firmware  releases
+     addressing the SNMP vulnerabilities.
+
+IBM Corporation
+
+     Based  upon  the  results  of  running  the  test  suites  we  have
+     determined  that  our  version  of  SNMP  shipped  with  AIX is NOT
+     vulnerable.
+
+Innerdive Solutions, LLC
+
+     Innerdive Solutions, LLC has two SNMP based products:
+     1. The "SNMP MIB Scout"
+     (http://www.innerdive.com/products/mibscout/)
+     2. The "Router IP Console" (http://www.innerdive.com/products/ric/)
+     The "SNMP MIB Scout" is not vulnerable to either bug.
+     The "Router IP Console" releases prior to 3.3.0.407 are vulnerable.
+     The release of "Router IP Console" correcting the behavior outlined
+     in  OUSPG#0100  is  3.3.0.407 and is already available on our site.
+     Also,  we  will  notify all our customers about this new release no
+     later than March 5, 2002.
+
+Juniper Networks
+
+     This  is  in reference to your notification regarding CAN-2002-0012
+     and  CAN-2002-0013.   Juniper Networks has reproduced this behavior
+     and coded a software fix.  The fix will be included in all releases
+     of  JUNOS Internet software built after January 5, 2002.  Customers
+     with  current  support contracts can download new software with the
+     fix from Juniper's web site at www.juniper.net.
+     Note: The behavior described in CAN-2002-0012 and CAN-2002-0013 can
+     only  be  reproduced  in JUNOS Internet software if certain tracing
+     options  are  enabled.   These options are generally not enabled in
+     production routers.
+
+Lantronix, Inc.
+
+     Lantronix  is  committed  to  resolving  security  issues  with our
+     products.  The SNMP security bug you reported has been fixed in LRS
+     firmware version B1.3/611(020123).
+
+Lotus Development Corporation
+
+     Lotus    Software   evaluated   the   Lotus   Domino   Server   for
+     vulnerabilities using the test suite materials provided by OUSPG.
+     This  problem  does  not affect default installations of the Domino
+     Server.   However,  SNMP  agents  can  be  installed from the CD to
+     provide  SNMP  services for the Domino Server (these are located in
+     the   /apps/sysmgmt/agents   directory).    The  optional  platform
+     specific  master  and  encapsulator  agents included with the Lotus
+     Domino  SNMP  Agents  for  HP-UX  and Solaris have been found to be
+     vulnerable.  For  those  platforms,  customers  should  upgrade  to
+     version  R5.0.1  a  of  the Lotus Domino SNMP Agents, available for
+     download  from the Lotus Knowledge Base on the IBM Support Web Site
+     (http://www.ibm.com/software/lotus/support/).   Please   refer   to
+     Document  #191059,  "Lotus Domino SNMP Agents R5.0.1a", also in the
+     Lotus Knowledge Base, for more details.
+
+LOGEC Systems Inc
+
+     The  products  from  LOGEC  Systems are exposed to SNMP only via HP
+     OpenView.  We  do  not have an implementation of SNMP ourselves. As
+     such,  there is nothing in our products that would be an issue with
+     this alert.
+
+Lucent
+
+     Lucent is aware of reports that there is a vulnerability in certain
+     implementations  of  the  SNMP (Simple Network Management Protocol)
+     code  that  is  used in data switches and other hardware throughout
+     the telecom industry.
+     As soon as we were notified by CERT, we began assessing our product
+     portfolio  and  notifying  customers  with  products  that might be
+     affected.
+     Our  5ESS  switch  and  most  of  our  optical  portfolio  were not
+     affected.   Our  core  and  edge  ATM switches and most of our edge
+     access  products  are  affected, but we have developed, tested, and
+     deployed  fixes for many of those products to our customers.  Fixes
+     for  the  rest  of the affected product portfolio will be available
+     shortly.
+     We consider the security and reliability of our customers' networks
+     to  be  one  of  our  critical  measures  of success. We take every
+     reasonable measure to ensure their satisfaction.
+     In  addition,  we  are  working  with  customers on ways to further
+     enhance the security they have in place today.
+
+Marconi
+
+     Marconi  supplies  a  broad range of telecommunications and related
+     products,  some  of  which are affected by the SNMP vulnerabilities
+     identified  here.  The  manner  in  which they are affected and the
+     actions  required  (if any) to avoid being impacted by exploitation
+     of  these  vulnerabilities,  vary  from  product  to product. Those
+     Marconi   customers   with  support  entitlement  may  contact  the
+     appropriate   Technical  Assistance  Center  (TAC)  for  additional
+     information.  Those not under support entitlement may contact their
+     sales representative.
+
+Microsoft Corporation
+
+     The  Microsoft  Security Reponse [sic] Center has investigated this
+     issue, and provides the following information.
+
+     Summary:
+     All  Microsoft  implementations  of  SNMP  v1  are  affected by the
+     vulnerability.  The  SNMP v1 service is not installed or running by
+     default on any version of Windows. A patch is underway to eliminate
+     the  vulnerability.  In  the  meantime,  we recommend that affected
+     customers disable the SNMP v1 service.
+
+     Details:
+     An  SNMP  v1 service ships on the CDs for Windows 95, 98, and 98SE.
+     It  is  not  installed  or  running  by  default  on  any  of these
+     platforms.  An SNMP v1 is NOT provided for Windows ME.  However, it
+     is  possible  that  Windows  98  machines  which  had  the  service
+     installed  and  were  upgraded would still have the service.  Since
+     SNMP  is  not  supported for WinME, customers in this situation are
+     urged to remove the SNMP service.
+     An  SNMP  v1  service  is  available  on  Windows NT 4.0 (including
+     Terminal  Server  Edition) and Windows 2000 but is not installed or
+     running  by  default  on any of these platforms.Windows XP does not
+     ship with an SNMP v1 service.
+
+     Remediation:
+     A  patch  is  underway  for  the  affected  platforms,  and will be
+     released  shortly.  In  the  meantime,  Microsoft  recommends  that
+     customers  who  have  the  SNMP  v1  service  running disable it to
+     protect their systems. Following are instruction for doing this:
+
+     Windows 95, 98 and 98SE:
+     1. In Control Panel, double-click Network.
+     2. On  the  Configuration  tab,  select Microsoft SNMP Agent from the
+        list of installed components.
+     3. Click Remove
+
+     Check the following keys and confirm that snmp.exe is not listed.
+     HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunSer
+     vices
+     HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run
+ 
+     For Windows XP:
+     1. Right-click on My Computer and select Manage
+     2. Click on Services and Applications, then on Services
+     3. Location  SNMP  on  the list of services, then select it and click
+        Stop.
+     4. Select Startup, and click Disabled.
+     5. Click  OK  to  close  the  dialoge  [sic], then close the Computer
+        Management window.
+   
+     For Windows NT 4.0 (including Terminal Server Edition):
+     1. Select Start, then Settings.
+     2. Select Control Panel, then click on the Services Icon
+     3. Locate  SNMP  on  the  list  of services, then select it and click
+        Stop.
+     4. Select Startup, and click Disabled.
+     5. Click OK to close the dialoge [sic], then close Control Panel
+
+     Windows 2000:
+     1. Right-click on My Computer and select Manage
+     2. Click on Services and Applications, then on Services
+     3. Location  SNMP  on  the list of services, then select it and click
+        Stop.
+     4. Select Startup, and click Disabled.
+     5. Click  OK  to  close  the  dialoge  [sic], then close the Computer
+        Management window.
+
+Multinet
+
+     MultiNet  and  TCPware customers should contact Process Software to
+     check  for  the availability of patches for this issue. A couple of
+     minor  problems were found and fixed, but there is no security risk
+     related to the SNMP code included with either product.
+
+Netaphor
+
+     NETAPHOR  SOFTWARE INC. is the creator of Cyberons for Java -- SNMP
+     Manager  Toolkit  and Cyberons for Java -- NMS Application Toolkit,
+     two   Java  based  products  that  may  be  affected  by  the  SNMP
+     vulnerabilities  identified  here.  The  manner  in  which they are
+     affected  and the actions required (if any) to avoid being impacted
+     by  exploitation  of  these  vulnerabilities,  may  be  obtained by
+     contacting  Netaphor  via email at info@netaphor.com Customers with
+     annual support may contact support@netaphor.com directly. Those not
+     under    support    entitlement   may   contact   Netaphor   sales:
+     sales@netaphor.com or (949) 470 7955 in USA.
+
+NetBSD
+
+     NetBSD does not ship with any SNMP tools in our 'base' releases. We
+     do  provide  optional  packages  which  provide various support for
+     SNMP.  These  packages  are  not installed by default, nor are they
+     currently  provided  as  an  install option by the operating system
+     installation tools. A system administrator/end-user has to manually
+     install this with our package management tools. These SNMP packages
+     include:
+          + netsaint-plugin-snmp-1.2.8.4  (SNMP  monitoring  plug-in  for
+            netsaint)
+          + p5-Net-SNMP-3.60 (perl5 module for SNMP queries)
+          + p5-SNMP-3.1.0  (Perl5  module for interfacing to the UCD SNMP
+            library
+          + p5-SNMP_Session-0.83   (perl5  module  providing  rudimentary
+            access to remote SNMP agents)
+          + ucd-snmp-4.2.1  (Extensible  SNMP  implementation) (conflicts
+            with ucd-snmp-4.1.2)
+          + ucd-snmp-4.1.2  (Extensible  SNMP  implementation) (conflicts
+            with ucd-snmp-4.2.1)
+
+     We    do   provide   a   software   monitoring   mechanism   called
+     'audit-packages',  which allows us to highlight if a package with a
+     range  of  versions  has  a potential vulnerability, and recommends
+     that the end-user upgrade the packages in question.
+
+Netscape Communications Corporation
+
+     Netscape  continues  to be committed to maintaining a high level of
+     quality  in  our  software  and  service  offerings.  Part  of this
+     commitment  includes  prompt response to security issues discovered
+     by organizations such as the CERT Coordination Center.
+     According  to a recent CERT/CC advisory, The Oulu University Secure
+     Programming  Group (OUSPG) has reported numerous vulnerabilities in
+     multiple  vendor  SNMPv1 implementations. These vulnerabilities may
+     allow unauthorized privileged access, denial of service attacks, or
+     unstable behavior.
+     We  have  carefully  examined the reported findings, performing the
+     tests  suggested  by the OUSPG to determine whether Netscape server
+     products  were  subject to these vulnerabilities. It was determined
+     that several products fell into this category. As a result, we have
+     created  fixes  which will resolve the issues, and these fixes will
+     appear  in  future  releases  of  our  product  line. To Netscape's
+     knowledge,  there  are  no known instances of these vulnerabilities
+     being exploited and no customers have been affected to date.
+     When such security warnings are issued, Netscape has committed to -
+     and will continue to commit to - resolving these issues in a prompt
+     and timely fashion, ensuring that our customers receive products of
+     the highest quality and security.
+
+NET-SNMP
+
+     All  ucd-snmp  version  prior  to  4.2.2  are  susceptible  to this
+     vulnerability  and  users  of  versions  prior to version 4.2.2 are
+     encouraged   to   upgrade   their  software  as  soon  as  possible
+     (http://www.net-snmp.org/download/).  Version  4.2.2 and higher are
+     not susceptible.
+
+Network Associates
+
+     PGP is not affected, impacted, or otherwise related to this VU#.
+
+Network Computing Technologies
+
+     Network   Computing   Technologies  has  reviewed  the  information
+     regarding  SNMP  vulnerabilities and is currently investigating the
+     impact to our products.
+
+Nokia
+
+     This  vulnerability  is  known  to affect IPSO versions 3.1.3, 3.3,
+     3.3.1,  3.4,  and  3.4.1.   Patches  are  currently  available  for
+     versions  3.3,  3.3.1,  3.4  and  3.4.1 for download from the Nokia
+     website.   In  addition,  version  3.4.2  shipped  with  the  patch
+     incorporated,  and the necessary fix will be included in all future
+     releases of IPSO.
+     We  recommend customers install the patch immediately or follow the
+     recommended precautions below to avoid any potential exploit.
+     If you are not using SNMP services, including Traps, simply disable
+     the   SNMP   daemon   to   completely   eliminate   the   potential
+     vulnerability.
+     If   you  are  using  only  SNMP  Traps  and  running  Check  Point
+     FireWall-1,  create  a  firewall  policy  to disallow incoming SNMP
+     messages on all appropriate interfaces. Traps will continue to work
+     normally.
+
+Nortel Networks
+
+     The  CERT Coordination Center has issued a broad based alert to the
+     technology industry, including Nortel Networks, regarding potential
+     security   vulnerabilities   identified   in   the  Simple  Network
+     Management  Protocol  (SNMP),  a  common  networking  standard. The
+     company   is   working   with  CERT  and  other  network  equipment
+     manufacturers, the U.S. Government, service providers, and software
+     suppliers to assess and address this issue.
+
+Novell
+
+     Novell ships SNMP.NLM and SNMPLOG.NLM with NetWare 4.x, NetWare 5.x
+     and  6.0  systems. The SNMP and SNMPLOG vulnerabilities detected on
+     NetWare  are  fixed and will be available through NetWare 6 Support
+     Pack 1 & NetWare 5.1 Support Pack 4. Support packs are available at
+     http://support.novell.com/tools/csp/
+
+OpenBSD
+
+     OpenBSD does not ship SNMP code.
+
+Qualcomm
+
+     WorldMail  does  not  support SNMP by default, so customers who run
+     unmodified installations are not vulnerable.
+
+Redback Networks, Inc.
+
+     Redback  Networks,  Inc.  has  identified that the vulnerability in
+     question  affects  certain versions of AOS software on the SMS 500,
+     SMS  1800,  and  SMS 10000 platforms, and is taking the appropriate
+     steps necessary to correct the issue.
+
+Red Hat
+
+     RedHat has released a security advisiory [sic] at
+     http://www.redhat.com/support/errata/RHSA-2001-163.html
+     with  updated  versions  of  the ucd-snmp package for all supported
+     releases and architectures. For more information or to download the
+     update please visit this page.
+
+SGI
+
+     SGI  acknowledges  the SNMP vulnerabilities reported by CERT and is
+     currently  investigating.  No  further  information is available at
+     this time.
+     For  the  protection  of  all our customers, SGI does not disclose,
+     discuss  or  confirm vulnerabilities until a full investigation has
+     occurred  and  any  necessary  patch(es)  or  release  streams  are
+     available  for all vulnerable and supported IRIX operating systems.
+     Until SGI has more definitive information to provide, customers are
+     encouraged  to  assume  all security vulnerabilities as exploitable
+     and  take  appropriate  steps  according  to  local  site  security
+     policies   and   requirements.   As   further  information  becomes
+     available,  additional advisories will be issued via the normal SGI
+     security  information  distribution  methods  including the wiretap
+     mailing list on http://www.sgi.com/support/security/.
+
+SNMP Research International
+
+     SNMP  Research  has  made  the following vendor statement. They are
+     likely  to  revise  and  expand  the  statement as the date for the
+     public vulnerability announcement draws nearer.
+     The  most recent releases (15.3.1.7 and above) of all SNMP Research
+     products  address  the  vulnerabilities identified in the following
+     CERT vulnerability advisories:
+     VU#854306 (Multiple vulnerabilities in SNMPv1 request handling)
+     VU#107186 (Multiple vulnerabilities in SNMPv1 trap handling)
+     All  customers who maintain a support contract have received either
+     this  release  or  appropriate patch sets to their 15.3 source code
+     releases   addressing  these  vulnerabilities.   Users  maintaining
+     earlier  releases should update to the current release if they have
+     not  already  done  so.  Up-to-date  information  is available from
+     support@snmp.com.
+
+Stonesoft
+
+     Stonesoft's  StoneGate  product does not include an SNMP agent, and
+     is therefore not vulnerable to this. Other Stonesoft's products are
+     still   under   investigation.   As   further  information  becomes
+     available, additional advisories will be available at
+     http://www.stonesoft.com/support/techcenter/
+
+Sun Microsystems, Inc.
+
+     Sun's  SNMP  product,  Solstice  Enterprise Agents (SEA), described
+     here:
+     http://www.sun.com/solstice/products/ent.agents/
+     is  affected  by VU#854306 but not VU#107186. More specifically the
+     main  agent  of  SEA, snmpdx(1M), is affected on Solaris 2.6, 7, 8.
+     Sun  is  currently  generating  patches  for this issue and will be
+     releasing  a  Sun Security Bulletin once the patches are available.
+     The bulletin will be available from:
+     http://sunsolve.sun.com/security.  Sun  patches are available from:
+     http://sunsolve.sun.com/securitypatch.
+
+Symantec Corporation
+
+     Symantec Corporation has investigated the SNMP issues identified by
+     the  OUSPG test suite and determined that Symantec products are not
+     susceptable [sic] to these issues.
+
+TANDBERG
+
+     Tandberg  have  run  all  the  testcases found the PROTOS test-suie
+     [sic], c06snmpv1:
+     1. c06-snmpv1-trap-enc-pr1.jar
+     2. c06-snmpv1-treq-app-pr1.jar
+     3. c06-snmpv1-trap-enc-pr1.jar
+     4. c06-snmpv1-req-app-pr1.jar
+     The  tests  were  run with standard delay time between the requests
+     (100ms),  but  also  with  a delay of 1ms. The tests applies to all
+     TANDBERG  products (T500, T880, T1000, T2500, T6000 and T8000). The
+     software  tested  on these products were B4.0 (our latest software)
+     and no problems were found when running the test suite.
+
+Tivoli Systems
+
+     Our  analysis indicates that this vulnerability does not affect the
+     Tivoli NetView product.
+
+Appendix B. - References
+         1. http://www.ee.oulu.fi/research/ouspg/protos/
+         2. http://www.kb.cert.org/vuls/id/854306
+         3. http://www.kb.cert.org/vuls/id/107186
+         4. http://www.cert.org/tech_tips/denial_of_service.html
+         5. http://www.ietf.org/rfc/rfc1067.txt
+         6. http://www.ietf.org/rfc/rfc1089.txt
+         7. http://www.ietf.org/rfc/rfc1140.txt
+         8. http://www.ietf.org/rfc/rfc1155.txt
+         9. http://www.ietf.org/rfc/rfc1156.txt
+        10. http://www.ietf.org/rfc/rfc1215.txt
+        11. http://www.ietf.org/rfc/rfc1270.txt
+        12. http://www.ietf.org/rfc/rfc1352.txt
+
+Appendix C. - Background Information
+
+     Background Information on the OUSPG
+
+       OUSPG  is an academic research group located at Oulu University in
+       Finland.  The  purpose  of this research group is to test software
+       for vulnerabilities.
+       History  has  shown  that  the  techniques  used by the OUSPG have
+       discovered a large number of previously undetected problems in the
+       products  and  protocols  they  have  tested.  In  2001, the OUSPG
+       produced a comprehensive test suite for evaluating implementations
+       of  the  Lightweight  Directory  Access Protocol (LDAP). This test
+       suite  was  developed with the strategy of abusing the protocol in
+       unsupported  and  unexpected  ways,  and  it was very effective in
+       uncovering  a  wide  variety  of  vulnerabilities  across  several
+       products.  This approach can reveal vulnerabilities that would not
+       manifest themselves under normal conditions.
+       After  completing  its  work  on  LDAP,  OUSPG  moved its focus to
+       SNMPv1.  As  with  LDAP,  they designed a custom test suite, began
+       testing   a   selection   of  products,  and  found  a  number  of
+       vulnerabilities.  Because  OUSPG's  work  on  LDAP  was similar in
+       procedure  to its current work on SNMP, you may wish to review the
+       LDAP  Test  Suite  and  CERT  Advisory  CA-2001-18, which outlined
+       results of application of the test suite.
+       In order to test the security of protocols like SNMPv1, the PROTOS
+       project  presents  a  server with a wide variety of sample packets
+       containing  unexpected  values  or  illegally formatted data. As a
+       member of the PROTOS project consortium, the OUSPG used the PROTOS
+       c06-snmpv1  test  suite  to  study  several implementations of the
+       SNMPv1  protocol.  Results  of  the  test  suites run against SNMP
+       indicate  that  there  are  many different vulnerabilities on many
+       different implementations of SNMP.
+
+     Background Information on the Simple Network Management Protocol
+     
+       The  Simple Network Management Protocol (SNMP) is the most popular
+       protocol  in use to manage networked devices. SNMP was designed in
+       the late 80's to facilitate the exchange of management information
+       between  networked  devices, operating at the application layer of
+       the  ISO/OSI  model.  The SNMP protocol enables network and system
+       administrators  to  remotely  monitor and configure devices on the
+       network  (devices  such  as  switches  and  routers). Software and
+       firmware products designed for networks often make use of the SNMP
+       protocol.  SNMP  runs  on  a  multitude  of  devices and operating
+       systems, including, but not limited to,
+          + Core  Network  Devices (Routers, Switches, Hubs, Bridges, and
+            Wireless Network Access Points)
+          + Operating Systems
+          + Consumer  Broadband  Network  Devices  (Cable  Modems and DSL
+            Modems)
+          + Consumer Electronic Devices (Cameras and Image Scanners)
+          + Networked   Office  Equipment  (Printers,  Copiers,  and  FAX
+            Machines)
+          + Network and Systems Management/Diagnostic Frameworks (Network
+            Sniffers and Network Analyzers)
+          + Uninterruptible Power Supplies (UPS)
+          + Networked Medical Equipment (Imaging Units and Oscilloscopes)
+          + Manufacturing and Processing Equipment
+       The  SNMP  protocol  is  formally defined in RFC1157. Quoting from
+       that RFC:
+
+                Implicit  in the SNMP architectural model is a collection
+                of  network  management  stations  and  network elements.
+                Network    management    stations    execute   management
+                applications  which monitor and control network elements.
+                Network  elements  are  devices  such as hosts, gateways,
+                terminal  servers,  and  the  like, which have management
+                agents  responsible for performing the network management
+                functions  requested  by the network management stations.
+                The  Simple Network Management Protocol (SNMP) is used to
+                communicate  management  information  between the network
+                management   stations  and  the  agents  in  the  network
+                elements.
+
+       Additionally,   SNMP  is  discussed  in  a  number  of  other  RFC
+       documents:
+          + RFC 3000 Internet Official Protocol Standards
+          + RFC 1212 Concise MIB Definitions
+          + RFC  1213  Management Information Base for Network Management
+            of TCP/IP-based Internets: MIB-II
+          + RFC  1215  A  Convention  for Defining Traps for use with the
+            SNMP
+          + RFC 1270 SNMP Communications Services
+          + RFC  2570  Introduction to Version 3 of the Internet-standard
+            Network Management Framework
+          + RFC  2571  An  Architecture  for  Describing  SNMP Management
+            Frameworks
+          + RFC  2572  Message  Processing and Dispatching for the Simple
+            Network Management Protocol (SNMP)
+          + RFC 2573 SNMP Applications
+          + RFC 2574 User-based Security Model (USM) for version 3 of the
+            Simple Network Management Protocol (SNMPv3)
+          + RFC  2575  View-based  Access  Control  Model  (VACM) for the
+            Simple Network Management Protocol (SNMP)
+          + RFC  2576  Coexistence  between  Version  1,  Version  2, and
+            Version   3   of  the  Internet-standard  Network  Management
+            Framework
+         _____________________________________________________________
+
+       The  CERT  Coordination  Center  thanks the Oulu University Secure
+       Programming  Group  for reporting these vulnerabilities to us, for
+       providing  detailed  technical  analyses,  and for assisting us in
+       preparing  this  advisory.  We also thank Steven M. Bellovin (AT&T
+       Labs  --  Research),  Wes Hardaker (Net-SNMP), Steve Moulton (SNMP
+       Research),  Tom Reddington (Bell Labs), Mike Duckett (Bell South),
+       Rob   Thomas,  Blue  Boar  (Thievco),  and  the  many  others  who
+       contributed to this document.
+         _____________________________________________________________
+
+       Feedback  on  this document can be directed to the authors, Ian A.
+       Finlay, Shawn V. Hernan, Jason A. Rafail, Chad Dougherty, Allen D.
+       Householder, Marty Lindner, and Art Manion.
+       __________________________________________________________________
+
+       This document is available from:
+       http://www.cert.org/advisories/CA-2002-03.html
+       __________________________________________________________________
+
+       CERT/CC Contact Information
+
+        Email: cert@cert.org
+                Phone: +1 412-268-7090 (24-hour hotline)
+                Fax: +1 412-268-6989
+                Postal address:
+                CERT Coordination Center
+                Software Engineering Institute
+                Carnegie Mellon University
+                Pittsburgh PA 15213-3890
+                U.S.A.
+
+       CERT/CC  personnel  answer  the  hotline  08:00-17:00 EST(GMT-5) /
+       EDT(GMT-4) Monday through Friday; they are on call for emergencies
+       during other hours, on U.S. holidays, and on weekends.
+       
+       Using encryption
+       We  strongly  urge  you  to  encrypt sensitive information sent by
+       email. Our public PGP key is available from
+        http://www.cert.org/CERT_PGP.key
+       If  you  prefer  to use DES, please call the CERT hotline for more
+       information.
+       
+       Getting  security information
+       CERT publications and other security information are available
+       from our web site
+        http://www.cert.org/
+       To   subscribe  to  the  CERT  mailing  list  for  advisories  and
+       bulletins, send email to majordomo@cert.org. Please include in the
+       body of your message
+       
+         subscribe cert-advisory
+       
+       * "CERT" and "CERT Coordination Center" are registered in the U.S.
+       Patent and Trademark Office.
+       __________________________________________________________________
+
+       NO WARRANTY
+       Any  material  furnished  by  Carnegie  Mellon  University and the
+       Software  Engineering  Institute is furnished on an "as is" basis.
+       Carnegie Mellon University makes no warranties of any kind, either
+       expressed  or  implied as to any matter including, but not limited
+       to,   warranty   of   fitness   for   a   particular   purpose  or
+       merchantability,  exclusivity  or results obtained from use of the
+       material. Carnegie Mellon University does not make any warranty of
+       any  kind  with  respect  to  freedom  from  patent, trademark, or
+       copyright infringement.
+         _____________________________________________________________
+
+       Conditions for use, disclaimers, and sponsorship information
+       Copyright 2002 Carnegie Mellon University.
+
+Revision History
+
+       February 12, 2002: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPGltxKCVPMXQI2HJAQGVeAQAuHtxGBsmU5HI6PtqhpZ1rkpV+Cq3ChIU
+R1FUz4Zi2vzklH8jdXd10KqwZAPhXTPazeguhRyLVSUprMlSKqcXg3BCkH/y4WAl
+QUZ1VnQXMnMrxIJO1fv0WW0pcyM4W0iQBl0kCIlawPcjCGVniOCOr+4CE0f923wr
+uZiMJ5f2SEo=
+=h42e
+-----END PGP SIGNATURE-----
+

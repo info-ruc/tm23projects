@@ -1,0 +1,105 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gAS0GMY29098
+	for <ggilfoyl@facstaff.richmond.edu>; Wed, 27 Nov 2002 19:16:22 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gAS0FEe29803
+	for <ggilfoyl@richmond.edu>; Wed, 27 Nov 2002 19:15:15 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002112719151425018
+ for <ggilfoyl@richmond.edu>; Wed, 27 Nov 2002 19:15:14 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gAS0FEv14247
+	for <ggilfoyl@richmond.edu>; Wed, 27 Nov 2002 19:15:14 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gAS0FD824140;
+	Wed, 27 Nov 2002 19:15:13 -0500
+Date: Wed, 27 Nov 2002 19:15:12 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: ggilfoyl@richmond.edu
+cc: sasko@mindspring.com
+Subject: Re: Richmond cluster status
+In-Reply-To: <3DE56439.434BE988@mindspring.com>
+Message-ID: <Pine.LNX.4.21.0211271904590.3237-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004439
+
+Greetings,
+
+This is excellent!
+
+The reason the cp rather than bpcp matters is that bpcp is unaware of nfs
+mounts, so the data was going from fileserver to master via NFS, then from
+master to slave via bpcp, so doubling the network traffic required.
+
+NFS can behave badly on a busy network. The sleep was also intended to
+reduce the number of simultaneous transfers, and appears to have helped a
+great deal.
+
+I hope you have a wonderful Thanksgiving.
+
+G'day,
+sjames
+
+
+
+On Wed, 27 Nov 2002, gilfoyle wrote:
+
+> hi steven,
+> 
+>    i made the following changes to my scripts.
+> 
+> 1. i had the script 'sleep' for 45 seconds after submitting a 
+> batch job with the following command.
+> 
+>     system("batch -f run_job");
+>     sleep 45;
+> 
+> 2. i changed the way i copied the data files over from this perl command
+> 
+>    system("bpcp /data2/e5/root/4.232/$data_filename
+> $NODE:/scratch/gilfoyle/e5/$RUNNO/$data_filename");
+> 
+> to this one.
+> 
+>    system("bpsh $NODE cp /data2/e5/root/4.232/$data_filename
+> $NODE:/scratch/gilfoyle/e5/$RUNNO/$data_filename");
+> 
+> does this really make a difference??
+> 
+> i tested things in the following ways.
+> 
+> 1. i ran my scripts on two data runs for a few events in each run. things
+> worked.
+> 
+> 2. i ran them on 12 data runs for 250,000 events in each run. this is where
+> pscm1 hung
+> last week. THIS WORKED! I MAY BE ON THE VERGE OF BEING A HAPPY GUY.
+> 
+> 3. i ran my scripts on 50 data runs for 250,000 events in each run. this worked!
+> 
+> 4. i ran my scripts on 120 data runs for all the events in each run. this will
+> take
+> many hours, but it looks good so far.
+> 
+> 5. went to chicago for thanksgiving.
+> 
+> i'll be in touch next week.
+> 
+> 
+> jerry
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

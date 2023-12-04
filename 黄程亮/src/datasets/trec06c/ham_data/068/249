@@ -1,0 +1,73 @@
+Received: from dec1.wi-inf.uni-essen.de (IDENT:root@dec1.wi-inf.uni-essen.de [132.252.53.1])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id HAA11686
+	for <handyboard@media.mit.edu>; Wed, 14 Jun 2000 07:08:12 -0400 (EDT)
+Received: from dec1.wi-inf.uni-essen.de (dial-99-199.wu-wien.ac.at [137.208.99.199])
+	by dec1.wi-inf.uni-essen.de (8.9.3/8.9.3) with ESMTP id NAA17047
+	for <handyboard@media.mit.edu>; Wed, 14 Jun 2000 13:08:10 +0200
+Message-Id: <39476748.2B358133@dec1.wi-inf.uni-essen.de>
+Date: Wed, 14 Jun 2000 13:06:48 +0200
+From: Stephan Adelsberger <astephan@dec1.wi-inf.uni-essen.de>
+X-Mailer: Mozilla 4.6 [de] (Win98; I)
+X-Accept-Language: de
+Mime-Version: 1.0
+To: HB Mailing list <handyboard@media.mit.edu>
+Subject: Re: HB Memory map
+References: <3944E383.BB01E222@uk.airsysatm.thomson-csf.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Device                    Location                        Notes
+=====================================
+6811 internal           $0000-$00ff                Built-in
+RAM                       (A1 chip)
+                                $0000-$01ff
+                                (E1 chip)
+-----------------------------------------------------------
+6811 control            $1000-$103f                Built-in
+registers
+-----------------------------------------------------------
+Expansion I/O         $4000-$4fff                Memory reads in this range
+enable the Y1 latch selector,
+Bank 0                                                        present on
+the   HB Expansion Bus. Memory writes in this
+                                                                    range
+enable the Y0 selector on the Expansion Bus. No
+                                                                    devices
+are present on a stock Handy Board.
+-----------------------------------------------------------
+Expansion I/O        $5000-$5fff                  Reads enable Y3; writes
+enable Y2. See explanation above.
+Bank 1
+-----------------------------------------------------------
+Expansion I/O        $6000-$6fff                Reads enable Y5; writes
+enable Y4. See explanation above
+Bank 2
+----------------------------------------------------------
+Digital inputs        $7000-$7fff                The digital inputs consist
+of the two switches and sensor ports
+                                                                 10 through
+15. A memory read from anywhere in this range
+                                                                returns the
+value of the digital input byte.
+---------------------------------------------------------
+Motor outputs       $7000-$7fff                A memory write to anywhere in
+this range controls the motor
+                                                                outputs.
+The low four bits are motor direction, and the high
+                                                                four bits
+are motor enable (1=on).
+----------------------------------------------------------
+External RAM       $8000-$ffff                The 32K of battery-backed
+memory is mapped to the
+                                                                upper 32K
+block of  the 6811 address space.
+=====================================
+
+
+-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
+Stephan Adelsberger                    stephan@adelsberger.com
+http://go.to/robot
+
+
+
+

@@ -1,0 +1,34 @@
+Received: from mail.montana.com (mailC.montana.com [199.2.139.118])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id NAA21800
+	for <handyboard@media.mit.edu>; Thu, 16 Mar 2000 13:32:05 -0500 (EST)
+Received: from selway.umt.edu (golfswit.montana.com [208.23.167.3])
+	by mail.montana.com (8.9.3/8.9.3) with ESMTP id LAA03176
+	for <handyboard@media.mit.edu>; Thu, 16 Mar 2000 11:21:03 -0700 (MST)
+Message-Id: <38D12851.84DD99EE@selway.umt.edu>
+Date: Thu, 16 Mar 2000 11:30:41 -0700
+From: Will Bain <willb@selway.umt.edu>
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Non-polaroid Sonar
+References: <003601bf8e84$a7c81c40$0500a8c0@wantree.com.au> <38CFBAA9.FB24EE1C@selway.umt.edu> <000901bf8f4d$841537a0$0500a8c0@wantree.com.au>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Adam Oliver wrote:
+> Just so I'm clear, ref pink book page 10-17.
+> Does the "bit_set( 0x1021, 1 );" refer to bit 0 -EDG3B, and
+> bit_clear( 0x1021, 2 ); " refer to bit 1 -EDG3A.
+> This is what was throwing me, I always thought bits started at zero and
+> ended at 7, not 1 to 8 as appears to be the case here. Is this what the
+> "zero-indexed " means?
+>
+> sorry if it's a basic question, but if you don't ask you never learn :-)
+
+No, that's a very good question. It had me confused, too. The second argument to bit_set and bit_clear is not actually the index of a bit at all; it's a bit mask.
+
+For example, when you do bit_set( 0x1021, 3 ), the 3 becomes 0000 0011 in binary, so it will set the last two bits of the address. Hope this helps!
+
+-- Will
+

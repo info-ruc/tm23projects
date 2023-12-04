@@ -1,0 +1,164 @@
+Received: from haarlem.cs.utexas.edu (wangf@haarlem.cs.utexas.edu [128.83.144.75
+])
+        by mail.cs.utexas.edu (8.12.3/8.12.3) with ESMTP id h1INGGrj007963
+        for <chris@cs.utexas.edu>; Tue, 18 Feb 2003 17:16:16 -0600 (CST)
+Received: (from wangf@localhost)
+        by haarlem.cs.utexas.edu (8.12.2/8.12.2/Submit) id h1INGGfW028535;
+        Tue, 18 Feb 2003 17:16:16 -0600
+Date: Tue, 18 Feb 2003 17:16:16 -0600 (CST)
+From: Feng Wang <wangf@cs.utexas.edu>
+To: Chris Edmondson-Yurkanan <chris@cs.utexas.edu>
+Subject: Re: please forward h1 solution 
+In-Reply-To: <200302182221.h1IMLMJ9023333@neverland.cs.utexas.edu>
+Message-ID: <Pine.LNX.4.33.0302181714350.28472-200000@haarlem.cs.utexas.edu>
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="1400916880-1559254401-1045610128=:28523
+"
+Content-ID: <Pine.LNX.4.33.0302181715330.28529@haarlem.cs.utexas.edu>
+Status: ORr
+
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+  Send mail to mime@docserver.cac.washington.edu for more info.
+
+--1400916880-1559254401-1045610128=:28523
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-ID: <Pine.LNX.4.33.0302181715331.28529@haarlem.cs.utexas.edu>
+
+I attached the txt file. Please check if it's OK.
+
+Thanks,
+Feng
+
+--1400916880-1559254401-1045610128=:28523
+Content-Type: TEXT/PLAIN; NAME="soln-1.txt"
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.LNX.4.33.0302181715280.28523@haarlem.cs.utexas.edu>
+Content-Description: 
+Content-Disposition: ATTACHMENT; FILENAME="soln-1.txt"
+
+CSAgSG13azI6IEFuYWx5emluZyB0aGUgQXBwbGljYXRpb24gbGF5ZXIgZGVz
+aWduIG9mIE5OVFANCg0KMSkgQSkgVGhlIE5ldHdvcmsgTmV3cyB1c2VyIGFn
+.....
+.....
+dXJhdGlvbiBsaXN0IG9mIHdoaWNoIE5OVFAgc2VydmVycyB0byBjb250YWN0
+IG9yIGFjY2VwdCBhIGNvbnRhY3QgZnJvbS4NCg==
+--1400916880-1559254401-1045610128=:28523--
+<blank line>
+ THREE ANNOTATED DNS QUERIES with RESPONSES
+Scenario 1  DNS query for the MX records of ibm.com (for anyone whose email
+		was <name>@ibm.com).   Based on the measured response time
+		I can deduce that the info was not in our local name server's
+		cache.  I repeated it immediately afterwards, and the response
+		time was 0 msec and thus was retrieved from the L.N.S. cache.
+
+	    	Note the authoritative section with all the 4 Authoritative
+		Name Servers that have the longest match to the domain
+		name specified in the question.  And note that the 4 additional
+		answers are all A resource records of names provided in the
+		answers or the authoritative sections.  
+
+Scenario 2  DNS query that is NOT to our local name server but is instead
+		being sent to an authoritative name server found in one of 
+		the NS records....  Thus if I (or a local name server) had sent 
+		an iterative query data to the local name server and if it  
+		did not have a match, then it would send me back an NS record
+		in the authoritative section, with the hostname of an
+		authoritative name server that will help me find my answer. 
+		
+Scenario 3  DNS query to our local name server of a "mistyped" name, which 
+		based on the delay we know that it was sent to another name
+		server,which by definition would be 1 of the root name servers.
+		The SOA resource record is always sent back when there is
+		no answer, and it indicates which name server is THE official
+		name server that should have this data if anyone would....
+		The SOA RR contains the email address of someone to contact 
+		to ask about this data or knows why it has been deleted.
+		The  SOA value:NSTLD.VERISIGN-GRS.COM is an encoded email
+		address which is really:  NSTLD@VERISIGN-GRS.COM
+-------------------------------------------------------------------------
+SCENARIO 1
+neverland.cs.utexas.edu%  dig ibm.com mx
+
+; <<>> DiG 2.0 <<>> ibm.com mx 
+;; ->>HEADER<<- opcode: QUERY , status: NOERROR, id: 6
+;; flags: qr aa rd ra ; Ques: 1, Ans: 1, Auth: 4, Addit: 4
+;; QUESTIONS: 
+;;      ibm.com, type = MX, class = IN
+
+;; ANSWERS:
+ibm.com.        600     MX      0 ns.watson.ibm.com.
+
+;; AUTHORITY RECORDS:
+ibm.com.        242     NS      ns.watson.ibm.com.
+ibm.com.        242     NS      ns.austin.ibm.com.
+ibm.com.        242     NS      ns.almaden.ibm.com.
+ibm.com.        242     NS      internet-server.zurich.ibm.com.
+
+;; ADDITIONAL RECORDS:
+ns.watson.ibm.com.      127721  A       129.34.20.80
+ns.austin.ibm.com.      222     A       192.35.232.34
+ns.almaden.ibm.com.     7102    A       198.4.83.35
+internet-server.zurich.ibm.com. 1163    A       195.176.20.204
+
+;; Sent 1 pkts, answer found in time: 26 msec 
+;; FROM: neverland.cs.utexas.edu to SERVER: default -- 128.83.139.9
+;; WHEN: Tue Feb 18 16:44:39 2003
+;; MSG SIZE  sent: 25  rcvd: 222
+
+-------------------------------------------------------------------------
+SCENARIO 2
+neverland.cs.utexas.edu% dig @ns.almaden.ibm.com www.ibm.com any
+
+; <<>> DiG 2.0 <<>> @ns.almaden.ibm.com www.ibm.com any 
+;; ->>HEADER<<- opcode: QUERY , status: NOERROR, id: 10
+;; flags: qr aa rd ; Ques: 1, Ans: 5, Auth: 4, Addit: 4
+;; QUESTIONS: 
+;;      www.ibm.com, type = ANY, class = IN
+
+;; ANSWERS:
+www.ibm.com.    1800    A       129.42.16.99
+www.ibm.com.    1800    A       129.42.17.99
+www.ibm.com.    1800    A       129.42.18.99
+www.ibm.com.    1800    A       129.42.19.99
+www.ibm.com.    1800    MX      10 ns.watson.ibm.com.
+
+;; AUTHORITY RECORDS:
+ibm.com.        600     NS      ns.watson.ibm.com.
+ibm.com.        600     NS      ns.austin.ibm.com.
+ibm.com.        600     NS      ns.almaden.ibm.com.
+ibm.com.        600     NS      internet-server.zurich.ibm.com.
+
+;; ADDITIONAL RECORDS:
+ns.watson.ibm.com.               600     A       129.34.20.80
+ns.austin.ibm.com.             86400     A       192.35.232.34
+ns.almaden.ibm.com.            86400     A       198.4.83.35
+internet-server.zurich.ibm.com. 1800     A       195.176.20.204
+
+;; Sent 1 pkts, answer found in time: 54 msec 
+;; FROM: neverland.cs.utexas.edu to SERVER: ns.almaden.ibm.com  198.4.83.35
+;; WHEN: Tue Feb 18 16:51:54 2003
+;; MSG SIZE  sent: 29  rcvd: 283
+-------------------------------------------------------------------------
+Scenario 3
+neverland.cs.utexas.edu%  dig xxxxzzzzzttt.mli
+
+; <<>> DiG 2.0 <<>> xxxxzzzzzttt.mli 
+;; ->>HEADER<<- opcode: QUERY , status: NXDOMAIN, id: 6
+;; flags: qr aa rd ra ; Ques: 1, Ans: 0, Auth: 1, Addit: 0
+;; QUESTIONS: 
+;;      xxxxzzzzzttt.mli, type = A, class = IN
+
+;; AUTHORITY RECORDS:
+.       86400   SOA     A.ROOT-SERVERS.NET.  NSTLD.VERISIGN-GRS.COM. (
+                        2003021800      ;serial
+                        1800    ;refresh
+                        900     ;retry
+                        604800  ;expire
+                        86400 ) ;minim
+
+
+;; Sent 1 pkts, answer found in time: 39 msec 
+;; FROM: neverland.cs.utexas.edu to SERVER: default -- 128.83.139.9
+;; WHEN: Tue Feb 18 16:54:59 2003
+;; MSG SIZE  sent: 34  rcvd: 109

@@ -1,0 +1,108 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gAC1YPP20236
+	for <ggilfoyl@facstaff.richmond.edu>; Mon, 11 Nov 2002 20:34:25 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gAC1WA420037
+	for <ggilfoyl@richmond.edu>; Mon, 11 Nov 2002 20:32:10 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002111120320905825
+ for <ggilfoyl@richmond.edu>; Mon, 11 Nov 2002 20:32:09 -0500
+Received: from ucontrol.mobiledns.com ([216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gAC1W9w03228
+	for <ggilfoyl@richmond.edu>; Mon, 11 Nov 2002 20:32:10 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gABDUiH13248
+	for <ggilfoyl@richmond.edu>; Mon, 11 Nov 2002 08:30:44 -0500
+Date: Mon, 11 Nov 2002 08:30:43 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: gilfoyle <ggilfoyl@RICHMOND.EDU>
+Subject: Re: the Richmond saga continues
+In-Reply-To: <3DD0153C.20C7017A@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0211110821550.429-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status:   
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb26730000424a
+
+Greetings,
+
+I am still looking at the scripts, but in the mean while, I have made a
+few mods (again) to the library setup to compensate for the changes to
+directory structure.
+
+perl is dependant on several affected libs. hopefully, this will make it
+happy.
+
+G'day,
+sjames
+
+
+On Mon, 11 Nov 2002, gilfoyle wrote:
+
+> Hi Steven,
+> 
+>    The saga continues. After you made your changes last Friday I was 
+> able to run root on the slaves 0-2. I could execute it from the master 
+> using the following command. 
+> 
+> bpsh 0 root -b -q /scratch/gilfoyle/e5/24023/run_eod3.C
+> 
+> I was also able to run my scripts for just those two nodes. On Sunday, 
+> I rebooted the remaining nodes (3-48), removed the /home area and put 
+> in a link home->/usr/home. I then started to run ten jobs which would 
+> run on nodes 0-9. The master hung: wouldn't budge. I rebooted the 
+> master and brought up slaves 0-5 and tried again and got the same 
+> results. After rebooting the master and slaves 0-5 this is what I have 
+> noticed. 
+> 
+> 1. I ran my scripts without running root and they appeared to work!
+> 
+> 2. There are two sub-directories on slave 0, /include and /cint that 
+> are not visible on any of the other slaves. These two subdirectories 
+> are needed by root.  This would seem to be a smoking gun for the 
+> problem except for one thing. Slave 1 seemed to run root successfully 
+> even though those areas are not visible to it.
+> 
+> 3. I can run root on slaves 3-5 from the master using the bpsh 
+> command. The master only gets hung when I am running my script. I am 
+> using perl for these scripts and I have attached them to this message. 
+> Perhaps there is some library that perl needs??
+> 
+> 4. The problem seems to be with the nodes that I rebooted on Sunday 
+> and not the ones you worked on last Friday. Did I reboot them 
+> incorrectly? I checked some of the permissions of directories on the 
+> slaves and they all appear to be the same.
+> 
+> I have rebooted the master and nodes 0-5. I am at JLab this week so I
+> can only work on this sporadically, but I will try to get as much 
+> done as I can.
+> 
+> Let me know what you think.
+> 
+> Jerry
+> 
+> p.s. description of perl scripts:
+> 
+> submit_eod3c.pl - main script, does some housekeeping and generates the
+> input file for the batch command.
+> 
+> run_root_on_node2.pl - copies files over to the slave, runs root, and 
+> cleans up.
+> 
+> 
+> 
+> 
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

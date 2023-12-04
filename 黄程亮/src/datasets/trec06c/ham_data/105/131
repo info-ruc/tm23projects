@@ -1,0 +1,116 @@
+Received: from hotmail.com (bay21-f15.bay21.hotmail.com [65.54.233.104])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j7J5LC5L031643
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 18 Aug 2005 22:21:12 -0700
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Thu, 18 Aug 2005 22:21:06 -0700
+Message-ID: <BAY21-F15E3745CEABD33FB288D72DCB50@phx.gbl>
+Received: from 80.15.249.164 by by21fd.bay21.hotmail.msn.com with HTTP;
+	Fri, 19 Aug 2005 05:21:06 GMT
+From: =?gb2312?B?y+8gtcPB1Q==?= <sundelinustc@hotmail.com>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] question about branching
+Date: Fri, 19 Aug 2005 13:21:06 +0800
+Mime-Version: 1.0
+Content-Type: text/plain; charset=gb2312; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+I am a new user of DMDX in china(so my system language is simplified 
+chinese),and I have a question about the branching keyword. I want to 
+display some bitmap pictures in circulation.But it dosn't work as my wish.
+My script is following:
+<ep> <vm 800 600 600 16 75><nfb></ep>
+0 <set c1=0>;
+1 <ms% 1000><bmp>"1";
+2 <ms% 1000><bmp>"2";
+3 <ms% 1000><bmp>"2", <ms% 1000><bmp>"1";
+4 <inc 1><bi 1,(c1 .lt. 2)>;
+0 "the end";
+
+But there is no circulation! the diagnostics is following:
+DMDX Vers. 3.1.4.1 08/19/2005 12:29:49 on machine PSYLAB-DPS2NPES
+DMDX Vers. 3.1.4.1
+Item File <G:\programs\DMDX\tt1.rtf> 
+Parsed file is <rtfparsed.itm>
+Getting file -- Wait
+No scramble
+Scrambled file is <rtfparsed.itm>
+Available DI device < Û±Í> (?
+Available DI device <º¸≈Ã> (?
+Input Device <KEYBOARD> selection failed
+Available DI device <º¸≈Ã> (?
+EXPERIMENT READY
+15 video memory buffers at 800x600 16 bpp
+0 <set c1=0>;
+Preparation A 0.07ms, B 0.05ms
+1 <ms% 1000><bmp>"1";
+Preparation A 0.72ms, B 0.16ms
+2 <ms% 1000><bmp>"2";
+Preparation A 1.18ms, B 0.78ms
+3 <ms% 1000><bmp>"2", <ms% 1000><bmp>"1";
+Preparation A 0.68ms, B 1.04ms
+4 <inc 1><bi 1,(c1 .lt. 2)>;
+0 "end";
+JOB ABORTED
+
+I can't use the branching keywords as what is instructed in the DMDX help 
+files.On the other hand, I found that the circulation can be made by adding 
+a symbol '!' before the end line, the modified script is following:
+<ep> <vm 800 600 600 16 75><nfb></ep>
+0 <set c1=0>;
+1 <ms% 1000><bmp>°±1°±;
+2 <ms% 1000><bmp>°±2°±;
+3 <ms% 1000><bmp>°±2°±, <ms% 1000><bmp>°±1°±;
+4 <inc 1><bi 1,(c1 .lt. 2)>;
+!0 °∞end°±;
+
+Although it runs, there is still somthing wrong -- DMDX warnded me "read 
+error". The diagnostics is following:
+DMDX Vers. 3.1.4.1 08/19/2005 12:39:18 on machine PSYLAB-DPS2NPES
+DMDX Vers. 3.1.4.1
+Item File <G:\programs\DMDX\tt1.rtf> 
+Parsed file is <rtfparsed.itm>
+Getting file -- Wait
+No scramble
+Scrambled file is <rtfparsed.itm>
+Available DI device < Û±Í> (?
+Available DI device <º¸≈Ã> (?
+Input Device <KEYBOARD> selection failed
+Available DI device <º¸≈Ã> (?
+EXPERIMENT READY
+15 video memory buffers at 800x600 16 bpp
+0 <set c1=0>;
+Preparation A 0.06ms, B 0.05ms
+1 <ms% 1000><bmp>"1";
+Preparation A 0.70ms, B 0.16ms
+2 <ms% 1000><bmp>"2";
+Preparation A 1.17ms, B 0.76ms
+3 <ms% 1000><bmp>"2", <ms% 1000><bmp>"1";
+Preparation A 0.74ms, B 1.00ms
+4 <inc 1><bi 1,(c1 .lt. 2)>;
+1 <ms% 1000><bmp>"1";
+Preparation A 0.83ms, B 0.16ms
+2 <ms% 1000><bmp>"2";
+Preparation A 2.41ms, B 0.78ms
+3 <ms% 1000><bmp>"2", <ms% 1000><bmp>"1";
+Preparation A 0.76ms, B 1.02ms
+4 <inc 1><bi 1,(c1 .lt. 2)>;
+Preparation A 0.13ms, B 0.67ms
+Preparation A 0.00ms, B 0.00ms
+READ ERROR
+JOB ABORTED
+
+What's the matter? And what I should do to make the pictures displaying 
+circularly ? I beg your advice. 
+
+Thanks a lot,
+best wishes.
+Your sincerely
+Sun De Lin
+sundelinustc@hotmail.com
+
+_________________________________________________________________
+√‚∑—œ¬‘ÿ MSN Explorer:   http://explorer.msn.com/lccn/  
+
+

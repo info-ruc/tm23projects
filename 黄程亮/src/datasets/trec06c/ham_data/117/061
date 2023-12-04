@@ -1,0 +1,95 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29G7Rt03561
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 11:07:27 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k29G7MlG012526
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 11:07:23 -0500 (EST)
+Received: from 128.84.154.13 (proxying for unknown)
+        by webmail.cornell.edu with HTTP;
+        Thu, 9 Mar 2006 11:07:23 -0500 (EST)
+Message-ID: <28009.128.84.154.13.1141920443.squirrel@webmail.cornell.edu>
+Date: Thu, 9 Mar 2006 11:07:23 -0500 (EST)
+Subject: PAPER 13
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Resilient Overlay Networks (RON) provides an application level overlay for
+general data routing on the internet.  Specifically Andersen et al.
+identify problems with BGP, the underlying internet routing protocol. 
+Specifically, path failures are frequently not detected and repaired by
+BGP for tens of seconds.  RON seeks to address some of these issues.  RON
+is implemented using FreeBSD's Divert Socket software to intercept IP
+traffic so that RON can perform its own application level routing
+(providing an IP abstraction to higher level applications).  RON forwards
+packets to the final estination using standard IP in most cases.  However,
+if a link or path failure is detected RON is able to use an intermediary
+RON node to forward packets.  This failure detection and intermediary
+route discover is accomplished through a full connectivity overlay where
+every node exchanges probes with every other node (incurring O(N^2)
+overhead) to detect failures and measure several metrics (latency,
+packet-loss and throughput) for route selection.  These metrics can be
+augmented by application level metrics and intermediate nodes not
+supporting these metrics can fallback on some application defined default.
+ RON also includes route policies to decide which paths are acceptable
+when choosing an indirection (such as disallowing commercial traffic on
+Internet2 links).  Anderson et al. show that RON can route around most
+underlying network failures (50-60% of such failures) in two test
+deployments of 12 and 16 nodes.
+
+However, this improvement is at the cost of significant overhead
+(estimated at 2.2Kbps for N=10 to 33Kbps for N=50, scaling with O(N^2) and
+latency (200ms for their implementation).  Anderson et al. characterize
+this cost as a tradeoff for performance, however the analysis and
+evaluation of such a tradeoff and the parameters involved are not shown in
+detail.  In the end RON is not presented as a scalable solution for many
+nodes and is instead suggested for deployment in small applications such
+as conferencing.  However many of these applications may not be able to
+tolerate additional overhead for failures which may be unlikely over the
+short lifetime of some of these applications.
+
+In "Improving the Reliability of Internet Paths..." Gummadi et al. present
+two important contributions.  First a simple study of internet
+connectivity explores routing failures from different vantage points.  The
+data from this study is used to analyze the effectiveness of several
+indirection strategies in the face of routing failures.  Specifically,
+given a set of "vantage points" probes are sent to a diverse set of
+internet destinations from vantage points.  When connectivity failure is
+encountered alternative probes are sent from different vantage points and
+the path from source to stination is probed via a modified traceroute. 
+Gumamdi et al. conclude that only between 40 and 60% of connectivity
+failures can be recovered (because last-hop connectivity has failed for
+which no indirection routing could be performed).  To address this
+random-4 indirection is presented which consists of randomly and in
+parallel choosing four random other hosts as one-hop indirection hosts to
+attempt to recover.  This stateless and low-cost indirection mechanism is
+shown to be very competetive with stateful and much more expensive
+alternative strategies.  Second, the SOSR implementation is presented
+which is a kernel level routing indirection which automatically contacts a
+configured intermediary according to random-4 to forward packets NAT-style
+in the face of failures.  This indirection is transparent to the user
+application and the destination host.  Experimentation suggests that SOSR
+recovers from 56% of network level failures (slightly below the measured
+66% which could have been recoverable).
+
+"Improving the Relaiablity of Internet Paths.." makes important
+contributions to this space.  Specifically a careful survey of network
+failures is made characterizing the frequency of failures and the
+percentage of those recoverable by indirection and the random-4 protocol
+which suggests that these failures can be overcome by simple, stateless
+mechanisms.  However, the experimental study presented only considers
+between 383 and 486 failure instances over a 72 hour period.  These
+failures account for between .14 and .18% of the interactions attempted. 
+The improvement shown by SOSR is a .04% increase in end reliability with a
+.01% increase in application level failures.  These margins may be on the
+order of statistically insignificant differences, and no such hypothesis
+test is presented to show otherwise or what margin can be inferred to
+generalize.  The increase in application level failures is worrysome and
+is not explored in-depth.  Such failures could be much larger for other
+classes of applications.
+

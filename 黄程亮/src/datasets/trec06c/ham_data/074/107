@@ -1,0 +1,87 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA16333
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 9 Nov 2000 09:25:24 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by deimos.email.Arizona.EDU (5.1.046)
+        id 39F9F778000F8C5E for DMDX@psy1.psych.arizona.edu; Thu, 9 Nov 2000 09:25:23 -0700
+Message-Id: <5.0.0.25.2.20001109091517.009d4eb0@psy1.psych.arizona.edu>
+Date: Thu, 09 Nov 2000 09:25:20 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Loopsetup
+In-Reply-To: <3A0AA6E7.33903CC0@forenap.asso.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 02:30 PM 11/9/00 +0100, you wrote:
+
+>Hello everybody,
+>
+>I wrote the following code and I have 2 questions
+>
+>from it.
+>
+>
+>
+>0 <ln 0> "Loop Timing Test";
+>
+>250 <set 1,10>
+>
+>11 d393 g "cross" <dec 1> <bicGT 1,0,-11>;
+>
+>0 "Test Done";
+>
+>The cross  display last for 60s (59890 ms exactly)
+>
+>
+>
+>1- However there is a  6s delay before the cross is displayed
+>
+>(6s correspond to 393 ticks) I don't understand that.
+>
+>Any suggestions ?
+
+   D is a delay parameter, it *delays* the display of the frame.  The 
+reason we use it is to determine the duration of the *previous* item's last 
+frame so we can be loading the next frame's bitmap(s) as the previous is 
+displaying.  If you don't want an initial delay and you can guarantee that 
+the bitmap for the display has been loaded already by using it in the 
+previous item you can have an initial item with a much lower delay (it will 
+still have to be something > 0, the preparation B time still has to be 
+allowed for) and only loop 9 times:
+
+0 <ln 0> "Loop Timing Test" / %0! g "cross";
+1 d5 g "cross";
+250 <set 1,9>
+11 d393 g "cross" <dec 1> <bicGT 1,0,-11>;
+0 d393 "Test Done";
+
+   Note that the last instruction has to be delayed too to allow the last 
+frame to be displayed for the correct duration.
+
+>2- How to I introduce the use of a trigger into a loop
+>
+>I tried
+>
+>0 d393 g "cross" <dec 1> <bicGT 1,0,-0>;
+>
+>NO success . Any help ?
+
+   Don't use 0 as a branch destination, -0 is in fact 0 which is not less 
+than 0 so the code can't branch backwards to an item number 0.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Dimensions will always be expressed in the least usable term.
+Velocity, for example, will be expressed in furlongs per fortnight.
+
+
+

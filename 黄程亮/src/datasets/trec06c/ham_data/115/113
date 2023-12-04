@@ -1,0 +1,215 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LG77t10114
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 11:07:07 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1LG76ti003959
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 11:07:06 -0500 (EST)
+Message-ID: <001001c63700$e5c309d0$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 8
+Date: Tue, 21 Feb 2006 11:07:21 -0500
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_000D_01C636D6.FC605230"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_000D_01C636D6.FC605230
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+The Sybil attack paper points out that any attacker who has enough =
+resources (relative to the weakest person in the network) can dupe =
+himself many times.  In other words, an attacker can fake multiple =
+identities.  This would kill the security in any system which heavily =
+relies on redundancy for its security.  To help show this, the paper =
+introduces 4 lemmas.  The first one states that if you are x times more =
+privileged in terms of resources than another node, you can present =
+floor(x) identities to a local entity.  The second lemma states that =
+unless all entities are validated simultaneously, any single entity can =
+present itself through distinct identities as many times as it wishes.  =
+Lemma 3 says that even with trusted entities, if there are enough faulty =
+entities or they have enough processing power, they can still take over. =
+ Lemma 4 builds upon others by saying that unless multiple nodes =
+coordinate time intervals, an attacker does not need too many resources =
+to hurt the network.
+
+An Eclipse attack is when an attacker tries to fill the neighbor sets of =
+nonfaulty nodes with faulty nodes.  This would ensure that that node =
+would not be able to effectively communicate with the network.  While =
+unstructured networks are most effected by this attack, it is a severe =
+problem in structured p2p systems as well.  A key insight is that an =
+attacker node would then have a large in-degree and a large out-degree.  =
+By limiting neighbor selection to those nodes who have low indegree and =
+low outdegree, a node could assume that its neighbor is legitimate.  A =
+node could therefore ask any other node to give it their neighbor set =
+and back-pointer set.  If the requesting node is not in it or the sets =
+are too large, then that node is removed from its neighbor set.  This =
+will ensure that a malicious node cannot insert itself into the neighbor =
+set.  The obvious counter to this is to put the requesting node into the =
+set before sending the set back.  To counter against this, the =
+requesting node anonymously routes the request for the two sets through =
+nodes it trusts.
+    In the end, it seems like there is a tradeoff between querying =
+neighbors and reliability.  The more you query, the more reliable the =
+network, but this causes large bandwidth overhead.  The less you query, =
+the less bandwidth, but your neighbors might not be reliable.  The other =
+issue is that the paper seems to assume that the network is already =
+immune to a Sybil attack, which seems to be a chicken-and-egg problem.
+
+In the secure routing paper, the authors argue that three things are =
+necessary to ensure that a message will reach a correct node: assigning =
+node ids securely, maintaining routing tables securely, and forwarding =
+messages securely.  To obtain a node id, a node would have to go through =
+a certification authority.  The authority would then give the node a =
+cryptographic key based on its IP address.  The problem is that a node =
+could request multiple certificates.  To prevent this, you might have to =
+pay for a certificate, making it costly (literally) to get multiple =
+identities.  The problem is the central authority: in general, it is =
+something you don't want in a p2p network.  Since computational power is =
+limited, giving out cryptographic puzzles would limit the amount of time =
+between new IDs, but a powerful node would be able to overcome this =
+easily.  The routing table turns into two routing tables.  The first is =
+the same as any system which uses proximity information or which can be =
+duped into choosing neighbors.  The backup routing table does not take =
+proximity into account and therefore, while it will not route as =
+efficiently, it is not as susceptible to attack.  Secure routing tries =
+to detect routing failure and then re-routed the messages appropriately. =
+ This seems like a failed part of the paper and in the end the authors =
+suggest using a flooding or gossip like system to get the message to its =
+destination: a complete failure in a structured network.
+------=_NextPart_000_000D_01C636D6.FC605230
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<DEFANGED_META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<DEFANGED_META content=3D"MSHTML 6.00.2900.2802" name=3DGENERATOR>
+ <!-- <DEFANGED_STYLE> --> </DEFANGED_STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>The Sybil attack paper points out that =
+any attacker=20
+who has enough resources (relative to the weakest person in the network) =
+can=20
+dupe himself many times.&nbsp; In other words, an attacker can fake =
+multiple=20
+identities.&nbsp; This would kill the security in any system which =
+heavily=20
+relies on redundancy for its security.&nbsp; To help show this, the =
+paper=20
+introduces 4 lemmas.&nbsp; The first one states that if you are x times =
+more=20
+privileged in terms of resources than another node, you can present =
+floor(x)=20
+identities to a local entity.&nbsp; The second lemma states that unless =
+all=20
+entities are validated simultaneously, any single entity can present =
+itself=20
+through distinct identities as many times as it wishes.&nbsp; Lemma 3 =
+says that=20
+even with trusted entities, if there are enough faulty entities or they =
+have=20
+enough processing power, they can still take over.&nbsp; Lemma 4 builds =
+upon=20
+others by saying that unless multiple nodes coordinate time intervals, =
+an=20
+attacker does not need too many resources to hurt the =
+network.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>An Eclipse attack is when an attacker =
+tries to fill=20
+the neighbor sets of nonfaulty nodes with faulty nodes.&nbsp; This would =
+ensure=20
+that that node would not be able to effectively communicate with the=20
+network.&nbsp; While unstructured networks are most effected by this =
+attack, it=20
+is a severe problem in structured p2p systems as well.&nbsp; A key =
+insight is=20
+that an attacker node&nbsp;would then have a large in-degree and a large =
+
+out-degree.&nbsp; By limiting neighbor selection to those nodes who have =
+low=20
+indegree and low outdegree, a node could assume that its neighbor is=20
+legitimate.&nbsp; A node could therefore ask any other node to give it =
+their=20
+neighbor set and back-pointer set.&nbsp; If the requesting node is not =
+in it or=20
+the sets are too large, then that node is removed from its neighbor =
+set.&nbsp;=20
+This will ensure that a malicious node cannot insert itself into the =
+neighbor=20
+set.&nbsp; The obvious counter to this is to put the requesting node =
+into the=20
+set before sending the set back.&nbsp; To counter against this, the =
+requesting=20
+node anonymously routes the request for the two sets through nodes it=20
+trusts.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; In the end, it seems =
+like there=20
+is a tradeoff between querying neighbors and reliability.&nbsp; The more =
+you=20
+query, the more reliable the network, but this causes large bandwidth=20
+overhead.&nbsp; The less you query, the less bandwidth, but your =
+neighbors might=20
+not be reliable.&nbsp; The other issue is that the paper seems to assume =
+that=20
+the network is already immune to a Sybil attack, which seems to be a=20
+chicken-and-egg problem.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>In the secure routing paper, the =
+authors argue that=20
+three things are necessary to ensure that a message will reach a correct =
+node:=20
+assigning node ids securely, maintaining routing tables securely, and =
+forwarding=20
+messages securely.&nbsp; To obtain a node id, a node would have to go =
+through a=20
+certification authority.&nbsp; The authority would then give the node a=20
+cryptographic key based on its IP address.&nbsp; The problem is that a =
+node=20
+could request multiple certificates.&nbsp; To prevent this, you might =
+have to=20
+pay for a certificate, making it costly (literally) to get multiple=20
+identities.&nbsp; The problem is the central authority: in general, it =
+is=20
+something you don't want in a p2p network.&nbsp; Since computational =
+power is=20
+limited, giving out cryptographic puzzles would limit the amount of time =
+between=20
+new IDs, but a powerful node would be able to overcome this =
+easily.&nbsp; The=20
+routing table turns into two routing tables.&nbsp; The first is the same =
+as any=20
+system which uses proximity information or which can be duped into =
+choosing=20
+neighbors.&nbsp; The backup routing table does not take proximity into =
+account=20
+and therefore, while it will not route as efficiently,&nbsp;it is not as =
+
+susceptible to attack.&nbsp; Secure routing tries to detect routing =
+failure and=20
+then re-routed the messages appropriately.&nbsp; This seems like a =
+failed part=20
+of the paper and in the end the authors suggest using a flooding or =
+gossip like=20
+system to get the message to its destination: a complete failure in a =
+structured=20
+network.</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_000D_01C636D6.FC605230--
+

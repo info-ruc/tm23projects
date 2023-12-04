@@ -1,0 +1,167 @@
+Received: from exchfe1.cs.cornell.edu (exchfe1.cs.cornell.edu [128.84.97.27])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h81MNtj15868
+	for <egs@unix.cucs>; Mon, 1 Sep 2003 18:23:55 -0400 (EDT)
+Received: from EXCHVS1.cs.cornell.edu ([128.84.97.23]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(5.0.2195.6713);
+	 Mon, 1 Sep 2003 18:23:41 -0400
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6375.0
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Subject: 615 PAPER 1
+Date: Mon, 1 Sep 2003 18:23:40 -0400
+Message-ID: <40E631F174C41E4DBE52727E137AF9278B32A3@EXCHVS1.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 PAPER 1
+Thread-Index: AcNw17JmPEPsKkzqSR6ABgdri87GhA==
+From: "Selcuk Aya" <ayas@cs.cornell.edu>
+To: <egs+615@cs.cornell.edu>
+X-OriginalArrivalTime: 01 Sep 2003 22:23:41.0201 (UTC) FILETIME=[B2878010:01C370D7]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id h81MNtj15868
+
+This paper describes the Destination Sequenced Distance Vector Routing,
+which is an improvement over the classic Bellman-Ford  Routing. The
+protocol tries to address some problems such as short and long term
+loops and poor convergence. Moreover it takes measures in order to use
+bandwidth more wisely and uses sequence numbers in order to prevent
+loops.
+
+In DSDV, every node maintains full routing table and broadcasts this to
+other nodes periodically. Between this full routing table
+advertisements, there are incremental routing table advertisements and
+in these, not the full routing table but the important changes are
+advertised. A link`s being broken or a node`s becoming available are
+considered to be important changes. A node changes a routing entry when
+it receives an update with a more recent sequence number or an update
+with the same sequence number and a better metric. However, it may wait
+a while before advertising the new update if it is not important. The
+mechanisms of incremental updates and holding off advertisements enable
+the protocol to use bandwith more wisely.
+
+The paper and the protocol have several weaknesses. There are not any
+simulation results. We do not see any information about how the protocol
+scales. It may well be the case that when network is large, a lot of
+redundant data is stored at each node (because full routing tables are
+stored) and although incremental advertisements are used the protocol
+may not scale well because of periodic updates. Moreover, the paper does
+not discuss convergence(although it says that it ackles the problems in
+classic routing algorithms)  and acknowledgement mechanisms
+
+2)DSR
+
+This paper describes a protocol,DSR, for dynamic source routing.
+ In DSR, route discovery and route maintenance are reactive. 
+By having reactive route discovery and route maintenance, DSR eliminates
+the need for periodic updates broadcast from the nodes.  Moreover, DSR
+is designed to work both with symmetric and asymmetric links.
+
+	Because route discovery is reactive, it is made only when a node
+wants to transmit a message to a destination for which the node does not
+have a route entry in its cache. The source node transmits a route
+request packet and the final destination or an intermediate node which
+has a route to the final destination replies with a route reply packet
+which includes the route to the destination. When a node transmits a
+data packet, the whole route should be included in the header. Route
+maintenance  is also on demand, it is made only when a link breakage is
+discovered during a packet transmission. Link breakage can be discovered
+by hope by hop acknowledgements and link level protocols. In absence of
+these, higher level protocols may be used.
+
+	Several improvements have been proposed to the basic protocol.
+For example route cache of intermediate routes may be used for route
+discovery. Moreover, unfiltered receival of   packets may be used in
+updating route entries and detecting errors. When updating the cache not
+the full entry but part of it may be changed. This may decrease
+processing time.DSR results in loop free routes because during route
+discovery a host discards a route request if it is listed in the route
+record and checks if there is a loop whenever it is going to reply from
+its cache.
+
+	There are some disadvantages associated with DSR. The route
+records which are carried in the discovery and data packets may pose a
+problem because they can be long. When the number of nodes in the
+network is large, reply, error packets and link level acknowledgements
+may dominate the network. So, reactive routing may shoot back and
+bandwidth shortage problems may occur. Moreover, I think that, there may
+be some problems because of this protocol with some applications. Some
+applications may require that nodes be aware of the new-comers whenever
+they pop up. However, if the network is stable ( nodes are stationary or
+they move very slowly), then nodes will not need route discovery. As a
+result they will not be aware of a new-comer because they will be
+merrily sending messages to each other. The new-comer may use
+promiscuious receiving and may learn others slowly but nothing can
+prevent him from not sending a message unless someone in the network
+says hello to him. Some multicasting mechanism may be a solution to this
+problem.
+
+	The presented simulations in the network are unrealistic. At
+most 24 nodes are tested. There may be larger networks. So it can be
+said that, because of the problems presented above, this routing
+protocol does not scale good. Moreover, in the paper there is nothing
+about acquisition-latency. In large networks this latency may be high.
+In fact, because of a node`s holding off a reply waiting for a better
+reply, latency may be worse than what we would expect from the basic
+protocol. I do not think that holding off a reply is good for avoiding
+collisions given that link level protocols have techniques( such as
+carrier sending) to avoid collisions.
+
+3)AODV
+
+This paper describes a protocol , AODV, for on demand routing. AODV
+enhances DSDV and seems to be influenced by DSR.  Route discovery in
+AODV is on demand. There is no need for the nodes to keep full routing
+tables and global periodic update messages are not used for management.
+However, in AODV, local connectivity management is done in a proactive
+way. AODV requires that neighboring nodes can detect each other.
+
+Whenever a node wants to send a packet to a destination and it has not a
+route entry for that destination a route request packet is broadcast. To
+this request, an intermediate route or the destination replies with a
+route reply packet. During this request and reply process , reverse and
+forward paths are set up dynamically. This is important because this
+enables AODV packets not to carry the whole routing information in their
+headers. This may enable the protocol to scale better. For local
+connectivity management, link level mechanisms and periodic hello
+messages are used. When a node does not receive a hello message from one
+of its neighbors in allowed-hello-loss time or it does notice the link
+breakage through link level mechanisms, it transmits this information to
+the nodes which may be interested(to the active nodes described
+below).The paper assumes bidirectional links, but does not discuss
+whether providing this is always possible. For example if FDD is use,
+because different frequencies are affected differently by the
+environment, there can be a danger that not enough node can hear each
+others` messages. 
+
+Besides using bandwidth wisely, AODV also aims at preventing unnecessary
+data storage and processing. First of all, nodes which do not lie on a
+active route do not have to maintain entry for that entry. Moreover,
+associated with each route entry is a route caching timeout and a list
+of active nodes which may be interested in that routes` destination. So
+when something important happens only those active routes are notified,
+and stale routes are not cached. Also, there is the  route request
+expiration timer which prevents nodes that do not lie on a path from
+source to destination keep the reverse path for long. The paper does not
+discuss the possibility of changing these parameters dynamically. For
+future work I think that it would be interesting to try to not to
+broadcast the query message but somehow determine the nodes which will,
+with high probability, give an answer to the query and forward the query
+to only them. Combined with the elimination of hello messages, this
+would result in a more wise use of the bandwidth.
+
+AODV, like DSDV uses sequence numbers for keeping the route information
+up-to-date and for preventing loop formations. A node updates its route
+entry when an update with a newer sequence number arrives or when an
+update with the same sequence number but a better metric arrives.
+
+
+The simulation results are explained clearly except some points. First
+of all, what good-put means is not explained in the paper. Also,
+although values which are said to be optimal are given for rreq-retries
+and allowed_hello_loss parameter, it is not clear that these values are
+optimal for other situations. This may be a problem because there are
+some big changes in acquisition latency when these parameters are
+changed a little. 
+
+

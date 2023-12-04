@@ -1,0 +1,581 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f6H64lL22911;
+	Mon, 16 Jul 2001 23:04:47 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id AAA17429;
+	Tue, 17 Jul 2001 00:43:29 -0400 (EDT)
+Date: Tue, 17 Jul 2001 00:43:29 -0400 (EDT)
+Received: by canaveral.red.cert.org; Tue, 17 Jul 2001 00:38:35 -0400
+Message-Id: <CA-2001-18.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-18
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c4e250d63a8f4cd691befe40f18c9aa
+Status: RO
+X-Status: $$$$
+X-UID: 0000000014
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-18 Multiple Vulnerabilities in Several
+Implementations of the Lightweight Directory Access Protocol (LDAP)
+
+   Original release date: July 16, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * iPlanet Directory Server, version 5.0 Beta and versions up to and
+       including 4.13
+     * Certain versions of IBM SecureWay running under Solaris and
+       Windows 2000
+     * Lotus Domino R5 Servers (Enterprise, Application, and Mail), prior
+       to 5.0.7a
+     * Teamware Office for Windows NT and Solaris, prior to version
+       5.3ed1
+     * Qualcomm Eudora WorldMail for Windows NT, version 2
+     * Microsoft Exchange 5.5 LDAP Service (Hotfix pending)
+     * Network Associates PGP Keyserver 7.0, prior to Hotfix 2
+     * Oracle 8i Enterprise Edition
+     * OpenLDAP, 1.x prior to 1.2.12 and 2.x prior to 2.0.8
+
+Overview
+
+   Several implementations of the Lightweight Directory Access Protocol
+   (LDAP) protocol contain vulnerabilities that may allow
+   denial-of-service attacks, unauthorized privileged access, or both. If
+   your site uses any of the products listed in this advisory, the CERT/CC
+   encourages you to follow the advice provided in the Solution section
+   below.
+
+I. Description
+
+   The LDAP protocol provides access to directories that support the X.500
+   directory semantics without requiring the additional resources of
+   X.500. A directory is a collection of information such as names,
+   addresses, access control lists, and cryptographic certificates.
+   Because LDAP servers are widely used in maintaining corporate contact
+   information and providing authentication services, any threats to their
+   integrity or stability can jeopardize the security of an organization.
+
+   To test the security of protocols like LDAP, the PROTOS project
+   presents a server with a wide variety of sample packets containing
+   unexpected values or illegally formatted data. This approach may reveal
+   vulnerabilities that would not manifest themselves under normal
+   conditions. As a member of the PROTOS project consortium, the Oulu
+   University Secure Programming Group (OUSPG) co-developed and
+   subsequently used the PROTOS LDAPv3 test suite to study several
+   implementations of the LDAP protocol.
+
+   The PROTOS LDAPv3 test suite is divided into two main sections: the
+   "Encoding" section, which tests an LDAP server's response to packets
+   that violate the Basic Encoding Rules (BER), and the "Application"
+   section, which tests an LDAP server's response to packets that trigger
+   LDAP-specific application anomalies. Each section is further divided
+   into "groups" that collectively exercise a particular encoding or
+   application feature. Finally, each group contains one or more "test
+   cases," which represent the network packets that are used to test
+   individual exceptional conditions.
+
+   By applying the PROTOS LDAPv3 test suite to a variety of popular
+   LDAP-enabled products, the OUSPG revealed the following
+   vulnerabilities:
+
+   VU#276944 - iPlanet Directory Server contains multiple vulnerabilities
+   in LDAP handling code
+    
+       The iPlanet Directory Server contains multiple vulnerabilities in
+       the code that processes LDAP requests.
+    
+       In the encoding section of the test suite, this product had an
+       indeterminate number of failures in the group that tests invalid
+       BER length of length fields.
+    
+       In the application section of the test suite, this product failed
+       four groups and had inconclusive results for an additional five
+       groups. The four failed groups indicate the presence of buffer
+       overflow vulnerabilities. For the inconclusive groups, the product
+       exhibited suspicious behavior while testing for format string
+       vulnerabilities.
+    
+   VU#505564 - IBM SecureWay Directory is vulnerable to denial-of-service
+   attacks via LDAP handling code
+    
+       The IBM SecureWay Directory server contains one or more
+       vulnerabilities in the code that processes LDAP requests. These
+       vulnerabilities were discovered independently by IBM using the
+       PROTOS LDAPv3 test suite. The CERT/CC is not currently aware of the
+       nature of these vulnerabilities.
+    
+   VU#583184 - Lotus Domino R5 Server Family contains multiple
+   vulnerabilities in LDAP handling code
+    
+       The Lotus Domino R5 Server Family (including the Enterprise,
+       Application, and Mail servers) contains multiple vulnerabilities in
+       the code that processes LDAP requests.
+    
+       In the encoding section of the test suite, this product failed 1 of
+       77 groups. The failed group tests a server's response to
+       miscellaneous packets with semi-valid BER encodings.
+    
+       In the application section of the test suite, this product failed
+       23 of 77 groups. These results suggest that both buffer overflow
+       and format string vulnerabilities are likely to be present in a
+       variety of application components.
+    
+   VU#688960 - Teamware Office contains multiple vulnerabilities in LDAP
+   handling code
+    
+       The Teamware Office suite is packaged with a combination X.500/LDAP
+       server that provides directory services. Multiple versions of the
+       Office product contain vulnerabilities that cause the LDAP server
+       to crash in response to traffic sent by the PROTOS LDAPv3 test
+       suite.
+    
+       In the encoding section of the test suite, this product failed 9 of
+       16 groups involving invalid encodings for several BER object types.
+    
+       In the application section of the test suite, this product failed 4
+       of 32 groups. The remaining 45 groups were not exercised during the
+       test runs. The four failed groups indicate the presence of buffer
+       overflow vulnerabilities.
+    
+   VU#717380 - Potential vulnerabilities in Qualcomm Eudora WorldMail
+   Server LDAP handling code
+    
+       While investigating the vulnerabilities reported by OUSPG, it was
+       brought to our attention that the Eudora WorldMail Server may
+       contain vulnerabilities that can be triggered via the PROTOS test
+       suite. The CERT/CC has reported this possibility to Qualcomm and an
+       investigation is pending.
+    
+   VU#763400 - Microsoft Exchange 5.5 LDAP Service is vulnerable to
+   denial-of-service attacks
+    
+       The Microsoft Exchange 5.5 LDAP Service contains a vulnerability
+       that causes the LDAP server to freeze in response to malformed LDAP
+       requests generated by the PROTOS test suite. This only affects the
+       LDAP service; all other Exchange services, including mail handling,
+       continue normally.
+    
+       Although this product was not included in OUSPG's initial testing,
+       subsequent informal testing revealed that the LDAP service of the
+       Microsoft Exchange 5.5 became unresponsive while processing test
+       cases containing exceptional BER encodings for the LDAP filter type
+       field.
+    
+   VU#765256 - Network Associates PGP Keyserver contains multiple
+   vulnerabilities in LDAP handling code
+    
+       The Network Associates PGP Keyserver 7.0 contains multiple
+       vulnerabilities in the code that processes LDAP requests.
+    
+       In the encoding section of the test suite, this product failed 12
+       of 16 groups.
+    
+       In the application section of the test suite, this product failed 1
+       of 77 groups. The failed group focused on out-of-bounds integer
+       values for the messageID parameter. Due to a peculiarity of this
+       test group, this failure may actually represent an encoding
+       failure.
+    
+   VU#869184 - Oracle 8i Enterprise Edition contains multiple
+   vulnerabilities in LDAP handling code
+    
+       The Oracle 8i Enterprise Edition server contains multiple
+       vulnerabilities in the code used to process LDAP requests.
+    
+       In the encoding section of the test suite, this product failed an
+       indeterminate number of test cases in the group that tests a
+       server's response to invalid encodings of BER OBJECT-IDENTIFIER
+       values.
+    
+       In the application section of the test suite, this product failed
+       46 of 77 groups. These results suggest that both buffer overflow
+       and format string vulnerabilities are likely to be present in a
+       variety of application components.
+    
+   VU#935800 - Multiple versions of OpenLDAP are vulnerable to
+   denial-of-service attacks
+
+       There are multiple vulnerabilities in the OpenLDAP implementations
+       of the LDAP protocol. These vulnerabilities exist in the code that
+       translates network datagrams into application-specific information.
+    
+       In the encoding section of the test suite, this product failed the
+       group that tests the handling of invalid BER length of length
+       fields.
+    
+       In the application section of the test suite, this product passed
+       all 6685 test cases.
+    
+Additional Information
+
+   For the most up-to-date information regarding these vulnerabilities,
+   please visit the CERT/CC Vulnerability Notes Database at:
+
+          http://www.kb.cert.org/vuls/
+
+   Please note that the test results summarized above should not be
+   interpreted as a statement of overall software quality. However, the
+   CERT/CC does believe that these results are useful in describing the
+   characteristics of these vulnerabilities. For example, an application
+   that fails multiple groups indicates that problems exist in different
+   areas of the code, rather than in a specific code segment.
+
+II. Impact
+
+   VU#276944 - iPlanet Directory Server contains multiple vulnerabilities
+   in LDAP handling code
+
+       One or more of these vulnerabilities allow a remote attacker to
+       execute arbitrary code with the privileges of the Directory Server.
+       The server typically runs with system privileges. At least one of
+       these vulnerabilities has been successfully exploited in a
+       laboratory environment under Windows NT 4.0, but they may affect
+       other platforms as well.
+
+   VU#505564 - IBM SecureWay Directory is vulnerable to denial-of-service
+   attacks via LDAP handling code
+
+       These vulnerabilities allow a remote attacker to crash affected
+       SecureWay Directory servers, resulting in a denial-of-service
+       condition. It is not known at this time whether these
+       vulnerabilities will allow a remote attacker to execute arbitrary
+       code. These vulnerabilities exist on the Solaris and Windows 2000
+       platforms but are not present under Windows NT, AIX, and AIX with
+       SSL.
+
+   VU#583184 - Lotus Domino R5 Server Family contains multiple
+   vulnerabilities in LDAP handling code
+
+       One or more of these vulnerabilities allow a remote attacker to
+       execute arbitrary code with the privileges of the Domino
+       server. The server typically runs with system privileges. At least
+       one of these vulnerabilities has been successfully exploited in a
+       laboratory environment.
+
+   VU#688960 - Teamware Office contains multiple vulnerabilities in LDAP
+   handling code
+
+       These vulnerabilities allow a remote attacker to crash affected
+       Teamware LDAP servers, resulting in a denial-of-service condition.
+       They may also allow a remote attacker to execute arbitrary code
+       with the privileges of the Teamware server. The server typically
+       runs with system privileges.
+
+   VU#717380 - Potential vulnerabilities in Qualcomm Eudora WorldMail
+   Server LDAP handling code
+
+       The CERT/CC has not yet determined the impact of this vulnerability. 
+
+   VU#763400 - Microsoft Exchange 5.5 LDAP Service is vulnerable to
+   denial-of-service attacks
+
+       This vulnerability allows a remote attacker to crash the LDAP
+       component of vulnerable Exchange 5.5 servers, resulting in a
+       denial-of-service condition within the LDAP component.
+
+   VU#765256 - Network Associates PGP Keyserver contains multiple
+   vulnerabilities in LDAP handling code
+
+       One or more of these vulnerabilities allow a remote attacker to
+       execute arbitrary code with the privileges of the Keyserver. The
+       server typically runs with system privileges. At least one of these
+       vulnerabilities has been successfully exploited in a laboratory
+       environment.
+
+   VU#869184 - Oracle 8i Enterprise Edition contains multiple
+   vulnerabilities in LDAP handling code
+
+       One or more of these vulnerabilities allow a remote attacker to
+       execute arbitrary code with the privileges of the Oracle
+       server. The server typically runs with system privileges. At least
+       one of these vulnerabilities has been successfully exploited in a
+       laboratory environment.
+
+   VU#935800 - Multiple versions of OpenLDAP are vulnerable to
+   denial-of-service attacks
+
+       These vulnerabilities allow a remote attacker to crash affected
+       OpenLDAP servers, resulting in a denial-of-service condition.
+
+III. Solution
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   Please consult this appendix to determine if you need to contact your
+   vendor directly.
+
+Block access to directory services at network perimeter
+
+   As a temporary measure, it is possible to limit the scope of these
+   vulnerabilities by blocking access to directory services at the
+   network perimeter. Please note that this workaround does not protect
+   vulnerable products from internal attacks.
+
+       ldap    389/tcp     # Lightweight Directory Access Protocol
+       ldap    389/udp     # Lightweight Directory Access Protocol
+       ldaps   636/tcp     # ldap protocol over TLS/SSL (was sldap)
+       ldaps   636/udp     # ldap protocol over TLS/SSL (was sldap)
+
+Appendix A. - Vendor Information
+
+   This appendix contains information provided by vendors for this
+   advisory. As vendors report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular vendor is not listed below, we have not received their
+   comments.
+
+IBM Corporation
+
+   IBM and Tivoli are currently investigating the details of the
+   vulnerabilities in the various versions of the SecureWay product
+   family.
+
+   Fixes are being implemented as these details become known.
+
+   Fixes will be posted to the download sites (IBM or Tivoli) for the
+   affected platform. See http://www-1.ibm.com/support under "Server
+   Downloads" or "Software Downloads" for links to the fix distribution
+   sites.
+
+iPlanet E-Commerce Solutions
+
+   [CERT/CC Addendum: These vulnerabilities were originally discovered in
+   Directory Server 5.0 Beta and were later found to exist in versions up
+   to and including version 4.13. These vulnerabilities have been
+   addressed in the released version of Directory Server 5.0.]
+
+Lotus Development Corporation
+
+   Lotus reproduced the problem as reported by OUSPG and documented it in
+   SPR#DWUU4W6NC8.
+
+   Lotus considers security issues as top priority, so we acted quickly
+   to resolve the problem in a maintenance update to Domino. It was
+   addressed in Domino R5.0.7a, which was released on May 18th, 2001.
+   This release can be downloaded from Notes.net at
+
+          http://www.notes.net/qmrdown.nsf/qmrwelcome.
+
+   The fix is documented in the fix list at
+
+          http://www.notes.net/r5fixlist.nsf/Search!SearchView&Query=DWUU
+          4W6NC8
+
+Microsoft Corporation
+
+   Microsoft is developing a hotfix for this issue which will be
+   available shortly.
+
+   Customers can obtain this hotfix by contacting Product Support
+   Services at no charge and asking for Q303448 and Q303450. Information
+   on contacting Microsoft Product Support Services can be found at
+
+          http://www.microsoft.com/support/
+
+Network Associates, Inc.
+
+   Network Associates has resolved these vulnerabilities in Hotfix 2 for
+   both Solaris and Windows NT. All Network Associates Enterprise Support
+   customers have been notified and have been provided access to the
+   Hotfix.
+
+   This Hotfix can be downloaded at
+
+          http://www.pgp.com/downloads/default.asp
+
+The OpenLDAP Project
+
+   [CERT/CC Addendum: To address these vulnerabilities, the OpenLDAP
+   Project has released OpenLDAP 1.2.12 for use in LDAPv2 environments
+   and OpenLDAP 2.0.8 for use in LDAPv3 environments. The CERT/CC
+   recommends that users of OpenLDAP contact their software vendor or
+   obtain the latest version, available at
+   http://www.openLDAP.org/software/download/.]
+
+QUALCOMM Incorporated
+
+   The LDAP service in WorldMail may be vulnerable to this exploit, but
+   our tests so far have been inconclusive. At this time, we strongly
+   urge all WorldMail customers to ensure that the LDAP service is not
+   accessible from outside their organization nor by untrusted users.
+
+The Teamware Group
+
+   An issue has been discovered with Teamware Office Enterprise Directory
+   (LDAP server) that shows a abnormal termination or loop when the LDAP
+   server encounters a maliciously or incorrectly created LDAP request
+   data.
+
+   If the maliciously formatted LDAP request data is requested, the LDAP
+   server may excessively copy the LDAP request data to the stack area.
+
+   This overflow is likely to cause execution of malicious code. In other
+   case, the LDAP server may go into abnormal termination or infinite
+   loop.
+
+   [CERT/CC Addendum: Teamware has provided additional documentation of
+   these issues in their "Teamware Solution Database," available at
+   http://support.teamw.com/Online/s_database1.shtml. Registered users
+   can find information on these vulnerabilities by searching for
+   document #010703-0000 for Windows NT or document #010703-0001 for
+   Solaris.]
+
+Appendix B. - Supplemental Information
+
+The PROTOS Project
+
+   The PROTOS project is a research partnership between the University of
+   Oulu and VTT Electronics, an independent research organization owned
+   by the Finnish government. The project studies methods by which
+   protocol implementations can be tested for information security
+   defects.
+
+   Although the vulnerabilities discussed in this advisory relate
+   specifically to the LDAP protocol, the methodology used to research,
+   develop, and deploy the PROTOS LDAPv3 test suite can be applied to any
+   communications protocol.
+
+   For more information on the PROTOS project and its collection of test
+   suites, please visit
+
+          http://www.ee.oulu.fi/research/ouspg/protos/
+
+ASN.1 and the BER
+
+   Abstract Syntax Notation One (ASN.1) is a flexible notation that
+   allows one to define a variety data types. The Basic Encoding Rules
+   (BER) describe how to represent or encode the values of each ASN.1
+   type as a string of octets. This allow programmers to encode and
+   decode data for platform-independent transmission over a network.
+
+References
+
+   The following is a list of URLs referenced in this advisory as well as
+   other useful sources of information:
+
+          http://www.cert.org/advisories/CA-2001-18.html
+          http://www.ietf.org/rfc/rfc2116.txt
+          http://www.ietf.org/rfc/rfc2251.txt
+          http://www.ietf.org/rfc/rfc2252.txt
+          http://www.ietf.org/rfc/rfc2253.txt
+          http://www.ietf.org/rfc/rfc2254.txt
+          http://www.ietf.org/rfc/rfc2255.txt
+          http://www.ietf.org/rfc/rfc2256.txt
+          http://www.ee.oulu.fi/research/ouspg/protos/
+          http://www.ee.oulu.fi/research/ouspg/protos/testing/c06/ldapv3/
+          http://www.kb.cert.org/vuls/
+          http://www.kb.cert.org/vuls/id/276944
+          http://www.kb.cert.org/vuls/id/505564
+          http://www.kb.cert.org/vuls/id/583184
+          http://www.kb.cert.org/vuls/id/688960
+          http://www.kb.cert.org/vuls/id/717380
+          http://www.kb.cert.org/vuls/id/763400
+          http://www.kb.cert.org/vuls/id/765256
+          http://www.kb.cert.org/vuls/id/869184
+          http://www.kb.cert.org/vuls/id/935800
+     _________________________________________________________________
+
+   The CERT Coordination Center thanks the Oulu University Secure
+   Programming Group for reporting these vulnerabilities to us, for their
+   detailed technical analyses, and for their assistance in preparing
+   this advisory. We also thank the many vendors who provided feedback
+   regarding their respective vulnerabilities.
+     _________________________________________________________________
+
+   Authors: Jeffrey P. Lanza and Cory F. Cohen. Feedback on this advisory
+   is greatly appreciated.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-18.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-17:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+Jul 16, 2001: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBO1O5eQYcfu8gsZJZAQGupwQAikpVVn5wK0o9Kzdl3wjFf2jEhbyr3Ngz
+ycfKTYp8GfaKvKf9HzM/861WBmAkRIkChM+t9mQZ2FuH6nNMzfYRputHb3MK5w18
+8EOE/stQbV0kDgXxi078ELkvZy4tqrNhd7KXNtsFCPvwo7XTrJJFLTpCS5Nltheq
+PaynurnhNrw=
+=mEjW
+-----END PGP SIGNATURE-----
+

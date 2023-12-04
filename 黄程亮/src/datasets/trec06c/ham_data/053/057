@@ -1,0 +1,50 @@
+Received: from smtp1.andrew.cmu.edu (SMTP1.ANDREW.CMU.EDU [128.2.10.81])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA20178
+	for <handyboard@media.mit.edu>; Mon, 27 Sep 1999 08:54:05 -0400 (EDT)
+Received: from unix15.andrew.cmu.edu (UNIX15.ANDREW.CMU.EDU [128.2.15.19])
+	by smtp1.andrew.cmu.edu (8.9.3/8.9.3) with SMTP id IAA06098;
+	Mon, 27 Sep 1999 08:53:59 -0400 (EDT)
+Date: Mon, 27 Sep 1999 08:54:00 -0400 (EDT)
+From: Michael N Rosenblatt <mr4@andrew.cmu.edu>
+To: Will Hein <wfh@andrew.cmu.edu>
+Cc: Asim Kar <measim@cityu.edu.hk>, handyboard@media.mit.edu
+Subject: Re: Analog I/O as Digital I/O
+In-Reply-To: <2108135922.938411006@SIMON.RES.CMU.EDU>
+Message-Id: <Pine.SOL.3.96L.990927083836.1435B-100000@unix15.andrew.cmu.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Also, the "digital(int p)" extends to the analog ports too.  When used
+with a port that is analog in hardware, it just uses 127 as a threshold
+value to return 1 or 0 (note below 127 returns true).
+
+See page 22 in the HB manual.
+
+However, with this method, you lose the advantage of setting your own
+thresholds which, as Will stated, may be important depending on your
+application.
+
+Michael Rosenblatt
+Carnegie Mellon University
+
+
+On Mon, 27 Sep 1999, Will Hein wrote:
+
+> > Can the analog input lines be used as a digital input lines (if there is
+> > no requirement of analog input)? Because, these lines are connected to
+> > the port E of 68hc11, then what are modifications required in the code?
+> 
+> Since the analog inputs read voltage levels, you should be able to just plug
+> in any switch or 5-0volt input directly.  To read the values, use the analog
+> command, and in theory you should only get two possible values, 255 for
+> +5volts, and 0 for 0 volts.  Depending on if your inputs are driven logic
+> versus switches, you may need to threshold these values and consider
+> anything above maybe 200 to be a logic high and anything below 50 to be a
+> logic low.  But if you are using precisely 5 volts and 0 volts, or an open
+> and closed switch, than the extreme values should be accurate.
+> -Will Hein
+> Carnegie Mellon University
+> 
+
+

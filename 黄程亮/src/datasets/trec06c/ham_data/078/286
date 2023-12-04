@@ -1,0 +1,69 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fAKIi3R22856
+	for <egs@cs.cornell.edu>; Tue, 20 Nov 2001 13:44:03 -0500 (EST)
+Received: from aquinas.ee.cornell.edu (aquinas.ee.cornell.edu [128.84.236.57])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fAKIftM32215
+	for <egs@cs.cornell.edu>; Tue, 20 Nov 2001 13:41:55 -0500
+Date: Tue, 20 Nov 2001 13:42:43 -0500 (EST)
+From: Prince Samar <samar@ece.cornell.edu>
+X-Sender: samar@aquinas.ee.cornell.edu
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 60
+Message-ID: <Pine.GSO.4.21.0111201342001.12863-100000@aquinas.ee.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Freenet: A Distributed Anonymous Information Storage and Retrieval System
+
+The paper presents an adaptive peer-to-peer system that enables the
+storage and retrieval of data while maintaining the anonymity of readers
+and authors. The system does not any central point of failure and provides
+privacy to the users of the system. Other design goals of Freenet
+deniability for storers of information, resistance to third denial of
+access, efficient storage and routing and decentralization of all network
+functions. It is assumed that most of the nodes will run nodes, offering
+datastore space to the network.
+
+Each node in Freenet maintains its own local datastore on which the
+network is permitted to read and write. The nodes also maintain a dynamic
+routing table containing the addresses of other nodes and the keys that
+they are known to hold. Requests for keys are passed along from node to
+node through a chain of proxy requests in which each node makes a local
+decision about where to send the request next, depending on which node's
+key is found to be lexicographically close to the data request at hand.
+Files are identified by binary has keys obtained by applying a hash
+function. Three different types of file keys are used. The Keyword-Signed
+Key (KSK) is derived from a short descriptive text chosen by the user. The
+Signed-Subspace Key (SSK) enables personal name-spaces by randomly
+generating a private/public key pair that identifies the name-space of the
+user. The third key is the Content-Hash Key (CHK) which is derived by
+hashing the actual contents of the corresponding file.
+
+A request to retrieve data operates as a steepest-ascent hill-climbing
+search with backtracking, along with a hops-to-live limit. This has the
+problem of being inefficient and slow to start. The actual path taken by
+the request may be way off the minimum hop route, and may possibly cause
+congestion. However it is hypothesized that as time progresses, nodes
+become specialized in certain types of data, having good knowledge of data
+with *keys* similar to each other. Nodes can override large hops-to-live
+values and can forget about pending requests after a period of time. Node
+storage is managed as Least Recently Used (LRU) cache in which data items
+are kept sorted in decreasing order by time of most recent request. This
+has the disadvantage of a file being lost forever from the system if not
+used for a long time - there is no "permanent" copy of the file in
+Freenet.
+
+The performance analysis shows that the request path-length starts off
+really badly, but ultimately converges to better values. The system seems
+to have decent scalability and fault tolerance. Freenet provides sender
+anonymity beyond suspicion in the presence of collaborating nodes. Using
+pre-routing with Freenet also provides key anonymity beyond suspicion in
+the presence of a local eavesdropper.
+
+The idea of nodes getting specialized is pretty interesting as it makes
+routing more efficient. However, it also makes network vulnerable to
+failure of nodes with specialization in a particular kind in the sense
+that it can disrupt the routing for at least some time until new routing
+table entries are created.
+

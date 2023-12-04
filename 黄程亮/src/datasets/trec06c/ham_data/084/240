@@ -1,0 +1,145 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gA8M9YP00410
+	for <ggilfoyl@facstaff.richmond.edu>; Fri, 8 Nov 2002 17:09:34 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gA8M7B402757
+	for <ggilfoyl@richmond.edu>; Fri, 8 Nov 2002 17:07:12 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002110817071113309
+ for <ggilfoyl@richmond.edu>; Fri, 08 Nov 2002 17:07:11 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gA8M7Bw22869
+	for <ggilfoyl@richmond.edu>; Fri, 8 Nov 2002 17:07:11 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gA8A66w26119
+	for <ggilfoyl@richmond.edu>; Fri, 8 Nov 2002 05:06:06 -0500
+Date: Fri, 8 Nov 2002 05:06:06 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: gilfoyle <ggilfoyl@richmond.edu>
+Subject: Re: progress on Richmond cluster (but not done yet)
+In-Reply-To: <3DCC1B0C.C053D85B@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0211080501590.429-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status:   
+X-Mozilla-Status: 9013
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004219
+
+Greetings,
+
+It's fixed up now. since nodes >2 are down, I wasn't able to complete a
+couple of needed commands on them that they will need:
+
+bpsh 3-48 rmdir /home
+bpsh 3-48 ln -s /usr/home /home
+
+That is necessary since the kernel NFS won't allow a single host to NFS
+mount a directory and it's parent directory at the same time. So, I
+modified the exports table to export /usr to the slaves, and continue
+exporting /usr/home to the other machines listed there.
+
+I think this should have it, let me know!
+
+G'day,
+sjames
+
+
+
+On Fri, 8 Nov 2002, gilfoyle wrote:
+
+> that would be great if you could fix it.
+> 
+> jerry
+> 
+> steven james wrote:
+> > 
+> > Greetings,
+> > 
+> > I can see the confusion. Digging through my old notes, I see that /usr
+> > should be NFS shared with the cluster. Currently, the /usr on the nodes is
+> > NOT an NFS mount of /usr on the master.
+> > 
+> > If you like, I can fix that right up. No wonder things didn't work as you
+> > expected!
+> > 
+> > G'day,
+> > sjames
+> > 
+> > On Fri, 8 Nov 2002, gilfoyle wrote:
+> > 
+> > > hi steven,
+> > >
+> > >    progress! root actually started to run - and then crashed.
+> > > the error messages are below. it looks like it cannot get to
+> > > some files on the master. these files all exist in the areas
+> > > /usr/root/PRO/include/ and /usr/root/PRO/cint/ on the master.
+> > > i compared their file permissions with other machines and they
+> > > are the same so i don't think it is a permission problem.
+> > >
+> > > step-by-tortuous-step...
+> > >
+> > > jerry
+> > >
+> > > pscm1:gilfoyle> bpsh 2 root -b -q /scratch/gilfoyle/e5/24026/run_eod3.C
+> > > Error: cannot open file "/usr/root/PRO/include/RQ_OBJECT.h"  FILE:
+> > > LINE:0
+> > >   *******************************************
+> > >   *                                         *
+> > >   *        W E L C O M E  to  R O O T       *
+> > >   *                                         *
+> > >   *   Version   3.02/07   10 January 2002   *
+> > >   *                                         *
+> > >   *  You are welcome to visit our Web site  *
+> > >   *          http://root.cern.ch            *
+> > >   *                                         *
+> > >   *******************************************
+> > >
+> > > Compiled for linux with thread support.
+> > >
+> > > CINT/ROOT C/C++ Interpreter version 5.15.25, Jan 6 2002
+> > > Type ? for help. Commands must be C++ statements.
+> > > Enclose multiple statements between { }.
+> > > Error: cannot open file "iostream"  FILE:/tmp/fileHs83TS_cint LINE:2
+> > > *** Interpreter error recovered ***
+> > > Error: cannot open /usr/root/PRO/cint/MAKEINFO
+> > > !!! There are examples of MAKEINFO files under
+> > > /usr/root/PRO/cint/platform/ !!!
+> > > Please refer to these examples and create for your platform
+> > > Error: cannot open /usr/root/PRO/cint/MAKEINFO
+> > >
+> > > ... this stuff goes on for a while and then
+> > >
+> > >
+> > > Processing /scratch/gilfoyle/e5/24026/run_eod3.C...
+> > > Error: cannot open file "TROOT.h"
+> > > FILE:/scratch/gilfoyle/e5/24026/eod3.h LINE:13
+> > > *** Interpreter error recovered ***
+> > >
+> > >
+> > > TROOT.h is an include file in the actual code i'm trying to run
+> > > (eod3.C). root uses a
+> > > C++ interpreter as its command line language in both interactive and
+> > > batch modes.
+> > >
+> > >
+> > 
+> > --
+> > -------------------------steven james, director of research, linux labs
+> > ... ........ ..... ....                     230 peachtree st nw ste 701
+> > the original linux labs                             atlanta.ga.us 30303
+> >       -since 1995                              http://www.linuxlabs.com
+> >                                    office 404.577.7747 fax 404.577.7743
+> > -----------------------------------------------------------------------
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

@@ -1,0 +1,69 @@
+Received: from nz-out-0102.google.com (nz-out-0102.google.com [64.233.162.207])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k4BMZHLI011503
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 11 May 2006 15:35:18 -0700
+Received: by nz-out-0102.google.com with SMTP id l1so301941nzf
+        for <DMDX@psy1.psych.arizona.edu>; Thu, 11 May 2006 15:35:17 -0700 (PDT)
+Received: by 10.36.24.14 with SMTP id 14mr1613995nzx;
+        Thu, 11 May 2006 15:35:17 -0700 (PDT)
+Received: by 10.37.12.55 with HTTP; Thu, 11 May 2006 15:35:17 -0700 (PDT)
+Message-ID: <9ae8f64a0605111535k6fc8ef9fn4c8741d9220e6505@mail.gmail.com>
+Date: Thu, 11 May 2006 17:35:17 -0500
+From: "John Curtin" <jjcurtin@wisc.edu>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] configuration of IO card
+Cc: "John Govin" <jrgovin@wisc.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi Jonathan,
+I am hoping you might consider (with my sponsorship if needed) an
+additional method to set up the IO card.  I am running an experiment
+that needs 18 output lines (8 for sending a trigger code to a physio
+amp and 10 for controlling a shock generator) along with 2 input lines
+(for two buttons).  I know that it is possible to split the C port
+into C-upper and C-lower (two four bit "sub"-port).  At a minimum,
+would it be possible to provide a queued device that configures A, B
+and C-lower for output and C-upper for input.  (control port
+configured as 136 DEC; from page 12 of the measurement computing
+docs).
+
+Even more flexible would be if you would provide a command that could
+be inserted into the header to send any of the available configuration
+codes to the control port when initializing the IO card.  That would
+allow anyone to set up the card for all the various combo that are
+available.
+
+An added benefit of this would be that C could be then used regularly
+for input rather than output.  You might remember an earlier email I
+sent to the list about problems with the way that the C port handles
+output.  It appears that the lower and upper subport on C are not
+perfectly in synch.  B/c of this we get (very infrequent) errors when
+using all 8 bits of C to either send triggers (we sometimes get
+triggers that only include 4 of the 8 bits) or to control other
+devices (our shock generator infrequently reads the C port incorrectly
+and administers shock intensities that only represent 4 of the 8 bits
+on C used to indicate intensity).
+
+Is this possible and are you willing to make either of these changes?
+
+Thanks J
+
+-- 
+John J. Curtin, Ph.D.
+Associate Professor of Psychology
+University of Wisconsin
+1202 West Johnson St.
+Madison, WI 53706
+
+Email: jjcurtin@wisc.edu
+Website: http://dionysus.psych.wisc.edu
+Office: 608-262-0387
+Lab: 608-262-5621
+Cell: 608-217-6221
+Fax: 608-262-4029
+
+

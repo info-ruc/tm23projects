@@ -1,0 +1,52 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i1QIStR4011733
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 26 Feb 2004 11:28:55 -0700
+Received: from anybodyi.u.arizona.edu (ppp44.broadband01.tus.dakotacom.net [69.9.24.44])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id i1QISsHE028058
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 26 Feb 2004 11:28:54 -0700 (MST)
+Message-Id: <5.1.0.14.2.20040226110409.00b144d8@psy1.psych.arizona.edu>
+Date: Thu, 26 Feb 2004 11:28:49 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] scrambling koan from a week or two ago
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   I've just realized that there is in fact a solution to a scrambling 
+problem someone had a while ago involving selecting bitmaps randomly for 
+the four corners of the screen.  While I'm probably too late for them as 
+they have more than likely brute forced it the solution is worth writing up.
+
+   The solution is to use macros.  You would have to use the mother of all 
+multi-scrambling item files -- four scrambles -- but it's actually half way 
+elegant.  Before the multi-scrambling is added to the item file it would 
+look like this (assuming the centering <xyjustification> is used):
+
+~1001 mA="some upper left quadrant filename"=;
+~1002 mB="some upper right quadrant filename"=;
+~1003 mC="some lower left quadrant filename"=;
+~1004 mD="some lower right quadrant filename"=;
++1005 * <xy 0.25,0.25> g ~A ,
+         <xy 0.75,0.25> g ~B ,
+         <xy 0.25,0.75> g ~C ,
+         <xy 0.75,0.75> g ~D ;
+
+   Keeping track of what gets presented would be possible by loading 
+counters with values and emitting them in the first four items.  The 
+multi-scrambling would want to first scramble all macro A definition items, 
+then the Bs and so on -- but I leave that as an exercise for someone that 
+wants to use this...
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   "If everything seems under control, you are going too slow"
+                                                 - Mario Andretti
+
+
+

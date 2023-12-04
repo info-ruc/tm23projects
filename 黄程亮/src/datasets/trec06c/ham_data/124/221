@@ -1,0 +1,86 @@
+Received: from iago.cs.cornell.edu (iago.cs.cornell.edu [128.84.96.10])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k4C5UJ216505
+	for <egs+summary@cs.cornell.edu>; Fri, 12 May 2006 01:30:19 -0400 (EDT)
+Received: from postoffice10.mail.cornell.edu ([132.236.56.14]) by iago.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 12 May 2006 01:29:44 -0400
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k4C5TgWV003831;
+	Fri, 12 May 2006 01:29:43 -0400 (EDT)
+Received: from 128.84.98.245
+        by webmail.cornell.edu with HTTP;
+        Fri, 12 May 2006 01:29:43 -0400 (EDT)
+Message-ID: <3469.128.84.98.245.1147411783.squirrel@webmail.cornell.edu>
+In-Reply-To: <2537.128.84.98.245.1147406914.squirrel@webmail.cornell.edu>
+References: <2537.128.84.98.245.1147406914.squirrel@webmail.cornell.edu>
+Date: Fri, 12 May 2006 01:29:43 -0400 (EDT)
+Subject: PAPER 8
+From: "Gopal Parameswaran" <gp72@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Cc: gp72@cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-OriginalArrivalTime: 12 May 2006 05:29:44.0239 (UTC) FILETIME=[1359CBF0:01C67585]
+
+Sybil Attack
+In this paper the author discusses the effects of faulty or hostile remote
+computing elements, which could present more than one identity and can
+control a portion of the network and undermine the redundancy in the
+system and cause failures. Systems usually utilize replication of tasks
+across multiple remote sites for failure prevention or fragment the tasks
+across multiple nodes for privacy. The author argues that a distributed
+environment needs a centralized authority to prevent such attacks. However
+the presence of a centralized authority would destroy the anonymity of the
+nodes in the network that undermines the peer-to-peer network. Sybil
+attack or forging multiple identities in a distributed certifying
+environment as opposed to a centralized certifying authority could be
+compromised at startup by malignant nodes that join the network initially
+and provide certification for other bad nodes. The author states that
+based on a PKI based solution with a centralized certifying authority is
+the solution. However the author has not taken into effect the group
+effect of good certifying nodes and bad certifying nodes and hasn’t done
+enough study before denouncing a distributed certifying system. A
+distributed certifying system is both practical and reliable with slight
+modifications where a centralized server only monitors and certifies a
+certain set of certifying nodes. AS the trust in the network spreads any
+certifying node or set of nodes that is malignant reports to the a set of
+its neighbor certifying nodes of malignant nodes and such certifying nodes
+can lose its rights to provide certification and can be revoked by a
+central certifying authority. Thus the central certifying node only takes
+action when it receives reports of malignant nodes that have been
+certified as otherwise and in which case it goes for the node that
+certified it. Thus in course of time a set of certified nodes would emerge
+which are not malignant. Thus a co-operative certifying authority would
+work where the distributed would fail.
+
+Eclipse Attacks & Secure Routing for Structured peer to peer networks
+Eclipse attacks are more general than Sybil attacks are usually launched
+after a Sybil attack where a portion of the network is controlled and the
+efforts are made to disrupt the routing in the overlay network. The main
+purpose is to prevent correct overlay operation.
+In Eclipse attacks the attacker even if controlling only a small fraction
+of the nodes can still launch an attack by manipulating the overlay
+algorithm. In an eclipse attack eventually the attacker gets control over
+the whole network. The authors suggests an approach based on choosing
+neighbors based on a threshold value for the number of in connections and
+out connections for each neighbor to be added as a neighbor. This limits
+the attack since the degree of the attacking nodes must be higher than the
+average degree of number of neighbors and number of neighbors refereeing
+to each attacking node. So when a value is chosen that is below that of
+the average for the network then the attack can be thwarted.
+Implementation of the protocol is done by enforcing degree bounds by
+auditing the neighbor nodes for its in degree and based on if it exceeds
+the threshold it removes the node from the list or maintains it in its
+list besides adding a random nonce to ensure the authenticity of the
+replies from the neighbor nodes. In the paper Secure Routing the authors 
+follow up on the earlier paper where Eclipse attacks were discussed and
+dwells into the impact on Pastry CAN, Chord and Tapestry and proposes a
+secure routing protocol that is based on sending multiple messages and in
+triggering failures in the routes where the messages timed out without a
+response and is based on the assumption that the average density of the
+good nodes is more than that of faulty nodes.
+
+

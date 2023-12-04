@@ -1,0 +1,78 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [208.235.160.21])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id IAA11885
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 9 Dec 1999 08:29:22 -0700
+Received: (qmail 23960 invoked from network); 9 Dec 1999 15:20:24 -0000
+Received: from unknown (HELO homebox) (150.135.175.3)
+  by breaker.dakotacom.net with SMTP; 9 Dec 1999 15:20:24 -0000
+Message-Id: <3.0.1.32.19991209082921.00691e20@psy1.psych.arizona.edu>
+Date: Thu, 09 Dec 1999 08:29:21 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: 1.1.13
+In-Reply-To: <3.0.5.32.19991209102522.008072a0@mailserv.cuhk.edu.hk>
+References: <3.0.1.32.19991208094449.00694258@psy1.psych.arizona.edu>
+ <3.0.5.32.19991208072917.007c9680@mailserv.cuhk.edu.hk>
+ <3.0.1.32.19991207091659.006948a0@psy1.psych.arizona.edu>
+ <3.0.5.32.19991207085255.007c1100@mailserv.cuhk.edu.hk>
+ <3.0.6.32.19991206145821.00799210@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 10:25 AM 12/9/99 +0800, you wrote:
+
+>It is strange that on <id "mouse_chinese"> the (mr/mpr/mnr) +/- sign should
+>be include inside the " ", e.g <mpr "+ button_chinese 1"> but not < mpr
+>+"button_chinese 1">, the syntax check will report error that no mapping
+>were found on the later case.
+
+  No it's not strange, the name of the button (as far as DMDX is
+convcerned) includes the + or - symbol.
+
+>and I can't use both <id rawjoystick> and <id pio12>, DMDX will behave
+>abnormally i.e. RT will be 1 and automatically continu without /c command.
+
+  You can't use a pio12 input device unless you actually have a PIO-12, if
+you do then DMDX will be taking noise as input and so it can see the
+request key hit when in fact it isn't.
+
+>On using the rawjoystick, it is fascinating, without running the TIMEDX, I
+>insert the parameter <id rawjoystick> and plug in the Gamepad
+>(logitech-thunderpad), the itemfile run, the default key REQUEST POSREPONSE
+>NEGRESPONSE all work except VOX. the response of the gamepad make me feel
+>much more skillful than the mouse button.
+
+  Because only those buttons are bound by default, if you wish to use other
+buttons you will have to bind them yourself.
+
+>I am going to compare the old itemfile that run the chinese word in bmp
+>under english windows with the new setup with chinese word as RTF under
+>chinese windows to see if any different...
+>
+>Last thing I want to ask Joanthan:
+>About <id rawjoystick> +Switch 4 VOX, on timedx input test VOX is mark N/A 
+>how can I make the VOX work on <id rawjoystick>, is it some add-on circuit
+>to connect to the gamepad....?
+
+  It's the PIO Test that you are talking about, not the Input Test.  You
+can't use RawJoystick for anything except a classic joystick that has up to
+4 buttons.  If you wish to use the fifth button you will have to use <id
+jaystick> and put up with have it take 1.5ms to poll the device (or short
+out the potentiometers n the gamepad).  Alternatively you could use
+RawJoystick and map +Button 3 to the VOX (which you'd have to do even if
+you could get button 4 anyway as it isn't bound by default), <mvk +button 3>.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+Trying to be happy is like trying to build a machine for which the only
+specification is that it should run noiselessly.
+
+
+

@@ -1,0 +1,126 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Fri, 30 Dec 1994 19:30:26 MST
+Received: from agate.Berkeley.EDU by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA07209; Fri, 30 Dec 1994 19:30:25 MST
+Received: by agate.berkeley.edu (8.6.8.1/1.33)
+	id RAA10500; Fri, 30 Dec 1994 17:27:12 -0800
+Received: from GATEWAY by agate with netnews
+	for icon-group@cs.arizona.edu (icon-group-l@cs.arizona.edu)
+To: icon-group-l@cs.arizona.edu
+Date: 30 Dec 1994 23:52:14 GMT
+From: todd.nathan@mccaw.com (Todd Nathan)
+Message-Id: <3e26fe$b0d@ftp-p.mccaw.com>
+Organization: McCaw Cellular Communications, Inc.
+Sender: icon-group-request@cs.arizona.edu
+Subject: Building for ICON for NS 3.3
+
+Hello there folks.
+
+Been trying to build the ICON
+distribution from arizona state on NS 3.3 Intel.
+If anyone could help I would appreciate it.
+The following output is from the attempt.
+I copied the next config directory, and put
+the i386_linux rswitch.c into it to replace
+the m68k rswitch code.  Was told this should
+work, but i get the following.  Please
+respond to me via email since this is not
+too much of a public issue to discuss.
+
+Happy New Year!
+
+Todd
+
+PS.  Got the distribution twice to make sure it
+was not corrupted.  Also tried the rswitch.c from
+i486_linux also.
+
+------------- output from the build attempt -----------
+learfan> cp -r next i486_next
+learfan> cp i386_linux/rswitch.c i486_next
+learfan> ../..
+learfan> make Configure name=i486_next
+make Clean
+cd docs;                make Clean
+rm -rf *.bak
+cd ipl;         make Clean
+rm -f *.bak
+cd src;         make Clean
+cd iconc; rm -f *.o iconc
+cd common; rm -f *.o
+cd preproc; rm -f *.o pp
+cd rtt; rm -f *.o rtt
+cd runtime; rm -f *.c *.o rt.db rt.a rttcur.lst rttfull.lst iconx
+cd icont; rm -f *.o icont iconx.hdr hdr.h newhdr
+cd xpm; rm -f *.o *.a
+touch h/define.h
+cd tests;               make Clean
+cd bench;       make Clean
+rm -f *.out concord-[ct] deal-[ct] ipxref-[ct] queens-[ct]  rsg-[ct] *.u?
+cd calling;     make Clean
+cd extcall; make Clean
+rm -f *.o
+cd loadfunc; make Clean
+rm -f *.o *.so *.out so_locations btest
+rm -f foo
+cd general;     make Clean
+rm -f local/*
+touch local/.placeholder
+cd graphics;    make Clean
+rm -f foo
+cd ipl; make Clean
+rm -f local/*
+cd preproc;     make Clean
+cd samples;     make Clean
+rm -f local/*
+touch local/.placeholder
+cd special;     make Clean
+rm -f keyboard save
+cd vtran;       make Clean
+rm -rf vt
+rm -f tests/local/*
+cat config/unix/i486_next/vtran.hdr  config/unix/Config/vt3.make  
+>config/unix/Config/Makefile
+cp config/unix/Common/Makefile config/unix/i486_next
+cd config/unix/i486_next;       make 
+make -f ../Config/Makefile Setup
+make -f ../Config/Makefile Clean
+rm -f ../../../src/common/rswitch.[csS]
+make -f ../Config/Makefile Localcode
+cp define.h ../../../src/h
+cp rswitch.[csS] ../../../src/common
+if grep -s NoRanlib define.h;  then touch ../../../NoRanlib;  else rm -rf  
+./../../NoRanlib; fi
+make -f ../Config/Makefile Makefiles
+cat rtt.hdr ../Config/rtt.make  > ../../../src/rtt/Makefile
+cat common.hdr ../Config/common.make  > ../../../src/common/Makefile
+cat iconc.hdr ../Config/iconc.make  > ../../../src/iconc/Makefile
+cat preproc.hdr ../Config/preproc.make  > ../../../src/preproc/Makefile
+cat icont.hdr ../Config/icont.make  > ../../../src/icont/Makefile
+cat runtime.hdr ../Config/runtime.make  > ../../../src/runtime/Makefile
+cat vtran.hdr ../Config/vt2.make > ../../../src/vtran/Vtmake2
+cp ../Config/vt1.make ../../../src/vtran/Vtmake1
+make -f ../Config/Makefile VT
+rm -f icon_vt.c
+ln ../Config/icon_vt.c icon_vt.c
+cc -E icon_vt.c | egrep -v '(^#|^$)' > ../../../bin/icon_vt
+./Config/icon_vt.h:1: illegal external declaration, missing `;' after  
+`/me/languages/icon/bin/'
+./Config/icon_vt.h:2: illegal external declaration, missing `;' after  
+`Setting'
+./Config/icon_vt.h:2: illegal external declaration, missing `;' after  
+`structure'
+./Config/icon_vt.h:2: undefined type, found `variant'
+./Config/icon_vt.h:2: illegal external declaration, missing `;' after  
+`translator'
+./Config/icon_vt.h:4: undefined type, found `common'
+./Config/icon_vt.h:5: illegal external declaration, missing `;' after  
+`itran'
+./Config/icon_vt.h:6: undefined type, found `h'
+./Config/icon_vt.h:7: illegal external declaration, missing `;' after  
+`rm'
+./Config/icon_vt.h:7: illegal method definition, found `$CommonDir'
+./Config/icon_vt.h:2: illegal method definition, missing `{' after  
+`icon_vt.c'
+*** Exit 1
+Stop.
+

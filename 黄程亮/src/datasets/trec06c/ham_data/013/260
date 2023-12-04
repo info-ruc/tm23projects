@@ -1,0 +1,62 @@
+Received: from griffin.itc.gu.edu.au (griffin.itc.gu.edu.au [132.234.250.8])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id UAA05960
+	for <handyboard@media.mit.edu>; Tue, 31 Mar 1998 20:33:42 -0500 (EST)
+Received: from kraken.itc.gu.edu.au (nkraken.itc.gu.edu.au [132.234.250.31]) by griffin.itc.gu.edu.au (8.8.5/8.7.3) with ESMTP id LAA04775 for <handyboard@media.mit.edu>; Wed, 1 Apr 1998 11:33:37 +1000 (EST)
+Received: from ipnet.ins.gu.edu.au (gcstaff.ins.gu.edu.au [132.234.11.140])
+	by kraken.itc.gu.edu.au (8.8.5/8.8.5) with ESMTP id LAA21571
+	for <handyboard@media.mit.edu>; Wed, 1 Apr 1998 11:30:13 +1000 (EST)
+Received: from GCSTAFF/SpoolDir by ipnet.ins.gu.edu.au (Mercury 1.40);
+    1 Apr 98 11:33:44 +1000
+Received: from SpoolDir by GCSTAFF (Mercury 1.40); 1 Apr 98 11:33:38 +1000
+From: "Charles Hacker EAS" <C.Hacker@ste.gu.edu.au>
+Organization: Griffith University
+To: handyboard@media.mit.edu
+Date: Wed, 1 Apr 1998 11:33:26 +1000
+Subject: Re: Cannot download :( 
+Reply-To: c.hacker@eas.gu.edu.au
+X-Confirm-Reading-To: c.hacker@eas.gu.edu.au
+X-Pmrqc: 1
+Priority: normal
+In-Reply-To: <Version.32.19980331170920.00fbbce0@pop.videotron.ca>
+References: <199803311032.FAA31416@ml.media.mit.edu>
+X-Mailer: Pegasus Mail for Windows (v2.52)
+Message-Id: <164DCD7DEF@ipnet.ins.gu.edu.au>
+
+Based on my Win95 / NT programming experience:
+ 
+> So problems with downloading could be related to the FIFO buffer? I don't
+> think a mouse port needs the FIFO buffer. 
+
+Yes it most certainly does!.  Any serial port needs a buffer in 
+windows, to account for multiple programs that would want to use the 
+port.
+(ie could have 2 or terminal programs accessing the same serial pot).
+Also, Windows may be busy doing something, unable to process serial 
+data at that time.  Hence Windows stores input/output to the buffers 
+until it can process, and direct the data to various programs.
+
+>Can Win95 or NT disable the FIFO
+> buffer when using the mouse driver on a certain com port?? I know that
+> Win95 can let you disable the buffer when you have a modem connected to it,
+> but is it effectively disabling the Fifo register? That could be why older
+> computer with UART chips lower than 16550 have better success downloading
+> with the handy board...
+
+No you either can not, or it is NOT recommended to disable the FIFO 
+buffer. 
+If the FIFO buffer was disabled WinNT (and Win95 to some extend) 
+programs will not be able to get any serial data. This is due to 
+WinNT virtualising machine I/O calls, allowing programs to 
+read/write to the buffer only (not the port directly).
+
+
+Charles Hacker
+School of Engineering
+Griffith University - Gold Coast
+PMB 50 Gold Coast Mail Centre
+Southport Queensland 9726
+Australia.
+Email - C.Hacker@eas.gu.edu.au
+Ph. (07) 55948 670
+Fax.(07) 55948 065
+

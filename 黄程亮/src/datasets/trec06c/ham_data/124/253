@@ -1,0 +1,57 @@
+Received: from nz-out-0102.google.com (nz-out-0102.google.com [64.233.162.193])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k4D0ZSZY020078
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 12 May 2006 17:35:28 -0700
+Received: by nz-out-0102.google.com with SMTP id l1so567364nzf
+        for <DMDX@psy1.psych.arizona.edu>; Fri, 12 May 2006 17:35:27 -0700 (PDT)
+Received: by 10.36.17.3 with SMTP id 3mr484054nzq;
+        Fri, 12 May 2006 17:35:27 -0700 (PDT)
+Received: by 10.37.12.55 with HTTP; Fri, 12 May 2006 17:35:27 -0700 (PDT)
+Message-ID: <9ae8f64a0605121735u100ca4e3p67328e395044e8ee@mail.gmail.com>
+Date: Fri, 12 May 2006 19:35:27 -0500
+From: "John Curtin" <jjcurtin@wisc.edu>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: configuration of IO card
+In-Reply-To: <5.1.0.14.2.20060512153335.00ba4938@psy1.psych.arizona.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+References: <5.1.0.14.2.20060512153335.00ba4938@psy1.psych.arizona.edu>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+> Depends on the I/O card, some of them require two commands to write to
+> the separate halves of the port and there's no way to synchronously set
+> them.  The usual solution is to use the 16 bit output device and only use
+> the high word which is the B port that is synchronous.
+
+That definitely seems to be the case with the Measurement computing
+pio/dio24.  The option to just use the high word on port B doesnt
+solve our problem b/c we use all 8 bits on port B and on port c to
+control two separate devices.  Whichever device is controlled by port
+C ends up having trouble with the two nibbles not being set at the
+exactly same time.
+
+If you are willing to break with the 5 input line tradition and
+provide a device that uses A, B and C-Low for output and C-High for
+input, I will definitely buy you something nice!  Can we talk more off
+the list?
+
+J
+
+
+-- 
+John J. Curtin, Ph.D.
+Associate Professor of Psychology
+University of Wisconsin
+1202 West Johnson St.
+Madison, WI 53706
+
+Email: jjcurtin@wisc.edu
+Website: http://dionysus.psych.wisc.edu
+Office: 608-262-0387
+Lab: 608-262-5621
+Cell: 608-217-6221
+Fax: 608-262-4029
+
+

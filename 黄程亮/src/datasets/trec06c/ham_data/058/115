@@ -1,0 +1,76 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id BAA24569
+	for <handyboard@media.mit.edu>; Mon, 13 Dec 1999 01:17:01 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id BAA13352; Mon, 13 Dec 1999 01:17:01 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7211
+From: "John Cromer" <cro@astro.caltech.edu>
+X-Real-Life-Name: John Cromer
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: Inversine sine function
+Posted-Date: Mon, 13 Dec 1999 06:16:02 GMT
+Date: Mon, 13 Dec 1999 06:16:02 GMT
+Organization: Caltech
+Message-Id: <FMo1Eq.A6C@lugnet.com>
+References: <002701bf4512$aecf1cc0$2b1225d8@jmm> <FMnuoF.AKE@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+This polynomial approximation looks better:
+
+ArcSin(x) = Pi/2 - Sqrt(1-x)*(a(0) + a(1)*x + a(2)*x^2 + a(3)*x^3
+            + a(4)*x^4 + a(5)*x^5 + a(6)*x^6 + a(7)*x^7 )
+where
+a(0) =  1.57079 63050
+a(1) = -0.21459 88016
+a(2) =  0.08897 89874
+a(3) = -0.05017 43046
+a(4) =  0.03089 18810
+a(5) = -0.01708 81256
+a(6) =  0.00667 00901
+a(7) = -0.00126 24911
+
+Reference:  Abramowitz and Stegun, Handbook of Mathematical Functions,
+Dover, 9th printing, 1972.  p 81.
+
+Caveat:  I haven't used this one either, but the authors claim better
+than 2e-8 accuracy for 0<=x<=1, which is much better than the series
+in my first reply.
+
+Again, good luck.
+
+John C.
+
+In lugnet.robotics.handyboard, John Cromer writes:
+>In lugnet.robotics.handyboard, Jean-Michel Mongeau writes:
+>>Hello,
+>>    I would like to calculate an inverse sine (arcsin) function for one of
+>>my
+>>application. Does anyone know the algorithm of this trigonometric function?
+>>
+>>Thank you,
+>>J.M. Mongeau
+>
+>You might give this a try (for -1 < x < 1):
+>
+>ArcSin(x) = x + a(1)*x^3 + a(2)*x^5 + a(3)*x^7 + ... etc.
+>
+>with
+>a(1) = 0.1666666667
+>a(2) = 0.0750000000
+>a(3) = 0.0446428571
+>a(4) = 0.0303819444
+>a(5) = 0.0223721599
+>a(6) = 0.0173527644
+>a(7) = 0.0139648437
+>a(8) = 8.0115518009 (?)
+
+This should be 0.0115518009, but really, don't bother....
+
+>a(9) = 0.0097616095
+>a(10)= 0.0083903358
+

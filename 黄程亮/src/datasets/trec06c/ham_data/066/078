@@ -1,0 +1,58 @@
+Received: from hotmail.com (law2-f142.hotmail.com [216.32.181.142])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with SMTP id LAA23828
+	for <handyboard@media.mit.edu>; Sat, 15 Apr 2000 11:36:42 -0400 (EDT)
+Received: (qmail 91448 invoked by uid 0); 15 Apr 2000 15:36:11 -0000
+Message-Id: <20000415153611.91447.qmail@hotmail.com>
+Received: from 38.14.49.111 by www.hotmail.com with HTTP;
+	Sat, 15 Apr 2000 08:36:11 PDT
+X-Originating-Ip: [38.14.49.111]
+Reply-To: georgejr@musser.com
+From: "George Musser Jr" <gmusser@hotmail.com>
+To: handyboard@media.mit.edu
+Subject: How to change the baud rate of Interactive C
+Date: Sat, 15 Apr 2000 11:36:11 EDT
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+
+Interactive C communicates with the 68HC11 at 9600 baud, but if you'd like 
+to change that -- say, to maintain interactivity over a slow RF link -- it 
+is easy to hack the software, at least in Mac version 3.1.  I'm indebted to 
+Randy Sargent who sent me the C code for the relevant routine, 
+io_serial_init().  I was able to find the binary code using ResEdit.  The 
+pcode also needs to be changed.
+
+In ResEdit, open up the CODE resource and then the second block, ID=2.  
+Location 0x16D2 should read 0x6724, which is the branch corresponding to the 
+C code for switch/case 9600.  Change this value to 0x6718 for 1200 baud and 
+0x6712 for 600 baud.
+
+In principle, a value of 0x670C would allow 300-baud operation  For 150 
+baud, you would also change the time constant for 300 baud, which is located 
+at address 0x16E2, from 0x017C to 0x02FE.  (The time constant for 150 baud 
+does not appear anywhere in the Mac development environment, but this should 
+be the correct value according to the data sheet for the Zilog serial chip.)
+
+I say "in principle" because whenever I try 300 baud or 150 baud, IC 
+crashes, which is a pity because the slow speed is useful for unpacketized 
+RF links.  If someone can figure out why, please let me know.
+
+The next step is to hack the pcode.  Search for the following hex sequence: 
+0x1D 28 20 86 B0.  The value 0xB0 is the time constant for the 68HC11's 
+UART.  Change it to 0xB3 for 1200 baud, 0xB4 for 600 baud, 0xB5 for 300 
+baud, and 0xB6 for 150 baud.
+
+There is one twist to all this.  The baud rate of the pcode downloader is 
+fixed by the 68HC11 hardware.  So you need to load the new pcode using an 
+unhacked version of IC and then switch to the hacked version for interactive 
+operation.
+
+I'd be curious to hear about your experience with this, so please let me 
+know what happens!
+
+George Musser
+georgejr@musser.com
+
+______________________________________________________
+Get Your Private, Free Email at http://www.hotmail.com
+
+

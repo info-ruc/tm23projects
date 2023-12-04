@@ -1,0 +1,119 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1EHD6t07196
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 12:13:06 -0500 (EST)
+Received: from [192.168.1.102] (host-69-48-92-3.spr.choiceone.net [69.48.92.3])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1EHD5an003046
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 12:13:06 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <5D17C0B6-E798-44B4-886D-7BB8AEAC016E@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 6
+Date: Tue, 14 Feb 2006 12:15:41 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+Search and Replication in Unstructured Peer-to-Peer Networks focuses  
+primarily in improving search performance in a Gnutella-like  
+network.  The authors begin by describing  the inefficiency of the  
+flood type search scheme currently employed in Gnutella, where  
+searches generate excessive messaging and load in the system.   
+Flooding is simulated on several network structures, including a  
+regular grid, random graph, power law graph, and a snapshot of the  
+Gnutella network, and the authors note that a random graph is the  
+optimal "structure" for a flooding based approach as it is the only  
+case where the number of new nodes reached at each forward matches  
+the number of nodes receiving a duplicate message.
+
+The authors then examine two improved approaches compared to  
+flooding, the first they call expanding ring, and the second random  
+walks or walkers.  Previously the authors note that it is difficult  
+to select a proper TTL for messages when flooding if the network size  
+is unknown.  The expanding ring search still floods messages, however  
+it begins with a very small TTL and continues to raise it until the  
+object is found.  The random walkers search is based on the random  
+walk technique, where a message is forwarded randomly to a neighbor  
+rather than to all neighbors.  The message is given a TTL, and is  
+called a walker.  Random walkers employs the use of several  
+concurrent walkers; the authors find that 16-64 walkers gives good  
+results.  They later raise the TTL to a very high number, and  
+instruct walkers to check in with their originating node every four  
+hops to determine if the object has been found.  They also suggest  
+keeping a "state" at each node which will allow the walkers to avoid  
+returning to nodes they have already traversed, increasing the  
+efficiency of the search.
+
+These techniques succeed in greatly reducing the amount of message  
+traffic in the network while  retaining comparable lookup times,  
+however a limitation of their analysis is that the latency of links  
+in the underlying network are completely disregarded.  They also do  
+not address issues of network setup to produce a random graph.
+
+The authors also address the issue of replication to reduce search  
+times in the network.  They begin by analyzing two schemes, which  
+they call uniform and proportional.  Uniform replication replicates  
+an even number of copies of objects across all nodes, and  
+proportional allocates more objects to nodes which receive more  
+requests for that object.  They determine that the average number  
+nodes messaged in each scheme is the same, however proportional  
+replication achieves better load balancing.  Also, using the  
+proportional scheme, more popular objects have a smaller search size,  
+and less popular objects have a larger search size.  They introduce  
+squareroot replication, where the number of replicas is proportional  
+to the square root of the size of the network, and replicas are  
+distributed randomly throughout the network.  This scheme produces  
+less variance in the search sizes of objects of different popularity  
+and also less variance in load.  The authors do not suggest methods  
+of implementing the square root replication scheme.
+
+Beehive begins by noting that the O(log N) lookup times associated  
+with structured DHTs results in latencies which are too high for  
+certain critical applications, such as DNS.  However, the query  
+distributions associated with these applications are often known, and  
+this structure can be exploited to guide proactive replication and  
+yield O(1) lookup times.  In particular, they address a power law  
+query distribution that is found in DNS, web-caching, etc.  They  
+implement Beehive on top of Pastry, however they note that an prefix  
+based DHT could be used as a substrate for Beehive.
+
+For prefix based DHTs, the author's primary insight is that  
+replicating an object on all paths leading to a home/owner node for  
+an object will reduce the average lookup time for that object by one  
+hop.  Beehive adjusts the size of this expanding ring of replicas  
+such that the average lookup time across all objects is a constant.   
+Based on the Zipf-like, or power law query distribution, the authors  
+give closed for solutions to the problem of determining the  
+appropriate replication level (size of replication ring) for all  
+objects in the network.  The authors note that this model is  
+appropriate for objects which do not change frequently, such as dns,  
+but may not be appropriate for web objects in general.
+
+In order to use the closed form solutions, the parameter for the Zipf  
+distribution must be determined.  The number of requests per object  
+is periodically forwarded towards the home node for that object, and  
+out from that node, to allow estimation of parameters for objects  
+that have been replicated.  In order to achieve replication, nodes  
+push replicas to nodes matching one less prefix for the object, who  
+may in turn push that object again, depending on it's desired  
+replication level.  In order to reduce constant movement of objects  
+between replication levels, when a node sorts the objects at that  
+level by popularity, it favors the nodes already at that level to  
+remain at that level.  Beehive supports mutable objects by  
+associating a version number with objects and pushing updates from  
+the home node.  Version numbers are also propagated by nodes when  
+they push objects to other levels for replication when object  
+popularity changes.
+
+Beehive is simulated and compared to Pastry and Pastry with passive  
+caching, and provides the best lookup performance of the three,  
+averaging less than one hop.  It also maintains low maintenance  
+bandwidth.  Beehive also reacts well to sudden changes in object  
+popularity.
+
+The primary limitation of Beehive is that it requires queries to  
+follow a certain random distribution, which is not the case for all  
+classes of objects one may want to store in a P2P network.
+

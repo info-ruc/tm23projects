@@ -1,0 +1,76 @@
+Received: from augustus-239.cs.umn.edu (mail.cs.umn.edu [128.101.224.69])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA30183
+	for <handyboard@media.mit.edu>; Wed, 10 Mar 1999 11:48:54 -0500 (EST)
+Received: from crab.cs.umn.edu (crab.cs.umn.edu [128.101.225.11])
+	by augustus-239.cs.umn.edu (8.9.3/8.9.3) with ESMTP id KAA22697;
+	Wed, 10 Mar 1999 10:48:52 -0600 (CST)
+Received: from localhost (rybski@localhost)
+	by crab.cs.umn.edu (8.9.1/8.9.0) with ESMTP id KAA23410;
+	Wed, 10 Mar 1999 10:48:51 -0600
+X-Authentication-Warning: crab.cs.umn.edu: rybski owned process doing -bs
+Date: Wed, 10 Mar 1999 10:48:51 -0600 (CST)
+From: "Paul E. Rybski" <rybski@cs.umn.edu>
+To: Thomas Hauri <har@zhwin.ch>
+Cc: Bill Denzel <wdenzel@polymail.cpunix.calpoly.edu>,
+        "Handyboard@Media. Mit. Edu" <handyboard@media.mit.edu>
+Subject: Re: Vision on the Handy Board?
+In-Reply-To: <36E62D7C.C719F64C@zhwin.ch>
+Message-Id: <Pine.LNX.4.05.9903101013390.23148-100000@crab.cs.umn.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Wed, 10 Mar 1999, Thomas Hauri wrote:
+
+> we are using a NewtonLabs cognachrome system on one of our model cars.
+> The car is equiped with a Handyboard, a cognachrom system, a camera,
+> and a couple of RS232 to CAN converters. 
+
+I have a question for you guys.  Why are you using the Handyboard to
+control the car?  The SBC332 board on the cognachrome system is a very
+powerful microcontroller and is fully capable of handling the actuators on
+your car.  As an example, check out Newton Labs' page where they describe
+"The Fast Vision Car" <http://www.newtonlabs.com>.  I had a chance to
+actually play with this thing in Portland at AAAI '96.  The cognachome
+system seemed to be the only micro on it and it drove that car extremely
+well.  Anne Wright (of Newton labs) said that when the cognachrome system
+was first being built at MIT, they had it hooked up to a legged walking
+robot which tracked light sources. The TPU on the 68332 is able to control
+multiple servos and RC motor speed controllers (like the Blast! Duratrax
+Mosfet motor driver). Newton labs supplies sample code for stand-alone
+applications like this. One such code snippit is for a 2dof
+servo-controlled camera head which tracks a bright orange fish swimming
+around in a fishtank.
+
+> Attaching a camera directly to the handyboard (using some sort of
+> framegrabber) would ask too much of the 6811 I think althoough I have
+> never tried it. 
+
+I haven't heard of anyone hooking a camera to a handyboard, but we did
+have a guy in our lab build his own 6811-based microcontrollers and hook a
+grayscale camera up to one of them.  There's not much documentation left
+from this project, but the URL is:
+
+http://www.cs.umn.edu/research/airvl/walleye/
+
+Walleye had three 6811-based microcontroller boards on it.  One was the
+frame grabber board which shared its 32K RAM chip with the camera.  When
+it wanted to grab a frame, the micro would go into a wait loop, running
+code in either EEPROM or buffalo ROM (I can't remember now) until the
+camera finished dumping the image into memory.  Then, it would run
+routines written in assembly (using the GNU gcc-based 6811 cross compiler)
+to do simple object and shape recognition.  It was fast enough to track a
+black squiggle ball at around 10Hz, which was pretty cool.  There was also
+code written to recognize paper with the letter "T" and "O" on them. A
+specialized high-current driver 6811 board was used for driving the motors
+and the big gripper and a third was the "master" board which was used for
+communications to the outside world and controlled the other two.
+Communications was achieved through the SPI bus.  A writeup was published
+in the special vision issue of the Robotics Practitioner, Spring 1996. Vol
+2, Number #2.
+
+-Paul
+
+---
+Paul E. Rybski --- http://www.cs.umn.edu/~rybski
+
+

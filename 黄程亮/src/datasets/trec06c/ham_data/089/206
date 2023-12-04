@@ -1,0 +1,150 @@
+Received: from smtpgate.email.arizona.edu (gandalf.email.Arizona.EDU [128.196.133.20])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h7ELIcil010579
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Aug 2003 14:18:38 -0700
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 6200E1C0FD
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Aug 2003 14:18:37 -0700 (MST)
+Received: from smtpgate.email.arizona.edu ([127.0.0.1])
+ by localhost (gandalf [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 22831-07 for <DMDX@psy1.psych.arizona.edu>;
+ Thu, 14 Aug 2003 14:18:37 -0700 (MST)
+Received: from 666-devel.u.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id F11921C081
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Aug 2003 14:18:36 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030814141001.00b13428@psy1.psych.arizona.edu>
+Date: Thu, 14 Aug 2003 14:18:36 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Fwd: RE: Intel i845 chipset :(
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Hmm, sounds like problem is more wide spread.  Guess I'll have to do 
+some DMDX benching to see if this is really affecting DMDX or whether it's 
+just TimeDX.  TimeDX actually represents a pretty stressful workload 
+compared to DMDX as it generates a whole new screen of info as often as it 
+can and on a quick processor that's every tick.
+
+   Also I guess more specificity is required.  The two devices that 
+identify the main chipset (the north bridge) have "Processor to AGP 
+Controller" and "Processor to I/O Controller" in the name.  Devices with 
+801 in them are the south bridge chipset and while I see them in the poorly 
+functioning machines I also see them in the development box that is 
+flawless, it's main chipset AGP ID is E7000 and  I/O ID is E7205.
+
+
+>X-Sender: jforster@jforster.inbox.email.arizona.edu
+>X-Mailer: QUALCOMM Windows Eudora Version 5.1
+>Date: Thu, 14 Aug 2003 14:09:31 -0700
+>To: jforster@psy1.psych.arizona.edu
+>From: "Matthew Finkbeiner" <msf@wjh.harvard.edu>(by way of "Jonathan C. 
+>Forster" <jforster@email.arizona.edu>)
+>Subject: RE: [DMDX] Intel i845 chipset :(
+>X-Virus-Scanned: by amavisd-new at email.arizona.edu
+>
+>I've got the same exact pattern of data on our machines here (XP, P4,
+>with chipset Intel 82801), and they have DX9.
+>
+>
+>
+> > -----Original Message-----
+> > From: DMDX-owner@psy1.psych.arizona.edu
+> > [mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of
+> > Jonathan C. Forster
+> > Sent: Thursday, August 14, 2003 1:55 PM
+> > To: DMDX@psy1.psych.arizona.edu
+> > Subject: [DMDX] Intel i845 chipset :(
+> >
+> >
+> >
+> >    Well I gotta say I sure as hell am unimpressed with the Intel i845
+> > chipset which unfortunately we're going to be finding in a lot of
+> > computers.  The computers in question here are Celeron 2 GHz
+> > machines with
+> > Biostar motherboards but I don't think the problem is
+> > specific to them, I
+> > think it's the i845 chipset.  The problem manifests in the
+> > TimeDX Time
+> > Video Mode where you can see that 50% or more of the retraces
+> > are Multiply
+> > Missed Retraces, looking at the detail I can see that when
+> > the retrace
+> > thread wants to sleep for some number of milliseconds it's
+> > almost always
+> > 15.6 milliseconds before it gets control again.  Regardless
+> > of whether it
+> > wants to sleep for one millisecond or anything else it asks
+> > for.  So of
+> > course it misses an awful lot of retraces.  Which is not too
+> > bad using 60
+> > Hz displays but we'd like to use 100 Hz and arbitrarily
+> > loosing control for
+> > 15 ms makes tracking the retrace none too accurate.  The
+> > machines will
+> > probably run most experiments reasonably well but when you've
+> > got a machine
+> > that should be flawless it's irritating.  We're running XP on
+> > them, it's
+> > possible (if not very likely) that other OSes are fine.
+> >
+> >    If people care to check whether they've got i845 chipsets
+> > in any recent
+> > machines they've purchased they can do so by examining the
+> > properties of My
+> > Computer then looking on the Hardware tab using the Device
+> > Manager and in
+> > it expanding the System Devices tree.  In there you should
+> > see two devices,
+> > "Intel(R) 82845G" followed by copious other identifiers.
+> > It's the 845 part
+> > after the 82 that tells us what chipset there is in there.
+> > If people see
+> > this 845 I'd be obliged if they could check the TimeDX Time
+> > Video Mode
+> > test, specifically the "slept fox xx.xx (xx)" data after clicking Do
+> > Test.  The xx.xx is the actual time slept for and the (xx) is
+> > the time
+> > requested.  If anyone else sees egregious discrepancies I'd
+> > like to know
+> > about it.  I've tried all manner of things from removing a
+> > swapping video
+> > cards to unplugging as much as I can from the machine to applying the
+> > latest chipset drivers from Intel and the timing faults are still
+> > present.  I'll be trying DX9 as I notice that isn't installed
+> > yet and I'm
+> > running out of other things to change.
+> >
+> >                                                 /"\
+> >   -jonathan (j.c.f.)                            \ /
+> >                                                  X
+> >      ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+> >
+> > Justice is incidental to law and order.
+> >
+> >                                                -  J. Edgar Hoover
+> >
+> >
+> > ====================================================================
+> >    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+> >   'unsubscribe' by itself with no quotes in the body of the email
+> >   to be removed from the list.  The list archive is available here:
+> >           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> > ====================================================================
+> >
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Justice is incidental to law and order.
+
+                                               -  J. Edgar Hoover
+
+
+

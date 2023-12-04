@@ -1,0 +1,81 @@
+Received: from smtp1.cso.uiuc.edu (smtp1.cso.uiuc.edu [128.174.5.124])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id KAA28217
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 30 Dec 1999 10:38:35 -0700
+Received: from pc219 (pc219.lang.uiuc.edu [128.174.232.219])
+	by smtp1.cso.uiuc.edu (8.9.3/8.9.3) with SMTP id LAA28209;
+	Thu, 30 Dec 1999 11:38:32 -0600 (CST)
+Message-Id: <3.0.5.32.19991230113819.00921900@ux1.cso.uiuc.edu>
+Date: Thu, 30 Dec 1999 11:38:19 -0600
+To: DMDX@psy1.psych.arizona.edu
+From: Jerry Packard <j-packard@uiuc.edu>
+Subject: [DMDX] moving windows
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Dear DMDX users,
+
+I'm a new user trying to design a word-by-word sentence reading experiment
+(‘moving window’) giving a reaction time for each keypress that erases a
+word and elicits the next. Each word is preceded with a forward mask. The
+subject answers a content question about the sentence after it is
+displayed. Eventually I will be running these experiments with both English
+and Chinese stimuli.
+
+So far I’ve put together something that works (see program below) by using
+<x N> and <y N> keywords to put the words and their masks where they should
+go, but this takes a lot of time because of the need to figure out
+different spacing required by different word lengths. I’ve tried the <px>
+keyword, but as far as I can tell if I want a response time for each word,
+then each word has to be contained in its own item, and the <px> keyword
+has scope over a single item. 
+
+I’ve also seen reference to a Response Contingent <rc [N]> keyword for
+experiments like this, the usage of which I can’t figure out. 
+
+Does anyone know of a good way to do this? 
+
+Thanks,
+
+Jerry Packard
+U of Illinois
+
+N18  <s 2><g 9><azk> <cr> f42 <t 9000>  <id "keyboard"> <dbc 0> <dwc
+000255000><umb "Right Shift"> <umb "Left Shift"><mpr "+Right Arrow"> <mnr
+"+Left Arrow">
+$
+0 <clfb> "Press SPACEBAR to start";
+$
+=1 <umb "+Space"><mpr "+Space"> <ms% 700>  "ready…" / <x 0.10> <y 0.50>
+"#####" /  <x 0.10> <y 0.50> * "My" ;  
+=2 <x 0.15> <y 0.50>  "#####" /<x 0.17> <y 0.50>* "dad" ;
+=3  <x 0.20> <y 0.50> "#####" /  <x 0.22> <y 0.50> * "wants" ;
+=4 <x 0.25> <y 0.50>  "#####" /<x 0.27> <y 0.50> * "to" ;
+=5 <x 0.30> <y 0.50> "#####" / <x 0.32> <y 0.50> * "see" ;
+=6  <x 0.35> <y 0.50> "#####" / <x 0.37> <y 0.50> * "a" ;
+=7  <x 0.40> <y 0.50> "#####" /<x 0.42> <y 0.50> * "movie" ;
+=8 <x 0.45> <y 0.50> "#####" /<x 0.47> <y 0.50> * "today." ;
+-9 <cfb "…correct…"><wfb "…wrong…"><nfbt>"The person who wants to see the
+movie is your mother" * ; 
+$
+0<umb "+Space"><mr "+Space"> <clfb>"Press SPACEBAR for next sentence";
+$
+=10 <umb "+Space"><mpr "+Space"> <ms% 700>  "ready…" /<x 0.10> <y 0.50>
+"#####" /  <x 0.10> <y 0.50> * "Your" ;  
+=11 <x 0.15> <y 0.50>  "#####" /<x 0.15> <y 0.50>* "brother" ;
+=12  <x 0.20> <y 0.50> "#####" /  <x 0.20> <y 0.50> * "likes" ;
+=13 <x 0.25> <y 0.50>  "#####" /<x 0.25> <y 0.50> * "to" ;
+=14 <x 0.30> <y 0.50> "#####" / <x 0.30> <y 0.50> * "eat" ;
+=15  <x 0.35> <y 0.50> "#####" / <x 0.35> <y 0.50> * "bagels" ;
+=16  <x 0.40> <y 0.50> "#####" /<x 0.40> <y 0.50> * "every" ;
+=17 <x 0.45> <y 0.50> "#####" /<x 0.45> <y 0.50> * "day." ;
++18 <cfb "…correct…"><wfb "…wrong…"><nfbt>"The person who likes to eat
+bagels is your brother" * ; 
+$
+0 "The End.  Thank You.";
+$
+
+

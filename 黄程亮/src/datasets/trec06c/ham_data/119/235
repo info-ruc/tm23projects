@@ -1,0 +1,75 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2U76PY23300
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 02:06:25 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2U76OE3028977
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 02:06:25 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060328204555.03192e18@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Thu, 30 Mar 2006 02:07:12 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 17
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+BitTorrent:
+         Bittorrent is a system for efficient file download.  The key 
+motivations were to produce a system that worked efficiently in the 
+presence of churn, and that forced nodes to contribute resources, to 
+upload.  BitTorrent relies on peers that want a file each swapping chunks; 
+if a peer does not upload, it will be choked.  In this way, the system 
+enforces fairness; further, since chunks of the file are grabbed from many 
+different peers, the system is robust against failures, slow peers, and 
+even against peers whose connection speed changes in mid-download.
+         The BitTorrent design is fairly ad-hoc, without any correctness 
+proofs.  The system tries to enforce fairness with respect to downloads of 
+a single file, and does not allow exchanges across different files.  The 
+system relies on a centralized tracker, and on a single altruistic "seed" 
+for a given file.  Since nodes primarily download from other downloaders, 
+the system may fail to acquire a file even if (complete) copies of it are 
+held by nodes connected to the system.
+
+
+SplitStream:
+         In a tree-based multicast, there are typically many more "leaves" 
+receiving the multicast than there are interior nodes sending traffic; as a 
+result, the interior nodes are heavily laden.  This is awkward in a 
+peer-to-peer system where nodes are neither able nor willing to bear 
+disproportionate burden.    SplitStream attempts to solve the problem by 
+having many trees in parallel, with files striped between them.  Nodes 
+hopefully will be "leaves" in most of the trees, and interior nodes in a 
+few.  SplitStream builds its trees on top of some existing multicast 
+system, such as Scribe/Pastry.  A group of nodes with spare capacity is 
+maintained, and is key for adding flexibility to the tree.
+         SplitStream relies on the locality and efficiency properties of 
+the underlying Pastry system in order to build the tree efficiently; in 
+contexts where Pastry performs poorly, SplitStream would be expected to as 
+well.  SplitStream tries to make each node act as both an interior and leaf 
+node; this is a poor choice when there are clients with very small 
+bandwidth resources.
+
+Bullet:
+         Bullet has the same central insight as BitTorrent and SplitStream: 
+that multicast performance can be improved by having nodes trying to 
+receive a broadcast share data amongst themselves instead of just 
+downloading from the source.  Bullet takes an existing multicast tree, and 
+turns it into a mesh, using a number of specialized tricks: custom 
+protocols are proposed for picking random subsets of nodes, for quickly 
+comparing content, and for reliably and efficiently streaming data in a 
+TCP-friendly way.
+         Bullet relies on a number of highly tuned protocols, and it's not 
+clear how weIt's not clear how well Bullet would work in a highly 
+heterogenous network, where some nodes have very little upstream 
+bandwidth.  Also, it seems like Bullet is ignoring non-local information 
+about the topology of the broadcast mesh that ought to be useful.
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

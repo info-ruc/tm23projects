@@ -1,0 +1,47 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id MAA32494
+	for <handyboard@media.mit.edu>; Sun, 18 Oct 1998 12:59:09 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id MAA23545;
+	Sun, 18 Oct 1998 12:58:58 -0400 (EDT)
+Message-Id: <199810181658.MAA23545@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: "Adam Oliver" <oli@wantree.com.au>
+Cc: "'Handyboard Mailing List'" <handyboard@media.mit.edu>
+Subject: Re: Address locations port d and y0 
+In-Reply-To: Your message of "Sun, 18 Oct 1998 23:21:16 +0800."
+             <002801bdfaaa$f5de1ac0$0264648c@adam> 
+Date: Sun, 18 Oct 1998 12:58:58 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+it's in the faq, at
+
+  http://el.www.media.mit.edu/projects/handy-board/faq/index.html#memmap
+
+all you do is write to 0x4000, 0x5000, 0x6000 depending on whether
+your latch is attached to Y0, Y2, or Y4 (respectively).  e.g.,
+"poke(0x4000, 0xff);" will set all the bits of a latch attached to Y0
+to 1.
+
+Fred
+
+In your message you said:
+> 
+> Ok I've had another read of the FAQ, as well as a close look at the
+> schematics for the handyboard and the expansion board. Correct me if I'm
+> wrong, but I think I can use d0-d7 along with Y0 or similar and hook these
+> into a HC374 to get some digital outputs.
+> 
+> My question is, what address do I have to poke to in order to set or unset
+> these bits? I can't find this information anywhere, and I've gone over all
+> the source code I can find. Also what should the sequence be? I know it's
+> similar to the motor output routines, but I can't work it out.
+> 
+> Any help would be great,
+> 
+> Thanks
+> Adam
+> 
+> 
+

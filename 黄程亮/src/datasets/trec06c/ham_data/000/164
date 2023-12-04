@@ -1,0 +1,60 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <2579>; Fri, 13 Aug 1993 11:35:30 -0400
+Received: from phantasm.ecst.csuchico.edu ([132.241.4.11]) by psuvax1.cse.psu.edu with SMTP id <292904>; Fri, 13 Aug 1993 11:29:40 -0400
+Received: by phantasm.ecst.csuchico.edu
+	(1.37.109.4/16.2) id AA04124; Fri, 13 Aug 93 08:30:58 -0700
+From:	Jerry W Johnson <jwjohn@ecst.csuchico.edu>
+Message-Id: <9308131530.AA04124@phantasm.ecst.csuchico.edu>
+Subject: ALEF Installation (REPOST)
+To:	plan.9@research.att.com
+Date:	Fri, 13 Aug 1993 11:30:58 -0400
+Cc:	plan9-fans@cse.psu.edu
+X-Mailer: ELM [version 2.3 PL11]
+
+
+I think this had some problems getting out. Sorry, if you got
+it twice. --JJ
+
+Hi 9'ers,
+I've run into some problems installing the new ALEF files.
+
+To get this far, I:
+Copied the old alef tree to /sys/src/alef.old.
+Installed the new tree into /sys/src/alef.
+Copied back fcall.h and the conversions, convM2S & convS2M.
+Copied the new include files to /sys/include/alef.
+Installed the new sparc mkfile and mksyslib.
+Made the dirs /$objtype/lib/alef where not done.
+Made the new compilers (kal,val,8al) by running the mkfiles
+in /sys/src/alef/k
+                /v
+                /8   
+using "objtype=architecture mk" and copying the resulting binary
+to /$objtype/bin.
+
+Then from /sys/src/alef I ran "objtype=architecture mk install";
+all the libraries (/$objtype/lib/alef/*.a) seem to compile fine,
+(assuming none generated for the 68020 & only libA.a, libbio.a for
+the 386), but $objtype=mips generates the error:
+val -w div64.l
+div64.l":12: syntax error near symbol 'lint'
+mk: val -w div64.l  : exit status=rc 8989:val 8991 errors 
+mk: for (i in ...  : exit status:=rc 8191:mk 8999:error
+mk: @{cd v; mk ...  : exit status=rc 8049:val 8991:errors
+mk: for (i in ...  : exit status=rc 8191:mk 8988:error
+mk: @{cd v; mk ...  : exit status=rc 8042:mk 8190:error
+mk: mk $objtype.install  : exit status=rc 8039:mk 8041:error
+
+If, instead,  "mk installall" is executed from /sys/src/alef,
+the compile lists errors "ar: *.8 cannot open" for:
+/sys/src/alef/lib/libbio,
+/sys/src/alef/lib/p9, & ( announce.l:69 WARNING parameter
+                         INT nf declared but not used )
+/sys/src/alef/lib/port.
+
+Anybody got any ideas, insights?
+
+ALSO,
+ once the installation is complete, will the example code which
+came on the 2nd rev cdrom, (/sys/src/alef/test, /sys/src/alef/test/Y),
+all compile correctly?
+

@@ -1,0 +1,86 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id TAA30754;
+	Fri, 13 Feb 1998 19:26:06 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id TAA18813;
+	Fri, 13 Feb 1998 19:26:03 -0500 (EST)
+Message-Id: <199802140026.TAA18813@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Max Davies <mdavies@CAM.ORG>
+Cc: "Fred G. Martin" <fredm@media.mit.edu>,
+        Jan-Sipke van der Veen <veenjs@cs.utwente.nl>,
+        handyboard@media.mit.edu
+Subject: public apology
+In-Reply-To: Your message of "Fri, 13 Feb 98 18:21:24 EST."
+             <34E4D573.25ADBEA3@cam.org> 
+Date: Fri, 13 Feb 98 19:26:03 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+Yes -- I didn't think very hard and in retrospect it's fairly evident
+that Jan-Sipke's code is just the starting step.
+
+Sorry for being such a blunderhead.
+
+(Jan-Sipke and I have been exchanging some private messages and I
+think he's closing in on a solution.)
+
+Fred
+
+
+In your message you said:
+> Fred G. Martin wrote:
+> 
+> > Jan-Sipke,
+> >
+> > You're really pretty far away from having this
+> > work.  It's not just a
+> > matter of redirecting the serial interrupt; when
+> > you get there, you
+> > have to:
+> >
+> > * store incoming character in a buffer
+> > * advance the buffer pointer
+> > * check the buffer for overruns
+> >
+> > then you need a separate subroutine which
+> > fetches the character from
+> > the buffer (checking first if there is anything
+> > there), and decrements
+> > the buffer point.
+> >
+> > learning how to write interrupt code is probably
+> > the hardest part of
+> > assembly programming.  my best advice to you is
+> > to simply write code
+> > on the PC side to slow down your transmit
+> > character rate until things
+> > work. and make sure on the HB side, you're in a
+> > tight loop receiving
+> > characters when communications are in progress.
+> 
+> Sipke obviously realizes that more work is needed,
+> and justs want to get to step 1 first by
+> recognizing the interrupt.  That is exactly what I
+> would do too.
+> 
+> I've been thinking about writing an
+> interrupt-driven serial receive routine too, but
+> haven't had the time for it yet.  Such a method
+> would be magnitudes better than the 'tight-loop'
+> reception method which I find always gives me
+> trouble once my program gets complicated enough to
+> not run as fast as I would like.
+> 
+> On the other hand, maybe there's a comprimise
+> approach:  Try writing 'C' code that you run as a
+> seperate high priority process to poll for serial
+> input and buffer it, and add a support routine
+> that your normal code can call to pull characters
+> out of that buffer.
+> 
+> /Max
+> 
+> 
+> 
+

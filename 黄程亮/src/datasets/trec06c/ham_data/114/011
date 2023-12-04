@@ -1,0 +1,73 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k19Fnct16472
+	for <egs+summary>; Thu, 9 Feb 2006 10:49:38 -0500 (EST)
+Received: from [127.0.0.1] (cpe-24-59-77-191.twcny.res.rr.com [24.59.77.191])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k19Fna0O019077
+	for <egs+summary>; Thu, 9 Feb 2006 10:49:37 -0500 (EST)
+Message-ID: <43EB6504.1020609>
+Date: Thu, 09 Feb 2006 10:51:32 -0500
+From: Nick Gerner <nsg7>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary
+Subject: PAPER 5
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+in "One Hop..." A. Gupta et al. and in "Kelips..." I. Gupta et al. both 
+suggest that one-hop lookups are possible in DHTs by maintaing O(n) 
+connectivity at all nodes in the overlay.  "One Hop..." begins by 
+presenting results of a study on some existing P2P networks suggesting 
+that sizes are between 10^5 and 10^6 and that membership changes can 
+occur at a rate of about 19 per second.  With these numbers maintaing 
+O(n) connectivity at all nodes is feasible with modern systems (10^6 
+32-bit IP addresses takes ~3.8 MB of memory).  Maintaining this 
+connectivity is the problem which both papers approach (as opposed to 
+how to efficiently route lookups as we've seen in previous papers).
+
+In "One Hop..." every node has connectivity with nearly all other nodes. 
+  To maintain this connectivity nodes are organized into k two level 
+trees (k slices each of u units).  Every node is responsible for sending 
+keep-alive messages with either it's successor (on an identifier ring, 
+also used for consistent hashing as before) or it's predecessor.  The 
+choice is made so that information flows from a unit leader (center of 
+the unit division of the identifier ring) outward, without crossing unit 
+boundaries.  When a new member enters or a member fails notification of 
+this message is sent directly to the detecting node's slice leader.  The 
+slice leader aggregates events occuring within some time division and 
+sends the aggregated information to other slice leaders.  Each slice 
+leader then sends its aggregated information to unit leaders which then 
+piggybacks the information on the keepalives flowing out of it toward 
+unit boundaries.  The claim is that this eliminates redundant communication.
+
+Kelips also maintains nearly full connectivity between all nodes. 
+However, nodes are divided into k affinity groups (continguous groups 
+over the identifier ring).  Nodes within an affinity group maintain full 
+connectivity.  Kelips choose k=O(sqrt(n)) to analytically optimize 
+performance.  Some connections between groups are also maintained in 
+contact groups at each node (chosen to minimize rtt).  Queries can thus 
+be routed in 2 hops (one to reach the correct affinity group via a 
+contact and one to reach the correct destination via full connectivity). 
+  Connectivity is maintained by using a epidemic-gossip protocol where 
+new events are propegated fully within an affinity group and 
+occasionally across groups via contacts.  Gossip bandwidth is 
+arbitrarily fixed at a certain level.  Events not gossiped in the 
+allotted bandwidth are preserved for another round of gossiping.
+
+Both papers present schemes that potentially provide very low latency 
+lookups.  However, this is a tradeoff made with respect to the amount of 
+state that must be stored (reasonable for modern machines) and also the 
+amount of bandwidth spent to maintain that state.  "One Hop..." admits 
+that in a 10^6 node network (the size of Napster at the time) requires a 
+slice leader to use 350kbps upstream bandwidth to disseminate events. 
+This is strong motivation for nodes to misbehave.  And even if they do 
+obey the protocol (at high personal cost to the node) the problem of 
+churn in system like this is aggrevated since a failed node causes some 
+kind of failure (and maintenace costs) at all other nodes.  Kelips 
+limits the bandwidth arbitrarily so one could say that maintenance 
+overhead is capped; however, it's not clear that arbitrarily capping 
+this bandwidth will allow sufficient bandwidth to maintain nearly full 
+connectivity (or O(sqrt(n)) connectivity), especially in the face of churn.
+

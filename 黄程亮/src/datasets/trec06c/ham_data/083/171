@@ -1,0 +1,68 @@
+Received: from postoffice2.mail.cornell.edu (postoffice2.mail.cornell.edu [132.236.56.10])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8JFwwh28355
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 11:58:58 -0400 (EDT)
+Received: from ks238.cornell.edu (syr-24-24-18-11.twcny.rr.com [24.24.18.11])
+	by postoffice2.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id LAA24469
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 11:58:57 -0400 (EDT)
+Message-Id: <5.1.0.14.2.20020919115753.01ce4720@postoffice2.mail.cornell.edu>
+X-Sender: ks238@postoffice2.mail.cornell.edu (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Thu, 19 Sep 2002 11:58:46 -0400
+To: egs@CS.Cornell.EDU
+From: Karan Suri <ks238@cornell.edu>
+Subject: 615 PAPER #13
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+In this paper a new energy efficient protocol for mobile ad-hoc networks is 
+introduced. The paper assumes a network in which all nodes are within 
+transmission range of every other node (i.e. a small, clustered network is 
+ideal for PARO). The critical assumption the protocol is based on is that 
+the less distance between communicating nodes, the less powerful the 
+transmission, and hence the more power is conserved. The protocol, which is 
+quite simple, includes three main processes: overhearing, redirecting and 
+route-maintenance. Overhearing is the process through which nodes include 
+themselves into routes between source and destination nodes. After the 
+destination node sends a communication transmission to the source node, 
+those nodes that overhear this transmission will be viable intermediary 
+nodes for the route. This intermediary or "redirector" node assesses, 
+through a mathematical equation included in the paper, if its participation 
+in the route will make a more energy efficient route. Then, if it is 
+possible to have a more energy efficient route, this redirector node sends 
+a redirect message to both nodes and becomes an intermediary node in the 
+route, which will forward packets from source to destination. This process 
+is known as redirecting. Overhearing and redirecting are iterative 
+processes and continue until no intermediary node exists which thinks it 
+can create a more efficient route (i.e .route convergence). The final 
+process is route maintenance, which is critical to preserving the existence 
+of the routes while little traffic is being transmitted. This is done by 
+sending periodic data signals from source to destination keeping the route 
+active.
+
+The authors include a pretty comprehensive simulation (one of the best seen 
+thus far). Many of the concerns that I had while reading the paper were 
+answered by the simulation's results. For instance, I felt that PARO would 
+show a substantial decrease in the success rate of data transmissions in an 
+actively mobile network since this would entail an increase in the number 
+of iterations seen in the network, which I felt would cause diminishing 
+results as far as energy conservation was concerned. However, it seems that 
+this was not the case since route-maintenance was more efficient than was 
+previously assumed.
+
+One question, which was raised in the beginning of the paper which was not 
+addressed in the simulation was the idea of having varying packet sizes 
+being transmitted (they used 100-byte packets). It would seem that larger 
+data packets would need greater transmission power. So, in addition, to 
+distance between nodes, the effect of packet sizes on energy efficiency 
+should be addressed. Another problem with this protocol that you see with 
+the examples provided is that nodes in the "middle of the network" will 
+always be active and nodes on the fringe of the network will be conserving 
+the greatest amount of energy. This might have diminishing returns in a 
+more static topology with large amounts of data transfer since "middle 
+nodes" would lose a substantial amount of energy being redirector nodes 
+rather than losing energy communicating as source nodes. They are in a 
+pretty unfortunate position in the network and this may hurt them in the 
+long run when they need to communicate.
+
+
+

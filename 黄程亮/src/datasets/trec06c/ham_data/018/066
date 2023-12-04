@@ -1,0 +1,31 @@
+Received: from imo15.mx.aol.com (imo15.mx.aol.com [198.81.17.37])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id BAA20810
+	for <handyboard@media.mit.edu>; Thu, 11 Jun 1998 01:23:56 -0400 (EDT)
+From: GJZ@aol.com
+Received: from GJZ@aol.com
+	by imo15.mx.aol.com (IMOv14_b1.1) id UGDHa05135;
+	Thu, 11 Jun 1998 01:22:43 -0400 (EDT)
+Message-Id: <ae5319e3.357f69a4@aol.com>
+Date: Thu, 11 Jun 1998 01:22:43 EDT
+To: bill_r@inetnebr.com, handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: onboard IR receiver
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 60
+
+the problem that i was having with the onboard IR receiver is that the codes
+that i retrieved from the ir_data() function were inconsistant from the same
+remote control button.  the error was usually manifested in multiples of two,
+which lead me to believe that the data coming in has been logically
+(arithmetically) shifted.  this was probably due to the first and sometimes
+second incoming bit being missed.  however, i developed a way to eliminate
+this problem about 99% of the time.  this is by turning the software driver on
+and off, by using the sony_init() function.  in my tests, the receiver
+responds much better than before, however, it does not poll continuosly.  i
+thought that maybe the HB could be tricked into polling continuosly, maybe
+this will lead you in the right direction.
+
+Justin D. Gullotta.. , Engineer,
+Rensselaer Polytechnic Institute.
+

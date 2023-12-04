@@ -1,0 +1,51 @@
+Received: from mail-out1.apple.com (mail-out1.apple.com [17.254.0.52])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id QAA08630
+	for <handyboard@media.mit.edu>; Wed, 28 Oct 1998 16:55:03 -0500 (EST)
+Received: from mailgate.apple.com (A17-128-100-225.apple.com [17.128.100.225])
+	by mail-out1.apple.com (8.8.5/8.8.5) with ESMTP id NAA08894
+	for <handyboard@media.mit.edu>; Wed, 28 Oct 1998 13:47:45 -0800
+Received: from scv2.apple.com (scv2.apple.com) by mailgate.apple.com
+ (mailgate.apple.com - SMTPRS 2.0.15) with ESMTP id <B0003296732@mailgate.apple.com>;
+ Wed, 28 Oct 1998 13:47:41 -0800
+Received: from cervione (cervione.apple.com [17.205.40.224])
+	by scv2.apple.com (8.8.5/8.8.5) with SMTP id NAA10522;
+	Wed, 28 Oct 1998 13:47:40 -0800
+Message-Id: <4.1.19981028132652.00a3a330@nowhere.xxx.yyy>
+X-Sender: noyau@mail.apple.com (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Wed, 28 Oct 1998 13:43:18 -0800
+To: luikeith@egr.msu.edu (Keith - Lui)
+From: Eric Noyau <noyau@apple.com>
+Subject: Re: Motor output
+Cc: handyboard@media.mit.edu
+In-Reply-To: <199810282034.PAA25253@mulder>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 12:34 PM 10/28/98 , Keith - Lui wrote:
+>Hi!
+>
+>When I work with the motor outputs, I found that the outputs are not linear.
+>
+>The "motor(m,p)" changes the output only in an increment 10 of p.
+>
+>Is there anyway I can get a more presiced output?
+>
+The motor controls in the Handy Board library supports only 8 levels of power.
+
+Upgrade!
+
+Get the Smooth PWM version made by Julian Skidmore  in the software contributed page on the Handy board web site (http://el.www.media.mit.edu/groups/el/projects/handy-board/).
+
+You will have to do multiple things:
+
+1- Get the new pcode_hb.s19, install it on your board
+2- Merge the differences between the latest HB libraries and the ones from Julian. It's fairly easy to do and you end up with the latest changes from Fred Martin and the smooth PWM code from Julian in one neat package. Just get the two lib_hb.c and compare them, it's fairly evident what the changes are (Fred changed a function from IC to native and Julian changed the motor controls to match the changes in the pcode).
+
+I did that for my board and I can now control my motors with great precision. It's really appreciable when you are trying to use the feedback from your shaft encoders to regulate the motors at the same speed. Before installing the smooth PWM my 'bot was always over correcting and basically never ran on a straight line, swerving right and left. Now it's smoothly correcting and it's running (almost) in straight line
+
+Is there any chance for the smooth PWM algorithm to make their way into the supported release of the pcode and libraries? This is a real improvement over the standard one...
+
+-- Eric
+
+

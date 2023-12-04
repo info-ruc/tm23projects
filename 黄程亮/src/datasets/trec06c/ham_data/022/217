@@ -1,0 +1,55 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id KAA12043
+	for <handyboard@media.mit.edu>; Mon, 7 Sep 1998 10:43:32 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id KAA08381;
+	Mon, 7 Sep 1998 10:43:30 -0400 (EDT)
+Message-Id: <199809071443.KAA08381@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Fred Fotsch <ffotsch@lib.drury.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: Serial Communication with HP48 calculator 
+In-Reply-To: Your message of "Sun, 03 Jan 1904 16:21:38 GMT."
+             <83DDD88D.73C69E66@lib.drury.edu> 
+Date: Mon, 07 Sep 1998 10:43:30 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+> 1.  Is there a version of the 9600 baud driver that supports input?
+
+not that i am aware of.  you could connect to the HB's phone jack as
+long as you don't have to talk to interactive c and your calc at the
+same time.  see the FAQ serial answer.
+
+> 
+> 2.  Any suggestions that might help me use the serialio.c code and the
+> SPI?
+
+the SPI is for high speed SYNCHRONOUS comms (data and clock line).
+RS232 is ASYNCHRONOUS (data only).  SPI doesn't do RS-232.
+
+
+> 3.  What is the difference between the inverting and non inverting
+> driver code?
+
+the normal voltages of RS232 are -10v is logic 1, +10v is logic 0 (non
+inverted, desktop levels).  the MAX232 chip on the HB's serial
+interface card converts these into +5v logic 1, 0v logic 0 "TTL or
+microprocessor level" voltages (inverted).
+
+your calc apparently talks at the inverting, TTL level voltages -- it
+would need a ckt like that on the HB's serial interface to talk to a
+desktop computer.
+
+thus, you can wire direct from the HB's phone jacks to your calc using
+the SW drivers presented in the FAQ.
+
+
+
+> 
+> Thanks in advance!
+> 
+> Fred Fotsch
+> 
+> 
+

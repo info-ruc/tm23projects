@@ -1,0 +1,114 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j7A9bTgU015258
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Wed, 10 Aug 2005 04:37:29 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.4/Submit) id j7A9bSed015257
+	for reliable_computing-outgoing; Wed, 10 Aug 2005 04:37:28 -0500 (CDT)
+Received: from ccsmta3.resource.rmcs.cranfield.ac.uk (ccsmta3.rmcs.cranfield.ac.uk [193.63.243.26])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j7A9bE15015253
+	for <reliable_computing@interval.louisiana.edu>; Wed, 10 Aug 2005 04:37:25 -0500 (CDT)
+Received: from isepryce.staff.rmcs.cranfield.ac.uk ([10.4.49.11])
+	by ccsmta3.resource.rmcs.cranfield.ac.uk with esmtp (Exim 4.41)
+	id 1E2n0V-00017c-OX
+	for reliable_computing@interval.louisiana.edu; Wed, 10 Aug 2005 10:36:19 +0100
+X-Sender: prycej@pop3.rmcs.cranfield.ac.uk
+Message-Id: <l03130300bf1f718cb3a4@[10.4.49.11]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Wed, 10 Aug 2005 10:40:18 +0100
+To: reliable_computing@interval.louisiana.edu
+From: Dr John D Pryce <J.D.Pryce@cranfield.ac.uk>
+Subject: Re: Verification and Validation
+X-DEFAC-MailScanner-Information: Please contact postmaster@rmcs.cranfield.ac.uk for more information
+X-DEFAC-MailScanner: Found to be clean
+X-DEFAC-MailScanner-SpamCheck: not spam, SpamAssassin (score=0, required 6)
+X-MailScanner-From: j.d.pryce@cranfield.ac.uk
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+Dear all
+On the current discussion about terms & names:
+
+(1) ---------------------
+I have had the job of teaching our basic Software Engineering course for
+some years now. The distinction made by the software engineering (and I
+believe more broadly systems engineering) community between Verification
+and Validation is quite explicit:
+
+Verification:
+ "Are we building the product right?"
+
+       The software should conform to its specification.
+
+Validation:
+  "Are we building the right product?"
+
+       The software should do what the user really requires.
+
+(see e.g. "Software Engineering", Ian Sommerville, 6th edition, Chapter 19)
+So verification is *in principle* automatable, being about the equivalence
+between one formal system (a spec) and another (a software system).
+Validation is *in principle* non-automatable, being about the
+correspondence between human requirements and a formal system.
+
+This is clearly related to, but not the same as, the distinction being made
+in other engineering disciplines as e.g. quoted by Ray Moore in his
+original posting:
+>Evidently "validation" is widely used to refer to agreement with physical
+>effects, experimental results, etc.
+
+I do not think we should get too worried about "right" usage of these
+words, seeing that there are various communities out there that use them in
+subtly different ways.
+
+(2) ---------------------
+I am perfectly happy with the name "Reliable Computing". I think "Interval
+Arithmetic" and "Interval Computing" are too narrow for the reasons Baker
+has just given, namely you don't need intervals to get, ermm, validated
+results.
+
+Example: Years ago I refereed a joint paper by two great men, Jim Wilkinson
+and Frank Olver, on an algorithm and its implementation, for solving a
+(dense) linear system Ax=b with rigorous bounds on the error. This was in
+the days when double precision was far slower than single, and before
+IEEE754 I think. They just used the Wilkinson model
+       x OP y = (1 + e) ( x op y),    |e| <= u                      (*)
+
+where op is an exact arithmetic operation, OP is as done on the machine, u
+is the roundoff unit. (I think they even put in an extra term to handle
+underflow.) So, the scheme was to do the main computation in double
+precision, and simultaneously in single precision perform a running
+rigorous error bound of each operation (*), using an inflation of each
+absolute-value bound by a factor (1+u1) where u1 is the S.P. roundoff unit,
+so as to account for errors in the S.P. computation. You thus did
+Wilkinson's backward error analysis but with far sharper bounds, which in
+theory would be asymptotically optimal as u -> 0.
+
+So, totally "validated" but with no interval arithmetic!
+
+Wilkinson wrote me to the effect that this was Olver's baby, he found it
+rather boring and he could have done it on the pilot ACE in 1948 if he had
+really wanted to. He was much more interested in error analysis for giving
+insight rather than rigorous bounds. But times and needs change.
+
+---------------------
+
+John Pryce
+
+Dr John D Pryce
+Lecturer in Mathematical Software Engineering
+Computer Information Systems Engineering Dept
+Cranfield University, RMCS Shrivenham
+Swindon SN6 8LA, UK
+Tel +44 (0)1793-785683 direct,
+    +44 (0)1793-785931 secretaries,
+    +44 (0)1793-785366 fax
+
+
+
+-- 
+This message has been scanned for viruses and
+dangerous content by the Cranfield MailScanner, and is
+believed to be clean.
+
+

@@ -1,0 +1,53 @@
+Received: from anvil.gatech.edu (IDENT:root@anvil.gatech.edu [130.207.165.41])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id HAA01284
+	for <handyboard@media.mit.edu>; Tue, 24 Aug 1999 07:04:33 -0400 (EDT)
+Received: from gooberville (gooberville.stucen.gatech.edu [130.207.52.70])
+	by anvil.gatech.edu (8.9.2/8.9.2) with SMTP id HAA05086;
+	Tue, 24 Aug 1999 07:04:32 -0400 (EDT)
+Message-Id: <3.0.5.32.19990824070414.0083eea0@pop.prism.gatech.edu>
+X-Sender: js333@pop.prism.gatech.edu
+X-Mailer: QUALCOMM Windows Eudora Pro Version 3.0.5 (32)
+Date: Tue, 24 Aug 1999 07:04:14 -0400
+To: handyboard@media.mit.edu (handyboard),
+        Robot Board  <robot-board@cmf.nrl.navy.mil>
+From: Jonathan Swaby <jonathan.swaby@vpss.gatech.edu>
+Subject: Temperature sensing
+Mime-Version: 1.0
+Content-Type: text/enriched; charset="us-ascii"
+
+I have both a Handyboard, and a miniboard. I would like them to be able to sense the temperature of the air around them, so I have purchased some lm34's. They are the caz versions. They are TO92 form factor. The output of the sensor is a voltage. 10mv/F. In playing with it last night i got a reading of 158 from the miniboard. Now, how do I convert this number to a temperature? It was measuring the temperature of the room, which was about 78F. Now, I figure the 158 translates into a voltage of 3.098V. The temperature range for the sensor is -40F to 270F. I think the following formula should give me what I want:
+
+
+(40F+270F)/255 =1.05F per step.
+
+-40F is the offset value.
+
+My reading was 158, so I should be able to do the following:
+
+(158*1.05F)-40F=129F
+
+
+This value is, of course, not correct, but I think the process is. Unlike the LM334 series sensor, there is no way to calibrate this sensor except in the formula. My idea is to find the values of known temperatures, freezing, and boiling water, and use that information to adjust the degrees per step.
+
+
+Is this a good way to approach it, or is there a better solution?
+
+<bold><bigger>Jonathan Swaby
+
+</bigger>Computer Services Specialist IV
+
+Student Affairs 
+
+Phone: 404-894-5889
+
+Fax:   404-894-9928
+
+<color><param>0000,0000,8080</param><bigger><bigger>
+Georgia</bigger></bigger></color></bold><bigger><bigger><italic><color><param>8080,8080,0000</param>Institute
+
+of</color></italic><bold><color><param>0000,0000,8080</param>Tech</color></bold><italic><color><param>8080,8080,0000</param>nology
+
+</color></italic></bigger></bigger>
+
+
+

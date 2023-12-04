@@ -1,0 +1,75 @@
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2E5uDt22467
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 00:56:13 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id D6B1B5327F; Mon, 13 Mar 2006 21:56:07 -0800 (PST)
+Date: Mon, 13 Mar 2006 21:56:07 -0800
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 14
+Message-ID: <20060314055607.GA22886@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+
+For many network applications, both peer-to-peer and more general
+client-server, it's useful to determine which of a set of servers is
+closest to a client.  The simple solution to this is to have the client
+ping all the servers, and take the one with the shortest round trip
+time.  In systems with a large number of clients or servers, this
+approach generates a lot of traffic, and it results in higher
+latencies the first time a client contacts a server.
+
+The papers for this week attempt to eliminate these problems by
+providing a scheme for estimating the distance between two nodes,
+based on other information in the network.  The first scheme is GNP,
+which is presented using a set of slides rather than in a paper.  This
+makes it slightly more difficult to understand.  As far as I can tell,
+it works by modeling the Internet in a coordinate space.  First, it
+selects a set of landmark servers, determines the RTT between them,
+and uses these measurements to assign the landmarks coordinates in the
+space.  Then, when a new node joins, it pings each landmark, and
+figures out its location in the coordinate space.  They also propose
+Triangulated Heuristic Coordinates, which I think create coordinates
+for an object by selecting some base servers, finding the distance
+from the object to the base servers, and using those as coordinates.
+
+Vivaldi takes the same basic approach, with two key modifications.
+First, it models the nodes in the network as a system of physical
+springs; the system attempts to find the minimum energy configuration,
+and this corresponds to the minimum error configuration for the
+coordinate system.  Secondly, it uses a 2 dimensional space, and adds
+a height, a directionless value, to each object.  This accounts for
+the lag due to access link latency.  The performance data which is
+presented shows that Vivaldi outperforms GNP in most cases.
+
+Meridian uses a different approach to find nodes which are nearby.  It
+forms a loosely structured overlay network.  Each node keeps track of
+O(log N) peers, which are organized into a series of concentric rings.
+The node also tracks some additional peers which it can add to the
+rings as needed to fill in gaps.  Information about peers is spread
+using a gossip protocol.  Meridian can be used to find the closest
+node to a target, giving it the ability to search like Chord or
+Pastry.  Meridian also makes it easy to find a central leader for a
+group, and sets of nodes which satisfy network geography constraints.
+Experiments show that by eliminating embedding errors, Meridian
+significantly reduces error in the distances it calculates.
+
+GNP and Vivaldi both require fairly expensive calculations to create
+their embedded coordinate system.  This could prove to be too costly
+in networks with high churn.  In Meridian, fairly high churn could be
+tolerated, provided that the gossip protocol spread information fast
+enough to offer replacements for failed nodes.  However, Meridian
+doesn't provide a very accurate way of determining which server will
+be closest to a client without running any additional packets through
+the network.
+
+If these calculations are used to determine who a node contacts, then
+these schemes might run into problems, as people intentionally delay
+responses so that their node gets less traffic.  A couple of
+misbehaving nodes, especially in GNP's landmark servers, could also
+cause a lot of chaos.
+
+-- Victoria Krafft
+

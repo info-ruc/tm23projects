@@ -1,0 +1,132 @@
+Received: from interval.louisiana.edu (localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id i8C3vCxQ016056
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Sat, 11 Sep 2004 22:57:12 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id i8C3vCWv016055
+	for reliable_computing-outgoing; Sat, 11 Sep 2004 22:57:12 -0500 (CDT)
+Received: from sys31.mail.msu.edu (sys31.mail.msu.edu [35.9.75.131])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id i8C3uxJt016051
+	for <reliable_computing@interval.louisiana.edu>; Sat, 11 Sep 2004 22:57:08 -0500 (CDT)
+Received: from c-24-11-149-116.client.comcast.net ([24.11.149.116] helo=TP570MSUMB)
+	by sys31.mail.msu.edu with asmtp (Exim 4.32 #22)
+	(TLSv1:RC4-MD5:128)
+	id 1C6LU0-0008A7-Cn; Sat, 11 Sep 2004 23:56:56 -0400
+From: "Martin Berz" <berz@msu.edu>
+To: <reliable_computing@interval.louisiana.edu>,
+        "Rosa, Andrea" <A.Rosa@napier.ac.uk>
+Subject: RE: intervals for integer programs
+Date: Sat, 11 Sep 2004 23:56:03 -0400
+Message-ID: <LOBBLFLDLCOABDBDAMICCEJNHBAA.berz@msu.edu>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.6604 (9.0.2911.0)
+In-Reply-To: <200409112315.i8BNFlIS109370@imap.univie.ac.at>
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
+Importance: Normal
+X-Virus: None found by Clam AV
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+Dear all,
+
+this discussion seems to be getting a little hypothetical. It appears it may
+be a good idea if Andrea would supply a representative test problem, and then
+Baker can apply Globsol to it, while Neumaier can apply whatever other tool he
+sees fit. Then we compare the results (which better agree), and more
+importantly, the performance - because in the end, for Andrea that's all that
+counts.
+
+Martin
+
+> -----Original Message-----
+> From: owner-reliable_computing@interval.louisiana.edu
+> [mailto:owner-reliable_computing@interval.louisiana.edu]On Behalf Of
+> arnold.neumaier@univie.ac.at
+> Sent: Saturday, September 11, 2004 7:16 PM
+> To: reliable_computing@interval.louisiana.edu
+> Subject: Re: intervals for integer programs
+>
+>
+> "R. Baker Kearfott" <rbk@louisiana.edu> wrote:
+>
+> > Nonetheless, the technique DOES allow you to treat the integers
+> > as continuous variables without losing optima.
+>
+> Yes, this does not contradict what I said; see below.
+>
+>
+> > Second, some global optimization programs are touted as
+> > being able to efficiently ignore large numbers of local optima.
+>
+> Yes. That why the sine approach works.
+>
+> I only claimed that it is inefficient, compared to treating
+> the integers as integer variables, and proceeding as in my first
+> mail in this thread. In addition, one needs of course suitable
+> techniques for integer rounding, as in mixed integer linear
+> programming.
+>
+>
+> > Third, it is presently unclear to me what you mean about
+> > "generates a local extremum at each critical point."
+>
+> I did not say that, but
+> ''it generates a local extremum at every feasible integer point''
+>
+> The precise statement underlying this remark is that if you
+> fix all integer variables at some feasible integer values
+> and locally minimize the objective in the remaining variables,
+> the resulting point will be a local mimimizer of the sine-constrained
+> program.
+>
+> In particular, if all variables are integers then _any_ feasible
+> point satisfies the first order conditions for the sine version.
+> In that case, all work done in an interval Newton method is wasted.
+>
+>
+> > What is your objective?  Are you using a penalty method?
+>
+> No. Constrained optimization problems also may have several
+> local minima. One can pass the sine version to any global solver
+> for constrained problems, and my remarks apply no matter what
+> methods the solver uses. In each case, modifying the solver
+> directly will gain efficiency.
+>
+> Essentially, my remark boils down to saying that the sine-trick
+> is just a waste of many transcendental function evaluations
+> (sines and cosines in function and gradient evaluatiosn,
+> arc sines in constraint propagation).
+>
+> It buys nothing but the ability to use black box continuous
+> global solvers, at the expense of introducing inefficiency
+> at various places (overhead in function and gradient evaluation,
+> optimality conditions, and constraint propagation).
+>
+> Apart from that, it should not have a negative effect on the
+> number of boxes in the b&b process, at least if the global
+> solver is well-written.
+>
+>
+> Arnold Neumaier
+>
+>
+> > >> When the variables xi must be integers, Hansen proposes
+> > >> (in "Global Optimization Using Interval Analysis", pg 214)
+> > >> to solve a constrained problem by adding constraints like
+> > >> sin (pi*xi)=0
+> > >
+> > >This is a simple way of posing the problem to a package that handles
+> > >only continuous problems. But it is quite inefficient since
+> > >it generates a local extremum at every feasible integer point,
+> > >and thus makes the problem unnecessarily difficult.
+> > >
+> > >Even linear mixed integer problems, which can generally be solved
+> > >quite efficiently using branch and cut with an LP-solver,
+> > >will become nonlinear!
+>
+
+

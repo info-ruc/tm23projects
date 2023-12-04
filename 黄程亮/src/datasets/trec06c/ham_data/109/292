@@ -1,0 +1,53 @@
+Received: from vms046pub.verizon.net (vms046pub.verizon.net [206.46.252.46])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jAU48v5L005607
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 29 Nov 2005 21:08:57 -0700
+Received: from DELL ([68.239.40.227])
+ by vms046.mailsrvcs.net (Sun Java System Messaging Server 6.2-4.02 (built Sep
+ 9 2005)) with ESMTPA id <0IQR00EJO26V9V82@vms046.mailsrvcs.net> for
+ DMDX@psy1.psych.arizona.edu; Tue, 29 Nov 2005 22:08:56 -0600 (CST)
+Date: Tue, 29 Nov 2005 23:08:55 -0500
+From: "Matthew Finkbeiner" <msf@wjh.harvard.edu>
+Subject: [DMDX] RE: Recording reaction times & having the picture clear after
+ voice response
+In-reply-to: <b758b9390511291832o168b128es43d364c0379718a2@mail.gmail.com>
+To: <DMDX@psy1.psych.arizona.edu>
+Message-id: <000001c5f563$c86ef710$6501a8c0@DELL>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+> 
+> I am trying to get my program to display a picture until it 
+> detects a vocal response.  Then, the screen should clear and 
+> move on.  Or, if there is no response after 2 seconds, it 
+> should clear and move on. 
+> Also, it should record the reaction time from when the 
+> picture is displayed to when the vocal response is detected.
+> 
+> As it stands now, I can only get it to display the picture 
+> until it detects a vocal response (but the reaction times all 
+> come out as 1.00 in the azk file) OR I can get it to record 
+> the reaction times in ms but it just displays the picture for 
+> 2 seconds no matter what.
+> 
+> Here is some of the script where it displays the picture 
+> until it detects voice, but the reaction times all read 1.00 
+> in the azk:
+
+replace <ntl> with <t 2000> and <id recordvocal 0, 2000> with <id
+recordvocal 500>.  other than that, it looks fine.
+
+> <ep> <ntl><d 0><cr><id digitalVOX><id RecordVocal 0, 2000><id
+> keyboard><wc 000255000> <dbc 000000000><dfs 36><vm
+> 1024,768,768,16,75><ClearFeedback><eop>
+> 
+> +1111 g"+2" <% 75> / <bmp> * "picture1";
+> 0 <ms% 2000> /c;
+> +1112 g"+2" <% 75> / <bmp> * "picture2";
+> 0 <ms% 2000> /c;
+> 
+
+

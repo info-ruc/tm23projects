@@ -1,0 +1,101 @@
+Received: from uni-freiburg.de (ms.ruf.uni-freiburg.de [132.230.2.1])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i12GWFR4010839
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 2 Feb 2004 09:32:15 -0700
+Received: from [132.230.17.128] (account daniel.mueller@cognition.uni-freiburg.de)
+  by uni-freiburg.de (CommuniGate Pro WebUser 4.1.8)
+  with HTTP id 21961229 for DMDX@psy1.psych.arizona.edu; Mon, 02 Feb 2004 17:32:10 +0100
+From: "Daniel =?ISO-8859-1?Q?M=FCller?="
+ <daniel.mueller@cognition.uni-freiburg.de>
+Subject: [DMDX] keypress not recognized
+To: DMDX@psy1.psych.arizona.edu
+Date: Mon, 02 Feb 2004 17:32:10 +0100
+Message-ID: <web-21961229@uni-freiburg.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+Hi all!
+
+I'm trying to program a grammaticality judgement expt in
+DMDX.
+- Words are presented for a particular time dependent of
+their length.
+- The subject has to press a button as soon as the sentence
+gets ungrammatical.
+- the sentence is aborted after a keypress.
+- "CORRECT" feedback is presented if the subject presses
+the key anytime after the first wrong word or doesn't press
+it during a correct sentence, otherwise "WRONG".
+
+The Problem:
+The Expt works, but from time to time a keypress is missed,
+with the result that the sentence does not abort and the RT
+is not gathered. I tried various versions, but nothing
+seems to help...
+I built a similar "zil" version which showed that sometimes
+only the release of the key is stored, so the press must
+have been missed somewhere between the frames...
+
+Does anyone have an idea what the reason could be?
+(I thought it may be a problem to determine the frame
+duration through the time-out, but it didn't seem to make a
+difference changing that...)
+
+Many thanks!
+
+***
+Here is a part of the itemfile:
+(item 1-9 is the feedback routine, items 1501-1505 are just
+to make the output-file easier to read.)
+***
+
+<ep> <azk> <id Tastatur> <mr +Leertaste> <mnr +Umschalt
+rechts> <mnr +Umschalt links> <fd 0> <d 0> <cr> <wc
+255255255> <bc 0> <vm 1024,768,768,16,0> <nfb> <eop>
+
+1 <set 1,0> <set 2,0> <set 3,0> <set 4,0> <set 5,1> <branch
+10>;
+2 <bicGT 2, 0, 7>;
+3 <bicGT 1, 0, 4>;
+4 <ln 2> <wc 255000000> <ms% 1000> "FALSCH!" / <emit
+falsch> <inc 5>;
+=5 * <ntl> ">> nächster Satz bei Tastendruck >>" ;
+6 <ntl 0> <return>;
+7 <ln 2> <wc 000255000> <ms% 1000> "RICHTIG!" / <emit
+richtig> <inc 5>;
+=8 * <ntl> ">> nächster Satz bei Tastendruck >>" ;
+9 <ntl 0> <return>;
+10 ;
+
+1100 <emit code: 8 3 ad04a 13 3> <emit 5> <ms% 800>/ <ms%
+800> "+"/ <ms% 300>/ <set 1,0> <set 2,1> <set 3,0> <set
+4,0>;
+^1101 * <ms% 234> <t 264> "The" <biw 1501> <inciw 1> <inc
+3> <deciw 2> /;
+^1102 * <ms% 290> <t 320> "woman" <biw 1502> <inciw 1> <inc
+3> <deciw 2> /;
+-1103 * <ms% 234> <t 264> "are" <bic 1503> <inciw 1> <inc
+3> <inc 4> /;
+-1104 * <ms% 262> <t 292> "tall" <bic 1504> <inciw 1> <inc
+3> <inc 4> /;
+-1105 * <ms% 178> <t 208> "." <bic 1505> <inciw 1> <inc 3>
+<inc 4> /;
+-1106 * <t 800> "???" <branch 1999> <inciw 1> <inc 3> <inc
+4> <deciw 2>;
+=1501 * <t 1>;
+=1502 * <t 1>;
+=1503 * <t 1>;
+=1504 * <t 1>;
+=1505 * <t 1>;
+1999 <emit 1> <emit 2> <emit 3> <emit 4> <call -2>;
+ 999999 ;
+0 "Ende des Versuchs. Vielen Dank fürs Mitmachen!";
+
+Daniel Müller
+University of Freiburg
+Department of Cognitive Science
+

@@ -1,0 +1,247 @@
+Received: from lassen.berkeley.edu (lassen.berkeley.edu [128.32.25.102])
+	by uclink4.berkeley.edu (8.12.9/8.12.3) with ESMTP id h6VNQbqW209756;
+	Thu, 31 Jul 2003 16:26:37 -0700 (PDT)
+Received: from uclink4.berkeley.edu (localhost [127.0.0.1])
+	by lassen.berkeley.edu (8.12.9/8.12.9) with ESMTP id h6VNQaIm003425;
+	Thu, 31 Jul 2003 16:26:36 -0700 (PDT)
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.9/8.12.3) with ESMTP id h6VNQZ0J178454;
+	Thu, 31 Jul 2003 16:26:36 -0700 (PDT)
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/1.27) with ESMTP id h6VNCUtB011753;
+	Thu, 31 Jul 2003 19:24:52 -0400
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/Submit/1.1) with SMTP id h6VL0Ghp007702;
+	Thu, 31 Jul 2003 17:00:16 -0400
+Date: Thu, 31 Jul 2003 17:00:16 -0400
+Message-Id: <CA-2003-19.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2003-19 Exploitation of Vulnerabilities in Microsoft RPC Interface 
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000086
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-19 Exploitation of Vulnerabilities in Microsoft RPC
+Interface
+
+   Original issue date: July 31, 2003
+   Last revised: -
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Systems Affected
+
+     * Microsoft Windows NT 4.0
+     * Microsoft Windows NT 4.0 Terminal Services Edition
+     * Microsoft Windows 2000
+     * Microsoft Windows XP
+     * Microsoft Windows Server 2003
+
+Overview
+
+   The   CERT/CC   is   receiving  reports  of  widespread  scanning  and
+   exploitation  of  two recently discovered vulnerabilities in Microsoft
+   Remote Procedure Call (RPC) Interface.
+
+I. Description
+
+   Reports  to  the CERT/CC indicate that intruders are actively scanning
+   for  and  exploiting a vulnerability in Microsoft's DCOM RPC interface
+   as  described  in VU#568148 and CA-2003-16. Multiple exploits for this
+   vulnerability  have  been  publicly  released,  and  there  is  active
+   development   of   improved  and  automated  exploit  tools  for  this
+   vulnerability.  Known  exploits  target  TCP  port  135  and  create a
+   privileged  backdoor  command shell on successfully compromised hosts.
+   Some  versions  of the exploit use TCP port 4444 for the backdoor, and
+   other  versions  use  a  TCP  port number specified by the intruder at
+   run-time.  We  have  also  received  reports  of scanning activity for
+   common  backdoor ports such as 4444/TCP. In some cases, due to the RPC
+   service  terminating,  a  compromised  system  may  reboot  after  the
+   backdoor is accessed by an intruder.
+
+   There  appears  to  be  a  separate denial-of-service vulnerability in
+   Microsoft's  RPC  interface  that  is  also  being  targeted. Based on
+   current  information,  we  believe  this vulnerability is separate and
+   independent  from  the  RPC  vulnerability  addressed in MS03-026. The
+   CERT/CC  is tracking this additional vulnerability as VU#326746 and is
+   continuing  to work to understand the issue and mitigation strategies.
+   Exploit  code  for  this  vulnerability has been publicly released and
+   also targets TCP port 135.
+
+   In  both  of the attacks described above, a TCP session to port 135 is
+   used  to  execute the attack. However, access to TCP ports 139 and 445
+   may also provide attack vectors and should be considered when applying
+   mitigation strategies.
+
+II. Impact
+
+   A  remote  attacker  could  exploit  these  vulnerabilities to execute
+   arbitrary  code  with  Local System privileges or to cause a denial of
+   service condition.
+
+III. Solutions
+
+Apply patches
+
+   All users are encouraged to apply the patches referred to in Microsoft
+   Security  Bulletin  MS03-026  as soon as possible in order to mitigate
+   the  vulnerability  described  in  VU#568148.  These  patches are also
+   available via Microsoft's Windows Update service.
+
+   Systems  running  Windows  2000  may still be vulnerable to at least a
+   denial  of  service  attack via VU#326746 if their DCOM RPC service is
+   available  via the network. Therefore, sites are encouraged to use the
+   packet  filtering  tips  below  in  addition  to  applying the patches
+   supplied in MS03-026.
+
+Filter network traffic
+
+   Sites  are  encouraged  to  block network access to the RPC service at
+   network  borders. This can minimize the potential of denial-of-service
+   attacks  originating from outside the perimeter. The specific services
+   that should be blocked include
+     * 135/TCP
+     * 135/UDP
+     * 139/TCP
+     * 139/UDP
+     * 445/TCP
+     * 445/UDP
+
+   If  access  cannot  be  blocked  for  all  external hosts, the CERT/CC
+   recommends  limiting  access  to  only those hosts that require it for
+   normal  operation. As a general rule, the CERT/CC recommends filtering
+   all  types  of  network  traffic  that  are  not  required  for normal
+   operation.
+
+   Because  current exploits for VU#568148 create a backdoor, which is in
+   some  cases  4444/TCP, blocking inbound TCP sessions to ports on which
+   no  legitimate  services  are  provided  may  limit intruder access to
+   compromised hosts.
+
+Recovering from a system compromise
+
+   If  you  believe  a  system under your administrative control has been
+   compromised, please follow the steps outlined in
+
+          Steps for Recovering from a UNIX or NT System Compromise
+
+Reporting
+
+   The  CERT/CC is tracking activity related to exploitation of the first
+   vulnerability  (VU#568148)  as CERT#27479 and the second vulnerability
+   (VU#326746)  as CERT#24523. Relevant artifacts or activity can be sent
+   to cert@cert.org with the appropriate CERT# in the subject line.
+
+Appendix A. Vendor Information
+
+   This  appendix  contains information provided by vendors. When vendors
+   report  new  information,  this section is updated and the changes are
+   noted  in  the  revision  history. If a vendor is not listed below, we
+   have not received their comments.
+
+Microsoft
+
+     Please see Microsoft Security Bulletin MS03-026.
+
+Appendix B. References
+
+     * CERT/CC Vulnerability Note VU#561284 -
+       http://www.kb.cert.org/vuls/id/561284
+     * CERT/CC Vulnerability Note VU#326746 -
+       http://www.kb.cert.org/vuls/id/326746
+     * Microsoft Security Bulletin MS03-026 -
+       http://microsoft.com/technet/security/bulletin/MS03-026.asp
+     * Microsoft      Knowledge      Base      article      823980      -
+       http://support.microsoft.com?kbid=823980
+   ______________________________________________________________________
+
+   Authors: Chad Dougherty and Kevin Houle
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2003-19.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+   ______________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2003 Carnegie Mellon University.
+
+   Revision History
+
+   July 31, 2003: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPyl3xGjtSoHZUTs5AQE8gAQAqCNAwHihfJzIH8DJDaWxGqacDZYAzGjh
+30rPq9AM1/0KkvsdfHb6MC/b+ktCZBrMvXew1e+WGOoE0McZ+IuB9t2DIGsFCBuo
+ltqDw8v08FLM+7zsAM0DooEZLdNpkqdiKhKvooyJ6LGrj5Nb5inW5joITSBn9MMY
+YSIQfaGqABU=
+=m+s3
+-----END PGP SIGNATURE-----
+

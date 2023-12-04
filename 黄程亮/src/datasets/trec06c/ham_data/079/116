@@ -1,0 +1,216 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id fBK12DW28959;
+	Wed, 19 Dec 2001 17:02:13 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id SAA25821;
+	Wed, 19 Dec 2001 18:07:43 -0500 (EST)
+Date: Wed, 19 Dec 2001 18:07:43 -0500 (EST)
+Received: by canaveral.red.cert.org; Wed, 19 Dec 2001 17:58:43 -0500
+Message-Id: <CA-2001-36.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-36 Microsoft Internet Explorer Does Not Respect Content-Disposition and Content-Type MIME Headers
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 32831e19563691c4cd6897c9c362ab60
+Status: RO
+X-Status: $$$$
+X-UID: 0000000033
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-36 Microsoft Internet Explorer Does Not Respect
+Content-Disposition and Content-Type MIME Headers
+
+   Original release date: December 19, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+
+  Systems Affected
+
+     * Microsoft Internet Explorer 6.0 for Windows
+     * Microsoft Outlook, Outlook Express, or any other software that
+       utilizes vulnerable versions of Internet Explorer to render HTML
+
+Overview
+
+   Microsoft Internet Explorer contains a vulnerability in its handling of
+   certain MIME headers in web pages and HTML email messages. This
+   vulnerability may allow an attacker to execute arbitrary code on the
+   victim's system when the victim visits a web page or views an HTML
+   email message.
+
+I. Description
+
+   Web pages and HTML email messages usually contain HTML text, but other
+   files may also be included. The MIME headers Content-Disposition and
+   Content-Type provide the information needed by the HTML rendering
+   software to determine the type of these files. In Microsoft Internet
+   Explorer, these MIME headers are consulted when evaluating whether to
+   process an embedded file, but they are ignored when the file is
+   actually processed.
+
+   For example, if an executable (.exe) file is embedded with MIME headers
+   that misrepresent it as a JPEG image file (.jpg), Internet Explorer
+   will treat the file as a JPEG when evaluating whether it is safe to
+   open.  Once this evaluation is complete, the file will be opened
+   according to its .exe file extension and will be executed on the local
+   system.
+
+   This behavior results in a vulnerability that allows attackers to
+   bypass the security measures that typically screen out executable code.
+   This code would be executed with the privileges the user who views the
+   web page or email message.
+
+   Users who view a malicious web site or HTML email message may be able
+   to prevent the execution of the attacker's code by using the download
+   progress dialog box to cancel the download. However, depending on the
+   size of the embedded file and the speed of the network connection,
+   users may not have time to cancel the file download.
+
+   The CERT/CC is tracking this vulnerability as VU#443699, which
+   corresponds directly to the "File Execution" vulnerability described in
+   Microsoft Security Bulletin MS01-058. This Microsoft bulletin is
+   available at
+
+     http://www.microsoft.com/technet/security/bulletin/MS01-058.asp
+
+   This vulnerability is being referenced in CVE as CAN-2001-0727.
+
+II. Impact
+
+   By convincing a user to view a malicious web page or HTML email
+   message, a remote attacker can cause the user to execute arbitrary
+   code.  Any such code would run with the privileges of the user who
+   attempted to view the content.
+
+III. Solution
+
+   Apply a patch from your vendor
+   
+   	  Microsoft has released a cumulative patch for Internet Explorer that
+   	  corrects this vulnerability and several others. For more information
+   	  about the patch and the vulnerabilities, please see Microsoft
+   	  Security Bulletin MS01-058:
+   
+   		http://www.microsoft.com/technet/security/bulletin/MS01-058.asp
+   
+   Disable file downloads in all security zones
+   
+   	  As a workaround, you can prevent malicious files from being
+   	  downloaded by disabling file downloads in all security zones. Note
+   	  that this decision will impact browser functionality.
+
+Appendix A. - Vendor Information
+
+   This appendix contains information provided by vendors for this
+   advisory.  As vendors report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular vendor is not listed below, we have not received their
+   comments.
+
+   Microsoft Corporation
+
+      The following documents regarding this vulnerability are available
+      from Microsoft:
+      
+      	http://www.microsoft.com/technet/security/bulletin/MS01-058.asp
+      	http://support.microsoft.com/default.aspx?scid=kb;EN-US;q313675
+     _________________________________________________________________
+
+   The CERT Coordination Center acknowledges Jouko Pynnonen as the
+   discoverer of this vulnerability and thanks Microsoft for the
+   information presented in MS01-058.
+     _________________________________________________________________
+
+   Author: This document was written by Jeffrey P. Lanza.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-36.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC personnel answer the hotline 08:00-17:00 EST(GMT-5) /
+   EDT(GMT-4) Monday through Friday; they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from our
+   web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie Mellon
+   University makes no warranties of any kind, either expressed or implied
+   as to any matter including, but not limited to, warranty of fitness for
+   a particular purpose or merchantability, exclusivity or results
+   obtained from use of the material. Carnegie Mellon University does not
+   make any warranty of any kind with respect to freedom from patent,
+   trademark, or copyright infringement.
+   _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+
+   December 19, 2001:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPCEWlaCVPMXQI2HJAQFgDwP/RG6V61VtHeQAXVUL/JxqTXahz0BpwxPW
+WCyHWrIZ7fkXTJJtecqGD3zeDiWNwdk+r83a5amgCzbj2Abfp6U3mmTOArlkV3Ge
+RbptkjNfd4M1KLtvbjMBSUlypxDdT/fLSjogT57IJk2ZiD3WMxvBU0CQun+zxhu1
+lMdqudg6GpQ=
+=Qwr2
+-----END PGP SIGNATURE-----
+

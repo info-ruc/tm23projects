@@ -1,0 +1,83 @@
+Received: from Legato.COM (test8.legato.com [137.69.200.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA03774
+	for <handyboard@media.mit.edu>; Thu, 25 Mar 1999 13:42:21 -0500 (EST)
+Received: from mail.Legato.COM (mail.legato.com [137.69.1.58])
+	by Legato.COM (8.9.1/8.9.1) with ESMTP id KAA03191;
+	Thu, 25 Mar 1999 10:41:10 -0800 (PST)
+Received: from Legato.COM (ducati [137.69.4.216])
+	by mail.Legato.COM (8.8.8+Sun/8.8.8) with ESMTP id KAA09368;
+	Thu, 25 Mar 1999 10:41:27 -0800 (PST)
+Message-Id: <199903251841.KAA09368@mail.Legato.COM>
+X-Mailer: exmh version 2.0.2 2/24/98
+To: Thomas Hauri <Thomas.Hauri@zhwin.ch>
+Cc: "Mailing List, Handyboard" <handyboard@media.mit.edu>, khearn@Legato.COM
+Subject: Re: Help with pointers 
+In-Reply-To: Your message of "Thu, 25 Mar 1999 17:00:55 +0100."
+             <36FA5DB7.32ABEF8@zhwin.ch> 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Thu, 25 Mar 1999 10:42:18 -0800
+From: Keith Hearn <khearn@Legato.COM>
+
+In message <36FA5DB7.32ABEF8@zhwin.ch>, Thomas Hauri writes:
+> Hi all
+> little question:
+> 
+> How can I ad a value to a pointer ??
+> 
+> int *px, x;
+> 
+> px = &x;
+> 
+> px = px + 1;   (????? pointing to the lowbyte of x for example)
+
+When you do pointer arithmatic, you work in increments of what the
+  pointer points to. So if you have a pointer to an int, as in the above
+  example, when you add one to it, you actually make it point to the
+  next int, not the next byte or word. 
+
+This is so that you can have an array of something and move a pointer
+  through the array by ioncrementing it without having to pay 
+  attention to how big your array elements are.
+
+If you want to point to the low byte of x, you might be able to do
+  something like this:
+
+  int x;
+  char * p; /*this assumes that a char is one byte*/
+
+  p = &x;
+  p++;
+
+Be warned that that is pretty non-portable code. What it actually does
+  depends on how big int and char are with the specific
+  compiler/machine combination, and details like byte ordering within
+  words.
+
+The above all applies to "normal" C. I'm not exactl sure how IC would
+  handle it.
+
+  Keith Hearn
+  khearn@legato.com
+
+> 
+> Is it just NOT possible with IC or am I missunderstanding anything ????
+> 
+> Thanks for any help.
+> 
+> --
+> Thomas Hauri
+> ZHW Zuercher Hochschule Winterthur
+> University of applied sciences
+> Technikumstr.9 /PF
+> CH-8401 Winterthur
+> Switzerland
+> 
+> Phone : +41 52 267 74 79
+> Fax    :  +41 52 268 74 79
+> Mail  :   Thomas.Hauri@zhwin.ch
+> HP    :   http://www.zhwin.ch
+> 
+> 
+
+

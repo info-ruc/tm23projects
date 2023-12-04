@@ -1,0 +1,50 @@
+Received: from ns.research.att.com (ns.research.att.com [192.20.225.4]) by cse.psu.edu (8.8.5/8.7.3) with SMTP id RAA19121 for <9fans@cse.psu.edu>; Sun, 9 Feb 1997 17:39:34 -0500 (EST)
+From: rsc@research.att.com
+Message-Id: <199702092239.RAA19121@cse.psu.edu>
+Received: from research.research.att.com by ns; Sun Feb  9 17:38:01 EST 1997
+Received: from p9att.att.com by research; Sun Feb  9 17:36:20 EST 1997
+Date: Sun, 9 Feb 1997 17:35:21 -0500
+To: rsc@corona.research.att.com, 9fans@cse.psu.edu
+Subject: pc audio buffer bug
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+There is a small bug in the buffer handling
+in the PC devaudio (Soundblaster) driver.
+Basically, if you open /dev/audio for writing,
+partially fill a buffer, and then close /dev/audio,
+the buffer doesn't get played.  You notice this
+with smallish sound files, because nothing gets
+played at all when the sound file is less than one
+buffer in size.
+
+My fix is to add 
+	int omode;
+	Buf *b;
+
+at the beginning of 
+/sys/src/9/pc/devaudio.c:/^audioclose
+and in the case Qaudio that follows, insert
+	omode = audio.amode;
+before audio.amode = Aclosed;
+
+Then, before the while(audio.active), insert
+	if(omode == Awrite && audio.filling != 0) {
+		print("flush...");
+		b = audio.filling;
+		audio.filling = 0;
+		memset(b->virt+audio.curcount, 0, Bufsize-audio.curcount);
+		swab(b->virt);
+		putbuf(&audio.full, b);
+		pokeaudio();
+	}
+
+I would post a diff, but I've hacked up devaudio.c
+too much.  Just looking at the code for other 
+architectures, it appears that next/devaudio.c also
+suffers from this bug, while indigo3k/devaudio.c
+does not.
+
+Russ
+

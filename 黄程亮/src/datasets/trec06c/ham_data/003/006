@@ -1,0 +1,77 @@
+Received: by psuvax1.cse.psu.edu id <34022>; Fri, 2 Jun 1995 14:47:00 -0400
+Received: from plan9.att.com ([192.20.225.252]) by psuvax1.cse.psu.edu with SMTP id <33962>; Fri, 2 Jun 1995 14:46:40 -0400
+From:	rob@plan9.att.com
+To:	9fans
+Date:	Fri, 2 Jun 1995 14:44:13 -0400
+Message-Id: <95Jun2.144640edt.33962@psuvax1.cse.psu.edu>
+Sender: owner-9fans
+Precedence: bulk
+Reply-To: 9fans
+
+here is a more thorough but still rudimentary fix to the eqn problem.
+david hogan's fix solves the problem but doesn't address the issue.
+as a side note, the textc() routine illustrates why plan 9 doesn't by
+default use ansi's specification for multibyte and wide characters.
+
+eqn% diff text.c /n/dump/1995/0401/sys/src/cmd/eqn
+40,57d39
+< int textc(void)	/* read next UTF rune from psp */
+< {
+< 	wchar_t r;
+< 	int w;
+< 
+< 	w = mbtowc(&r, psp, 3);
+< 	if(w == 0){
+< 		psp++;
+< 		return 0;
+< 	}
+< 	if(w < 0){
+< 		psp += 1;
+< 		return 0x80;	/* Plan 9-ism */
+< 	}
+< 	psp += w;
+< 	return r;
+< }
+< 
+92c74
+< 		for (psp = p1; (c = textc()) != '\0'; ) {
+---
+> 		for (psp = p1; (c = *psp++) != '\0'; ) {
+115,124d96
+< int isalpharune(int c)
+< {
+< 	return ('a'<=c && c<='z') || ('A'<=c && c<='Z');
+< }
+< 
+< int isdigitrune(int c)
+< {
+< 	return ('0'<=c && c<='9');
+< }
+< 
+129c101
+< 	if (isalpharune(c) && ft == ITAL && c != 'f' && c != 'j') {	/* italic letter */
+---
+> 	if (isalpha(c) && ft == ITAL && c != 'f' && c != 'j') {	/* italic letter */
+134c106
+< 	if (isalpharune(c) && ft != ITAL) {		/* other letter */
+---
+> 	if (isalpha(c) && ft != ITAL) {		/* other letter */
+139c111
+< 	if (isdigitrune(c)) {
+---
+> 	if (isdigit(c)) {
+290c262
+< void cadd(int c)		/* add character c to end of cs */
+---
+> void cadd(int c)		/* add char c to end of cs */
+293d264
+< 	int w;
+315,317c286
+< 	w = wctomb(csp, c);
+< 	if(w > 0)	/* ignore bad characters */
+< 		csp += w;
+---
+> 	*csp++ = c;
+
+
+

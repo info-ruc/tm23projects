@@ -1,0 +1,39 @@
+Received: from imo23.mx.aol.com (imo23.mx.aol.com [198.81.17.67])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA04694
+	for <handyboard@media.mit.edu>; Thu, 21 Jan 1999 08:17:10 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo23.mx.aol.com (IMOv18.1) id JVNa007017;
+	Thu, 21 Jan 1999 08:14:55 -0500 (EST)
+Message-Id: <6bdb967.36a7284f@aol.com>
+Date: Thu, 21 Jan 1999 08:14:55 EST
+To: chhan@hanjung.co.kr, handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: New comer to HB mailing list
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Han ,
+    I think you have a slight misunderstanding of the command fd(motor).  This
+command means START running the motors, not continue running the motors.
+When you hit the switch you need off(motor).  So:
+ void main (void)
+    {
+      fd (0);
+      fd (1); 
+      printf("Hey, you look for power station?!");
+      while (digital(7)==0) {   /* digital(7) input: bumper switch
+                             connection with normal open contact   */
+ /* Do some steering here */
+       }
+       off(0);
+       off(1);
+    }
+ 
+ or in place of off(0) and off(1) you could just call alloff(); which turns
+off all motors.  I dont know what you have motors 3 and 4 doing.
+
+hope this helps
+Pherd
+

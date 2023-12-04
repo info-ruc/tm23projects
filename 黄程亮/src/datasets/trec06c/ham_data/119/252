@@ -1,0 +1,138 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2UGxhY19144
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 11:59:43 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2UGxgcT025374
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 11:59:42 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Thu, 30 Mar 2006 11:59:43 -0500 (EST)
+Message-ID: <4740.128.84.98.90.1143737983.squirrel@webmail.cornell.edu>
+Date: Thu, 30 Mar 2006 11:59:43 -0500 (EST)
+Subject: paper 17 - MULTICASTING
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+
+these set of papers target high-bandwidth data distribution from a single
+source to a number of receivers.
+
+BASIC IDEA:
+split content into smaller sized chunks and distribute disjoint data sets
+for better recovery.
+
+BIT-TORRENT
+it breaks contents into sub-pieces typically 16Kb in size.
+the torrent file contains SHA1 hashes of all pieces and the peers dont
+report that they have a piece until the hash is checked against.
+
+a set of trackers help nodes in finding each other.
+
+a number of requests kept pending to avoid delay b/w pieces being sent.
+
+the order of downloading pieces depends upon the strategy being used. the
+authors discuss that a rarest first strategy serves the necessary purpose
+except when downloading starts(random first used).
+
+"endgame-mode": cancels have to be sent for pieces arrived to prevent
+bandwidth from being wasted on redundant sends.
+
+OPTIMISTIC UNCHOKING:
+allows upload to peers with download rates slower than the best download
+rate. this allows to test the bandwidth of unused connections.
+
+
+ANTI-SNUBBING:
+when over a minute goes by without getting a single piece from a
+particular peer, the requesting node does not upload to that peer (
+assuming it is getting snubbed) - tit-for-tat strategy.
+this can reduce free-riding.
+
+
+
+BULLET
+
+basic idea:
+instead of sending the same data stream to all nodes in a tree and then
+designing scalable mechanisms for recovering from loss, the sender
+transmits disjoint data sets to various points in the network.
+the sender splits the data into sequential blocks. blocks are further
+subdivided into individual objects
+
+which are transmitted over the network. nodes receive a subset of the
+entire data objects from their parents but they are responsible for
+locating peers that hold the missing data objects. locating peers
+
+requires storage of state information that has to be updated using
+periodic dissemination of changing, uniformly random subsets of global
+state. RanSub achieves this purpose using collect and distribute messages.
+
+objects may be encoded to make data recovery more efficient.
+
+each node receiving a packet will optionally forward it to each of its
+children depending on factors related to the child's bandwidth and
+relative position in the tree. for this purpose it maintains a sending
+factor and a limiting factor. the sending factor is based on the number of
+descendants a node has while the limiting factor represents the proportion
+of the parent rate beyond the sending factor that each child can handle.
+
+calculating the sending factor requires knowledge of number of descendants
+of each node that is a child of the current node.
+
+
+each node maintains a working set of packets it has received ( indexed by
+sequence numbers).
+
+improving mesh:
+each node keeps a trial slot in its sender list which helps in elimination
+of senders that send greater amounts of duplicate packets.
+similarly a sender keeps a trial receiver.
+
+
+
+SPLITSTREAM
+
+the content is split into k stripes and each stripe is multicast using a
+separate tree.
+
+in a tree based multicast system, the burden of duplicating and forwarding
+multicast traffic is carried out by the interior nodes of the tree.
+
+the main goal is to balance across all nodes. this raises the challenge of
+constructing a forest of trees such that an interior node in a tree is a
+leaf in the remaining trees.
+
+
+the authors use scribe ( an application level group communication system)
+interior-node disjoint trees are created using a different msb for the
+group-id.
+
+a node's outdegree is limited by a "push-down" mechanism - if a node has
+reached its maximum outdegree capacity, it asks the requesting node to
+communicate with its children.
+
+
+SPARE CAPACITY GROUP :
+this is a special scribe group which consists of nodes who have not
+reached their outdegree capacity.
+
+this group can be used by a node to find a parent. cycles need to be taken
+care of in this mechanism.
+
+
+POSSIBLE FLAWS:
+splitting the content into same number of stripes, irrespective of the
+content size, does not seem a good idea.
+
+
+
+
+
+
+

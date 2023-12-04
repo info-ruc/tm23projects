@@ -1,0 +1,80 @@
+Received: from mail.montana.com (mailA.montana.com [199.2.139.116])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA03596
+	for <handyboard@media.mit.edu>; Wed, 10 Feb 1999 16:59:25 -0500 (EST)
+Received: from cs.umt.edu (mso4-195.montana.com [208.4.224.195])
+	by mail.montana.com (8.9.2.Beta4/8.9.4) with ESMTP id PAA28068
+	for <handyboard@media.mit.edu>; Wed, 10 Feb 1999 15:02:52 -0700 (MST)
+Message-Id: <36C200E3.499410B4@cs.umt.edu>
+Date: Wed, 10 Feb 1999 14:57:55 -0700
+From: Will Bain <willbain@cs.umt.edu>
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Polaroid Sonar Questions
+References: <36C083C2.FB0F3882@iname.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Mime-Autoconverted: from 8bit to quoted-printable by aleve.media.mit.edu id QAA03596
+
+Nick Taylor wrote:
+> I'm looking for help/advice with my sonar setup.
+<snip>=20
+> 1. How to deal with "jitter" of about =B11 cm at all ranges.  My
+>    tentative solution is to average 3 or 4 readings.
+> 2. How to deal with the occasional (once out of 10 or 20 pings)
+>    large error.  My tentative solution is to discard ranges that
+>    have changed a "large" amount since the previous reading ...
+>    faster than the 'bots max velocity ... but what about a
+>    rapidly approaching predator such as my cat?
+
+I found that returning the median (middle value) of three successive
+readings filters out the noisy readings quite well--especially the
+occasional large error.  Just a couple nested if-then statements are
+needed.
+
+
+> 3. How to determine when the minimum reliable range has been
+>    reached.  Tentative: just discard anything less than 20 cm.
+
+Sure, that sounds about right.
+
+
+> 4a.Are my time of flight calculations correct?  Polaroid implies
+>    that the speed of sound is about 1.1 feet/sec.  My reference
+>    says 331.6 m/sec at 0=B0C and approx. 354 m/sec at 20=B0C (68=B0F).
+>    If my grade school math is correct this works out to a sonar
+>    inch (out and back time) equal to 143.5 usec (287 counts) and
+>    a sonar centimeter of 56.5 usec (113 counts).
+> 4b.Using Dr. Martin's sonar.c to test the 6500 the about figures
+>    give reasonably accurate readings, but it is necessary to
+>    subtract about 1000 counts (0.5 msec) from the returned result
+>    prior to converting to inches or centimeters.
+
+When I calibrated mine, the counts per cm ended up about 143 (maybe
+because I live up in the thin air?)
+
+
+> 5. How best to implement the software to take full advantage of
+>    the 6500's capabilities?
+>=20
+> I intend using Adam Cox's four transducer hookup at:
+> http://el.www.media.mit.edu/groups/el/projects/handy-board/software/con=
+trib/adam/mxducr1.gif
+
+There's a lot to be said for simple solutions.  The Seattle Robotics
+Society web site had a great page about sonar (I don't know if it's
+still there).  It described overlapping the 10-degree fields of "view"
+of a couple of sonar transducers by five degrees to provide a 15-degree
+field with 5-degree effective resolution.  I plan to follow their lead.=20
+I'll let you all know how it turns out.  Have a blast.
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,            If you steal from one author, it's plagiarism;
+Will Bain,                       if you steal from many, it's research.
+& Tatoosh                                               --Wilson Mizner
+

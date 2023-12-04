@@ -1,0 +1,65 @@
+Received: from hq.freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id OAA12594
+	for <handyboard@media.mit.edu>; Mon, 4 May 1998 14:50:28 -0400 (EDT)
+Received: (qmail+freegate 5326 invoked by alias); 4 May 1998 18:50:27 -0000
+Received: from ws163.hq.freegate.com (HELO freegate.com) (208.226.86.163)
+  by ns.hq.freegate.com with SMTP; 4 May 1998 18:50:27 -0000
+Message-Id: <354E0E84.2B4F64A4@freegate.com>
+Date: Mon, 04 May 1998 11:52:52 -0700
+From: Chuck McManis <cmcmanis@freegate.com>
+Reply-To: cmcmanis@freegate.com
+Organization: FreeGate Corporation
+X-Mailer: Mozilla 4.04 [en] (Win95; U)
+Mime-Version: 1.0
+To: Mike Davis <ipscone@halcyon.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: LCD Addressing - & - Expanded Mode
+References: <199805041838.LAA04553@smtp4.nwnexus.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+From the driver code I recently sent out:
+ * LCD Connections on the Handyboard
+ *	PORTB bit 0 - R/W
+ *	PORTB bit 1 - RS (Register Select, 0 = instruction)
+ *	PORTC 8 bits of Data
+ *	PORTA bit 4 - E clock
+
+Mike Davis wrote:
+> Does this mean that the LCD is NOT memory mapped?
+
+That is correct, the LCD is NOT memory mapped, it is connected
+directly to the pins on the 68HC11 that become ports A, B, and C
+in "single chip" mode.
+
+> Do I first have to write to Port B then write to Port A, to clock 
+> it.
+
+That is correct.
+Something like:
+	Write B
+	Write C (this is your data)
+	Write the clock high
+	NOP
+	Write the clock low
+(The NOP is to insure the timing requirements of the LCD are met,
+you can leave it out but it can screw up when the LCD is cold)
+
+> This must mean that I have to go into and out of expanded mode to 
+> use both the LCD and the SRAM?  That's kinda wierd.
+
+Not exactly, it means the SRAM is unavailable to you when you are
+in single chip mode, however there is at least 256 bytes of RAM
+addressed at address 0 that is available (its inside the
+processor). It's not "kinda" weird, it is very, very weird. 
+ 
+> Anything else you can point me to as far as addressing the LCD and
+> accessing SRAM via assembly code?
+
+Other than the source I sent out? Not really. Note that you can't
+address SRAM easily in single chip mode. I suspect it is possible
+but it is much easier to copy stuff from SRAM into the first 256
+bytes before you switch into single chip mode.
+
+--Chuck
+

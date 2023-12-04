@@ -1,0 +1,88 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1G7MZt04154
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 02:22:35 -0500 (EST)
+Received: from [10.0.1.2] (cpe-69-207-41-159.twcny.res.rr.com [69.207.41.159])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1G7MZBO010977
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 02:22:35 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <3149C7F1-1A96-454B-8DFC-91E7192E7207@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 7
+Date: Thu, 16 Feb 2006 02:25:16 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+GEOPEER
+GeoPeer is Peer-to-Peer overlay network designed to support location  
+aware operations.  Rather than randomly hashing node IP addresses  
+into an identifier space, node locations in GeoPeer are the node's  
+identifier.  A number of long range contacts keeps the diameter of  
+the GeoPeer network low.  Objects to be stored in the network are  
+hashed to virtual positions in the physical space.  Routing as well  
+as partitioning the object identifier space for ownership in GeoPeer  
+is based on Delaunay triangulation.  Directly correlating location in  
+the GeoPeer identifier space to the underlying network allows at  
+least two interesting services, including geographically scoped  
+multicast, and geographically scoped queries.
+
+GeoPeer has several mechanisms  to reduce the diameter of the  
+network, all using long range connections (LRCs).  The first is what  
+the authors call hop level, where by which a maximum number of hops  
+per query is arbitrarily set.  If a node cannot reach an object, it  
+forms a LRC with the node furthest towards the target and retries the  
+query.  Another mechanism is called hit count balancing.  LRCs are  
+evenly distributed throughout the network.  Periodically, often used  
+LRCs are split and less used are removed.  The final mechanism,  
+called small world, divides the  identifier space into a number of  
+smaller regular segments and chooses a random subset of centers of  
+these segments as LRCs.
+
+Unfortunately GeoPeer produces a range of O(log N) to O(log^2 N)  
+lookups depending on the LRC scheme, which is not notably good  
+compared to other DHT schemes.
+
+
+P-TREES
+The primary purpose of the P-Tree structure is to allow structured  
+queries such as range queriesand equality queries, which cannot be  
+achieved in many DHT schemes due to the random hashing of object IDs  
+into the identifier space.  The P-Tree is in essence a distributed  
+set of semi-independent partial B-Trees.  Partial overlap between sub- 
+trees is allowed to allow independent tree changes and keep  
+coordination traffic low.  A node stores keys which fall on it's  
+leftmost root-to-leaf path.  This results in a predecessor/successor  
+situation where the Chord algorithm is used to maintain the leftmost  
+root-to-leaf path criteria.  Periodic stabilization and ping  
+processes are used to detect node failures and keep the tree  
+structure even to maintain O(log N) queries.  There is a tradeoff in  
+this structure between the width of a tree at each node and the depth  
+of the entire P-tree, trading off query latency for node insertion/ 
+deletion cost.  Dynamically optimizing aspect ratio of the P-tree is  
+an issue not addressed by the authors.  P-Trees do, however, allow  
+for efficient range queries, which can similarly be achieved by  
+GeoPeer with geographically scoped queries.
+
+MERCURY
+Mercury differs from GeoPeer and P-Trees in that is supports multi- 
+attribute range queries.  It does however yield O(log N) lookup times  
+and does not hash objects randomly across the identifier space.   
+Therefore, it also requires a periodic load balancing system to  
+maintain an even distribution of objects across nodes.  Mercury  
+routing functions as follows:  Nodes are organized into attribute  
+hubs for an attribute, with hubs as orthogonal in a virtual space  
+with one dimension in that space for each attribute.  Nodes within a  
+hub are arranged in a ring structure.  The first hop of a query is  
+towards the appropriate hub, with further matching taking place  
+around the ring of nodes associated with that hub.  Within these  
+rings, there are long distance links which reduce the object search  
+times.
+
+Nodes within this ring keep a number of successor and predecessor  
+links, allowing maintenance of the ring when nodes join or leave the  
+network.  Also, a random walk scheme is used to periodically estimate  
+the state of the network and potentially rebalance the hubs.
+

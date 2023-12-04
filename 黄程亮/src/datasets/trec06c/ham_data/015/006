@@ -1,0 +1,67 @@
+Received: from twins.twi.ch (twins.twi.ch [160.85.128.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id DAA03836
+	for <handyboard@media.mit.edu>; Fri, 17 Apr 1998 03:40:54 -0400 (EDT)
+Received: from twi.ch (alepc6.twi.ch [160.85.129.237])
+	by twins.twi.ch (8.8.8/8.8.8) with ESMTP id JAA01114;
+	Fri, 17 Apr 1998 09:40:16 +0200 (MET DST)
+Message-Id: <3537077D.F23B21C5@twi.ch>
+Date: Fri, 17 Apr 1998 09:40:46 +0200
+From: Thomas Hauri <har@twi.ch>
+Organization: Technikum Winterthur Ingenieurschule
+X-Mailer: Mozilla 4.03 [de] (WinNT; I)
+Mime-Version: 1.0
+To: "Jonathan K. Church" <churchie@nwu.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: polaroid sonar problems
+References: <3.0.3.32.19980416121949.006bfcec@lulu.acns.nwu.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi all
+
+if anyone has problems using the 6500 series for distances below 35cm by
+using the binh signal I have a possible solution to the problem. We also
+expierienced problems using the sensors for distances between 15cm and
+40cm. We finally found out that the digital chip (TL851) on the 6500
+board gets huge voltage spikes making it detect an echo even if there
+was none.
+We solved the problem by adding an additional capacitior to the
+powersupply.
+
+THE REWORK
+Solder a tantal c (1uF) directly to pin 3(Gnd) and pin 1 (+) of chip U2
+(TL851).
+
+This will filter the spikes keeping them from droping below 2.5 V.
+If anyone has a better way of solving this problems please tell me.
+
+cu                      TOM
+
+
+
+
+
+
+> We continue to progress on our first robot here at Northwestern but have run into a problem with our sonars. We have run out of solutions to try and would appreciate any help from people experienced with the polaroid sonar modules.
+>
+> Our sonar is hooked up to our Handy Board following the "offical" instructions. The unit itself is mounted on an acrylic stand where it is pressed into place to hold it. We have also loaded the code as it appears on your website:
+>
+> http://el.www.media.mit.edu/groups/el/Projects/handy-board/software/sonar.html
+>
+> Unfortunately, when we execute the program all that we get on the display are random numbers (usually around 800 and 1125). It makes no difference how far away we are from the wall we are trying to measure.
+>
+> Our real probelm seems to be to get the correct echo to trigger the timing loop. As it stands, a count of 800 corresponds to a distance of .22 ft which is closer than the board can measure and much closer than our wall. Have you seen this problem before? Do you have any advice on how to correct it?
+>
+> Thanks for your help. If you need more information please e-mail me and I will get it to you asap.
+>
+> Jon Church
+>
+> ----------------------------------------------------------------------------------
+> Jonathan K. Church
+> churchie@nwu.edu
+> (847) 332-6829
+> ----------------------------------------------------------------------------------
+
+
+
+

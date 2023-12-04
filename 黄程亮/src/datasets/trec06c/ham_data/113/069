@@ -1,0 +1,50 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0VGvR424135
+	for <egs@unix.cucs>; Tue, 31 Jan 2006 11:57:27 -0500 (EST)
+Received: from exchfe1.cs.cornell.edu ([128.84.97.33]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 31 Jan 2006 11:57:27 -0500
+Received: from [192.168.0.6] ([65.110.147.185]) by exchfe1.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 31 Jan 2006 11:57:26 -0500
+Message-ID: <43DF96C9.7070808>
+Date: Tue, 31 Jan 2006 11:56:41 -0500
+From: Tudor Marian <tudorm>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: egs+summary
+Subject: PAPER 2
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 31 Jan 2006 16:57:26.0873 (UTC) FILETIME=[6A135490:01C62687]
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.2 required=5.0 tests=AWL,BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+Chord differs from Pastry in several key points. Both overlays split the 
+identifier space into a modulo n ring, but in Chord's case the keys are 
+located at the node with the immediately successor id, as opposed to 
+Pastry where a node is responsible for the keys who's id's are closer to 
+the node's id. As a consequence, Chord doesn't require any leaf set, and 
+the routing table consists of m entries (m is the number of bits the 
+keys have) such that the i-th entry in the table of node n holds the 
+first node that succeeds n by at least 2^{i-1} in the circle.
+
+Chord doesn't make any use of proximity metric, hence it may not take 
+advantage of locality, which is the case of Pastry. Node joining is 
+different as well, a new chord node n that knows about n' and wants to 
+join will delegate the task of filling in it's finger table to n'. This 
+has an upper bound of O(m logN), which is more than the O(log N) in 
+Pastry's case. Each Chord node runs a stabilization periodic algorithm 
+to take care of churn, moreover nodes keep not just the finger routing 
+tables but predecessor pointers as well.
+
+Tapestry is very much like Pastry, both in the way the routing works 
+with prefix/suffix of addresses/ids, insertion and deletion algorithms 
+and storage overhead costs. Tapestry however caches object pointers 
+along query routes as opposed to PAST's replica placement of objects at 
+several nodes with node id in the vicinity of the object's id.
+
+
+Tudor
+

@@ -1,0 +1,36 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2G7hHt02372
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 02:43:17 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2G7hHUd018562
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 02:43:17 -0500 (EST)
+Message-ID: <1452781051.1142494995483.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 16 Mar 2006 02:43:15 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 15
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+The papers to be discussed today present schemes to communicate anonymously over the Internet. Crowd achieves this by routing messages through different, potentially random paths. P5 scales the broadcast protocols by allowing anonymous connections through a logical broadcast hierarchy. DC-Net provides a framework for unconditional anonymous communications, which forms the basis of Herbivore, a peer-to-peer file sharing system with anonymity.
+
+<Comments>
+Crowd can't resist statistic correlation attacks. The noise packets of P5 imply heavy load over the Internet all the time. DC-Net and Herbivore are vulnerable to disruption attacks.
+
+<Crowd>
+* In Crowd, a sender delivers by passing his/her messages to a randomly chosen member. That member either delivers the messages to the receiver or forwards them to a randomly chosen member, so on and forth. Any member on the path, as a successor to route the messages, can't tell whether his/her predecessor initiates or simply forwards the messages. However, if the attacker can trace the whole traffic over the Internet, he/she can identify the originator.
+
+<P5>
+* P5 provides scalability for anonymous broadcast protocols as follows: Each node in P5's binary tree corresponds to a broadcast channel. It is represented by (bit-string/bit-mask) pairs. A user participates as a member of some node whose bit-string can act as a prefix of his/her key's hash value. The bit-mask i.e., hierarchical level, is decided independently based on the user's security policy: the lower levels increase communication efficiency at the expense of decreased anonymity and vice versa. Users communicate via a common channel.
+* P5 is subject to two attacks: (Difference Attack) If A has communicated with someone via a channel of level v, he/she should avoid responding to a message delivered to the channel of level < v, since in this way attackers can map A to a smaller set of users. (Intersection Attack) Because participants may exist in a set of groups as they need to communicate with each other via a common channel, their anonymity might be reduced by the intersecting sets they appear. It is therefore important for users to communicate through only one anonymous group.
+
+<DC-Net>
+* DC-Net transmits messages in the following way: Suppose there are three participants A, B and C. (We say that A, B and C form an anonymous set.) Each pair of them tosses a coin in secret, namely AB, BC and CA. Basically, everyone reports the XOR of his/her coin tosses for every transmission. If one of them (A) wants to transmit a one-bit message m, he/she reports the XOR of his/her coin tosses with the message. In this case, the overall parity of their reports turns out to be m. Neither B nor C knows the bit is delivered by A because B has no idea about CA and C has no idea about AB.
+* (1) Scalability is a problem of DC-Net since it requires N^2 secrets shared by all participants. (2) Randomness of the secrets shared by participants is essential to this scheme. In the cryptographic system, this is generally achieved by having two participants share a secret key and use that as the seed to generate a pseudo-random sequence. (3) Underlying communication techniques is another concern. Star topology is more efficient than ring topology communication systems in delivery of messages. (4) An anonymous protocol for participants to reserve transmission slots is required.
+
+<Herbivore>
+* Herbivore adapts the scheme of DC-Net and scales through a divide-and-conquer approach that partitions the system into several anonymizing cliques. It allows participants to anonymously sign up for slots before transmission so as to avoid collisions. File queries and transfers are conducted within each anonymizing clique. Inter-clique communications are carried out by proxies.
+* One issue of Herbivore is that one malicious participant is sufficient to anonymously disrupt the whole transmission. Another issue on the anonymizing cliques is its locality. Since they are formed according to the participants' identifiers strictly, nodes located at different areas may exist in an anonymizing clique, thereby causing long propagation latency. The protocol might be loosened in such a way that forms several anonymizing cliques across a range of identifier space, each accommodates participants geographically nearby.
+

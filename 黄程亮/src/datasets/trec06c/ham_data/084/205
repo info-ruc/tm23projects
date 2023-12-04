@@ -1,0 +1,98 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gA5FPhP13023
+	for <ggilfoyl@facstaff.richmond.edu>; Tue, 5 Nov 2002 10:25:43 -0500
+Received: from urmail-ag.richmond.edu (urmail-ag.richmond.edu [141.166.183.2])
+	by argyle.richmond.edu (8.11.6/8.11.6) with ESMTP id gA5FOe417188
+	for <ggilfoyl@richmond.edu>; Tue, 5 Nov 2002 10:24:40 -0500
+Received: by urmail-ag.richmond.edu with Internet Mail Service (5.5.2653.19)
+	id <VBF90S90>; Tue, 5 Nov 2002 10:24:40 -0500
+Message-ID: <C1F927C74082D311A25B00508B5BFF1702C97543@urmail-oz.richmond.edu>
+From: "Stefanovski, Sasko" <sstefano@richmond.edu>
+To: "Gilfoyle, Gerard" <ggilfoyl@richmond.edu>
+Subject: RE: Richmond cluster is upgraded
+Date: Tue, 5 Nov 2002 10:24:33 -0500 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Status: RO
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004187
+
+Jerry,
+
+I changed /etc/hosts.allow and /etc/hosts.deny file yesterday according to
+the changes we did couple a weeks ago. That change should not affect users.
+
+About user directories, you can't make link unless you actualy move user's
+data to the new location in /usr/home, and then delete /home directory (the
+link could not be created over an existing directory).
+
+What can also be done is to edit /etc/passwd file (with vipw command) and
+change the default home directory for users from /home to /usr/home (after
+moving their data from /home/<user> to /usr/home/<user>). Then you will not
+need to create link, since the user's home directory would be changed.
+
+Sasko
+
+-----Original Message-----
+From: gilfoyle [mailto:ggilfoyl@mindspring.com]
+Sent: Tuesday, November 05, 2002 2:30 AM
+To: Mike Vineyard; luminita@jlab.org; Stefanovski, Sasko
+Subject: Richmond cluster is upgraded
+
+
+hi folks,
+
+status of the cluster:
+
+1. we successfully completed the upgrade of the cluster to RH 7.2 and 
+Nimbus this afternoon. thanks go to steven james at linux labs and 
+sasko.
+
+2. all of the previous user files were successfully restored in 
+/usr/old-home. you can copy over the files to your new area.
+
+3. right now users log into the /home/your_name directory. however, 
+the partition that holds the /home area is too small (only about 500 
+MB) so i will make a symbolic link from /home to /usr/home and keep 
+the user directories there. if anyone has other ideas, let me know. 
+i'll do this tuesday morning.
+
+4. i've added the following user accounts: vineyard, luminita, 
+gilfoyle, and arayner. i've given everyone a temporary password. just 
+call me at 804-289-8284 or 804-289-8784 to get the password or leave a 
+message telling where and when i can call you.
+
+5. i've modified the TCL wrappers configuration files. actually, i 
+just copied over the files from psc1 and changed them. you will have 
+to modify your .ssh/known_hosts file. you need to eliminate any 
+references to pscm1.
+
+6. just for your information, you still log into pscm1, but this 
+machine is actually the old secondary. the machines were switched to 
+make the upgrade go more smoothly.
+
+7. we still have to install software. i was planning on getting root, 
+PAW, and cernlib in place on tuesday. 
+
+8. luminita, do we have to rebuild the clas software? if so, can you 
+do it and tell us where everything is located.
+
+9. what over software do we need on the cluster?
+
+10. i hope to unleash the cluster late tuesday after i get root 
+installed to see if we can really run this baby to the max.
+
+later,
+
+jerry
+
+
+-- 
+Dr. Gerard P. Gilfoyle
+Physics Department                e-mail: ggilfoyl@richmond.edu
+University of Richmond, VA 23173  phone:  804-289-8255
+USA                               fax:    804-289-8482
+

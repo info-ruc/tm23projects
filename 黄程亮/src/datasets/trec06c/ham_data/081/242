@@ -1,0 +1,54 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id g5JKSNb19759;
+	Wed, 19 Jun 2002 16:28:23 -0400
+Received: from webmail.richmond.edu (newman.richmond.edu [141.166.188.61])
+	by argyle.richmond.edu (8.11.6/8.11.6) with ESMTP id g5JKLZW28443;
+	Wed, 19 Jun 2002 16:21:35 -0400
+X-WebMail-UserID:  fchinchi@richmond.edu
+Date: Wed, 19 Jun 2002 16:21:35 -0400
+Sender: Francisco Chinchilla <fchinchi@richmond.edu>
+From: Francisco Chinchilla <fchinchi@richmond.edu>
+To: mvineyar@richmond.edu
+Cc: aiqbal@richmond.edu, ggilfoyl@richmond.edu, prubin@richmond.edu
+X-EXP32-SerialNo: 00003277
+Subject: cube status
+Message-ID: <3D10C2CC@webmail.richmond.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebMail (Hydra) SMTP v3.61
+Status:  O
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb2673000034e4
+
+I succesfully ran about 200 of the h2root files on the old cluster when the 
+cube crashed.  I attached a monitor and did the following:
+
+1) restart network...nope.  Still couldn't get a "df" on psc1, it would hang, 
+and "cd /net/pscr1/" gave a a "service not available" msg.
+
+2) I hit the green button and the system would hang when probing pci bus #4.  
+One of the hard drives was making a funny noise and taking a bit longer before 
+its light turned off during bootup.  I called raidzone and they said that one 
+of the hard drives probly went bad (which is the case) and that since we were 
+using RAID0 we lost all the data.  I am tinkering right now with the hard 
+drive that went bad to see if I can get anything out of it.  I will try to see 
+if we can salvage the other data and lose just the one that was in the bad 
+hard drive, but that may be impossible to do.  I will keep you posted as soon 
+as I have more news.
+
+"Did u back up the data?"
+No.  It is quite hard to back up over 250GB of data. I am not sure we have 
+enought tapes to even do that.  I believe that is why the different levels of 
+RAID exist, even though you do lose usable disk space, there is some 
+redundancy and recovery from an error is feasible.
+This might be a good time to move all the data from pscm1:/data# into data1, 
+and then switch data2 and data3 from RAID0 to another RAID (5 or 10), then do 
+the same for data1.
+Of course, you can always argue that the data could be re-downloaded, etc, so 
+it really is your call.  I can send statistics on space lost and all that from 
+each RAID configuration if you want me to.
+
+Francisco Chinchilla
+

@@ -1,0 +1,113 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j2SFaxFJ001641
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 28 Mar 2005 08:36:59 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 0BFB3A82B5C
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 28 Mar 2005 08:36:59 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-6.dsl.arizona.edu [128.196.237.6])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 72E4CA82DF7
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 28 Mar 2005 08:36:58 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050328082618.00ba4690@psy1.psych.arizona.edu>
+Date: Mon, 28 Mar 2005 08:36:56 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: question about randomization
+In-Reply-To: <20050328143140.62813.qmail@web17703.mail.tpe.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 10:31 PM 3/28/2005 +0800, you wrote:
+>Hi all,
+>I have problems about randomization in my experiment
+>using implicit priming paradigm so I'm writing to the
+>mailing list.
+>There are four conditions in my experiment and I want
+>them to appear in fixed order.
+
+   Then you want to have a scramble emit command, the back slash, between 
+each block at the start of a line.  Like this:
+
+\
+
+>  In each condition,
+>there are six blocks and I want them to appear
+>randomly. In each block, there is a bitmap file
+>followed by three randomized items. How can I make it
+>work as I wish? Where should I put $ in my script?
+
+   You'll have to use the multi-scrambling options for such a complex 
+job.  There's an example in the help that's almost exactly what you want, 
+look at
+
+http://psy1.psych.arizona.edu/~jforster/dmdx/help/dmdxhmultiscramblingscramblekeyword.htm
+
+   Your backslash mentioned above will have to become a <ms\ 1> but other 
+than that it's a direct rip from the first example.
+
+
+>Below is a simplified version of my script (suppose
+>there are two condictions,homo-seg and homo-fea, and
+>each condition has two blocks):
+>
+>N78  <s 78> <g 3> <azk> <cr> f38 <t 1500> <dwc
+>000000000> <dbc 255255255> <id "keyboard"> <mr +Space>
+><id "RecordVocal"> <nfb> <id "digitalvox"> <eop>
+>$
+>0<bmp> "Intro.bmp" ;
+>250 <ms% 1500>/ ;
+>$
+>
+>0<bmp> "homo-seg set1";
+>+1 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"¸õ"
+>/<ms% 1500> /;
+>+2 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"Åx"
+>/<ms% 1500> /;
+>+3 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"Å}"
+>/<ms% 1500> /;
+>
+>0<bmp> "homo-seg set2";
+>+4 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"¼Ó"
+>/<ms% 1500> /;
+>+5 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"¨í"
+>/<ms% 1500> /;
+>+6 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"·I"
+>/<ms% 1500> /;
+>
+>0<bmp> "homo-fea set1";
+>+7 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"¸õ"
+>/<ms% 1500> /;
+>+8 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"Åx"
+>/<ms% 1500> /;
+>+9 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/ *"±i"
+>/<ms% 1500> /;
+>
+>0<bmp> "homo-fea set2";
+>+10 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/
+>*"©ñ" /<ms% 1500> /;
+>+11 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/
+>*"¼s" /<ms% 1500> /;
+>+12 <bgc 255255255> <dwc 00000000>"+" /<ms% 500>/
+>*"Å}" /<ms% 1500> /;
+>
+>Is there anyone doing implict priming paradigm with
+>DMDX before?
+
+   Dozens of them.
+
+>  Any help would be appreciated a lot.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Where there is sugar, there are ants.
+                                              - Malaysian Proverb
+
+
+
+

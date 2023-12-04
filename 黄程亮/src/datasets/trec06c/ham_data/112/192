@@ -1,0 +1,75 @@
+Received: from olive-green.cs.utexas.edu (rossbach@olive-green.cs.utexas.edu [128.83.144.102])
+	by nobodaddy.cs.utexas.edu (8.13.5/8.13.5) with ESMTP id k0PM2Vm9003310
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <cs395t-mark@cs.utexas.edu>; Wed, 25 Jan 2006 16:02:31 -0600 (CST)
+Received: (from rossbach@localhost)
+	by olive-green.cs.utexas.edu (8.13.5/8.13.5/Submit) id k0PM2V7U029658
+	for cs395t-mark@cs.utexas.edu; Wed, 25 Jan 2006 16:02:31 -0600
+X-Authentication-Warning: olive-green.cs.utexas.edu: rossbach set sender to rossbach@cs.utexas.edu using -f
+Subject: PAPER for 1/26/06: Architectural Optimizations for Low-Power,
+	Real-Time Speech Recognition
+From: Chris Rossbach <rossbach@cs.utexas.edu>
+Reply-To: rossbach@cs.utexas.edu
+To: cs395t-mark@cs.utexas.edu
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Organization: University of Texas at Austin, Computer Science Dept. 
+Date: Wed, 25 Jan 2006 16:02:31 -0600
+Message-Id: <1138226551.28039.21.camel@olive-green.cs.utexas.edu>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.3 
+
+http://www.eecs.umich.edu/%7Etaustin/papers/CASES03-speech.pdf
+
+Greetings All-
+
+My ambitions were to send out this brief missive/reminder a bit earlier,
+which I think would have been more in line with the proper procedure.
+Hopefully my shortcomings in this regard will not set a precedent. 
+
+Nonetheless, below are some questions to consider, in no particular
+order. If I am not mistaken, the questions are just food for thought:
+your answers, should you choose to actually write them down, will be
+neither collected nor graded:
+
+* Consider the sensitivity of recognition performance and total energy
+consumption to initial partitioning of data/knowledge base. The claim is
+that a partitioning has been chosen that maximizes load balancing,
+minimizes scheduling logic complexity, maximizes PE utilization. So
+initial state seems to matter, but later load-balancing and
+software-based migration are shown to have non-trivial effect. Is there
+tension between these claims?
+
+* The paper claims that PE's not exposing ILP results in 15% savings on
+scheduling and issue logic. What other tradeoffs are at work here, and
+why does this design decision make sense? In general, total energy
+savings are gained in this work by using more power for a shorter time.
+Is the pipeline architecture chosen for the PE's an obvious choice under
+these assumptions? 
+
+* No cache coherence protocols are used between PEs in this work. What
+assumptions are made that allow this? What is gained and lost by this
+decision? 
+
+* What are the constraints imposed on the programming model by this
+architecture? Are they realistic/acceptable? 
+
+* THREAD-SPAWN instruction models a function call and can be converted
+dynamically to a function call. When might such a conversion be handy or
+necessary? How general is this mechanism?
+
+* In the speech co-processor PEs, newly spawned threads may not execute
+if their UID matches the UID of a currently executing thread. Why is
+this necessary? Are there important tradeoffs associated with this
+decision? 
+
+Finally, following the precedent of posing extra credit questions in a
+context where no credit was ever really at stake: 
+
+EXTRA CREDIT:
+* How many 3-D graphs are in this paper? Would more be better? 
+
+Cheers,
+Chris
+
+

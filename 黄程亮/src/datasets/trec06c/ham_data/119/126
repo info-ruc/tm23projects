@@ -1,0 +1,159 @@
+Received: from pproxy.gmail.com (pproxy.gmail.com [64.233.166.183])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2S066Y00917
+	for <egs+summary@cs.cornell.edu>; Mon, 27 Mar 2006 19:06:06 -0500 (EST)
+Received: by pproxy.gmail.com with SMTP id s49so1584943pyc
+        for <egs+summary@cs.cornell.edu>; Mon, 27 Mar 2006 16:06:05 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=M5SgUSpDbJM6ExpMzUJ48F9qFo93027pRT+8bQmjkm4phhrwuOt7kTeJdHHIY294HqjDvLYidzI8nGMmkyjlAOFs6cSgr5k4SIQFLXOGetYCwW2ZNLaGC69BkRXTdcQIHu5VoySGoJG7wNq4BOEJHMkBNyjj07zWuzCtlf15qDk=
+Received: by 10.35.49.4 with SMTP id b4mr1829417pyk;
+        Mon, 27 Mar 2006 16:06:05 -0800 (PST)
+Received: by 10.35.61.2 with HTTP; Mon, 27 Mar 2006 16:06:05 -0800 (PST)
+Message-ID: <9aa7a97d0603271606x59513eeci60c27ca54d41ba92@mail.gmail.com>
+Date: Mon, 27 Mar 2006 19:06:05 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 14
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_8131_17142571.1143504365295"
+
+------=_Part_8131_17142571.1143504365295
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+    EigenTrust
+    Hector Garcia-Molina
+
+    Attempting to deduce the trust values to place in entities and objects
+removed from oneself in the network, EigenTrust uses a system of "entities
+rating entities" to discover not just the trust that A places in B (in orde=
+r
+to aggregate and so determine whether B should be trusted), but the
+aggregate trust placed in A by the network as a whole, via the observation
+that by asking ones friends, and ones friends of friends, and so forth, one
+creates a completely connected segment which should be equal to the entire
+network. This turns out to be a problem equivalent to solving for the
+principal eigenvector of a matrix whose entries represent localized trust
+value measurements. Key insights include the rarity of individual
+client-client interactions, leading to sparse matrix representation and
+relatively low coordination message overhead, and that piecewise computatio=
+n
+of this matrix function converges relatively quickly, having each individua=
+l
+node calculate its own trust function (conceptually only, due to security
+flaw! In actuality, M deterministically-selected trust-manager peers
+calculate this value on behalf of each node).
+    As the paper points out, the difficulty with this algorithm is that its
+end result is universally viewed, which means that there is no information
+assymetry in the network which can be leveraged, which will almost
+universally result in the best possible peer being isolated, and used,
+leading to an accrual of trust, which will cause the problem the escalate.
+The probabilistic algorithm will fix this, but is something of an altruisti=
+c
+solution, since it relies on each individual accepting the choice of a
+suboptimal path to patch a "black hole" in the system. Their attacker model
+is sufficiently malicious, but their experiments seem to leave something to
+be desired; the subtext is that the effect is visible in the small scale,
+but that the data in the large scale experiments are too large to fully
+study. However, these data are not presented; presumably the effect is
+cleaner in a small network.
+
+    Robust Reputation System for P2P and Mobile Ad-hoc Networks
+    Jean-Yves Le Boudec
+    Another attempt at validating entities in a distributed fashion, this
+paper uses another reputation scheme, attempting to strike the happy medium
+between considering the reports of others and relying entirely on
+self-generated interactions. It does this by pushing first hand information
+out into the network, based on a modified Bayesian approach and a linear
+model merging heuristic, leaving reputation & trust ratings as private. It
+does this in the absence of primary trusted entities (the seed values that
+EigenTrust relies on). It uses reputation fading, to keep ratings "current"=
+,
+and is exceedingly noncentralized.
+    Not much space is given in the paper, to using others' deduced trust
+values, just first hand operations. This means that while the system can be
+quite scalable, as it relies only on local data about any entity who is to
+be interacted with, it gives the impression of being lower overhead than
+EigenTrust without actually being so; if one wishes to later interact with =
+a
+remote entity, to look up its rating requires just as much work, and the
+calculation is not particularly easier here, merely a different metric.
+
+------=_Part_8131_17142571.1143504365295
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+&nbsp;&nbsp; &nbsp;EigenTrust<br>
+&nbsp;&nbsp; &nbsp;Hector Garcia-Molina<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Attempting to deduce the trust values to place in
+entities and objects removed from oneself in the network, EigenTrust
+uses a system of &quot;entities rating entities&quot; to discover not just =
+the
+trust that A places in B (in order to aggregate and so determine
+whether B should be trusted), but the aggregate trust placed in A by
+the network as a whole, via the observation that by asking ones
+friends, and ones friends of friends, and so forth, one creates a
+completely connected segment which should be equal to the entire
+network. This turns out to be a problem equivalent to solving for the
+principal eigenvector of a matrix whose entries represent localized
+trust value measurements. Key insights include the rarity of individual
+client-client interactions, leading to sparse matrix representation and
+relatively low coordination message overhead, and that piecewise
+computation of this matrix function converges relatively quickly,
+having each individual node calculate its own trust function
+(conceptually only, due to security flaw! In actuality, M
+deterministically-selected trust-manager peers calculate this value on
+behalf of each node).<br>
+&nbsp;&nbsp; &nbsp;As the paper points out, the difficulty with this
+algorithm is that its end result is universally viewed, which means
+that there is no information assymetry in the network which can be
+leveraged, which will almost universally result in the best possible
+peer being isolated, and used, leading to an accrual of trust, which
+will cause the problem the escalate. The probabilistic algorithm will
+fix this, but is something of an altruistic solution, since it relies
+on each individual accepting the choice of a suboptimal path to patch a
+&quot;black hole&quot; in the system. Their attacker model is sufficiently
+malicious, but their experiments seem to leave something to be desired;
+the subtext is that the effect is visible in the small scale, but that
+the data in the large scale experiments are too large to fully study.
+However, these data are not presented; presumably the effect is cleaner
+in a small network.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Robust Reputation System for P2P and Mobile Ad-hoc Netwo=
+rks<br>
+&nbsp;&nbsp; &nbsp;Jean-Yves Le Boudec<br>
+&nbsp;&nbsp; &nbsp;Another attempt at validating entities in a
+distributed fashion, this paper uses another reputation scheme,
+attempting to strike the happy medium between considering the reports
+of others and relying entirely on self-generated interactions. It does
+this by pushing first hand information out into the network, based on a
+modified Bayesian approach and a linear model merging heuristic,
+leaving reputation &amp; trust ratings as private. It does this in the
+absence of primary trusted entities (the seed values that EigenTrust
+relies on). It uses reputation fading, to keep ratings &quot;current&quot;,=
+ and
+is exceedingly noncentralized.<br>
+&nbsp;&nbsp; &nbsp;Not much space is given in the paper, to using
+others' deduced trust values, just first hand operations. This means
+that while the system can be quite scalable, as it relies only on local
+data about any entity who is to be interacted with, it gives the
+impression of being lower overhead than EigenTrust without actually
+being so; if one wishes to later interact with a remote entity, to look
+up its rating requires just as much work, and the calculation is not
+particularly easier here, merely a different metric.
+
+------=_Part_8131_17142571.1143504365295--
+

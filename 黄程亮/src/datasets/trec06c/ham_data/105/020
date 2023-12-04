@@ -1,0 +1,166 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j7AHDxBr016466
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Wed, 10 Aug 2005 12:13:59 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.4/Submit) id j7AHDw3g016465
+	for reliable_computing-outgoing; Wed, 10 Aug 2005 12:13:58 -0500 (CDT)
+Received: from cs.clemson.edu (plato.cs.clemson.edu [130.127.48.6])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j7AHDnVZ016461
+	for <reliable_computing@interval.louisiana.edu>; Wed, 10 Aug 2005 12:13:55 -0500 (CDT)
+Received: from [130.127.49.168] (csdhcp24.cs.clemson.edu [130.127.49.168])
+	by cs.clemson.edu (8.13.3/8.13.3) with ESMTP id j7AHDcaM029587;
+	Wed, 10 Aug 2005 13:13:43 -0400 (EDT)
+Mime-Version: 1.0
+Message-Id: <p06210202bf1fe4f9c548@[130.127.49.168]>
+In-Reply-To: <s2f9c5d5.097@grpws1.uca.edu>
+References: <s2f9c5d5.097@grpws1.uca.edu>
+Date: Wed, 10 Aug 2005 13:13:33 -0400
+To: "Chenyi Hu" <chu@uca.edu>, <J.D.Pryce@cranfield.ac.uk>,
+        <reliable_computing@interval.louisiana.edu>
+From: Steve Stevenson <steve@cs.clemson.edu>
+Subject: Re: Verification and Validation
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Scanned-By: MIMEDefang 2.51 on 130.127.48.6
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+For what it's worth, I agree with Chenyi. I call your attention to a 
+really interesting volume of
+
+@Proceedings{helton04,
+   title =        {Special Issue: Alternative Representations of
+                   Epistemic Uncertainty},
+   year =         2004,
+   editor =       {J. C. Helton and W. L. Oberkampf},
+   volume =       85,
+   series =       {Reliability Engineering \& System Safety},
+   publisher =    {Elsevier}
+}
+
+Not only is this published in a series of reliability but the volume 
+itself covers a large number of alternative arithmetic systems, many 
+based in part on interval arithmetic. I think this idea is just 
+gaining speed that alternative approaches are needed.
+
+steve
+
+
+At 9:15 -0500 8/10/05, Chenyi Hu wrote:
+>Dear All,
+>
+>I still feel very strongly that Ray's original post on this topic 
+>has great intrinsic merit. Although achieving computational 
+>reliability has been one of the most important applications of 
+>interval computing,  intervals have been applied in much broader 
+>areas nowadays. Yes, there are other methods to achieve 
+>computational reliability. But, the term "interval computing" covers 
+>much more application areas than only on "verification" and 
+>validation".  As a very recent example, I do not feel if it is very 
+>appropriate to submit one of our current research results on 
+>interval fuzzy decision making systems to the Journal of Reliable 
+>Computing simply because of that our work does not fit the term 
+>"Reliable". I think, the most common interests of  this group 
+>probably are in interval computing and its applications. If that is 
+>true, then the term "interval computing" might not be "too narrow" 
+>for this group as it seems.
+>
+>Regards,
+>
+>Chenyi Hu
+>
+>>>>  Dr John D Pryce <J.D.Pryce@cranfield.ac.uk> 08/10/05 2:40 AM >>>
+>Dear all
+>On the current discussion about terms & names:
+>
+>(1) ---------------------
+>I have had the job of teaching our basic Software Engineering course for
+>some years now. The distinction made by the software engineering (and I
+>believe more broadly systems engineering) community between Verification
+>and Validation is quite explicit:
+>
+>Verification:
+>  "Are we building the product right?"
+>
+>        The software should conform to its specification.
+>
+>Validation:
+>   "Are we building the right product?"
+>
+>        The software should do what the user really requires.
+>
+>(see e.g. "Software Engineering", Ian Sommerville, 6th edition, Chapter 19)
+>So verification is *in principle* automatable, being about the equivalence
+>between one formal system (a spec) and another (a software system).
+>Validation is *in principle* non-automatable, being about the
+>correspondence between human requirements and a formal system.
+>
+>This is clearly related to, but not the same as, the distinction being made
+>in other engineering disciplines as e.g. quoted by Ray Moore in his
+>original posting:
+>>Evidently "validation" is widely used to refer to agreement with physical
+>>effects, experimental results, etc.
+>
+>I do not think we should get too worried about "right" usage of these
+>words, seeing that there are various communities out there that use them in
+>subtly different ways.
+>
+>(2) ---------------------
+>I am perfectly happy with the name "Reliable Computing". I think "Interval
+>Arithmetic" and "Interval Computing" are too narrow for the reasons Baker
+>has just given, namely you don't need intervals to get, ermm, validated
+>results.
+>
+>Example: Years ago I refereed a joint paper by two great men, Jim Wilkinson
+>and Frank Olver, on an algorithm and its implementation, for solving a
+>(dense) linear system Ax=b with rigorous bounds on the error. This was in
+>the days when double precision was far slower than single, and before
+>IEEE754 I think. They just used the Wilkinson model
+>        x OP y = (1 + e) ( x op y),    |e| <= u                      (*)
+>
+>where op is an exact arithmetic operation, OP is as done on the machine, u
+>is the roundoff unit. (I think they even put in an extra term to handle
+>underflow.) So, the scheme was to do the main computation in double
+>precision, and simultaneously in single precision perform a running
+>rigorous error bound of each operation (*), using an inflation of each
+>absolute-value bound by a factor (1+u1) where u1 is the S.P. roundoff unit,
+>so as to account for errors in the S.P. computation. You thus did
+>Wilkinson's backward error analysis but with far sharper bounds, which in
+>theory would be asymptotically optimal as u -> 0.
+>
+>So, totally "validated" but with no interval arithmetic!
+>
+>Wilkinson wrote me to the effect that this was Olver's baby, he found it
+>rather boring and he could have done it on the pilot ACE in 1948 if he had
+>really wanted to. He was much more interested in error analysis for giving
+>insight rather than rigorous bounds. But times and needs change.
+>
+>---------------------
+>
+>John Pryce
+>
+>Dr John D Pryce
+>Lecturer in Mathematical Software Engineering
+>Computer Information Systems Engineering Dept
+>Cranfield University, RMCS Shrivenham
+>Swindon SN6 8LA, UK
+>Tel +44 (0)1793-785683 direct,
+>     +44 (0)1793-785931 secretaries,
+>     +44 (0)1793-785366 fax
+>
+>
+>
+>--
+>This message has been scanned for viruses and
+>dangerous content by the Cranfield MailScanner, and is
+>believed to be clean.
+
+
+-- 
+best,
+steve
+
+Dr. D. E. Stevenson
+Director, Institute for Modeling and Simulation Applications
+Clemson University
+Clemson,SC 29634-0974
+

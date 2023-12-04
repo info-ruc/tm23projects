@@ -1,0 +1,95 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.13.6/8.13.6) with ESMTP id k3BMYiIv003508
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 11 Apr 2006 17:34:46 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.36) with SMTP id k3BMYheo020890;
+	Tue, 11 Apr 2006 17:34:43 -0500 (CDT)
+Received: from ironmaiden.mail.utexas.edu (ironmaiden.mail.utexas.edu [128.83.32.53])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.36) with ESMTP id k3BMYbFu020875
+	for <cs352-swk@lists.cc.utexas.edu>; Tue, 11 Apr 2006 17:34:37 -0500 (CDT)
+Received: from mail.cs.utexas.edu ([128.83.139.10])
+  by ironmaiden.mail.utexas.edu with ESMTP; 11 Apr 2006 15:47:01 -0500
+X-IronPort-MID: 1839963322
+X-SBRS: 5.5
+X-BrightmailFiltered: true
+X-Brightmail-Tracker: AAAAAQAAA+k=
+X-IronPort-AV: i="4.04,113,1144040400"; 
+   d="scan'208"; a="1839963322:sNHT18245948"
+Received: from [128.83.141.72] (snipe.csres.utexas.edu [128.83.141.72])
+	(authenticated bits=0)
+	by mail.cs.utexas.edu (8.13.6/8.13.6) with ESMTP id k3BKl0bT002478
+	for <cs352-swk@lists.cc.utexas.edu>; Tue, 11 Apr 2006 15:47:01 -0500 (CDT)
+Mime-Version: 1.0 (Apple Message framework v623)
+Content-Transfer-Encoding: 7bit
+Message-Id: <8d80faaf4748092ae9886ffa2fb2526b@cs.utexas.edu>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+To: cs352-swk@lists.cc.utexas.edu
+From: Steve Keckler <skeckler@cs.utexas.edu>
+Subject: A couple of notes
+Date: Tue, 11 Apr 2006 15:47:07 -0500
+X-Mailer: Apple Mail (2.623)
+Reply-To: skeckler@cs.utexas.edu
+Sender: owner-cs352-swk@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+CS352-ers,
+
+I have a couple of notes related to the review and the project:
+
+1) I had overlooked the fact that you all have learned Java instead of 
+C++.  Thus, you will be required to complete the project in Java.  You 
+will need to submit source code that can be compiled on the 
+departmental public linux systems.  We will compile and run it on a 
+battery of test programs to determine if your programs are correct.  
+More info will follow shortly.
+
+2) The issue of WAR hazards came up in class today.  These are unusual 
+in an in-order processor, but possible with variable length pipelines 
+(see slide 24 from the lecture 12 slide deck).  That example includes a 
+pipeline that supports two types of instructions:
+
+a) Normal simple instructions that need just the normal five stages in 
+a pipeline:  F - R - X - M - W
+b) A more complicated pipeline that has a late register read stage that 
+supports instructions such as:  R1 = R2 + R3*R4.  Let's call this 
+instruction a "mula" for multiply and add. Such a pipeline might look 
+like this:
+                        F - R - X1 - X2 - X3 - X4 - R - X5 - W
+Note that X1 through X4 are for the multiply, while X5 is for the add.  
+In this example, R2 would not be read from the register file until the 
+second R stage.  The problem with this is the following instruction 
+sequence:
+
+   mula R1, R2, R3, R4
+   add  R2, R6, R7
+
+Here the mula instruction is supposed to get the old value of R2, not 
+the new value produced by the add instruction.  Now consider how these 
+instructions proceed down their pipelines:
+
+mula:                       F - R - X1 - X2 - X3 - X4 - R - X5 - W
+add:                               F - R   - X    - M   - W
+
+Note that the add instruction reaches its W stage before the mula 
+reaches its second R stage.  Thus the mula will incorrectly get the new 
+value of R2 - hence the WAR hazard.
+
+This problem can come up in out-of-order pipelines in a less-contrived 
+manner, and can be solved by using a technique called register 
+renaming.  We will discuss this starting next week.
+
+Cheers,
+
+SK
+
+Steve Keckler                                        Computer 
+Architecture and Technology Lab
+Associate Professor                             Tel:    (512) 471-9763
+Department of Computer Sciences   Dept:   (512) 471-7316
+1 University Station C0500                 Fax:    (512) 232-1413
+The University of Texas at Austin      E-mail:  skeckler@cs.utexas.edu
+Austin, TX 78712-0233                        
+http://www.cs.utexas.edu/users/skeckler
+
+

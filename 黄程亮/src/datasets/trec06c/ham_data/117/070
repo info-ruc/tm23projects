@@ -1,0 +1,62 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29HbUt03245
+	for <egs@unix.cucs>; Thu, 9 Mar 2006 12:37:31 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.28]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 9 Mar 2006 12:37:30 -0500
+Received: from [128.84.223.148] ([128.84.223.148]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 9 Mar 2006 12:37:30 -0500
+Message-ID: <441067D9.8040707@cs.cornell.edu>
+Date: Thu, 09 Mar 2006 12:37:29 -0500
+From: Tudor Marian <tudorm@cs.cornell.edu>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: egs@cs.cornell.edu
+Subject: PAPER 13
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 09 Mar 2006 17:37:30.0384 (UTC) FILETIME=[23F6C100:01C643A0]
+
+<RON>
+
+RON is an architecture that improves the reliability of underlying 
+Internet packet transport by detecting and recovering from transient 
+path failures more rapidly than BGP does. It works by deploying a set of 
+nodes  into an app-level overlay network, and having them aggressively 
+probing and monitoring the quality of the underlying links between 
+themselves. Packets are routed according to application specified 
+metrics, either by direct sink into the Internet or by way of some other 
+RON node.
+
+The paper found that forwarding packets via at most one RON node was 
+sufficient to overcome faults and improve performance in most of the 
+cases, moreover the link failure detection and recovery took on average 
+18 seconds as opposed to tens of minutes it takes BGP to recover.
+
+One can argue that the architecture is as dirty as it gets, even if it 
+is a good hack that works it only does so because of the shortcomings of 
+the BGP.
+
+</RON>
+
+<One Hop Source Routing>
+
+The paper proposes a simple approach to recover from Internet path 
+failures, called one-hop source routing. The way it works is by routing 
+indirectly through a small set of randomly chosen peers, and in contrast 
+to RON, performs no background path monitoring, thereby scaling well and 
+avoiding the overhead in the common case of no failures. In order to 
+motivate the approach, the paper starts by presenting a measurement 
+study of Internet path failures and then evaluate their implementation 
+prototype on PlanetLab. They conclude that although 16% of the failures 
+on paths to servers and 60% on paths to broadband hosts are 
+unrecoverable since it's impossible to route around the last hop, the 
+simple random-4 technique was able to recover from 61% of the path 
+failures for popular servers and 35% for broadband hosts.
+
+Arguably, the netfilter choice of implementation is much more elegant 
+than the one chosen by RON.
+
+</One Hop Source Routing>
+
+Tudor
+

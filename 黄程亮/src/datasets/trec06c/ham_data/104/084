@@ -1,0 +1,91 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j6JGK55L020815;
+	Tue, 19 Jul 2005 09:20:05 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP
+	id C3675ADD13B; Tue, 19 Jul 2005 09:20:05 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP
+	id 0BDBBAE6F67; Tue, 19 Jul 2005 09:20:05 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050719090050.00ba4838@psy1.psych.arizona.edu>
+Date: Tue, 19 Jul 2005 09:20:00 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DMDX setup for default user ? (Win XP Pro)
+In-Reply-To: <6.2.1.2.2.20050719145125.02958638@mail.unimelb.edu.au>
+References: <5.1.0.14.2.20050718185152.00ba4808@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718172338.00bcbf30@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718082358.00ba4820@psy1.psych.arizona.edu>
+ <6.2.1.2.2.20050718121101.028d7ed0@mail.unimelb.edu.au>
+ <5.1.0.14.2.20050718082358.00ba4820@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718172338.00bcbf30@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718185152.00ba4808@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:10 PM 7/19/2005 +1000, you wrote:
+>jonathan,
+>         Very interesting and possibly very useful.  Is the structure of 
+> the of the DMDX and TimeDX entries in HKLM\Software and HKLU\Software 
+> supposed to be or normally the same?
+
+   No.
+
+>   I am thinking that it may be possible to just copy the HKLU\Software 
+> DMDX and TimeDX sections to HL_Users\.Default as a way of setting up the 
+> default user.
+
+   Might work.
+
+>Up to now I had assumed that the HKLM entry was the most important as I 
+>have not seen the HKLU\Software entries getting much stored in them.
+
+   The original code used HKLM, nowadays with actual user privileges and 
+HKLM becoming an administrative branch HKLU gets checked incase HKLM won't 
+work.
+
+>   This is probably because I normally have DMDX run under a user with 
+> administrator rights (what I am avoiding this time).
+>
+>Am I right that the entries dont actually store any timing information?
+
+   They could store timing information, it all depends on what was done by 
+the privileged users.  Whatever they didn't do will be duplicated in HKLU 
+for the non-privileged users.
+
+At 05:41 PM 7/19/2005 +1000, you wrote:
+>jonathan
+>         I have one issue I hope you can put some light on.  I have a 
+> setup that works for default user but when I run DMDX (or TimeDX) I get a 
+> very very slow response and then a message
+>
+>Retrace Thread did not self terminate
+>
+>(in both DMDX and TimeDX)
+>If I put the user in the local administrators group the problem goes away.
+>
+>Can you suggest anything?
+>
+>I'm using DMDX 3.1.4.0
+>I can send you the Reg patch and other details I am using if it would help.
+
+    Interesting.  It's not something to be concerned about other than tests 
+taking longer to finish in TimeDX and DMDX taking longer to terminate a 
+job.  The code normally asks the Retrace Thread to politely die after it's 
+no longer needed, if it doesn't do it after a second it kills the thread 
+and posts the error you see.  It's one of those error messages that I never 
+expect to see but it crops up from time to time and I've never been able to 
+discern why it might occur.  It's not indicative of anything not working as 
+near as I can tell.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   The way to love anything is to realize that it might be lost.
+
+
+

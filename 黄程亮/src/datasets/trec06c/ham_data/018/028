@@ -1,0 +1,159 @@
+Received: from ra.cland.net (ra.cland.net [206.29.106.10])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id AAA15844
+	for <handyboard@media.mit.edu>; Tue, 9 Jun 1998 00:02:27 -0400 (EDT)
+Received: from mail.cland.net (pm126.cland.net [206.29.106.126])
+	by ra.cland.net (8.8.5/8.8.5) with ESMTP id WAA26534;
+	Mon, 8 Jun 1998 22:56:22 -0500 (CDT)
+Message-Id: <357CB27D.E5B77548@mail.cland.net>
+Date: Mon, 08 Jun 1998 22:56:45 -0500
+From: John Duff <jnduff@ra.cland.net>
+Reply-To: jnduff@cland.net
+Organization: Cox Health Systems
+X-Mailer: Mozilla 4.02 [en] (Win95; I)
+Mime-Version: 1.0
+To: GJZ@aol.com, "handyboard@media.mit.edu" <handyboard@media.mit.edu>
+Subject: Re: serial communications
+References: <75a9299.3579aa40@aol.com>
+Content-Type: multipart/mixed; boundary="------------0EEC2E0C63AA80E9BDAA0683"
+
+This is a multi-part message in MIME format.
+--------------0EEC2E0C63AA80E9BDAA0683
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Justin
+Here is the file.  Please feel free to modify/improve.  I'm a doctor not a
+programmer, and I better keep my day job.
+
+Notice it borrows Randy Sargent's and Dr. Richard F. Drushel's routines found in
+serialio.c and math.c, both on the handy board web site.
+
+This program could be used with any NEMA compliant GPS receiver.  The Tripmate
+has two quirks: First, the DTR line is taken high to turn on the receiver.
+Second, after power up, the receiver sends an ASCII string 'ASTRAL' and waits for
+the computer to respond with the same string.  I handled this by connecting two
+DB9 plugs together, shorting pins 2 and 3 (the Rx and Tx pins) on the GPS side
+and then connecting these to pin 3 on the handyboard end. This causes the
+'Astral' string transmitted by the GPS unit to echo back and trick the GPS.  Also
+connect pin 4 (DTR) to a lead and plug into any +5 v location on the handy board.
+Then connect the jumpered plug to the handy board serial adapter (GPS outputs at
+RS-232 signal levels, need to change to TTL.)  Now when the handy board is turned
+on, the GPS unit is powered up and begins to acquire satalites. Sit back and wait
+untill you have a valid signal, and you're in business. I've made this sound
+hard, but it takes 15 minutes and a little solder.
+
+I started to write a routine for calculating the checksum and compare with
+transmitted, but never finished. What I have is at the end of the file. Possibly
+someone would like to finish it.  I would appreciate any improvements. Thanks
+
+John
+
+GJZ@aol.com wrote:
+
+> John,
+>
+> yes i would appreciate getting the IC program you use.  need the GPS receiver
+> that is used be a board, or may it be interfaced with a handheld unit.  i was
+> planning on getting a board, such as the motorola oncore series.  if it is
+> possible to interface the HB with a handheld unit?  thank you in advance for
+> your generosity.
+>
+> Justin D. Gullotta.. , Engineer,
+> Rensselaer Polytechnic Institute.
+
+
+
+--------------0EEC2E0C63AA80E9BDAA0683
+Content-Type: application/x-unknown-content-type-c_auto_file; name="tripmate7.c"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline; filename="tripmate7.c"
+
+LyoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqLw0KLyogIE5FTUEgMDE4NiBjb21wbGlhbnQJCQkJCQkJCQkJ
+CQkgICAqLw0KLyoJUmVjb2duaXplcyBSTVMgc2VudGVuY2UuIExvb3BzIHVudGlsIHN0b3Ag
+YnV0dG9uCQkJCSAgICovDQovKgkJCQkJCQkJCQkJCQkJCQkJICAgKi8NCi8qCVVzZXMgUmFu
+ZHkgU2FyZ2VudCdzIHNlcmlhbCBmdW5jdGlvbnMgaW4gc2VyaWFsaW8uYyAgICAgICAgICAg
+ICAgICAqLw0KLyogIE91dHB1dHMgbGF0L2xvbiBhcyBmbG9hdCwgYW5kIHRoZSB2YWxpZGl0
+eSBmbGFnIC0gc2F0J3MgYWNxdWlyZWQgICAqLw0KLyogIEZpcnN0IGxvYWQgYXRvZi5jIGZy
+b20gIERyLiBSaWNoYXJkIEYuIERydXNoZWwncyBtYXRoLmMgcHJvZ3JhbSAgICAqLyANCi8q
+ICBKb2huIER1ZmYJCQkJCQkJCQkJCQkJCSAgICovICAgICAgICAgICANCi8qKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKi8NCg0KaW50IGJhdWRfZGVmYXVsdCx0b3RfcmRfY2hhcjsNCmNoYXIgc2VyaWFs
+X2J1ZmYgWzgwXTsJLypzdG9yZSByZWNpZXZlZCBzZW50ZW5jZSovDQppbnQgY29tbWFfcG9z
+aXRpb25bMTFdOwkvKnBvc2l0aW9uIG9mIGNvbW1hcyBpbiBzZXJpYWxfYnVmZiovDQoNCnZv
+aWQgbWFpbigpDQp7DQppbnQgaSx4LHJlY2hlY2s7IA0KaW5pdCgpOwkJCQkvKmluaXRpYWxp
+emUgdGhlIFNDSSovDQp3aGlsZSAoIXN0b3BfYnV0dG9uKCkpCS8qcHJlc3Mgc3RvcCB0byBi
+cmVhayBvdXQqLw0Kew0KcmVjaGVjaz1nZXRzZW50KCk7DQp3aGlsZSAocmVjaGVjaykJLypp
+ZiBub3QgdGhlIFJNUyBzZW50ZW5jZSwgY2hlY2sgYWdhaW4qLw0KCXtwcmludGYoIldhaXRp
+bmdcbiIpOw0KCXJlY2hlY2s9Z2V0c2VudCgpO30NCmNvbW1hX2NvdW50KHRvdF9yZF9jaGFy
+KTsJLypjb3VudCBjb21tYXMqLw0KY29udmVydCgpOwkvKmxvY2F0ZSBsYXQgYW5kIGxvbiBp
+biBzZW50ZW5jZSwgY29udmVydCB0byBmbG9hdCBhbmQgcHJpbnQqLw0Kc2xlZXAoMC4yNSk7
+DQp9DQpyZXNldCgpOw0KcHJpbnRmKCJEaXNjb25uZWN0ZWRcbiIpOw0KfQ0KDQp2b2lkIGNv
+bnZlcnQoKQ0Kew0KCS8qZmluZCBjaGFycyBmb3IgbGF0IGFuZCBsb25nLCBjb252ZXJ0IHRv
+IGZsb2F0Ki8NCgkvKmNvdWxkIHVzZSB0byBmaW5kIGFueSBjb21tYSBkZWxpbWl0ZWQgY2hh
+ciovDQoJZmxvYXQgbGF0LGxvbjsNCglpbnQgc3RhcnQsZmluaXNoLG5zLGV3LHZhbGlkOw0K
+CXN0YXJ0PWZpZWxkKDMpOwkJLypnZXQgYmVnaW5uaW5nIG9mIHRoZSBsYXQgY2hhcmFjdGVy
+cyovDQoJZmluaXNoPWZpZWxkKDQpOwkvKmFuZCB0aGUgYXJyYXkgaW5kZXggZm9yIHRoZSBl
+bmQqLw0KCWxhdCA9IG15X2F0b2Yoc3RhcnQsZmluaXNoKTsvKmFuZCBjb252ZXJ0IHN0cmlu
+ZyB0byBmbG9hdCovDQoJc3RhcnQ9ZmllbGQoNSk7CS8qbm93IGRvIHNhbWUgZm9yIGxvbiov
+DQoJZmluaXNoPWZpZWxkKDYpOw0KCWxvbiA9IG15X2F0b2Yoc3RhcnQsZmluaXNoKTsNCgll
+dz1zZXJpYWxfYnVmZltmaW5pc2grMV07IC8qZ2V0IG5vcnRoL3NvdXRoIGFuZCBlYXN0L3dl
+c3QqLw0KCW5zPXNlcmlhbF9idWZmW3N0YXJ0LTFdOw0KCXZhbGlkPXNlcmlhbF9idWZmWyhm
+aWVsZCgyKSsxKV07CS8qZ2V0IHRoZSB2YWxpZGl0eSBmbGFnKi8NCglwcmludGYoIiVmICVj
+ICVjICAgJWYgJWMgXG4iLGxhdCxucyx2YWxpZCxsb24sZXcpOw0KfQ0KDQpmbG9hdCBteV9h
+dG9mKGludCBiZWdpbixpbnQgZW5kKQ0Kew0KCS8qcHV0IHNlbGVjdGVkIGNoYXIgaW50byBh
+cnJheSBhbmQgY29udmVydCB0byBmbG9hdCovDQoJaW50IGkseDsNCgljaGFyIHRlbXBbMjBd
+Ow0KCWZvcihpPWJlZ2luKzE7aTw9ZW5kO2krKykJLypwdXQgdGhlbSBpbiBhbiBhcnJheSAt
+IGluY2x1ZGUgIiwiICovDQoJCXsNCgkJdGVtcFt4XT1zZXJpYWxfYnVmZltpXTsNCgkJeCsr
+Ow0KCQlpZih4PjE5KQ0KCQl7cHJpbnRmKCJhcnJheSBvdXQgb2YgYm91bmRzXG4iKTticmVh
+azt9CS8qanVzdCBpbiBjYXNlKi8NCgkJfQ0KCXJldHVybiBhdG9mKHRlbXApOwkJLyp3aWxs
+IHN0b3AgYXQgdGhlICIsIiAqLw0KfQ0KDQoNCnZvaWQgaW5pdCgpDQp7DQpkaXNhYmxlX3Bj
+b2RlX3NlcmlhbCgpOwkJLypub3cgcC1jb2RlIHdvbnQgaW50ZXJjZXB0IHNlcmlhbCBpbiov
+DQpiYXVkX2RlZmF1bHQ9cGVlaygweDEwMmIpOyAvKndpbGwgbmVlZCB0aGlzIHRvIHJlc2V0
+Ki8NCnBva2UoMHgxMDJiLDB4MzEpOyAvKnNldCBiYXVkIHJhdGUgdG8gNDgwMCovDQp9DQoN
+CnZvaWQgcmVzZXQoKQ0Kew0KcmVlbmFibGVfcGNvZGVfc2VyaWFsKCk7CS8qcHV0IGV2ZXJ5
+dGhpbmcgYmFjayB0aGUgd2F5IGl0IHdhcyovDQpwb2tlKDB4MTAyYixiYXVkX2RlZmF1bHQp
+Ow0KfQ0KDQppbnQgZ2V0c2VudCgpCQkJLypwdXRzIHRoZSBHUFJNUyBzZW50ZW5jZSBpbnRv
+IGJ1ZmZlciovDQp7CQ0KCWNoYXIgc2VudGNoYXI7DQoJaW50IGksaW5kZXgscmVjaGVjazsN
+CglzZW50Y2hhciA9IHNlcmlhbF9nZXRjaGFyKCk7DQoJd2hpbGUgKHNlbnRjaGFyICE9ICck
+JykJLyp3YWl0IGZvciBiZWdpbiBvZiBzZW50ZW5jZSovDQoJc2VudGNoYXI9c2VyaWFsX2dl
+dGNoYXIoKTsNCgl3aGlsZSAoaW5kZXggPCAzKQkvKmxvYWQgZmlyc3QgMyBjaGFyKi8NCgkJ
+ew0KCQlzZXJpYWxfYnVmZltpbmRleF09c2VudGNoYXI7DQoJCXNlbnRjaGFyPXNlcmlhbF9n
+ZXRjaGFyKCk7DQoJCWluZGV4Kys7DQoJCX0NCglpZiAoc2VudGNoYXIgPT0gJ1InKSAvKm5v
+dyB0ZXN0IHRoZSA0dGggY2hhciovDQoJew0KCQl3aGlsZSAoc2VudGNoYXIgIT0gMTMpIC8q
+bG9hZCByZXN0IG9mIHNlbnRlbmNlLiAxMz08Y3I+Ki8NCgkJCXsNCgkJCXNlcmlhbF9idWZm
+W2luZGV4XT1zZW50Y2hhcjsNCgkJCXNlbnRjaGFyPXNlcmlhbF9nZXRjaGFyKCk7DQoJCQlp
+bmRleCsrOw0KCQkJfQ0KCX0NCgllbHNlDQoJCXJlY2hlY2s9MTsJCS8qcmVjaGVjayBmbGFn
+LCBpZiBzZXQgZG8gaXQgYWxsIG92ZXIqLw0KCXRvdF9yZF9jaGFyPWluZGV4Ow0KCXJldHVy
+biByZWNoZWNrOw0KfQ0KDQoNCnZvaWQgY29tbWFfY291bnQoaW50IGFycmF5X3NpemUpDQp7
+ICAvKmZpbmQgY29tbWFzIGFuZCByZWNvcmQgdGhlaXIgcG9zaXRpb25zLiBUaGUgUk1TIHNl
+bnRlbmNlIGhhcyAxMSBjb21tYXMqLw0KCWludCBpLHg7DQoJZm9yIChpPTA7aTxhcnJheV9z
+aXplO2krKykNCgl7DQoJCWlmIChzZXJpYWxfYnVmZltpXT09MHgyYykgLypjb21tYSovDQoJ
+CXsNCgkJCWNvbW1hX3Bvc2l0aW9uW3hdPWk7DQoJCQl4Kys7DQoJCX0NCgl9DQp9DQoNCg0K
+aW50IGZpZWxkKGludCBhKQ0Kew0KLypyZXR1cm4gZWxlbWVudCBpbiBzZXJpYWxfYnVmZiBj
+b3JyZXBvbmRpbmcgdG8gY29tbWEgYSovDQppbnQgcG9zaXRpb247DQpwb3NpdGlvbj1jb21t
+YV9wb3NpdGlvblthLTFdOyAvKnRoZSA1dGggY29tbWEgaXMgNHRoIGVsZW1lbnQsIGV0Yyov
+DQpyZXR1cm4gcG9zaXRpb247DQp9DQoNCg0Kdm9pZCBkaXNhYmxlX3Bjb2RlX3NlcmlhbCgp
+ICAgLyogbmVjZXNzYXJ5IHRvIHJlY2VpdmUgY2hhcmFjdGVycyB1c2luZyBzZXJpYWxfZ2V0
+Y2hhciAqLw0Kew0KICAgcG9rZSgweDNjLCAxKTsNCn0NCg0KDQp2b2lkIHJlZW5hYmxlX3Bj
+b2RlX3NlcmlhbCgpICAgLyogbmVjZXNzYXJ5IGZvciBJQyB0byBpbnRlcmFjdCB3aXRoIGJv
+YXJkIGFnYWluICovDQp7DQogICBwb2tlKDB4M2MsIDApOw0KfQ0KDQoNCmludCBzZXJpYWxf
+Z2V0Y2hhcigpDQp7DQogICB3aGlsZSAoIShwZWVrKDB4MTAyZSkgJiAweDIwKSk7IC8qIHdh
+aXQgZm9yIHJlY2VpdmVkIGNoYXJhY3RlciAqLw0KCXJldHVybiBwZWVrKDB4MTAyZik7DQp9
+DQoNCg0KaW50IGNoZWNrc3VtKCkgLypjYWxjdWxhdGVzIGNoZWNrIHN1bSAtIE5FRURTIFdP
+UksqLw0Kew0KCWludCBpbmRleCA9IDE7ICAvKnNraXAgdGhlICQgaW4gY2VsbCAwKi8NCglp
+bnQgY3M7DQoJd2hpbGUgKChzZXJpYWxfYnVmZltpbmRleF0gIT0gJyonKSYmIChpbmRleDw4
+MCkpIC8qbG9vayBmb3IgJyonIGRlbGltaXRlciovDQoJew0KCQljcyA9IGNzIF4gc2VyaWFs
+X2J1ZmZbaW5kZXhdOyAvKnRoaXMgd2lsbCByZXR1cm4gOCBiaXQgaW50Ki8NCgkJaW5kZXgr
+KzsNCgl9DQpyZXR1cm4gY3M7DQovKnRoaW5rIGFib3V0IHRoaXMuICBUaGUgY2hlY2tzdW0g
+dHJhbnNtaXR0ZWQgaXMgdGhlIGhleCB2YWx1ZSBvZiB0aGUgbHMgYW5kIG1zIG5pYmJsZXMN
+Cm9mIHRoZSBjaGVja3N1bSByZXN1bHQsIGNvbnZlcnRlZCB0byB0d28gYXNjaWkgY2hhci4g
+IE1zIGlzIHRyYW5zbWl0dGVkIGZpcnN0Lg0KQ2FsY3VsYXRlZCBjaGVja3N1bSB3aWxsIGJl
+IGFuIGludCBJIHRoaW5rLiAgTmVlZCB0byBjb21wYXJlIHRoZSB0d28gYXNjaWkgY2hhciB0
+byB0aGUgaGV4IGZvcm1hdCBvZiBjYWxjX2Noa3N1bS4NCkNvdWxkIEkgY29lcmNlIHRoZSBp
+bnRlZ2VyIHRvIGhleCwgdGhlbiBjb21wYXJlLCBvciBjaGFuZ2UgYXNjaWkgYmFjayB0byBo
+ZXggDQpvciBpbnQuIElmIHN1bXMgYXJlIHNhbWUgdGhlbiByZXR1cm4gMSBvdGhlcndpc2Ug
+MCovCQ0KfQkNCg0KDQoNCg0KDQo=
+--------------0EEC2E0C63AA80E9BDAA0683--
+
+

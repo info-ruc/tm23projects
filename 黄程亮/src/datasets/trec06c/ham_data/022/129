@@ -1,0 +1,65 @@
+Received: from flexcell.com (bridge-204-180-39-230.iquest.net [204.180.39.230])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id JAA07005
+	for <handyboard@media.mit.edu>; Wed, 26 Aug 1998 09:37:34 -0400 (EDT)
+Received: from dwhite by flexcell.com (SMI-8.6/SMI-SVR4)
+	id IAA14968; Wed, 26 Aug 1998 08:38:54 -0500
+Message-Id: <35E41245.1586@cybermetrix.com>
+Date: Wed, 26 Aug 1998 08:48:53 -0500
+From: Dan White <dwhite@cybermetrix.com>
+Reply-To: dwhite@cybermetrix.com
+Organization: CyberMetrix
+X-Mailer: Mozilla 3.01 (Win95; I)
+Mime-Version: 1.0
+To: Handy board list <handyboard@media.mit.edu>, edmund <ho106@singnet.com.sg>
+Subject: Re: HB's analog inputs
+References: <Chameleon.4.01.2.980826115337.ho106@>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+edmund wrote:
+> 
+>  does anyone know if the handy board's analog inputs can accept analog
+>  current output(4-20mA) from a photo-electric distance sensor? (e.g. the
+>  sensor might return 4mA if the object is 1 ft away and 15mA if it's 3 ft
+>  away) or can it only accept analog voltage output(0-5V).
+> 
+>  if the function 'int analog()' is used and the analog input is 2.5V, would
+>  the handy-board return a value of 127? i believe the range of values is
+>  from 0-255 for 0-5V. what if the analog input is current?
+> 
+>  the distance sensor i'm going to buy comes with either a current or a
+>  voltage output and i don't know which will suit the HB best. can anyone
+>  help? thanks in advance.
+> 
+>  edmund
+Edmund,
+
+Typically the solution is to pass the 4-20 mA through a 250 ohm resistor
+and measure the voltage across that resistor. As long as your A/D input
+impedance is high, it can be ignored. A resistor is essentially a
+current to voltage converter after all. You can use a 1% tolerance for
+better accuracy. Keep in mind that you will never read zero because your
+current never goes to zero. At 4 mA you will read one volt and at 20 mA
+you will read 5 volt so now you have a 1-5 V transducer.
+
+4-20mA ---------.----------- A/D +input
+                /
+                \ 250
+                / ohm
+                \
+4-20mA return---.----------- A/D -input (ground)
+
+Good Luck,
+Dan
+
+
+
+-- 
+/***********************************************************
+* Dan White - National Instruments Certified Instructor    *
+* CyberMetrix,Inc. - National Instruments Alliance Member  *
+* <http://www.cybermetrix.com/ni>                          *
+* dwhite@cybermetrix.com                                   *
+***********************************************************/
+
+

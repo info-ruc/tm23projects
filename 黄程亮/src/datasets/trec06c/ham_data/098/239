@@ -1,0 +1,492 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j0CMkiMb014378
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Wed, 12 Jan 2005 16:46:44 -0600 (CST)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id j0CMkioK014377
+	for reliable_computing-outgoing; Wed, 12 Jan 2005 16:46:44 -0600 (CST)
+Received: from interval.louisiana.edu (rbk5287@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j0CMkgnr014373
+	for <reliable_computing@interval.louisiana.edu>; Wed, 12 Jan 2005 16:46:42 -0600 (CST)
+Received: (from rbk5287@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id j0CMkfG3014372
+	for reliable_computing@interval.louisiana.edu; Wed, 12 Jan 2005 16:46:41 -0600 (CST)
+Received: from mail.math.berkeley.edu (mail.math.Berkeley.EDU [169.229.58.57])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j0CLREtR014241
+	for <reliable_computing@interval.louisiana.edu>; Wed, 12 Jan 2005 15:27:24 -0600 (CST)
+Received: from megan (adsl-67-123-166-211.dsl.sntc01.pacbell.net [67.123.166.211])
+	(authenticated bits=0)
+	by mail.math.berkeley.edu (8.13.2/8.12.11) with ESMTP id j0CLR1ZH072155
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);
+	Wed, 12 Jan 2005 13:27:02 -0800 (PST)
+	(envelope-from njw@math.berkeley.edu)
+Message-ID: <001c01c4f8ed$75f45160$6500a8c0@megan>
+From: "Jiawang Nie" <njw@Math.Berkeley.EDU>
+To: "Patrizia Lamberti" <plamberti@unisa.it>,
+        <reliable_computing@interval.louisiana.edu>
+Cc: "James Demmel" <demmel@cs.berkeley.edu>
+References: <00b401c4f8b7$4de76350$7fa4cdc1@plportatile>
+Subject: Re: polynomial variability
+Date: Wed, 12 Jan 2005 13:27:02 -0800
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0019_01C4F8AA.66FEA630"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2180
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+X-Scanned-By: MIMEDefang 2.49 on 169.229.58.57
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+Status:  O
+X-Status: $$$$
+X-UID: 0000000029
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0019_01C4F8AA.66FEA630
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+
+Dear  Patrizia:
+
+      Your question about polynomial variability is very interesting, and r=
+elated to our work.=20
+
+      The global minimum or maximum of a univariate polynomial on an interv=
+al [a,b] can be found very efficiently by software SOSTOOLS or Gloptipoly (=
+ search in google for the references and websits). So the true range of f(x=
+)  over your X(k) can be found.=20
+
+      The interval extensions F_TM(X(k)) evaluated via taylor expansion ( f=
+irst order ?) of  f(x) reflect the true range of f(x) over X(k) when delta =
+is tiny. If delta is not sufficiently small, the relationship may not be cl=
+ear.
+
+=20=20=20=20=20=20=20=20
+       A more general problem about sensitivity analysis of solutions to  p=
+olynomial systems is discussed in one of our papers.  The following paper m=
+ay be useful to you:
+             http://front.math.ucdavis.edu/math.OC/0411122
+Given a multivariate system of polynomials p(x,mu), where the mu's can  be =
+thought of as parameters determining the coefficient of p(), we give an alg=
+orithm  for computing the minimal ellipsoid contining all the real solution=
+s x of p(x,mu)=3D0.  For example, if q() is a single polynomial in the scal=
+ar x with coefficients in=20
+intervals with given centers and radii, and you want bounds on the real zer=
+os,then this can be formulated as finding  the minimum ellipsoid containing=
+ the  roots x of a system like
+
+      sum_{i=3D0 to n}   mu_i * x^i  =3D 0
+      (mu_i - center_i)^2 + mu'_i^2 =3D radius^2   for  i =3D 0 to n
+
+The paper uses techniques from semidefinite programming.
+
+
+Regards,
+Jiawang Nie and Jim Demmel
+
+  ----- Original Message -----=20
+  From: Patrizia Lamberti=20
+  To: reliable_computing@interval.louisiana.edu=20
+  Sent: Wednesday, January 12, 2005 6:59 AM
+  Subject: polynomial variability
+
+
+  I am a PhD Student in Information and Electric Engineering at the Univers=
+ity of Salerno, Italy.
+
+=20=20=20
+
+  I am investigating the possibility of determining the range of minimum va=
+riability of a polynomial by means of interval analysis.
+
+=20=20=20
+
+  I prefer to describe the problem by using a simple example.
+
+=20=20=20
+
+  Let us consider the 5th order polynomial f(x)=3Dx^5+60*x^4+30*x^3-10*x^2+=
+6, which has 2 minima and 3 maxima in the range I=3D[-1.0,0.7]. Let us insp=
+ect the behaviour of f over I by considering a translating WIDE interval X(=
+k)=3D[x0(k)-delta,x0(k)+delta], included in I, with x0=3D{-0.7,-0.6,.,0.3,0=
+.4} and delta=3D0.3. Let us calculate the Taylor expansion of f(x) centred =
+in x0(k), k=3D1,2,., and evaluate its interval extension F_TM(X(k)).
+
+  I have found that, among the N values F_TM(X(k)) calculated, the one of m=
+inimum radius is obtained for the X(k) wherein the real function f(x) is su=
+bjected to the minimum variation (namely, in that X(k) the united extension=
+ of f(X(k)) assumes the minimum radius).
+
+=20=20=20
+
+  Note that:
+
+  1)      the F_TM(X(k)) are calculated over intervals X(k) of fixed, and b=
+ig, amplitude 2*delta;
+
+  2)      I don't have looked for the true range of f over I or X(k), but I=
+ it was enough for me to look for the range of minimum (even if unknown) ra=
+dius of f(x).
+
+=20=20=20
+
+  Now, I have some questions:
+
+  1)      is this result of general validity, namely for any polynomial and=
+/or function in general? Does it exist some theorem helpful to demonstrate =
+it in general?
+
+  2)      has this problem already afforded in literature?
+
+=20=20=20
+
+  Please, do not hesitate to ask for further details.
+
+=20=20=20
+
+  Best regards
+
+=20=20=20
+
+  Patrizia Lamberti
+
+=20=20=20
+
+------=_NextPart_000_0019_01C4F8AA.66FEA630
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML DEFANGED_xmlns:st1 =3D "urn:schemas-microsoft-com:office:smarttags" D=
+EFANGED_xmlns:o =3D=20
+"urn:schemas-microsoft-com:office:office"><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2900.2523" name=3DGENERATOR><DEFANGED_STYLE_0 =
+<>
+<DEFANGED_style_0 </STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DEFANGED_DIV><FONT face=3DArial size=3D2>
+<DEFANGED_DIV><FONT face=3DArial size=3D2><FONT face=3DArial size=3D2></FON=
+T></FONT>&nbsp;</DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2>Dear&nbsp; Patrizia:</FONT></DEFA=
+NGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Yo=
+ur question about=20
+polynomial variability is very interesting, and related to our work.=20
+</FONT></DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Th=
+e global minimum=20
+or maximum of a univariate polynomial on an interval [a,b] can be found ver=
+y=20
+efficiently by software SOSTOOLS or Gloptipoly ( search in google for the=
+=20
+references and websits). So the true range of f(x)&nbsp; over your X(k) can=
+ be=20
+found. </FONT></DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Th=
+e interval=20
+extensions <FONT face=3D"Times New Roman" size=3D3>F_TM(X(k)) evaluated via=
+ taylor=20
+expansion ( first order ?) of&nbsp; f(x) reflect the true range of f(x) ove=
+r=20
+X(k) when delta is tiny. If delta is not sufficiently small, the relationsh=
+ip=20
+may not be clear.</FONT></FONT></DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;=20
+</FONT></DEFANGED_DIV>
+<DEFANGED_DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;A more=20
+general problem about&nbsp;sensitivity analysis of solutions=20
+to&nbsp;&nbsp;polynomial systems is discussed in one of our papers.<FONT=20
+face=3D"Times New Roman" size=3D3>&nbsp; The </FONT></FONT><FONT face=3DAri=
+al=20
+size=3D2><FONT face=3D"Times New Roman" size=3D3>following paper may be use=
+ful to=20
+you:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+=20
+&nbsp;</FONT><A href=3D""><FONT face=3D"Times New Roman"=20
+size=3D3>http://front.math.ucdavis.edu/math.OC/0411122</FONT></A><BR><FONT=
+=20
+face=3D"Times New Roman" size=3D3>Given a multivariate system of polynomial=
+s=20
+p(x,mu), where the mu's can&nbsp; be thought of as parameters determining t=
+he=20
+coefficient of p(), we give an algorithm&nbsp; for computing the minimal=20
+ellipsoid contining all the real solutions x of p(x,mu)=3D0.&nbsp; For exam=
+ple, if=20
+q() is a single polynomial in the scalar x with coefficients in <BR>interva=
+ls=20
+with given centers and radii, and you want bounds on the real zeros,then th=
+is=20
+can be formulated as finding&nbsp; the minimum ellipsoid containing the&nbs=
+p;=20
+roots x of a system like<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sum_{i=3D0 t=
+o=20
+n}&nbsp;&nbsp; mu_i * x^i&nbsp; =3D 0<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (mu=
+_i -=20
+center_i)^2 + mu'_i^2 =3D radius^2&nbsp;&nbsp; for&nbsp; i =3D 0 to n<BR><B=
+R>The=20
+paper uses techniques from semidefinite=20
+programming.<BR></FONT></FONT></DEFANGED_DIV><FONT face=3DArial size=3D2><F=
+ONT=20
+face=3D"Times New Roman" size=3D3>
+<DEFANGED_DIV><BR>Regards,<BR>Jiawang Nie and Jim=20
+Demmel</FONT><BR></DEFANGED_DIV></FONT></FONT></DEFANGED_DIV>
+<BLOCKQUOTE dir=3D"ltr"=20
+DEFANGED_style=3D"PADDING-RIGHT: 0px; PADDING-LEFT: 5px; MARGIN-LEFT: 5px; =
+BORDER-LEFT: #000000 2px solid; MARGIN-RIGHT: 0px">
+  <DEFANGED_DIV style=3D"FONT: 10pt arial">----- Original Message ----- </D=
+EFANGED_DIV>
+  <DEFANGED_DIV=20
+  style=3D"BACKGROUND: #e4e4e4; FONT: 10pt arial; font-color: black"><B>Fro=
+m:</B>=20
+  <A title=3Dplamberti@unisa.it href=3D"mailto:plamberti@unisa.it">Patrizia=
+=20
+  Lamberti</A> </DEFANGED_DIV>
+  <DEFANGED_DIV style=3D"FONT: 10pt arial"><B>To:</B> <A=20
+  title=3Dreliable_computing@interval.louisiana.edu=20
+  href=3D"mailto:reliable_computing@interval.louisiana.edu">reliable_comput=
+ing@interval.louisiana.edu</A>=20
+  </DEFANGED_DIV>
+  <DEFANGED_DIV style=3D"FONT: 10pt arial"><B>Sent:</B> Wednesday, January =
+12, 2005 6:59=20
+  AM</DEFANGED_DIV>
+  <DEFANGED_DIV style=3D"FONT: 10pt arial"><B>Subject:</B> polynomial varia=
+bility</DEFANGED_DIV>
+  <DEFANGED_DIV><BR></DEFANGED_DIV><DEFANGED_DIV><FONT face=3DArial size=3D=
+2><DEFANGED_DIV><FONT=20
+  face=3DArial size=3D2>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><FONT size=3D=
+3><FONT=20
+  face=3D"Times New Roman"><DEFANGED_SPAN lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB">I am a PhD Student in Information and=
+=20
+  Electric Engineering at the=20
+  </DEFANGED_SPAN><DEFANGED_ST1:PLACE><DEFANGED_ST1:PLACETYPE><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB">University</DEFANGED_SPAN></DEFANGED_S=
+T1:PLACETYPE><DEFANGED_SPAN=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"> of=20
+  </DEFANGED_SPAN><DEFANGED_ST1:PLACENAME><DEFANGED_SPAN lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB">Salerno</DEFANGED_SPAN></DEFANGED_ST1:=
+PLACENAME></DEFANGED_ST1:PLACE><DEFANGED_SPAN=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB">,=20
+  </DEFANGED_SPAN><DEFANGED_ST1:COUNTRY-REGION><DEFANGED_ST1:PLACE><DEFANGE=
+D_SPAN=20
+  lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB">Italy</DEFANGED_SPAN></DEFANGED_ST1:PL=
+ACE></DEFANGED_ST1:COUNTRY-REGION><DEFANGED_SPAN=20
+  lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB">.<o:p></o:p></DEFANGED_SPAN></FONT></F=
+ONT></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><FONT size=3D3><FONT=20
+  face=3D"Times New Roman">I am investigating the possibility of determinin=
+g the=20
+  range of minimum variability of a polynomial by means of interval=20
+  analysis.<o:p></o:p></FONT></FONT></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><FONT size=3D3><FONT=20
+  face=3D"Times New Roman">I prefer to describe the problem by using a simp=
+le=20
+  example.<o:p></o:p></FONT></FONT></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><FONT size=3D=
+3><FONT=20
+  face=3D"Times New Roman"><DEFANGED_SPAN lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB">Let us consider the 5<SUP>th</SUP> ord=
+er=20
+  polynomial f(x)=3Dx^5+60*x^4+30*x^3-10*x^2+6, which has 2 minima and 3 ma=
+xima in=20
+  the range I=3D[-1.0,0.7]. Let us inspect the behaviour of f over I by=20
+  considering a translating WIDE interval X(k)=3D[x0(k)-delta,x0(k)+delta],=
+=20
+  included in I, with x0=3D{-0.7,-0.6,=85,0.3,0.4} and delta=3D0.3. Let us =
+calculate=20
+  the </DEFANGED_SPAN><DEFANGED_ST1:CITY><DEFANGED_ST1:PLACE><DEFANGED_SPAN=
+=20
+  lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB">Taylor</DEFANGED_SPAN></DEFANGED_ST1:P=
+LACE></DEFANGED_ST1:CITY><DEFANGED_SPAN=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"> expansion of f(x) centre=
+d in=20
+  x0(k), k=3D1,2,=85, and evaluate its interval extension=20
+  F_TM(X(k)).<o:p></o:p></DEFANGED_SPAN></FONT></FONT></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><FONT size=3D3><FONT=20
+  face=3D"Times New Roman">I have found that, among the N values F_TM(X(k))=
+=20
+  calculated, the one of minimum radius is obtained for the X(k) wherein th=
+e=20
+  real function f(x) is subjected to the minimum variation (namely, in that=
+ X(k)=20
+  the united extension of f(X(k)) assumes the minimum=20
+  radius).<o:p></o:p></FONT></FONT></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><FONT size=3D3><FONT=20
+  face=3D"Times New Roman">Note that:<o:p></o:p></FONT></FONT></DEFANGED_SP=
+AN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt 36pt; TEXT-INDENT: -18pt; TEXT-ALIG=
+N: justify; mso-list: l1 level1 lfo1; tab-stops: list 36.0pt"><FONT=20
+  face=3D"Times New Roman"><DEFANGED_SPAN lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB"><DEFANGED_SPAN style=3D"mso-list: Igno=
+re"><FONT=20
+  size=3D3>1)</FONT><DEFANGED_SPAN=20
+  style=3D"FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+  </DEFANGED_SPAN></DEFANGED_SPAN></DEFANGED_SPAN><DEFANGED_SPAN lang=3DEN-=
+GB=20
+  style=3D"mso-ansi-language: EN-GB"><FONT size=3D3>the F_TM(X(k)) are calc=
+ulated=20
+  over intervals X(k) of fixed, and big, amplitude=20
+  2*delta;<o:p></o:p></FONT></DEFANGED_SPAN></FONT></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt 36pt; TEXT-INDENT: -18pt; TEXT-ALIG=
+N: justify; mso-list: l1 level1 lfo1; tab-stops: list 36.0pt"><FONT=20
+  face=3D"Times New Roman"><DEFANGED_SPAN lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB"><DEFANGED_SPAN style=3D"mso-list: Igno=
+re"><FONT=20
+  size=3D3>2)</FONT><DEFANGED_SPAN=20
+  style=3D"FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+  </DEFANGED_SPAN></DEFANGED_SPAN></DEFANGED_SPAN><DEFANGED_SPAN lang=3DEN-=
+GB=20
+  style=3D"mso-ansi-language: EN-GB"><FONT size=3D3>I don=92t have looked f=
+or the true=20
+  range of f over I or X(k), but I it was enough for me to look for the ran=
+ge of=20
+  minimum (even if unknown) radius of=20
+  f(x).<o:p></o:p></FONT></DEFANGED_SPAN></FONT></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><FONT size=3D3><FONT=20
+  face=3D"Times New Roman">Now, I have some=20
+  questions:<o:p></o:p></FONT></FONT></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt 36pt; TEXT-INDENT: -18pt; TEXT-ALIG=
+N: justify; mso-list: l0 level1 lfo2; tab-stops: list 36.0pt"><FONT=20
+  face=3D"Times New Roman"><DEFANGED_SPAN lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB"><DEFANGED_SPAN style=3D"mso-list: Igno=
+re"><FONT=20
+  size=3D3>1)</FONT><DEFANGED_SPAN=20
+  style=3D"FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+  </DEFANGED_SPAN></DEFANGED_SPAN></DEFANGED_SPAN><DEFANGED_SPAN lang=3DEN-=
+GB=20
+  style=3D"mso-ansi-language: EN-GB"><FONT size=3D3>is this result of gener=
+al=20
+  validity, namely for any polynomial and/or function in general? Does it e=
+xist=20
+  some theorem helpful to demonstrate it in=20
+  general?<o:p></o:p></FONT></DEFANGED_SPAN></FONT></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt 36pt; TEXT-INDENT: -18pt; TEXT-ALIG=
+N: justify; mso-list: l0 level1 lfo2; tab-stops: list 36.0pt"><FONT=20
+  face=3D"Times New Roman"><DEFANGED_SPAN lang=3DEN-GB=20
+  style=3D"mso-ansi-language: EN-GB"><DEFANGED_SPAN style=3D"mso-list: Igno=
+re"><FONT=20
+  size=3D3>2)</FONT><DEFANGED_SPAN=20
+  style=3D"FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+  </DEFANGED_SPAN></DEFANGED_SPAN></DEFANGED_SPAN><DEFANGED_SPAN lang=3DEN-=
+GB=20
+  style=3D"mso-ansi-language: EN-GB"><FONT size=3D3>has this problem alread=
+y=20
+  afforded in literature?<o:p></o:p></FONT></DEFANGED_SPAN></FONT></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt 18pt; TEXT-ALIGN: justify"><DEFANGE=
+D_SPAN=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><FONT size=3D3><FONT=20
+  face=3D"Times New Roman">Please, do not hesitate to ask for further=20
+  details.<o:p></o:p></FONT></FONT></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><FONT size=3D3><FONT=20
+  face=3D"Times New Roman">Best=20
+  regards<o:p></o:p></FONT></FONT></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><FONT size=3D3><FONT=20
+  face=3D"Times New Roman">Patrizia=20
+  Lamberti<o:p></o:p></FONT></FONT></DEFANGED_SPAN></P>
+  <P class=3D"MsoNormal"=20
+  DEFANGED_style=3D"MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><DEFANGED_SPA=
+N=20
+  lang=3DEN-GB style=3D"mso-ansi-language: EN-GB"><o:p><FONT face=3D"Times =
+New Roman"=20
+  size=3D3>&nbsp;</FONT></o:p></DEFANGED_SPAN></P></BLOCKQUOTE></FONT></DEF=
+ANGED_DIV></FONT></DEFANGED_DIV></BODY></HTML>
+
+------=_NextPart_000_0019_01C4F8AA.66FEA630--
+
+

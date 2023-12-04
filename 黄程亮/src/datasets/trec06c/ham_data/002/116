@@ -1,0 +1,101 @@
+Received: by cheltenham.cs.arizona.edu; Sat, 17 Dec 1994 04:54:13 MST
+Date: Sat, 17 Dec 94 12:54:04 +0100
+From: karczma@univ-caen.fr (Jerzy Karczmarczuk)
+Message-Id: <9412171154.AA22688@milou.univ-caen.fr>
+To: icon-group@cs.arizona.edu
+Subject: Backtracking in Icon
+Errors-To: icon-group-errors@cs.arizona.edu
+
+
+Dave Kuhlman (dkuhlman@netcom) finished his last posting with a 
+remark and a question:
+
+> Anyway, I'd be interested to know if others use backtracking
+> more heavily, or whether maybe this is just a "neat" but
+> not so useful feature of Icon.
+
+> Or, could it be that the fact that Icon does not have logical
+> variables, as Prolog does, make backtracking and goal seeking
+> evaluation less usable?
+
+John Paolillo (johnp@utafll.uta.edu) decided then to share his
+experience:
+
+> I have just finished teaching a course "The Computer and Natural Language"
+> using Icon.  Through this course, Icon's backtracking became  one of my
+> fondest friends, so to speak.
+
+...
+
+> Backtracking is an essential
+> part of the functioning of such recognizers, and makes it possible 
+> to teach linguistics students how to write parsers by applying a 
+> simple translation process to get from a formalism they know:
+
+> 	NP -> (Det) N
+
+> ... etc.
+
+> I have recently tried to implement something similar in another
+> language that I use (because it is visual), which even employs
+> failure, but which does not have built-in backtracking.  The result
+> was an indescribable mess.  I would rank backtracking among the 
+> most important features of Icon for what I do.  There are many 
+> many problems you can solve very elegantly with built-in backtracking,
+> and once you finally understand it, it is hard to live without.
+
+
+A short (?) comment.
+
+Backtracking is essential when you use non-deterministic parsing strategies.
+For linguists, people who read grammar production rules rather conceptually
+than technically, obviously this is a great thing. You won't teach them
+the LALR methods, left recursion removal by Greibach normalization, etc.,
+unless you want them to strangle you...
+
+Unfortunately, in the domain of computer languages, we have a 30 years old
+(bad?) tradition - the quest for efficiency, and backtracking is used mainly
+for teaching, and not for the parser construction. My students might be
+fascinated by the non-deterministic parsers written in Prolog and using
+heavily the differential lists, but if they have to write a serious project,
+they take YACC...
+
+But, fortunately, there are other domains where backtracking may be helpful,
+for exemple other kind (than syntaxical) generators: all kind of combinatorial
+problems, code-breaking, game playing, task planning etc.  Is the existence
+of the logical variable essential? I don't know, but I doubt. The only
+place, where this IS essential, and you cannot reproduce this by the reversible
+instantation is the usage of incomplete data structures in Prolog, e.g.
+the differential lists. But maybe I am wrong.
+
+In the Artificial Intelligence domain, when you have to schedule a solution
+of a non-deterministic problem, the backtracking IS the only way of doing
+it reasonably fast (in terms of human time, not the efficiency of the
+algorithm). Then, it is necessary sometimes to memorize a partial solution.
+In Prolog this is simply lousy. In Icon this is easier and elegant. I think
+that Icon may eventually become more popular thanks to its plethora of data
+structures, and the legibility of the programs. But somebody has to write
+a serious book showing how to solve real life problems with it. Any takers?
+
+Still, another word of critics of  gnikcartkcab:
+
+"once you finally understand it, it is hard to live without".
+
+No Sir, not necessarily. You may replace the backtracking, whose role is to
+provide you an alternative collection of solutions to a given problem, by
+a LAZY LIST of these solution. So, the lazy functional languages give you
+an alternative. You may find some information about this in quite respectable
+books, for example Henderson, or Abelsson&Sussman. 
+
+You may wish to read the paper "Painless parsing in Haskell", where this
+idea is applied to the syntactic analysis.
+
+On the other hand, implementing lazy evaluation in Icon is a real pleasure,
+although it is not natural (as the parameters are passed by value), and it
+is not very efficient.
+
+
+Jerzy Karczmarczuk
+
+Dept. d'Informatique, Universite de Caen, Normandy, France.
+

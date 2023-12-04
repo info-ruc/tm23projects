@@ -1,0 +1,81 @@
+Received: from abel.math.umu.se (abel.math.umu.se [130.239.20.139])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id DAA26843
+	for <tex-fonts@math.utah.edu>; Wed, 27 Mar 2002 03:40:16 -0700 (MST)
+Received: from [130.239.137.13] (mariehemsv093.sn.umu.se [130.239.137.13])
+	by abel.math.umu.se (8.9.2/8.9.2) with ESMTP id LAA00708;
+	Wed, 27 Mar 2002 11:32:01 +0100 (CET)
+X-Sender: lars@abel.math.umu.se
+Message-Id: <l03102800b8c74e556507@[130.239.137.13]>
+In-Reply-To: <l03130300b8c7467bf84f@[213.122.29.39]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Date: Wed, 27 Mar 2002 11:40:14 +0100
+To: Rowland McDonnell <rowland.mcdonnell@physics.org>
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?=  <Lars.Hellstrom@math.umu.se>
+Subject: Re: fontinst question
+Cc: "tex-fonts" <tex-fonts@sunshine.math.utah.edu>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sunshine.math.utah.edu id DAA26844
+
+At 11.03 +0100 2002-03-27, Rowland McDonnell wrote:
+>This question probably ought to be sent to the fontinst mailing list, but
+>I've changed email address since I subscribed to that one *and* lost the
+>information on how to subscribe.  So for my first question: can anyone tell
+>me how to subscribe to the fontinst mailing list?
+
+In the fontinst v1.8 manual (by Alan Jeffrey and Rowland McDonnell [sic!]),
+it says:
+
+  If you would like to be on the
+  \texttt{fontinst} mailing list, please mail
+  \url{fontinst-request@cogs.susx.ac.uk}.
+
+Mind you, posting on this list is not restricted to the list subscribers,
+so you could just as well have posted your question there.
+
+>And for my second question, assuming that everyone subscribed to the
+>fontinst list is subscribed to this one...
+>
+>I've just tried installing the Adobe part of the Univers family using
+>fontinst 1.801.  Using \latinfamily,
+>
+>punro8ac.afm
+>punr8ac.afm
+>punlo8ac.afm
+>punl8ac.afm
+>punbo8ac.afm
+>punb8ac.afm
+>
+>get ignored.  Is this appropriate?  I can't help feeling that it'd make
+>sense for \latinfamily to look out for condensed variants.
+
+Looking for c widths is commented out in the definition of \latin_widths. I
+have no idea why; the last person who changed anything in that code was
+Ulrik Vieth.
+
+>But aside from that, when I try installing the above founts using:
+>
+>\installfonts
+>% begin Univers condensed install
+[snip]
+>% end Univers condensed install
+>\endinstallfonts
+>
+>I get the expected pl and vpl files, but no fd files.  What do I have to do
+>to persuade it to write the required fd file entries?
+
+You have to say
+
+\installfamily{T1}{pun}{}
+\installfamily{OT1}{pun}{}
+
+>It strikes me that
+>this ought to happen by default -
+
+Good point! I'll see what I can do about it.
+
+Lars Hellström
+
+
+
+

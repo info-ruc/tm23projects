@@ -1,0 +1,49 @@
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0V7a5423974
+	for <egs+summary>; Tue, 31 Jan 2006 02:36:05 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id 719AE53230; Mon, 30 Jan 2006 23:35:59 -0800 (PST)
+Date: Mon, 30 Jan 2006 23:35:59 -0800
+From: Victoria Krafft <vmk>
+To: egs+summary
+Subject: PAPER 2
+Message-ID: <20060131073559.GA16513>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+Pastry, Chord, and Tapestry are all similar peer to peer networks,
+based on a Distributed Hash Table (DHT).  Pastry and Chord have only a
+few differences.  Chord does not attempt to take network locality into
+account, which means that messages will probably take a bit longer
+over a large network.  Chord keeps a constant size routing table, with
+a lookup time of O(log N).  Chord can also improve load balancing by
+creating virtual nodes in the network.
+
+Tapestry is slightly different.  It's based on the Plaxon mesh data
+structure, which is essentially a DHT.  Each node has a unique ID, and
+routing across the network is accomplished by forwarding a message to
+a node with an ID closer to the destination of the message.  For each
+object in the network, there are several root nodes, which know the
+location of the object.  Tapestry also features the idea of second
+chance recovery.  If a node disappears from the network, it is marked
+as inactive, and not removed from the other nodes for some period of
+time (perhaps an hour or a day).  If the node re-joins the network
+within that time frame, then it can simply pick up where it left off.
+
+While Tapestry's second chance recovery mechanism sounds promising
+when the network will not be experiencing high churn, it could become
+costly.  To give an extreme example, if 3/4 of the network is offline
+at any given time, but comes back once a day to check and see if
+anything new has been added, then 3/4 of the routing table entries
+each node stores are currently invalid, and will just be sitting
+around taking up memory.
+
+-- Victoria Krafft
+

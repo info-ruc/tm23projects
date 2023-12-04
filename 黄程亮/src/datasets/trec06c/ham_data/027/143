@@ -1,0 +1,120 @@
+Received: from mtiwmhc01.worldnet.att.net (mtiwmhc01.worldnet.att.net [204.127.131.36])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id VAA02016
+	for <handyboard@media.mit.edu>; Tue, 17 Nov 1998 21:01:13 -0500 (EST)
+Received: from 161.portland-05rs.me.dial-access.att.net ([12.79.244.161])
+          by mtiwmhc01.worldnet.att.net (InterMail v03.02.03 118 118 102)
+          with SMTP
+          id <19981118020013.HHTT27129@161.portland-05rs.me.dial-access.att.net>
+          for <handyboard@media.mit.edu>; Wed, 18 Nov 1998 02:00:13 +0000
+Received: by 161.portland-05rs.me.dial-access.att.net with Microsoft Mail
+	id <01BE126C.B9F6CDC0@161.portland-05rs.me.dial-access.att.net>; Tue, 17 Nov 1998 20:56:19 -0500
+Message-Id: <01BE126C.B9F6CDC0@161.portland-05rs.me.dial-access.att.net>
+From: Peter Eacmen <eacmen@postoffice.worldnet.att.net>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Serial Communication %!*#!!--Please Help
+Date: Tue, 17 Nov 1998 20:56:17 -0500
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+I need for two HBs to communicate via the serial port.  I'm using the =
+"network" style cable. With Randy Seargent's serialio routines and the =
+code that is in the HB FAQ.  Please Help my project is due the Monday =
+after Thanksgiving.  Any input would be greatly appreciated.
+Thanks
+Peter
+
+This is the code on the transmitting HB: (basically the code in the FAQ)
+void serial_putchar(int c)
+{
+   while (!(peek(0x102e) & 0x80));  /* wait until serial transmit empty =
+*/
+   poke(0x102f, c);  /* send character */
+}
+
+void printdec(int n)
+        {
+        int leading_digit=3D 0;
+        int dig, div;
+
+        if (n =3D=3D 0)  {
+        _printnum(0);
+        return;
+        }
+                =20
+        if (n < 0)  {
+        serial_putchar('-');
+        n =3D 0 - n;
+        }
+                 =20
+        for (div=3D 10000; div=3D div/10; div> 0) {
+        dig=3D n/div;
+        n=3D n - dig*div;
+        if (dig || leading_digit) {
+        _printnum(dig);
+        leading_digit=3D 1;
+        }
+    }
+}
+
+/* prints digit from 0 to 9 over serial line */
+void _printnum(int n)
+{
+serial_putchar(n + '0');
+}
+
+/*To start a new line on the serial output, use:*/=20
+
+void newline() {
+ serial_putchar(10);
+ serial_putchar(13);
+}
+
+void main(){
+newline();
+while(1){
+printdec(5);
+}
+}
+
+This is the code on the recieving HB:
+void disable_pcode_serial()   /* necessary to receive characters using =
+serial_getchar */
+{
+   poke(0x3c, 1);
+}
+
+void reenable_pcode_serial()   /* necessary for IC to interact with =
+board again */
+{
+   poke(0x3c, 0);
+}
+
+int serial_getchar()
+{
+   while (!(peek(0x102e) & 0x20)); /* wait for received character */
+   return peek(0x102f);
+}
+
+int main(){
+disable_pcode_serial();
+while(1){
+printf("\n%d", serial_getchar());
+sleep(.05);
+}
+}
+
+
+
+
+-------------------------------------------------------------------------=
+--------------------------
+Peter Eacmen
+Boston Latin School
+babylongod@usa.net
+
+Knowledge is power,
+power is money,
+knowledge is money!
+
+

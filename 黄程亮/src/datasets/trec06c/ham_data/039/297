@@ -1,0 +1,46 @@
+Received: from terminus.idirect.com (terminus.idirect.com [207.136.80.70])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA26592
+	for <handyboard@media.mit.edu>; Tue, 23 Mar 1999 11:09:42 -0500 (EST)
+Received: from ts6-31t-17.idirect.com (ts6-31t-17.idirect.com [216.154.3.209])
+	by terminus.idirect.com (8.9.3/8.9.3) with SMTP id LAA01231
+	for <handyboard@media.mit.edu>; Tue, 23 Mar 1999 11:09:38 -0500 (EST)
+X-Authentication-Warning: terminus.idirect.com: ts6-31t-17.idirect.com [216.154.3.209] didn't use HELO protocol
+Message-Id: <3.0.6.32.19990323110926.0079b100@idirect.com>
+X-Sender: orthner@idirect.com
+X-Mailer: QUALCOMM Windows Eudora Light Version 3.0.6 (32)
+Date: Tue, 23 Mar 1999 11:09:26 -0500
+To: <handyboard@media.mit.edu>
+From: Duncan Orthner <orthner@idirect.com>
+Subject: Re: PWM and executing 2 function at the same time
+In-Reply-To: <006e01be7541$d60c31c0$136b18d2@jet>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 11:28 PM 3/23/99 +0800, you wrote:
+
+>thanz  Duncan for your advice. but for question 1, what i mean was to count
+>the number of pulses generated without any external device. what i am asking
+>is to count the number of pulses internally.
+
+Umm, not sure which 'pulses' you're refering to. How are you generating the
+pulses and what are they for? Do you mean the PWM going to the motor
+drivers? The HB can generate lots of different pulses 8^]
+
+ and for question 2, i mean is
+>there any command to executed 2 functions at the same time.(eg: testmotors()
+>and testdigitals())
+
+try:
+
+start_process(testmotors());
+start_process(testdigitals());
+
+this starts each function as a seperate process...
+
+When running more than one process, you should know that some actions (like
+printing to the LCD and IR communication) take significantly more processor
+cycles which can *really* slow things down if you're not careful.
+
+Hope this helps, Duncan
+
+

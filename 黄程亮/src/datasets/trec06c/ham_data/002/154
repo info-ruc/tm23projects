@@ -1,0 +1,96 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Wed, 28 Dec 1994 09:57:10 MST
+Received: from gw1.att.com by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA17049; Wed, 28 Dec 1994 09:57:08 MST
+Received: from iwtqg.UUCP by ig1.att.att.com id AA08398; Wed, 28 Dec 94 11:54:57 EST
+Message-Id: <9412281654.AA08398@ig1.att.att.com>
+From: Jerry Nowlin <nowlin@iwtqg.att.com>
+To: icon-group@cs.arizona.edu (Icon News Group)
+Subject: Re: Truth-Table generator
+Original-To: att!cs.arizona.edu!icon-group (Icon News Group)
+Date: Wed, 28 Dec 94 10:55:00 CST
+Original-From: Jerry Nowlin <nowlin@iwtqg>
+X-Mailer: ELM [version 2.3 PL11]
+
+> I had a need to write a program to output truth tables for boolean
+> expressions. I used the programmming language J (a sister of APL). The
+> 'program' was about two lines long.  I wrote a program for the same task
+> in Icon. I include it below.  This Icon solution is ugly (because of the
+> programmer, not the language..), but works. I would be happy to hear
+> comments. Any idea for improvemnet is welcome.
+>
+> I got alot of help on comp.lang.apl when writing the J version - so don't
+> let me down! I think I will write a short note comparing the solutions.
+> My idea is to show the way different languages shape your thought. Both J
+> and Icon are rather special in that they give the programmer tools not
+> found in other languages. Does this interest anyone?
+>
+> Any way, here goes:
+
+It's Christmas break (unless you have a real job) and I figured why not
+try this.  I worked with what you had.  There were a few little things I
+cleaned up but the major flaw was not in the Icon.  This program didn't
+work with n larger than 2.  That's not an Icon problem but what the heck.
+It's been a while since I worried about boolean anything but I took a
+shot.  I also made it possible to pass in a larger n to verify the
+changes worked.  I didn't include the original program so dig up the
+earlier mail for comparison.
+
+Jerry Nowlin
+
+# Truth-Table generator Ver -1.0
+# 12.1994
+#
+procedure main(args)
+        local n, t
+
+        n := get(args) | stop("I need a 'n'")
+
+        # every write(Outl(t:=Truth_Table(n)),"--> ",Expr(t))
+        # shows many expr to many truth-table lines
+        every t:=Truth_Table(n)           &
+              write()                     &
+              writes(Outl(t))             &
+              every writes(" | ",Expr(t))
+        write()
+
+end
+
+procedure Truth_Table(n)
+#
+# generates lines (as lists) of the truth table for n variables
+# list concatenation can't be that efficient but it's simpler
+#
+        if n = 0 then return []
+        suspend [0|1] ||| Truth_Table(n-1)
+end
+
+procedure Expr(vec)
+# evaluates a list of bits (the logical expr)
+# when multiple expr are suspended a mechanism in main prints them side by
+# side
+#
+# you need copies of the list since it's eaten at it's booled
+#
+        suspend Lior(copy(vec)) | Lixor(copy(vec))
+end
+
+procedure Lior(vec)
+        if *vec = 1 then return get(vec)
+        suspend ior(get(vec),Lior(vec))
+end
+
+procedure Lixor(vec)
+        if *vec = 1 then return get(vec)
+        suspend ixor(get(vec),Lixor(vec))
+end
+
+procedure Outl(vec)
+#
+# prints a list
+#
+        local s
+        s := ""
+        every s ||:= !vec || " "
+        return s
+end
+

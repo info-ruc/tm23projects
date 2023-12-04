@@ -1,0 +1,220 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.196] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k21NtMt14290
+	for <egs+summary@cs.cornell.edu>; Wed, 1 Mar 2006 18:55:22 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id x3so276521nzd
+        for <egs+summary@cs.cornell.edu>; Wed, 01 Mar 2006 15:55:22 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=MK3FQoUr/Zth2suHcr3ogrjffSx//+U3V6ojJmkrsbqBStYKTuI+mPh4J2YyDTJ8g0aAV/yzFPrgLQIXvd0dvj+XkpZRuAsPp/2K7CUJb3ro8HIer7Z0eseJhL8qkAeHXJN20PBFmSNAWR3svQcDQlRR7IzXG9r7ZaG8m9/2d2Y=
+Received: by 10.36.222.25 with SMTP id u25mr982058nzg;
+        Wed, 01 Mar 2006 15:55:22 -0800 (PST)
+Received: by 10.36.147.10 with HTTP; Wed, 1 Mar 2006 15:55:21 -0800 (PST)
+Message-ID: <9aa7a97d0603011555g3eb2ce5bs9f96c1dd4719b76f@mail.gmail.com>
+Date: Wed, 1 Mar 2006 18:55:21 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 11
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_4988_31705272.1141257321927"
+
+------=_Part_4988_31705272.1141257321927
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+
+    _Serving_DNS_Using_a_Peer_to_Peer_Lookup_Service
+    Russ Cox, Athicha Muthitacharoen, Robert T. Morris
+
+    An exploratory paper on splitting DNS responsibilities, this paper
+creates a system where records may be verified through means above trusting
+the delivery-point. This is performed through DHash, built on top of Chord,
+in order to eliminate administrative issues found in the current DNS. There
+are already certain measures in place to authenticate these data -- DNSSEC
+effectively separated the authentication from the delivery of data. Thus,
+this paper seeks to improve on the behavior of the currently constructed
+service; studies show that much of the current DNS traffic is either faulty
+or due to the current structure's hierarchical construction. Because of
+this, there is a lot of load which could in some sense be better
+apportioned. Because they are severing the link between administrative
+hierarchy and service structure, we remove certain skill-sets from system
+administrator's tasks, provide better load balance, and provide robustness
+against denial or service attack. Updates are prepared, signed, and inserte=
+d
+into the DHash with key Sha1(domain name|query type).
+    This is a neat hat-trick of a public key distribution system, punting
+the problem over to the same method used to distribute DNS IP addresses (an=
+d
+similar). They claim that this reduces certain capabilities extended by DNS=
+,
+the major one being that of dynamically generated records. In fact, these
+are still available, but through more complex load-management at the server
+side -- by returning the IP address of some server which manages whichever
+dynamic content would normally be returned, and performing some sort of
+redirection, this can be achieved. Even protocols which do not support
+redirection can be handled in this fashion, by the dynamic-application
+server handling the traffic as a middle-man. This requires good load
+balancing, as otherwise whichever computer exposes this service will
+collapse under the weight of requests; this must almost certainly be handle=
+d
+at client side.
+    Nevertheless, the acknowledged flaw of the scheme is indeed latency and
+load; it is clearly a mistake to assume that this is the death-knell of
+peer-to-peer DNS (see: beehive!) but rather that simply using chord does no=
+t
+expose the correct level of services.
+
+
+ _The_Design_and_Implementation_of_a_Next_Generation_Name_Service_for_the_I=
+nternet_
+    Venugopalan Ramasubramanian, Emin Gun Sirer
+
+    DNS nameservers are easy targets for malicious agents, and moreover
+badly load-balanced in that 80% of the domain names are served by just two
+nameservers, and 0.8% by only one nameserver. Name-adress translation in th=
+e
+DNS incurs long delays, also; the flattening of the namespace leads not jus=
+t
+to imbalanced load on root nameservers, but also to high latency. Moreover,
+the current DNS suffer from a high degree of replication through caching
+which prevents quick updates, since the locations of caches is not stored,
+using instead timeout-based invalidations of stale mappings. CoDoNS uses
+Beehive as a substrate to achieve extremely low latency (under one hop on
+average) with reasonable storage overhead, given rank of objects. Also, due
+to Beehive's proactive replication, root nodes for a given object are aware
+of all copies of the object, and can therefore ensure reasonably fresh
+copies are dissemenated.
+    What strikes me as unusual in this paper is the degree of immediacy
+required from it. While we are no longer in the "days of yore" we once were=
+,
+where the hosts.txt file was updated on a nightly basis, DNS remains
+relatively stable. Indeed, this "need for speed" grows from the removal of
+the hierarchical nature of the current implementation, since theoretically
+all views rely on global state of the Beehive substrate being correctly
+updated, versus the current state in which only the parent node for a
+resource need be informed -- ignoring the fact that currently, stale cached
+copies can predominate anyway! The use of cryptography is admirable and
+necessary given the lack of hierarchy, but "unnecessary" in that we do not
+have it now. It is, however, desirable, and so the slight overhead incurred
+is irrelevant; it is worth noting, however, that legacy programs will not b=
+e
+able to take advantage of the new form.
+    The real problem is one that we've had for the last few papers, to whit=
+:
+the tragedy of the commons. The paper implies that "institutions" should ru=
+n
+this service, but it is unclear whether this is intended to mean any entity
+currently operating a nameserver, or some other interpretation.
+Unfortunately, since this protocol places a higher load on the unpopular
+nameservers than they are used to seeing, it is "not worth their time" to
+participate; some middle ground must be reached between requiring
+participation in the system and yielding services from the system to balanc=
+e
+the resources of smaller and larger entities while giving them both
+incentives.
+
+------=_Part_4988_31705272.1141257321927
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+<br>
+&nbsp;&nbsp; &nbsp;_Serving_DNS_Using_a_Peer_to_Peer_Lookup_Service<br>
+&nbsp;&nbsp; &nbsp;Russ Cox, Athicha Muthitacharoen, Robert T. Morris<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;An exploratory paper on splitting DNS
+responsibilities, this paper creates a system where records may be
+verified through means above trusting the delivery-point. This is
+performed through DHash, built on top of Chord, in order to eliminate
+administrative issues found in the current DNS. There are already
+certain measures in place to authenticate these data -- DNSSEC
+effectively separated the authentication from the delivery of data.
+Thus, this paper seeks to improve on the behavior of the currently
+constructed service; studies show that much of the current DNS traffic
+is either faulty or due to the current structure's hierarchical
+construction. Because of this, there is a lot of load which could in
+some sense be better apportioned. Because they are severing the link
+between administrative hierarchy and service structure, we remove
+certain skill-sets from system administrator's tasks, provide better
+load balance, and provide robustness against denial or service attack.
+Updates are prepared, signed, and inserted into the DHash with key
+Sha1(domain name|query type).<br>
+&nbsp;&nbsp; &nbsp;This is a neat hat-trick of a public key
+distribution system, punting the problem over to the same method used
+to distribute DNS IP addresses (and similar). They claim that this
+reduces certain capabilities extended by DNS, the major one being that
+of dynamically generated records. In fact, these are still available,
+but through more complex load-management at the server side -- by
+returning the IP address of some server which manages whichever dynamic
+content would normally be returned, and performing some sort of
+redirection, this can be achieved. Even protocols which do not support
+redirection can be handled in this fashion, by the dynamic-application
+server handling the traffic as a middle-man. This requires good load
+balancing, as otherwise whichever computer exposes this service will
+collapse under the weight of requests; this must almost certainly be
+handled at client side.<br>
+&nbsp;&nbsp; &nbsp;Nevertheless, the acknowledged flaw of the scheme is
+indeed latency and load; it is clearly a mistake to assume that this is
+the death-knell of peer-to-peer DNS (see: beehive!) but rather that
+simply using chord does not expose the correct level of services.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_The_Design_and_Implementation_of_a_Next_Generation_Name=
+_Service_for_the_Internet_<br>
+&nbsp;&nbsp; &nbsp;Venugopalan Ramasubramanian, Emin Gun Sirer<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;DNS nameservers are easy targets for malicious
+agents, and moreover badly load-balanced in that 80% of the domain
+names are served by just two nameservers, and 0.8% by only one
+nameserver. Name-adress translation in the DNS incurs long delays,
+also; the flattening of the namespace leads not just to imbalanced load
+on root nameservers, but also to high latency. Moreover, the current
+DNS suffer from a high degree of replication through caching which
+prevents quick updates, since the locations of caches is not stored,
+using instead timeout-based invalidations of stale mappings. CoDoNS
+uses Beehive as a substrate to achieve extremely low latency (under one
+hop on average) with reasonable storage overhead, given rank of
+objects. Also, due to Beehive's proactive replication, root nodes for a
+given object are aware of all copies of the object, and can therefore
+ensure reasonably fresh copies are dissemenated.<br>
+&nbsp;&nbsp; &nbsp;What strikes me as unusual in this paper is the
+degree of immediacy required from it. While we are no longer in the
+&quot;days of yore&quot; we once were, where the hosts.txt file was updated=
+ on a
+nightly basis, DNS remains relatively stable. Indeed, this &quot;need for
+speed&quot; grows from the removal of the hierarchical nature of the curren=
+t
+implementation, since theoretically all views rely on global state of
+the Beehive substrate being correctly updated, versus the current state
+in which only the parent node for a resource need be informed --
+ignoring the fact that currently, stale cached copies can predominate
+anyway! The use of cryptography is admirable and necessary given the
+lack of hierarchy, but &quot;unnecessary&quot; in that we do not have it no=
+w. It
+is, however, desirable, and so the slight overhead incurred is
+irrelevant; it is worth noting, however, that legacy programs will not
+be able to take advantage of the new form.<br>
+&nbsp;&nbsp; &nbsp;The real problem is one that we've had for the last
+few papers, to whit: the tragedy of the commons. The paper implies that
+&quot;institutions&quot; should run this service, but it is unclear whether=
+ this
+is intended to mean any entity currently operating a nameserver, or
+some other interpretation. Unfortunately, since this protocol places a
+higher load on the unpopular nameservers than they are used to seeing,
+it is &quot;not worth their time&quot; to participate; some middle ground m=
+ust be
+reached between requiring participation in the system and yielding
+services from the system to balance the resources of smaller and larger
+entities while giving them both incentives. <br>
+
+------=_Part_4988_31705272.1141257321927--
+

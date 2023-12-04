@@ -1,0 +1,73 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2SFliY07485
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 10:47:44 -0500 (EST)
+Received: from [128.84.153.247] (rrdhcp152-503.redrover.cornell.edu [128.84.153.247])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2SFkLPo013348
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 10:46:24 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <8EFB1A32-4982-4C94-8840-186D601813A1@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 16
+Date: Tue, 28 Mar 2006 10:43:58 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+THE EIGENTRUST ALGORITHM:
+The problem which the authors wish to address with EigenTrust is that  
+P2P networks generally do not have mechanisms for preventing the  
+spread of inauthentic files.  The method that they choose is to  
+maintain a global trust value for each node in the network based on  
+that node's upload history, indicating the confidence with which that  
+node is expected to produce authentic files.
+
+Each node maintains a local trust value for each node it has  
+interacted with, giving way to a challenge of aggregating these local  
+trust values to generate a global trust value.  EigenTrust assumes  
+that the accuracy to which a node reports its local trust values is  
+proportional to the authenticity of files uploaded by that node, and  
+aggregation is achieved by weighting reported local trust values by  
+the local trust value of the node who reported them.  This can be  
+cascaded from to neighbors of neighbors of neighbors, etc.  Thus, in  
+the global sense, aggregation is achieved by a distributed  
+computation of the left eigenvector of a matrix of normalized local  
+trust values, making it possible to guarantee a convergence to a set  
+of unique global trust values.
+
+To secure this process, DHT consistent hashing is used to select a  
+set of score managers, who act as a definitive set of nodes who are  
+queried and averaged to report a trust value for a given node.  As  
+malicious nodes cannot choose their DHT identifier, it is difficult  
+for attackers to control a large portion of score managers for a  
+given node.
+
+
+A ROBUST REPUTATION SYSTEM:
+
+Reputation systems must balance a critical tradeoff:  first-hand  
+reputation is accurate but a small set, and shared information is a  
+large set but may be inaccurate.  EigenTrust achieves this by  
+weighting second hand reputation values by first hand trust values.   
+This system, in contrast, accepts second hand reputation values only  
+if they are congruent with local values.
+
+This is achieved using a Bayesian approach, modified in the sense  
+that more recent transactions affect trust ratings more strongly that  
+older transactions.  Each node begins with an expectation that a node  
+will act incorrectly according to an initial uninformative Beta  
+distribution.  This distribution is updated as observations are made.
+
+Nodes are not punished for inaccurate information, as this may punish  
+intermediate nodes along multi-hop aggregation of trust.  Although  
+they mention that node identities must be authentic, they do not  
+provide a mechanism to achieve this.
+
+EigenTrust requires a set of pre-trusted peers to anchor the global  
+ratings.  In terms of performance between the two schemes, it is  
+difficult to compare, as EigenTrust is evaluated based on suppression  
+of unauthentic files, while this system is evaluated based on  
+detection of malicious nodes.
+

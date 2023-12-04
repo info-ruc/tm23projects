@@ -1,0 +1,136 @@
+Received: from io.unm.edu (io.unm.edu [129.24.8.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id JAA24950
+	for <handyboard@media.mit.edu>; Tue, 15 Dec 1998 09:50:51 -0500 (EST)
+From: jdunn@unm.edu
+Received: from unm.edu(ppp-320.unm.edu[129.24.11.64]) (5051 bytes) by io.unm.edu
+	via sendmail with P:esmtp/R:bind_hosts/T:inet_zone_bind_smtp
+	(sender: <jdunn@unm.edu>) 
+	id <m0zpvoG-0000aRC@io.unm.edu>
+	for <handyboard@media.mit.edu>; Tue, 15 Dec 1998 07:50:48 -0700 (MST)
+	(Smail-3.2.0.101 1997-Dec-17 #2 built 1998-Sep-15)
+Message-Id: <3676771F.C36415C1@unm.edu>
+Date: Tue, 15 Dec 1998 07:50:07 -0700
+X-Mailer: Mozilla 4.02 [en] (Win95; I)
+Mime-Version: 1.0
+To: mbge7hlc@stud.man.ac.uk, Handy Board <handyboard@media.mit.edu>
+Subject: Re: Mapping
+References: <119B2DF4F27@fs1.eng.man.ac.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I've just started experimenting with mapping and these are my thoughts on
+it.
+
+Drop the robot anywhere in its environment.  
+The robot has a sonar hooked to a servo so the sensor can be scanned
+horizontally.
+As the sensor sweeps from left to right, only the time intervals that are
+different from the last by at least a certain margin are recorded, along
+with the servo position.
+Each of these are recorded as arbitrary, but sequential for now, vectors of
+a fixed size in memory.
+
+After a complete scan from left to right is made
+The critical points are identified by:
+
+Identify the characteristics of your sensor
+	The sonar we are using has a detection cone of about 40 degrees, this
+depends upon the texture, material, shape, and size of the obstacle.  A
+flat metal surface directed straight back at the sensor broadens the cone
+to about 60 degrees up close (1.5' to 5' for the Polaroid sensor).  And
+narrows the cone to about 2 degrees at very far distances (about 22' for
+the Polaroid) because nothing else is detected at those distances.  The
+surface used was 12ga steel 1'x1' smooth plate. Other obstacles were kept
+out of it's line of vision.  ~2msec / foot of distance according to the
+oscope used.  A person on the other hand could only be detected out to
+about 7'.
+
+So once you have some data on the 'sonar field width' for the different
+materials, sizes, and shapes the robot is expected to encounter, a
+weighting table, heretofore 'feature lookup table' can be set up to help
+distinguish critical points of data by the apparent width of the cone the
+objects produce at a given distance.
+
+As the same analog value is produced while scanning, assume it is from the
+same point on that object, even though there are other objects that may be
+the same distance away.  Take the distance and average the positions at
+which they occurred and store the location of the vector and its weight
+from the 'feature lookup table'.  If the difference in positions of
+constant values exceeds any in the lookup table, then create two new
+positions that are at the mean of the edges of the sonar field width for
+that distance and the associated mean weight of obstacles at that distance
+(this provides a guess as to where the edges of the obstacle are).
+
+Do this for all echo return time values that have a matching value within a
+certain experimentally determined tolerance, regardless of other data
+values being between them.  For 
+
+Next look for values of progressively increasing, or decreasing time
+intervals.  These are walls, couches, etc.
+	If there is a somewhat linear relationship you only need to keep the
+begining and ending values with a flag that indicates the data between was
+connected.  This is to save memory.
+	If the data is non-linear then keep the vectors as they are to compare
+with once the vehicle moves.
+
+From the present position of the robot, calculate where all of the critical
+vectors should be once the robot moves a known distance.
+
+Move that distance.  Rescan the area and compare the results.
+
+For critical points that agree, increase their data weighting by some
+value.
+For critical points that disagree, decrease their data weighting by some
+value.
+For new critical points, record them as above.
+When a critical point weighting drops below a certain value, it is
+overwritten by new data.
+
+If critical points tend to decrease slowly while adjacent points tend to
+increase slowly, then this indicates that the robot may be moving in an
+other than straight line, or there is some other systematic error that
+needs correction.
+
+By moving toward obstacles and checking them out up close, say with
+infrared contact sensors, the weighting of the obstacles can be increased
+significantly.  And systematically roving from obstacle to obstacle will
+eventually map the entire area.
+
+The map ends up be a set of vectors that move as the robot moves (a moving
+map display).  The more it moves, the more exact the map becomes.
+
+This is still a paper program, but this is the direction I am going.
+
+
+
+
+Mr H.L. Chin wrote:
+> 
+> Hi,
+> Could anyone tell me how a robot can do mapping in a room.
+> 
+> Thank you
+
+-- 
+James and Roya
+jdunn@unm.edu
+Chat# 14708321
+
+Like a rose, life is sweet,
+with just enough thorns
+to make it interesting.
+      _,--._.-,
+     /\_r-,\_ )
+   .-.) _;='_/ (.;
+    \ \'     \/S )
+     L.'-. _.'|-'
+     <_`-'\'_.'/
+      *-._( \
+      ___   \\,     ___
+      \ .'-. \\ .-'_. /
+       '._' '.\\/.-'_.'
+          '--``\('--'
+                \\
+                `\\,
+                  \|
+

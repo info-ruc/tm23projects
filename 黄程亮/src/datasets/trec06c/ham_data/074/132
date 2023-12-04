@@ -1,0 +1,63 @@
+Received: from darwin.psy.fsu.edu (root@darwin.psy.fsu.edu [128.186.66.5])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id TAA23800
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 11 Nov 2000 19:33:48 -0700
+Received: from john (dial1099.acns.fsu.edu [146.201.36.235])
+	by darwin.psy.fsu.edu (8.9.3/8.9.3) with SMTP id VAA15835
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 11 Nov 2000 21:33:30 -0500
+Message-Id: <3.0.6.32.20001111213343.00ecdc10@psy.fsu.edu>
+Date: Sat, 11 Nov 2000 21:33:43 -0500
+To: DMDX@psy1.psych.arizona.edu
+From: "John P. Kline" <kline@darwin.psy.fsu.edu>
+Subject: [DMDX] Re: PIO / Sound latency slop
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+We have a Soundblaster PCI card... less than a year old... I think a
+Soundblaster 128.  Still have some variance even with the change in the
+thread priority.  The latency I am measuring is between the output of the
+PIO-12 and the output of the sound card.  We did this with an Oscilloscope,
+but then I did it again by building a voltage divider and placing it
+between my sound output and the input on the headbox of my Neuroscan
+synamps (i.e. to down-step the voltage into the mvolt range, so that the
+Synamps can handle it... not with a subject hooked up, mind you).  
+
+I conducted a couple of tests:  the sound latency test in TimeDX, and
+another test where I put together a simple item file with triggers and
+sounds.  I then rectified and averaged the sound file output over 30
+trials, and took the mean onset latency, defined as the time from the
+trigger to the half amplitude of the sound signal.  I have a jitter range
+of about +/- 3 msec.  This doesn't appear to affect our pilot ERP
+recordings, nor our pilot startle recordings... but I would like to
+decrease this if at all possible.  If I can't decrease it by purchasing
+commercial hardware (a sound card), I may build a buffered "AND" gate, i.e.
+that will store the 8 bit word from the CIO/DIO 24 and write it out
+simultaneously with, or at least within nanoseconds of the measured sound
+pulse (measured from the output of the sound card).
+
+Do you have recommendations for fast, buffered sound cards?  I've solved
+the latency problem"  It seems that measuring the latency, and then
+replacing the default "observed latency" value with the measured value
+(around 17 msec) in TimeDX took care of this.  The slop range is still
+around +/- 3 msec.... This would be acceptable in a pinch, but i'd still
+like to decrease it if I can, even if it means purchasing a better sound card.
+
+thanks,
+
+John
+
+
+
+
+_____________________________________________________________________________
+John P. Kline, Ph.D.			Phone:	   850-644-9363	
+Assistant Professor			Fax:       850-644-7739 
+Department of Psychology		
+Florida State University		Mailto:kline@psy.fsu.edu
+Tallahassee, FL  32306-1051		http://klinelab.psy.fsu.edu
+______________________________________________________________________________
+
+
+

@@ -1,0 +1,27 @@
+Received: from plan9.cs.bell-labs.com (plan9.bell-labs.com [204.178.31.2])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id NAA13464
+	for <9fans@cse.psu.edu>; Mon, 28 Feb 2000 13:07:12 -0500 (EST)
+Message-Id: <200002281807.NAA13464@cse.psu.edu>
+From: "rob pike" <rob@plan9.bell-labs.com>
+Subject: [9fans] Re: 9p question
+Date: Mon, 28 Feb 2000 13:07:00 -0500
+To: 9fans@cse.psu.edu
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+The Topen message generates a permission check and enables I/O. Before
+the open, you may not read or write on the fid.  There is no close (well, there
+is, but it's called clunk) because you must dispose of fids that have not been
+Topened, so it seemed that Tclose would be the wrong name for the operation.
+
+The manual says somewhere I believe, and the code says somewhere I know,
+that once a fid is opened, it cannot be walked or cloned further.  This avoids
+some difficult implementation problems for the servers.
+
+-rob
+
+

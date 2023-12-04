@@ -1,0 +1,182 @@
+Received: from postal1.lbl.gov (postal1.lbl.gov [128.3.7.82])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id RAA18555
+	for <handyboard@media.mit.edu>; Tue, 7 Dec 1999 17:01:28 -0500 (EST)
+Received: from SpamWall.lbl.gov (localhost [127.0.0.1])
+	by postal1.lbl.gov (8.9.3/8.9.3) with ESMTP id OAA23097
+	for <handyboard@media.mit.edu>; Tue, 7 Dec 1999 14:01:26 -0800 (PST)
+Received: from lbl.gov (pseudoknot.CChem.Berkeley.EDU [128.32.144.206])
+	by SpamWall.lbl.gov (8.9.3/8.9.3) with ESMTP id OAA23078
+	for <handyboard@media.mit.edu>; Tue, 7 Dec 1999 14:01:25 -0800 (PST)
+Message-Id: <384D8374.52EA2BA6@lbl.gov>
+Date: Tue, 07 Dec 1999 14:00:24 -0800
+From: Jan Liphardt <JTLiphardt@lbl.gov>
+Organization: UC Berkeley
+X-Mailer: Mozilla 4.05 (Macintosh; I; PPC)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Piezo Rate Gyro and HB
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg=sha1; boundary="------------msB916B82B08BF9B07CDB57802"
+
+This is a cryptographically signed message in MIME format.
+
+--------------msB916B82B08BF9B07CDB57802
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+FYI, it is possible (and indeed pretty easy) to attach a small piezo
+rate
+gyro to the HB. I used the hitec GY-130 (availible for about 100$ from
+Tower Hobbies). It modifies a PWM signal - the pulse width increases or
+decreases depending on the rate of rotation around the gyro axis.
+
+I used one servo port on the extension board to provide the
+PWM signal:
+
+init_expbd_servos(action) ;        /*initialize servos*/
+
+pos_servo_0 = 1500;                /* 0 to 3000 are valid */
+
+and measured the pulse width with TIC3:
+
+while(1)
+ {
+    temp = gyro_sample();
+    if((temp < 5000) && (temp > 100)) {printf("gyro rate: %d\n",temp)}
+    sleep(0.1);
+}
+
+
+int gyro_sample() {
+    int start_pulse;
+    int end_pulse;
+
+    int TFLG1 = 0x1023;        /* Timer flags, 8-bit reg*/
+    int TMSK1= 0x1022;        /* Timer Interrupt Masks, 8-bit reg*/
+    int TCTL2 = 0x1021;        /* Timer control 2, 8-bit reg, interupt
+edge*/
+
+    bit_set(TCTL2, 1);         /* at tctl2, */
+    bit_clear(TCTL2, 2);       /* set tic3 for rising edge */
+
+    poke(TFLG1, 1);              /* clear tic3 flag */
+
+    while (!(peek(0x1000) & 0x1)) { /*do nothing*/; }
+
+   start_pulse = peekword(0x1014);   /* tic3 has time of echo */
+
+   bit_set(TCTL2, 2);           /*    at tctl2, */
+   bit_clear(TCTL2, 1);         /*   set tic3 for falling edge */
+   poke(TFLG1, 1);               /*   clear tic3 flag*/
+
+   while (peekword(0x1014) == start_pulse){ /*do nothing until 0x1014
+actually changes*/; }
+
+   end_pulse = peekword(0x1014);   /* tic3 has time of echo */
+
+   if ((end_pulse <0)  && (start_pulse < 0 ))
+            { return (end_pulse + (- start_pulse));}
+
+    if ((end_pulse > 0)   && (start_pulse > 0 ))
+             { return(end_pulse - start_pulse); }
+
+    if ((end_pulse <0)   && (start_pulse > 0))
+             {return( (32767 + end_pulse) + (32767 - start_pulse) );}
+
+    if ((end_pulse >0)   && (start_pulse < 0 ))
+             {return ( (end_pulse) + (- start_pulse) ); }
+
+}
+
+
+Sorry about the terrible code - I've only had my HB since yesterday! It
+does work,
+though.
+
+Jan
+
+
+
+
+Jan Liphardt
+Dept. of Physics
+UC Berkeley
+(510) 642 1440
+
+
+
+
+
+
+
+
+
+
+--------------msB916B82B08BF9B07CDB57802
+Content-Type: application/x-pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIMGwYJKoZIhvcNAQcCoIIMDDCCDAgCAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHAaCC
+Ch0wggSyMIIEG6ADAgECAhAqwhkYFm2fdtHGOy/fH76MMA0GCSqGSIb3DQEBBAUAMIHMMRcw
+FQYDVQQKEw5WZXJpU2lnbiwgSW5jLjEfMB0GA1UECxMWVmVyaVNpZ24gVHJ1c3QgTmV0d29y
+azFGMEQGA1UECxM9d3d3LnZlcmlzaWduLmNvbS9yZXBvc2l0b3J5L1JQQSBJbmNvcnAuIEJ5
+IFJlZi4sTElBQi5MVEQoYyk5ODFIMEYGA1UEAxM/VmVyaVNpZ24gQ2xhc3MgMSBDQSBJbmRp
+dmlkdWFsIFN1YnNjcmliZXItUGVyc29uYSBOb3QgVmFsaWRhdGVkMB4XDTk5MDgxNTAwMDAw
+MFoXDTAwMDgxNDIzNTk1OVowggERMRcwFQYDVQQKEw5WZXJpU2lnbiwgSW5jLjEfMB0GA1UE
+CxMWVmVyaVNpZ24gVHJ1c3QgTmV0d29yazFGMEQGA1UECxM9d3d3LnZlcmlzaWduLmNvbS9y
+ZXBvc2l0b3J5L1JQQSBJbmNvcnAuIGJ5IFJlZi4sTElBQi5MVEQoYyk5ODEeMBwGA1UECxMV
+UGVyc29uYSBOb3QgVmFsaWRhdGVkMTMwMQYDVQQLEypEaWdpdGFsIElEIENsYXNzIDEgLSBO
+ZXRzY2FwZSBGdWxsIFNlcnZpY2UxFTATBgNVBAMUDEphbiBMaXBoYXJkdDEhMB8GCSqGSIb3
+DQEJARYSanRsaXBoYXJkdEBsYmwuZ292MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMfpPXwP
+d+ZG5sEpQO6dC99GCc++7tyMxjF+jFf3yuAom1LQd2zN/m5dqypJTceIk5LSQ99gQ0+V3QNx
+gB66gmUCAwEAAaOCAY8wggGLMAkGA1UdEwQCMAAwgawGA1UdIASBpDCBoTCBngYLYIZIAYb4
+RQEHAQEwgY4wKAYIKwYBBQUHAgEWHGh0dHBzOi8vd3d3LnZlcmlzaWduLmNvbS9DUFMwYgYI
+KwYBBQUHAgIwVjAVFg5WZXJpU2lnbiwgSW5jLjADAgEBGj1WZXJpU2lnbidzIENQUyBpbmNv
+cnAuIGJ5IHJlZmVyZW5jZSBsaWFiLiBsdGQuIChjKTk3IFZlcmlTaWduMBEGCWCGSAGG+EIB
+AQQEAwIHgDCBhgYKYIZIAYb4RQEGAwR4FnZkNDY1MmJkNjNmMjA0NzAyOTI5ODc2M2M5ZDJm
+Mjc1MDY5YzczNTliZWQxYjA1OWRhNzViYzRiYzk3MDE3NDdkYTVkM2YyMTQxYmVhZGIyYmQy
+ZTg5MjFmYTk2Y2YxZDMxMTQ4OWVhMWI5NDVmZmYzZWE0NTBkMDMGA1UdHwQsMCowKKAmoCSG
+Imh0dHA6Ly9jcmwudmVyaXNpZ24uY29tL2NsYXNzMS5jcmwwDQYJKoZIhvcNAQEEBQADgYEA
+MBBMaPYAghQQyhPW+U/IQMLrV51KfipWNuHqMwC3CFMyAScfOx+rSOZNDRHTslkFjbD7uQXf
+4mY/eo9sopmoEOSQWjFtKawoOjIFuXxf9by/lEEfHeRU5EEVr2snh5EMamHspYW01cPejbg7
+Y7XhcWO/eqk5Hnz9CA0wx8aiB+8wggMuMIICl6ADAgECAhEA0nYujRQMPX2yqCVdr+4NdTAN
+BgkqhkiG9w0BAQIFADBfMQswCQYDVQQGEwJVUzEXMBUGA1UEChMOVmVyaVNpZ24sIEluYy4x
+NzA1BgNVBAsTLkNsYXNzIDEgUHVibGljIFByaW1hcnkgQ2VydGlmaWNhdGlvbiBBdXRob3Jp
+dHkwHhcNOTgwNTEyMDAwMDAwWhcNMDgwNTEyMjM1OTU5WjCBzDEXMBUGA1UEChMOVmVyaVNp
+Z24sIEluYy4xHzAdBgNVBAsTFlZlcmlTaWduIFRydXN0IE5ldHdvcmsxRjBEBgNVBAsTPXd3
+dy52ZXJpc2lnbi5jb20vcmVwb3NpdG9yeS9SUEEgSW5jb3JwLiBCeSBSZWYuLExJQUIuTFRE
+KGMpOTgxSDBGBgNVBAMTP1ZlcmlTaWduIENsYXNzIDEgQ0EgSW5kaXZpZHVhbCBTdWJzY3Jp
+YmVyLVBlcnNvbmEgTm90IFZhbGlkYXRlZDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA
+u1pEigQWu1X9A3qKLZRPFXg2uA1Ksm+cVL+86HcqnbnwaLuV2TFBcHqBS7lIE1YtxwjhhEKr
+wKKSq0RcqkLwgg4C6S/7wju7vsknCl22sDZCM7VuVIhPh0q/Gdr5FegPh7Yc48zGmo5/aiSS
+4/zgZbqnsX7vyds3ashKyAkG5JkCAwEAAaN8MHowEQYJYIZIAYb4QgEBBAQDAgEGMEcGA1Ud
+IARAMD4wPAYLYIZIAYb4RQEHAQEwLTArBggrBgEFBQcCARYfd3d3LnZlcmlzaWduLmNvbS9y
+ZXBvc2l0b3J5L1JQQTAPBgNVHRMECDAGAQH/AgEAMAsGA1UdDwQEAwIBBjANBgkqhkiG9w0B
+AQIFAAOBgQCIuDc73dqUNwCtqp/hgQFxHpJqbS/28Z3TymQ43BuYDAeGW4UVag+5SYWklfEX
+fWe0fy0s3ZpCnsM+tI6q5QsG3vJWKvozx74Z11NMw73I4xe1pElCY+zCphcPXVgaSTyQXFWj
+ZSAA/Rgg5V+CprGoksVYasGNAzzrw80FopCubjCCAjEwggGaAgUCpAAAATANBgkqhkiG9w0B
+AQIFADBfMQswCQYDVQQGEwJVUzEXMBUGA1UEChMOVmVyaVNpZ24sIEluYy4xNzA1BgNVBAsT
+LkNsYXNzIDEgUHVibGljIFByaW1hcnkgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkwHhcNOTYw
+MTI5MDAwMDAwWhcNOTkxMjMxMjM1OTU5WjBfMQswCQYDVQQGEwJVUzEXMBUGA1UEChMOVmVy
+aVNpZ24sIEluYy4xNzA1BgNVBAsTLkNsYXNzIDEgUHVibGljIFByaW1hcnkgQ2VydGlmaWNh
+dGlvbiBBdXRob3JpdHkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAOUZv22jVmEtmUhx
+9mfeuY3rt56GgAqRDvo4Ja9GiILlc6igmyRdDR/MZW4MsNBWhBiHmgabEKFz37RYOWtuwfYV
+1aioP6oSBo0xrH+wNNePNGeICc0UEeJORVZpH3gCgNrcR5EpuzbJY1zF4Ncth3uhtzKwezC6
+Ki8xqu6jZ9rbAgMBAAEwDQYJKoZIhvcNAQECBQADgYEAUnO6mlXc3D+CfbCQmGIqgkx2AG4l
+PdXCCXBXAQwPdx8YofscYA6gdTtJIUH+p1wtTEJJ0/8o2Izqnf7JB+J3glMj3lXzzkST+vpM
+vco281tmsp7I8gxeXtShtCEJM8o7WfySwjj8rdmWJOAt+qMp9TNoeE60vJ9pNeKomJRzO8Qx
+ggHGMIIBwgIBATCB4TCBzDEXMBUGA1UEChMOVmVyaVNpZ24sIEluYy4xHzAdBgNVBAsTFlZl
+cmlTaWduIFRydXN0IE5ldHdvcmsxRjBEBgNVBAsTPXd3dy52ZXJpc2lnbi5jb20vcmVwb3Np
+dG9yeS9SUEEgSW5jb3JwLiBCeSBSZWYuLExJQUIuTFREKGMpOTgxSDBGBgNVBAMTP1ZlcmlT
+aWduIENsYXNzIDEgQ0EgSW5kaXZpZHVhbCBTdWJzY3JpYmVyLVBlcnNvbmEgTm90IFZhbGlk
+YXRlZAIQKsIZGBZtn3bRxjsv3x++jDAJBgUrDgMCGgUAoH0wGAYJKoZIhvcNAQkDMQsGCSqG
+SIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNOTkxMjA3MjIwMDI0WjAeBgkqhkiG9w0BCQ8xETAP
+MA0GCCqGSIb3DQMCAgEoMCMGCSqGSIb3DQEJBDEWBBTBUwdUI0WBL0QusD2l0ujWF7E3tTAN
+BgkqhkiG9w0BAQEFAARAIML/OCFQuF9KrR+yBAZa2s6Rl2jfrQAgu/NYwCRN/Y0gVqd1AUgn
+yPuCcS2HQ7uYzvqqhvWrnauVDVb7zLb5Ag==
+--------------msB916B82B08BF9B07CDB57802--
+
+

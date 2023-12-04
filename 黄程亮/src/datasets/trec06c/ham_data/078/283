@@ -1,0 +1,65 @@
+Received: from wilkes.csl.cornell.edu (wilkes.csl.cornell.edu [132.236.71.69])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fAKGClR25407
+	for <egs@cs.cornell.edu>; Tue, 20 Nov 2001 11:12:47 -0500 (EST)
+Received: (from daehyun@localhost)
+	by wilkes.csl.cornell.edu (8.9.3/8.9.2) id LAA59342
+	for egs@cs.cornell.edu; Tue, 20 Nov 2001 11:12:42 -0500 (EST)
+	(envelope-from daehyun)
+From: Daehyun Kim <daehyun@csl.cornell.edu>
+Message-Id: <200111201612.LAA59342@wilkes.csl.cornell.edu>
+Subject: 615 PAPER 60
+To: egs@CS.Cornell.EDU
+Date: Tue, 20 Nov 2001 11:12:42 -0500 (EST)
+X-Mailer: ELM [version 2.4ME+ PL54 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+This paper proposes a distributed information storage and retrieval system
+called Freenet. Freenet is distributed - there is no broadcast and no
+centralized location index and files are location independent. And Freenet
+is anonymous - it is impossible to discover the true origin and destination
+of files passing through the network.
+
+Freenet is implemented as an adaptive peer-to-peer network of nodes that
+query on another to store and retrieve data files. Each node maintains its
+own local datastore and dynamic routing table. A requests for data file
+(location independent key) is passed along from node to node through a
+chain of proxy requests in which each node makes a local routing decision.
+Each request is given hops-to-live (similar to TTL) to prevent infinite
+chain and pseudo-unique random identifier to prevent loop. A request is
+routed throu the network until it is either satisfied or exceeds its
+hops-to-live limit. Then the success or failure results is passed back to
+the sender.
+
+Files are identified by file keys obtained by applying a hash function.
+There are three types of file keys, keyword-signed key (KSK), signed-subspace
+key (SSK) and content-hash key (CHK). For the file searching purpose,
+indirect files are used.
+To retrieve a file, user sends a request specifying the file key and
+a hop-to-live. Then the message is routed through the networks and finally
+the results is returned to the user. For the security concern, any node along
+the route can change the data source of the reply message.
+To insert a file, user also sends a request. First the file key is searched
+in the same way as retrieval. If there already exists the same file key, it
+is returned for the user to try a different key. Otherwise, a success message
+is returned and the user send the data for nodes to insert a new entry.
+For the finite storage capacity, Freenet uses LRU. If the storage runs short,
+the least recently used files are evicted in order until there is room.
+A node joins the network by sending a announcement message with a random key.
+When a already joined node receives it, the node generates another random key,
+XORs it with the key received and propagates the announcement. This procedure
+repeats until hops-to-live runs out.
+Freenet protocol is packet-oriented and uses self-contained messages. Each
+messages contain a transaction ID, a hops-to-live and a depth.
+
+In my opinion, Freenet has a high potential. It seems scalable and robust.
+Most of all, its security feature might be getting more important in the future
+network environments. But, there are several points I couldn't understand.
+First, how to guarantee that a useful file may not deleted. As far as I understand,
+it is possible for a file to be deleted from all the nodes. Seconde, how to
+guarantee the consistency between two files with the same key. If a node tries
+to insert a key and another node out of hops-to-live limit has the same key,
+it seems to me possible that two node can have different files with the same key.
+ 
+

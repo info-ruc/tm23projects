@@ -1,0 +1,77 @@
+Received: from urth.netco.com (new-urth.netco.com [206.103.221.15])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id KAA32464
+	for <handyboard@media.mit.edu>; Tue, 15 Dec 1998 10:32:04 -0500 (EST)
+Received: from dm.wamnet.com([192.168.168.2]) (2590 bytes) by urth.netco.com
+	via sendmail with P:esmtp/R:inet_hosts/T:smtp
+	(sender: <tgb@cozy.wamnet.com>) 
+	id <m0zpwRi-00DuSxC@urth.netco.com>
+	for <handyboard@media.mit.edu>; Tue, 15 Dec 1998 09:31:34 -0600 (CST)
+	(Smail-3.2.0.104 1998-Nov-20 #1 built 1998-Dec-7)
+Received: from cozy.wamnet.com(really [192.168.250.75]) by dm.wamnet.com
+	via sendmail with esmtp
+	id <m0zpwRh-00BgOzC@dm.wamnet.com>
+	for <@mail-relay.wamnet.com:jdunn@unm.edu>; Tue, 15 Dec 1998 09:31:33 -0600 (CST)
+	(Smail-3.2 1996-Jul-4 #3 built 1996-Nov-12)
+Received: (from tgb@localhost) by cozy.wamnet.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA27949; Tue, 15 Dec 1998 09:31:32 -0600
+Date: Tue, 15 Dec 1998 09:31:32 -0600
+Message-Id: <199812151531.JAA27949@cozy.wamnet.com>
+From: Tom Brusehaver <tgb@cozy.wamnet.com>
+To: jdunn@unm.edu
+Cc: mbge7hlc@stud.man.ac.uk, handyboard@media.mit.edu
+In-Reply-To: <3676771F.C36415C1@unm.edu> (jdunn@unm.edu)
+Subject: Re: Mapping
+Reply-To: tgb@wamnet.com
+References: <119B2DF4F27@fs1.eng.man.ac.uk> <3676771F.C36415C1@unm.edu>
+
+
+>Identify the characteristics of your sensor
+>	The sonar we are using has a detection cone of about 40 degrees, this
+>depends upon the texture, material, shape, and size of the obstacle.  A
+>flat metal surface directed straight back at the sensor broadens the cone
+>to about 60 degrees up close (1.5' to 5' for the Polaroid sensor).  And
+>narrows the cone to about 2 degrees at very far distances (about 22' for
+>the Polaroid) because nothing else is detected at those distances.  The
+>surface used was 12ga steel 1'x1' smooth plate. Other obstacles were kept
+>out of it's line of vision.  ~2msec / foot of distance according to the
+>oscope used.  A person on the other hand could only be detected out to
+>about 7'.
+
+
+Watch the critical angle for the sonar too.  If the sonar doesn't hit
+almost straight on, some of the energy will be reflected off at an
+angle, and may provide false longer distances.  Smooth surfaces will
+have a lower critical angle then coarse surfaces. 
+
+
+                    |
+   ]< <------------>| wall
+  sonar             |
+
+ straight on good measurement
+
+
+
+  ]< <-
+       \    
+        \ 
+         \      |
+          \     |
+           \    |
+            \   |
+             \  |
+              \ |
+               \|
+               /|
+              / |
+             /  |
+            v   |
+ ---------------+
+
+   Angle reflection longer measurement.
+
+
+Good mapping will take a combination of sensors, and actual wandering
+of the room to detect all obstacles and make an accurate map.  Decide
+your grid size, and program the robot to get to each size area, and
+mark the grid as open or filled. 
+

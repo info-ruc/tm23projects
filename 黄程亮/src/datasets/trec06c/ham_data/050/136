@@ -1,0 +1,135 @@
+Received: from iserver2.dolby.com ([38.169.100.21])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA23949
+	for <handyboard@media.mit.edu>; Tue, 24 Aug 1999 13:05:06 -0400 (EDT)
+Received: from xsf1.dolby.com (xsf1.dolby.com [38.158.145.103])
+	by iserver2.dolby.com (8.9.1a/8.9.1) with ESMTP id KAA10261;
+	Tue, 24 Aug 1999 10:04:58 -0700 (PDT)
+Received: by xsf1.dolby.com with Internet Mail Service (5.5.2448.0)
+	id <Q4LF4CVK>; Tue, 24 Aug 1999 10:06:26 -0700
+Message-Id: <0FAAFBF846ABD211A19100805FA6A55ABCD38B@gold.dolby.com>
+From: "Dito, Paul" <PCD@dolby.com>
+To: "'Jonathan Swaby'" <jonathan.swaby@vpss.gatech.edu>,
+        handyboard@media.mit.edu, Robot Board <robot-board@cmf.nrl.navy.mil>
+Subject: RE: Temperature sensing
+Date: Tue, 24 Aug 1999 10:05:37 -0700
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BEEE52.FF4AEA42"
+
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+------_=_NextPart_001_01BEEE52.FF4AEA42
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
+Don't forget the pullup resistor on the analog input....
+
+-----Original Message-----
+From: Jonathan Swaby [mailto:jonathan.swaby@vpss.gatech.edu]
+Sent: Tuesday, August 24, 1999 4:04 AM
+To: handyboard@media.mit.edu; Robot Board
+Subject: Temperature sensing
+
+
+
+I have both a Handyboard, and a miniboard. I would like them to be able to
+sense the temperature of the air around them, so I have purchased some
+lm34's. They are the caz versions. They are TO92 form factor. The output of
+the sensor is a voltage. 10mv/F. In playing with it last night i got a
+reading of 158 from the miniboard. Now, how do I convert this number to a
+temperature? It was measuring the temperature of the room, which was about
+78F. Now, I figure the 158 translates into a voltage of 3.098V. The
+temperature range for the sensor is -40F to 270F. I think the following
+formula should give me what I want: 
+
+
+(40F+270F)/255 =1.05F per step. 
+
+-40F is the offset value. 
+
+My reading was 158, so I should be able to do the following: 
+
+(158*1.05F)-40F=129F 
+
+
+This value is, of course, not correct, but I think the process is. Unlike
+the LM334 series sensor, there is no way to calibrate this sensor except in
+the formula. My idea is to find the values of known temperatures, freezing,
+and boiling water, and use that information to adjust the degrees per step. 
+
+
+Is this a good way to approach it, or is there a better solution? 
+
+Jonathan Swaby 
+
+Computer Services Specialist IV 
+
+Student Affairs 
+
+Phone: 404-894-5889 
+
+Fax: 404-894-9928 
+
+GeorgiaInstitute 
+
+ofTechnology 
+
+
+
+------_=_NextPart_001_01BEEE52.FF4AEA42
+Content-Type: text/html;
+	charset="iso-8859-1"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD W3 HTML//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+
+
+<META content='"MSHTML 4.72.3510.1400"' name=GENERATOR>
+</HEAD>
+<BODY>
+<DIV><SPAN class=27220317-24081999><FONT color=#0000ff face=Arial size=2>Don't 
+forget the pullup resistor on the analog input....</FONT></SPAN></DIV>
+<BLOCKQUOTE 
+style="BORDER-LEFT: #0000ff solid 2px; MARGIN-LEFT: 5px; PADDING-LEFT: 5px">
+    <DIV class=OutlookMessageHeader><FONT face="Times New Roman" 
+    size=2>-----Original Message-----<BR><B>From:</B> Jonathan Swaby 
+    [mailto:jonathan.swaby@vpss.gatech.edu]<BR><B>Sent:</B> Tuesday, August 24, 
+    1999 4:04 AM<BR><B>To:</B> handyboard@media.mit.edu; Robot 
+    Board<BR><B>Subject:</B> Temperature sensing<BR><BR></FONT></DIV>
+    <P>I have both a Handyboard, and a miniboard. I would like them to be able 
+    to sense the temperature of the air around them, so I have purchased some 
+    lm34's. They are the caz versions. They are TO92 form factor. The output of 
+    the sensor is a voltage. 10mv/F. In playing with it last night i got a 
+    reading of 158 from the miniboard. Now, how do I convert this number to a 
+    temperature? It was measuring the temperature of the room, which was about 
+    78F. Now, I figure the 158 translates into a voltage of 3.098V. The 
+    temperature range for the sensor is -40F to 270F. I think the following 
+    formula should give me what I want: </P><BR>
+    <P>(40F+270F)/255 =1.05F per step. </P>
+    <P>-40F is the offset value. </P>
+    <P>My reading was 158, so I should be able to do the following: </P>
+    <P>(158*1.05F)-40F=129F </P><BR>
+    <P>This value is, of course, not correct, but I think the process is. Unlike 
+    the LM334 series sensor, there is no way to calibrate this sensor except in 
+    the formula. My idea is to find the values of known temperatures, freezing, 
+    and boiling water, and use that information to adjust the degrees per step. 
+    </P><BR>
+    <P>Is this a good way to approach it, or is there a better solution? </P>
+    <P><B><FONT size=4>Jonathan Swaby </FONT></B></P>
+    <P><B>Computer Services Specialist IV </B></P>
+    <P><B>Student Affairs </B></P>
+    <P><B>Phone: 404-894-5889 </B></P>
+    <P><B>Fax: 404-894-9928 </B></P>
+    <P><B><FONT color=#000080 size=5>Georgia</FONT></B><B></B><B></B><I><FONT 
+    color=#808000 size=5>Institute </FONT></I></P>
+    <P><I><FONT color=#808000 size=5>of</FONT></I><I></I><B><FONT color=#000080 
+    size=5>Tech</FONT></B><B></B><I><FONT color=#808000 size=5>nology 
+    </FONT></I></P><BR></BLOCKQUOTE></BODY></HTML>
+
+------_=_NextPart_001_01BEEE52.FF4AEA42--
+

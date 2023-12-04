@@ -1,0 +1,72 @@
+Received: from twins.twi.ch (twins.twi.ch [160.85.128.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id DAA24444
+	for <handyboard@media.mit.edu>; Wed, 20 May 1998 03:29:48 -0400 (EDT)
+Received: from twi.ch (alepc6.twi.ch [160.85.129.237])
+	by twins.twi.ch (8.8.8/8.8.8) with ESMTP id JAA02478;
+	Wed, 20 May 1998 09:28:42 +0200 (MET DST)
+Message-Id: <35628638.9BDF4CB0@twi.ch>
+Date: Wed, 20 May 1998 09:28:56 +0200
+From: Thomas Hauri <har@twi.ch>
+Organization: Technikum Winterthur Ingenieurschule
+X-Mailer: Mozilla 4.03 [de] (WinNT; I)
+Mime-Version: 1.0
+To: Arthur Tretyak <atr188@merle.acns.nwu.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: Addresses of SPI ports
+References: <199805192000.PAA03999@merle.acns.nwu.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi
+
+The SPI Header is connected to port D of the hc11 as follows:
+
+Port D Bit 2 - PD2 - MISO
+Port D Bit 3 - PD3 - MOSI
+Port D Bit 4 - PD4 - SCK
+Port D Bit 5 - PD5 - SS
+
+All of those pins can be used for general-purpose I/O signals.
+
+To program port D you have the following registers:
+
+* DDRD (Data Direction Register Port D) $1009
+For output set the corresponding bit to 1.
+All bits 0 (input) after reset.
+
+* PORTD (POrt D Data) $1008
+Read or Write data through this register.
+
+* SPCR (Serial Peripheral Control) $1028
+Make sure that the SPI is turned off.
+Bit 7 and Bit 6 of this register must be cleared (0).
+Bit 7 - SPI interrupt
+Bit 6 - SPI enable
+
+With bit 5 (DWOM) you can control the Port D mode
+(Port D Wired-OR Mode option)
+DWOM = 0 Normal CMOS outputs
+DWOM = 1 Open-drain outputs
+
+For further information about port D please refer to the HC11A8 technical
+manual.
+http://www.mcu.motsps.com/cgi-bin/Lit?Table=HC11&Type=USER
+
+it's the pdf or ps file MC68HC11A8/D
+
+Hope that helps.
+
+Tom
+
+> Hello.  I was wondering if anyone knows all 4 addresses for all 4 ports of
+> SPI header.  Thank you
+> --
+> *************************************
+> *         Arthur Tretyak            *
+> *       or just Arturchik           *
+> *       a-tretyak@nwu.edu           *
+> *************************************
+
+
+
+

@@ -1,0 +1,75 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1SEfxt05664
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 09:41:59 -0500 (EST)
+Received: from [128.253.212.208] (r253212208.resnet.cornell.edu [128.253.212.208])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1SEfwrI007585
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 09:41:58 -0500 (EST)
+Message-ID: <44046134.3010907@cornell.edu>
+Date: Tue, 28 Feb 2006 09:41:56 -0500
+From: Ivan Stoyanov <ids3@cornell.edu>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 10
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+These papers make attempts to introduce fairness and accountability in 
+p2p networks. They challenge the assumption that all peers willingly 
+contribute a decent share of resourses to the global pool. Fairness is 
+achieved by using cryptographic receipts/signatures about 
+resources/services consumed.
+
+Karma
+
+Instead of explaining how it works, I will try to challenge the 
+assumptions it makes about the economics of such a system. The implicit 
+assumption made is that for a typical object in the system, there exist 
+an equilibrium of supply/demand that is for a non-zero price (i.e. 
+different from "free"). However, when two suppliers offer completely 
+identical products/services, the differentiation that the customer makes 
+is solely on price. Therefore, the "market" price of the object will 
+converge towards the marginal cost of producing it, which in the case of 
+digital goods, such as multimedia files, is zero. Supplier can try to 
+offer slightly different "services" by charging more because of their 
+higher bandwidth, but as we noticed in the previous papers, file sharing 
+is a batch-mode system.
+
+Once an object is introduced in the system, its price will reach zero or 
+close to zero very quickly. The smallness of the price will depend 
+probably on the size of the object, so the system will converge in a 
+"per megabyte" contribution scheme. If peers really wants to make Karma, 
+they need to insert new objects, ideally popular ones. The price of a 
+high-demand object will initially be very high, probably more than most 
+peers can afford. Once a number of peers download it, the price will 
+quickly spiral to zero. That is fine for most users, again, judging from 
+the "batch-mode" usage pattern.
+
+This "market" will be segmented into a very small number of peers who 
+introduce the new and popular objects and have very high Karma, and the 
+rest who have little or no Karma and practically run on the same old 
+"free" p2p network.
+
+Sharp and PPay
+
+The two systems are quite similar. They use crypto signatures to create 
+and verify "tickets" or "coins". The signature scheme allows for 
+non-repudiation to be introduced, that is, a consumer may deny the 
+consumption of a resource and is not liable for purchases that cannot be 
+proven. The archiecture uses a scheme of layered signatures so that 
+faulty peers can be identified along the path. Unlike Karma, Sharp and 
+PPay require super peers to do the job of centralized brokers.
+
+One problems with such approach is that a user may join under a 
+different identity every time they want to download a certain file, 
+similar to downloading the trial version of a product every time it 
+expires. Since there can be guards against that, a user may 
+alternatively simulate a number of identities and exchange dummy files 
+between the controlled peers so that the Karma is accumulated in a 
+single node. This Sybil attack can be made more successful if 
+(ironically) the abusing peer pays Karma to correct peers to solve the 
+crypto puzzles given upon system entry.
+

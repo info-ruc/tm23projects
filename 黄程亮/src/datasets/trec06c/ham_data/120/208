@@ -1,0 +1,28 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k365UDt24850
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 01:30:13 -0400 (EDT)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k365UClJ025293
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 01:30:13 -0400 (EDT)
+Message-ID: <1487752533.1144301411648.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 6 Apr 2006 01:30:11 -0400 (EDT)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 19
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+Overlcast is an application-level multicast system implemented as an overlay network. It builds a data distribution tree, whose goal is to optimize the bandwidth, for single-source multicast, and its protocol provides timely status updates to adapt to the changing network conditions.
+
+* Overcast distribution tree emphasizes bandwidth efficiency over other metrics such as latency. It places a node as far away from the root as possible without sacrificing the bandwidth.
+* To join, nodes contact the root of an Overcast group and move down to the point in the tree where they can still maintain some level of bandwidth. They constantly re-evaluate their positions in the tree, in terms of bandwidth, and move if necessary.
+* With the up/down protocol, each node periodically checks with its parent, and this information of which nodes are up/down is propagated to the root. The purpose of this protocol is for the root to maintain the global state of the Overcast system.
+* The source (root) of each distribution tree acts as a single point of failure and carries all loads. To alleviate this, several replicated roots together handle the node joins in round-robin fashion. Some number of nodes starting with the root are configured linearly to address fault tolerance.
+* In Overcast multicasting, only one non-root sender is active at any particular time. The sender unicasts to the root, which performs the multicast on behalf of the sender. Data are moved between parent sand children using TCP streams.
+
+<Issue>
+* The participating nodes in this system are supposed to be dedicated machines rather than desktop computers. This protocol is thus less suitable in peer-to-peer systems.
+* Replication of the root can't change the nature of load imbalance in a multicast distribution tree. Interior nodes carry the load to forward data while leaf nodes don't. Loads are Not evenly distributed to all participants in the system.
+

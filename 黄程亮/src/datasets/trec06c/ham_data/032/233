@@ -1,0 +1,85 @@
+Received: from hq.freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id NAA21809
+	for <handyboard@media.mit.edu>; Sun, 24 Jan 1999 13:27:40 -0500 (EST)
+Received: (qmail+freegate 16771 invoked by alias); 24 Jan 1999 18:27:36 -0000
+Received: from dialip-10.hq.freegate.com (HELO hyannis) (208.226.86.228)
+  by hq.freegate.com with SMTP; 24 Jan 1999 18:27:36 -0000
+Message-Id: <4.1.19990124101700.009ad4f0@208.226.86.10>
+X-Sender: cmcmanis@208.226.86.10
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Sun, 24 Jan 1999 10:34:07 -0800
+To: "Clancy Nelson" <nelson3@jcn1.com>,
+        "HB Mail List" <handyboard@media.mit.edu>
+From: Chuck McManis <cmcmanis@mcmanis.com>
+Subject: Re: Wirz LMD18200
+In-Reply-To: <000001bd28aa$c59883a0$36d1bbce@cln>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+I'm not familiar with the Wirz board, however the board I built used the
+regular "motor output" of the handyboard with no modification required. The
+trick was to use an opto-isolator to "recover" the forward and backward
+logic states. That was done as follows:
+
+<pre>
+HB Motor out -----\/\/\/\/-------+---------------+
+                    680          |               |
+                                 |              _|_   
+                                \ /  Opto1       ^    Opto2
+                                _V_             / \   
+                                 |               |
+                                 |               |
+HB Motor out --------------------+---------------+
+</pre>
+
+The NECP2502 works fine. Then on the output side of the optoisolator
+connect the transistors as follows:
+<pre>
+           +5v
+           |
+         | /
+         |/
+         | Opto1
+         |\
+         | V
+           |
+           +-----o A
+           |
+           /
+           \
+           / 47K
+           \
+           |
+           |
+          Gnd
+</pre>
+And repeat this for the other half othe opto-isolator (opto2). Now you will
+have two outputs A, B and the truth table for these outputs is
+	A    B
+       0    0     Do nothing (ie stop)
+       1    0     Go Forward
+       0    1     Go Backward
+       1    1     Can't happen (unless you fry the opto isolators LEDs :-)
+
+Alternatively you can hook up A & B to an OR gate and generate an "ENABLE"
+line and a "DIRECTION" line (use either A or B for the direction value). 
+
+Another advantage of this scheme is that since the adaptor circuit is built
+out of an optotiolator there is no requirement that your motor subsystem
+run off the same power as the handyboard, thus enabling either higher
+voltage motors or lower voltage motors to be run from the h-bridge that is
+"slaved" to the motor outputs on the Handyboard.
+
+--Chuck
+
+
+At 03:30 AM 1/24/98 -0600, Clancy Nelson wrote:
+>Can someone instruct me on how to connect the Wirz Electronics LMD18200
+>H-bridge board to the Handyboard's motor control IC socket, which pin of the
+>socket hooks to which pin of the H-bridge board.
+>Any help would be grate.
+>Thanks
+>
+
+
+

@@ -1,0 +1,110 @@
+Received: from smtp.ucla.edu (smtp.ucla.edu [169.232.47.137])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iBGKkxFJ009981
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Dec 2004 13:47:01 -0700
+Received: from mail.ucla.edu (azalea.noc.ucla.edu [169.232.47.12])
+	by smtp.ucla.edu (8.13.1/8.13.1) with ESMTP id iBGKkwqA015018
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Dec 2004 12:46:58 -0800
+Received: from azalea.noc.ucla.edu (localhost [127.0.0.1])
+	by mail.ucla.edu (8.13.1/8.13.1) with ESMTP id iBGKkw7s003190
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Dec 2004 12:46:58 -0800
+Received: (from wproxy@localhost)
+	by azalea.noc.ucla.edu (8.13.1/8.13.1/Submit) id iBGKkwol003153
+	for DMDX@psy1.psych.arizona.edu; Thu, 16 Dec 2004 12:46:58 -0800
+Received: from 128.97.142.47 ([128.97.142.47]) 
+	by mail.ucla.edu (IMP) with HTTP 
+	for <mathis@st-2.mail.ucla.edu>; Thu, 16 Dec 2004 12:46:58 -0800
+Message-ID: <1103230018.41c1f442206e9@mail.ucla.edu>
+Date: Thu, 16 Dec 2004 12:46:58 -0800
+From: "MATHIS,KRISTOPHER IAN" <mathis@ucla.edu>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: PIO output issue
+References: <54183d546112.54611254183d@wiscmail.wisc.edu>
+In-Reply-To: <54183d546112.54611254183d@wiscmail.wisc.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hey John,
+That's some really cool detective work.  Hope you're doing well.
+Ian
+
+
+Quoting JOHN J CURTIN <jjcurtin@facstaff.wisc.edu>:
+
+> Hi Jonathan,
+> We have had continued infrequent problems using DMDX to send triggers
+> (event codes) with the Computerboards/Measurement Computing PIO card
+> to
+> amplifiers (Neuroscan synamps) that are monitoring participant's
+> physiology.  Periodically, triggers recorded by the synamps are
+> incorrect.  I've been working with an engineer here and he believes he
+> has identified the source of the problem.  Here is what he says....
+>
+> ;;;;;;;;;;;;;;;;;;;
+> New and interesting info about DMDX and SYNAMPS trigger ports.
+>
+> The 3 erroneous values  out of 1000 received by SYNAMPS are also
+> occurring on your systems on the first floor.  I've pretty well
+> characterized the behavior, and I think I know what is going on.
+>
+> It starts with DMDX and the I/O card.  DMDX is writing to port C one
+> nibble at a time, not a whole byte.  First it writes the lower 4 bits,
+> then it writes the higher 4 bits, 4 microseconds later.
+>
+> It appears that the synamps does _not_ watch the
+> trigger port continuously and wait for a change and log it.  I believe
+> it samples the trigger port at the same rate that it samples the A/D
+> converter and when it sees something other than 255 at the sample
+> time, it logs it, then waits for it to go back to 255 and starts
+> looking again for change - at the sampling rate.
+>
+> The sampling rate clock is running asynchronously to the trigger port
+> pulses, so every now and then (approx 3 out of 1000) the trigger port
+> is
+> sampled during that 4 us. when half of the byte at port C is correct
+> and the other half is all ones, leading to the bad trigger values that
+> Jeremy
+> is reporting.
+>
+> Port C has the ability to be written as a complete byte but it appears
+> that either the DMDX author or the card manufacturer drivers chose not
+> to use it that way.  I would lean towards it being a DMDX problem.
+> ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+>
+> Is he correct that DMDX writes to  port C in two sets of 4 bits rather
+> than the full byte?  If so, I agree with him that this could be the
+> source of our trigger problem with the synamps.  In fact, the specific
+> trigger errors are all consistent with his assessment.
+>
+> If he is correct, is it possible to have new PIO devices that write
+> the full byte to Port C rather than two successive nibbles?  I have
+> sponsored changes in the past but if needed would be willing to
+> sponsor another if you are willing to make such a change.
+>
+> Thanks John
+>
+> John J. Curtin, Ph.D.
+> Assistant Professor of Psychology
+> University of Wisconsin
+> 1202 West Johnson St.
+> Madison, WI 53706
+>
+> Email: jjcurtin@wisc.edu
+> Office: 608-262-0387
+> Lab: 608-262-5621
+> Cell: 608-217-6221
+> Fax: 608-262-4029
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+>
+
+
+

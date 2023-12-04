@@ -1,0 +1,188 @@
+Received: from conversion-daemon.mail.hawaii.edu by mail.hawaii.edu
+ (iPlanet Messaging Server 5.1 HotFix 1.14 (built Oct  8 2003))
+ id <0IEI00801CBZLV@mail.hawaii.edu>; Tue, 05 Apr 2005 18:36:14 -1000 (HST)
+Received: from [128.171.154.24] (manini.soest.hawaii.edu [128.171.154.24])
+ by mail.hawaii.edu
+ (iPlanet Messaging Server 5.1 HotFix 1.14 (built Oct  8 2003))
+ with ESMTPS id <0IEI00HI0CSEW9@mail.hawaii.edu>; Tue,
+ 05 Apr 2005 18:36:14 -1000 (HST)
+Date: Tue, 05 Apr 2005 18:36:14 -1000
+From: Eric Firing <efiring@hawaii.edu>
+Subject: Re: HDSS 50kHz ocean velocities
+In-reply-to: <24a96cd261741bd0eab701c269db5d6d@ucsd.edu>
+To: Rob Pinkel <rpinkel@ucsd.edu>
+Cc: Jules Hummon <hummon@hawaii.edu>, rwatts@gso.uri.edu, phacker@hawaii.edu,
+ rknox@ucsd.edu, kathy donohue <kdonohue@gsosun1.gso.uri.edu>,
+ bo@soest.hawaii.edu, Erik Fields <fields@icess.ucsb.edu>,
+ Teri Chereskin <tchereskin@ucsd.edu>, Jody Klymak <jklymak@ucsd.edu>,
+ Woody Sutherland <woodys@ucsd.edu>, Michael Goldin <mgoldin@ucsd.edu>,
+ talthouse@ucsd.edu
+Message-id: <4253673E.2050701@hawaii.edu>
+Organization: University of Hawaii
+MIME-version: 1.0
+Content-type: text/plain; charset=windows-1252; format=flowed
+Content-transfer-encoding: 8BIT
+X-Accept-Language: en-us, en
+User-Agent: Mozilla Thunderbird 0.9 (X11/20041103)
+References: <m2zmz6tz4e.fsf@hornby.ucsd.edu>
+ <41ED6F77.9000501@rv-revelle.ucsd.edu> <m2sm4y1g9x.fsf@hornby.ucsd.edu>
+ <42390CC5.1000709@hawaii.edu> <24a96cd261741bd0eab701c269db5d6d@ucsd.edu>
+
+Rob,
+
+To follow up on your message: Jules and I are now back from a cruise on 
+the Kilo Moana; your message arrived just as we left.  Phone contact 
+will certainly be helpful, but there are a few points that I would like 
+to clarify first.
+
+In earlier emails from the Revelle, Jules identified HDSS problems, from 
+the standpoint of a potential user outside your group, in four categories:
+
+1) The software and information available to a typical prospective user: 
+misleading information on the web; lack of usable data access and 
+processing software prior to her arrival, apart from Jody's invaluable 
+file-reading and transformation routines; minimal documentation.
+
+2) Bugs in the data acquisition system: some trivial but irritating, 
+others resulting in data loss.
+
+3) Bias inherent in estimating two horizontal velocity components from a 
+2-beam sonar, given correlated pitch and heave.
+
+4) The fundamental velocity measurements: as far as we can tell, there 
+are systematic errors in the basic measurement of velocity along each 
+beam at the level of a few cm/s.
+
+The first two of these can be addressed in simple and obvious ways.  The 
+third is not present in the 140, and will vanish from the 50 when you 
+get the two new beams installed.  Congratulations on the good news that 
+the new beams are funded!
+
+The fourth problem requires elaboration.  It has been with great 
+reluctance and puzzlement that we have arrived at the conclusion that 
+there are basic velocity measurement problems; Jules and I initially 
+assumed that the beam velocity measurements were perfect (that is, 
+having negligible bias and no more than the expected uncorrelated 
+measurement noise).  On that assumption, Jules wrote programs to bring 
+the HDSS data stream into our processing software (with Jodie's Matlab 
+routines as the starting point for reading the data files and doing 
+coordinate transformations).  Starting from single-ping velocities 
+relative to the ship, in beam or earth coordinates, the processing 
+software yields vector-averaged velocity profiles relative to the 
+ground, with editing, scale-factor calibration (with soundspeed 
+corrections when necessary), and heading from Ashtech-corrected 
+gyrocompass readings after an offset calibration.  With data from other 
+ADCPs, the result usually is a nearly seamless picture of the velocity 
+structure along the cruise track, with little difference between 
+on-station and off-station, with no need to discard data during 
+accelerations, and with calibration factors that remain stable cruise 
+after cruise. Applying the same software, the same transformation, 
+calibration, and navigation methods, to the HDSS data, Jules was unable 
+to produce such a self-consistent velocity product.
+
+What was the problem?  First Jules looked at every aspect of the data 
+stream and low-level processing.  We have not yet found any error at the 
+lowest levels--reading the files and transforming the velocities--that 
+could account for the problems.  Next, we thought about the problems 
+peculiar to having only two beams.  Given our assumption that the 
+underlying velocity measurements were unbiased, this was the obvious 
+candidate.  Indeed, I am convinced that the problem of bias owing to 
+correlated pitch and heave is significant, and would be difficult if not 
+impossible to correct accurately.  Calculations indicated, however, that 
+the observed inconsistencies in the HDSS velocity estimates after our 
+processing are too large to be caused solely by the 2-beam problems. 
+Similarly, we could not account for the inconsistencies with any 
+reasonable error in the assumed beam geometry.
+
+What was left? At this point, we were forced to reexamine the velocity 
+estimates themselves.  Jules has looked at HDSS-50 data from one HOT 
+cruise, from the Nelson cruise preceeding P16S, and from P16S.  She has 
+also looked at HDSS-140 data from P16S.  Here is a summary of the main 
+points:
+
+1) Both the 50 and the 140 show a bias towards water velocity in the aft 
+direction, relative to the RDI NB-150, with the ship on station--ship 
+velocity over the ground less than 0.5 m/s.  On the 50, during the HOT 
+cruise when the two forward beams were operational if not optimal, all 
+four beams were biased at low speeds toward along-beam velocity away 
+from the instrument; but the bias was larger in the aft-facing beams, 
+hence the net bias toward velocity aft when all four beams were used. 
+Looking at 3-beam solutions from the 140, one finds a bias towards 
+negative W on station, also consistent with the bias toward velocity in 
+each beam being away from the transducer.
+
+2) Jules looked at the velocity profiles from the 50 on P16S, averaged 
+over two layers: 100-250 m and 520-620 m.  The difference between the 
+layers is a measure of large-scale shear--let's call it "shear", even 
+though it is still in velocity units. She compared this shear as 
+measured on station versus underway.  (This is a WOCE-style line, with 
+more than 100 stations at 1/2-degree intervals.)  There is a 4 cm/s 
+difference, averaged over the cruise, in the meridional component of 
+this vertically-integrated shear.  Given that the entire cruise was a 
+south-bound section, this appears to be a bias in the shear measurement 
+in the direction of motion.  There was no bias in the zonal component.
+
+3) Visual comparison of on-station/off-station profiles from the Nelson 
+cruise along the equator suggests a big difference in higher wavenumber 
+shear (compared to the 200 to 600 m averaged shear considered in point 
+2); it appears that on this zonal section, the meridional shear 
+estimates are higher underway.  This aspect of the data is the one we 
+have looked at the least, and are the least certain about.  (The Nelson 
+cruise data has other problems as well, and Jules has not spent as much 
+time on it as on P16S.)
+
+So, consistency checks that do not depend in any sensitive way on 
+navigation and data processing procedures lead directly to the 
+conclusion that there are problems with the velocity profiles 
+themselves.  To verify this, you may wish to use your own software to do 
+some similar checks.  Look for systematically non-zero W from datasets 
+with 3 or 4 beams.  See whether you can get consistent horizontal 
+velocity estimates from any two beams, when you have 3 or 4 available to 
+check against. Using velocity profiles relative to a reference layer, 
+look for differences in large to medium-scale shear between on-station 
+and underway times.
+
+
+> data. It is important to identify whether the problems that you list 
+> stem from a) acoustic / electronic issues, b) beam geometry uncertainty, 
+> or c) ship navigation errors. We need more information than just a 
+
+It is not (b) or (c).
+
+
+> If one had back-to-back Janus beams, wouldn't the bias in the beams be 
+> of opposite sign (<w*pitch> has opposite sign since one beam tilts up & 
+> one tilts down), such that the combined estimate of horizontal velocity 
+> remains biased? Subtracting back-to-back Janus beams “to get the w out” 
+> , and then averaging, is mathematically identical to averaging the beams 
+> independently and then subtracting. Both approaches are biased, right?
+
+Calculations with a Janus pair are not subject to this bias, because the 
+pair yields W and a horizontal velocity component.  Similarly, 3-beam 
+and 4-beam calculations are fine; W is part of the calculation. 
+Calculations with a non-Janus pair, such as the aft-facing beams on the 
+Revelle, yield one horizontal component and a component in the tilted 
+plane of the beams.  The problem comes only in this situation, from 
+assuming W is zero when it is not.  Even a small error in W yields a 
+large error in the forward component (for the Revelle example), a little 
+  bit of which is rectified given correlated pitch.
+
+
+> That being said, why can't one use the TSS pitch and heave to calculate 
+> the magnitude of this bias in real time and subtract it from the 
+> horizontal velocity estimates. At depths below 200m, the actual w in the 
+
+Possibly one could, taking care to transform the TSS pitch, roll, and 
+heave into heave at the transducer, and making sure the measurements 
+correspond to the time of the ping.  Actually, the TSS heave as recorded 
+by the HDSS would not be very helpful; it is elevation at the time of 
+the ping, when what one needs is W, and it is not sampled often enough 
+to provide a good estimate of W at the time of the ping.
+
+I hope the summary above--which is much longer than what I originally 
+intended--is useful.  For more detail and discussion, by all means, 
+call.  My number is 808 956 7894, and Jules is at 956 7037.  Jules has 
+all the data sets, calculations, routines, and plots.
+
+Eric
+

@@ -1,0 +1,73 @@
+Received: from atlrel2.hp.com (atlrel2.hp.com [156.153.255.202])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA30444
+	for <handyboard@media.mit.edu>; Thu, 17 Jun 1999 13:13:13 -0400 (EDT)
+From: BART_SCHRIJVER@HP-Sonoma-om2.om.hp.com
+Received: from boi164.boi.hp.com (boi164.boi.hp.com [15.56.8.78])
+	by atlrel2.hp.com (8.8.6 (PHNE_17135)/8.8.5tis) with ESMTP id NAA09391;
+	Thu, 17 Jun 1999 13:12:57 -0400 (EDT)
+Received: from localhost (root@localhost) by boi164.boi.hp.com with SMTP (8.7.1/8.7.3 TIS 5.0 Openmail) id KAA27655; Thu, 17 Jun 1999 10:13:06 -0700 (PDT)
+X-Openmail-Hops: 1
+Date: Thu, 17 Jun 1999 10:12:56 -0700
+Message-Id: <H0000e110ef4a222@MHS>
+In-Reply-To: <Pine.SGI.3.95.990617065459.17308A-100000@coe1.engr.umbc.edu>
+Subject: Re: Handyboard Assembly Problems
+Mime-Version: 1.0
+To: ukhan@engr.umbc.edu
+Cc: handyboard@media.mit.edu
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Disposition: inline; filename="Handyboard"
+Content-Transfer-Encoding: 7bit
+
+     Umar:
+     
+     This may sound trivial to others, but here is what I think you should 
+     do.
+     
+     When a new handyboard is switched on without any software loaded that 
+     drives the LCD display, you should see the first line fully dark and 
+     the second line light. So what you see is normal.
+     
+     When you bring the HB in download mode, the situation stays the same. 
+     Then when you download software like IC, after the download process 
+     completes the LCD remains in that condition.
+     
+     You have to switch your board on and off to reboot and start the 
+     loaded program, this is when the LCD will show: Interactive C
+     version 2.8.1    plus a heart beat if IC is loaded. Since the HB is 
+     used in Special test mode, the reset vector is at $BFFE, $BFFF and 
+     should point to $C5000 where IC starts.
+     
+     
+     When you have done all of this or already did this and the situations 
+     remains the same, you could try to use dlm downloader in DOS, which 
+     checks every byte that downloads and sees if it arrives with the 
+     correct value. This checks out access to your SRAM chip and all the 
+     driver logic to it. It might be that one of the 74HC chips is busted 
+     and that you miss one or more of the data or address lines which 
+     prevents any program from running. The above check with dlm should 
+     reveal this though.
+     
+     Hope this helps, Bart Schrijver.
+
+
+______________________________ Reply Separator _________________________________
+Subject: Handyboard Assembly Problems
+Author:  Non-HP-ukhan (ukhan@engr.umbc.edu) at HP-PaloAlto,mimegw2
+Date:    6/17/99 4:11 AM
+
+
+     
+I am assembling a handyboard, and am at stage 6.0.4, where I plug in my 
+LCD screen for the first time. When I turn the handy board on, instead of 
+getting the dimly lit arrays, I get a top array that is strongly lit, and 
+bottom array that is lightly lit. The LCD screen is LM052L. I checked the 
+power and ground and they seem to be ok.
+The download process goes fine, but there is no interactive C
+prompt. I also checked the orientation of chips and they all seem ok. 
+Finally I did a continuity check and that seems alright too.
+To all the experts out there, I'd really appreciate your help. 
+     
+Regards,
+Umar
+
+

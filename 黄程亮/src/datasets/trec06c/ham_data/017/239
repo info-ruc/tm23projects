@@ -1,0 +1,66 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA17823
+	for <handyboard@media.mit.edu>; Wed, 3 Jun 1998 09:59:28 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id JAA24818;
+	Wed, 3 Jun 1998 09:59:27 -0400 (EDT)
+Message-Id: <199806031359.JAA24818@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: GJZ@aol.com
+Cc: handyboard@media.mit.edu
+Subject: Re: download problems 
+In-Reply-To: Your message of "Wed, 03 Jun 1998 02:07:58 EDT."
+             <98b68ad4.3574e83f@aol.com> 
+Date: Wed, 03 Jun 1998 09:59:27 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+
+The motor state is insignificant before the board has booted.  I.e.,
+the fact the motors are on the red direction means nothing; it's just
+the random state of the motor output latch when the board turns on
+without a program.
+
+The LCD screen should not have a solid black band, however.  This
+usually indicates a power problem.  Check that you have a legitmate
++5v on your board's power ckt.
+
+Also, you should see the following LED behavior:
+
+1. before download:  BATT and PWR LEDs fully off
+2. during download:  PWR LED flashes
+3. after download:   PWR LED on steady
+
+If (1) is not true, then your board is not in download mode.  Download
+cannot proceed until the board is powered on with both of these LEDs off.
+
+If (2) is not true, then your board is not receiving data from your
+PC.  Check your interface board power, serial cable, and telephone cable.
+
+If (3) is not true, then something else indeterminate went wrong.
+
+Fred
+ 
+
+
+In your message you said:
+> i am still having trouble with getting the PC to communicate with the
+> handyboard.  all conections seem to be correct, and the programs are
+> configured correctly, but the thing will still not communicate properly.
+> mabye there is a fault in the board itself, i am wondering what the screen
+> should display in the bootstrap mode, i have a dark black bar in the top line
+,
+> and nothing in the bottom.  this is also what is on screen when the board is
+> "on".  is this correct?  also, in any mode, the four red lights are on
+> indicating a motor direction.  should these be on during bootstrap mode?
+> during download with "dl", the program downloads with no trouble, "dl" seems
+> happy about what happens, but then when "trying to synchronize" does not work
+,
+> it returns "failed".  this has been as far as i got.  to check the board, i
+> tried to design a small assembler program that would use an XIRQ ISR to jmp t
+o
+> a line of code on the zero page to drive port B pins hi, but it would not
+> download either.  my concern, and opinion, is that i have a malfunctioning
+> board.  please help.  thank you.
+> 
+

@@ -1,0 +1,57 @@
+Received: from pop.montana.com (pop.montana.com [199.2.139.66])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA06878
+	for <handyboard@media.mit.edu>; Fri, 11 Dec 1998 13:01:18 -0500 (EST)
+Received: from cs.umt.edu (mso1-53.montana.com [208.4.224.53])
+	by pop.montana.com (MX-9/8.9.0) with ESMTP id LAA06915
+	for <handyboard@media.mit.edu>; Fri, 11 Dec 1998 11:00:17 -0700 (MST)
+Message-Id: <36715DB7.D7333DF@cs.umt.edu>
+Date: Fri, 11 Dec 1998 11:00:23 -0700
+From: Will <willbain@cs.umt.edu>
+Reply-To: willbain@cs.umt.edu
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: How to get digital outputs from the handyboard?????????????
+References: <1.5.4.32.19981210171714.0067859c@pacific.net.sg>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Michael Toh wrote:
+> hi everyone, i have been trying for the past few days to get digital outputs
+> from the board but with no success. i have been trying to get digitals
+> outputs from the  SPI's pins (J6). i have poke to make the port as output
+> port. but the problem now is how to config the 4 bits. what is the location
+> and the mask bit to do a bit_set/clear.
+
+First, to enable the four SPI pins D2 through D5 as digital outputs,
+make sure you do a bit_set( 0x1009, 0x3C ).  (In the sonar.c program,
+for example, bit_set( 0x1009, 0x30 ) seems to only enable two of the
+pins--not all four).  I think poke would work OK here, too, even though
+it actually clears bits in addition to setting bits.
+
+The middle 4 bits of byte 0x1008 map to ports D2 through D5.  To send
+the pins high, do the following:
+                                          Bit mask
+Port           Send high                  7654 3210
+---------      -----------------------    ---- ----
+D2 (MISO)      bit_set( 0x1008, 0x04 )    0000 0100
+D3 (MOSI)      bit_set( 0x1008, 0x08 )    0000 1000
+D4 (SCK)       bit_set( 0x1008, 0x10 )    0001 0000
+D5 (SS)        bit_set( 0x1008, 0x20 )    0010 0000
+
+Of course, to send 'em low again, just do the corresponding bit_clear. 
+You can set or clear multiple bits in one statement; you just need to
+figure out what the bit mask equates to in hexadecimal.  You could even
+set *and* clear bits simultaneously by using poke (instead of bit_set or
+bit_clear) with the appropriate mask.  Good luck!
+
+-- Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                                            I can't take a
+Will Bain,                                well-tanned person seriously.
+& Tatoosh                                             --Cleveland Amory
+

@@ -1,0 +1,188 @@
+Received: from canaveral.indigo.cert.org ([192.88.209.130] verified)
+  by calmail-cr.berkeley.edu (CommuniGate Pro SMTP 4.1.8)
+  with ESMTP-TLS id 38683842; Fri, 11 Jun 2004 15:19:28 -0700
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/1.31) with ESMTP id i5BLnwuM008666;
+	Fri, 11 Jun 2004 18:17:55 -0400
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/Submit/1.1) with SMTP id i5BKsmoL004825;
+	Fri, 11 Jun 2004 16:54:48 -0400
+Date: Fri, 11 Jun 2004 16:54:48 -0400
+Message-Id: <TA04-163A.23957@us-cert.gov>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: US-CERT Technical Cyber Security Alert TA04-163A -- Cross-Domain Redirect Vulnerability in Internet Explorer 
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000105
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+Technical Cyber Security Alert TA04-163A
+
+Cross-Domain Redirect Vulnerability in Internet Explorer
+
+   Original release date: June 11, 2004
+   Last revised: --
+   Source: US-CERT
+
+
+Systems Affected
+
+     Microsoft Windows systems
+
+
+Overview
+
+   A cross-domain vulnerability in Internet Explorer (IE) could allow an
+   attacker to execute arbitrary code with the privileges of the user
+   running IE.
+
+
+I. Description
+
+   There is a cross-domain vulnerability in the way IE determines the
+   security zone of a browser frame that is opened in one domain then
+   redirected by a web server to a different domain. A complex set of
+   conditions is involved, including a delayed HTTP response (3xx status
+   code) to change the content of the frame to the new domain.
+   Vulnerability Note VU#713878 describes this vulnerability in more
+   technical detail and will be updated as further information becomes
+   available.
+
+   Other programs that host the WebBrowser ActiveX control or use the
+   MSHTML rendering engine, such as Outlook and Outlook Express, may also
+   be affected.
+
+   This issue has been assigned CVE CAN-2004-0549.
+
+
+II. Impact
+
+   By convincing a victim to view an HTML document (web page, HTML
+   email), an attacker could execute script in a different security
+   domain than the one containing the attacker's document. By causing
+   script to be run in the Local Machine Zone, the attacker could execute
+   arbitrary code with the privileges of the user running IE.
+
+   Publicly available exploit code exists for this vulnerability, and
+   US-CERT has monitored incident reports that indicate that this
+   vulnerability is being actively exploited.
+
+
+III. Solution
+
+   Until a complete solution is available from Microsoft, consider the
+   following workarounds.
+
+ Disable Active scripting and ActiveX controls
+
+   Disabling Active scripting and ActiveX controls in the Internet Zone
+   (or any zone used by an attacker) appears to prevent exploitation of
+   this vulnerability. Disabling Active scripting and ActiveX controls in
+   the Local Machine Zone will prevent widely used payload delivery
+   techniques from functioning. Instructions for disabling Active
+   scripting in the Internet Zone can be found in the Malicious Web
+   Scripts FAQ. See Microsoft Knowledge Base Article 833633 for
+   information about securing the Local Machine Zone. Also, Service Pack
+   2 for Windows XP (currently at RC1) includes these and other security
+   enhancements for IE.
+ 
+ Do not follow unsolicited links
+
+   Do not click on unsolicited URLs received in email, instant messages,
+   web forums, or internet relay chat (IRC) channels. While this is
+   generally good security practice, following this behavior will not
+   prevent exploitation of this vulnerability in all cases.
+  
+ Maintain updated anti-virus software
+
+   Anti-virus software with updated virus definitions may identify and
+   prevent some exploit attempts. Variations of exploits or attack
+   vectors may not be detected. Do not rely solely on anti-virus software
+   to defend against this vulnerability. More information about viruses
+   and anti-virus vendors is available on the US-CERT Computer Virus
+   Resources page.
+
+
+Appendix B. References
+
+     * Vulnerability Note VU#713878-
+       <http://www.kb.cert.org/vuls/id/713878>
+
+     * Malicious Web Scripts FAQ -
+       <http://www.cert.org/tech_tips/malicious_code_FAQ.html#steps>
+
+     * Computer Virus Resources -
+       <http://www.us-cert.gov/other_sources/viruses.html>
+
+     * CVE CAN-2004-0549 -
+       <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2004-0549>
+
+     * Microsoft Knowledge Base Article 833633 -
+       <http://support.microsoft.com/default.aspx?scid=833633>
+
+     * Windows XP Service Pack 2 RC1 -
+       <http://www.microsoft.com/technet/prodtechnol/winxppro/maintain/wi
+       nxpsp2.mspx>
+
+     * Increase Your Browsing and E-Mail Safety -
+       <http://www.microsoft.com/security/incident/settings.mspx>
+
+     * Working with Internet Explorer 6 Security Settings -
+       <http://www.microsoft.com/windows/ie/using/howto/security/settings
+       .mspx>
+
+     _________________________________________________________________
+
+
+   Public incidents related to this vulnerability were reported by Rafel
+   Ivgi. Thanks to Jelmer for further research and analysis.
+ 
+    _________________________________________________________________
+
+
+   Feedback can be directed to the author:  Art Manion.
+
+   Send mail to <mailto:cert@cert.org>.
+
+   Please include the Subject line "TA04-163A Feedback VU#713878".
+
+     _________________________________________________________________
+
+
+   Copyright 2004 Carnegie Mellon University.
+
+   Terms of use:  <http://www.us-cert.gov/legal.html>
+
+     _________________________________________________________________
+
+   The most recent version of this document can be found at:
+
+     <http://www.us-cert.gov/cas/techalerts/TA04-163A.html>
+
+     _________________________________________________________________
+
+
+   Revision History
+
+   June 11, 2004: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iD8DBQFAyhdcXlvNRxAkFWARAt2eAKCRDeqWLNgG+xXJtd0PyRGeN+S69ACfcXoi
+GDMew8rDUjleel9OLMqs9W4=
+=ZAyn
+-----END PGP SIGNATURE-----
+

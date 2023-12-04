@@ -1,0 +1,180 @@
+Received: from callisto.net.voyager.co.nz (root@callisto.net.voyager.co.nz [203.21.30.2])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id IAA30089
+	for <handyboard@media.mit.edu>; Sat, 22 Apr 2000 08:58:12 -0400 (EDT)
+Received: from Default (p161.tnt1.akl2.voyager.co.nz [203.110.18.161])
+	by callisto.net.voyager.co.nz (8.9.0/8.9.0) with SMTP id AAA25677
+	for <handyboard@media.mit.edu>; Sun, 23 Apr 2000 00:58:07 +1200 (NZST)
+Message-Id: <001f01bfac5a$18794ca0$a1126ecb@Default>
+From: "David Young" <djyoung@voyager.co.nz>
+To: <handyboard@media.mit.edu>
+Subject: wits end with PWM measurement
+Date: Sun, 23 Apr 2000 00:53:03 +1200
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_001C_01BFACBE.47B3E980"
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+X-Mimeole: Produced By Microsoft MimeOLE V5.00.2615.200
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_001C_01BFACBE.47B3E980
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Dear All
+
+I'm at my wits end on this one. It's a little routine to measure on PA0 =
+a pulse width of a PWM signal generated on PA7. The two pins are linked =
+with a jumper.
+
+I've looked through all the books and and handyboard archive, but all I =
+get is values that just don't seem to make sense.
+
+Can anyone tell me where I'm going wrong.
+
+TIA David young
+
+void main()
+
+{
+
+int period=3D1500; /* High period for PWM signal on PA7 */
+
+int TIC3 =3D 0x1014; /* TIC3 at $1014 and $1015 (connected to PA0) */
+
+int TCTL2 =3D 0x1021; /* TCTL2 (input capture register) at $1021 */
+
+int TFLG1 =3D 0x1023; /* TFLG1 (input capture flag register) at $1023 */
+
+int rising_edge;
+
+int falling_edge;
+
+servo (period); /* PWM signal on PA7 - connected to PA0 by jumper */
+
+servo_on ();
+
+
+
+/* Detect a signal at PA0 on its rising edge -> set bit #0 to 1 and #1 =
+to 0 */
+
+bit_set(TCTL2,0);
+
+bit_clear(TCTL2,1);
+
+bit_set(TFLG1,0); /* Clear TFLG1 */
+
+while (peek(TFLG1) & 0x01 !=3D 0x01){} /* Loop until the capture flag =
+for PA0 is set*/
+
+/* Get rising edge time in TIC3 */
+
+rising_edge =3D peekword(TIC3);
+
+
+
+/* Detect a signal at PA0 on its falling edge -> set bit #0 to 1 and #1 =
+to 1 */
+
+bit_clear(TCTL2,0);
+
+bit_set(TCTL2,1);
+
+bit_set(TFLG1,0); /* Clear TFLG1 */
+
+while (peek(TFLG1) & 0x01 !=3D 0x01) {} /* Loop until the capture flag =
+for PA0 is set*/
+
+/* Get falling edge time in TIC3 */
+
+falling_edge =3D peekword(TIC3);
+
+
+
+printf("Pulse range =3D %d", rising_edge);=20
+
+printf(" %d\n", falling_edge);=20
+
+servo_off();
+
+}
+
+
+------=_NextPart_000_001C_01BFACBE.47B3E980
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Diso-8859-1" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2614.3500" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3D"Courier New" size=3D2>
+<P><FONT face=3DArial size=3D2>Dear All</FONT></P>
+<P><FONT face=3DArial>I'm at my wits end on this one. It's a little =
+routine to=20
+measure on PA0 a&nbsp;pulse width of a PWM signal generated on PA7. The =
+two pins=20
+are linked with a jumper.</FONT></P>
+<P><FONT face=3DArial size=3D2>I've looked through all the books and and =
+handyboard=20
+archive, but all I get is&nbsp;values that just don't seem to make=20
+sense.</FONT></P>
+<P><FONT face=3DArial size=3D2>Can anyone tell me where I'm going =
+wrong.</FONT></P>
+<P><FONT face=3DArial size=3D2>TIA David young</FONT></P>
+<P></FONT><FONT face=3D"Courier New" size=3D2>void main()</P>
+<P>{</P>
+<P>int period=3D1500; /* High period for PWM signal on PA7 */</P>
+<P>int TIC3 =3D 0x1014; /* TIC3 at $1014 and $1015 (connected to PA0) =
+*/</P>
+<P>int TCTL2 =3D 0x1021; /* TCTL2 (input capture register) at $1021 =
+*/</P>
+<P>int TFLG1 =3D 0x1023; /* TFLG1 (input capture flag register) at $1023 =
+*/</P>
+<P>int rising_edge;</P>
+<P>int falling_edge;</P>
+<P>servo (period); /* PWM signal on PA7 - connected to PA0 by jumper =
+*/</P>
+<P>servo_on ();</P>
+<P>&nbsp;</P>
+<P>/* Detect a signal at PA0 on its rising edge -&gt; set bit #0 to 1 =
+and #1 to=20
+0 */</P>
+<P>bit_set(TCTL2,0);</P>
+<P>bit_clear(TCTL2,1);</P>
+<P>bit_set(TFLG1,0); /* Clear TFLG1 */</P>
+<P>while (peek(TFLG1) &amp; 0x01 !=3D 0x01){} /* Loop until the capture =
+flag for=20
+PA0 is set*/</P>
+<P>/* Get rising edge time in TIC3 */</P>
+<P>rising_edge =3D peekword(TIC3);</P>
+<P>&nbsp;</P>
+<P>/* Detect a signal at PA0 on its falling edge -&gt; set bit #0 to 1 =
+and #1 to=20
+1 */</P>
+<P>bit_clear(TCTL2,0);</P>
+<P>bit_set(TCTL2,1);</P>
+<P>bit_set(TFLG1,0); /* Clear TFLG1 */</P>
+<P>while (peek(TFLG1) &amp; 0x01 !=3D 0x01) {} /* Loop until the capture =
+flag for=20
+PA0 is set*/</P>
+<P>/* Get falling edge time in TIC3 */</P>
+<P>falling_edge =3D peekword(TIC3);</P>
+<P>&nbsp;</P>
+<P>printf("Pulse range =3D %d", rising_edge); </P>
+<P>printf(" %d\n", falling_edge); </P>
+<P>servo_off();</P>
+<P>}</P></FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_001C_01BFACBE.47B3E980--
+
+

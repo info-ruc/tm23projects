@@ -1,0 +1,80 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1L6Fqt25459
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 01:15:52 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1L6Fp9B001618
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 01:15:51 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060219150526.02e7c178@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Tue, 21 Feb 2006 00:42:31 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 9
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+
+Sybil:
+         A Sybil attack is when a given principal acquires many different 
+IDs, in order to take control of a disproportionate fraction of the 
+network, to do damage.  A Sybil attack, properly defined, is a building 
+block of some other attack.  In order to prove strong security properties, 
+it would be very nice to be able to show that distinct machines in a P2P 
+network are owned by different principals.  Alas, the central result of 
+this paper is that there are no good strategies for limiting Sybil 
+attacks.  In particular, techniques for directly proving that two hosts are 
+distinct via network have an error margin proportional to the difference in 
+resources between a "powerful" host and a "weak" one.  Different hosts must 
+be tested simultaneously, rendering distributed challenges 
+difficult.  Vouching schemes are also problematic.
+         The Sybil paper unfortunately does a fairly shallow analysis.  It 
+implicitly assumes that all authentication must be done across the network, 
+through messages.  It assumes that every malicious node has a valid 
+identity.  It implicitly assumes that identities are either accepted or 
+not, with no middle ground.
+
+
+
+Eclipse:
+         In an eclipse attack, the attacker attempts to inject faulty nodes 
+into every entry in the target host's routing table, with an eye to 
+preventing proper overlay operations. In the end, the target host may have 
+all its network operations mediated through hostile nodes.  To make this 
+attack harder, the authors propose to limit the degree of nodes in the 
+overlay network.  They propose a protocol for this, in which nodes can 
+anonymously query their neighbors to verify that their neighbor's table 
+includes them, and has a legal degree.  If not, then that neighbor is dropped.
+         This defense is only partial.  The anonymous query protocol 
+proposed has a number of weaknesses.  If an attacker controls a node and 
+its entire anonymity set, the protocol fails.  An attacker can also cause 
+innocent nodes to be marked as suspicious by falsifying their 
+responses.  And even if the protocol works properly, an attacker's fraction 
+of routing table entries can still be substantially higher than their 
+fraction of overall nodes.
+
+
+Secure routing on structured overlays:
+
+         This paper proposes a general scheme for reliable delivery of 
+messages on peer-to-peer networks, in the presence of malicious 
+nodes.  Messages are sent redundantly, to each of several root nodes for a 
+given object.  The authors propose to use two routing tables, one optimized 
+for speed, the other constrained deterministically to limit an attacker's 
+flexibility.  This does allow something otherwise impossible--very reliable 
+behavior, with a substantial fraction of the network compromised.
+         The protocol fails when more than around 25% of nodes are 
+compromised.  When it does work, the proposed protocol is quite expensive, 
+with substantial time and message cost; an attacker can easily force it 
+every time, which would significantly degrade the network.  Another 
+weakness is that the paper does not offer suggestions for cheaper protocols 
+when the threat level is less severe.
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

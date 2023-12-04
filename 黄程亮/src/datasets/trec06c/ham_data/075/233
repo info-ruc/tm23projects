@@ -1,0 +1,52 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.1/8.11.1) with ESMTP id f2H3xZU28523;
+	Fri, 16 Mar 2001 22:59:35 -0500 (EST)
+Received: from fchinchi (smh226090.richmond.edu [141.166.226.90])
+	by argyle.richmond.edu (8.11.2/8.11.2) with SMTP id f2H3vtK28733;
+	Fri, 16 Mar 2001 22:57:55 -0500 (EST)
+From: "Francisco Chinchilla" <fchinchi@richmond.edu>
+To: "Gerard P. Gilfoyle" <ggilfoyl@richmond.edu>,
+   "Vineyard, Mike" <mvineyar@richmond.edu>
+Cc: <mfetea@richmond.edu>, <rfetea@richmond.edu>
+Subject: ssh
+Date: Fri, 16 Mar 2001 23:10:53 -0500
+Message-ID: <HAEAIPGPNEMFLKEOMBJGAECGCBAA.fchinchi@richmond.edu>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+In-Reply-To: <3AA02F2A.59A6B4E9@richmond.edu>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Status: RO
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300000b17
+
+All the machines have ssh version 2 installed.  I upgraded ssh1 on psc1 from
+1.27 to 1.30 (i forgot to do this on the grv's, so they are at 1.26, i'll
+fix that later).  Anyways, I suggest the use of ssh2 on all machines,
+Xforwarding is denied on all ssh1d, but not ssh2d.
+
+The reason why I prefer ssh2 over openssh is because of sftp.  There is more
+configuration involved if you want ssh1 and ssh2 as opposed to just
+installing openssh, but I think it's worth it.
+
+Anyways, I used the following to allow the use of tcp-wrappers (disabled by
+default on all versions) and to explicitly deny rsh:
+
+"./configure --with-libwrap --without-rsh"
+
+Thus, use tarballs and not rpms if you want tcp-wrapper support.
+Also add:
+"/usr/local/sbin/sshd" to your "rc.local" file if your system does not add a
+link (do this AFTER you install it and check that there is not link)
+
+Have a good weekend.
+
+
+Francisco Chinchilla
+

@@ -1,0 +1,102 @@
+Received: from ric.ric.uci.edu (root@ric.ric.uci.edu [128.200.63.152])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id RAA01922
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 12 Oct 2000 17:05:37 -0700
+Received: from hera (hera.ric.uci.edu [128.195.196.10]) by ric.ric.uci.edu (8.9.3/) with SMTP id RAA13510 for <DMDX@psy1.psych.arizona.edu>; Thu, 12 Oct 2000 17:05:36 -0700 (PDT)
+Message-ID: <000701c034a9$46896260$0ac4c380@ric.uci.edu>
+From: "Nabil Saba" <nsaba@ric.ric.uci.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+References: <5.0.0.25.2.20001012124104.009e3c70@psy1.psych.arizona.edu> <5.0.0.25.2.20001012142951.009da960@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Loops and accepting triggers from scanner
+Date: Thu, 12 Oct 2000 17:05:20 -0700
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi,
+1- I need to set a counter or a loop.
+for example:
+I want to write a code that accepts 20 times input from a space bar on the
+keyboard.
+Is there a counter that i can set to 20 or a loop to use "like for loop in
+C++"  instead of writting 0 "press space" ; 20 times.
+Thank you
+
+
+----- Original Message -----
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Sent: Thursday, October 12, 2000 2:47 PM
+Subject: [DMDX] Re: Loops and accepting triggers from scanner
+
+
+> At 01:38 PM 10/12/00 -0700, you wrote:
+> >Hi everyone,
+> >I have 2 questions.
+> >1- Is DMDX capable of doing loops. I have a block of dmdx code and i need
+to
+> >do it 1000 times.
+>
+>    Not yet, sorry.  There is however no limit on item file size...  If
+it's
+> really a pain I can stick the code in over the next day or two and you can
+> test it if you want.
+>
+> >2- I wrote a code to display 10 frames per second for 5 seconds. I have a
+> >picker system that produce 100 RF pulses for 5 seconds. I want to
+> >synchronize the two systems.
+> >First run the dmdx (10 frames/sec. for 5 seconds)using the computer
+internal
+> >clock and at the same time accepting "counting" the RF pulses from the
+> >picker system. So, if the computer finished displaying the frames for 5
+> >seconds and the RF pulses coming from the scanner is not complete (100),
+> >DMDX will continue displaying the frames until it finishes counting the
+> >pulses.
+>
+>    It is unclear from your explanation exactly what you want, it sounds
+> like you want a contingency in DMDX, something that is very difficult to
+> code as it's only decision making process right now is based on subject
+> error rate.  You can get DMDX to be driven by the RF machine assuming the
+> RF machine can produce a TTL level signal or a switch closure -- in either
+> event I recommend opto-isolating the machines.  You buy a PIO12 clone (see
+> TimeDX PIO help file) and use one of it's bits as a Request input and make
+> the RF machine drive DMDX that way.  But it's an implicit assumption that
+> the number of triggers from the RF machine is the same as the number of
+> items in the itemfile, anything more is going to require a very flexible
+> decision making system to be implemented, something I have yet to settle
+on
+> a design for as it has not been needed to date and I don't gaily add
+> features to DMDX lightly as reduced complexity is a definite boon.  Hell,
+> we have enough trouble documenting it's current abilities.  I guess if you
+> really need DMDX to continue doing something for an arbitrary externally
+> controlled interval you could map the external signal to the positive
+> response and get DMDX to loop as long as the error rate is 0%, as soon as
+> the signal stops coming DMDX will timeout and the error rate will be 100%
+> and it will continue.
+>    DMDX can be made to trigger other equipment using the PIO12 and the O
+> switch (or the <output> keyword) as well.
+>
+>
+> -jonathan (j.c.f.)
+>
+>   /"\
+>   \ /
+>    X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+>   / \
+>
+>    When things are going well, something will go wrong.
+>
+>
+> ====================================================================
+>   Send mail to  DMDX-request@psy1.psych.arizona.edu  with the word
+>   'unsubscribe' by itself  with no quotes in the body of the email
+>   and  Ken  will then  remove you  from the  list at his  earliest
+>   convenience.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+>
+
+

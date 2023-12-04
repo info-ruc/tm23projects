@@ -1,0 +1,137 @@
+Received: from smtp3.wiscmail.wisc.edu (blitzen.doit.wisc.edu [144.92.197.183])
+	by psy1.psych.arizona.edu (8.12.8/8.12.4) with ESMTP id h2IJbnIA017363
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 18 Mar 2003 12:37:50 -0700
+Received: from conversion-daemon.smtp3.doit.wisc.edu by smtp3.doit.wisc.edu
+ (iPlanet Messaging Server 5.2 HotFix 1.05 (built Nov  6 2002))
+ id <0HBY00D01MQW8O@smtp3.doit.wisc.edu> for DMDX@psy1.psych.arizona.edu; Tue,
+ 18 Mar 2003 13:46:27 -0600 (CST)
+Received: from wiscmail.wisc.edu (sneezy [144.92.197.154])
+ by smtp3.doit.wisc.edu
+ (iPlanet Messaging Server 5.2 HotFix 1.05 (built Nov  6 2002))
+ with ESMTP id <0HBY00E0ZMWLW6@smtp3.doit.wisc.edu> for
+ DMDX@psy1.psych.arizona.edu; Tue, 18 Mar 2003 13:45:57 -0600 (CST)
+Received: from [144.92.197.221] by mailst3.doit.wisc.edu (mshttpd); Tue,
+ 18 Mar 2003 13:45:56 -0600
+Date: Tue, 18 Mar 2003 13:45:56 -0600
+From: JOHN J CURTIN <jjcurtin@facstaff.wisc.edu>
+Subject: [DMDX] Re: 
+To: DMDX@psy1.psych.arizona.edu
+Message-id: <32d1c338af.338af32d1c@wiscmail.wisc.edu>
+MIME-version: 1.0
+Content-type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+I believe you will need to increase the delay parameter from 0 to some value that is adequate to load your bmp files.  Right now you are asking DMDX to attempt to start each item as quickly as possible with a minimum delay between items which leads it to be late in starting some items.
+
+J
+
+John J. Curtin, Ph.D.
+Assistant Professor of Psychology
+University of Wisconsin
+1202 West Johnson St.
+Madison, WI 53706
+
+Email: jjcurtin@wisc.edu
+Office: 608-262-0387
+Lab: 608-262-5621
+Cell: 608-217-6221
+Fax: 608-262-4029
+
+----- Original Message -----
+From: Paul Dockree <dockreep@tcd.ie>
+Date: Tuesday, March 18, 2003 1:06 pm
+Subject: [DMDX] 
+
+> 
+> Hi,
+> 
+> I've set up an experiment such that a fixation point will remain 
+> on screen 
+> while numbers are sequentially presented above the fixation.  The 
+> continuous fixation is giving me timing problems.
+> 
+> Here's a sample of the script:
+> 
+> <ep> <NumberOfItems 432> <AZKII> <VideoMode 800,600,600,8,0> 
+> <ContinuousRun> <Delay 0> <Timeout 1500> <fd 36> <id "keyboard"> 
+> <id 
+> "mouse"> <DefaultBackgroundColor 000000000> <DefaultWritingColor 
+> 255255255> 
+> <zil> <ztr> <nfb> <mr "+Right Ctrl"> <mpr +button 0> <mnr +button 
+> 1> <vzk 
+> "+button 0"> <vzk "-button 1"> <eop>
+> 
+> 0 <line -2> "Please respond in the same way", <line -1> "as the 
+> practice 
+> run.", <line 0> "The most important thing is to", <line 1> 
+> "respond 
+> correctly (right mouse click)", <line 2> "to the grey coloured 
+> numbers.", 
+> <line 4> "Press the SPACEBAR to start";
+> 
+> +1 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.46,0.30> ?b41"/ <ms% 
+> 500> <Ln 
+> 0> ?+?/!;
+> +1 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.46,0.30> ?b42"/ <ms% 
+> 500> <Ln 
+> 0> ?+?/!;
+> +9 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.46,0.30> ?b43"/ <ms% 
+> 500> <Ln 
+> 0> ?+?/!;
+> +8 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.465,0.32> ?b34"/ <ms% 
+> 500> <Ln 
+> 0> ?+?/!;
+> +1 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.475,0.365> ?b15"/ 
+> <ms% 500> 
+> <Ln 0> ?+?/!;
+> +1 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.46,0.30> ?b56"/ <ms% 
+> 500> <Ln 
+> 0> ?+?/!;
+> +1 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.475,0.35> ?b27"/ <ms% 
+> 500> <Ln 
+> 0> ?+?/!;
+> +1 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.465,0.32> ?b38"/ <ms% 
+> 500> <Ln 
+> 0> ?+?/!;
+> +1 <ms% 161> <Ln 0> ?+?/! * <ms% 500> <bmp 0.475,0.365> ?b19"/ 
+> <ms% 500> 
+> <Ln 0> ?+?/!;
+> 
+> The output gives me display errors as follows:  !  Display error 
+> at msec 
+> 25682, tick 1846 in item 1, frame "+" !  moved into video memory 1 
+> tick 
+> late!     (previous frame's duration will have been longer)
+> 
+> These errors do not occur for every line but quite frequently 
+> across the 
+> task.  Any ideas on how to remedy this?
+> 
+> Many thanks, Paul.
+> 
+> ------------------------------------------
+> Paul Dockree
+> 
+> Department of Psychology
+> Áras an Phiarsaigh
+> University of Dublin
+> Trinity College
+> Dublin 2
+> Ireland
+> 
+> Tel:  +353 (0)1 608 3083
+> 
+> 
+> ====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+> 
+
+
+

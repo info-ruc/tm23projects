@@ -1,0 +1,70 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i9LHvNFJ022582
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 21 Oct 2004 10:57:23 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 53EF29BC73A
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 21 Oct 2004 10:57:23 -0700 (MST)
+Received: from 666-devel.u.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id DFAE59B21DD
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 21 Oct 2004 10:57:22 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041021100538.00ba5378@psy1.psych.arizona.edu>
+Date: Thu, 21 Oct 2004 10:57:21 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Mapping four PIO12 responses
+In-Reply-To: <4177EC8C.2060709@cam.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 06:06 PM 10/21/2004 +0100, you wrote:
+>Hi,
+>
+>I have just designed a multiple response experiment and have had a 
+>four-button response box made to go with it.
+
+   Hey, someone else besides me makes response boxes, cool.
+
+>   I have previously used a two-button response box mapping the responses 
+> to Bit1 and Bit2.  I assumed that I would be able to do the same using 
+> responses Bit1, Bit2, Bit3 and Bit4, however, only the Bit1 and Bit2 
+> responses work.  When I do the timedx pio test the buttons correspond to 
+> 1, 2, 3 and 4 are activated respectively.  Also the experiment works fine 
+> if I use four keyboard buttons.  Was I wrong to assume that I could map 
+> these 4 buttons?
+
+   The PIO has an additional level of customization that masks out bits 
+that aren't used, the MIP word.  You need <mip 36>.  You'll also want to 
+have <umtp> and <umvk> in the parameter line after the <id qpio12> as the 
+tape pulse by default is bit 3 and the voice key bit 4 -- when I construct 
+extra button response boxes I usually use bits 5 and 6 to avoid having to 
+unmap those responses.  Not that this usually causes problems as any 
+positive or negative mappings will take precedence but it's safer than sorry.
+
+
+>Also a separate but related enquiry: is it possible to map a positive or 
+>negative response and a request response to the same button?
+
+   No.  You can do it but only the first button found will generate a 
+response (which is why you could get away without <umtp> and 
+<umvk>).  While I admit this would solve some problems it also stands a 
+significant chance of creating several others and due to race conditions 
+not actually solving the problem in any event (for instance DMDX is usually 
+not ready to receive a request within microseconds of a response).  Each 
+time I've been confronted with a task that's looked like it's needed that 
+sort of solution there have been other ways of doing it and I'm always 
+happy to suggest solutions here.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   First Law of Advice: The correct advice is to give the advice
+that is desired.
+
+
+

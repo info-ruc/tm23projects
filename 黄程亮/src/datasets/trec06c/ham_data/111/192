@@ -1,0 +1,237 @@
+Received: from saffron.cc.columbia.edu (saffron.cc.columbia.edu [128.59.59.102])
+	by brinza.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0DIFWUB015029;
+	Fri, 13 Jan 2006 13:15:32 -0500 (EST)
+Received: from saffron.cc.columbia.edu (localhost [127.0.0.1])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0DI2FXt012110
+	for <cuflow-users-outgoing@columbia.edu>; Fri, 13 Jan 2006 13:02:15 -0500 (EST)
+Received: (from majordom@localhost)
+	by saffron.cc.columbia.edu (8.13.0/8.12.8/Submit) id k0DI2FYt012109
+	for cuflow-users-outgoing; Fri, 13 Jan 2006 13:02:15 -0500 (EST)
+Received: from dewberry.cc.columbia.edu (dewberry.cc.columbia.edu [128.59.28.165])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0DI2E6f012104
+	for <majordom+cuflow-users@saffron.cc.columbia.edu>; Fri, 13 Jan 2006 13:02:14 -0500 (EST)
+Received: from netzentry.com (64-161-121-25.ded.pacbell.net [64.161.121.25] (may be forged))
+	by dewberry.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0DI1t8k017405;
+	Fri, 13 Jan 2006 13:02:02 -0500 (EST)
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C6186C.186DF312"
+Subject: RE: error with flowscan
+Date: Fri, 13 Jan 2006 10:06:37 -0800
+Message-ID: <223288A730E679499423722134E1A6351EE93E@nexus.netzentry.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: error with flowscan
+Thread-Index: AcYXLN6AcwWp4G+VSfq+neJrl2cDGQBPfeCp
+References: <223288A730E679499423722134E1A6351EE936@nexus.netzentry.com> <6e238a300d9b3063daf10ec999341227@columbia.edu>
+From: "Neelay Thaker" <neelay@netzentry.com>
+To: "Matt Selsky" <selsky@columbia.edu>
+Cc: <cuflow-users@columbia.edu>
+X-Spam-Score: 4.242 (****) HTML_20_30 HTML_MESSAGE CU_HELO_DNSMISMATCH_netzentry.com
+X-Scanned-By: MIMEDefang 2.48 on 128.59.29.8
+X-Scanned-By: MIMEDefang 2.48 on 128.59.28.165
+Sender: owner-cuflow-users@columbia.edu
+Precedence: bulk
+X-No-Spam-Score: Local
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C6186C.186DF312
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Matt,
+thanks for the reply.
+The problem is that I have Cflow already installed on this machine as =
+per directions in the README. I have used flow tools before on it and =
+flowscan has worked fine. Even when I re-install Cflow, the problem does =
+not go away. Here's what I get when I print @INC, note that it includes =
+Cflow-
+[root:~] perl -e 'use Cflow; print map {"$_ =3D> $INC{$_}\n"} keys %INC'
+Exporter.pm =3D> /usr/local/lib/perl5/5.6.2/Exporter.pm
+Carp.pm =3D> /usr/local/lib/perl5/5.6.2/Carp.pm
+Cflow.pm =3D> /usr/local/lib/perl5/site_perl/5.6.2/i686-linux/Cflow.pm
+/usr/local/lib/perl5/5.6.2/i686-linux/auto/POSIX/load_imports.al =3D> =
+/usr/local/lib/perl5/5.6.2/i686-linux/auto/POSIX/load_imports.al
+XSLoader.pm =3D> /usr/local/lib/perl5/5.6.2/i686-linux/XSLoader.pm
+strict.pm =3D> /usr/local/lib/perl5/5.6.2/strict.pm
+vars.pm =3D> /usr/local/lib/perl5/5.6.2/vars.pm
+POSIX.pm =3D> /usr/local/lib/perl5/5.6.2/i686-linux/POSIX.pm
+Config.pm =3D> /usr/local/lib/perl5/5.6.2/i686-linux/Config.pm
+warnings/register.pm =3D> =
+/usr/local/lib/perl5/5.6.2/warnings/register.pm
+warnings.pm =3D> /usr/local/lib/perl5/5.6.2/warnings.pm
+DynaLoader.pm =3D> /usr/local/lib/perl5/5.6.2/i686-linux/DynaLoader.pm
+Exporter/Heavy.pm =3D> /usr/local/lib/perl5/5.6.2/Exporter/Heavy.pm
+/usr/local/lib/perl5/5.6.2/i686-linux/auto/POSIX/autosplit.ix =3D> =
+/usr/local/lib/perl5/5.6.2/i686-linux/auto/POSIX/autosplit.ix
+AutoLoader.pm =3D> /usr/local/lib/perl5/5.6.2/AutoLoader.pm
+
+Thanks.
+
+-Neelay
+
+
+
+-----Original Message-----
+From: Matt Selsky [mailto:selsky@columbia.edu]
+Sent: Wed 1/11/2006 7:57 PM
+To: Neelay Thaker
+Cc: cuflow-users@columbia.edu
+Subject: Re: error with flowscan
+=20
+You need to install Cflow then.  :-)
+
+See=20
+http://www.dynamicnetworks.us/netflow/2-getting-started.html#software
+
+>  I'm a flowtools newbie. I have installed flowtools on my system. When =
+
+> I try to start flowscan, I get the error-
+>  Can't locate Cflow.pm in @INC (@INC contains:=20
+> /usr/lib/perl5/5.8.5/i386-linux-thread-multi /usr/lib/perl5/5.8.5=20
+> /usr/lib/perl5/site_perl/5.8.5/i386-linux-thread-multi=20
+> /usr/lib/perl5/site_perl/5.8.4/i386-linux-thread-multi=20
+> /usr/lib/perl5/site_perl/5.8.3/i386-linux-thread-multi=20
+> /usr/lib/perl5/site_perl/5.8.2/i386-linux-thread-multi=20
+> /usr/lib/perl5/site_perl/5.8.1/i386-linux-thread-multi=20
+> /usr/lib/perl5/site_perl/5.8.0/i386-linux-thread-multi=20
+> /usr/lib/perl5/site_perl/5.8.5 /usr/lib/perl5/site_perl/5.8.4=20
+> /usr/lib/perl5/site_perl/5.8.3 /usr/lib/perl5/site_perl/5.8.2=20
+> /usr/lib/perl5/site_perl/5.8.1 /usr/lib/perl5/site_perl/5.8.0=20
+> /usr/lib/perl5/site_perl=20
+> /usr/lib/perl5/vendor_perl/5.8.5/i386-linux-thread-multi=20
+> /usr/lib/perl5/vendor_perl/5.8.4/i386-linux-thread-multi=20
+> /usr/lib/perl5/vendor_perl/5.8.3/i386-linux-thread-multi=20
+> /usr/lib/perl5/vendor_perl/5.8.2/i386-linux-thread-multi=20
+> /usr/lib/perl5/vendor_perl/5.8.1/i386-linux-thread-multi=20
+> /usr/lib/perl5/vendor_perl/5.8.0/i386-linux-thread-multi=20
+> /usr/lib/perl5/vendor_perl/5.8.5 /usr/lib/perl5/vendor_perl/5.8.4=20
+> /usr/lib/perl5/vendor_perl/5.8.3 /usr/lib/perl5/vendor_perl/5.8.2=20
+> /usr/lib/perl5/vendor_perl/5.8.1 /usr/lib/perl5/vendor_perl/5.8.0=20
+> /usr/lib/perl5/vendor_perl .) at /var/netflow/bin/flowscan line 25.
+>  BEGIN failed--compilation aborted at /var/netflow/bin/flowscan line=20
+> 25.
+>
+>  Any help regarding this error will be highly appreciated.
+
+
+
+------_=_NextPart_001_01C6186C.186DF312
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7233.28">
+<TITLE>RE: error with flowscan</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><TT><FONT SIZE=3D2>Hi Matt,<BR>
+thanks for the reply.<BR>
+The problem is that I have Cflow already installed on this machine as =
+per directions in the README. I have used flow tools before on it and =
+flowscan has worked fine. Even when I re-install Cflow, the problem does =
+not go away. Here's what I get when I print @INC, note that it includes =
+Cflow-<BR>
+[root:~] perl -e 'use Cflow; print map {&quot;$_ =3D&gt; =
+$INC{$_}\n&quot;} keys %INC'<BR>
+Exporter.pm =3D&gt; /usr/local/lib/perl5/5.6.2/Exporter.pm<BR>
+Carp.pm =3D&gt; /usr/local/lib/perl5/5.6.2/Carp.pm<BR>
+Cflow.pm =3D&gt; =
+/usr/local/lib/perl5/site_perl/5.6.2/i686-linux/Cflow.pm<BR>
+/usr/local/lib/perl5/5.6.2/i686-linux/auto/POSIX/load_imports.al =3D&gt; =
+/usr/local/lib/perl5/5.6.2/i686-linux/auto/POSIX/load_imports.al<BR>
+XSLoader.pm =3D&gt; =
+/usr/local/lib/perl5/5.6.2/i686-linux/XSLoader.pm<BR>
+strict.pm =3D&gt; /usr/local/lib/perl5/5.6.2/strict.pm<BR>
+vars.pm =3D&gt; /usr/local/lib/perl5/5.6.2/vars.pm<BR>
+POSIX.pm =3D&gt; /usr/local/lib/perl5/5.6.2/i686-linux/POSIX.pm<BR>
+Config.pm =3D&gt; /usr/local/lib/perl5/5.6.2/i686-linux/Config.pm<BR>
+warnings/register.pm =3D&gt; =
+/usr/local/lib/perl5/5.6.2/warnings/register.pm<BR>
+warnings.pm =3D&gt; /usr/local/lib/perl5/5.6.2/warnings.pm<BR>
+DynaLoader.pm =3D&gt; =
+/usr/local/lib/perl5/5.6.2/i686-linux/DynaLoader.pm<BR>
+Exporter/Heavy.pm =3D&gt; =
+/usr/local/lib/perl5/5.6.2/Exporter/Heavy.pm<BR>
+/usr/local/lib/perl5/5.6.2/i686-linux/auto/POSIX/autosplit.ix =3D&gt; =
+/usr/local/lib/perl5/5.6.2/i686-linux/auto/POSIX/autosplit.ix<BR>
+AutoLoader.pm =3D&gt; /usr/local/lib/perl5/5.6.2/AutoLoader.pm<BR>
+<BR>
+Thanks.<BR>
+<BR>
+-Neelay<BR>
+<BR>
+<BR>
+<BR>
+-----Original Message-----<BR>
+From: Matt Selsky [<A =
+HREF=3D"mailto:selsky@columbia.edu">mailto:selsky@columbia.edu</A>]<BR>
+Sent: Wed 1/11/2006 7:57 PM<BR>
+To: Neelay Thaker<BR>
+Cc: cuflow-users@columbia.edu<BR>
+Subject: Re: error with flowscan<BR>
+<BR>
+You need to install Cflow then.&nbsp; :-)<BR>
+<BR>
+See<BR>
+<A =
+HREF=3D"http://www.dynamicnetworks.us/netflow/2-getting-started.html#soft=
+ware">http://www.dynamicnetworks.us/netflow/2-getting-started.html#softwa=
+re</A><BR>
+<BR>
+&gt;&nbsp; I'm a flowtools newbie. I have installed flowtools on my =
+system. When<BR>
+&gt; I try to start flowscan, I get the error-<BR>
+&gt;&nbsp; Can't locate Cflow.pm in @INC (@INC contains:<BR>
+&gt; /usr/lib/perl5/5.8.5/i386-linux-thread-multi =
+/usr/lib/perl5/5.8.5<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.5/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.4/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.3/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.2/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.1/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.0/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.5 /usr/lib/perl5/site_perl/5.8.4<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.3 /usr/lib/perl5/site_perl/5.8.2<BR>
+&gt; /usr/lib/perl5/site_perl/5.8.1 /usr/lib/perl5/site_perl/5.8.0<BR>
+&gt; /usr/lib/perl5/site_perl<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.5/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.4/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.3/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.2/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.1/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.0/i386-linux-thread-multi<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.5 =
+/usr/lib/perl5/vendor_perl/5.8.4<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.3 =
+/usr/lib/perl5/vendor_perl/5.8.2<BR>
+&gt; /usr/lib/perl5/vendor_perl/5.8.1 =
+/usr/lib/perl5/vendor_perl/5.8.0<BR>
+&gt; /usr/lib/perl5/vendor_perl .) at /var/netflow/bin/flowscan line =
+25.<BR>
+&gt;&nbsp; BEGIN failed--compilation aborted at =
+/var/netflow/bin/flowscan line<BR>
+&gt; 25.<BR>
+&gt;<BR>
+&gt;&nbsp; Any help regarding this error will be highly appreciated.<BR>
+<BR>
+<BR>
+</FONT></TT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C6186C.186DF312--
+

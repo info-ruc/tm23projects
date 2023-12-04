@@ -1,0 +1,61 @@
+Received: from maccs.mq.edu.au (currawong.maccs.mq.edu.au [137.111.47.11])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j7BAXb5L030790
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 11 Aug 2005 03:33:40 -0700
+Received: (from nobody@localhost)
+	by maccs.mq.edu.au (8.11.6/8.11.6) id j7BAXao27896
+	for DMDX@psy1.psych.arizona.edu; Thu, 11 Aug 2005 20:33:36 +1000
+Received: from 193.63.253.218 ( [193.63.253.218])
+	as user awoollam@currawong.maccs.mq.edu.au by www.maccs.mq.edu.au with HTTP;
+	Thu, 11 Aug 2005 20:33:36 +1000
+Message-ID: <1123756416.42fb2980c5c33@www.maccs.mq.edu.au>
+Date: Thu, 11 Aug 2005 20:33:36 +1000
+From: Anna Woollams <awoollam@maccs.mq.edu.au>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: varying text color within the same word
+References: <e9a00f6b050810183130fc5403@mail.gmail.com>  <5.1.0.14.2.20050810213229.00ba4788@psy1.psych.arizona.edu> <e9a00f6b0508102238d8c5c74@mail.gmail.com>
+In-Reply-To: <e9a00f6b0508102238d8c5c74@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Dear DMDXers,
+
+> Sorry to bother you again with such a seemingly simple issue, but
+> applying your answer in quotation marks,  I get the "<font..>" as part
+> of the displayed string; preceding the inner quotation marks with a
+> backslash gives an error: unknown (\") ; applying it without quotation
+> marks altogether, I get the error "unknown keyword <FONT>".  I guess
+> it is just a small syntax issue that I am still missing.
+> Could I ask you to send me a code snippet? 
+
+I recall having trouble with changing text colour in this fashion some time 
+ago.  I am ashamed to admit that I never really got to the bottom of the 
+problem, but I did use the following syntax to get around it:
+
++500 <ms% 500> "+" / <ms% 0> <wc 111000000> "a  "/ ! <ms% 0> <wc 000022000> " 
+b " / ! <wc 000000003> "  c" *;
+
+What this does is just tell DMDX to prepare the frame with "a" in one colour, 
+hold that in memory, prepare "b" in another colour, hold that in memory, 
+prepare "c" in yet another colour, and then display them all together.
+
+The main problem with adopting this solution is that it limits you to using 
+only nonproportional fonts (e.g. Courier), otherwise your different letters 
+will overlap at display.
+
+I'm sure that Jonathan can offer a far more elegant solution than the one I 
+have outlined here, but I thought I would just mention this alternative in case 
+it might prove useful.
+
+Best wishes,
+Anna W.
+
+This Message is intended for the addressee named and may contain
+confidential information.  If you are not the intended recipient, please
+delete it and notify the sender.  Views expressed in this message are those
+of the individual sender and are not necessarily the views
+of The Macquarie Centre for Cognitive Science.
+

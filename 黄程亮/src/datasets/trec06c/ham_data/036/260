@@ -1,0 +1,75 @@
+Received: from mail.montana.com (mailB.montana.com [199.2.139.117])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA04989
+	for <handyboard@media.mit.edu>; Sun, 21 Feb 1999 13:41:02 -0500 (EST)
+Received: from cs.umt.edu (mso1-13.montana.com [208.4.224.13])
+	by mail.montana.com (8.9.2.Beta4/8.9.4) with ESMTP id LAA27749
+	for <handyboard@media.mit.edu>; Sun, 21 Feb 1999 11:45:18 -0700 (MST)
+Message-Id: <36D052D5.72357FC7@cs.umt.edu>
+Date: Sun, 21 Feb 1999 11:39:17 -0700
+From: Will Bain <willbain@cs.umt.edu>
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Sonar Sensors
+References: <Pine.3.87.9902201614.A11916-0100000@camelot.bradley.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Ian Hojnicki wrote:
+> Ok... both of my sonars are now fully functional and clicking like they
+> should...  I took the test prgram from the website and changed some of
+> the values to make it use D3 for the other sensor...  Here is my problem
+> though...  When I output the values from the sensors to the LCD display,
+> they appear to be random numbers...  Any clues as to what is wrong???
+> Any suggestions would be appreciated...
+
+I don't know much about electronics, but here are a few hardware
+questions that others have asked me:
+
+Can you verify that each sonar works ok all by itself?
+
+Are you using two separate sonar module boards, one for each transducer,
+or are you running both transducers off the same module through a
+multiplexor?  I've been trying to do the former.  If you've done the
+latter, then some of the other questions may not make sense.
+
+Did you solder the capacitors into position C7 on the Polaroid sonar
+module boards? They're necessary for the correct operation of the
+modules.
+
+Are you using 6 power diodes to drop the voltage down from 9.6 V at the
+HB to about 6 V at the sonar module boards?  That's the best way to get
+power to the modules.  You can use a separate battery for the sonar, but
+make sure it has adequate surge current capacity (the HB power does).
+
+Do you have two echo lines connected to the same TIC port on the HB?  I
+tried that and it doesn't work for me at all.  I was warned that there
+might be signal contention with two echos on the same port, and it
+appears that that's the case.  I haven't tried the switching diodes yet
+to see if that fixes it.
+
+Are you triggering two pings at almost the same time?  If so, there may
+not be enough surge current to supply both modules at the same time, or
+the reverberations from one transducer could be affecting the other. 
+Make sure that you pause between firing one sonar and firing the next. 
+Remember, even after the first echo returns to the transducer, there
+could still be more echos bouncing around the room for a few
+milliseconds.
+
+I also have written code to use two sonar modules with the HB.  Perhaps
+if you wouldn't mind sending me your code, I could look over it and help
+figure out whether it's a software problem.  I know a little more about
+programming than I do about electronics.
+
+Sincerely,
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,               Conscience:  the inner voice which warns us
+Will Bain,                                 that someone may be looking.
+& Tatoosh                                               --H. L. Mencken
+

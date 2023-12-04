@@ -1,0 +1,66 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k295UUt01327
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 00:30:30 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k295UTAi024064
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 00:30:30 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060307201509.0324a090@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Thu, 09 Mar 2006 00:28:29 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 13
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+RON:
+         A RON is a resilient overlay network; an overlay network designed 
+to have data tunneled through it.  By doing routing at the application 
+layer instead of the network layer, a RON can adapt to bad links much more 
+quickly than a lower-level protocol such as BGP.  In addition, a RON is 
+able to employ much more flexible criteria about routing, thus allowing use 
+of routes that are not publicly advertised.
+         It is unclear how well RONs would work if deployed on a larger 
+scale.  How would the internet's routing perform if many nodes were rapidly 
+altering their traffic patterns in response to perceived poor 
+service?   And if it would work well, why not simply alter BGP, rather than 
+do this at the application layer?  Also, using a RON requires trusting that 
+nodes are not lying about the origin of their data to get around awkward 
+usage policies.  This, as the authors say, is possible in small systems, 
+but presumably would be awkward as RON systems become larger and more common.
+
+
+One-hop:
+
+         How much benefit can we get fro mclever routing?  The authors of 
+this paper did extensive path traces from Planetlab nodes to triangulate 
+routing failures.  As it happens, a significant fraction of server 
+failures, and a large preponderance of broadband user machine failures, are 
+end-system or last-link failures, which no routing algorithm can 
+ameliorate.  For those failures which can be fixed by routing, picking four 
+nodes at random and trying to route through them ("one-hop" indirection) 
+worked 92% of the time.  The authors conclude that trying to route through 
+a small number of random peers is often an effective technique for routing 
+around failures.  Interestingly, if one is trying more than 2 or 3 indirect 
+routes, cleverness does not seem to help; it's hard to do better than 
+choosing indirection points at random.  This suggests that a RON may in 
+fact be overkill for most applications needing higher reliability.
+         How well would this system work for those of us who aren't running 
+on planetlab?  For the system to work, nodes must have some set of 'peers' 
+who are willing to route for them, with whom they have tolerably fast 
+connections, but who are far enough away in the network graph that routing 
+through them will miss the damaged link[s].  Moreover, they must be willing 
+to forward data.  This is by no means impossible, but neither is it 
+straightforward.  Unlike disk space, bandwidth is an ephemeral resource, 
+and particularly in this case, used seldom.  Therefore a straightforward 
+swap seems inapplicable.
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

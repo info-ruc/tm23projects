@@ -1,0 +1,50 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k227vWt12612
+	for <egs@cs.cornell.edu>; Thu, 2 Mar 2006 02:57:32 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k227vVNL017276
+	for <egs@cs.cornell.edu>; Thu, 2 Mar 2006 02:57:31 -0500 (EST)
+Received: from 24.59.114.243
+        by webmail.cornell.edu with HTTP;
+        Thu, 2 Mar 2006 02:57:31 -0500 (EST)
+Message-ID: <2032.24.59.114.243.1141286251.squirrel@webmail.cornell.edu>
+Date: Thu, 2 Mar 2006 02:57:31 -0500 (EST)
+Subject: paper 11
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+The two papers discuss using P2P networks to perform DNS lookups to
+address some of  the issues that legacy DNS has: largely network
+resilience and updating. One of the  papers uses Beehive over a Pastry
+ring overlay, which we already discussed in  class. It uses proactive
+replication of popular lookups to achieve  less-than-one-hop performance.
+The MIT DNS system (DDNS) is overlaid on a Chord  network (though the
+exact network overlay is not especially important for theirs).  Both DDNS
+and CoDoNS preserves the hierarchy of legacy DNS by signing data with the 
+key of the next level higher, all the way to the top-level domain and then
+the root  domain. This allows for security in legitimizing the results
+from a search, but  requires many extra queries to go through the key
+hierarchy, even when popular  results maybe have multiple levels cached at
+one location. In addition, DDNS only  performs reactive caching, which is
+not entirely sufficient to minimize latency.
+
+A major issue with these is that the nodes in the network must all be
+trusted. Even  with a signing hierarchy like in DDNS, malicious nodes
+could attack the network in  other ways, via Sybil and Eclipse attacks for
+instance. Domain Name Service is a  critical service that should not be
+able to be compromised at all, and opening it  up to Eclipse attacks might
+have a similar effect to DoS attacks. This would  probably restrict the
+nodes in the network to certified trusted agents like the  current
+top-level servers. This also removes the worry about nodes not having the 
+resources to handle the latency-sensitive application, but can reintroduce
+the  limited points of failures if the servers are not sufficiently widely
+distributed.  It would be a significant improvement over the single-point
+of failure of the root  domain servers, but it could still present a
+vulnerability.
+

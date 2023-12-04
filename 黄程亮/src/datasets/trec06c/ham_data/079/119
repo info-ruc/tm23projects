@@ -1,0 +1,198 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id fBL2Xrg25271;
+	Thu, 20 Dec 2001 18:33:53 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id UAA01169;
+	Thu, 20 Dec 2001 20:22:24 -0500 (EST)
+Date: Thu, 20 Dec 2001 20:22:24 -0500 (EST)
+Received: by canaveral.red.cert.org; Thu, 20 Dec 2001 20:13:15 -0500
+Message-Id: <CA-2001-37.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-37 Buffer Overflow in UPnP Service On Microsoft Windows
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 19447dcad564059fd394b11d3e666150
+Status: RO
+X-Status: $$$$
+X-UID: 0000000034
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-37 Buffer Overflow in UPnP Service On Microsoft Windows
+
+   Original release date: December 20, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Microsoft Windows XP
+     * Microsoft Windows ME
+     * Microsoft Windows 98
+     * Microsoft Windows 98SE
+
+Overview
+
+   Vulnerabilities  in  software included by default on Microsoft Windows
+   XP, and optionally on Windows ME and Windows 98, may allow an intruder
+   to   execute   arbitrary   code   on  vulnerable  systems,  to  launch
+   denial-of-service  attacks  against  vulnerable  systems,  or  to  use
+   vulnerable   systems   to  launch  denial-of-service  attacks  against
+   third-party systems.
+
+I. Description
+
+   There is a vulnerability in the Universal Plug and Play (UPnP) service
+   on  Microsoft Windows XP and Microsoft Windows ME that could permit an
+   intruder to execute arbitrary code with administrative privileges on a
+   vulnerable  system.  The  UPnP  service  is  enabled by default on XP.
+   Microsoft  does  not ship Windows ME with UPnP enabled by default, but
+   some  PC manufacturers do. UPnP may be optionally installed on Windows
+   98 and Windows 98SE. This vulnerability was discovered by Eeye Digital
+   Security. For more information, see
+
+          http://www.eeye.com/html/Research/Advisories/AD20011220.html
+          http://www.microsoft.com/technet/security/bulletin/MS01-059.asp
+
+   Universal  Plug  and  Play  (UPnP)  is  a  set of protocols that allow
+   computer  systems  and network devices to work together with little or
+   no prior configuration.
+
+   One  vulnerability  is a buffer overflow in the code that handles UPnP
+   NOTIFY  directives.  This  vulnerability permits an intruder to send a
+   malicious  NOTIFY  directive  to  a  vulnerable computer and cause the
+   computer  to run code of the intruder's choice. The code will run with
+   full  privileges on all vulnerable systems, including Windows XP. This
+   can permit an attacker to take complete control of the system.
+
+   A second vulnerability in the Microsoft Windows implementation of UPnP
+   could  allow  an  intruder  to  consume  memory  and processor time on
+   vulnerable  systems,  resulting in performance degradation. Variations
+   on  this  problem  can allow an intruder to use a vulnerable system to
+   launch a denial-of-service attack against a third-party.
+
+   For more information about these vulnerabilities, see
+
+          http://www.kb.cert.org/vuls/id/951555
+          http://www.kb.cert.org/vuls/id/411059
+
+   These   vulnerabilities   have   been  assigned  the  CVE  identifiers
+   CAN-2001-0876 and CAN-2001-0877, respectively.
+
+II. Impact
+
+   Intruders   can  gain  complete  control  of  vulnerable  systems,  or
+   interrupt the normal operation of vulnerable systems.
+
+III. Solution
+
+Apply a patch from your vendor
+
+   Microsoft has provided patch information in their bulletin. Please see
+   MS01-059, available from
+
+   http://www.microsoft.com/technet/security/bulletin/MS01-059.asp
+
+Block Access to UPnP Service
+
+   Until  a  patch  can  be applied, you can reduce your exposure to this
+   problem  by  blocking  access  to  ports 1900 and 5000 at your network
+   border.  This  does not eliminate your exposure to attacks originating
+   from within your network, however.
+
+   Note  that  Microsoft  Internet  Connection  Firewall,  which  runs by
+   default  on  Windows  XP, does not provide complete protection against
+   this  attack.  Specifically,  an intruder can still use a broadcast or
+   multicast  address  to reach the UPnP service on Microsoft Windows. On
+   systems that don't require UPnP, it can be disabled.
+
+   Author: Shawn V. Hernan
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-37.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+December 20, 2001: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPCKL0KCVPMXQI2HJAQHiugP6AiOA0OEEVmdFKhkhZEznW84XKBZPrURz
+Z9XA6lYs7ZdZnLD3xRAheDuoYF2p3xVrJXayzXPVrk7axWotgljqUBBMn4Ce5Nh8
+2kRMjVHt66jW39R5TGc37B5XBjy55XXNwAoBzBFC8uvu0tk+hvRpbkxqGZ7rhKtI
+2AWSkUlltMk=
+=O0YG
+-----END PGP SIGNATURE-----
+

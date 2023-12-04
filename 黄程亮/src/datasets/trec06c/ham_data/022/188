@@ -1,0 +1,104 @@
+Received: from imo15.mx.aol.com (imo15.mx.aol.com [198.81.17.5])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA06775
+	for <handyboard@media.mit.edu>; Fri, 4 Sep 1998 09:30:41 -0400 (EDT)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo15.mx.aol.com (IMOv16.1) id TJWQa12640;
+	Fri, 4 Sep 1998 09:29:24 -0400 (EDT)
+Message-Id: <69e4d62c.35efeb34@aol.com>
+Date: Fri, 4 Sep 1998 09:29:24 EDT
+To: philchia@singnet.com.sg
+Cc: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Steppr motor pulse problem
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Phillip:
+
+     In the process I was referring to, you do not use the Handy board, driver
+or anything to determine the step sequence.  You only use the motor and a
+battery (after you finish with the Ohm meter).  The idea is to learn what the
+motor is expecting only.  Once you have this down on paper, you can also make
+measurements as to what your driver (if any) is doing.  If you are using a
+driver (chip or board) you should clock this with the handy board.  If you use
+switches of wires, you will get a random number of pulses on either rising or
+falling edges.  (For the motor by itself this is not a problem, but a driver
+chip/board will count each pulse as a step, not just the switch closure.
+(This is called bounce.))  
+     If your motor does not draw too much current, you should not need any
+external components.  If the motor is bi-polar, each coil plugs into a motor
+output; so two motor outputs would be consumed by one stepper motor.  In this
+case you would need to program the sequence into the handy board.  If your two
+coils were plugged into motor outputs 1 and 2 your sequence would look like
+                                     Motor 1          Motor 2
+motor 1 forward                  +
+wait a pulse width
+motor 1 off
+motor 2 forward                                       +
+wait a pulse width
+motor 2 off
+motor 1 reverse                    -
+wait a pulse width
+motor 1 off
+motor 2 reverse                                        -
+wait a pulse width
+repeat the sequency
+
+     If your motor is really low current and you need extra resolution you
+could:
+
+                                      Motor 1        Motor 2
+motor 1 forward                    +
+wait a pulse width
+motor 2 forward                    +                 +
+wait a pulse width
+motor 1 off                                              +
+wait a pulse width
+motor 1 reverse                     -                 +
+wait a pulse width
+motor 2 off                            -
+wait a pulse width
+motor 2 reverse                     -                  -
+wait a pulse width
+motor 1 off                                               -
+wait a pulse width
+motor 1 forward                     +                 -
+wait a pulse width
+motor 2 off                            +
+This is the first state in this list, repeat the sequence
+
+     Here there is an overlap between the coils of the sequence given last
+time.  This is called half stepping and draws just a little less than twice
+the current  as the first sequence.
+
+     But I'm getting a little off topic here.  The point is to first find out
+what step sequence the motor needs, then wire it to the Handy board/driver
+system to insure the sequence it gets.
+     If you are using a stepper motor driver chip like the Motorola MC3479,
+then you only need to provide signals like: Clock, Direction, and maybe Motor
+On.  These are TTL level signals and do not use the Motor driver ports.  But
+this chip can only deliver 350mA of current per coil so you might as well use
+the motor ports on the handy board (unless you need the 16 volts/coil).  If
+your are using a drive like this, you do not need to "Program" the step
+sequence into the handy board, you need to "wire" the sequence to the motor.
+But your handy board program will still need to time the pulses correctly to
+drive the motor.
+
+
+
+In a message dated 98-09-04 04:47:34 EDT, you write:
+<<
+Hi ,
+Thank for the infor. Does the sequence of the stepper motor which connected
+to the driver need to be programmed into the microcontroller 6811 ? In
+another word, does the squence of steps need be created out by programming
+or just by defalt that the driver and the motor have the sequence step
+itself already  ?
+
+Is it the driver has to be connected to the microcontroller  first to see
+the step sequence  ?
+
+  >>
+

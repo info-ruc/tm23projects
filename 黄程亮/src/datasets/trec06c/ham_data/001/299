@@ -1,0 +1,25 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3009>; Sun, 10 Apr 1994 17:39:56 -0400
+Received: from minster.york.ac.uk ([144.32.128.41]) by psuvax1.cse.psu.edu with SMTP id <293915>; Sun, 10 Apr 1994 17:31:22 -0400
+From:	forsyth@minster.york.ac.uk
+Date:	Sun, 10 Apr 1994 16:42:52 -0400
+To:	9fans@cse.psu.edu
+Message-ID: <swordfish.766013471@minster.york.ac.uk>
+subject: fork test
+
+i've just tried the 10,000 fork test on a Sparc Classic
+
+unix
+	156.1 real	136.9 sys	13.5 user	dynamically linked
+	 58.7 real	 50.4 sys	 3.2 user	statically linked, dynamically paged executable
+	 58.8 real	 51.1 sys	 2.8 user	statically linked, not dynamically paged image (-n)
+
+plan 9
+	 26.9 real	 20.4 sys	 0.8 user	no need to choose
+
+the sparc classic has tiny caches, and a sleazy implementation of the Reference MMU
+(TLB context flushes are implemented as complete TLB flushes).  i might revise the MMU code,
+but i don't think it will help this test on this model of sparc.  memmove might
+be made faster, though; i haven't checked yet.  i haven't got figures for the ss/10,
+since that hardware is different again.
+
+

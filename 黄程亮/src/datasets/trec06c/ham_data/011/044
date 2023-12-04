@@ -1,0 +1,57 @@
+Received: from smtp.ucsd.edu (smtp.ucsd.edu [132.239.1.49])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id QAA25570
+	for <handyboard@media.mit.edu>; Fri, 13 Feb 1998 16:46:43 -0500 (EST)
+Received: from jkeyzer (jkeyzer.reshall.ucsd.edu [128.54.129.38]) by smtp.ucsd.edu (8.8.5/8.6.9) with SMTP id NAA12819; Fri, 13 Feb 1998 13:46:36 -0800 (PST)
+Message-Id: <199802132146.NAA12819@smtp.ucsd.edu>
+X-Sender: jkeyzer@sdcc10.ucsd.edu
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.0
+Date: Fri, 13 Feb 1998 13:46:23 -0800
+To: PCA95RAS@sheffield.ac.uk
+From: Jeff Keyzer <jkeyzer@ucsd.edu>
+Subject: Re: 'uploading' data?
+Cc: Handy Board <handyboard@media.mit.edu>
+In-Reply-To: <l03130301b10890b62027@[143.167.75.169]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 11:43 AM 2/12/98 +0000, you wrote:
+>Hi,
+>I am programming a 6.270 board with IC and wondered if there was any way of
+>'uploading' data from the board back to my PC? or would the only way to get
+>the data be to print it out on the screen....
+>Thanks,
+>Ruth
+> 
+	Yes, this is very possible, and I've done a fair amount of work for
+various experiments where I needed to get data back from the board.  First,
+you should check out http://www.ai.mit.edu/people/rsargent/ic/serialio.html
+for the routines that the 6.270 and Handy Board that let you disable the
+communication stream between IC and the board and then send your own data
+over the main serial link.
+
+There are also Richard Drushel's routines, which implement some basic
+functions to send/receive data between the board and a host computer.
+These routines can be found at
+http://lcs.www.media.mit.edu/groups/el/projects/handy-board/software/contrib
+/drushel/ and have worked very well for me.
+
+On the PC side, you'll have to either open up a terminal window to the COM
+port you have the board on (9600 baud, no handshake), or write a software
+program to handle the data.  I use Linux to talk to my HB, which simplifies
+programming quite a bit and works very well overall for data logging,
+remote control, etc.  One of my current projects is using the HB to
+activate the PTT circuit on an amateur radio in an effort to set up a
+remote control station.  Doing that sort of thing is very simple in Linux,
+while a monster in Win95 or DOS.
+
+Linux serial routines can be found on the Linux Documentation Project HOWTO
+page or on sunsite, etc.
+
+Hope this helps!
+
+--------------------------------
+Jeff Keyzer, KF6PBP
+UCSD EE Major
+jkeyzer@ucsd.edu
+http://sehplib.ucsd.edu/~jkeyzer/
+

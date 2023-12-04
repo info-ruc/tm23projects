@@ -1,0 +1,45 @@
+Received: from mvp.net (root@Walden.mo.Net [209.96.2.52])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id MAA20738
+	for <handyboard@media.mit.edu>; Thu, 6 Aug 1998 12:48:31 -0400 (EDT)
+Received: from mvp.net (DialIP7-161.mvp.net [209.96.75.161])
+	by mvp.net (8.8.8/8.8.8) with ESMTP id LAA25548;
+	Thu, 6 Aug 1998 11:47:42 -0500 (CDT)
+Message-Id: <35C9DEAD.79B50EDA@mvp.net>
+Date: Thu, 06 Aug 1998 11:49:49 -0500
+From: Rick Moll <rickmoll@mvp.net>
+X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+Mime-Version: 1.0
+To: Sheridan Edward Ethier <seethier@zeus.uwaterloo.ca>
+Cc: handyboard@media.mit.edu, Rick Moll <rickmoll@mvp.net>
+Subject: Re: Pull Up Resistor
+References: <Pine.NXT.3.91.980806113350.824A-100000@zeus>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Sheridan Edward Ethier wrote:
+
+> I checked the ECHO signal and found it to be at 2.0V when plugged into
+> TIC3 on the HB.  I also applied a pull-up resitor which did send ECHO
+> to 5V when not pinging.  However, in both cases, I still had seemingly
+> random positive and negative values returned from the sonar.
+>
+> Any insight would be appreciated.
+
+ I just checked my copy of the Polaroid Sonar Module documentation, and it does in
+deed state that the module can sink up to 0.1 mA when ECHO is pulled high.  It
+sounds like your module is drawing around 0.064 mA = ((5V - 2V)/47Kohms), so it is
+in spec; but even so 2V is *not* a valid CMOS level (anything between 1V to 3.5V is
+not a valid input according to my 68HC11 doc).
+
+So first thing, I would use the 4.7K pullup!
+
+But that said, it sounds like you have something else wrong.
+
+Do you have access to an oscilloscope?  If so you could verify the timing of the
+interface pins.
+
+Later,
+
+    Rick
+
+

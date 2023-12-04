@@ -1,0 +1,62 @@
+Received: from penguin.cs.cornell.edu (penguin.cs.cornell.edu [128.84.96.11])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k36Fgut12030
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 11:42:56 -0400 (EDT)
+Received: from wproxy.gmail.com ([64.233.184.235]) by penguin.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 6 Apr 2006 11:42:56 -0400
+Received: by wproxy.gmail.com with SMTP id 68so150879wra
+        for <egs+summary@cs.cornell.edu>; Thu, 06 Apr 2006 08:42:55 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=Mk2SUzctnVyD0pRwTSLsY7A5fEpZ9CEw3bqGfIDdLjJWSd9TLvR2PpbXJXj5qWp6Kf/kmUJP80a/O8IIhjJry6NCY5rioH7+b5R46nePztf2W8FUn0r1boZt7dX5TYWnIkYvuPwqV3D49E8BOV39/obM+tDgj6mfsTtKD1r/8E4=
+Received: by 10.54.158.9 with SMTP id g9mr2002980wre;
+        Thu, 06 Apr 2006 05:47:05 -0700 (PDT)
+Received: by 10.54.78.8 with HTTP; Thu, 6 Apr 2006 05:47:05 -0700 (PDT)
+Message-ID: <6e1ca4560604060547t2ec36f27gf29481e92dac7f98@mail.gmail.com>
+Date: Thu, 6 Apr 2006 08:47:05 -0400
+From: "Chiu Wah Kelvin So" <kelvinso@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: Paper 19
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+X-OriginalArrivalTime: 06 Apr 2006 15:42:56.0236 (UTC) FILETIME=[C63802C0:01C65990]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k36Fgut12030
+
+	The paper, "Overcast: Reliable Multicasting with an Overlay Network,"
+presents an application-level multicasting system for
+bandwidth-intensive content. Unlike IP multicast, which is difficult
+to deploy in real world, application-level multicast is easily and
+incrementally deployable. Also, it is adaptable, robust and
+customizable.
+	The main protocol of the system is to build a single source multicast
+tree. To maximize bandwidth to the root for all nodes in tree
+construction, each node tries to locate the Overcast root. Then, the
+new node attempts to locate itself further down in the tree without
+sacrificing bandwidth to the root. It will also periodically
+reevaluate its position in the tree by measuring bandwidth with
+sibling, parent and grandparent, so it can adapt to network changes.
+Overcast nodes also need to keep track of all the aliveness status of
+the descendants using a Up/Down protocol. Each node periodically
+contacts its parent. If the parent doesn't receive the child contact
+within certain interval, the parent will assume the child and all the
+descendants to fail and send death certificates up the tree. Birth
+certificates are also issued when a new node joins. It also tries to
+replicate the root to avoid single point of failure.
+	This system is designed to use as an infrastructure, so it is not
+designed to handle high rate of churn. Client doesn't participate in
+disseminating the data. It locates a closest overcast node to receive
+a multicast stream. Because this work is one of the first works in
+application-level multicasting, it doesn't address all the issues,
+such as scalability, churn, and efficiency. It doesn't scale well
+under intensive nodes joining the network because the nodes in the top
+level Overcast hierarchy need to handle large number of join requests.
+Also, when nodes fails, nodes will need to migrate to other part of
+the tree to continue receive the streaming. However, Bullet is more
+resilient to node departures since it can as well receive streaming
+from perpendicular peers. Second, Overcast doesn't utilize the client
+upload bandwidth to disseminate the data. SplitStream utilizes the
+leaf node upload bandwidth to improve efficiency by building multiple
+disseminating trees.
+

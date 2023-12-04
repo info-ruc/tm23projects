@@ -1,0 +1,105 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i7DJlvFJ002804
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Aug 2004 12:47:57 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id D0A017CCD02
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Aug 2004 12:47:57 -0700 (MST)
+Received: from localhost (gandalf.email.arizona.edu [10.0.0.200])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 824BC7CD861
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Aug 2004 12:47:57 -0700 (MST)
+Received: from Mrisun.Radiology.Arizona.EDU (Mrisun.Radiology.Arizona.EDU
+	[128.196.112.62]) by www.email.arizona.edu (Horde) with HTTP for
+	<smhayes@email.arizona.edu>; Fri, 13 Aug 2004 15:47:57 -0400
+Message-ID: <1092426477.c7451ac305db9@www.email.arizona.edu>
+Date: Fri, 13 Aug 2004 15:47:57 -0400
+From: Scott Hayes <smhayes@u.arizona.edu>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: COTs inconsistencies, response vs. no response
+References: <5.1.0.14.2.20040810085034.00b144c8@psy1.psych.arizona.edu>
+	<5.1.1.6.2.20040808152113.03b82810@pophost.mrc-cbu.cam.ac.uk>
+	<1091732550.a67c0bb938e2d@www.email.arizona.edu>
+	<5.1.1.6.2.20040808152113.03b82810@pophost.mrc-cbu.cam.ac.uk>
+	<5.1.0.14.2.20040810085034.00b144c8@psy1.psych.arizona.edu>
+	<5.1.0.14.2.20040812155945.00b14f08@psy1.psych.arizona.edu>
+In-Reply-To: <5.1.0.14.2.20040812155945.00b14f08@psy1.psych.arizona.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Thanks Jonathon!  Setting the video mode to 75 Hz worked...
+
+Quoting "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>:
+
+> At 03:56 PM 8/12/2004 -0700, you wrote:
+> >Hi Jonathon,
+> >I've added a level of complexity to my previous script because I need to
+> >vary the duration of the presentation of pictures and also the duration of
+> >the delay.  My timing for the trials is consistent (that's nice), but the
+> >timing is not what I expected.  The refresh rate is 13.33 ms (video mode
+> >800X600, 16 bit, 0 Hz).  I would like the ISI for each trial to be around
+> >4500 msec (338 tics).   As you can see from the results below, the ISI is
+> >closer to 4200 ms, which is about 315 tics.  Below is my parameter line
+> >and a few item lines.   I think I've specified 339 tics for each item line
+> >(fd=225, d=77, 35 for the 2nd frame, and 1 tic for each of the 2 frame
+> >delimiters
+>
+>    Frame delimiters don't take a tick, the blank frame between the last
+> frame delimiter and the semicolon /; takes tick.  So it's only one extra
+> tick and 338 would be my reading of your item's duration.
+>
+> >--these specs differ for item 9001, but should still add up to 339 tics),
+> >which should be slightly more than 4500 msec based on the refresh
+> >rate.  So either I'm really not specifying 339 tics or my refresh rate
+> >isn't really 13.33 msec.  As always, any suggestions would be appreciated.
+> >Thanks,
+> >Scott
+> >
+> ><ep><RecordClockOnTime><id keyboard> <id
+> >mouse><cr><NoFeedback><FrameDuration 225><Delay 77><t
+> >2950><FontMultipliers 3><vm 800,600,600,16,0></ep>
+> >
+> >+1002 *<t 2950><jpg .15,.03>"f_andy_lfp"/ <% 35>/;
+> >+1039 *<t 2950><jpg .15,.03>"f_cylinder"/ <% 35>/;
+> >-9001 *<fd 112> <t 1490><jpg .15,.03>"1X_O"/ <% 148> /;
+> >+3005 *<t 2950><jpg .15,.03>"am_gt_gp"/ <% 35>/;
+> >
+> >Item RT COT ISI # tics
+> >1002 -2950 0 4204.88 315.4449
+> >1039 -2950 4204.88 4204.54 315.4194
+> >9001 -1490 8409.42 4204.88 315.4449
+> >3005 -2950 12614.3 4201.29 315.1755
+>
+>    Looks to me like your refresh rate isn't really 75Hz, it's more like
+> 80Hz.  It's possible when you change video cards or monitors for TimeDX
+> settings to stay set at some frequency that's no longer being used, you
+> need to time your video mode again.  If you're using XP you might give some
+> thought to using video modes like 800,600,16,75 instead of
+> 800,600,16,0.  While not foolproof I've only seen a specific retrace rate
+> be incorrect once.
+>
+>
+>                                                 /"\
+>   -jonathan (j.c.f.)                            \ /
+>                                                  X
+>      ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+>
+> "I have made mistakes but I have never made the mistake of claiming
+> that I have never made one."
+>
+>                                           -  James Gordon Bennett
+>
+>
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+>
+
+
+
+

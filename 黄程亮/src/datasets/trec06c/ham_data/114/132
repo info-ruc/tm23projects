@@ -1,0 +1,101 @@
+Received: from exchfe1.cs.cornell.edu (exchfenlb-1.cs.cornell.edu [128.84.97.33])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1E33At15357
+	for <egs@unix.cucs>; Mon, 13 Feb 2006 22:03:10 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.34]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 13 Feb 2006 22:03:10 -0500
+Received: from [192.168.2.3] ([128.253.212.193]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 13 Feb 2006 22:03:10 -0500
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <9FA5D92B-4932-4332-855A-DA9265E6B899@cs.cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Oliver Kennedy <okennedy@cs.cornell.edu>
+Subject: PAPER 6
+Date: Mon, 13 Feb 2006 22:03:07 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-OriginalArrivalTime: 14 Feb 2006 03:03:10.0550 (UTC) FILETIME=[2FF71760:01C63113]
+
+Search and replication notes that structured distributed networks  
+(such as the ring networks we've been discussing) react very poorly  
+to the levels of churn seen on the internet.  With few exceptions,  
+most deployed distributed networks are unstructured.  The paper also  
+notes that while unstructured networks such as gnutella react very  
+well to churn, the flooding approach to searches they use is  
+incredibly inefficient.  The paper proposes that rather than flooding  
+the network with requests and causing an exponential number of  
+messages, the originator of the search should let loose a number of  
+walkers.  Rather than forwarding a search request to all adjacent  
+hosts, a walker is propagated to only one other adjacent host.   
+Rather than placing an exponential load on the network for each  
+search, the load is constant with each search.  The paper also  
+discusses several options for replicating objects for decreased  
+search times.  It notes that replicating objects proportional to the  
+number of queries received for them provides no benefit.  The  
+benefits gained by having the most common queries be short is lost  
+due to all the remaining queries becoming longer.  They state that it  
+is most efficient to replicate as the square root of the number of  
+queries received.  They suggest a means of implementing this without  
+knowing the overall number of queries for an object.  After every  
+query, the queried object is replicated proportionally to the number  
+of hops it took for the walker to reach the object (for example on  
+all the nodes in the successful walker's path).  These replicas die  
+after a particular time period.  This scheme converges to square root  
+replication and distinctly reduces the number of hops required to  
+complete a search.
+
+As they note in the paper, random walking provides a reliability  
+tradeoff.  The load on the network is dramatically reduced in  
+exchange for a slightly increased chance of the search returning a  
+false negative.  Searches will also take longer.  The replication  
+scheme they propose is used to combat this effect.  However, this  
+requires each node to store more data than it would need to store in  
+one of the ring network schemes, or even a gnutella scheme.   
+Additionally, for networks with high amounts of object churn, the  
+traffic associated with keeping replicas up to date would quickly  
+outweigh the gains from random walking.
+
+Beehive takes the view that ring networks are viable for real world  
+deployment and attempts to improve their performance using  
+replication techniques as done by search and replication.  An object  
+is replicated on a fraction of the hosts proportional to its  
+popularity.  The node in charge of an object collects usage  
+information from the object's replicas (if there are any), and  
+decides whether or not the object should be replicated (presumably  
+replicating only the X most popular objects it hosts with X as a  
+tunable parameter).  Being based on Pastry, it uses the standard log 
+(N) digit identifiers.  It replicates the object to all the nodes  
+which share one less digit in common with the object's identifier  
+than it does.  Each of those nodes then decide (using a similar  
+metric) whether the object should be further replicated.  If so, each  
+node pushes the object to nodes that share one fewer digit in the  
+identifier than they do.  Load balancing is done (presumably) by  
+having each node only distribute to nodes which share with it one  
+more digit than the node shares with the object.
+
+Beehive's replication scheme performs poorly with high object churn.   
+Every copy needs to be updated whenever the object is, so frequent  
+updates will increase traffic considerably.  The replication scheme  
+also seems to increase storage requirements on each node  
+proportionally to the log of the number of nodes joining the  
+network.  Though this is ultimately limited by the number of possible  
+identifiers, Pastry functions best when that limit is set far above  
+the number of nodes that might conceivably join the network.   
+Furthermore, this system assumes all nodes are trusted, and includes  
+no solution to byzantine failures, much like its parent, Pastry.
+
+- Oliver Kennedy
+
+They laughed at Einstein.  They laughed at the Wright Brothers.  But  
+they
+also laughed at Bozo the Clown.
+                 -- Carl Sagan
+
+
+
+-Oliver Kennedy
+
+Cogito cogito ergo cogito sum --
+"I think that I think, therefore I think that I am."
+                 -- Ambrose Bierce, "The Devil's Dictionary"
+

@@ -1,0 +1,93 @@
+Received: from plan9.bell-labs.com (plan9.bell-labs.com [204.178.31.2])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id KAA19283
+	for <9fans@cse.psu.edu>; Thu, 19 Nov 1998 10:23:55 -0500 (EST)
+From: presotto@plan9.bell-labs.com
+Message-Id: <199811191523.KAA19283@cse.psu.edu>
+Date: Thu, 19 Nov 1998 10:22:35 -0500
+To: 9fans@cse.psu.edu
+Subject: re: [9fans] removing a name from the name space
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+
+You might want to do something that we did in inferno also.
+We added a system call that disables a process' ability to
+dereference '#xxxx' names, i.e., local devices.  That way,
+once you've built a namespace, you can keep anyone from
+adding things to it that you don't already have access to.
+That gives you a more secure sandbox to play in.
+
+To build a safe namespace, you really wan't one where you
+can't expose files via unbinding.  For example, hiding
+
+	/x/y/x
+
+by binding an empty directory onto /x/y isn't very safe since
+the program can unbind it.   You would be best served by
+buidling a namespace starting at the root and working
+your way down.  For example:
+
+	# create a sandbox
+	mkdir sandbox/x
+	mkdir sandbox/x/bin
+	mkdir sandbox/dev
+	> sandbox/dev/cons
+	> sandbox/dev/mouse
+	> sandbox/dev/time
+	mkdir sandbox/tmp
+
+	# bind things into it
+	bind -c /386/safebin sandbox/x/bin
+	bind -c /dev/cons sandbox/x/dev/cons
+	bind -c /dev/mouse sandbox/x/dev/mouse
+	bind -c /dev/time sandbox/x/dev/time
+
+	# replace the root
+	bind -c sandbox/x /
+	magic call to turn off '#' access
+
+At this point you can exec a game and it will be hard
+pressed to get to things outside the original namespace
+though it can still change its namespace.
+
+------ forwarded message follows ------
+
+>From cse.psu.edu!owner-9fans Thu Nov 19 04:19:52 EST 1998
+Received: from plan9.bell-labs.com ([135.104.9.2]) by plan9; Thu Nov 19 04:19:52 EST 1998
+Received: from cse.psu.edu ([130.203.3.50]) by plan9; Thu Nov 19 04:19:51 EST 1998
+Received: from localhost (majordom@localhost)
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id EAA15022;
+	Thu, 19 Nov 1998 04:19:36 -0500 (EST)
+Received: by claven.cse.psu.edu (bulk_mailer v1.5); Thu, 19 Nov 1998 04:18:39 -0500
+Received: (from majordom@localhost)
+	by cse.psu.edu (8.8.8/8.8.8) id EAA14977
+	for 9fans-outgoing; Thu, 19 Nov 1998 04:18:34 -0500 (EST)
+X-Authentication-Warning: claven.cse.psu.edu: majordom set sender to owner-9fans using -f
+Received: from ohio.river.org (river.org [209.24.233.15])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id EAA14973
+	for <9fans@cse.psu.edu>; Thu, 19 Nov 1998 04:18:30 -0500 (EST)
+Received: (from ru@localhost) by ohio.river.org (8.8.8/8.7.3) id BAA13296; Thu, 19 Nov 1998 01:18:25 -0800 (PST)
+Date: Thu, 19 Nov 1998 01:18:25 -0800 (PST)
+Message-Id: <199811190918.BAA13296@ohio.river.org>
+From: Richard Uhtenwoldt <roo@river.org>
+To: 9fans@cse.psu.edu
+Subject: [9fans] removing a name from the name space
+Sender: owner-9fans@cse.psu.edu
+Reply-To: 9fans@cse.psu.edu
+Precedence: bulk
+
+using BIND, a process can 
+customize a namespace so that /big/long/file/name
+can be referred to as /biggie.
+
+is there a way to *remove* /big/long/file/name
+from the namespace as seen from a particular process?
+
+why would one want to do that?  well, suppose that I
+want to run a game that does not need the network.
+before I run the game, I remove the file that "exports"
+(terminology?) the network interface from the game's
+namespace so that it impossible for the game to act as a
+trojan horse.  so, it is useful for security reasons.
+

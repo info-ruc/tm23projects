@@ -1,0 +1,110 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k27FKKt02296
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Mar 2006 10:20:20 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k27FKIUG008033
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Mar 2006 10:20:18 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Tue, 7 Mar 2006 10:20:19 -0500 (EST)
+Message-ID: <1683.132.236.227.119.1141744819.squirrel@webmail.cornell.edu>
+Date: Tue, 7 Mar 2006 10:20:19 -0500 (EST)
+Subject: PAPER 12
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+CFS provides a filesystem-like abstraction built upon a Chord ring. 
+Specifically, CFS provides an insert and lookup mechanism to support block
+level storage and retrieval of files distributed over nodes on the Chord
+ring.  Files must be fragmented into small blocks which are identified by
+the hash of their contents and signed by the owner's private key.  The
+block level storage seeks to distributed both storage and query load by
+ensuring that all storage units are of approximately equal size and
+distributing logically related blocks uniformly throughout the ring to
+support parallel, distributed retrieval.  The fact that blocks are
+identified by the hash of their content ensures that a named block cannot
+be replaced by faulty data.  Deletes are not explicitly updated, instead
+CFS guarantees storage for blocks only for a fixed period of time.  After
+this period expires nodes are free to discard the associated block.  To
+ensure persistence, owners must request an extension for the storage. 
+Additionally CFS implements passive LRU caching along query paths.  This
+caching is distinguished from guaranteed replication of each block on the
+k nodes succeeding the original storage location (the node with nodeid
+closest to to the blockid in question).  CFS also supports IP identified
+quotas where each node limits the amount of local storage which can be
+consumed by a given IP address to a fraction of some estimation of the
+total storage in the network.
+
+PAST also provides a filesystem-like abstraction built upon a Pastry ring.
+ PAST also provides an insert/lookup for storage units.  However PAST
+places no restrictions on the sizes of storage units (instead this choice
+could be layered on top of PAST to achieve the probabalistic load
+balancing properties which CFS hopes to achieve).  A reclaim operation
+allows storing nodes to remove associated file replicas (subject to
+verification of the reclaim request through cryptographic signatures), but
+does not guarantee that such replicas are no longer available.  Also, PAST
+storage units are identified not by a hash of their content, but by a
+potentially unrelated filename, salt and owner public key.  The block
+content hash is additionally included and signed with the owner's private
+key to ensure a malicious node can't forge a copy with alternate content. 
+PAST guarantees that k replicas are persistently stored in the network (at
+the k nodes with closest nodeid to the fileid) (constrained by available
+system space).  In the face of varied node capacities and file sizes PAST
+introduces replica diversion and file diversion.  Replica diversion allows
+one of the k nodes which should store a replica, A, to store instead a
+pointer to an alternate storage location at one of the nodes in A's leaf
+set.  If replication diversion is not possible (because the chosen leaf
+node also cannot store the file), file diversion suggests that the file
+owner create a new fileid (by choosing a new salt value) so that the file
+may be stored at an entirely different location in the node ring.  These
+two methods provide some measure of load balance (empirically verified). 
+PAST also maintains the k replicas where possible (constrained by system
+wide storage capacity) in the face of node additions.  When a new node
+joins it must semantically keep the replicas for which it is one of the k
+closest nodes.  This is done by first having the new node store a pointer
+to all relevant copies and lazily copying the necessary data.  This is
+similar to replica diversion.  Node failures are handled as part of the
+Pastry node failure process.
+
+Both these systems provide filesystem-like abstractions and replication
+without providing all the services provided by a filesystem.  It seems as
+if there may be fundamental properties of some of these services (such as
+delete) which cannot be expressed in such p2p systems, however, the
+characterization of these properties is not explored in either paper. 
+Additionally, some important and simple features of a distributed file
+system are provided in one system but not explored in the other (such as
+parallel retrieval) and the implications of such features are not explored
+in depth.  Additionally, both systems feature passive caching and vague
+arguments that such caching should be able to improve common access
+behaviors (such as system-wide or local non-uniform access distributions),
+but such arguments are not formalized and no model of such behaviors are
+provided.
+
+Samsarsa doesn't explicitly provide a filesystem abstraction, but supports
+symmetric storage exchange through claims which are uncompressible
+sequences of data created and validated by a storage node and stored by a
+storing node.  Periodically a storage node B storing data for node A can
+validate that A still stores a claim for B.  This claim may later be
+replaced by actual data from B as long as B still stores data for A. 
+Samsara extends this notion to dependency chains where three or more nodes
+store data in a chain (A stores data on B who stores data on C), where
+there is only one claim (storage overhead) per chain at the root of the
+chain (so A stores a C's claim for B).  If a claim fails a validation
+query, the node performing the query probabalistically ejects a storage
+block from the node failing the query.  A might fail a validation query on
+B's claim, B might respond by ejecting A's storage block.  While a simple
+system, there are several weaknesses.  First if chains are avoided then
+the storage overhead for the system equals the amount of data stored in
+the system.  Second, dependency chains are only as strong as the weakest
+link and a malicious or failed node in a dependency chain can trigger a
+cascading failure along the chain (in one direction).  While the paper
+points out that dependency cycles are much more resilient to failures, in
+fact cycles are only resilient to one failure, after which they become a
+dependency chain.
+

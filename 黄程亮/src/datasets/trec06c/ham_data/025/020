@@ -1,0 +1,72 @@
+Received: from imo19.mx.aol.com (imo19.mx.aol.com [198.81.17.9])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA09675
+	for <handyboard@media.mit.edu>; Sun, 25 Oct 1998 09:53:09 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo19.mx.aol.com (IMOv16.10) id SMVCa04680
+	 for <handyboard@media.mit.edu>; Sun, 25 Oct 1998 09:52:04 -0500 (EST)
+Message-Id: <2db81a71.36333b14@aol.com>
+Date: Sun, 25 Oct 1998 09:52:04 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Stepper Motor.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Keith,
+     At first blush I would suggest the following connections:
+
+Motor Out 0   1 - stepper phase #1
+Motor Out 1   2-    ''     ''   #2
+Motor Out 2   3-    ''     ''   #3
+Motor Out 3   4 -   ''     ''   #4
+Ground         5 - stepper common #1,3
+Ground         6 - stepper common #2,4
+
+
+Your program would look like:
+
+long  someTime;
+someTime = knob();  /* set time delay with frob knob */
+while (1) { /* Forever */
+  while (start_press()) {  /* Motor spins one way */
+    fd(0);
+    msleep(someTime);
+    off(0);
+    fd(1);
+    msleep(someTime);
+    off(1);
+    fd(2);
+    msleep(someTime);
+    off(2);
+    fd(3);
+    msleep(someTime);
+    off(3);
+  }
+  while (stop_press()) {  /* Motor spins the other way */
+    fd(3);
+    msleep(someTime);
+    off(3);
+    fd(2);
+    msleep(someTime);
+    off(2);
+    fd(1);
+    msleep(someTime);
+    off(1);
+    fd(0);
+    msleep(someTime);
+    off(0);
+  }
+}
+
+    You might want to use an ohm meter to measure the resistance of the coils
+before you start.  If the resistance is less and 5 ohms, I really wouldn't
+expect too much from the motor outputs, but it might still do something no
+load.  This is a crude approach, and you might want to spend some time
+fiddling with the way you arrive at "someTime."  But I think this will get you
+started.
+
+Hope this helps
+Pherd
+

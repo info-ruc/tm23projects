@@ -1,0 +1,67 @@
+Received: by psuvax1.cse.psu.edu id <34058>; Thu, 9 Feb 1995 13:56:03 -0500
+Received: from euler.Berkeley.EDU ([128.32.142.1]) by psuvax1.cse.psu.edu with SMTP id <34059>; Thu, 9 Feb 1995 13:55:14 -0500
+Received: from localhost by euler.Berkeley.EDU (8.6.9/1.28)
+	id KAA23570; Thu, 9 Feb 1995 10:54:56 -0800
+Message-Id: <199502091854.KAA23570@euler.Berkeley.EDU>
+To:	plan9-fans
+Subject: Re: Brazil in Tucson.
+From:	serge@euler.Berkeley.EDU
+Date:	Thu, 9 Feb 1995 13:54:55 -0500
+X-Mts: smtp
+Sender: owner-9fans
+Precedence: bulk
+Reply-To: 9fans
+
+The abstract in http://www.cs.arizona.edu/people/tics/#pike seems very
+interesting, albeit all too brief and tantalizing (would there per any
+chance be any more Brazil information available)?  In particular, the
+following excerpt raises some intriguing questions:
+
+	For example, the graphics model of the system has been completely
+	replaced. Brazil uses a data-based model in which applications
+	transmit graphical updates as rectangular blocks of pixels to be
+	written directly to the screen or window, rather than the
+	traditional description of how to draw the update. This unifies
+	traditional user interfaces and video at the lowest levels of the
+	system, which, coupled with the model of the file name space
+	inherited from Plan 9, makes it possible to display video on the
+	display under control of the window system but without the window
+	system needing to touch the data: the application can drive the
+	display directly.
+
+That is, how does this interact with the current trend for ever more
+intelligent graphics controllers, which, e.g. presumably have special
+instructions for drawing lines, polygons, etc.?  Also, what does this
+due for the communication bandwidth?  I.e., with the ``old'' model,
+to draw a line, you would send something like the following packet
+
+	type	= LINE	1 - 8 bytes
+	start.x	= XXX	1 - 8 bytes
+	start.y	= YYY	1 - 8 bytes
+	end.x	= XX2	1 - 8 bytes
+	end.y	= YY2	1 - 8 bytes
+
+for a total of (roughly) 5 to 40 bytes.  On the other, hand, with the
+new model, the size appears to be unbounded, even for the same line, e.g.
+
+
+	start.x			= XXX	1 - 8 bytes
+	start.y			= YYY	1 - 8 bytes
+	end.x			= XX2	1 - 8 bytes
+	end.y			= YY2	1 - 8 bytes
+	data[Y0][X0].pixel	= RGB	1 - 8 bytes
+	data[Y0][X1].pixel	= RGB	1 - 8 bytes
+	...
+	data[YN][XM].pixel	= RGB	1 - 8 bytes
+
+Does this also mean, that, e.g. a line from (0, 0) to (1024,1024) would
+require an entire rectangle of data to be sent?  (Or just individual
+dots, which would be nearly as expensive, since you would have to
+transmit the coordinates of each?)
+
+Finally, how does one deal with device (e.g. black and white versus gray
+scale versus pseudo color versus true color) independence, if the data is
+sent directly to the display?  Thank you very much.
+
+
+

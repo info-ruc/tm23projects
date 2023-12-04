@@ -1,0 +1,36 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2U7TMY28252
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 02:29:22 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2U7TLd2019702
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 02:29:21 -0500 (EST)
+Message-ID: <795335277.1143703759874.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 30 Mar 2006 02:29:20 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 17
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+Today's three papers present efficient data distribution schemes in peer-to-peer / overlay network systems with the concerns of load balance, fault tolerance and bandwidth utilization.
+
+<Issues>
+The trackers in BitTorrent, which direct peers to find each other, act as single points of failure and carry load in proportion to the number of peers in the system.
+
+<BitTorrent>
+* BitTorrent distributes the cost of upload to downloaders. It does so by dividing files into pieces; when multiple people are downloading a file, they upload the pieces of that file to each other.
+* Trackers play an important role in BitTorrent. They track which peers have what data and gather statistics to help downloaders find and connect to each other.
+* The principle of piece selections for file download in BitTorrent is: (a) When the download just starts, users get a complete piece as quickly as possible. (b) Once a sub-piece is requested, the remaining sub-pieces of that piece are requested before other pieces. (c) The fewest pieces available are requested before popular ones. (This is called rarest first in the paper.)
+
+<SplitStream>
+* SplitStream solves two problems of traditional tree-based multicast systems: (a) Interior node carry the loads to forward data while no forwarding is required by leaf nodes. It's unfair. (b) Peers who act as interior nodes may be unable to handle high-bandwidth applications due to network capacity limitations.
+* To solve the first problem, SplitStream works by splitting the stream into multiple stripes which uses separate multicast trees (a forest) to distribute each stripe to the peers. The goal is to ensure that vast majority of peers are interior nodes in only one tree and are leaf nodes in all other trees.
+* To solve the second problem, peers in SplitStream choose to join a subset of the stripes to control their inbound bandwidths. On the other hand, they opt to limit the number of children nodes they adopt to control their outbound bandwidths. Therefore the split stream system accommodates peers with different bandwidths.
+
+<Bullet>
+* Bullet constructs an overlay mesh over the distribution tree. It aims to make data items available uniformly across the system.
+* The basic idea of Bullet is: as a parent, each participant transmits disjoint sets of its data to its children; as children, they receive objects from their parents but are responsible for locating peers that hold missing objects.
+* Bullet and SplitStream can be complementary to each other. Bullet may run on each of the stripes in SplitStream to maximize the bandwidth delivered to each node along each stripe.
+

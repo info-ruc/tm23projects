@@ -1,0 +1,51 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OFCFh23396
+	for <egs@popsrv.cs.cornell.edu>; Tue, 24 Sep 2002 11:12:15 -0400 (EDT)
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+X-MimeOLE: Produced By Microsoft Exchange V6.0.5762.3
+Subject: 615 PAPER 19
+Date: Tue, 24 Sep 2002 11:12:15 -0400
+Message-ID: <706871B20764CD449DB0E8E3D81C4D4302CEE61D@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 PAPER 19
+Thread-Index: AcJj3MQCyy8pQtYhTcecgq3E0baSKQ==
+From: "Hongzhou Liu" <liuhz@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by sundial.cs.cornell.edu id g8OFCFh23396
+
+  This paper presents CEDAR, the first cluster-based routing protocol we have seen in 
+this class. In CEDAR, each node nominates one node among all the 1st neighbors as its
+dominator. The core graph consists of all these dominators. Each core node maintains 
+only local states and some global information pertaining to those stable, high-bandwith
+links. CEDAR uses increase/decrease waves to propagate link states. Links with different
+bandwidth initiate waves with different ttl. CEDAR proposes ttl proportional to 
+bandwidth, which guarantees that information about high-bandwidth links can be 
+propagated far away while limits the scale for propagating low-bandwidth link states.
+  Based on these core-extraction and state propagation schemes, it's possible to 
+to use some well known ad hoc routing protocols in the core graph. CEDAR proposes 
+a QoS routing protocol that uses source routing to find a path between the dominators of
+the source and destination, and then follows this core path as direction to build a 
+source-to-destination path with quality guarantee. 
+  CEDAR reacts to link failure very quickly. Once a link fails, the node before this 
+link will initiate a local route recomputation to find a new path to the destination. 
+Meanwhile, it will notify the source node about this failure. Thus the source node will
+recompute the route to the destination.
+Good points:
+  1. CEDAR uses core broadcast instead of flooding. Core broadcast is based on reliable
+unicast(using RTS-CTS ect.) and can reduce the amount of unnecessary broadcast messages.
+  2. CEDAR uses different ttl for links with different bandwidth, and lets decrease-wave
+move faster than increase-wave. Thus low-bandwidth and unstable link-state are kept 
+local while stable high-bandwidth link-state is propagated throughout the core.
+  3. A backup route is found just as the byproduct of the primary route, thus no 
+overhead is introduced by the backup route.
+weakness:
+  CEDAR doesn't always find the optimal route. Another problem is about the simulation.
+Although the paper claims CEDAR is applicable to small to medium networks with tens to
+hundreds of nodes. The simulation only shows result with at most 30 nodes. I believe 
+when the networks become larger, the optimality will be hurt further.
+

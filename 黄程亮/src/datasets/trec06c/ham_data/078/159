@@ -1,0 +1,62 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fA1GtQR17331
+	for <egs@CS.Cornell.EDU>; Thu, 1 Nov 2001 11:55:26 -0500 (EST)
+Received: from ee.cornell.edu (hegel.ee.cornell.edu [128.84.236.63])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fA1Gt7J16369
+	for <egs@CS.Cornell.EDU>; Thu, 1 Nov 2001 11:55:07 -0500
+Sender: papadp@ece.cornell.edu
+Message-ID: <3BE17E60.136D2FDF@ee.cornell.edu>
+Date: Thu, 01 Nov 2001 11:54:56 -0500
+From: Panagiotis Papadimitratos <papadp@ece.cornell.edu>
+Reply-To: papadp@ece.cornell.edu
+Organization: Cornell University
+X-Mailer: Mozilla 4.51 [en] (X11; I; SunOS 5.7 sun4u)
+X-Accept-Language: el, fr-FR, en
+MIME-Version: 1.0
+To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 30
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+
+Review of: "The design and implementation of an intentional naming
+system," by W.A.Winoto, E.Schwartz, H.Balakrishnan, and J. Lilley
+
+Panagiotis Papadimitratos papadp@ece.cornell.edu
+
+The proposed architecture falls in the group of works that intend to
+decouple names from object locations, and a system for resource
+discovery
+and service location is presented. The Intentional Naming System (INS)
+functionality is implemented by the Intentional Name Resolvers (INR's)
+that request and discover services and provide the corresponding data to
+the querying application/client.
+
+The INR's form an overlaid network, i.e., a virtual topology above the
+actual network-layer topology, exchange and forward service
+advertisements
+and locally cache such descriptions. The entire system relies on
+attribute-value pairs organized into 'Name-Tree' structures, which INR's
+look up into. When a 'name specifier' arrives at an INR the look-up
+returns the the IP address of the advertiser(s) of the sought
+resource/service. The lookup algorithm is one of the technical
+challenges of this work, and is experimentally evaluated.  
+
+The operation of the system assumes the presence of an entity (DSR) that
+maintains the list of all INR's present in the network. A new INR
+contacts DSR (Domain space resolver) in order to acquire this
+information and then establishes links with the rest of the INR's in
+order to form the necessary connectivity. The apparent need for
+proactiveness clearly impedes the scalability of the scheme, especially
+in a dynamically changing environment, and the authors propose the
+partitioning of the name space into domains, i.e., virtual spaces. 
+
+In any case, the INR's have to make routing decisions at the level of
+the overlaid network, this done at the publication of the paper with a
+local construction of a spanning tree. The use of DBF is mentioned also
+as an alternative. The amount of the overhead maybe significant, while
+the goal of optimality is not clearly supported, especially because of
+the apparent independence of routing decisions at the INS and network
+layer. There is also the 'paradoxical' result that the lookup delay is
+higher if two INR's reside at the same node.
+

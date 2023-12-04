@@ -1,0 +1,56 @@
+Received: from mvp.net (root@Walden.mo.Net [209.96.2.52])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id SAA23625
+	for <handyboard@media.mit.edu>; Mon, 3 Aug 1998 18:25:55 -0400 (EDT)
+Received: from mvp.net (DialIP3-218.mvp.net [209.96.13.218])
+	by mvp.net (8.8.8/8.8.8) with ESMTP id RAA28222;
+	Mon, 3 Aug 1998 17:48:18 -0500 (CDT)
+Message-Id: <35C63952.CC77F4D9@mvp.net>
+Date: Mon, 03 Aug 1998 17:27:31 -0500
+From: Rick Moll <rickmoll@mvp.net>
+X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+Mime-Version: 1.0
+To: alf.kuchenbuch@usa.net
+Cc: handyboard@media.mit.edu, Rick Moll <rickmoll@mvp.net>
+Subject: Re: Polaroid trouble again
+References: <35C5C521.446B@eikon.e-technik.tu-muenchen.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Alf Kuchenbuch wrote:
+
+> Hi!
+> I am having trouble with my Polaroid sonar:
+> When I keep my HB hooked up
+> to external power, I will only get correct readings up to 20 inches. As
+> soon as I use battery power without hooking it up to external power, the
+> readings are correct up to 6 feet, not more! This sound like EMI, I
+> guess. I tried all the capacitor tricks from HB mailing list, but in
+> vain. Do you know a fix that works?
+
+I haven't used the Polaroid module with my HB, but I have used them a lot
+with 68332 micro-processors.  I does sound like you may have an electrical
+noise problem (not EMI, but noise conducted through the power bus).
+
+The only way I've got the Polaroid modules to reliably measure long
+distances was to either use a separate power supply regulator for the sonar
+module, or to filter the micro-processor's power bus feed to the sonar
+through an L-C filter:
+
+    (power bus +5V) >--(RF Choke)--*--> (+5V sonar power)
+                                   |
+                                   |
+                                 (cap)
+                                   |
+                                   |
+                                 (gnd)
+
+The RF Coke was 100uH with a 2A rating, and the cap was 2200uF with a 16V
+rating.  DigiKey carries Panasonic caps which are low ESR, and much better
+than the ones you'll find at Radio Shack.  You can find the RF Choke at
+Radio Shack, or at Mouser.
+
+Later,
+
+    Rick
+
+

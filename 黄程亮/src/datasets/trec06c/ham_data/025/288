@@ -1,0 +1,109 @@
+Received: from hil-img-2.compuserve.com (hil-img-2.compuserve.com [149.174.177.132])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id XAA26769
+	for <handyboard@media.mit.edu>; Tue, 3 Nov 1998 23:20:41 -0500 (EST)
+Received: (from mailgate@localhost)
+	by hil-img-2.compuserve.com (8.8.6/8.8.6/2.16) id XAA08320
+	for handyboard@media.mit.edu; Tue, 3 Nov 1998 23:20:10 -0500 (EST)
+Date: Tue, 3 Nov 1998 23:19:42 -0500
+From: HECTOR NORIEGA <110060.2126@compuserve.com>
+Subject: RE: AS11_IC
+Sender: HECTOR NORIEGA <110060.2126@compuserve.com>
+To: Handyboard <handyboard@media.mit.edu>
+Message-Id: <199811032320_MC2-5F0A-6B38@compuserve.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+
+        From: Hector Noriega                Date: 3OCT98
+
+to:  makarraj@cse.msu.edu
+
+To Integrate Assembly Code into a "C" Program
+
+The variables declared here become globals in C.
+A simple example to double a number entered from a =
+
+"C" program, multiply it in assembly code, =
+
+then displayed on the Handy Board LCD display,
+will be explained here . =
+
+The process is as follows:  write the assembly code, =
+
+assemble the ASM file and convert it to an "ICB" file,
+add "ICB" to lib_hb.lis file, and call the variable or
+subroutine from the MAIN "C" file. For Example,
+the name of the file is ASMTEST and the extensions =
+
+determine the type of data on files.
+ASMTEST.ASM    ; a file written in assembly code
+ASMTEST.ICB    ; a file that was assembled into "S" =
+
+               ; records.
+ASMTEST.C      ; "IC" MAIN function program
+LIB_HB.LIS     ; list of files to be executed
+AS11_IC        ; a batch file that assembles, creates  =
+
+       ; lables definitions of entry points and C variables
+
+For this example the commands were as follows:
+AS11_IC ASMTEST  ;this batch assembles the ASMTEST.ASM
+file and outputs ASMTEST.ICB. The following programs
+were tested for the example multiply by 2 and display:
+
+* file: asmtest.asm, first assembly file to be tested 29SEP98*/
+* Sample icb file */
+* origin for module and variables */
+#include "6811regs.asm"
+            ORG      MAIN_START
+* program to return twice the argument passed to us */
+subroutine_double:
+            ASLD        ; shift left accumulator to multiply by 2
+            RTS          : return of subroutine =
+
+********************end of ASMTEST.ASM*********************
+**********ASMTEST.ICB FILE*******************
+S105802005391C
+S9030000FC
+S105872B05390A
+S9030000FC
+6811 assembler version 2.1  10-Aug-91
+  please send bugs to Randy Sargent (rsargent@athena.mit.edu)
+  original program by Motorola.
+subroutine_double 872b *0007 =
+
+******************END OF ASMTEST.ICB FILE *****************
+***********************ASMTEST.C FILE BEGINS HERE**************
+/* file:asmtest.c, by  Hector Noriega, 28SEP98 */
+/* To test writting assembly*/
+
+void main()
+  {
+   while(1)
+    {      =
+
+         printf("asmtest # =3D %d\n",double(5)); /*assembly subroutine*/
+     }
+    } =
+
+**********************ASMTEST.C FILE ENDS HERE***********
+****************LIB_HB.LIS *******************
+lib_hb.c
+c:\ic\ic\work\asmtest.icb
+asmtest.c
+*******************END OF LIB_HB.LIS***************
+To finish this procedure run "IC"  which automatically
+downloads and executes the MAIN() , the turn =
+
+the Handy Board "OFF" and then "ON". =
+
+"The asmtest # =3D 10" should be displayed on the =
+
+Handy Board's LCD screen.
+
+Good luck
+Hector Noriega.
+Long Beach State University
+Electrical Engineering "Controls" Dept.
+

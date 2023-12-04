@@ -1,0 +1,63 @@
+Received: from mail-out2.apple.com (mail-out2.apple.com [17.254.0.51])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id WAA22352
+	for <handyboard@media.mit.edu>; Fri, 30 Oct 1998 22:26:09 -0500 (EST)
+Received: from mailgate.apple.com (A17-128-100-225.apple.com [17.128.100.225])
+	by mail-out2.apple.com (8.8.5/8.8.5) with ESMTP id TAA40750
+	for <handyboard@media.mit.edu>; Fri, 30 Oct 1998 19:22:03 -0800
+Received: from scv3.apple.com (scv3.apple.com) by mailgate.apple.com
+ (mailgate.apple.com - SMTPRS 2.0.15) with ESMTP id <B0003375697@mailgate.apple.com>;
+ Fri, 30 Oct 1998 19:21:56 -0800
+Received: from cervione (cervione.apple.com [17.205.40.224])
+	by scv3.apple.com (8.8.5/8.8.5) with SMTP id TAA07910;
+	Fri, 30 Oct 1998 19:21:54 -0800
+Message-Id: <4.1.19981030190127.00ae4480@nowhere.xxx.yyy>
+X-Sender: noyau@mail.apple.com (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Fri, 30 Oct 1998 19:17:24 -0800
+To: edmund <ho106@singnet.com.sg>
+From: Eric Noyau <noyau@apple.com>
+Subject: Re: programming help.
+Cc: handyboard@media.mit.edu
+In-Reply-To: <Chameleon.4.01.2.981031104338.ho106@ho106.singnet.com.sg>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 10:34 AM 10/31/98 , Edmund wrote:
+>
+> hello
+>
+>       can someone please tell me what does the following command line mean?
+>
+>       bit_set(0x0e, 1 << (4 + motor));
+>
+>       i know that 0x0e refers to memory location $0E but how does bit_set
+>       work? is it similar to poke? and more importantly, what operation
+>       does '1 << (4 + motor)' perform?
+>
+>       any help will be appreciated. thanks.
+> 
+>
+
+In binary 1 is represented by  0000-0001
+
+1 << 1 is 0000-0010 aka 2
+1 << 2 is 0000-0100 aka 4
+1 << 3 is 0000-1000 aka 8
+
+You get the idea? x << y means slide x to the left y times.
+
+motor is probably a number between 0 and 3. 4+motor is then a number between 4 and 7.
+
+so, to go back to your example the result of  1<<(4+motor) is one of:
+
+1000-0000
+0100-0000
+0010-0000
+0001-0000
+
+And my guess is that bit_set(address, value) is equivalent to poke(address, peek(address) | value). I don't have any documentation here, so I don't know what is stored in 0x0e, but it could be the place where you turn the motors on and off. And the code you are looking at is turning a motor on without touching the other motors.
+
+
+-- Eric
+
+

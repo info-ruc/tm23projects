@@ -1,0 +1,113 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id QAA20528
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Dec 2000 16:03:34 -0700
+Received: from jcf.u.arizona.edu (128.196.98.7) by phobos.email.Arizona.EDU (5.1.046)
+        id 3A1F0EE60017FF9F for DMDX@psy1.psych.arizona.edu; Thu, 14 Dec 2000 16:03:32 -0700
+Message-Id: <5.0.2.1.2.20001214154601.009ef6d0@psy1.psych.arizona.edu>
+Date: Thu, 14 Dec 2000 16:03:33 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: branching with 2 counters
+In-Reply-To: <3A35296E00002C91@deimos.email.Arizona.EDU>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Should be possible, I think it's an error in the syntax check code, it 
+doesn't clear those pending operations unless they actually execute (and in 
+a syntax check they don't), 2.3.04 will have that fixed.  BTW, you're 
+missing a semi colon in item 1004.   Also f.5 in the parameter line is 
+invalid (it'll be interpreted as F0), you can't use seconds to F, only 
+counts of frames.  And much to my surprise I find you can't have + 2002 
+(space between the CR indicator and the item number), it's got to be +2002, 
+might fix that in 2.3.04 too.
+
+At 03:38 PM 12/14/00 -0700, you wrote:
+>I am trying to track separate accuracies to 2 different questions (emotional
+>valence induced by stimulus and content of stimulus)per item.
+>I didn't find a way to track 2 separate accuracies per item
+>and across items with the <bierGT N1,N2> command, so I tried to use the
+><set N1,N2> set counter and <deciw N1> command and set up a different counter
+>for each type of accuracy I'm tracking. However, these counter commands
+>seem to work only for looping on the same item and not for decrementing
+>the count across a series of items, because I get the error:  "multiple
+>pending operations per counter not allowed". I want to branch if accuracy
+>to the first question about valence is below 75% and I want to emit the
+>accuracy to the second question about stimulus content at the end of the
+>block before branching. Is there a way to do this? Thanks.
+>
+>A piece of the item file:
+>
+><ep> t2500 f.5 d180 <zil> <nfb> <df Arial> <dfs 26> <cr> <RecordClockOnTime>
+><mip 27> <vm 640,480,480,16,0> <wc 000255000> <ID Keyboard> <ID PIO12>
+><bgc 000000000> <eop>
+>
+>
+>8881  <fd 60> "Ready?";
+>8882 <set 1, 4> <set 2, 4> d60/;
+>
+>-1001  %20 g" E:\Data\crosshair.bmp"/%7 *"Set 1 Pleasant"/%60 "Pleasant
+>      Unpleasant      Neutral?"/ <deciw 1>;
+>
+>-2001 %60 *"Face    No Face?"/ <deciw 2>;
+>
+>+1002  <mpr +Bit4> %20 g"E:\Data\crosshair.bmp"/%7 *"Set 1 Neutral" /%60
+>"Pleasant      Unpleasant      Neutral?"/ <deciw 1>;
+>
+>+ 2002 %60 *"Face   No Face?"/ <deciw 2>;
+>
+>-1003  %20 g"E:\Data\crosshair.bmp"/%7 *"Set 1 Pleasant"/%60 "Pleasant
+>     Unpleasant      Neutral?"/ <deciw 1>;
+>
+>+ 2003 %60 *"Face   No Face?"/ <deciw 2>;
+>
+>+1004  %20 g"E:\Data\crosshair.bmp"/%7 *"Set1 Negative" /%60 "Pleasant
+>     Unpleasant      Neutral?"/ <deciw 1>
+>
+>+ 2002 %60 *"Face   No Face?"/ <deciw 2> <emit 2> < cicLE 1, 2, -8881>;
+>
+>8883  <fd 60> "Ready?";
+>8884 <set 1, 4> d60/;
+>
+>. . .
+>
+>
+>
+>
+>
+>
+>Keolani Taitano, Ph.D.
+>Postdoctoral Research Fellow
+>Department of Psychiatry
+>University of Arizona Health Sciences Center
+>P.O. Box 245002
+>Tucson, AZ 85724-5002
+>
+>voice: 520-235-9588
+>fax: 253-369-3571
+>
+>
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Main's Law:
+	For every action there is an equal and opposite government
+program.
+
+
+

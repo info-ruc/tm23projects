@@ -1,0 +1,59 @@
+Received: from wproxy.gmail.com (wproxy.gmail.com [64.233.184.228])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2UHWOY27171
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 12:32:24 -0500 (EST)
+Received: by wproxy.gmail.com with SMTP id i13so802996wra
+        for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 09:32:24 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=j14oeokZNXgTtk2agDfvWjM7foBOk2alkg3sRhQT14z1c5GFkWssQTICF989S2x3Mv8ZBSSDghdOjfqgDt8lhvRZXah2ReBLwcGmmPL7ia6JJIfSbolZ50MoryoOiXOpSFIh1XwvwpozG0/4Uw9w+xfy1EX9nrjRY6BKDEZIoIk=
+Received: by 10.54.124.10 with SMTP id w10mr84682wrc;
+        Thu, 30 Mar 2006 09:32:21 -0800 (PST)
+Received: by 10.54.78.5 with HTTP; Thu, 30 Mar 2006 09:32:21 -0800 (PST)
+Message-ID: <6e1ca4560603300932q5b5e34b1rde16767a7ed07b42@mail.gmail.com>
+Date: Thu, 30 Mar 2006 12:32:21 -0500
+From: "Chiu Wah Kelvin So" <kelvinso@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: Paper 17
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k2UHWOY27171
+
+	BitTorrent is a popular file distribution system. The general idea is
+to split the file into fixed-size segments. Bittorrent uses the
+tracker to gather statistic of each peers, such as upload rates,
+download rates, and also the segments of file they have. Whenever a
+peer wants to participate in download, the peer contacts the tracker
+to get a list of available peers. The peer individually requests
+segments using rarest first policy from anyone who has the segments.
+Although the tracker doesn't have a high load of communication, it is
+still a centralized approach and can suffer from scalability and
+single point of failure.
+	The second paper, "Bullet: High Bandwidth Data Dissemination Using an
+Overlay Mesh," presents a general data dissemination protocol using an
+overlay mesh instead of multicast tree. This overlay mesh is based on
+a multicast tree with some number of cross links from other peers.
+Therefore, it is more fault-tolerance than multicast tree where a node
+only receives traffic only from its parent. Another advantage of such
+an approach is that the data dissemination rate doesn't limit by the
+bottleneck bandwidth of parent links. Bullet splits the object into
+fragments and sends disjoint set of the fragments to each of the
+children in the overlay mesh. It uses RanSub to collect information of
+the fragments each node has. Therefore, each node can finds its
+potential peers to download necessary fragments.
+	The third paper, "SplitStream: High-Bandwidth Multicast in
+Cooperative Environments," uses multiple multicast tree to improve the
+efficiency. This paper identifies a problem in single multicast tree
+where the leaf in the tree doesn't contribute any bandwidth in the
+multicast. Therefore, it splits multicast stream into k stripes. Each
+stripe is served using a multicast tree built using Scribe. Therefore,
+the leaf in a tree can be an interior node of the other tree. Also, if
+a single node suddenly fails, the performance will not suffer since
+there are k-1 other multicast streams. All the techniques above can
+use some other data encoding, such as erasure coding, to improve
+performance. Although both Bullet and SplitStream require more
+bandwidth to maintain the underlying data dissemination structure, it
+can achieve a higher overall efficiency.
+

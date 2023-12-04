@@ -1,0 +1,84 @@
+Received: from exchfe1.cs.cornell.edu (exchfenlb-1.cs.cornell.edu [128.84.97.33])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LIJJt20583
+	for <egs@unix.cucs>; Tue, 21 Feb 2006 13:19:19 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.34]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 21 Feb 2006 13:16:24 -0500
+Received: from [128.84.98.36] ([128.84.98.36]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 21 Feb 2006 13:16:24 -0500
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <336FE6BD-7FF1-452C-92C3-7CC3DA488AF5@cs.cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Oliver Kennedy <okennedy@cs.cornell.edu>
+Subject: PAPER 8
+Date: Tue, 21 Feb 2006 13:16:30 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-OriginalArrivalTime: 21 Feb 2006 18:16:24.0469 (UTC) FILETIME=[EC93DC50:01C63712]
+
+This weeks papers present two general classes of attacks on P2P  
+networks, and provide a set of potential counters to those attacks.   
+The first paper attempts to show that without a centralized authority  
+to map entities to identities, it is not possible to assert that two  
+identities belong to distinct entities.  This leads to what they call  
+a Sybil attack, where one entity enters the P2P network under  
+multiple identities in an attempt to disrupt the network's  
+operations.  By overwhelming the number of fair nodes with its own  
+identities, an attacker can partition the network, bypass security  
+based on separation of effort, and with high probability disrupt  
+access to certain objects.  The paper goes on to demonstrate the  
+necessity of such a centralized authority, as any other attempt to  
+securely determine the distinctness of two different entities would  
+be infeasible.
+
+The second paper presents a more general attack called an eclipse  
+attack.  This class of attacks takes advantage of the fact that the  
+only way a node can learn about other nodes is to ask other nodes.   
+If several attackers (or a single attacker with multiple identities)  
+are able to collude, the attacker nodes can refer node requests to  
+other attacker nodes.  By doing this, a single attacker can  
+eventually gain near total control over all routing in the network.   
+This can result in dropped queries, faulty responses, or any number  
+of other network disruptions.  The paper suggests several responses.   
+Firstly, nodes may be restricted to a certain number of connections.   
+Assuming it is possible to audit an attacker for the number of nodes  
+he is connected to, the attacker will not be able to compromise more  
+traffic than a normal node would be able to.  They propose an  
+auditing scheme where a node keeps track of all of its connections.   
+Periodically it asks all the nodes that it is connected to to send it  
+a list of their connections.  If any of the results is too big or  
+does not contain the original node, the offending node is removed.   
+In order to prevent the attacker from falsifying this list on the  
+spot, the request is routed through an "anonymizer" chosen from the  
+set of nodes closest to the potential attacker.  Of course, if an  
+attacker is able to establish a subnet or a range of addresses of  
+compromised nodes with itself at the center, the anonymizer approach  
+fails with high probability.
+
+Finally the last paper points out three aspects of P2P networks where  
+security issues are most likely to occur in structured P2P networks.   
+Firstly, attacks on the nodeID.  Allowing clients to choose their own  
+nodeID (or allowing them to choose from a large set of potential  
+nodeIDs) results in an attacker being able perform several disruptive  
+attacks.  By using the certificate authority suggested by the Sybil  
+paper to give each node a static nodeID, this problem may be  
+avoided.  They concur that distributed algorithms are insufficient  
+for this task.  The second potential vulnerability is in the routing  
+algorithm.  A faulty node could intercept messages not meant for it  
+and attempt to populate a valid node's routing table with other  
+faulty nodes.  The paper suggests solving this by eliminating the  
+fuzziness included in the node selection.  While a node would  
+typically pick the node in a range with the best ping, now a  
+particular node is deterministically selected.  This leads to the  
+last of the problems, in particular the routing algorithm.  A node is  
+capable of intercepting all messages that pass through it and even  
+with encryption techniques, it could still drop the packets.  In  
+order to ensure that the message arrives intact at the destination  
+with high probability, the paper suggests sending multiple copies at  
+once.
+
+- Oliver Kennedy
+
+There cannot be a crisis next week.  My schedule is already full.
+                 -- Henry Kissinger
+

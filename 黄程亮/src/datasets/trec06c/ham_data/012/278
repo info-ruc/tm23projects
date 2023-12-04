@@ -1,0 +1,75 @@
+Received: from paw.montana.com (paw.montana.com [199.2.139.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id VAA15569
+	for <handyboard@media.mit.edu>; Wed, 18 Mar 1998 21:06:45 -0500 (EST)
+Received: from Nepenthe (mso2-89.montana.com [208.4.224.89])
+	by paw.montana.com (8.9.0.Beta3/8.9.0) with SMTP id TAA11739
+	for <handyboard@media.mit.edu>; Wed, 18 Mar 1998 19:57:01 -0700 (MST)
+Date: Wed, 18 Mar 1998 19:57:01 -0700 (MST)
+Message-Id: <199803190257.TAA11739@paw.montana.com>
+X-Sender: willbain@cs.umt.edu
+X-Mailer: Windows Eudora Light Version 1.5.2
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+To: handyboard@media.mit.edu
+From: Will Bain <willbain@cs.umt.edu>
+Subject: defer() ??
+
+At 07:13 PM 3/18/98 -0600, Sudeshna wrote:
+>Hi !
+>
+>Does anybody know how the defer() function works ?  Also, what are its 
+>applications ?
+
+The defer function is used in multithreaded programs when one process
+doesn't require all the processor cycles that it would ordinarily be allotted.
+
+Typically, if you have multiple processes (threads, tasks, whatever) running
+at the same time, the system ordinarily cycles through them one at a time,
+giving each one a few clock cycles (I believe the default is five).  If you
+have one thread that doesn't require many cycles, and you know that it can
+afford to wait 'til its next turn in the sequence before it needs to do more
+work, then you defer that thread, and in that way it politely relinquishes
+the rest of its turn to whichever process comes next.  It can be thought of
+as a way to lower the priority of a particular process; a similar effect
+could be obtained by specifying fewer than the default number of cycles to a
+process when you create it (see the HB Tech. Reference for the exact syntax
+of process creation).
+
+Here's an example:  Say you have three processes--A, B & C--and you create B
+such that it gets 10 cycles per turn, and C such that it gets 20 cycles per
+turn.  Process A gets the default 5 cycles per turn.  Now suppose that the
+code in process B performs a test, and if the test comes up negative (which
+happens, say, about half the time) the process defers itself after only five
+cycles, and if it comes up positive, it defers after nine cycles.  In that
+case, you might get the following allotment of CPU cycles:
+
+A     B     C
+----  ----  ----
+5     9     20
+5     5     20
+5     5     20
+5     9     20
+5     9     20
+5     5     20
+
+So the result in this example is that process B never actually uses its
+whole ten cycles each time it has its turn.  Now this is an artificial
+example in that most processes will probably require more than nine cycles
+to do a useful test and accomplish anything, but by making B defer, the
+other processes don't have to wait quite so long, which can make the program
+as a whole run more efficiently.
+
+Hope that answers your question, and if I'm wrong about any of this, I hope
+someone else posts a correction.  Good luck.
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,             If you can't say anything good about someone,
+Will Bain,                                        sit right here by me.
+& Tatoosh                                   --Alice Roosevelt Longworth
+
+

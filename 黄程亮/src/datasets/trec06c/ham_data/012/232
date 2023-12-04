@@ -1,0 +1,52 @@
+Received: from hq.freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id OAA21150
+	for <handyboard@media.mit.edu>; Mon, 16 Mar 1998 14:32:17 -0500 (EST)
+Received: (qmail+freegate 21730 invoked by alias); 16 Mar 1998 19:32:11 -0000
+Received: from ws170.hq.freegate.com (HELO freegate.com) (208.226.86.170)
+  by ns.hq.freegate.com with SMTP; 16 Mar 1998 19:32:11 -0000
+Message-Id: <350D7DA0.B0216E76@freegate.com>
+Date: Mon, 16 Mar 1998 11:29:36 -0800
+From: Chuck McManis <cmcmanis@freegate.com>
+Reply-To: cmcmanis@freegate.com
+Organization: FreeGate Corporation
+X-Mailer: Mozilla 4.04 [en] (Win95; I)
+Mime-Version: 1.0
+To: German Gentile <ggentile@cvtci.com.ar>
+Cc: Handyboard Discussion List <handyboard@media.mit.edu>,
+        Robot Board Discussion List <robot-board@cmf.nrl.navy.mil>
+Subject: Re: How i can beep the handy in Imgecraft C....
+References: <01bd4f7e$48a9c0c0$381820c8@gerpc>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi German, I sent this to you before, but I guess you didn't keep
+it.
+
+This one is going to both the robot-board and handyboard lists
+you can always find it again later by searching the archives for
+these lists.
+
+To beep the beeper using ImageCraft C you will need to set up
+three
+things, 
+	-- Two global values, one containing the beep period, and
+	   the other containing the beep duration. These should be
+	   unsigned 16 bit values.
+	-- an interrupt service routine for the OC5 timer, that checks
+	   the duration value and if it is not zero loads the period
+	   value into the OC5 counter and starts it, then decrements
+	   the duration counter.
+	-- A C function that takes a frequency and period and
+           converts them into a pair of period and duration
+values.
+	   stores the global values and starts the OC5 counter for
+	   the first time.
+
+If you don't set up the OC5 interrupt routine in your crt11.s
+file you should store in the new values in your main() function.
+Remember that the interrupt vector table on the handboard is at
+0xbfe0 (check that with the pink book, i'm using it from memory
+and I do drop bits now and then). 
+
+--Chuck McManis
+

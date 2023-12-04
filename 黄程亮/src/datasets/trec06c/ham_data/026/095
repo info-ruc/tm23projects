@@ -1,0 +1,59 @@
+Received: from imo15.mx.aol.com (imo15.mx.aol.com [198.81.17.5])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id LAA06815
+	for <handyboard@media.mit.edu>; Sat, 7 Nov 1998 11:50:30 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo15.mx.aol.com (IMOv16.10) id SZHKa02539
+	 for <handyboard@media.mit.edu>; Sat, 7 Nov 1998 11:49:55 -0500 (EST)
+Message-Id: <eb210f05.36447a33@aol.com>
+Date: Sat, 7 Nov 1998 11:49:55 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: To step or not to step
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Russell ,
+
+     Having that encoder will help you a lot.  One of the biggest problems
+with using steppers is that they will stall when you get to higher speeds.
+What ever program you use to drive the steppers should have a part that asks
+"has it made the last step?" before issuing the next step.
+     I have a small line following robot using steppers that runs very slowly
+since it does not have this feedback.  Your program will need to generate the
+stepper timing, and if you do not use a "stepper driver chip" you will also
+need to generate the stepper pattern.  These are not hard, but they will eat
+into you program time budget a good bit.  I'd count on 30%-50% of your
+software time just running the two steppers with feedback.  All the timer
+features of the 6811 will help this a bit, but it will still call for a good
+amount of attention.  The feedback might ease the limits on ramping that you
+need to do.  If the encoders are an overriding part of your program you could
+change your speed from 0 to max, and let the encoders do the ramping for you.
+The only problem there is insuring the motors run at the same speed.
+     If you use an external stepper driver chip, you will not need to generate
+the step pattern.  If you are just using a simple current amplifier (I don't
+think the Handy motor driver chips will give you enough current), you will
+need to generate the steps in your program.  It is not hard to do the steps in
+the program, you just have to do it.  I don't think your code will be too
+different either way.  I would guess that you would set your timers to issure
+a software interrupt when it is time for the next step.  So your code would
+look something like:
+
+TimeForNextStep:
+    Did this motor take the last step (read encoder)
+    Did the other motor take its step (if going straight)
+    Issue next step (if external stepper driver this is just a pulse on a pin,
+      otherwise you "look up" the next step from a step table in code space)
+    return from interrupt
+
+    Even with encoders you will need the timer to slow the motors down.  Your
+software will need to ramp the speed down for stopping if you want the
+position of the robot to be accurately known.  Steppers slow down faster than
+they speed up.
+
+Hope this helps
+
+
+Later pherd
+

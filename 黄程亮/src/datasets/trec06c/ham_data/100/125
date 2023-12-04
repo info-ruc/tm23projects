@@ -1,0 +1,104 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j1OFLoFJ023198
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 24 Feb 2005 08:21:50 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 75570A83778
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 24 Feb 2005 08:21:50 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-6.dsl.arizona.edu [128.196.237.6])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id AFF4DA83917
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 24 Feb 2005 08:21:49 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050224081648.00ba4708@psy1.psych.arizona.edu>
+Date: Thu, 24 Feb 2005 08:21:47 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: maze task-read error
+In-Reply-To: <564946378@web.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:02 PM 2/24/2005 +0100, you wrote:
+>hallo,
+>
+>when running a syntax check dmdx isn't able to read the last line of the 
+>experiment. here it is:
+>$
+>=57 * " That"c;
+>-57 * "myth  folks"c;
+>-57 * " still chains"c;
+>+57 * " air exists"c;
+>-57 * " in aunt"c;
+>+57 * " paper the"c;
+>+57 * " mother southern"c;
+>+57 *" watch. States."c;
+>0 c;
+>0 c;
+>0 c;
+>0 c;
+>$
+>
+>0! "End.";
+
+   That's the item file before the scramble, it's not what DMDX is having 
+trouble reading.  Look at the file scrambled.itm (probably in c:\program 
+files\dmdx), it contains the results of the scramble.  Your problem 
+probably stems from the fact that you've got the wrong things locked down 
+between pairs of $ signs, usually one would be locking the end of the 
+experiment, not the contents:
+
+
+=57 * " That"c;
+-57 * "myth folks"c;
+-57 * " still chains"c;
++57 * " air exists"c;
+-57 * " in aunt"c;
++57 * " paper the"c;
++57 * " mother southern"c;
++57 *" watch. States."c;
+0 c;
+0 c;
+0 c;
+0 c;
+$
+0! "End.";
+$
+
+
+
+
+>also i am not sure about how to abort an item after a wrong answer because 
+>from what i understood one should use the keyword <branch> and then tell 
+>the program with which item it shall continue but that would make a 
+>randomization hard, wouldn't it?
+
+   I include dummy items in those instances:
+
+
+=57 * " That"c <biw 999>;
+-57 * "myth folks"c <biw 999>;
+-57 * " still chains"c <biw 999>;
++57 * " air exists"c <biw 999>;
+-57 * " in aunt"c <biw 999>;
++57 * " paper the"c <biw 999>;
++57 * " mother southern"c <biw 999>;
++57 *" watch. States."c <biw 999>;
+0 c;
+0 c;
+0 c;
+~999 c;
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Comparing information and knowledge is like asking whether the fatness
+of a pig is more or less green than the designated hitter rule."
+
+                                                -  David Guaspari
+
+
+

@@ -1,0 +1,73 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1GHoOt06859
+	for <egs@unix.cucs>; Thu, 16 Feb 2006 12:50:24 -0500 (EST)
+Received: from exchfe1.cs.cornell.edu ([128.84.97.33]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 16 Feb 2006 12:50:23 -0500
+Received: from [128.84.223.148] ([128.84.223.148]) by exchfe1.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 16 Feb 2006 12:45:27 -0500
+Message-ID: <43F4BA33.6070906@cs.cornell.edu>
+Date: Thu, 16 Feb 2006 12:45:23 -0500
+From: Tudor Marian <tudorm@cs.cornell.edu>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 7
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 16 Feb 2006 17:45:27.0372 (UTC) FILETIME=[C59898C0:01C63320]
+
+GeoPeer:
+
+This paper presents a p2p system  capable of supporting location-aware 
+services. The overlay network lays out nodes such that a Delaunay 
+triangulation is created, and the structure is augmented with long range 
+contacts for better lookup performance. Each peer has constant 
+connectivity degree, and because of the long range nodes the bound on 
+the routing hops is O(log^2 N) (small world networks). Choosing and 
+maintaining the long range links is done using various schemes. Queries 
+are answered by first sending them to the appropriate geographical 
+region and then performing a local search.
+
+Problem arise in the case when the system cannot maintaining the 
+triangulation under heavy churn.
+
+P-Trees:
+
+This work builds upon the B+ trees and the ability to perform range 
+queries efficiently while using such a structure. P-Trees are basically 
+a distributed index built on top of a p2p system like Chord, in which 
+peers maintain parts of semi-independent B++ trees. Each peer is 
+responsible for the left most path from itself to the root of the 
+correspondnding B+ index. A query is routed to the lower value of the 
+range using the index, and the whole range is then retrieved by walking 
+on the neighbor pointers of the ring.
+
+The system does not scale well since there's an index for each attribute 
+that one might want to index, therefore maintaining multiple indexes 
+could be a major problem. The ping and stabilization protocols are 
+rather complex and one would expect the system to perform poorly under 
+churn.
+
+Mercury:
+
+The paper presents a routing protocol that supports multi-attribute 
+range queries. In doing so, each attribute is associated with a routing 
+hub, that is basically a ring of peers (a subset of all the peers in the 
+system). Within each ring, data is placed contiguously therefore each 
+node is responsible for a range of values. This has the downside that 
+node joining must consider load ballancing constraints. Detecting load 
+imballance is done using a random walk and relocation of nodes from 
+regions of less load to "hot" regions. A node that joins is to be 
+inserted such that it will take first half of the interval of a highly 
+loaded node.
+
+The authors admit that their system does not scale with the increase in 
+number of attributes. The scheme employed is very wasteful, in that the 
+first hop is the one that chooses the hub, and then all the rest of the 
+routing is done within that hub -- this means that if the attribute that 
+will determine the hub to be chosen is not picked appropriately, 
+consequent filtering will incurr a high cost.
+
+
+Tudor
+

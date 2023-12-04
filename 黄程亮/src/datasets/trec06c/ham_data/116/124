@@ -1,0 +1,111 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k22GNut12047
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:23:56 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k22GNs5c025383
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:23:55 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Thu, 2 Mar 2006 11:23:55 -0500 (EST)
+Message-ID: <1440.128.84.98.90.1141316635.squirrel@webmail.cornell.edu>
+Date: Thu, 2 Mar 2006 11:23:55 -0500 (EST)
+Subject: paper 11 - DNS
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+SERVING DNS USING PEER-TO-PEER..
+
+
+the authors point out to various flaws in the current DNS system:
+1) malicious people can impersonate DNS servers as IP addresses can be forged
+2) most common name server problems are configuration errors ( appx 35% of
+queries suffer due to incorrect configurations)
+3) the root serves as a single point of failure and attack (especially DoS
+attacks)
+
+
+the authors suggest serving DNS data over the chord network thereby
+eliminating the concept of a root server. This provides better robustness
+against Dos
+
+attacks.
+
+BASIC IDEA :
+separate the authentication of data from the the service of that data
+
+the paper discusses DNSSEC mechanisms which use public-key cryptography
+for signing resource sets. Each resource set is signed with the public key
+for the
+
+enclosing domain (until the root is reached).
+
+DDNS stores and retrieves resource record sets using Chord-based
+distributed hash table.
+
+Verifying a DNS RRSet for a name with n path elements requires n KEY
+lookups. in order to address this problem the authors allow the owner to
+present
+
+additional relevant KEYs in the RRSet. KEYs for popular resource sets can
+be omitted to decrease size  of response based on the assumption that it
+would be
+
+widely cached.
+
+
+the authors themselves state that their system has significantly higher
+latencies and other disadvantages in comparison with conventional DNS. the
+O(log N)
+
+lookup time is not appreciable for latency critical applications like DNS.
+Accepting a system which is slower than the current system (DNS needs appx
+
+2RPCs) would be another social aspect to overcome.
+low-latency P2P applications will also suffer due to the high latency of
+this new system.
+Chord performance gets worse in case of malicious nodes which may choose
+to be alive but not respond or simply forward incorrect information.
+
+
+
+DNS USING BEE-HIVE
+
+the authors point to the load imbalance due to the skewed distribution of
+names under popular domains.
+they point to the dilemma of choosing a TTL for cached records in  legacy
+DNS systems.
+
+
+BEE-HIVE:
+it places copies of the object at all nodes nodes one hop prior to the
+home node in the request path, reducing the lookup latency by one hop.
+
+it minimizes the total number of replicas subject to the constraint that
+the aggregate lookup latency is less than a desired constant.
+( object frequencies being updated every aggregation interval)
+
+
+OTHER DETAILS:
+
+in order to allow the CoDoNS to gradually grow into a globally recognized
+system, the authors have incorporated compatibility to the legacy DNS.
+NXDOMAIN responses are cached temporarily to preserve the capacity of the
+system.
+
+FLASH-CROWD EFFECT:
+represents the worst case for CoDoNS.
+graphs show a temporary increase in the median latency for flash-crowd
+effects. it takes appx 7 hours to achieve normal latency times.
+
+
+the churn for a look-up system should  be low and bee-hive performance is
+very good for systems with low churn.
+
+
+

@@ -1,0 +1,119 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3010>; Tue, 1 Mar 1994 19:53:11 -0500
+Received: from Xenon.Stanford.EDU ([36.28.0.25]) by psuvax1.cse.psu.edu with SMTP id <294091>; Tue, 1 Mar 1994 19:47:17 -0500
+Received:  by Xenon.Stanford.EDU (5.61+IDA/25-CS-eef) id AA10328; Tue, 1 Mar 94 16:47:03 -0800
+Date:	Tue, 1 Mar 1994 19:47:03 -0500
+From:	Sean Quinlan <sean@CS.Stanford.EDU>
+Message-Id: <9403020047.AA10328@Xenon.Stanford.EDU>
+To:	9fans@cse.psu.edu
+
+
+There is a problem with the plan9 memory management system for the PC
+due to one of the brain dead features of the 386 architecture.
+In particular, the R/W bit in a user page table entry is ignored when
+the processor is in supervisor mode.  This means that copy on write will
+not work when the kernel is copying into user space.
+For example the following code segment exhibits the problem.
+
+#include <u.h>
+#include <libc.h>
+
+char    buf[1024];
+
+main()
+{
+        int i;
+
+        if (fork() == 0) {
+                /* make sure memory is allocated RONLY */
+                i = buf[0];
+
+                read(0, buf, 1024);
+                print("%s\n", buf);
+                exits(0);
+        }
+
+        /* wait a second so the child completes */
+
+        sleep(1000);
+
+        buf[1023] = 0;
+
+        print("parent -> %s\n", buf);
+}
+
+On plan 9 for the pc, the data read into buf will incorrectly appear in both
+the child and parent process.
+
+The 486 (and higher?) fixed the problem but to maintain compatibility
+it defaults to the 386 behavior.  On a 486 you need to set bit 16 in CR0
+to get the correct behavior for the R/W bit.  Of course, if you have a
+386, then copy on write can not be fixed, but you can still run plan9
+with a copy on reference scheme... unfortunately, this means your 386
+machine runs slower and requires more memory...
+
+The complete fix of the problem, thanks to Dave Presotto, follows:
+
+Here's the changes.  It works on a couple of 486's and 386's so its
+probably right.
+
+In l.s (around line 131) change
+
+        ORL     $0X80000000,AX
+        ANDL    $~(0x8|0x2),AX  /* TS=0, MP=0 */
+
+to
+
+        ORL     $0X80010000,AX
+        ANDL    $~(0x40000000|0x20000000|0x8|0x2),AX    /* CD=0, NW=0, TS=0, MP=0 */
+
+This also turns on internal caching in case it was off.
+
+In l.s add the routine
+
+/*
+ *  return cpu type (what is a pentium?)
+ */
+TEXT    x86(SB),$0
+
+        PUSHFL
+        MOVL    0(SP),AX
+        ORL     $0x40000,AX
+        PUSHL   AX
+        POPFL
+        PUSHFL
+        POPL    AX
+        ANDL    $0x40000,AX
+        JZ      is386
+        MOVL    $486,AX
+        JMP     done
+is386:
+        MOVL    $386,AX
+done:
+        POPFL
+        RET
+
+This returns the number 386 or 486 depending.  I guess it'll return
+586 also when I get a chance at a Pentium.
+
+In fns.h add a definition for it:
+
+        int     x86(void);
+
+In main.c in confinit() change
+
+        conf.copymode = 0;      /* copy on write */
+
+to
+
+        switch(x86()){
+        case 386:
+                conf.copymode = 1;      /* copy on reference */
+                break;
+        default:
+        case 486:
+                conf.copymode = 0;      /* copy on write */
+                break;
+        }
+
+and you're done.
+

@@ -1,0 +1,133 @@
+Received: from salm.mrc-cbu.cam.ac.uk (salm.mrc-cbu.cam.ac.uk [193.63.252.3])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k23FAPg1010272
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 3 Mar 2006 08:10:25 -0700
+Received: from [172.31.10.98] (helo=PC0098.mrc-cbu.cam.ac.uk)
+	by salm.mrc-cbu.cam.ac.uk with esmtp (Exim 4.52)
+	id 1FFBvD-0004Da-JX
+	for DMDX@psy1.psych.arizona.edu; Fri, 03 Mar 2006 15:10:23 +0000
+Message-Id: <6.0.3.0.2.20060303141339.01cc16d0@pophost.mrc-cbu.cam.ac.uk>
+Date: Fri, 03 Mar 2006 15:09:51 +0000
+To: DMDX@psy1.psych.arizona.edu
+From: Sally Butterfield <sally.butterfield@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Re: fixed inter-onset interval for wavs of various
+  lengths
+In-Reply-To: <5.1.0.14.2.20060302143924.00ba4e50@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20060301180943.00ba4920@psy1.psych.arizona.edu>
+ <200603012358.k21NwFg1030663@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20060301180943.00ba4920@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20060302143924.00ba4e50@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Thank you, Jonathan, for your help again.
+Although I had tried the <svp start> parameter at one stage, I had 
+confounded it by an incorrect setting of another parameter.  Thanks to your 
+advice, the script now works as needed.
+
+In case it might be useful to anyone else, a summary and example follows:
+
+Task: Auditory lexical decision with  a fixed interval between onsets of 
+wav files and wav files of various lengths.
+
+! Refresh rate = 16.59ms.
+! Inter-onset interval of 2600 ms set by frame duration of %140 ticks + 
+delay of 15 ticks between items + 1 tick for empty frame "/ ;".
+! Inter-onset interval constant regardless of participants response.
+! Minimum <delay> value set to be greater than longest "Preparation time" 
+in ms diagnostics output.
+! RTs measured from the onset of the wav files by inclusion of <svp start>.
+! RT time out 2300 ms.  Value of  <time out> required to be less than 
+duration of frame.
+! In example, the wavs "1500ms" and "500ms" would be words and wav "1000ms" 
+would be a nonword
+! For illustration, the items are not yet scrambled
+
+<ep> <n 7> <azk> <cr> <NoFeedback> <d 15> <t 2300> <id "QPIO12"> <id 
+"keyboard"> <dbc 0>
+<dwc 255255255> <vm 1024,768,768,8,0> </ep>
+
+0 "Press spacebar to begin"/;
+9999 <ms% 1000> "Fingers on the buttons please"/<ms% 2000>/;
+
++101 * <svp start><wav 2>"1500ms" %140 /;
+-201 * <svp start><wav 2>"1000ms" %140 /;
++102 * <svp start><wav 2>"500ms" %140 /;
+
++103  * <svp start><wav 2>"1500ms" %140 /;
+-202  * <svp start><wav 2>"1000ms" %140 /;
++104  * <svp start><wav 2>"500ms" %140 /;
++105  * <svp start><wav 2>"1500ms" %140 /;
+
+0 <ms% 1000>/<ms% 1000> "The End.  Thank you!"/;
+
+Your help is much appreciated,
+Sally Butterfield
+
+
+
+
+At 21:44 02/03/2006, you wrote:
+>At 05:24 PM 3/2/2006 +0000, you wrote:
+>>Jonathan,
+>>Thank you for your speedy reply and helpful suggestions: I've tried to 
+>>incorporate them and have done a few rough & ready measurements of 
+>>outputs and RTs.  I have a few questions.
+>>
+>>I'm aiming to have  a fixed interval of 2600ms from wav onset to wav 
+>>onset and to record RTs from wav onset.
+>>
+>>Using the parameters below and three wav files of various lengths, it 
+>>seems that the interval between an item *offset* and the following item's 
+>>onset is ~2600 ms.  For our purposes, I need the wav onset- wav onset 
+>>interval to be 2600 ms.
+>
+>  You can always read the help, you'll probably find that I needed to add 
+> <svp start> in those <wav> frames.
+>
+>
+>>Also, the duration of the interval seems to depend on whether a response 
+>>is made before or after the wav offset -- i.e. if the response occurs 
+>>after wav offset, then the RT is recorded and the interval is ~2600 
+>>ms.  So right interval, albeit not intended starting point. However, if 
+>>the button press occurs before wav offset, then no RT recorded and the 
+>>interval increases to ~3000 ms.
+>
+>   You will of course be setting the timeout less than the duration of the 
+> display, <t 2080> or so.
+>
+>>   Of course, we hope that the participants will wait until wav offset to 
+>> respond, but we can't depend on it and we do want to keep the 
+>> inter-onset interval constant. So I need to measure RTs from wav onset 
+>> and I wonder if there's a way to avoid possible interaction between when 
+>> response occurs and the inter wav onset interval?
+>
+>   <svp start> will more than likely fix it.
+>
+>
+>>Finally, a general question ... it's tick talk time:  Is it generally 
+>>best to round *down* to the nearest tick - e.g. in this instance, for 
+>>2600 ms / 16.59 ms per tick = 156.7 so 156 or should I add in another?
+>
+>   Depends what you want the time for, in setting a timeout you want to 
+> round down.
+>
+>
+>                                                /"\
+>  -jonathan (j.c.f.)                            \ /
+>                                                 X
+>     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+>
+>   The only difference between a rut and a grave is the depth.
+>
+>
+>====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+

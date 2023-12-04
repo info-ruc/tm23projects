@@ -1,0 +1,68 @@
+Received: from watisit.uwaterloo.ca (slegon@watisit.uwaterloo.ca [129.97.172.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id MAA09272
+	for <handyboard@media.mit.edu>; Wed, 15 Jul 1998 12:22:21 -0400 (EDT)
+Received: (from slegon@localhost)
+	by watisit.uwaterloo.ca (8.8.8/8.8.8) id MAA18272
+	for handyboard@media.mit.edu; Wed, 15 Jul 1998 12:22:13 -0400 (EDT)
+From: Skye Legon <slegon@watisit.uwaterloo.ca>
+Message-Id: <199807151622.MAA18272@watisit.uwaterloo.ca>
+Subject: Config register 0x3c
+To: handyboard@media.mit.edu (MIT Handyboard List)
+Date: Wed, 15 Jul 1998 12:22:12 -0400 (EDT)
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Hello all (especially Fred and other gurus),
+
+I have some config register woes I can't resolve, and the mail archives
+have only got me so far.  I had a little electrical "accident" and now
+when I try to download pcode using HBDL in Win95, the boot loader
+downloads fine, and then I get an error message telling me my config 
+register is set to 0x3c, try again.  The config register box is set to
+0x0c, but it is never reset.  If I set the box to 0x3c, then everything
+downloads fine, but the pcode won't run (not surprisingly).
+
+As neither "Download" or "Burn the Board" (what is the difference?) seem 
+to reset this register, I have turned to DLM.exe and DL.exe without 
+success.  I have tried:
+
+> dlm config0c.s19 -eeprom -256  (I have an A1)
+> dl config0c.s19 -eeprom
+> dl pcode_hb.s19 -config_reg 0x0c
+
+and almost every other combination of parameters possible.  Both programs
+download the boot loader okay.  DLM always terminates with:
+
+Synchronizing with board.......................failed.
+
+while DL gives me:
+
+Download successful
+Board sync error: looking for prompt, got 0
+Synchronizing with board
+Board not responding
+
+I have used my HB with no problems whatsoever for the last 6 months, so
+I know my PC/serial port setup is fine.  I am curious, however, as
+I have never seen 0x3c discussed before (it is always 0x0c, 0x0d, 0xff)
+and wonder where this comes from.  Could it be a hardware issue?  I am
+suspicious because I then replaced my A1 chip with an E2 chip that I
+*believe* still works, and I still get the 0x3c error!  My power system
+seems fine (I have 5v on board), but could I have a hardware error 
+somewhere?  Any idea where to begin debugging?
+
+Cheers, Skye.
+
++-----------------------------------------+----------------------------+
+| Skye Legon                              |   University of Waterloo   |
+| Systems Design Engineering              | __/   __/  __/         __/ |
+| Pattern Analysis & Machine Intelligence | __/   __/  __/   __/   __/ |
+| 143 Columbia St. West, Unit E-4         | __/   __/  __/  ____/  __/ |
+| Waterloo Ontario CANADA  N2L 3L2        | __/__/__/   __/__/\__/__/  |
+| +1(519)888-9249                         |  ______/     ___/  \___/   |
+| slegon@uwaterloo.ca                     |  DC 2620, 888-4567 x5192   |
++-----------------------------------------+----------------------------+
+
+

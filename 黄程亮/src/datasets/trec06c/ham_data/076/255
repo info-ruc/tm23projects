@@ -1,0 +1,126 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f640h6Z06239;
+	Tue, 3 Jul 2001 17:43:06 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id RAA21344;
+	Tue, 3 Jul 2001 17:36:22 -0400 (EDT)
+Date: Tue, 3 Jul 2001 17:36:22 -0400 (EDT)
+Received: by canaveral.red.cert.org; Tue, 3 Jul 2001 17:31:24 -0400
+Message-Id: <CA-2001-16.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-16
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 1203b7da17eefdd4ba3eff2c30537dd8
+Status: RO
+X-Status: $$$$
+X-UID: 0000000012
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-16 Oracle 8i contains buffer overflow in TNS listener
+
+   Original release date: July 03, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Systems Affected
+
+     * Systems running Oracle 8i
+
+Overview
+
+   A vulnerability in Oracle 8i allows remote intruders to assume control
+   of database servers running on victim machines. If the Oracle server
+   is running on a Windows system, an intruder may also be able to gain
+   contol of the underlying operating system.
+
+I. Description
+
+   The COVERT labs at PGP Security have discovered a buffer overflow
+   vulnerability in Oracle 8i that allows intruders to execute arbitrary
+   code with the privileges of the TNS listener process. The
+   vulnerability occurs in a section of code that is executed prior to
+   authentication, so an intruder does not require a username or
+   password.
+
+   For more information, see the COVERT Labs Security Advisory, available
+   at
+
+          http://www.pgp.com/research/covert/advisories/050.asp
+
+II. Impact
+
+   An intruder who exploits the vulnerability can remotely execute
+   arbitrary code. On UNIX systems, this code runs as the 'oracle' user.
+   If running on Windows systems, the intruder's code will run in the
+   Local System security context.
+
+   In either case, the attacker can gain control of the database server
+   on the victim machine. On Windows systems, the intruder can also gain
+   administrative control of the operating system.
+
+III. Solutions
+
+   Install a patch from Oracle. More information is available in
+   Appendix A.
+
+Appendix A
+
+Oracle
+
+   Oracle has issued an alert for this vulnerability at
+
+          http://otn.oracle.com/deploy/security/pdf/nai_net8_bof.pdf
+
+   Oracle has fixed this potential security vulnerability in the Oracle9i
+   database server. Oracle is in the process of backporting the fix to
+   supported Oracle8i database server Releases 8.1.7 and 8.1.6 and
+   Oracle8 Release 8.0.6 on all platforms. The Oracle bug number for the
+   patch is 1489683.
+
+   Download the patch for your platform from Oracle's Worldwide Support
+   web site, Metalink:
+
+          http://metalink.oracle.com
+
+   Please check Metalink periodically for patch availability if the patch
+   for your platform is not yet available.
+     _________________________________________________________________
+
+   Our thanks to COVERT Labs at PGP Security for the information
+   contained in their advisory.
+     _________________________________________________________________
+
+   This document was written by Shawn V. Hernan. If you have feedback
+   concerning this document, please send email to:
+
+          mailto:cert@cert.org?Subject=[VU#620495]%20Feedback%20CA-2001-16
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+July 03, 2001: Initial Release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBO0I28QYcfu8gsZJZAQF1AQP/QvE4AO+I5HP8VXK850g83NlPiFCxlG1K
+51GjO/KCFqK78DoBK9YWvxGaZiR6xKaxYJbGftcJh1zKwNqiRDIGk1OdeW873uhj
+bR8vjobFMzNSZU5y9gXPa9YQWdEg1KozQH1VuNsBxRnmHu6Yi3WANbmZXYcRck2x
+lhP8noPes/Q=
+=nVFt
+-----END PGP SIGNATURE-----
+

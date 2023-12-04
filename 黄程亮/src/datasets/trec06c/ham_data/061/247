@@ -1,0 +1,181 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id FAA25379
+	for <handyboard@media.mit.edu>; Mon, 21 Feb 2000 05:14:02 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id FAA21655; Mon, 21 Feb 2000 05:14:02 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7467
+From: Dirk Stueker <stueker@gmx.de>
+X-Real-Life-Name: Dirk Stueker
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: WARNING WRONG ARITHMETICS ON HB !!!
+Posted-Date: Mon, 21 Feb 2000 10:13:33 GMT
+Date: Mon, 21 Feb 2000 10:13:33 GMT
+Organization: Uni Oldenburg
+Message-Id: <38B10FCD.961B90C3@gmx.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+Working with the free version of IC for Linux 2.860 BETA I discovered
+faulty operations on my handyboard. Please download the following
+program to check your own soft- and hardware.
+
+Can anybody tell me the result with the commercial version of IC.
+If the problems are solved this would make it worth paying for it.
+
+DIRK
+
+/*
+
+    Testprogram for your Handyboard-Configuration
+    ---------------------------------------------
+
+    This program shows faulty arithmetic operations on
+    Interactive C for 6811.  Version 2.860 BETA (Dec  7 1994)
+(Linux-Version)
+    Pcoder on Board was either
+    V 2.81 9/28/93 or
+    V 2.82 6/11/97 (smooth power routines) 
+
+    Dirk Stueker (stueker@gmx.de)
+
+    University of Oldenburg, Department of Computer Science.
+
+*/
+
+
+void main(void) {
+
+  /* LONG-PROBLEMS */
+
+
+   if (-2147483647L==-2147483648L) beep();
+
+   /* 
+
+      Shouldn't beep, test it, my board does beep! 
+      I experienced, that any value less than -2147483647L is treated as
+      -2147483647L although actually -2147483648L is -maxlong (32bits)! 
+
+   */
+
+   if (((long) -1)==65535L) 
+       printf("\nWhat's this?    -1 == 65536!");
+   else
+       printf("\nResult ok!");
+
+   while (!start_button()); while (start_button()); /* wait until start
+pressed
+                                                       and released */
+
+   /* 
+      Strange behavior, isn't it? 
+      Whereas positive ints can be converted to long without any
+problem,
+      negative ints are converted to 65536-value.
+
+      Conversion of float to long is done in an expected way.
+   */
+
+
+   /* FLOAT-PROBLEMS */
+   
+   printf("\n %f", 65537.0 / 65536.0);
+
+   while (!start_button()); while (start_button()); /* wait until start
+pressed
+                                                       and released */
+
+   /*
+
+     Should be somewhat greater than 1. 
+     My board displays: .5000153
+ 
+   */ 
+
+   printf("\n %f", 131074.0 / 65536.0);
+   while (!start_button()); while (start_button()); /* wait until start
+pressed
+                                                       and released */
+
+
+   printf("\n %f", 131075.0 / 65536.0);
+   while (!start_button()); while (start_button()); /* wait until start
+pressed
+                                                       and released */
+
+
+   /*
+
+     Both results should be somewhat greater than 2. 
+     My board displays: 1.000031 and 1.000046
+ 
+     Even more surprising: The result for 131073.0 / 65536.0 is ok!
+
+   */ 
+
+   printf("\n %f", 262148.0 / 65536.0);
+   while (!start_button()); while (start_button()); /* wait until start
+pressed
+                                                       and released */
+
+   printf("\n %f", 262149.0 / 65536.0);
+   while (!start_button()); while (start_button()); /* wait until start
+pressed
+                                                       and released */
+
+   printf("\n %f", 262150.0 / 65536.0);
+   while (!start_button()); while (start_button()); /* wait until start
+pressed
+                                                       and released */
+
+   printf("\n %f", 262151.0 / 65536.0);
+   while (!start_button()); while (start_button()); /* wait until start
+pressed
+                                                       and released */
+
+   /*
+
+     All results should be somewhat greater than 4. 
+     My board displays: 2.000061, 2.000076, 2.000092 and 2.000107
+     
+     Same behavior as above: result for 262147.0 / 65536.0 is correct.
+ 
+     After testing a lot, I discovered some systematic error.
+
+     n Errors are found at the following numbers:
+     2^(n-1) * 65536 + 2^(n-1)                   / n = 1,2,3, ...
+
+     See above:           
+     First error at          1 * 65536 + 1 = 65537.
+     Next TWO errors  at:    2 * 65536 + 2 = 131074 and 131075
+     Next FOUR errors at:    4 * 65536 + 4 = 262148 - 262151
+
+     ...
+
+
+     In each case the value must be multiplied by 2 to get the correct
+result!
+
+     The same behavior can be found if the negative values are used.
+
+   */ 
+
+   printf("\n-terminated-");
+}
+
+
+-- 
+------------------------------------------------------------------------
+   Dirk Stueker      Zietenstr. 36      26131 Oldenburg        Germany
+   Department of Computer Science              University of Oldenburg
+   Tel. & Fax: +49 / 441 / 5 39 35                  
+========================================================================
+Home-P: http://condor.informatik.uni-oldenburg.de/stueker
+E-Mail: stueker@gmx.de     (=Dirk.Stueker@Informatik.Uni-Oldenburg.de)
+------------------------------------------------------------------------
+

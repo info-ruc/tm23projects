@@ -1,0 +1,141 @@
+Received: from DIRECTORY-DAEMON by EMAIL1.BYU.EDU (PMDF V5.2-31 #31181) 
+ id <01J7J2ID5DDS8WY81S@EMAIL1.BYU.EDU> for swl3@email.byu.edu 
+ (ORCPT rfc822;liddle@byu.edu); Tue, 9 Feb 1999 06:01:16 MST 
+Received: from DIRECTORY-DAEMON by EMAIL1.BYU.EDU (PMDF V5.2-31 #31181) 
+ id <01J7J2ICSE808WXJ9L@EMAIL1.BYU.EDU> for stephen_liddle@byu.edu 
+ (ORCPT rfc822;liddle@byu.edu); Tue, 09 Feb 1999 06:01:16 -0700 (MST) 
+Received: from waldorf.cs.uni-dortmund.de 
+ ("port 2943"@waldorf.cs.uni-dortmund.de [129.217.4.42]) 
+ by EMAIL1.BYU.EDU (PMDF V5.2-31 #31181) 
+ with ESMTP id <01J7J2I8H44W8WY9X7@EMAIL1.BYU.EDU>; Tue, 
+ 09 Feb 1999 06:01:15 -0700 (MST) 
+Received: from gamgee.informatik.uni-dortmund.de 
+ (gamgee.cs.uni-dortmund.de [129.217.20.168]) by waldorf.cs.uni-dortmund.de 
+ with SMTP id NAA24379; Tue, 09 Feb 1999 13:58:56 +0100 (MET) 
+Received: (embley@localhost)    by gamgee.informatik.uni-dortmund.de id NAA26390; 
+ Tue, 09 Feb 1999 13:58:55 +0100 
+Date: Tue, 09 Feb 1999 13:58:55 +0100 
+From: David Embley <embley@gamgee.informatik.uni-dortmund.de> 
+Subject: Re: REMINDER -- paragraphs due soon 
+To: sbk@cs.byu.edu, liddle@byu.edu, quass@byu.edu 
+Cc: embley@ls6.informatik.uni-dortmund.de, campbell@cs.byu.edu, 
+ embley@cs.byu.edu, ng@cs.byu.edu, smithr@cs.byu.edu, jiang@lantern.cs.byu.edu, 
+ djackman@folio.com, lyon@cs.byu.edu, monsonc@cs.byu.edu, lonz@byu.edu, 
+ elane@novell.com, jjardine@cs.byu.edu, jivie@ancestry-inc.com, 
+ hewett@cs.byu.edu, istook@cs.byu.edu, kwongl@cs.byu.edu, bconrad@novell.com, 
+ mat@earthsoft.com, yaus@cs.byu.edu, miles@found.com 
+Message-id: <199902091258.NAA26390@gamgee.informatik.uni-dortmund.de> 
+MIME-version: 1.0 
+Content-type: text/plain; charset=us-ascii 
+Content-transfer-encoding: 7bit 
+Content-MD5: wTxtBUooOkrbXauUvZK/Rw== 
+
+
+
+> 
+> (2) We can take advantage of context in order to help us
+> discover additional concept instances in the text.  That is, 
+> for a given concept we can look at the contexts surrounding 
+> the instances of the concept found in the text.  We then 
+> identify those contexts in which the concept has appeared
+> frequently, and we look for additional instances of those 
+> contexts in the text.  It is likely that the those additional context
+> instances contain additional concept instances.  (Ref paper by
+> Sergey Brin.)
+Yes -- this should work.
+Further -- we should be able to optimize or specialize for particular
+pages by discovering the context and thus being able either to find
+the landmarks for the page or to discard unused context information from
+a more general regular expression.
+
+
+> 
+> (3) A context can be based upon either 
+>      (a) words appearing before and/or after the concept instance, or
+>      (b) structural "idioms."
+> 
+> As an example for (a), suppose we are looking for company names.
+> We have a lexicon of 10,000 company names and have found 100 
+> instances of company names in a text.  Suppose further that 25 of
+> the company names are preceeded by a person's name and the
+> words "works for."  If we look for additional occurrences of a person's
+> name followed by the words "works for" in the text, it is likely that 
+> the word following is a company name, which should be considered
+> for potential addition to our lexicon.
+> 
+> The situation is a little more complex if the concept is identified by
+> a regular expression instead of a lexicon.  In that case if we find
+> additional concept instances we need to consider extending our
+> regular expression to match the additional instances.  We want to
+> extend the regular expression in some minimal sense so that we 
+> match the additional concept instances but would not match too
+> many other character sequences.
+> 
+> As an example for (b) above, suppose you are looking for paper
+> titles and authors in unstructured text.  Paper titles and authors
+> often appear in bibliographies, which are formatted in one of 
+> a few specific ways (which we call "structural idioms").  Many 
+> types of information, such as glossaries, catalogs, etc., often
+> appear in such well-defined structures.  It should be possible
+> to characterize these structures before-hand as templates (idioms), 
+> then use these templates to help find additional concept 
+> instances in the text.  For example, suppose you find several
+> sequences "title, author, Y, year" near the end of a document,
+> where Y represents an unknown word.  Given a template that 
+> specifies that a bibliographic idiom is: "title, author, publisher, year" 
+> it should be possible to infer that Y is a publisher and that other 
+> sequences "W, X, Y, year" located nearby are also bibliographic
+> instances.
+> 
+> (4) One should be able to come up with reusable, extensible 
+> libraries of patterns, lexicons, and idioms.
+> 
+> WEB PAGE CLASSIFICATION
+> 
+> (After thinking about it, I may be interested in web page 
+> classification after all.)
+> 
+> (1) I believe most work on text classification has to do with 
+> frequencies of words and phrases in the texts.  (Nothing new
+> here.)  We propose to apply this work to web page classification
+> and extend it in three ways by taking advantage of special
+> characteristics of web pages.  (Need to check if any of these 
+> ideas have been proposed already.)
+> 
+> (2) First, we believe that web pages of a certain category are 
+> likely to point to and be pointed by other web pages in the same 
+> category.  We propose to take the graph structure of the Web
+> into account to help improve our classification, and to perform 
+> experiments to see if we are right!
+Yes -- we somehow need to find all the relevant links that bring the
+pages of interest together.
+
+
+> 
+> (3) Second, even though web pages do not contain the exact
+> same words and/or phrases, they may contain the same concepts.
+> For example, catalog pages often contain prices, identified by a 
+> pattern: $ followed by one or more digits and (at most) one period.
+> Even though different catalog pages contain different specific
+> prices, they generally contain instances of the price concept,
+> and so they are likely to belong to the online catalog category.
+> 
+> (4) Third, web pages may contain the same structural idioms.  
+> For example, catalog web pages often contain tables, with prices
+> in a certain column.  If you run across a web page with a table
+> containing instances of the price concept in one or more of the
+> columns, it is likely to be a catalog.  It should be possible to come
+> up with a set of idioms for a given category (say online catalogs)
+> that help to identify pages in that category.
+> 
+Don't forget to also use clusters of ideas related in an ontology to
+match clusters of information on a page (or set of related pages).
+In these clusters, the amount of information about some concept may indeed
+matter.  Example: Courses and Departments are related and there should be
+about 40 +/- courses for a department about 20 +/- faculty members, ...
+
+
+Good luck in putting this all together.
+
+
+Dave 

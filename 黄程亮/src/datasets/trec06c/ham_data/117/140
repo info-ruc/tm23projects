@@ -1,0 +1,59 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k2BHJxg1008483
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 11 Mar 2006 10:19:59 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 1D96FD3AA35
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 11 Mar 2006 10:19:59 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.Arizona.EDU [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id D4764D4EA2C
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 11 Mar 2006 10:19:57 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060311100848.00ba4818@psy1.psych.arizona.edu>
+Date: Sat, 11 Mar 2006 10:19:56 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Final remark on special characters
+In-Reply-To: <001701c644fc$88db2b30$0200a8c0@VIRGINIA>
+References: <20060310125102.70236.qmail@web37703.mail.mud.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 10:11 PM 3/11/2006 +1100, you wrote:
+>Hi all
+>
+>Just to note that it's not simple just to choose another font (that works) 
+>if what is required is a set of characters none of which resemble the 
+>English alphabet.  In trying out all the Arial Unicode fonts, the only 
+>appropriate sets that seemed to work were Katakana and Hiragana.  But on 
+>subsequent testing, DMDX still failed to recognise a few of the 
+>characters, and since that appeared to occur intermittently or to depend 
+>upon where in the sequence the character was, I decided that it was too 
+>risky to use.  The alternative at the moment is making individual bmp 
+>files for the about 100 different sequences.  If some time in the future 
+>Arial Unicode characters were available, that would be much appreciated.
+
+
+   If it makes you feel any better it's weeks worth of work to make DMDX 
+handle "a few" unicode characters and it runs the risk of upsetting almost 
+every single part of DMDX.  Each piece of code that manipulates pointers to 
+characters (like almost all of DMDX does) has to be gone over with a fine 
+tooth comb because instead of a character being one byte it's now 
+two.  Every single string (error messages, anything DMDX prints, you name 
+it) has to be wrapped with __T().  Now mind you, RTF files are still going 
+to be one byte characters so there's got to be code that intermixes byte 
+wide character pointers with 16 bit ones, yeecch.  And then of course we 
+have to test these changes.  Months away at the very least and that's 
+assuming we decide to do it and I for one ain't leaping at the 
+opportunity.  And won't be under any circumstances till we need it here.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+The moving cursor writes, and having written, blinks on.
+
+
+

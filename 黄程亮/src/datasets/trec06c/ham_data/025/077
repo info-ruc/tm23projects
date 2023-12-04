@@ -1,0 +1,67 @@
+Received: from quasar.newtonlabs.com (root@quasar.newtonlabs.com [206.125.74.97])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id NAA22803
+	for <handyboard@media.mit.edu>; Tue, 27 Oct 1998 13:17:23 -0500 (EST)
+Received: from newtonlabs.com (r.newtonlabs.com [207.55.51.19])
+          by quasar.newtonlabs.com (8.8.4/8.8.4) with ESMTP
+	  id KAA07112; Tue, 27 Oct 1998 10:14:27 -0800
+Message-Id: <36360CBC.986A8235@newtonlabs.com>
+Date: Tue, 27 Oct 1998 10:11:08 -0800
+From: Randy Sargent <rsargent@newtonlabs.com>
+Organization: Newton Research Labs
+X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+Mime-Version: 1.0
+To: The Plumber <jhoffman@it.sait.ab.ca>
+Cc: handyboard@media.mit.edu
+Subject: Re: C compiler
+References: <Pine.OSF.3.96.981026142531.17960B-100000@thunder.it.sait.ab.ca>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Joe,
+
+Your question implies that Interactive C does not compile to byte code,
+so I thought I should take some time to post an explanation of how IC  
+works.
+
+Actually, Interactive C does compile, and in fact does compile to byte
+code, which is then downloaded to the 6811.  The 6811 then has a byte
+code interpreter, which executes the byte code.  
+
+Being interactive doesn't necessarily require an interpreter;  because
+the IC compiler and debugger are in fact the same program, things you
+type at the IC> prompt are transparently compiled to byte code prior to
+download.
+
+Why wasn't IC designed to be an interpreter?  The advantage of compiling
+to byte code as opposed to using a standard interpreter is primarily
+speed.  The primary disadvantage is that the 6811 board won't contain
+the original source code, so you must maintain the source solely on your
+desktop computer.
+
+On the other hand, why wasn't IC designed to compile directly to machine
+code?  Advantages of compiling to byte code compared to compiling to
+machine code include smaller code size, ease of multitasking, and making
+it easier to do some run time error checking.  The primary disadvantage
+is that byte code is slower than machine code.  
+
+I hope this helps to clear up how IC works.
+
+-- Randy 
+
+The Plumber wrote:
+> 
+> Is there any C compilers that people can recomend, I am looking for a
+> cross compiler (compiles to byte code) as opposed to interpreted (IC).
+> 
+> Oh, I use a PC runing windows/dos
+> 
+> Thanks,
+> Joe Hoffmann
+> E-Mail jhoffman@it.sait.ab.ca
+
+-- 
+----------------------------------------------------------------
+Randy Sargent                        Newton Research Labs
+President                            Robotic Systems and Software
+rsargent@newtonlabs.com              http://www.newtonlabs.com/
+

@@ -1,0 +1,862 @@
+Received: from faui45.informatik.uni-erlangen.de (root@faui45.informatik.uni-erlangen.de [131.188.2.45])
+	by faui01.informatik.uni-erlangen.de (8.8.8/8.1.16-FAU) with ESMTP id XAA02413
+	for <rdzidlic@cip.informatik.uni-erlangen.de>; Sun, 19 Jul 1998 23:16:37 +0200 (MET DST)
+Received: from post.mail.demon.net (post-11.mail.demon.net [194.217.242.40])
+	by faui45.informatik.uni-erlangen.de (8.8.8/8.1.16-FAU) with SMTP id XAA29192
+	for <rdzidlic@cip.informatik.uni-erlangen.de>; Sun, 19 Jul 1998 23:16:26 +0200 (MET DST)
+Received: from (trespassersw.dld.org) [158.152.70.170] 
+	by post.mail.demon.net with smtp (Exim 1.82 #2)
+	id 0yy0hz-0003Uv-00; Sun, 19 Jul 1998 21:09:29 +0000
+Received: (from jrh@localhost)
+	by trespassersw.dld.org (8.8.7/8.8.7) id OAA06870
+	for rdzidlic@cip.informatik.uni-erlangen.de; Sun, 19 Jul 1998 14:49:09 +0100
+Message-ID: <XFMail.980719144908.jonathan.hudson@jrhudson.demon.co.uk>
+X-Mailer: XFMail 1.3 [p0] on Linux
+X-Priority: 3 (Normal)
+MIME-Version: 1.0
+Date: Sun, 19 Jul 1998 14:49:08 +0100 (BST)
+Reply-To: jonathan.hudson@jrhudson.demon.co.uk
+Organization: The Dead Letter Drop
+From: Jonathan Hudson <jonathan.hudson@jrhudson.demon.co.uk>
+To: Richard Zidlicky <rdzidlic@cip.informatik.uni-erlangen.de>
+Subject: QLip documentation
+Content-Type: multipart/mixed;
+ boundary="_=XFMail.1.3.p0.Linux:980719144908:6869=_"
+Content-Length: 14023
+
+This message is in MIME format
+--_=XFMail.1.3.p0.Linux:980719144908:6869=_
+Content-Type: text/plain; charset=us-ascii
+
+Here is the file you requested when I was away.
+
+
+
+Regards
+
+---
+   If it happens once, it's a bug. If it happens twice, it's a feature.
+         If it happens more than twice, it's a design philosophy.
+
+--_=XFMail.1.3.p0.Linux:980719144908:6869=_
+Content-Disposition: attachment; filename="QLip.txt"
+Content-Transfer-Encoding: 7bit
+Content-Description: QLip.txt
+Content-Type: text/plain; charset=us-ascii; name=QLip.txt; SizeOnDisk=13398
+
+QLIP - A tcp/ip driver for uqlx
+-------------------------------
+
+Introduction
+------------
+
+QLIP provides three new devices for QDOS/uqlx
+
+	tcp_	A stream socket device
+	udp_	A datagram socket device
+	sck_	A generic socket device used for accept(2) and simple
+		entry to the driver.
+
+The tcp_ and udp_ devices may be used from BASIC, assembler or 'C' (or
+any other compiled language). 
+
+Full socket library functionality is provided via the driver for
+languages that give access to trap #2 and trap #3 functionality. A
+more limited access is provided though standard QDOS I/O facilities,
+allowing BASIC programmers to write simple programs that access ASCII
+data (usually CR or LF terminated) via TCP and UDP devices using PRINT
+and INPUT.
+
+For 'C' programmers, a BSD sockets compatible 'socket library' is
+provided. Using this library, it should be possible to port almost all
+Unix IP programs to QDOS without having to change the networking code.
+
+The trap #3 interface is designed to support a 'C' BSD style sockets
+library; to this end to uses the socket library as the superior
+standard and passes data in the format that such a library would
+expect, for example, strings a NUL terminated.
+
+This document assumes that the reader is familiar with socket
+programming and the terminology used in typical Unix socket library
+man pages.
+
+It is recommended that this document be read in conjunction with
+either your Unix man pages, a book on socket programming to the GNU
+libc 'sockets' info text and the uqlx QLip.[ch] files.
+
+Using the devices
+-----------------
+
+sck_
+
+The sck_ device is used internally by the c68 socket library to
+provide an anonymous file descriptor for accept(2). The device is also
+used as a quick route into the driver for 'netdb' applications.
+
+The device is used as:
+
+	C:   io_open("sck_", sock);
+
+	ASM: (trap #2, D0 = #1, A0 = QDOS string, D3 = channel ID)
+
+	where sock is:
+
+	-  the channel ID of the (master) listening socket.
+	-  0 for a simple access to the driver. 
+
+sck_ may also be used to provide an entry to the driver without
+opening any socket as a way into the netdb functions, with D3 = 0.
+This technique is used extensively by the c68 socket library.
+
+tcp_
+
+The tcp_ device is used for stream socket connections. The device name
+may be anonymous "tcp_" (i.e. a socket(2) call), where the socket
+address will be provided by a bind(2) or connect(2), or the address
+may be defined as part of the device name. 
+
+	Anonymous:
+	==========
+
+	C: io_open("tcp_", 0);
+
+	ASM: (trap #2, D0 = #1, A0 = QDOS string, D3 = 0)
+
+	A type of 0 denotes an anonymous connection (socket(2)).
+
+
+	Addressed:
+	==========
+
+	C: io_open("tcp_host:port", type);
+
+	ASM: (trap #2, D0 = #1, A0 = QDOS string, D3 = type)
+
+	where type:
+
+	1  = connect
+	2} 
+	3} = bind
+
+
+	BASIC
+
+	ch = FOP_IN "tcp_host:port"	(connect)
+	ch = FOP_NEW "tcp_host:port"    (bind)	
+
+Where an 'addressed socket' is specified, then both the host and port
+may be either numeric or symbolic.
+
+For example, on my private network, the host 'tigger' (tigger.dld.org)
+has a dotted IP address of 192.168.1.3.
+
+Then the following are synonomous:
+
+	"tcp_192.168.1.3:13"
+	"tcp_tigger:daytime"
+	"tcp_tigger.dld.org:13"
+	"tcp_192.168.1.3:daytime"
+
+udp_
+
+UDP sockets follow the same rules as above, however it is not
+currently possible to use UDP sockets from BASIC.
+
+Valid udp_ device names might be:
+
+	"udp_"
+	"udp_192.168.1.3:13"
+	"udp_tigger:daytime"
+	"udp_tigger.dld.org:13"
+	"udp_192.168.1.3:daytime"
+
+Trap Definitions
+----------------
+
+The trap #2 definitions use the standard QDOS d0 values. trap #3
+don't, in the main. The symbolic values for non-standard trap #3 are
+given in the uqlx source file "iptraps.h". These symbolic values are
+used below.
+
+
+trap #2
+=======
+
+io.open, d0 = 1
+
+	A0 = QDOS string, device name
+	D1 = job ID
+	D3 = open type
+
+		0 = anonymous
+		1 = connect
+		2 or 3 = bind
+		Channel ID for accept(), with device name = "sck_"
+
+	Note that is the device name is anonymous ("dev_"), then d3 is
+	ignored.
+
+	Output values as standard
+
+
+io.close d0 = 2
+
+	A0 = channel ID
+
+trap #3
+
+The drivers support the following QDOS standard traps:
+
+	io.pend		(d0 = 0)
+	io.fbyte	(d0 = 1)
+	io.fline	(d0 = 2)
+	io.fstrg	(d0 = 3)
+	io.sbyte	(d0 = 5)
+	io.sstrg	(d0 = 7)
+
+Register usage is standard for these traps.
+
+The following non-standard trap #3 functions are provided:
+
+IP_LISTEN 
+
+Provides listen(2) functionality.
+
+	Input
+
+	D0 = IP_LISTEN
+	D1 = (int) backlog
+	D3 = (short) timeout (should be -1)
+	A0 = (chanid_t) channel ID
+
+	Output
+
+	D0 = result (0 if OK)
+	D2 = errno
+
+IP_SEND
+
+Provides send(2) functionality
+
+	Input
+
+	D0 = IP_SEND;
+	D1 = (uint) flag;
+	D2 = (int) buffer size;
+	D3 = (short) timeout (should be -1)
+
+	A0 = (chanid_t) channel ID
+	A1 = (void *) buffer address
+
+	Output
+
+	D0 = result
+	D1 = (int) bytes written
+	D2 = errno 
+
+	A1 = buffer address + bytes written
+
+IP_SENDTO
+
+Provides sendto(2) functionality
+
+	Input
+
+	D0 = IP_SENDTO;
+	D1 = (uint) flag;
+	D2 = (int) buffer size;
+	D3 = (short) timeout (should be -1)
+
+	A0 = (chanid_t) channel ID
+	A1 = void *) buffer address
+	A2 = parameter block (2 long words)
+		params[0] = (struct sockaddr*) to
+		params[1] = (int) tolen;
+    
+
+	Output
+
+	D0 = result
+		+ve => number of bytes sent
+		-ve => error code
+	D2 = errno
+
+
+IP_RECV
+
+Provides recv(2) functionality
+
+	Input
+
+	D0 = IP_RECV
+	D1 = (uint) flag
+	D2 = (int) buffer size
+	D3 = (short) timeout (should be -1)
+
+	A0 = (chanid_t) channel ID
+	A1 = (void *) buffer address
+
+	Output
+
+	D0 = result code
+	D1 = bytes written
+	D2 = errno
+
+IP_RECVFM
+
+Provides recvfrom(2) functionality
+
+	D0 = IP_RECVFM
+	D1 = (uint) flag
+	D2 = (int) buffer size
+	D3 = (short) timeout (-1)
+
+	A0 = (chanid_t) channel ID
+	A1 = (void *) buffer address
+	A2 = parameter block (2 long words)
+		params[0] = (struct sockaddr*) from
+		params[1] = (int) fromlen;
+    
+	Output
+
+	D0 = result
+		+ve => number of bytes sent
+		-ve => error code
+	D1 = size of returned struct sockaddr
+	D2 = errno
+
+IP_GETOPT
+
+Provides (some) getsockopt functionality
+
+	Input
+
+	D0 = IP_GETOPT
+	D1 = (int) optlen 
+	D2 = (int) level
+	D3 = (short) timeout (-1)
+
+	A0 = (chanid_t) channel ID
+	A1 = (void *) optval address
+	A2 = (int) optname
+
+	Output
+	
+	D0 = result
+	D1 = optlen
+	D2 = errno
+
+IP_SETOPT
+
+Provides (some) setsockopt functionality
+
+	Input
+
+	D0 = IP_SETOPT
+	D1 = (int) optlen 
+	D2 = (int) level
+	D3 = (short) timeout (-1)
+
+	A0 = (chanid_t) channel ID
+	A1 = (void *) optval address
+	A2 = (int) optname
+
+	Output
+	
+	D0 = result
+	D2 = errno
+
+
+IP_SHUTDWN
+
+Provides shutdown(2) functionality
+
+	Input
+
+	D0 = IP_SHUTDWN
+	D1 = (int) how
+	D3 = (short) timeout (-1);
+    
+	A0 = (chanid_t) Channel ID
+
+	Output
+	
+	D0 = result
+	D2 = errno
+
+
+IP_BIND
+
+Provides bind(2) functionality
+
+	Input
+
+	D0 = IP_BIND
+	D1 = (int) namelen
+	D3 = (short) timeout (-1)
+    
+	A0 = (chanid_t) Channel ID
+	A2 = (struct  sockaddr  *) name;
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_CONNECT
+
+Provides connect(2) functionality
+
+	Input
+
+	D0 = IP_CONNECT
+	D1 = (int) namelen
+	D3 = (short) timeout (-1)
+    
+	A0 = (chanid_t) Channel ID
+	A2 = (struct  sockaddr  *) name;
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_FCNTL
+
+Provides fcntl(2) funcionality for IPDEV sockets only.
+
+	Input
+	
+	D0 = IP_FCNTL
+	D1 = (int) cmd;
+	D2 = (int) arg;
+	D3 = (short) timeout -1;
+
+	A0 = (chanid_t) channel ID
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_GETHOSTNAME
+
+Provides gethostname(2) functionality
+
+	Input
+
+	D0 = IP_GETHOSTNAME;
+	D2 = (int) namebufferlen
+	D3 = (short) timeout (-1)
+
+	A0 = (chanid_t) channel ID
+	A1 = (char *)namebuffer;
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_GETSOCKNAME
+
+Provides getsockname(2) functionality
+
+
+	Input
+
+	D0 = IP_GETSOCKNAME
+	D2 = (int) namelen
+	D3 = (short) timeout (-1);
+
+	A0 = (chanid_t) channel ID
+	A1 = (struct sockaddr *) name
+
+	Output
+
+	D0 = result
+	D1 = namelen
+	D2 = errno
+
+
+IP_GETPEERNAME
+
+Provides getpeername(2) functionality
+
+	Input
+
+	D0 = IP_GETPEERNAME
+	D2 = (int) addrlen
+	D3 = (short) timeout (-1);
+
+	A0 = (chanid_t) channel ID
+	A1 = (struct sockaddr *) addr
+
+	Output
+
+	D0 = result
+	D1 = addrlen
+	D2 = errno
+
+
+IP_GETHOSTBYNAME
+
+Provides gethostbyname(2) functionality
+
+	Input
+
+	D0 = IP_GETHOSTBYNAME
+	D3 = (short) timeout (-1)
+
+	A0 = (chanid_t *) channel ID
+        A1 = (char *) name			// NUL terminated
+        A2 = (struct hostent *)hostent buffer	// minimum of 500 bytes
+
+The buffer pointed to by A2 must be at large enough to hold the
+largest struct hostent returned.
+
+	D0 = result
+	D2 = errno
+
+IP_GETHOSTBYADDR
+
+Provides gethostbyaddr(2) functionality
+
+	Input
+
+	D0 = IP_GETHOSTBYNAME
+        D1 = (int) addrlen;
+        D2 = (int) type;
+	D3 = (short) timeout (-1)
+
+	A0 = (chanid_t *) channel ID
+        A1 = (char *) addr
+        A2 = (struct hostent *)hostent buffer	// minimum of 500 bytes
+
+The buffer pointed to by A2 must be at large enough to hold the
+largest struct hostent returned.
+
+	D0 = result
+	D2 = errno
+
+
+IP_SETHOSTENT      
+IP_SETSERVENT      
+IP_SETNETENT        
+IP_SETPROTOENT      
+
+Provides set*ent(2) functionality
+
+	Input
+
+	D0 = IP_SET*ENT
+        D1 = (int) stayopen;
+	D3 = (short) timeout (-1)
+	A0 = (chanid_t *) channel ID
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+IP_ENDHOSTENT     
+IP_ENDSERVENT       
+IP_ENDNETENT        
+IP_ENDPROTOENT      
+
+Provides end*ent(2) functionality
+
+	Input
+
+	D0 = IP_END*ENT
+	D3 = (short) timeout (-1)
+	A0 = (chanid_t *) channel ID
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_GETSERVBYNAME    
+IP_GETSERVBYPORT    
+IP_GETSERVENT       
+
+Provides get*ent(2) functionality
+
+	Input
+
+	D0 = IP_GET*ENT
+	D3 = (short) timeout (-1)
+	A0 = (chanid_t *) channel ID
+	A2 = (void *) buffer		// cast as necessary
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+IP_GETNETBYNAME
+ 
+Provides getnetbyname(2) functionality
+
+	Input
+
+	D0 = IP_GETNETBYNAME
+	D3 = (short) timeout (-1)
+        A0 = (chanid_t)channel ID
+        A1 = (char *)name
+	A2 = (struct netent *)netent buffer
+
+	Output
+
+	D0 = result
+	D2 = errno
+ 
+IP_GETNETBYADDR     
+
+Provides getnetbyname(2) functionality
+
+	Input
+
+        D0 = IP_GETNETBYADDR;
+        A0 = (chanid_t) channel ID
+        A2 = (struct netent *)netent buffer
+        D1 = (uint) net
+        D2 = (int) type
+        D3 = (short) timeout (-1)
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+IP_GETPROTOBYNAME
+
+Provides getprotobyname(2) functionality
+
+	Input
+
+	D0 = IP_GETPROTOBYNAME;
+        D3 = (short) timeout (-1)
+        A0 = (chanid_t) channel ID
+        A1 = (char *)name;
+        A2 = (struct protoent *)protoent buffer
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+IP_GETPROTOBYNUMBER 
+
+Provides getprotobynumber(2) functionality
+
+	Input
+
+	D0 = IP_GETPROTOBYNUMBER;
+	D1 = (int) proto number
+        D3 = (short) timeout (-1)
+        A0 = (chanid_t) channel ID
+        A2 = (struct protoent *)protoent buffer
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+IP_INET_ATON        
+
+Provides inet_aton(2) functionality
+
+	Input
+
+        D0 = IP_INET_ATON;
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+        A1 = (char *) name
+        A2 = ( struct in_addr *)inaddr buffer            
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_INET_ADDR        
+
+Provides inet_addr(2) functionality
+
+	Input
+
+        D0 = IP_INET_ADDR
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+        A1 = (char *) name
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_INET_NETWORK     
+
+Provides inet_network(2) functionality
+
+	Input
+
+        D0 = IP_INET_NETWORK
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+        A1 = (char *) name
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_INET_NTOA        
+
+Provides (2) functionality
+
+	Input
+
+	D0 = IP_INET_NTOA
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+        A1 = (struct in_addr *) net address buffer
+        A2 = (char *) result buffer            
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_INET_MAKEADDR    
+
+Provides (2) functionality
+
+	Input
+
+        D0 = IP_INET_MAKEADDR
+        D1 = (int) network number
+        D2 = (int) host address
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+        A2 = (struct in_addr *) result buffer            
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_INET_LNAOF       
+
+Provides inet_lnaof (2) functionality
+
+	Input
+
+        D0 = IP_INET_LNAOF;
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+        A1 = (struct in_addr *) net address buffer            
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+IP_INET_NETOF       
+
+Provides inet_netof(2) functionality
+
+	Input
+
+        D0 = IP_INET_NETOF;
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+        A1 = (struct in_addr *) net address buffer            
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+IP_IOCTL            
+
+Provides ioctl(2) functionality
+
+	Input
+
+	D0 = IP_IOCTL
+	D1 = request
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+	A1 = (char *) argp
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+IP_GETDOMAIN        
+
+Provides getdomainname(2) functionality
+
+	Input
+
+        D0 = IP_GETDOMAIN;
+        D2 = len;
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+        A1 = name;
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+IP_H_ERRNO        
+
+Provides h_errno (2) functionality
+
+	Input	
+	
+	D0 = IP_H_ERRNO
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+
+	Output
+	
+	D0 = result
+	D1 = h_errno
+	D2 = errno
+
+
+IP_H_STRERROR	
+
+Provides special functionality to return the text for h_errno
+
+	Input
+
+        D0 = IP_H_STRERROR
+        D3 = (short) timeout (-1)
+	A0 = (chanid_t) channel ID
+	A1 = buffer for text
+
+	Output
+
+	D0 = result
+	D2 = errno
+
+
+--_=XFMail.1.3.p0.Linux:980719144908:6869=_--
+End of MIME message

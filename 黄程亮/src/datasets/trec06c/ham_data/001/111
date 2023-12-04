@@ -1,0 +1,139 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3005>; Mon, 7 Feb 1994 17:07:15 -0500
+Received: from ds1.gl.umbc.edu ([130.85.3.11]) by psuvax1.cse.psu.edu with SMTP id <293612>; Mon, 7 Feb 1994 16:44:24 -0500
+Received: from umbc8.umbc.edu (vijay@umbc8.umbc.edu [130.85.60.8]) by ds1.gl.umbc.edu (8.6.5/8.6.5) with ESMTP id QAA06655 for <9fans@cse.psu.edu>; Mon, 7 Feb 1994 16:42:34 -0500
+Received: from localhost (vijay@localhost) by umbc8.umbc.edu (8.6.5/8.6.5) id QAA26352; Mon, 7 Feb 1994 16:42:31 -0500
+Date:	Mon, 7 Feb 1994 16:42:31 -0500
+From:	Vijay Gill <vijay@gl.umbc.edu>
+To:	9fans plan9 users list <9fans@cse.psu.edu>
+Message-ID: <Pine.3.89.9402071630.A26112-0100000@umbc8.umbc.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+The purpose of this list is to maintain a database of hardware that is
+known to work with plan 9.  This should make life easier for those
+people contemplating the purchase of new hardware.  Most of this list
+is taken directly from what Forsyth sent me.  Please do not deluge him
+with mail, reply to me and I'll try to set up a mechanism to distribute
+this stuff.
+
+ The list is starting out for the most selfish of reasons, since I am
+in the market for some hardware to run plan 9, I thought it would be a
+good idea to find out what to get.  This list will concentrate mostly
+on the 386/486 clone hardware.  While the 386/486 machines are looked
+upon with derision, they provide the cheapest hardware to run plan 9.
+However, most of the hardware is only tested with, and comes with
+drivers for, DOS and Windows, and thus may not work with plan 9.  This
+list details the stuff that works with plan 9.
+
+BeginBlurb:  
+Plan 9 on a Mac.  No more futzing around. 
+I could deal with plan 9 on a Powerbook 180.
+End Blurb.
+
+Contributors:
+
+Most of this hardware list comes from forsyth@minster.york.ac.uk who
+has done yeoman work to contributing to this list.  Actually, come to
+think of it, his is about the only contribution ;)
+
+Here is the list of hardware that will work with plan 9.  Other
+hardware may work with plan 9, but this list will only list stuff that
+is known to work or stuff that I need confirmation on.
+
+-----------------------------------------------------
+Bus:
+	ISA
+	VESA
+	EISA (may work with ISA Cards, need confirmation)
+-----------------------------------------------------
+CPU:
+	Intel
+	AMD - To be tested by Forsyth
+	Cyrix - Ditto
+	IBM SLC - Ditto
+------------------------------------------------------
+Video Cards:
+
+This is the trickiest part.  SVGA cards all have different ways of
+configuring and operating high-resolution modes (higher than 640x480
+VGA).
+
+	ET4000 SVGA cards work.
+	S3 911 cards work
+	Paradise cards (reportedly) work.
+	Diamond Stealth Pro cards work, with some changes
+		to devvga.c and lib/vga.  This is from
+		Gary Chapel.
+
+------------------------------------------------------
+Ethernet cards:
+
+	WD
+	SMC
+	NE2000 clones (Reset port address it uses
+		       might not work on some clones)
+	3Com 3C509 Etherlink III (need to get some fixes
+		       to use the driver under very heavy
+		       loads)
+	3Com 3C503 -- Avoid this one
+
+
+------------------------------------------------------------
+Hard Disk Controllers:
+
+	Ultrastor 14F SCSI (driver is available by ftp)
+	Adaptec 1542B/Buslogic 542B (driver is available,
+		but hasn't been used very much)
+	Forsyth has added the driver for the Ultrastor 14F.
+	He has used it on both cpu and terminal machines,
+	and also on the file server, running Fujitsu 2624FA
+	disks, Seagate 3283N and Sun CDROM drives.
+
+	Standard IDE controllers should work.
+--------------------------------------------------------------
+Memory:
+
+	8-16 megs should be adequate.  More is better.
+
+--------------------------------------------------------------
+
+Modems:
+
+	High speed modems will work but the kernel does not take
+	advantage of the FIFO's in the 16550 UARTS.  Forsyth can
+	supply the diffs and the appropriate changes that will work
+	for `hayes', which work fine upto 38400.
+	
+--------------------------------------------------------------------------
+Diskettes:
+
+	Stick with 3.5" 1.44 meg or 5.25".  Plan 9 does not
+	work too well with 2.88 meg 3.5".
+
+---------------------------------------------------------------------------
+
+Disks:
+
+The pc system on the distribution (Jan 1993 version) supports
+IDE disks.  The IDE driver has a bug in it that causes it to fail
+on very old Seagate 42 Meg drives (fixed by Forsyth).  Modern IDE
+drives work just fine.
+
+----------------------------------------------------------------------------
+This is the list as it stands.  If you have plan 9 running on
+different hardware, please send me details.
+
+War stories welcomed, to go into the war stories list. I presently
+have Forsyth's war story. More input welcomed.  I will be looking at
+putting this stuff up for anon ftp when I have sufficient volume.  If
+there is sufficient interest, I'll post up the war stories that I
+have.
+
+--
+Vijay Gill                         |The (paying) customer is always right.
+wrath@cs.umbc.edu                  |                  - Piercarlo Grandi
+vijay@gl.umbc.edu                  | Eagles may soar, but weasels don't get
+These are my opinions only.        | sucked into jet engines.
+
+

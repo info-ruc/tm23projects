@@ -1,0 +1,71 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k36Ejat29694
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 10:45:37 -0400 (EDT)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k36EjYTh014637
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 10:45:34 -0400 (EDT)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Thu, 6 Apr 2006 10:45:35 -0400 (EDT)
+Message-ID: <1798.132.236.227.119.1144334735.squirrel@webmail.cornell.edu>
+Date: Thu, 6 Apr 2006 10:45:35 -0400 (EDT)
+Subject: PAPER 19
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Overcast is a system supporting single-source multi-cast on an application
+overlay focussed on real-world deployment issues.  The fundamental goal of
+Overcast is to easily deploy a system supporting high-bandwidth root-to
+leaf streams to very large numbers of standard webclients.  To achieve
+this Overcast defines a tree construction and maintenance protocols. 
+Combined these allow a client to contact the root of a multi-cast group
+which will the automatically select the best node for the client to
+connect to in order to receive the high-bandwidth stream.
+
+Tree construction is carried out by the root and "applicances" which are
+dedicated tree-internal nodes.  These nodes start at the root and descend
+the tree as it is constructed to locate themselves as deep in the tree as
+possible while still maintaining high-bandwidth to the root.  This is
+accomplished by testing the bandwidth from the root directly through the
+current parent (starting at the root), and the bandwidth achieveable from
+each sibling.  If one of the siblings bandwidth to the root is within 10%
+of that through the current parent, the sibling with fewest hops from the
+node in question is selected as the new parent and the process repeats
+until no such sibling can be found.  Tree maintenance is accomplished by
+having children periodically contact parents, grandparents and siblings
+(to find new parents if necessary).  Nodes aggregate these heartbeats and
+send changes to their parents.  This process recurses up the tree (always
+sending only the deltas) to the root so each node has a full view of the
+current membership of its subtree.  When a client requests the stream it
+contacts the root via a standard HTTP URL, and the root redirects the
+client to the "best" appliance (by some metric) given the full view the
+root has.
+
+Overcast is aimed at large-scale, high-bandwidth applications and focusses
+on ease of deployment.  Consideration of nodes behind firewalls are
+considered (for instance, parents never contact children which may be
+behind a firewall, and all communications are done over HTTP on port 80),
+the appliances are assumed to be dedicated machines and so a high churn
+environment is avoided, and the multi-cast is single-source.  It seems
+that several important problems are left unaddressed.  The
+tree-maintenance load on nodes is argued to be sub-linear in the size of
+the tree, however in some cases (such as a child of the root choosing a
+new parent) the load could be linear in the size of the sub-tree involved.
+ This is shown in experimentation, although not the "common case".  It
+also seems as if the bandwidth achieved after the tree is constructed
+could be very different from the bandwidth achieved during construction. 
+If an internal node is the parent of many nodes its outbound bandwidth
+will be divided amongst those children and this could be a bottle neck. 
+No discussion of how to avoid overloading nodes is made (although this may
+not be a problem given the parent selection algorithm).  While the paper
+is aimed at high-bandwidth applications in real-world deployments, the
+experimentation presented is not of a real-world deployment and does not
+investigate the end-application bandwidth achieved by unmodified HTTP
+clients.
+

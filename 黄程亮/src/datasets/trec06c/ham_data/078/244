@@ -1,0 +1,128 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fACKkiR23545
+	for <egs@cs.cornell.edu>; Mon, 12 Nov 2001 15:46:44 -0500 (EST)
+Received: from photon.ece.cornell.edu (photon.ece.cornell.edu [128.84.81.138])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fACKjNH03022
+	for <egs@cs.cornell.edu>; Mon, 12 Nov 2001 15:45:23 -0500
+Date: Mon, 12 Nov 2001 15:45:33 -0500 (EST)
+From: Edward Hua <eyh5@ece.cornell.edu>
+X-X-Sender:  <eyh5@photon.ece.cornell.edu>
+To: <egs@CS.Cornell.EDU>
+Subject: 615 Paper # 42
+Message-ID: <Pine.LNX.4.33.0111121543310.21999-100000@photon.ece.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+TinyOS: An Operating Systems for Networked Sensors
+Jason Hill, et al.
+
+	The group of researchers at UC Berkeley have proposed the TinyOS, 
+an event-driven operating environment designed for use with 
+embeddednetworked sensors. TinyOS is designed to perform with ultra-low 
+power consumption and to support concurrency-intensive applications, i.e., 
+applications who accept only the most recently gathered data and discard 
+the others. TinyOS serves as a system-level bridge between the low-power 
+RF technology and MEMS (Micro-Electro-Mechanical-System) technology. Its 
+attributes include is small physical size, its support for 
+concurrency-critical applications, its diversity in design and usage, and 
+its great autonomy in establishing the sensor network without oversight. 
+In addition, instead of developing the TinyOS from scratch, all hardware 
+components of this platform are purchased off-the-shelf. This makes it 
+very cost-effective. 
+
+	TinyOS takes advantage of the ad hoc sensing technique commonly 
+associated with MANETs. All nodes in a TinyOS sensor network are 
+autonomous, and, once deployed, communicate with each other to assemble 
+the network. One of the nodes is designated as the central collection 
+point, or the base station. The data captured by the nodes of the network 
+propagate to the base station. The information on the connectivity and 
+error rates exchanged between the nodes may be used to infer the relative 
+distance amongst them. A TinyOS, in a sense, is a finite state machine 
+(FSM). A single node functioningly independently is considered a state, 
+and a network of nodes working together represents transitions from state 
+to state. Such a design philosophy allows quick, low-overhead, 
+non-blocking state transmissions, and allows independent components of the 
+network to share a single execution context. This enhances the network's 
+ability to scale flexibly. 
+
+	Another feature of TinyOS is that it blurs the boundary between HW 
+and SW. In fact, the component model used by TinyOS translates and 
+propogates the HW abstractions into software. On the otherhand, it also 
+allows for migrations of SW components into HW. An example is that the bit 
+level radio procession component could be implemented as specialized FIFO 
+with complex pattern matching techniques. This feature makes TinyOS to be 
+highly modular, as it permits a node in the network to transport its 
+software modules to other nodes with minimum effor, therefore achieving 
+application-specific functionality.
+
+	The performance results of TinyOS are demonstrated in some of the 
+presentation slides made by the Berkeley team. One of the important 
+contributions is that it extends the battery life span, often a critical 
+constraint in sensor network deployment, to nearly a year if running 
+low-load tasks, because it uses the commercially available Panasonic 
+CR2354 560 mAh lithium battery. However, this economic battery consumption 
+is subject to the periodicity of the sensor node listening modes. When the 
+node listens full time, the battery life is about 72 hours. Therefore, the 
+type of application and its requirement of active listening node often 
+determines the life span of the sensor node network. Indeed, the 
+researchers argue that in deploying the sensor network, the paramount 
+concern is the energy consumption, and it is to the end of reducing as 
+much energy consumption as possible that TinyOS is devised.
+
+	
+------------------------------------------------
+
+Smart Dust: Autonomous Sensing and Communication in a Cubic Millimeter
+
+Kris Pister, John Kahn, Bernhard Boser
+
+	This team of researchers at Berkeley are working on the "smart 
+dust," a complete sensor/communication system can be integrated into a 
+cubic millimeter package. Smart dust may find applications in areas such 
+as weather/seismological monitoring, chemical/biological sensors, product 
+quality monitoring, and smart office space. The current technology allows 
+researchers to achievetens of cubic millimeters sensors, called motes, 
+although a breakthrough was expected last July that would push the 
+physical size down to around one cubic millimeter. The source of the 
+energy that supports the functioning smart dust is either solar energy or 
+combustion/thermopiles. The researchers claim that their smart dust may 
+last up to two years when running at 1% duty cyle.
+
+	The idea behind the smart dust is as follows. Because of the 
+miniscule size of each mote, conservation of power consumption is the top 
+priority. Therefore, a node does not remain on at all times. At any given 
+time, only a few timers and a clock are running while most parts of the 
+mote are in sleep mode. Each timer has a specific, corresponding function 
+to control. When one timer expires, a function module is awakened and 
+begins execute its pre-assigned tasks. The function module remains on for 
+a certain period of time, at the end of which it returns to sleep with its 
+timer reset to begin counting again. A mote is also usually equipped with 
+a receiver, which allows it to communicate with the neighbors of the mote 
+in case of packet transmissions. It too functions in the aforementioned 
+manner in order to conserve energy.  The receiver has two major functions. 
+First, it may receive instructional packets from another mote that 
+instruct it to perform some certain task. Second, it may act as a station 
+to help relay an incoming packet or packets to the intended destination. 
+
+	Another energy-conservation technique used in smart dust is 
+through the use of corner-cube-retroreflector. The corner cube 
+retroreflector transmits information just by moving a mirror and thus 
+changing the reflection of a laser beam from the base station. This 
+technique is substantially more energy efficient than actually generating 
+some radiation, as the only energy consumed is that to tweak the 
+orientation of the mirror. 
+
+	One implicit assumption in the research of smart dust is that the 
+base station where all the data collected from the motes goes to must be 
+in the vicinity of the network. This is so because the transmission range 
+of the motes is maintained at a minimum, barely enough for motes to 
+communicate with each other. There are scenarios in which the motes may be 
+spread over in a remote area. In that case, either a data retrieval device 
+with more powerful signal reception power needs to be installed 
+permanently or some kind of fly-over of a airplane-carried receiver is 
+required. In either case, there is a closely bonded proximity that exists 
+between the receiver of the data and the smart dust network. This may be a 
+constraint in finding a suitable application for the smart dust 
+technology.
+
+

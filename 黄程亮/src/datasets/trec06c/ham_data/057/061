@@ -1,0 +1,65 @@
+Received: from web601.yahoomail.com (web2003.mail.yahoo.com [128.11.68.203])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id EAA06379
+	for <handyboard@media.mit.edu>; Thu, 25 Nov 1999 04:47:18 -0500 (EST)
+Message-Id: <19991125094717.9229.rocketmail@web601.yahoomail.com>
+Received: from [209.252.50.67] by web2003.mail.yahoo.com; Thu, 25 Nov 1999 01:47:17 PST
+Date: Thu, 25 Nov 1999 01:47:17 -0800 (PST)
+From: Michael Miranda <mikmiranda@yahoo.com>
+Subject: robot project
+To: handyboard@media.mit.edu, M M <mmirand2@email.sjsu.edu>,
+        ant randolph <Da1spot@aol.com>,
+        anthony randolph <a_randolph106@hotmail.com>,
+        "TCC." <dab8rs_85@yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+X-Mime-Autoconverted: from 8bit to quoted-printable by aleve.media.mit.edu id EAA06379
+
+Hi,
+
+I=92m trying to get a robot to turn a face the owner
+using rf.  I have one transmitter (that the owner will
+wear) and three receivers (set up in a triangle).  We
+want to use the transmitter as a beacon.  Then
+whichever receiver gets the signal first, that=92s where
+the owner is and where we want to turn to.  We can
+transmit to the receivers, but we can=92t see which
+receiver is getting the signal first.  I am trying to
+look at the falling edge of one pulse.  In my program
+any receiver with a high signal will set its time
+variable to i (counter).  And the last time its high
+corresponds to the falling edge.  The problem seems to
+be the time of the loop is too slow and with in one
+loop all the signals change (at the same time).  What
+I would like to do is speed up the loop, if that is
+possible. Can anyone help, is my thinking wrong?=20
+Here, is my code:
+
+float i, ta, tb, tc;
+void main(void)
+{
+	ta=3D0.;
+	tb=3D0.;
+	tc=3D0.;
+	i=3D0.;
+	while (i<200.)			=09
+	{
+		if (digital(11)=3D=3D1)
+			tb=3Di;
+		if (digital(12)=3D=3D1)
+			ta=3Di;
+		if (digital(13)=3D=3D1)
+			tc=3Di;
+		i++;
+	}
+		printf("A%d B%d \rC%d\n",ta,tb,tc);
+}
+
+
+Mike
+
+__________________________________________________
+Do You Yahoo!?
+Thousands of Stores.  Millions of Products.  All in one place.
+Yahoo! Shopping: http://shopping.yahoo.com
+

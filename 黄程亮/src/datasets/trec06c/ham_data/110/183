@@ -1,0 +1,58 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jBDEMs5L001562;
+	Tue, 13 Dec 2005 07:22:54 -0700
+Received: from localhost (gimli.email.arizona.edu [10.0.0.223])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP
+	id D26C6BEAC9F; Tue, 13 Dec 2005 07:22:54 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.Arizona.EDU [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP
+	id B550FBECCAF; Tue, 13 Dec 2005 07:22:53 -0700 (MST)
+Message-Id: <5.1.0.14.2.20051213071733.00ba48a0@psy1.psych.arizona.edu>
+Date: Tue, 13 Dec 2005 07:22:42 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Windows sound mixer during DMDX?
+In-Reply-To: <20051213112113.73118.qmail@web90108.mail.scd.yahoo.com>
+References: <5.1.0.14.2.20051212131220.00ba4df0@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:21 AM 12/13/2005 -0800, you wrote:
+>The experiment calls for 12 minutes of noise masking
+>sound during the visual task.
+>
+>DMDX would not let me load a 12 minute WAV file (would
+>not allocate the buffer for this 9 MB beast),
+
+   For reference the <StreamingAudio> keyword would.
+
+>  so I
+>simply play a 10 second noise clip over and over for
+>12 minutes.  Without Media Life, the clip would play
+>followed by a noticeble silence (several hundred ms?)
+>before the loop started again.  This is on a new P4
+>with 1GB RAM.
+>
+><ML> solves this problem!
+
+   Pretty weird, those two pieces of code are divorced from each 
+other.  Only thing I can think of is that having had another sound request 
+made before the background sound you've got the HAL sound system into a 
+different state, one where it perhaps doesn't have to set things up again 
+each time the 10 second file finishes playing.  Hopefully we'll remember 
+your discovery the next time someone hits the background sound gap.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+	No violence, gentlemen -- no violence, I beg of you! Consider
+the furniture!
+
+                                               -  Sherlock Holmes
+
+
+

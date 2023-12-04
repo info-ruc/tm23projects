@@ -1,0 +1,72 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1GEWlt04057
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 09:32:47 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1GEWjnp028695
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 09:32:46 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Thu, 16 Feb 2006 09:32:46 -0500 (EST)
+Message-ID: <1752.132.236.227.119.1140100366.squirrel@webmail.cornell.edu>
+Date: Thu, 16 Feb 2006 09:32:46 -0500 (EST)
+Subject: PAPER 7
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+"Mercury...", "P-Trees..." and "GeoPeer..." all provide a range query
+extension to the routing mechanisms we've seen provided by DHTs. 
+"Mercury..." builds a set of ring overlays very similar to the work of
+other DHTs we've seen so far.  However, the identifier space in Mercury is
+not distributed by a hash function.  Instead values are laid on the ring
+in contigous ranges (e.g. ids 2,3,4,... correspond to sequential integers
+2,3,4,... in some attribute-value space).  Routing occurs by first
+choosing an appropriate ring for an attribute range (each ring in Mercury
+corresponds to one attribute) and then routing along that ring to the
+first value in the range using ring mechanisms we've seen already.  The
+ring is then scanned sequentially (using successor pointers) to retrieve
+all nodes containing relevant data-items.  Mercury also provids
+system-wide metric estimation techniques for load distribution, node
+distribution and query selectivity.  These estimates allow for non-uniform
+ring-range assignment to nodes to balance load, allow for selection of
+long-range contacts (similar to Chord's finger pointers), and allow for
+selection of the most selective attribute ring for a query to minimize
+query flooding.  This achieves O(m' + log^2 n) routing performance (where
+m' is the number of nodes holding data-items relevant to the most
+selective range in a query). "P-Trees" also builds on a ring-based DHT.  A
+P-Tree acts like a distributed B+ tree, where each peer in the network
+holds tree-nodes along the left-most root-to-leaf path.  A P-Tree loosens
+some requirements of a B+ tree to allow for more tolerance in the face of
+a dynamic network.
+
+GeoPeer is a very different system.  GeoPeer focusses on geographical
+attributes (specifically x-y coordinates) and builds a Delaunay
+Triangulation overlay on that space.  The triangulation connects nodes to
+their "nearest neighbors" in the Delaunay triangulation sense.  Given that
+basic topology, Geopeer adds k long-range contacts (motivated by
+Klienberg's Small Worlds) to achieve O(1/k log^2 n) routing.  Geographical
+queries are answered by sending the query into the desired region and
+doing limited flooding within that region.
+
+"Mercury..." and "P-Trees..." build on existing DHT work and point to the
+properties provided by these systems.  The contribution of these systems
+is to provide a range-query mechanism (and in the case of Mercury, metric
+estimation techniques).  It's not clear that Mercury's O(m' + log^2 n)
+routing performance is somehow a lower bound that is difficult to
+overcome.  And Mercury's application (Caduceus), while whimsical doesn't
+motivate scalability and wide applicability.  "P-Trees..." is well rooted
+in database theory, and provides O(m + log n) routing performance which is
+an improvement, but no presentation of the true cost of the overhead of
+maintaining the tree is presented (in a way comparable to the overhead of
+DHTs for example).  GeoPeer takes a wholly new approach to range based
+query fulfillment, and a construction mechanism resiliant to unbalanced
+node distribution is also presented, but methods to address hotspots (an
+important aspect of systems given GeoPeers suggested applications) are not
+discussed and these issues may weaken some of GeoPeer's long range contact
+Management techniques (a key contribution of "GeoPeer...").
+

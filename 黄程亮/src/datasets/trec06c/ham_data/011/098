@@ -1,0 +1,41 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA09721
+	for <handyboard@media.mit.edu>; Mon, 16 Feb 1998 09:49:38 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id JAA23349;
+	Mon, 16 Feb 1998 09:49:35 -0500 (EST)
+Message-Id: <199802161449.JAA23349@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Phethsavong Prachith <pprachit@ecs.umass.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: pa7 9600 serial output 
+In-Reply-To: Your message of "Sun, 15 Feb 98 16:35:51 EST."
+             <0EOF00I1BW04TC@rfd1.oit.umass.edu> 
+Date: Mon, 16 Feb 98 09:49:35 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+> Hi, I'm trying to interface the FerretTronics Servo Controller Chip FT639,
+> to the handyboard
+> using PA7.  How can i modify the pa7_9600.asm file to transmit at 2400 baud?
+> 
+
+You have to re-write the bit_delay loop to take up four times as much
+time.  Just multiply the delay count value by four, e.g., "LDAB #148".
+
+Fred
+
+(following is the 9600 code.)
+
+* take up 0.1042 millisecs
+* 208 cycles
+bit_delay
+	LDAB	#37
+bit_loop
+	DECB			; 2 cycles
+	BNE	bit_loop	; 3 cycles
+	RTS
+
+
+
+

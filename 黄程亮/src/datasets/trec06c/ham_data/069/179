@@ -1,0 +1,60 @@
+Received: from gwsmtp.thomson-csf.com (gwsmtp.thomson-csf.com [195.101.39.226])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id KAA11281
+	for <handyboard@media.mit.edu>; Wed, 12 Jul 2000 10:29:29 -0400 (EDT)
+Received: from thomplex.thomson-csf.com (200.3.2.2) by gwsmtp.thomson-csf.com (NPlex 5.0.034)
+        id 396B406B0000FF7F for handyboard@media.mit.edu; Wed, 12 Jul 2000 16:23:48 +0200
+Received: from thomplex.thomson-csf.com (200.3.2.2) by thomplex.thomson-csf.com (NPlex 5.0.046)
+        id 396C77840000114C for handyboard@media.mit.edu; Wed, 12 Jul 2000 16:22:07 +0200
+Received: from 151.5.0.20 by thomplex.thomson-csf.com (InterScan E-Mail VirusWall NT); Wed, 12 Jul 2000 16:22:07 +0200 (Paris, Madrid (heure d'iti))
+X-Internal-Id: 395705780000C40B
+Received: from uk.airsysatm.thomson-csf.com (89.80.69.241) by chessplex.uk.airsysatm.thomson-csf.com (NPlex 2.0.124); Wed, 12 Jul 2000 15:23:53 +0100
+Sender: jhatton@media.mit.edu
+Message-Id: <396C803A.9E98ABB@uk.airsysatm.thomson-csf.com>
+Date: Wed, 12 Jul 2000 15:27:07 +0100
+From: John Hatton <john.hatton@uk.airsysatm.thomson-csf.com>
+Organization: AirSys ATM UK
+X-Mailer: Mozilla 4.05 [en] (X11; I; OSF1 V4.0 alpha)
+Mime-Version: 1.0
+To: JR <jrnorris@nltc.net>, HB Mailing list <handyboard@media.mit.edu>
+Subject: Re: 6.8nF Capacitor
+References: <LPBBLCFDDGMKJGAHGEPDOEHOCAAA.jrnorris@nltc.net>
+Content-Type: text/plain; charset=us-ascii
+
+I don't suppose you know what the formula is for calculating the value of the
+frequency ?.  1/(R4*C6) possibly ?. This equation gives 38396Hz (38.4KHz) which
+means that my 6.6nF caps give 39560Hz (39.6KHz) which is closer to 40KHz than
+the 6.8nF value listed. I would appreciate confirmation of this before I decide
+which component to use.
+
+Thanks for your help
+
+John Hatton
+johnhatton@email.com
+
+JR wrote:
+
+> Greetings:
+> The capacitor used on the handy board (c6) and resistor r4 set up an
+> oscillator for infrared output frequency.  This signal does not have to be
+> an  exact frequency.  IE most infrared demodulators have a center frequency.
+> However the demodulator will operate within a range of a couple of kHz.  You
+> can change the values (of course within reason) of c6 and r4 to yield the
+> frequency that you desire.
+>
+> Issue this command to start the Ir transmitter circuit:
+>
+> poke(0x1000, 0x40);
+>
+> this will start the transmission circuit.  LED 9 will light.
+> use an oscilloscope to measure the signal at pin 2 of U9.  This should be a
+> square wave of about 40kHz  (39,000 Hz to 41,000 Hz will work).
+>
+> Issue the command from IC:
+> poke(0x1000, 0);
+>
+> This will turn off the transmission circuit and LED9 should go off.
+>
+
+
+
+

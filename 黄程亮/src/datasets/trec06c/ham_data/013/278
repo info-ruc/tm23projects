@@ -1,0 +1,115 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id SAA31212
+	for <handyboard@media.mit.edu>; Wed, 1 Apr 1998 18:34:49 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id SAA13778;
+	Wed, 1 Apr 1998 18:34:46 -0500 (EST)
+Message-Id: <199804012334.SAA13778@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Jaron Paludanus <j.paludanus@tip.nl>
+Cc: "HandyBoard (E-mail)" <handyboard@media.mit.edu>
+Subject: Re: Working with a different compiler 
+In-Reply-To: Your message of "Wed, 01 Apr 98 23:56:11 +0200."
+             <01BD5DC9.EBE4EC20.j.paludanus@tip.nl> 
+Date: Wed, 01 Apr 98 18:34:46 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+some of these questions are answered in the "i am using my own C
+compiler/what is the memory map of the handy board" entry in the FAQ.
+after reading this, please make sure you review the FAQ, because there
+is more information there.
+
+here are some key tidbits that you need to know to get going:
+
+1.  the HB's RAM lives from $8000 to $FFFF.  It is hardware battery
+backed, so if you turn the board off and on again, your program stays
+there. 
+
+2.  the reset vector for the HB is located at $BFFE-$BFFF.  you must
+put the entry point for your program at that two byte location.
+
+3.  in order to do subroutine calls you must initialize the stack
+pointer.  using the zero page of internal 6811 ram is a good place.
+the stack builds down, so setting it to $FF is reasonable.
+
+4.  here is a sample program that you should be able to assemble and
+download.  it will turn on the motors (mapped at address $7xxx, where
+'x' is any hex digit).
+
+----------------------------------------------------------------------
+	ORG	$8000		* put the program at address $8000
+
+START	LDS	#$FF		* init the stack pointer to $ff
+
+	LDAA	#$F0		* put the number $F0 in the A register
+	STAA	$7000		* store in the motors to turn them on.
+
+DIE	BRA	DIE		* loop endlessly to finish.
+
+	ORG	$BFFE		* address of RESET vector
+	FDB	START		* deposit start address
+---------------------------------------------------------------------
+
+i hope this helps!
+
+Fred
+
+
+In your message you said:
+> Hi all,
+> 
+> I managed to get the TASKING (Whitesmiths) 68HC11 optimizing C compiler, 
+> debugger and simulator for use with the Handyboard. Thrilled at first I now 
+> realize I leave the safe Interactive C path and wander of in the dark. I 
+> would like to get some understanding of what I am doing.
+> 
+> I've went through the mailing list since July 96 and have not found many 
+> references to using the Handyboard with a different compiler then IC. I 
+> have the pink book, I read the HB site and the documentation that came with 
+> the compiler and still can't get passed the "Hello World" stage. Can 
+> anybody help me with general embedded programming and programming the HB in 
+> particular?
+> 
+> My first real goal to achieve is a set of routines that use measured 
+> velocity (using shaft-encoders) and feed this information to the motor 
+> drivers. Using ANSI-C I created routines that do the actual work for the 
+> feed-back loop but I came to the conclusion there is much more I have to 
+> understand first.
+> 
+> I played around with the compiler package, I can create a C program and 
+> generate a S19 file. As far as I understand the documentation, it links a 
+> routine that starts up a function called main() after reset. The created 
+> S19 file can be downloaded without problems to the handyboard using 
+> HBDL.EXE. I reset the board and nothing happens!
+> 
+> To get some feedback during my escapades with the handyboard and to learn 
+> the tools I would like to start of with a routine that beeps the piezo. I 
+> have read the tries of German Gentile but did not find an answer. 
+> Programming the various timers in C leaves me clueless and implementing an 
+> interupt driven routine is off-limits for now. So can anybody help me 
+> creating (or just supply <gr>) an ANSI-C routine that beeps the piezo? 
+> Peeks and pokes in a simple loop will do fine for me at this point.
+> 
+> The compiler software I have allows for intermixing assembly and C, can map 
+> memory locations to variables without the need of pointers (a question of 
+> me earlier about this is answered in this package using a special 
+> identifier) and has all sorts of extravagant optimizations. I have a 
+> debugger, monitor and simulater, capabale of code-profiling etc. and I 
+> can't use any of them (yet)... ;(
+> 
+> I don't really understand what is happening when I download a program to 
+> the HandyBoard. What is a bootstrap exactly? Will the programs I write 
+> automatically go into the 32K RAM? What happens if I switch it off - will 
+> my code be unusable like IC code or can I do with simple integrety 
+> checking?
+> 
+> Since I have no feedback of the board at all I am a bit stuck...
+> So please, is there somebody who has previous experiences and wants to help 
+> me out here...?
+> 
+> thanks, Jaron
+> j.paludanus@tip.nl
+> 
+> 
+

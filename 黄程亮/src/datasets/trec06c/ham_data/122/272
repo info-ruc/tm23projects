@@ -1,0 +1,140 @@
+Received: from mailbox4.ucsd.edu (mailbox4.ucsd.edu [132.239.1.56])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k3Q0CbZO021673
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 17:12:37 -0700
+Received: from smtp.ucsd.edu (smtp.ucsd.edu [132.239.1.49])
+	by mailbox4.ucsd.edu (8.13.6/8.13.5) with ESMTP id k3Q0CYXJ036826
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK)
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 17:12:34 -0700 (PDT)
+Received: from Shanghai.ucsd.edu (stiles-lab-71.ucsd.edu [132.239.57.71])
+	by smtp.ucsd.edu (8.13.6/8.13.4) with ESMTP id k3Q0CXgu090323
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 25 Apr 2006 17:12:34 -0700 (PDT)
+Message-Id: <6.2.3.4.2.20060425165336.046c0c50@popmail.ucsd.edu>
+Date: Tue, 25 Apr 2006 17:12:33 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: Hongchuan Zhang <hczhang@ucsd.edu>
+Subject: [DMDX] timing on mwc
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="=====================_27027890==.ALT"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+--=====================_27027890==.ALT
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+Hi All,
+
+   I am trying to set up an experiment with fake feedbacks, in which 
+for 75% of trials subjects will get a positive feedback no matter 
+what key pressed, and for the remaining 25% they will get negative 
+feedbacks. There was also a too long feedback. The sample lines are 
+like below:
+
+  <zil> <zor> <cr> <n 6> <d 0> <rcot> <t 1200> <nfb> <vm 
+1024,768,768,16,0> <id keyboard> <vzk +Left Arrow> <vzk +Right Arrow>
+
+1 <% 60> "GO"/<% 60>/<bu 1000>
+m1#<umnr><umpr><mpr +Left Arrow><mpr +Right Arrow>#
+m2#<umnr><umpr><mnr +Left Arrow><mnr +Right Arrow>#
+mC#<mwc "+Left Arrow", 991, "+Right Arrow", 991, cinr, 999>#
+mW#<mwc "+Left Arrow", 992, "+Right Arrow", 992, cinr, 999>#;
+
+999 d2 "Time Out" <return>;
+991 d2 "RIGHT" <return>;
+992 d2 "WRONG" <return>;
+
+=1000 *<% 30> g "fix"/<% 87> g "blank"/!;
+=1000 *<% 30> g "fix"/<% 87> g "blank"/!;
++1 ~1 ~C *<% 30> g "pic1"/<% 87> g "blank"/!;
+-2 ~2 ~W *<% 30> g "pic2"/<% 87> g "blank"/!;
+=1000*<% 30> g "fix"/<% 87> g "blank"/!;
+=1000*<% 30> g "fix"/<% 87> g "blank"/!;
+
+    Since I want to use this for fMRI, the timing of mwc is 
+essential. First, the rcot showed that for items numbered 1000, the 
+timing is perfect. However, for those items numbered 1&2, there are 
+two more ticks. Are these two more ticks due to the d2 setting? 
+Second, those fake feedbacks appeared with a very short duration, is 
+there way to lengthen the duration? I tried using <%> key word, but failed.
+
+Hongchuan
+
+
+
+--------------------------------------------
+Hongchuan Zhang, Ph.D
+Center for Human Development
+University of California, San Diego
+AP&M Annex, 9500 Gilman Drive, 0115
+La Jolla, CA, 92093-0115
+Tel: (858) 534-2342
+FAX: (858) 534-2344
+hczhang@ucsd.edu  
+--=====================_27027890==.ALT
+Content-Type: text/html; charset="us-ascii"
+
+<html>
+<body>
+Hi All,<br><br>
+&nbsp; I am trying to set up an experiment with fake feedbacks, in which
+for 75% of trials subjects will get a positive feedback no matter what
+key pressed, and for the remaining 25% they will get negative feedbacks.
+There was also a too long feedback. The sample lines are like below:
+<br><br>
+&nbsp;&lt;zil&gt; &lt;zor&gt; &lt;cr&gt; &lt;n 6&gt; &lt;d 0&gt;
+&lt;rcot&gt; &lt;t 1200&gt; &lt;nfb&gt; &lt;vm 1024,768,768,16,0&gt;
+&lt;id keyboard&gt; &lt;vzk +Left Arrow&gt; &lt;vzk +Right Arrow&gt;
+<br><br>
+1 &lt;% 60&gt; &quot;GO&quot;/&lt;% 60&gt;/&lt;bu 1000&gt;<br>
+m1#&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +Left Arrow&gt;&lt;mpr +Right
+Arrow&gt;#<br>
+m2#&lt;umnr&gt;&lt;umpr&gt;&lt;mnr +Left Arrow&gt;&lt;mnr +Right
+Arrow&gt;#<br>
+mC#&lt;mwc &quot;+Left Arrow&quot;, 991, &quot;+Right Arrow&quot;, 991,
+cinr, 999&gt;#<br>
+mW#&lt;mwc &quot;+Left Arrow&quot;, 992, &quot;+Right Arrow&quot;, 992,
+cinr, 999&gt;#;<br><br>
+999 d2 &quot;<font color="#000080">Time Out</font>&quot;
+&lt;return&gt;;<br>
+991 d2 &quot;<font color="#00FF00">RIGHT</font>&quot;
+&lt;return&gt;;<br>
+992 d2 &quot;<font color="#FF0000">WRONG</font>&quot;
+&lt;return&gt;;<br><br>
+=1000 *&lt;% 30&gt; g &quot;fix&quot;/&lt;% 87&gt; g
+&quot;blank&quot;/!;<br>
+=1000 *&lt;% 30&gt; g &quot;fix&quot;/&lt;% 87&gt; g
+&quot;blank&quot;/!;<br>
++1 ~1 ~C *&lt;% 30&gt; g &quot;pic1&quot;/&lt;% 87&gt; g
+&quot;blank&quot;/!;<br>
+-2 ~2 ~W *&lt;% 30&gt; g &quot;pic2&quot;/&lt;% 87&gt; g
+&quot;blank&quot;/!;<br>
+=1000*&lt;% 30&gt; g &quot;fix&quot;/&lt;% 87&gt; g
+&quot;blank&quot;/!;<br>
+=1000*&lt;% 30&gt; g &quot;fix&quot;/&lt;% 87&gt; g
+&quot;blank&quot;/!;<br><br>
+&nbsp;&nbsp; Since I want to use this for fMRI, the timing of mwc is
+essential. First, the rcot showed that for items numbered 1000, the
+timing is perfect. However, for those items numbered 1&amp;2, there are
+two more ticks. Are these two more ticks due to the d2 setting? Second,
+those fake feedbacks appeared with a very short duration, is there way to
+lengthen the duration? I tried using &lt;%&gt; key word, but
+failed.<br><br>
+Hongchuan<br><br>
+<br>
+<x-sigsep><p></x-sigsep>
+--------------------------------------------<br>
+Hongchuan Zhang, Ph.D<br>
+Center for Human Development<br>
+University of California, San Diego<br>
+AP&amp;M Annex, 9500 Gilman Drive, 0115<br>
+La Jolla, CA, 92093-0115<br>
+Tel: <font size=2>(858) 534-2342</font> <br>
+FAX: <font size=2>(858) 534-2344<br>
+</font>hczhang@ucsd.edu </body>
+</html>
+
+--=====================_27027890==.ALT--
+
+
+

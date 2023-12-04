@@ -1,0 +1,413 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j05BqGDX001573
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Wed, 5 Jan 2005 05:52:16 -0600 (CST)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id j05BqFnD001572
+	for reliable_computing-outgoing; Wed, 5 Jan 2005 05:52:15 -0600 (CST)
+Received: from imap.univie.ac.at (mailbox-lmtp.univie.ac.at [131.130.1.27])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j05Bq5Bi001568
+	for <reliable_computing@interval.louisiana.edu>; Wed, 5 Jan 2005 05:52:11 -0600 (CST)
+Received: from univie.ac.at (theseus.mat.univie.ac.at [131.130.16.23])
+	by imap.univie.ac.at (8.12.10/8.12.10) with ESMTP id j05Bpb0W524472;
+	Wed, 5 Jan 2005 12:51:40 +0100
+Message-ID: <41DBD4C9.70406@univie.ac.at>
+Date: Wed, 05 Jan 2005 12:51:37 +0100
+From: Arnold Neumaier <Arnold.Neumaier@univie.ac.at>
+Organization: University of Vienna
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.3) Gecko/20041005
+X-Accept-Language: en, de
+MIME-Version: 1.0
+To: George Corliss <George.Corliss@marquette.edu>
+CC: Vladik Kreinovich <vladik@cs.utep.edu>,
+        reliable_computing@interval.louisiana.edu, rbk@louisiana.edu
+Subject: Re: quadratic equation with interval coefficients
+References: <BDFF6B3F.1104B%George.Corliss@Marquette.edu>
+In-Reply-To: <BDFF6B3F.1104B%George.Corliss@Marquette.edu>
+Content-Type: multipart/mixed;
+ boundary="------------090408020206050502070202"
+X-DCC-ZID-Univie-Metrics: mx7.univie.ac.at 4247; Body=5 Fuz1=5 Fuz2=5
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+Status:  O
+X-Status: $$$$
+X-UID: 0000000018
+
+This is a multi-part message in MIME format.
+--------------090408020206050502070202
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+George Corliss wrote:
+> 
+>>>It is described in the paper E. R. Hansen and G. W. Walster, Sharp bounds on
+>>>interval polynomial roots, Reliable Computing, 2002, Vol. 8, No. 2, pp.
+>>>115-122. 
+>>
+>>Thanks. I hope they didn't patent it!
+> 
+> They have applied for one.  Patent application number: 20030055857
+> Method and apparatus for computing roots of a polynomial equation with
+> interval coefficients
+> 
+> You may view the application at
+> http://appft1.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&u=%2Fneta
+> html%2FPTO%2Fsearch-adv.html&r=16&p=1&f=G&l=50&d=PG01&S1=walster.IN.&OS=IN/w
+> alster&RS=IN/walster
+
+
+Ultimately their patents will just mean that, for fear of possible
+law suits, nobody apart from SUN will be using the results of their
+research, but instead use innocent replacements. Using the latter
+may even be an advantage, as in the present case.
+
+
+The algorithm they try to patent sometimes gives a gross
+overestimation of the zero set. For example, in BACKGROUND
+[0018],[0019],[0064],[0065], one gets [-inf,inf] if A=B=0 notin C,
+although the solution set is empty.
+It seems that it is implicitly assumed that A is nonzero.
+
+Their formulas also lead to overflow when B.sup^2 > realmax,
+with very poor results if A=C=B/2 and B is huge.
+
+
+In order to prevent that there will be a patent on similar
+elementary tasks, I post a solution for the constraint propagation
+on univariate quadratic expressions, with or without interval
+coefficents. dvi,ps,and pdf versions can be downloaded from
+the address given below; the latex original is attached here
+to document that the paper was created today.
+
+
+
+Arnold Neumaier
+
+
+=======================================================================
+
+                         A. Neumaier
+
+Constraint propagation for univariate quadratic constraints
+
+                 Manuscript (January 5, 2005)
+
+      http://www.mat.univie.ac.at/~neum/papers.html#cpquad
+
+                           Abstract
+
+We present formulas for rigorous constraint propagation of
+quadratic equality or inequality constraints involving a single
+nonlinear variable. Since the analysis is very elementary,
+probably everything in here was known for a long time.
+The present approach, based on directed rounding only, provide
+efficient alternatives to the procedures discussed by
+     E. R. Hansen and G. W. Walster,
+     Sharp bounds on interval polynomial roots,
+     Reliable Computing 8 (2002), 115--122.
+(who only treat the solution of a quadratic equation with interval
+coefficients, and treat incorrectly the case where the coefficient
+of the quadratic term contains numbers of both signs),
+which employ interval arithmetic.
+
+In view of pending patent applications by these authors,
+who by these activities threaten to curb the freedom
+of research on interval methods, the following is explicitly stated:
+
+Various modifications to the methods described will be readily apparent
+to those skilled in the art, and the general principles defined herein
+may be applied to such modifications without departing from
+the spirit and scope of the present methods. Thus, the present
+methods are not intended to be limited to the formulas shown, but is
+to be accorded the widest scope consistent with the principles and
+features disclosed herein.
+
+
+--------------090408020206050502070202
+Content-Type: application/x-tex;
+ name="cpquad.tex"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="cpquad.tex"
+
+\documentclass[12pt]{article}
+
+\def\a {{\bf a}}
+\def\b {{\bf b}}
+\def\c {{\bf c}}
+\def\x {{\bf x}}
+\def\ol{\overline}
+\def\ul{\underline}
+
+\parindent0pt
+\parskip 2ex plus 1pt minus 1pt
+
+
+\begin{document}
+
+
+\begin{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\LARGE \bf Constraint propagation for } \\
+
+{\LARGE \bf univariate quadratic constraints} \\
+
+\vspace{1cm}
+
+\centerline{\sl {\large \bf Arnold Neumaier}}
+
+\vspace{0.5cm}
+
+\centerline{\sl Institut f\"ur Mathematik, Universit\"at Wien}
+\centerline{\sl Strudlhofgasse 4, A-1090 Wien, Austria}
+\centerline{\sl email: Arnold.Neumaier@univie.ac.at}
+\centerline{\sl WWW: http://www.mat.univie.ac.at/$\sim$neum/}
+
+
+\end{center}
+
+\vspace{0.5cm}
+
+\hfill January 5, 2004
+
+
+\vspace{0.5cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\bf Abstract.} 
+
+We present formulas for rigorous constraint propagation of
+quadratic equality or inequality constraints involving a single
+nonlinear variable. Since the analysis is very elementary, 
+probably everything in here has been known for a long time.
+The present approach, based on directed rounding only, provides 
+efficient alternatives to the procedures discussed by 
+{\sc Hansen \& Walster} \cite{HanW} (who only treat the solution
+of a quadratic equation with interval coefficients, and treat 
+incorrectly the case where the coefficient of the quadratic term 
+contains numbers of both signs), which employ interval arithmetic.
+
+In view of pending patent applications by these authors, 
+who by these activities threaten to curb the freedom 
+of research on interval methods, the following is explicitly stated:
+
+Various modifications to the methods described will be readily apparent 
+to those skilled in the art, and the general principles defined herein 
+may be applied to such modifications without departing from
+the spirit and scope of the present methods. Thus, the present
+methods are not intended to be limited to the formulas shown, but are
+to be accorded the widest scope consistent with the principles and
+features disclosed herein.
+ 
+Notation is as in my book {\sc Neumaier} \cite{Neu.int}.
+ 
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Bounds for quadratic expressions} 
+
+To find a rigorous upper bound on  
+\[
+u=\sup\,\{ax^2+bx \mid x \in \x\},
+\]
+we note that
+\[
+u=\max\,\{\ul x(a\ul x+b),\ol x(a\ol x+b)\},
+\]
+except in case that $ax^2+bx$ attains its global maximum in the
+interior of $\x$.
+This is the case iff $a<0$ and $t=-b/(2a)$ is in the interior of $\x$,
+in which case $u=b^2/(-4a)$, attained at $t$. 
+
+If $\ul x\ge0$, we get a rigorous upper bound in finite precision
+arithmetic by computing with upward rounding as follows 
+({\tt xl} = $\ul x$, {\tt xu} = $\ol x$):
+\begin{verbatim}
+  roundup;
+  u=max(xl*(a*xl+b),xu*(a*xu+b));
+  s=b/2; t=s/(-a);
+  if t>xl, r=(-2*a)*xu;
+    if r>b, u=max(u,s*t); end;
+  end;
+\end{verbatim}
+With some extra analysis, it could be determined in most cases which
+of the three cases is the worst case; however, if the unconstrained 
+maximum of the quadratic is very close to a bound (or to both bounds),
+two (or three) of the cases might apply due to uncertainty caused
+by rounding errors.
+ 
+\bigskip
+Finding a rigorous enclosure for the interval  
+\[
+\c=\sup\,\{ax^2+bx \mid x \in \x,~ a \in \a,~ b\in \b\}
+\]
+can be reduced to the above for $\ul x \ge 0$, using
+\[
+\ol c = \sup\, \{\ol ax^2+\ol bx \mid x \in \x\},~~~
+\ul c = -\sup\, \{-\ul ax^2-\ul bx \mid x \in \x\}.
+\]
+The case $\ol x\le0$ can be reduced to this by changing the sign of $x$,
+and the general case by splitting $\x$ at zero if necessary.
+
+\bigskip
+Essentially the same analysis holds for rigorous upper bounds on
+\[
+u=\sup\Big\{~\sum_{i=1}^{n} a_i x^i ~\Big|~ x \in \x~\Big\}
+\]
+and for rigorous enclosures of   
+\[
+\c=\sup\Big\{~\sum_{i=1}^{n} a_i x^i ~\Big|~ x \in \x,~ a\in\a~\Big\},
+\]
+except that finding the interior extrema is more involved.
+It can be done with closed formulas for $n\le 5$ (though already 
+$n=4$ is quite cumbersome and not recommended), and in general 
+(recommended for $n>3$) using a root enclosure algorithm for the 
+derivative, such as that in {\sc Neumaier} \cite{Neu.roots}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Solving quadratic constraints} 
+
+To find the set
+\[
+X=\{x \ge 0 \mid ax^2+2bx \ge c\},
+\]
+we proceed as follows. If $a=0$, the constraint is in fact linear,
+and we have 
+\[
+X= \cases{
+   \emptyset         & if $c>0$, $b\le 0$,\cr
+   [0.5c/b,\infty]      & if $c>0$, $b>0$, \cr
+   [0,0.5c/b]           & if $c\le 0$, $b<0$, \cr
+   [0,\infty]        & if $c\le 0$, $b\ge 0$,
+         }
+\]
+which can be nested such that only two compares are needed in any
+particular case. For a rigorous enclosure in finite precision 
+arithmetic, rounding must be downwards in the second case, 
+and upwards in the third case.
+
+If $a \ne 0$, the behavior is governed by the zeros
+of the quadratic equation $ax^2+2bx-c=0$, given by
+\[
+t_1=\frac{-b-\sqrt{\Delta}}{a}=\frac{c}{b-\sqrt{\Delta}},~~~~~~~~~
+t_2=\frac{-b+\sqrt{\Delta}}{a}=\frac{c}{b+\sqrt{\Delta}},
+\]
+where $\Delta:=b^2+ac$. If $\Delta\ge 0$, the zeros are real and 
+the nonnegative zeros determine 
+\[
+X=\cases{
+[0,\infty]\setminus~]t_1,t_2[ & if $a>0$,\cr
+[0,\infty]\cap\,    [t_2,t_1] & if $a<0$.
+        }
+\]
+Depending on the signs of $a$, $b$ and $c$ we find
+\[
+X=\cases{
+  \emptyset                   & if $a< 0$, $b\le 0$, $c> 0$,\cr
+  [0,-(c/z)]                  & if $a< 0$, $b\le 0$, $c\le 0$,\cr
+  [0,z/(-a)]                  & if $a< 0$, $b\ge 0$, $c\le 0$,\cr
+  [-((-c)/z),z/(-a)]          & if $a< 0$, $b\ge 0$, $c> 0$,\cr
+  [0,-(c/z)]\cup[z/a,\infty]  & if $a> 0$, $b\le 0$, $c\le 0$,\cr
+  [z/a,\infty]                & if $a> 0$, $b\le 0$, $c> 0$,\cr  
+  [-((-c)/z),\infty]          & if $a> 0$, $b\ge 0$, $c> 0$,\cr
+  [0,\infty]                  & if $a> 0$, $b\ge 0$, $c\le 0$,
+       }
+\]
+where 
+\[
+z=|b|+\sqrt{\Delta}. 
+\]
+These formulas are numerically stable, and can be nested such that 
+only three compares are needed in any particular case. 
+(There are avoidable overflow problems for huge $|b|$, which can be 
+cured by using for huge $|b|$ instead of $\sqrt{b^2+ac}$ the 
+formula $|b|\sqrt{1+ac/b^2}$.)
+
+Rigorous results in the presence of rounding errors are obtained if
+lower bounds are rounded downwards, and upper bounds are rounded 
+upwards. With the bracketing as given, this happens if in 
+cases 2,5 and 6 all computations (including those of 
+$\Delta=\sqrt{b^2+ac}$ and $z=|b|+\sqrt{\Delta}$) 
+are done with rounding downwards, and in the other cases with rounding 
+upwards. (However, this does {\bf not} hold for the version guarded 
+against overflow, where further care is needed for the directed 
+rounding of $\sqrt{\Delta}=|b|\sqrt{1+ac/b^2}$.)
+
+If (the exact) $\Delta$ is negative, there is no real solution,
+and $X$ is empty if $c>0$ and $[0,\infty]$ otherwise. 
+The case when the sign of $\Delta$ cannot be determined due to rounding
+errors needs special consideration. In the first and last case, 
+the conclusion holds independent of the sign of $\Delta$, so that the 
+latter need only be computed for cases 2--7. In the cases 2, 3, 6, and 7
+we have $ac\ge 0$, so that $\Delta\ge 0$ automatically. 
+This leaves cases 4 and 5. Now it is easily checked that with the 
+recommended rounding and, in place of cases 4 and 5,
+\[
+X=\cases{
+  \emptyset           & if $a< 0$, $b\ge 0$, $c> 0$, $\Delta< 0$,\cr
+  [-((-c)/z),z/(-a)]  & if $a< 0$, $b\ge 0$, $c> 0$, $\Delta\ge 0$,\cr
+  [0,-(c/z)]\cup[z/a,\infty]  
+                      & if $a> 0$, $b\le 0$, $c\le 0$, $\Delta\ge 0$,\cr
+  [0,\infty]          & if $a> 0$, $b\le 0$, $c\le 0$, $\Delta< 0$,
+       }
+\]
+a rigorous enclosure is computed in all cases.
+
+\bigskip
+Finding the set
+\[
+X'=\{x \ge 0 \mid ax^2+2bx \in \c \mbox{ for some } a\in\a, b\in\b\}
+\]
+can be reduced to the previous task since
+\[
+X'=\{x \ge 0 \mid \ul a x^2+2\ul b x \le \ol c\} \cap
+\{x \ge 0 \mid \ul a x^2+2\ul b x \le \ol c\}.
+\]
+The sets
+\[
+X''=\{x \in \x_0 \mid ax^2+2bx \ge c\}
+\]
+and
+\[
+X'''=\{x\in\x_0 \mid ax^2+2bx \in\c \mbox{ for some } a\in\a, b\in\b\}
+\]
+can be obtained by intersecting the result of the above tasks with 
+$\x_0$ if $\ul x_0\ge0$, by negating $x$, $\x_0$, and $\b$ if 
+$\ol x_0\le 0$, and by splitting $\x_0$ at zero if $0$ is in the 
+interior of $\x_0$. By modifying the code appropriately, one can 
+also avoid computing roots which can be seen to lie outside $\x_0$.
+
+\bigskip
+With minor changes, these formulas also apply for strict inequalities 
+and interior enclosures. Also, it is clear that polynomial inequalities
+and inclusions of interval polynomials can be solved by a 
+straightforward adaptation of the above arguments.
+
+
+\bigskip
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{thebibliography}{99}
+
+\bibitem{HanW} E. R. Hansen and G. W. Walster, 
+Sharp bounds on interval polynomial roots, 
+Reliable Computing 8 (2002), 115--122. 
+
+\bibitem{Neu.int} A. Neumaier, 
+Interval Methods for Systems of Equations,
+Cambridge Univ. Press, Cambridge 1990.
+
+\bibitem{Neu.roots} A. Neumaier, 
+Enclosing clusters of zeros of polynomials, 
+J. Comput. Appl. Math. 156 (2003), 389--401. 
+
+
+\end{thebibliography}
+\end {document}
+
+
+
+
+--------------090408020206050502070202--
+
+

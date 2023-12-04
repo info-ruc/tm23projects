@@ -1,0 +1,78 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB3IVET18281
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 13:31:14 -0500 (EST)
+Received: from photon.ece.cornell.edu (photon.ece.cornell.edu [128.84.81.138])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fB3IRvM21001
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 13:27:57 -0500
+Date: Mon, 3 Dec 2001 13:27:59 -0500 (EST)
+From: Edward Hua <eyh5@ece.cornell.edu>
+X-X-Sender:  <eyh5@photon.ece.cornell.edu>
+To: <egs@CS.Cornell.EDU>
+Subject: 615 Paper # 68
+Message-ID: <Pine.LNX.4.33.0112011956550.12599-100000@photon.ece.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Tapestry: An Infrastructure for Fault tolerant Wide-area Location and 
+Routing
+
+Ben Y. Zhao, John Kubiatowicz, and Anthony D. Joseph
+
+
+	This paper proposes Tapestry, a wide-area network infrastructure 
+that is capable of routing requests to service objects efficiently in the 
+presence of heavy load and network/node faults. Inspired by the Plaxton 
+scheme, Tapestry is self-organizing, easily scalable, fault-tolerant, uses 
+multiple root nodes to point to an object, and uses explicit locality 
+knowledge to route service requests. Tapestry achieves overall network 
+performance through the accumulation of statistics, and its routing is 
+done independent of the physical location of the server. 
+
+	The routing in Tapestry is done using the neighbor maps. The 
+neighbor maps contain entries whose neighbor node IDs are computed using a 
+hashing function such as SHA-1. The destination nodes in the neighbor map 
+can be resolved digit when a service request traverses through the 
+network. The location scheme in Tapestry is done by having multiple root 
+nodes serving an object. Each root node contains pointer pointing to the 
+actual location of the object. And each intermediate hop from the root 
+node to the object location node contains a <OID, SID> tuple assist a 
+client quickly locating the needed object. The use of multiple root nodes 
+solves the problem of single point of failure, as is present in the 
+Plaxton algorithm.
+
+	Tapestry allows soft-state, graceful fault recovery. It requires 
+the publisher of the object to periodically update and/or maintain the 
+object in the server, and will delete the object if a long period of 
+inaction is observed. This scheme has the advantage of treating faults as 
+part of Tapestry's normal operations, and thus no dedicated mechanism is 
+required to address the fault-tolerance issue. 
+
+	In Tapestry, load balancing may be achieved using two algorithms 
+implemented in Tapestry nodes. The first is a refresher thread that runs 
+in the background to update the network latency from the node to each of 
+its neighbors. If the latency exceeds some predefined threshold, a 
+secondary neighbor node (each Tapestry neighbor map entry keeps one 
+primary and two secondary neighbors) will be used to route the message. 
+The second algorithm enables the node to keep track of sources of heavy 
+query load, or hotspots, and offer suggestions on locations where 
+additional copies of the service object may improve query response time. 
+
+	The simulation results presented in this paper largely confirm the 
+objectives the researchers set out to accomplish. Specifically, the 
+results show that the use of location pointers in Tapestry nodes allows 
+the relative delay penalty to be kept fairly constant, irrespective of the 
+number of hops a message traverses; the replicas of object in several 
+locations help bring down the latency; multiple root nodes also have the 
+same positive impact; and Tapestry performs better when under high load 
+stress. However, there are some trade-offs to be made aware of. First is 
+the bandwidth. Tapestry requires an ample supply of bandwidth to carry out 
+its operations. Secondly, especially when multiple replicas of object and 
+multiple root nodes are deployed, there is a stringent requirement on the 
+disk space the replica servers and root nodes need to possess. Tapestry 
+seems to act under the assumption that the nodes will have enough disk 
+space to support object replicas and to serve as root nodes. This may not 
+be true in the real world. A result will be a replica of the object can 
+not find a suitable node to be housed.	
+
+
+

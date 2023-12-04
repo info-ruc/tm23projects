@@ -1,0 +1,70 @@
+Received: from mail.montana.com (mailA.montana.com [199.2.139.116])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA28575
+	for <handyboard@media.mit.edu>; Sat, 23 Jan 1999 13:20:39 -0500 (EST)
+Received: from cs.umt.edu (mso1-24.montana.com [208.4.224.24])
+	by mail.montana.com (8.9.2.Beta4/8.9.2) with ESMTP id LAA06213
+	for <handyboard@media.mit.edu>; Sat, 23 Jan 1999 11:22:10 -0700 (MST)
+Message-Id: <36AA1293.8691902E@cs.umt.edu>
+Date: Sat, 23 Jan 1999 11:18:59 -0700
+From: Will Bain <willbain@cs.umt.edu>
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Ultrasonic sensor
+References: <19990122181753.25699.qmail@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+MALTE51 wrote:
+ 
+> I have bought a Ultrasonic Sensor (with Board) 2 month ago.
+> Now, to christmas, I got this COOL Handy Board, but I want to use this
+> Board with HB on one of these Analog Ports,
+> but HOW???
+
+Firstly, it looks like the sensor board can be powered from the HB using the motor power header (J13).  This is good, because the two should share a common ground.
+
+Based on the schematic and the web page description, it looks like this type of ultrasonic sensor will give a digital signal instead of an analog signal.  The LED lights up when an object gets close enough.
+
+Apparently, the transistor T1 provides continuity to ground for the LED/R1 combination.  Try replacing the LED with a male header plug and plugging it into a digital port on the HB.
+
+BE CAREFUL THOUGH:  The ultrasonic sensor runs on 9 to 12 V, so you will need to ensure that resistor R1 is at least a few kOhms to ensure that you don't fry your digital sensor port, which is designed for 5V MAXIMUM.
+
+> Then i have heared, that you can use HB with an external Batt.
+> How can i build it? I have not seen Information about it...
+
+I don't know about this.  If you use an external battery, make sure it's compatible with the HB's charging circuitry.  Probably any 9.6V NiCd battery pack would suffice.
+
+> I try to build a robot like in this "FIRE FIGHTING ROBOT" thing.(I built
+> my own Labirint, because America is far away from GERMANY!!)
+> But how can my robot know if it is a candle...
+> I try it with something like that... (NOT REAL IC NOT BASIC NOT PASCAL
+> NOTHING!!)
+> 
+> BRIGHT = ANALOG(0)
+> 
+> IF BRIGHT < ANALOG(0) MAKE SOMETHING
+> IF BRIGHT > ANALOG(0) PUT OUT CANDLE!!
+
+If you use a light sensor connected to analog port 0, you first need to calibrate it.  Put a candle in front of it and make a note of the sensor reading.  Suppose it's about 200.  The following sort of Interactive C code would probably work:
+
+	int threshold = 190;
+
+	while( 1 ) {	/* (this begins indefinite loop) */
+		if( analog( 0 ) > threshold ) break;	/* (break out of loop) */
+		/* search for candle for a moment */
+	}
+	/* snuff out the candle */
+
+Good luck!
+
+-- Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                          Americans detest all lies except
+Will Bain,                       lies spoken in public or printed lies.
+& Tatoosh                                                     --Ed Howe
+

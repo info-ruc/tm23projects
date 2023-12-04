@@ -1,0 +1,263 @@
+Received: from amethyst (amethyst.CES.CWRU.Edu [129.22.16.91]) by alpha.CES.CWRU.Edu (8.7.3/8.7.3) with SMTP id NAA22200; Tue, 30 Sep 1997 13:50:38 -0400 (EDT)
+Sender: liu
+Message-ID: <34313BEC.167EB0E7@alpha.ces.cwru.edu>
+Date: Tue, 30 Sep 1997 13:50:36 -0400
+From: Wei LIU <liu@alpha.ces.cwru.edu>
+Organization: CES CWRU
+X-Mailer: Mozilla 3.01 (X11; I; SunOS 4.1.4 sun4m)
+MIME-Version: 1.0
+To: kwek, march
+Subject: instrustuin to getT(new!)
+Content-Type: text/plain; charset=us-ascii; name="instruction2"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline; filename="instruction2"
+X-Mozilla-Status: 0001
+Content-Length: 8225
+
+
+For those who wish to use our getTok() and ungetTok() in assignment 3
+----------------------------------------------------------------------
+1. How to include?
+step1: Download the file getToken2.c from ECMP337 webpage hyperlink
+"Assignment 3: getTok() and ungetTok() ". Move this file to your
+source file directory. Forget your getToken in assignment 2 scanner.c.
+
+step2:  At the beginning of your parser source file include section,
+insert the following line:
+
+#include <getToken.c>
+
+step3:  At the beginning of your parser source file(main problem),
+insert the following line(to initialize global variables):
+
+	/* set the transition table */
+	setTransitionTable();
+
+	/* set the lookup map between states and token types */
+	setStateTokenTypeMap();
+
+2. How to call?
+When your parser wants to "unget" a token, call our ungetTok();
+When your parser wants to get a token, call our getTok();
+
+The prototype of these two functions are:
+extern void getTok(FILE *pf, tokenRecord *pToken);
+pf is the file pointer of the input file.
+pToken is the pointer to the token variable that is being returned.
+When getTok finishes, *pToken points to the current token.
+
+extern void ungetTok(FILE *pf,tokenRecord *pToken);
+pf is the file pointer of the input file.
+pToken is the pointer to the token which you want to unget.
+When ungetTok finishes, *pToken is the token that will be returned by
+the next getToken() call.
+
+We suggest you use these functions as follows:
+
+        /* recommended usage of our getTok() and ungetTok(0 in assignment 3 */
+        /* variable declarations */
+        tokenRecord token;
+        FILE *pf;
+        ...... /* other variable declarations */
+
+        /* open file */
+        pf=fopen(fstrFilename, "r");
+        ...... /* other process of your parser */
+        /* now the parser wants to get a token, call our getTok; */
+        getTok(pf, &token);
+        ...... /* other process of your parser */
+        /* the parser wants to "unget" a token, call our ungetTok; */
+        ungetTok(pf, &token);
+        ...... /* other process of your parser */
+
+
+For those who wish to use use their own getToken() of assignment2
+-----------------------------------------------------------------
+
+0. If the prototype of your getToken follows the following one:
+
+tokenRecord getToken(FILE *pf);
+/* pf means the file pointer to the input file,
+ * the function returns the current token in the file.
+ */
+
+goto step 1
+else goto step 6
+
+1. insert the following lines in the include section of your parser source code
+/************************************************************************
+ * include files
+ ************************************************************************/
+#include <assert.h>
+
+2. insert the following lines in the marco & type definition section of your
+parser source code
+
+/************************************************************************
+ *  marco & type definition
+ ************************************************************************/
+
+typedef enum
+{ 
+        GET, PUT
+} 
+Action;
+
+/* Bool type definition */
+typedef int Bool;
+#define TRUE 1
+#define FALSE 0
+
+
+3. insert the following lines in the function declarations section of your
+parser source code:
+
+/*********************************************************************
+ * Function declarations
+ *********************************************************************/
+/* Functions can be used in assignment3: getTok(); ungetTok() */
+extern void getTok(FILE *pf, tokenRecord *pToken);
+
+extern void ungetTok(FILE *pf,tokenRecord *pToken);
+
+
+extern tokenRecord originalGetTok(FILE *pf);
+/* get the next token in the file specified by FILE pointer pf */
+
+extern void copy_token(tokenRecord *newtok, tokenRecord *oldtok);
+
+extern void manageToken(FILE *pf,Action action,tokenRecord *pToken);
+
+
+4. insert the following lines in the function implementation section of your
+parser source code:
+
+/*************************************************************************
+ * Function implemantation
+ *************************************************************************/
+
+void copy_token(tokenRecord *newtok, tokenRecord *oldtok)
+{
+        newtok->tokenval=oldtok->tokenval;
+        if ( oldtok->tokenval==ID || oldtok->tokenval==ERROR )
+                newtok->attribute.stringval=(char *)strdup(oldtok->attribute.stringval);
+        else
+                if(oldtok->tokenval==NUM)
+                        newtok->attribute.numval=oldtok->attribute.numval; 
+
+        return;
+}
+
+void manageToken(FILE *pf,Action action,tokenRecord *pToken)
+{
+        static tokenRecord tokenStored;
+        static Bool bStoredTokenReady=FALSE;
+
+        /* the function only accept parameter action of PUT or GET */
+        assert( ( PUT==action )||( GET==action ) );
+
+        if( PUT==action )
+        {
+                /* put the token into the buffer */
+
+                /* when there is a token ready in the buffer, the caller shouldn't put */
+                assert( FALSE==bStoredTokenReady );
+                /* copy the content to buffer */
+                copy_token(&tokenStored, pToken);
+                /* set the buffer flag to show that there is a token ready in the buffer now */
+                bStoredTokenReady=TRUE;
+        }
+        else 
+        {
+                /* get the token from the buffer or the file */
+
+                if( bStoredTokenReady )
+                {
+                        /* get the token from the buffer */
+                        copy_token(pToken, &tokenStored);
+                        /* since we have aten the stored token in the buffer,
+                         * set the buffer flag to show that there is NO token ready in the buffer now,
+                         * and release the memory(applicable for ID and ERROR) 
+                         */
+                        bStoredTokenReady=FALSE;
+                        if (  ( ID==tokenStored.tokenval ) ||( ERROR==tokenStored.tokenval ) )
+                                free(tokenStored.attribute.stringval);
+                }
+                else
+                {
+                        /* get the token from the file */
+                        tokenStored=originalGetTok(pf);
+                        copy_token(pToken, &tokenStored);
+                }
+        }
+
+        return;
+}
+
+
+void getTok(FILE *pf, tokenRecord *pToken)
+/* not originalGetTok()  !!!!!!!!!!!!!!!!!!!!! 
+ ***************************************/
+{
+        manageToken(pf, GET, pToken);
+        return;
+}
+
+void ungetTok(FILE *pf,tokenRecord *pToken)
+{
+        manageToken(pf, PUT, pToken);
+        return;
+}
+
+
+5. match your function with ours by writing the originalGetTok() function by yourself:
+
+If the prototype of your getToken follows the following one:
+
+tokenRecord getToken(FILE *pf);
+/* pf means the file pointer to the input file,
+ * the function returns the current token in the file.
+ */
+
+Just write this in your program to bridge yours and ours:
+tokenRecord originalGetTok(FILE *pf);
+{
+        return(getToken(pf)); /* call your getToken! */
+}
+
+
+6. If your prototype is a different one, we suggest you not to use our
+getTok() and ungetTok() in assignment3(if you really wish to
+use your own getToken() of assignment2). It would be troublesome to
+modify our functions to match yours, or vice versa. We are not able
+to provide functions for every kind of getToken() provider. We hereby
+provide the main idea of unget:
+
+        use token buffer and a flag;
+        initialize the flag as unreadable.
+
+then steps to get the current token:
+        if the flag is readable
+                copy token from the buffer rather than the file.
+                set the flag as unreadable.
+                free the memory of the buffer(applicable to ID or illegal token)
+        else (the flag is unreadable)
+                use your getToken to get a token from the file
+                copy it to the buffer
+                set the flag as readable.
+
+steps to unget the current token:
+                copy it to the buffer
+                set the flag as readable.
+
+Anyway, you may be hinted if you read though our codes listed in step1-5.
+
+
+Good Luck!
+
+PS: if you have any question regarding these programs, please send email to the
+TAs and cc it to the instructor. 
+
+
+
+

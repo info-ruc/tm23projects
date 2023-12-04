@@ -1,0 +1,58 @@
+Received: from mail.montana.com (mailA.montana.com [199.2.139.116])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA18634
+	for <handyboard@media.mit.edu>; Fri, 30 Jul 1999 12:28:06 -0400 (EDT)
+Received: from cs.umt.edu (mso1-106.montana.com [208.4.224.106])
+	by mail.montana.com (8.9.3/8.9.3) with ESMTP id KAA13238
+	for <handyboard@media.mit.edu>; Fri, 30 Jul 1999 10:29:48 -0600 (MDT)
+Message-Id: <37A1D24D.9FFCBE6E@cs.umt.edu>
+Date: Fri, 30 Jul 1999 10:26:53 -0600
+From: Will Bain <willbain@cs.umt.edu>
+X-Mailer: Mozilla 4.5 [en] (Win98; U)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Millisecond timing
+References: <25FB1DBA323DD311ACB400508B122D93049713@NTMAIL>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+> "Landahl, Bill" wrote:
+> 
+> I recently bought a Handy Board to use in acquiring time measurements varying by
+> one millisecond.  The Handy Board has a clock speed of 2kHz, therefore it should
+> be able to measure down to one half millisecond.
+> 
+> What I have found however is that the smallest time I am measuring is 3 millieseconds.
+> Ther is no code running except for the time acquisition code.  My question is, Will
+> it be possible for me to get the one millisecond time accuracy I want?  Should I be
+> using system interupts instead of just reading system time?  If so, how do I do that?
+
+
+See the Polaroid sonar code (from the HB web site) for an example of how to measure timing signals on the TIC3 channel.  You initialize with:
+
+	bit_set( 0x1009, 0x30 );                /* ddrd */
+	bit_set( 0x1021, 1 );                   /* at tctl2, */
+	bit_clear( 0x1021, 2 );                 /* set tic3 for rising edge */
+
+then start timing with:
+
+	poke( 0x1023, 1 );                      /* clear tic3 flag */
+	start_time = peekword( 0x100E );        /* capture start time */
+
+then do something else for a while, and finish with:
+
+	return peekword( 0x1014 ) - start_time;	/* tic3 has time of echo */
+
+I confess I really don't understand it (especially, what's the difference between peekword(0x100E) and peekword(0x1014) ???) but it seems to work.
+
+-- Will
+
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                When people are free to do as they please,
+Will Bain,                             they usually imitate each other.
+& Tatoosh                                                 --Eric Hoffer
+

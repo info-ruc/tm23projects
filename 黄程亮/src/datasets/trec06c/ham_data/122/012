@@ -1,0 +1,52 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3IFKI212768
+	for <egs@cs.cornell.edu>; Tue, 18 Apr 2006 11:20:18 -0400 (EDT)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k3IFKG0b026321
+	for <egs@cs.cornell.edu>; Tue, 18 Apr 2006 11:20:17 -0400 (EDT)
+Received: from 128.84.153.96
+        by webmail.cornell.edu with HTTP;
+        Tue, 18 Apr 2006 11:20:17 -0400 (EDT)
+Message-ID: <1151.128.84.153.96.1145373617.squirrel@webmail.cornell.edu>
+Date: Tue, 18 Apr 2006 11:20:17 -0400 (EDT)
+Subject: paper 22
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+The two papers discuss methods for abstracting the implementation of
+network overlays to simply implementing them and provide for a more
+structured method of testing and evaluating their performance.
+Macedon is a protocol-centric approach that abstracts each node into a
+finite state machine (FSM) and focuses on the events that cause
+transitions between states. Within Macedon itself, there is a
+multi-layered stack to allow systems to be built on others (for example,
+SplitStream is built on Scribe which is built on Pastry or alternative, a
+different DHT overlay such as Chord).
+P2 approaches things slightly differently. Instead of forcing the user to
+specify their own handling of events in code, P2 represents everything as
+a labeled relational tuple. The tuples are generated based on a series of
+rules, which are the various conditions on which a specified tuple will be
+generated. There are some primitive event types that P2 implements though,
+such as periodic generation of tuples and pings to measure latency. The
+general structure of an overlay can then be represented in surprisingly
+few rules (47 rules for Chord).
+
+The two approaches differ in the complexity of the code (both for the
+underlying backbone and the per-overlay code) and their perfomance goals.
+In Macedon, the user must write the majority of the message handling code
+and thus, the backbone of Macedon is relatively simple. In P2, the
+relational database abstraction simplifies the overlay code (or rules, as
+the case may be), but the underlying code of P2 is much longer and
+complicated than Macedon to support that abstraction. Similarly, pushing
+specific overlay descriptions to a higher level will have an impact on the
+performance. P2's performance goal is a "good enough" measure - or a
+performance that is not significantly worse than an optimized version.
+Macedon, on the other hand, can achieve better performance since the
+lower-level coding allows for more optimizations.
+

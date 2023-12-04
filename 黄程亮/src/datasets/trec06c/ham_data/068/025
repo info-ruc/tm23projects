@@ -1,0 +1,114 @@
+Received: from mail.montana.com (mailA.montana.com [199.2.139.116])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id NAA16600
+	for <handyboard@media.mit.edu>; Thu, 18 May 2000 13:44:33 -0400 (EDT)
+Received: from selway.umt.edu (golfswit.montana.com [208.23.167.3])
+	by mail.montana.com (8.9.3/8.9.3) with ESMTP id LAA08186
+	for <handyboard@media.mit.edu>; Thu, 18 May 2000 11:44:08 -0600 (MDT)
+Message-Id: <39242BAC.DFEB63D1@selway.umt.edu>
+Date: Thu, 18 May 2000 11:43:08 -0600
+From: Will Bain <willb@selway.umt.edu>
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Ultrasonic maximum timing
+Content-Type: multipart/mixed;
+ boundary="------------9B240662DEF140B13F0EFD73"
+
+This is a multi-part message in MIME format.
+--------------9B240662DEF140B13F0EFD73
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hey all --
+
+I was wrong about the speed of sound.
+
+The mistake I made was forgetting that the sonar measures round trip time, so the
+constant I experimentally determined for use in my code actually represents *two*
+centimeters per 143 clock ticks (instead of one cm per 143 ticks as I had said earlier).
+
+If the clock ticks at 2 MHz (as I believe it does, using an 8 MHz oscillator), this equates to 626 mph, which is fairly close to the nominal speed of sound.
+
+Regardless of my error, the maximum range (corresponding to 32767 ticks) is still about 2.29 meters by my calculation.
+
+-- Will
+
+
+> I think the register maxes out at 32767.  Since it's a 2 MHz processor, this gives:
+> 
+>         (32767 cycles) / (2,000,000 cycles/second) = 0.01638 seconds
+> 
+> Up here in the Rocky Mountains, the speed of sound is about one centimeter
+> every 143 half-microseconds, so the maximum range is 2.29 meters.
+> 
+> Adam Oliver wrote:
+> >
+> >  Greetings all,
+> >
+> >  I'm using a homebuilt sonar based on Kam Leang's design, which seems to be
+> >  working quite well. I just have one question with regard to the timing on
+> >  the input port. I'm using the same sonar driver as for the polaroid - right
+> >  now I can't remember which input is used for the return "echo".
+> >
+> >  My question is, what is the maximum time that the timer can measure before
+> >  returning a -1? I'm curious, as I'd like to know the maximum distance I can
+> >  measure on the HB, so I can set my sonar unit up accordingly.
+> >
+> >  Thanks for your help
+> >  Adam
+
++---------------------------------------------------------+
+
+Conscience:  the inner voice which warns us that someone
+may be looking.                         -- H. L. Mencken
+--------------9B240662DEF140B13F0EFD73
+Content-Type: message/rfc822
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+X-Mozilla-Status2: 00000000
+Message-ID: <3921774D.6268DEDB@selway.umt.edu>
+Date: Tue, 16 May 2000 10:29:01 -0600
+From: Will Bain <willb@selway.umt.edu>
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Ultrasonic maximum timing
+References: <001401bfbef7$c16e63e0$0500a8c0@iinet.net.au>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Adam Oliver wrote:
+> 
+>  Greetings all,
+> 
+>  I'm using a homebuilt sonar based on Kam Leang's design, which seems to be
+>  working quite well. I just have one question with regard to the timing on
+>  the input port. I'm using the same sonar driver as for the polaroid - right
+>  now I can't remember which input is used for the return "echo".
+> 
+>  My question is, what is the maximum time that the timer can measure before
+>  returning a -1? I'm curious, as I'd like to know the maximum distance I can
+>  measure on the HB, so I can set my sonar unit up accordingly.
+> 
+>  Thanks for your help
+>  Adam
+
+
+I think the register maxes out at 32767.  Since it's a 2 MHz processor, this gives:
+
+	(32767 cycles) / (2,000,000 cycles/second) = 0.01638 seconds
+
+Up here in the Rocky Mountains, the speed of sound is about one centimeter every 143 half-microseconds, so the maximum range is 2.29 meters.
+
+-- Will
+
++---------------------------------------------------------+
+
+The big thieves hang the little ones       -- Czech proverb
+
+--------------9B240662DEF140B13F0EFD73--
+
+

@@ -1,0 +1,211 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f4FJP9O13898;
+	Tue, 15 May 2001 12:25:09 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id LAA19379;
+	Tue, 15 May 2001 11:11:38 -0400 (EDT)
+Date: Tue, 15 May 2001 11:11:38 -0400 (EDT)
+Received: by canaveral.red.cert.org; Tue, 15 May 2001 11:06:56 -0400
+Message-Id: <CA-2001-12.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+Subject: CERT Advisory CA-2001-12
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: d928562cf9462ea2b2a4e027446462b7
+Status: RO
+X-Status: $$$$
+X-UID: 0000000009
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-12 Superfluous Decoding Vulnerability in IIS
+
+   Original release date: May 15, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Systems Affected
+
+     * Systems running Microsoft IIS
+
+Overview
+
+   A serious vulnerability in Microsoft IIS may allow remote intruders to
+   execute commands on an IIS web server. This vulnerability closely
+   resembles a previous vulnerability in IIS that was widely exploited.
+   The CERT/CC urges IIS administrators to take action to correct this
+   vulnerability.
+
+I. Description
+
+   URIs may be encoded according to RFC 2396. Among other things, this
+   RFC provides an encoding for arbitrary octets using the percent sign
+   (%) and hexadecimal characters.
+
+   Quoting from RFC 2396:
+
+   An escaped octet is encoded as a character triplet, consisting of the
+   percent character "%" followed by the two hexadecimal digits
+   representing the octet code. For example, "%20" is the escaped
+   encoding for the US-ASCII space character. 
+
+   escaped = "%" hex hex
+   hex = digit | "A" | "B" | "C" | "D" | "E" | "F"
+
+   Like all web servers, Microsoft IIS decodes input URIs to a canonical
+   format. Thus, the following encoded string:
+
+          A%20Filename%20With%20Spaces
+
+   will get decoded to
+
+          A Filename With Spaces
+
+   Unfortunately, IIS decodes some of the input twice. The second
+   decoding is superfluous. Security checks are applied to the results of
+   the first decoding, but IIS utilizes the results of the second
+   decoding. If the results of the first decoding pass the security
+   checks and the results of the second decoding refer to a valid file,
+   access will be granted to the file even if it should not be. More
+   information is available at
+
+          http://www.microsoft.com/technet/security/bulletin/MS01-026.asp
+          http://www.nsfocus.com/english/homepage/sa01-02.htm
+          http://www.kb.cert.org/vuls/id/789543
+
+   Note that this does not permit intruders to bypass ACLs enforced by
+   the filesystem, only security checks performed by IIS. We encourage
+   you to configure your web server according to the guidelines provided
+   in
+
+          http://www.microsoft.com/technet/security/iis5chk.asp
+          http://www.microsoft.com/technet/security/iischk.asp
+          http://www.microsoft.com/technet/security/tools.asp
+
+   Theses guidelines can help you reduce your exposure to this problem,
+   and possibly to problems that have not yet been discovered.
+
+   This issue was discovered by NSFocus.
+
+   The CVE Project has assigned the following identifier to this
+   vulnerability:
+
+          http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2001-0333
+
+   This vulnerability has many similarities to the Web Server Folder
+   Directory Traversal Vulnerability, which has been widely exploited.
+   For more information on that vulnerability, see
+
+          http://www.kb.cert.org/vuls/id/111677
+
+II. Impact
+
+   Intruders can run arbitrary commands with the privileges of the
+   IUSR_machinename account.
+
+III. Solutions
+
+Apply a patch from your vendor
+
+   Information on patches from Microsoft is available at
+
+          http://www.microsoft.com/technet/security/bulletin/MS01-026.asp
+
+   Additional advice on securing IIS web servers is available from
+
+          http://www.microsoft.com/technet/security/iis5chk.asp
+          http://www.microsoft.com/technet/security/tools.asp
+
+Appendix A. Vendor Information
+
+Microsoft Corporation
+
+   The following documents regarding this vulnerability are available
+   from Microsoft:
+
+          http://www.microsoft.com/technet/security/bulletin/MS01-026.asp
+
+   Authors:  Shawn Hernan.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-12.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-17:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+May 15, 2001: Initial Release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBOwFD9wYcfu8gsZJZAQEc0AP6A7XLQiQ7to6uzTeOyFRb+vXUBI1zBmT1
+TvVwLodq6wfeS0vG/+Ta0KC28CFthDs9vUrw6HTnVeeFilKRqUhPgR8Izgd56ePc
+SKalqxv41DRvkusTlvrygFw1IUzdCJ0/EzWUiRpqu1QV7ZWmNTTVG4ycoEM++cLh
+67h5IqMR/iU=
+=z3yR
+-----END PGP SIGNATURE-----
+

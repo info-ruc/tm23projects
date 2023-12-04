@@ -1,0 +1,70 @@
+Received: from wproxy.gmail.com (wproxy.gmail.com [64.233.184.196] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k22Gtrt22274
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 11:55:53 -0500 (EST)
+Received: by wproxy.gmail.com with SMTP id i3so698983wra
+        for <egs+summary@cs.cornell.edu>; Thu, 02 Mar 2006 08:55:53 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=Eyh0oCOEataWAitwP30JcteP4E9xImAFJvWGUPkZZC6fyezFQzVjAFijxd18itMGMNd0R2kjqOH7IlI3qxnK3aaqxixOjum+VE9jTQDytl1XsqrXVbAG8YDWpKhFMPKIZePx3PIzJwuFC6LRun6JHk1BEzWDPyrCpY8w8kF2kMU=
+Received: by 10.54.151.7 with SMTP id y7mr1165620wrd;
+        Thu, 02 Mar 2006 08:55:53 -0800 (PST)
+Received: by 10.54.81.5 with HTTP; Thu, 2 Mar 2006 08:55:53 -0800 (PST)
+Message-ID: <6e1ca4560603020855x300390h34b4c84cf4a42b9f@mail.gmail.com>
+Date: Thu, 2 Mar 2006 11:55:53 -0500
+From: "Chiu Wah Kelvin So" <kelvinso@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: Paper 11
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k22Gtrt22274
+
+   The DNS uses hierarchical structure, and it is partitioned into
+non-overlapping region called domains. DNS delegates the
+responsibility for each domain to a set of replicated nameservers. It
+passively caches the result in server with a TTL corresponded to it.
+There are many existing problems in the current DNS implementation.
+Name servers are difficult and time-consuming to administer. Loads are
+imbalance across servers and are frequently subjected to Dos attack
+because of its hierarchical structure. They are not resilience to
+attack and failure. Also, because it maintains passive caching in DNS
+and it does not know where all the copies are, it is difficult to
+propagate updates. The two papers talk about how to build peer-to-peer
+DNS service which solves some of the problems in the existing DNS.
+
+The first paper, "Serving DNS using a Peer-to-Peer Lookup Service,"
+presents a domain name system, DDNS, which built on top of a DHT. It
+uses Chord as underlying DHT to store record, which is a mapping
+between name and ip. Therefore, it inherits the fault tolerance and
+load balancing properties in DHT. It uses DNSSEC which separates the
+authentication of data from the service of that data. DNSSEC uses
+public key to sign each record. It also removes the administrative
+problems because of its flat namespace. There are many advantages
+using the peer-to-peer DNS, but this paper also presents some of the
+limitation of DDNS. Because of the heavy tail of query distribution,
+unpopular contents will take up to log(n) number of hops to reach the
+record. Their experimental result shows that median latency of lookups
+in DDNS take about 350ms while conventional DNS's is about 43ms.
+Although this paper does not address how to overcome the limitation of
+peer-to-peer DNS, the next paper shows how to achieve low lookup
+latency in peer-to-peer DNS.
+
+The second paper, "The Design and Implementation of a Next Generation
+Name Service for the Internet," also presents a peer-to-peer DNS,
+coDoNS. coDoNS is built on top of Pastry and Beehive. Because of the
+Zipf-like query distribution in DNS, Beehive can efficiently and
+proactively replicate records to optimal number of peers to achieve
+low latency according to each record's popularity. At the same time,
+home node of a record knows where all the replicas are, therefore it
+can efficiently prorogate update to all the replicas. In order to
+compatible with the legacy DNS, coDoNS uses legacy DNS to resolve
+queries for records not explicitly inserted by name owners. Using
+proactive caching, coDoNS achieves a lot lower latency with median
+lookup latency of 2ms while median lookup latency in legacy DNS is
+39ms. There are also other problems in peer-to-peer DNS. Because the
+domain names are served from other servers instead of the server which
+owns the responsibility of the domain names, servers have less
+incentive to serve the content.
+

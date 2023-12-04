@@ -1,0 +1,106 @@
+Received: from mtiwmhc01.worldnet.att.net (mtiwmhc01.worldnet.att.net [204.127.131.36])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id AAA30650
+	for <handyboard@media.mit.edu>; Sun, 25 Oct 1998 00:06:47 -0400 (EDT)
+Received: from TerryGathright.worldnet.att.net ([12.65.208.181])
+          by mtiwmhc01.worldnet.att.net (InterMail v03.02.03 118 118 102)
+          with ESMTP
+          id <19981025040616.ZCIP7918@TerryGathright.worldnet.att.net>;
+          Sun, 25 Oct 1998 04:06:16 +0000
+From: "Terry P. Gathright" <669@worldnet.att.net>
+To: <handyboard@media.mit.edu>, "Eric Noyau" <noyau@apple.com>
+Subject: Re: Sonar question
+Date: Sat, 24 Oct 1998 23:11:16 -0500
+X-Msmail-Priority: Normal
+X-Priority: 3
+X-Mailer: Microsoft Internet Mail 4.70.1155
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-Id: <19981025040616.ZCIP7918@TerryGathright.worldnet.att.net>
+
+Hi,
+acroname has the sonar modules for $45.00.
+www.acroname.com
+
+----------
+> From: Eric Noyau <noyau@apple.com>
+> To: handyboard@media.mit.edu
+> Subject: Sonar question
+> Date: Saturday, October 24, 1998 4:13 AM
+> 
+> 
+> Hi all,
+> 
+> I'd like to install sonar capabilities in my robot and I went to the FAQ
+to check how it was "recommended" to do it with the Polaroid OEM kit (It's
+at
+http://el.www.media.mit.edu/groups/el/projects/handy-board/software/sonar.ht
+ml). this seems pretty straightforward to do but I'd like to use 2 sonars,
+not just one, to give my robot a more stereoscopic view of the world.
+> 
+> By making the assumption that I'm never going to fire both sonars at the
+same time but one after the other I did convince myself that I can share a
+lot of connections between the two sonars board: basically there is only
+the need for one additional pin.
+> 
+> There is 5 things necessary to connect a sonar board with the HB:
+> 
+> - ground (unregulated motor power): can be shared
+> - Vcc (unregulated motor power): can be shared
+> - timer input (A0, timer input 3): can be shared with the addition of two
+diodes to avoid a return current on the unused sonar (is the diode really
+necessary?)
+> - BINH (port D4): to inhibit the blanking. Can be shared too.
+> 
+> The only one that cannot be shared is the INIT line, connected to the
+port D5.
+> 
+> Can I connect my second board INIT to D3 for this purpose? Here is a
+crude diagram of what I'm thinking about:
+> 
+> +    : connections
+> ->|- : diode
+> /\/\ : resistor
+> ---- : wire
+> 
+> 
+> Board1 Board2
+> 
+> GND   -------+-------- Motor power ground
+>        GND --+
+> 
+> V++   -------+-------- Motor power +
+>        V++ --+
+> 
+> ECHO  --->|-------+---- Sensor 7 (A0)
+>        ECHO -->|--+
+> 
+> BINH  --------+-/\/\--- Pord D4
+>        BINH --+
+> 
+> INIT  ----------------- Port D5
+>        INIT ----------- Port D3
+> 
+> 
+> I can modify the code in the sonar.c to do bit_set(0x1009, 0x38) in
+sonar_init and having a sample_right and sample_left functions with the
+only difference being the bit_set(0x1008, 0x20) replaced by bit_set(0x1008,
+0x08). As long as I don't use both sonar at the same time I'm fine right?
+> 
+> Does it make sense? Am I missing something crucial somewhere? The part
+I'm not sure about is the use of D3. If I understand the MC68HC11 reference
+manual correctly I can just use it the same way D4 and D5 are. D2 is
+apparently unusable as an output in the mode the SPI is in, but D3 should
+be possible to setup (I guess I'm going to reinstall monsterscope on my
+NeXTCube tomorrow to check my assumption!).
+> 
+> Otherwise is there a way to use a single Polaroid board for two
+transducer? This will reduce the cost (and the size) of this whole setup!
+And talking about cost, does anybody knows a cheap supplier for these
+sonars? Wirz Electronics want $50 for one and $94 for two... And it's $99
+for 2 direct from Polaroid. Anybody cheaper (and no, I don't have a
+hackable Polaroid camera at home ;^)?
+> 
+> Thanks in advance,
+> -- Eric
+

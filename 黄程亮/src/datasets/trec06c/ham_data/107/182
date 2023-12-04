@@ -1,0 +1,109 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9I6FuR2016061
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Tue, 18 Oct 2005 01:15:56 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.4/Submit) id j9I6Fuoa016060
+	for reliable_computing-outgoing; Tue, 18 Oct 2005 01:15:56 -0500 (CDT)
+Received: from poczta.polsl.pl (castor.polsl.pl [157.158.3.1])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9I6FkSi016056
+	for <reliable_computing@interval.louisiana.edu>; Tue, 18 Oct 2005 01:15:52 -0500 (CDT)
+Received: from andrzej ([217.97.166.220]) by poczta.polsl.pl with Microsoft SMTPSVC(6.0.3790.211);
+	 Tue, 18 Oct 2005 08:14:55 +0200
+From: "Andrzej Pownuk" <andrzej.pownuk@polsl.pl>
+To: <reliable_computing@interval.louisiana.edu>
+Subject: RE: How to solve DAE with an interval initial condition or an interval parameter?
+Date: Tue, 18 Oct 2005 08:14:57 +0200
+Message-ID: <!~!UENERkVCMDkAAQACAAAAAAAAAAAAAAAAABgAAAAAAAAAHPX/iKG7QE2v4jesvF98sMKAAAAQAAAAReJ6WrBou0mSCSw6MShGVAEAAAAA@polsl.pl>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Thread-Index: AcXTq0Mcn7TGfi1BRuutckMhzrSFRg==
+X-OriginalArrivalTime: 18 Oct 2005 06:14:55.0414 (UTC) FILETIME=[423DC560:01C5D3AB]
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+I have one very simple but efficient method for solution of the interval
+equations.
+If you have particular problem then you know more or less how the solution
+y=y(t,h) behave (h is an interval parameter, t is a time). 
+
+Then you can calculate the derivative of the solution y with respect to the
+interval parameters [h] (i.e. dy/dh). That should be easy. You can calculate
+this for the mid point of the interval [h]=[h_inf,h_sup]. If width of the
+interval [h] (or interval vector) is sufficiently small and the sign of the
+derivative is constant then you can calculate the extreme values of the
+solution using the endpoints of the interval [h] (or interval vector). 
+I know that this is very simply method but in many cases it is sufficient.
+If you need more accurate results then you can expand the derivative using
+Taylor series 
+
+dy(h)/dh= dy(h0)/dh+ d^2y(h0)/dh^2*(h-h0)+.
+
+and after that check the sign of the derivative. 
+Look at high order monotonicity tests here:
+http://andrzej.pownuk.com/~andrzej/publications/Pownuk%20A.,%20Numerical%20s
+olutions%20of%20fuzzy%20partial%20differential%20equations%20and%20its%20app
+lications%20in%20computational%20mechanics.pdf
+
+If the interval [h] is very wide then you can divide it into smaller parts
+and repeat above procedure. 
+If the sign of the derivative is not constant then . you can divide the
+interval [h] into smaller parts and check monotonicity again. Well if the
+solution behave really bad 
+then . . I do not know what to do :). 
+Some information about the solution you can get after calculation of the
+solution for the endpoints of the interval [h] and some points in the middle
+of the interval [h]. However the results may be very inaccurate.
+
+Above described algorithms do not give you the results with guaranteed
+accuracy . however sometimes . in my case (civil mechanical engineering
+examples) these methods give you accurate results in 90% of cases (in my
+opinion). If one calculate the interval solution using above described
+methodology then the interval solution has always physical interpretation. 
+There are lot of engineering papers in which the solution is calculated only
+for endpoints and sometimes that is enough in practice.
+http://andrzej.pownuk.com/IntervalEquations.htm
+http://andrzej.pownuk.com/fuzzyPDE.htm
+
+In some cases you can also get good results with guaranteed accuracy using
+interval methods (for example using constraint satisfaction approach or some
+kind of validated Taylor methods). However if the t is very large the
+results may be overestimated then we will get a lot of solutions which do
+not correspond to any parametric solution y(t,h) and because of that do not
+have any physical interpretation (in such cases the solution is almost
+meaningless). 
+If the approximation of the interval solution is good then there are no such
+problems even if the interval solution belong to very large interval (i.e.
+even very wide interval solution may have very clear meaning and physical
+interpretation).
+
+Regards,
+
+Andrzej Pownuk
+http://andrzej.pownuk.com
+
+
+> My research field is Multibody Dynamics and the core of the simulation is
+to solve the differenial-algebraic equations.
+> such as ,  { y\' =f(y,t)
+>                    {  g(y,t)=0
+> 
+> now ,i want to solve DAE with an interval initial condition or an interval
+parameter.
+> 
+> but, I think the main difficulty is how to ensure abs(g(y,t)) is small
+enough , if not so ,the DAE\'s structure will be destroied.
+> 
+> I find the the amount of articles about this topic is very few , I will be
+grateful to any comments helpful. 
+> As we know , some non-linear function will be sensitive to initial value.
+> 
+> for example , y\' =f(y,t)     y0=[y0_min , y0_max]
+> the interval at the t_end will be very large so the result will be
+meaningless ,right?
+
+
+

@@ -1,0 +1,42 @@
+Received: from jester.ti.com (jester.ti.com [192.94.94.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id OAA18543
+	for <handyboard@media.mit.edu>; Thu, 10 Sep 1998 14:17:14 -0400 (EDT)
+Received: from dlep3.itg.ti.com ([157.170.188.62]) by jester.ti.com (8.8.8) with ESMTP id NAA02649 for <handyboard@media.mit.edu>; Thu, 10 Sep 1998 13:16:30 -0500 (CDT)
+Received: from ti (cnb0208474.sc.ti.com [172.24.173.94])
+	by dlep3.itg.ti.com (8.8.8/8.8.8) with SMTP id NAA21997
+	for <handyboard@media.mit.edu>; Thu, 10 Sep 1998 13:16:43 -0500 (CDT)
+X-Mailer: BeyondMail for Windows/Professional 2.3
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7Bit
+To: handyboard@media.mit.edu
+From: Bill James <w-james2@ti.com>
+Subject: Questions for Fred
+Date: Thu, 10 Sep 1998 13:25:43 -0700
+X-Beyondmail-Priority: 1
+Message-Id: <BMSMTP90545896622a0208474@dlemail.itg.ti.com>
+Conversation-Id: <BMSMTP90545896623a0208474@dlemail.itg.ti.com>
+Reply-To: Bill James <w-james2@ti.com>
+X-Receipt-From-Agent: true
+
+I guess I should have learned by now, to investigate more before jumping out
+and asking. 
+I examined the two versions of the lib_hb.c
+the difference in the analog is the absence of the following code in the smooth
+pwm code:
+int _raw_analog(int port)
+{
+    poke(0x1039, 0b10000000);
+    poke(0x1030, port);
+    return peek(0x1031);
+}
+
+So just remove this and everything will be okay?
+
+Bill James              | work:  972.480.2306  
+Product Test Specialist | Pager: 972.598.6201
+w-james2@ti.com
+Precision Analog & Interface Department
+
+Polymath in Training    | Have Spacesuit will Travel
+

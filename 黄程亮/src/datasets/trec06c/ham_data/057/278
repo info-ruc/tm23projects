@@ -1,0 +1,83 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id SAA03810
+	for <handyboard@media.mit.edu>; Sat, 4 Dec 1999 18:11:46 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id RAA03078; Sat, 4 Dec 1999 17:48:01 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7180
+From: Nick Taylor <ntaylor@iname.com>
+X-Real-Life-Name: Nick Taylor
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: Nick Taylor <ntaylor@iname.com>
+Subject: Re: strange TS-53 servo problem
+Posted-Date: Sat, 4 Dec 1999 22:47:40 GMT
+Date: Sat, 4 Dec 1999 22:47:40 GMT
+Organization: None
+Message-Id: <38499A0C.1F414AA@iname.com>
+References: <FM8M85.M20@lugnet.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+Hi ... It sounds as though you are obtaing the power for your servo
+from the HandyBoard's motor output pins ... and if so, this is the
+source of your problem.  The HB does NOT control motor speed by
+varying the DC level ... it uses PWM to reduce the average DC level
+sent to the motors ... and your servo requires a +5V DC source for
+its power.  As a general rule the servo should NOT get its +5v from
+the same source that powers your microcontroller because the high
+load imposed by the servo under mechanical load may cause your power
+source to sag and possible cause a reset. Try using 3 AA or C cells
+to power your servo, but be certain that the negative end of your
+batteries is connected to the HandyBoard's ground ... otherwise your
+servo will still be erratic.  If you are using the HB's expansion
+board, then it supplies the required +5V directly to the servos
+by using the large diodes to drop the voltage to a value that is
+okay for the servos (they like from 4.8 to 6.0V for their power).
+
+Good luck,
+ - Nick -
+
+Kah Mun wrote:
+> 
+> Since the output ports for the motors of the handyboard supplies
+> 11V, i connected a 5V regulator to power my servo. i have a capacitor between
+> the driver's + and - terminals. I looked at the control signal on the
+> oscilloscope. The duration of the pulse is correct, the period of the signal is
+> a about 20ms. the servo just buzzes.
+> 
+>         one thing i noticed: whenever the ground lead of the oscilloscope
+> is connected to the negative terminal of the motor driver port, the servo
+> spins only in one direction regardless of the duration of the control
+> signal's pulse. i measured the voltage of the negative terminal with
+> respect to ground, it is 1.03V.
+> 
+>         do i have a grounding problem in addition to the servo problem?
+> 
+> here's the code i used: basically the i keep sending a 0.2ms pulse till the
+> stop button is pressed. then a 2.4ms pulse till the button is pressed. then the
+> servo is turned off.
+> 
+> void main()
+> {
+>   fd(1);
+>   servo_a7_init(1);  /* activates PortA bit7 that gives the control signal */
+> 
+>   while (stop_button()==0)
+>   {servo_a7_pulse = 400;  /* a pulse with duration 0.2ms */
+>    sleep(0.0198);
+>   }
+> 
+>   while (stop_button()==0)
+>   {servo_a7_pulse=4840;    /* a pulse with duration 2.4ms */
+>    sleep(0.0176);
+>    }
+> 
+>    ao();
+>    servo_a7_init(0);                 /* disables port A bit7 */
+> 
+> }
+

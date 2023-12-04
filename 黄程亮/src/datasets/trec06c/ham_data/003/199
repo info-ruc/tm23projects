@@ -1,0 +1,22 @@
+Received: by colossus.cse.psu.edu id <78671>; Mon, 3 Jun 1996 12:59:51 -0400
+Received: from plan9.bell-labs.com ([204.178.16.2]) by colossus.cse.psu.edu with SMTP id <78676>; Mon, 3 Jun 1996 12:59:34 -0400
+From:	philw@plan9.bell-labs.com
+To:	9fans
+Date:	Mon, 3 Jun 1996 12:56:03 -0400
+Subject: re: Bug in sysrendezvous?
+Message-Id: <96Jun3.125934edt.78676@colossus.cse.psu.edu>
+Sender: owner-9fans
+Precedence: bulk
+Reply-To: 9fans
+
+correct, stupid bug. the fix is to make the tag
+unsigned.
+
+long
+sysrendezvous(ulong *arg)
+{
+	Proc *p, **l;
+	ulong val, tag;
+
+
+

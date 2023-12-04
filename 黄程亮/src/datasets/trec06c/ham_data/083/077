@@ -1,0 +1,109 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g7S51vVM021973;
+	Tue, 27 Aug 2002 22:01:57 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id g7S2vNT05489;
+	Tue, 27 Aug 2002 22:57:23 -0400
+Date: Tue, 27 Aug 2002 22:57:23 -0400
+Message-Id: <CA-2002-19.2@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: UPDATE - CERT Advisory CA-2002-19 Buffer Overflows in Multiple DNS Resolver Libraries
+Precedence: bulk
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 523
+Status: RO
+X-Status: $$$$
+X-UID: 0000000059
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+UPDATE:  CERT Advisory CA-2002-19 Buffer Overflows in Multiple DNS
+Resolver Libraries
+
+
+August 27, 2002
+
+
+An important change has been made to CERT Advisory CA-2002-19.
+
+
+The workaround of using a local caching DNS server is not completely
+effective.  Specifically, some malicious DNS responses can be cached,
+reconstructed, and passed on to systems that may have vulnerable DNS
+resolver libraries.
+
+For the most current information, including which systems are affected
+and vendor statements, please see the documents listed at the end of
+this message.
+
+
+The following change was made to section III. of CA-2002-19:
+
+======================================================================
+
+III. Solution
+
+Upgrade to a corrected version of the DNS resolver libraries
+
+    [no change]
+
+Use of a local caching DNS server is not an effective workaround
+
+    When this advisory was initially published, it was thought that a
+    caching DNS server that reconstructs DNS responses would prevent
+    malicious code from reaching systems with vulnerable resolver
+    libraries.
+
+    This workaround is not sufficient. It does not prevent some DNS
+    responses that contain malicious code from reaching clients,
+    whether or not the responses are reconstructed by a local caching
+    DNS server. DNS responses containing code that is capable of
+    exploiting the vulnerabilities described in VU#803539 and
+    VU#542971 can be cached and reconstructed before being transmitted
+    to clients. Since the server may cache the responses, the
+    malicious code could persist until the server's cache is purged or
+    the entries expire.
+
+    The only complete solution to this problem is to upgrade to a
+    corrected version of the DNS resolver libraries as noted above.
+
+======================================================================
+
+
+The following documents have been revised:
+
+    CERT Advisory CA-2002-19
+    http://www.cert.org/advisories/CA-2002-19.html
+
+    Vulnerability Note VU#803539
+    http://www.kb.cert.org/vuls/id/803539
+
+    Vulnerability Note VU#542971
+    http://www.kb.cert.org/vuls/id/542971
+
+
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iQCVAwUBPWwncKCVPMXQI2HJAQKyqwP+NByjCM2eHhboD9L5PIrDTVs6eXv0qFcG
+zc8Hv1j/7I9I7oK4JwJUKLO83DvLxsEyCd+ooV32eBSw4UFsh+vbZz9On9XkDApf
+f6VRPIyKNBAQp8p1x+LpuH5Q1qIVMXBo1Y6NtiwAcn/WnTDq8McGSqCrMV+NRChI
+EfhhbZqnW6s=
+=yEmz
+-----END PGP SIGNATURE-----
+

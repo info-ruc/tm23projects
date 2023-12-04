@@ -1,0 +1,125 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <2512>; Sun, 1 May 1994 02:47:02 -0400
+Received: from nic.stolaf.edu ([130.71.128.8]) by psuvax1.cse.psu.edu with SMTP id <291764>; Sun, 1 May 1994 02:30:21 -0400
+Received: from localhost (guenther@quelle.acc.stolaf.edu [130.71.136.32]) by nic.stolaf.edu (8.6.9/8.6.5) with ESMTP id BAA28076 for <9fans@cse.psu.edu>; Sun, 1 May 1994 01:29:55 -0500
+Message-Id: <199405010629.BAA28076@nic.stolaf.edu>
+To:	9fans@cse.psu.edu
+Subject: assorted questions
+Date:	Sun, 1 May 1994 02:29:51 -0400
+From:	< (Philip Guenther) guenther@stolaf.edu>
+
+
+We've been trying to get plan9 setup in some form here at St Olaf for
+awhile now, and I've finally got it to the point were I could go
+through and recompile the kernels, fix the permissions on /adm, etc.
+Throughout this I've been aquiring a list of questions/problems.
+Well, yesterday when I fired up the cpu server and terminal (both Sun
+SLC's that run SunOS normally.  Dang machine shortage.) into plan9, I
+couldn't use the cpu command to get from the terminal to the cpu server,
+so I figured I might as well flush my list and see if I'm totally confused.
+
+Setup
+------
+fileserver: "the_ruler" SPARCstation 2 with 1G drive
+cpu server: "tanna" SPARCstation SLC, diskless (also serves authentication)
+terminal:   "eros"  same as cpu server
+
+The fileserver + drive are our spares, so I've backing up my changes via
+u9fs. :-|  The cpu server and terminal are in the CS lab, and run SunOS
+normally.  When I want to work with plan9 I halt them and use the boot
+rom's "dload" command to snarf the proper kernel via tftp (saves having
+to change the ether's database or /tftpboot on the server).  Thus they
+can't run plan9 continuously (just not enough computer to spare right
+now).
+
+Okay, here's the list.  Most of these have implict "why?" or "anybody
+see this?" attached.
+
+1)	The fileserver is supposed to rerequest the password when
+you type control-D on it's console.  I do that, and it halts.  I've
+added a new command "exit" which just calls conslock() to get around
+this, but I'm not sure why it doesn't work correctly.
+
+2)	Every so often, the filesever will just stop accepting connections.
+You can see the allocation message, but the remote machine never gets a
+nop, auth or attach through apparently.  This appears to have some
+connection with ethernet errors (from statl).  Rebooting the fileserver
+fixes the problem.
+
+3)	Speaking of rebooting the fileserver, whenever I do so I have to
+reenter all the info.  Why?  If I don't, the ip address is incorrect!  I
+can type:
+	service the_ruler.plan9.stolaf.edu
+	ip 130.71.8.48
+	ipgw 130.71.8.1
+	ipmask 255.255.255.0
+	ipauth 0.0.0.0
+	config w1
+	filsys main w1
+and it works fine.  I halt it, reboot, not enter config mode, but watch
+the config messages go by, and the ip address becomes something like
+135.104.9.122.  Everything else is fine (ipgw, service, etc).
+
+4)	DNS.  Does *anybody* know how to get plan9 to use DNS?  I've added
+ns lines to /lib/ndb/local, both for the DNS root as well as stolaf.edu.
+
+dom=stolaf.edu
+        ns=nic.stolaf.edu
+        ns=mari.acc.stolaf.edu
+        ns=news.stolaf.edu
+dom=nic.stolaf.edu ip=130.71.128.8
+dom=mari.acc.stolaf.edu ip=130.71.192.16
+dom=news.stolaf.edu ip=130.71.128.9
+
+And our cpu server starts "ndb/dns -s" from /bin/cpurc.  Sure enough,
+I can point nslookup at the cpuserver and it does proper forwarding.
+How can I get cs to use it?  "echo 'add dns' >/net/cs"?  I looked at
+the dns and cs source, but got lost very quickly.
+
+5)	BOOTP.  Due to the difficulties of getting authentication running
+without machines getting their info from BOOTP (as opposed to just typing
+it in each time), I hacked the plan9 kernel to do roughly rfc1048 & 1533
+BOOTP.  That is, the vendor field turns into options with the rfc specified
+magic cookie (99.130.83.99), it extracts the fields to do ipmask and ipgw,
+and options 209, 210 and 211 are site-specific options to specify
+fileserver, authentication server, and ip number.  ip number?  Yeah.  Since
+these machines run SunOS normally, the ip number in the BOOTP header goes
+with the name under SunOS, and this other BOOTP option gives their plan9
+IP.  Feel free to vomit.  Anyway, is there someway this can be shared with
+any interested parties?  Do I have to see a copy of their plan9 license
+before I can email them diffs to 9/boot/ip.c and 9/port/bootp.h?
+
+6)	Okay, now the biggy: authentication.  First of all, the
+documentation isn't at all clear on what actually have to be in the
+keys database to make it work.  Reading the source of libauth yielded
+the following as far as I can tell undocumented fact:
+
+	Each cpu server needs to entered as a host in the plan9 auth
+	database with the machine password under the system's name.
+
+The installation guide mentions machine login's, but doesn't say how to
+make them (that's easy), what they're for, or that cpu server "tanna"
+needs auth entry "tanna".  This is after 3 hours of tracing libauth when
+I just had a host entry for "bootes" (still haven't changed that).
+Anyway, I got it working.
+
+Yesterday, I fired up plan9 again.  Ha.  cpu decided it doesn't like me,
+and proceeds to return "challenge mismatch".  Okay, maybe a password was
+incorrectly entered somehow.  So I reenter the machine password in the
+auth database for both bootes and tanna (the cpu/auth server's name).
+Bzzt.  I reenter mine.  Still no go.  I remove /adm/keys from the file
+server console, recreate it, and restock it with users.  Still no go.
+Worked fine a week ago.  Maybe it's because the moon is now waning...
+
+So this last one is really a plea to someone in the know to explain
+the practicals of setting up authentication under plan9.  I've read
+the manpages too much.  How do the commands reflect the theory in
+auth(6)?
+
+Much preresponse appreciation.
+
+Philip Guenther
+
+guenther@stolaf.edu (Philip Guenther) St Olaf College, Northfield, MN 55057
+(defun sig-hook () (insert-disclaimer 'my-opinion-only 'powerless-student))
+"To go outside the mythos is to become insane..." -Robert Pirsig
+

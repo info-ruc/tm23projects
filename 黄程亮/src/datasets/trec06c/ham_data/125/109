@@ -1,0 +1,150 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k4JLAd9p005510
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 19 May 2006 14:10:39 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id BAEDFE161D3
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 19 May 2006 14:10:39 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 1B858E1657C
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 19 May 2006 14:10:33 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060519133748.00ba4ed8@psy1.psych.arizona.edu>
+Date: Fri, 19 May 2006 14:10:31 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] TFT (or LCD) displays caveat emptor
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="=====================_704245328==_.ALT"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+--=====================_704245328==_.ALT
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+   As I was testing a LCD display (alternatively called an TFT or Flat 
+Panel display) here I came across another previously unconsidered dimension 
+of them that is a very serious consideration in their use as tachistoscopic 
+display devices.  And that is that the LCDs all have a digital signal 
+processor (DSP) in them sitting between the computer's output and the 
+pixels of the display and the speed of that processor can interfere with 
+tachistoscopic displays.  For instance when I first started testing this 
+LCD the script I chose was using a 1024x768 display mode whereas the native 
+resolution of this panel is 1600x1200.  So the DSP has to take the 1024x768 
+signal and stretch it onto the 1600x1200 array of pixels that actually 
+constitutes the display.  It turns out that this device can't keep up with 
+even a moderately fast tachistoscopic display and was producing tearing at 
+even pedestrian 4 tick displays.  I was toggling the background color 
+between black and white and despite DMDX detecting no display errors I 
+could plainly see tearing on the display.  Once I realized what was up and 
+switched DMDX to using the native resolution of the panel the tearing went 
+away.
+
+   So one must be very careful to use the native resolution of an LCD when 
+using DMDX.
+
+   A further consideration that hasn't been tested yet but is likely to be 
+the case is that my monitor is using a DVI cable and not the old 15 pin 
+analog VGA cable that most displays are using.  The DVI cable is used here 
+because high resolution displays (ie 1600x1200 and beyond) start to jitter 
+and have all sorts of nasty problems.  Because the same DSP mentioned above 
+has to take the analog video signal and process it it stands a very good 
+chance of running into the same problems mentioned above.  So even if 
+someone was using the native resolution of the panel the use of an analog 
+signal cable could very well introduce the same sorts of tearing problems.
+
+   Fortunately this is relatively easy to detect without additional test 
+equipment beyond the human eye.  Basically toggle the background color at a 
+rate DMDX can handle without display errors and you should see an even 
+flickering display.  If you see periodic horizontal discontinuities then 
+your LCD has a problem.
+
+f30 <!VideoMode desktop> <vm 1024,768,16,0> d3
+0 <dbgc 0> <dwc 255255255> <ln -1> "display tearing test" <cr> <set c1=100>;
+3   <delay 3>  %4 <bgc 255255255>  /  <dec 1> <bicgt 1,0,3>;
+0 "end" l;
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Any given program, once running, is obsolete.
+
+
+--=====================_704245328==_.ALT
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<br>
+&nbsp; As I was testing a LCD display (alternatively called an TFT or
+Flat Panel display) here I came across another previously unconsidered
+dimension of them that is a very serious consideration in their use as
+tachistoscopic display devices.&nbsp; And that is that the LCDs all have
+a digital signal processor (DSP) in them sitting between the computer's
+output and the pixels of the display and the speed of that processor can
+interfere with tachistoscopic displays.&nbsp; For instance when I first
+started testing this LCD the script I chose was using a 1024x768 display
+mode whereas the native resolution of this panel is 1600x1200.&nbsp; So
+the DSP has to take the 1024x768 signal and stretch it onto the 1600x1200
+array of pixels that actually constitutes the display.&nbsp; It turns out
+that this device can't keep up with even a moderately fast tachistoscopic
+display and was producing tearing at even pedestrian 4 tick
+displays.&nbsp; I was toggling the background color between black and
+white and despite DMDX detecting no display errors I could plainly see
+tearing on the display.&nbsp; Once I realized what was up and switched
+DMDX to using the native resolution of the panel the tearing went
+away.<br><br>
+&nbsp; So one must be very careful to use the native resolution of an LCD
+when using DMDX.<br><br>
+&nbsp; A further consideration that hasn't been tested yet but is likely
+to be the case is that my monitor is using a DVI cable and not the old 15
+pin analog VGA cable that most displays are using.&nbsp; The DVI cable is
+used here because high resolution displays (ie 1600x1200 and beyond)
+start to jitter and have all sorts of nasty problems.&nbsp; Because the
+same DSP mentioned above has to take the analog video signal and process
+it it stands a very good chance of running into the same problems
+mentioned above.&nbsp; So even if someone was using the native resolution
+of the panel the use of an analog signal cable could very well introduce
+the same sorts of tearing problems.<br><br>
+&nbsp; Fortunately this is relatively easy to detect without additional
+test equipment beyond the human eye.&nbsp; Basically toggle the
+background color at a rate DMDX can handle without display errors and you
+should see an even flickering display.&nbsp; If you see periodic
+horizontal discontinuities then your LCD has a problem.<br><br>
+f30 &lt;!VideoMode desktop&gt; &lt;vm 1024,768,16,0&gt; d3<br>
+0 &lt;dbgc 0&gt; &lt;dwc 255255255&gt; &lt;ln -1&gt; =93display tearing
+test=94 &lt;cr&gt; &lt;set c1=3D100&gt;;<br>
+3&nbsp;&nbsp; &lt;delay 3&gt;&nbsp; %4 &lt;bgc 255255255&gt;&nbsp;
+/&nbsp; &lt;dec 1&gt; &lt;bicgt 1,0,3&gt;;<br>
+0 =93end=94 l;<br>
+<br>
+<br>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/&quot;\</div>
+<div>&nbsp;-jonathan
+(j.c.f.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;
+\ /</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+X </div>
+<div>&nbsp;&nbsp;&nbsp; ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL&nbsp; /
+\ </div>
+<br>
+<div>&nbsp; Any given program, once running, is obsolete.</div>
+<br>
+</html>
+
+--=====================_704245328==_.ALT--
+
+

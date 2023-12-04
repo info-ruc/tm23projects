@@ -1,0 +1,92 @@
+Received: from alushta.NL.net (alushta.NL.net [193.78.240.22])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id DAA10727
+	for <handyboard@media.mit.edu>; Wed, 29 Jul 1998 03:34:22 -0400 (EDT)
+Received: from domino by alushta.NL.net with UUCP id <9508-24315>; Wed, 29 Jul 1998 09:34:07 +0200
+Received: from chess.nl (pc217) by domino.chess.nl (4.1/SMI-4.1)
+	id AA13635; Wed, 29 Jul 98 09:14:46 +0200
+At:   Chess B.V.                 Chess Belgium
+      Postbus 5021
+      2000 CA  HAARLEM
+      Nieuwe Gracht 39           Kleine Broekstraat 4
+      2011 NC  HAARLEM           B-9030 Gent
+      The Netherlands            Belgium
+      tel: +31 (0)23 5 149 149   +32 (0)9 236 60 18
+      fax: +31 (0)23 5 149 199   +32 (0)9 236 54 12
+Message-Id: <35BECB7E.9DD6C7EB@chess.nl>
+Date: Wed, 29 Jul 1998 09:13:02 +0200
+From: Richard meester <richard.meester@chess.nl>
+X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+Mime-Version: 1.0
+To: Mike Davis <ipscone@halcyon.com>
+Cc: "handyboard@media.mit.edu" <handyboard@media.mit.edu>
+Subject: Re: 68hc11F1
+References: <199807281600.JAA02791@smtp4.nwnexus.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hello mike,
+
+
+
+Mike Davis wrote:
+> 
+> I am designing a board also.  I want a basic board with minimum I/O (for
+> small projects) and expansion connector to expanded I/O (for larger projects).
+> Two questions...
+
+I also wanted a small board with MCU, memory, serial and a bus to the
+outside world. This way i made a general io board and could connect
+anything to it.
+> 
+> > Hello Mike,
+> >
+> > Sorry for the cryptical message,
+> >
+> > I don't have a handyboard running at 16 Mhz, i made my own board,
+> > currently with a 68hc11F1(@16Mhz), 32 K external RAM, 32k External
+> 
+> Is this the normal Crystal speed for the 11F1?  I was not aware that the
+> HC11 could run that fast.  
+
+You can buy the hc11F1 in 4 speeds, with a freq up to 16 Mhz, setting
+the e-clock to 4. This gives 250 ns cycle time. In the ref. manual you
+can find the mcu codes for the speeds, i don't know excact, but
+something like 68hc11F1FN4
+
+Also did you do anything special because of the
+> higher speed; like ground planes, etc.  Was this a PCB or wirewrapped?
+> 
+My prototype is wirewrapped, i had some problems because of this, some
+bad connections. Also you should take into account the cycle time.
+Because during reads and writes during e-clock high you have 125 ns
+timing. If you use decoded r/~w and ather system signals, you should
+check the timing. I use a flash with 90 ns access time, and i also use a
+74hct139 for system signal decoding (r/~w, E-clk). 
+
+> > flash. My programs are run from the flash, leaving aprox 32 k of stack
+> > and heap. I also have a 50 pin header, to connect several other boards.
+> >  On this connector i have connected 2 * 4K of IO space, with chip select
+> > lines. So i have 32k - 8k - 1k left for stack and heap. On this 2 * 4k
+> > io space i'm designing a servo board, for rc hobby servos, 16 in total
+> > with just 2 ICs. Another board i'm designing are H-bridges for 3 DC
+> > motors. I'm thinking of designing 3 PIC micro's for the PID interface as
+> > well as the encoder stuf and PWM stuf, and just interface to the PIC
+> > with giving positions to move to and a start signal.
+> 
+> Since the HC11 only addresses 64K, and since there are internal resources
+> using some of that, how do you handle the overlap?
+> 
+> I think I asked more than two questions.
+> 
+> Thanks
+> 
+> --
+> -----------------------------------------------------------------
+> ipscone@halcyon.com                                 Shoot-To-Win!
+> 
+> Protect the 2nd Amendment!               Your rights may be next!
+> -----------------------------------------------------------------
+
+
+Hope this helps.
+

@@ -1,0 +1,55 @@
+Received: from highwire.stanford.edu (highwire.Stanford.EDU [171.64.249.40])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id KAA08579
+	for <9fans@cse.psu.edu>; Tue, 4 Apr 2000 10:10:57 -0400 (EDT)
+Received: from aubrey.stanford.edu (jimr@aubrey.Stanford.EDU [171.64.31.58])
+        by highwire.stanford.edu (8.9.3/HIGHWIRE2.0) with ESMTP id HAA15609
+	for <9fans@cse.psu.edu>; Tue, 4 Apr 2000 07:10:55 -0700 (PDT)
+Message-Id: <200004041410.HAA15609@highwire.stanford.edu>
+X-url: http://highwire.stanford.edu/~jimr/
+X-face: "!ZH^<"U,NeU:732A<C4y,*Cf?(iP<kPeb6%sXHk7p\H;56mY2n|J?=#=d0*O=8%G:xc2.f
+ @r{2w5^o|Kn_v*t|P68T[9c-c=k90RX}Jht/v
+Reply-to: jim.robinson@stanford.edu
+From: "James A. Robinson" <jim.robinson@stanford.edu>
+To: "Plan 9 Mailing List" <9fans@cse.psu.edu>
+Subject: [9fans] VMWare
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <19697.954857455.1@aubrey.stanford.edu>
+Date: Tue, 04 Apr 2000 07:10:55 -0700
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+I don't remember a VNC port, but I did see this post from David Bulkow
+about getting VNC to work with Plan 9.  I don't know if he got the
+network working.
+
+------- Forwarded Message
+
+Date:    Thu, 23 Dec 1999 18:54:42 -0500
+From:    David Bulkow <dbul@earthlink.net>
+To:      9fans <9fans@cse.psu.edu>
+Subject: [9fans] plan9 on vmware
+
+I have finally managed to boot Plan9 in a VMware configuration.
+The problem I ran into was the IDE driver attempting to set "read ahead
+mode".  After the command to set the feature, the IDE device status
+register indicates an error - the error register indicates Abort.
+Once the abort error is posted, the driver can no longer access the
+device and the boot fails.
+
+I did not attempt to fix the problem correctly, but instead took
+a short cut and commented out the call which sets read ahead mode.
+Performance appears acceptable.
+
+In boot/pc/hard.c comment out the call to hardsetbuf().  In 9/pc/devata.c
+comment out the call to atafeature().
+
+My next goal is to get ethernet working so I can have the VMware machines
+participate in the rest of the Plan9 environment.
+
+dbul@earthlink.net
+
+
+------- End of Forwarded Message
+

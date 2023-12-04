@@ -1,0 +1,48 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA16401
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 9 Nov 2000 09:43:04 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by phobos.email.Arizona.EDU (5.1.046)
+        id 39FA0044000F80A4 for DMDX@psy1.psych.arizona.edu; Thu, 9 Nov 2000 09:43:04 -0700
+Message-Id: <5.0.0.25.2.20001109093342.009d6360@psy1.psych.arizona.edu>
+Date: Thu, 09 Nov 2000 09:43:02 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] QPC testing
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   For a DMDX test of QueryPerformanceCounter and item file like the 
+following will do the job:
+
+<ep> f30 <id mouse> <mr +button 1> <id keyboard>
+<VideoMode 1024 768 768 16 0> <eop>
+0 <ln -1> "Display Test Mode 3";
+5  "Test Mode 3" / <testmode 3>;
+0 "end" l;
+
+   Because the test is continuously updating the display there will be a 
+lot of traffic on the bus to produce the error, although the chipset error 
+may require PCI traffic to manifest, if so (assuming you don't have a PCI 
+video card in which case this test should suffice) a looping item file 
+playing audio may be better.  If you are watching the display my guess is 
+that the error is going to manifest as a 4700ms latency but you won't see 
+DMDX pause for 4.7 seconds as would be the case if the error were 
+genuine.  Of course, any latency that long is almost guaranteed to be the 
+failure of the chipset.
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Dimensions will always be expressed in the least usable term.
+Velocity, for example, will be expressed in furlongs per fortnight.
+
+
+

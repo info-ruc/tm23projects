@@ -1,0 +1,58 @@
+Received: from giasbma.vsnl.net.in (giasbma.vsnl.net.in [202.54.4.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id FAA16026
+	for <handyboard@media.mit.edu>; Tue, 2 Mar 1999 05:14:45 -0500 (EST)
+Received: from giasbmc.vsnl.net.in (giasbmc [202.54.4.6])
+	by giasbma.vsnl.net.in (8.8.8/8.8.8) with SMTP id PAA28562;
+	Tue, 2 Mar 1999 15:50:30 +0500 (IST)
+Date: Tue, 2 Mar 1999 15:23:58 -0500 (GMT)
+From: "SHETTI.NITIN.MANGESH" <shettin@giasbmc.vsnl.net.in>
+To: "Russell, Casey" <crussell@osec.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: serial communications
+In-Reply-To: <D1C6ABF12D15D1119A2D006097BCFD4618B8C8@osec102.erols.com>
+Message-Id: <Pine.SOL.3.96.990302151251.29216A-100000@giasbmc.vsnl.net.in>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Dear Casey Russell,
+	   When pcode is disabled, the handy boards stops treating the
+data received on the serial port,in the manner the pcode wants it to. The
+bytes it receives through the com2 port is then just plain data for it. It
+should know what to do to the data. Hence there should be a receiving
+program on the hb to accept the data. The function serial_getchar() waits
+for the data coming through the serial port. 
+	When you ran Hyperterminal, I believe this function was not
+called. It must therefore have confused the hb.
+	Write a program which disables the pcode, calls serial_getchar()
+and then enables the pcode, inorder for observing the working of these
+functions. 
+							Yours sincerely,
+							     Nitin
+
+On Mon, 1 Mar 1999, Russell, Casey wrote:
+
+> I want to disconnect interactive C from the handy board and send
+> instructions to it via the hyper terminal on Windows 95.  I have
+> followed the instructions given in the HB technical reference.  I am
+> confused as to the procedure for accomplishing my task.  Once the code
+> for receiving Characters is downloaded  to the handy board what is my
+> next step.  When do I call the disable_pcode_serial() function and how
+> do I utilize the serial_getchar(int c)?
+> 
+> These are the steps that I have tried:
+>    1.  download given code on last page of manual.
+>    2.  call disable_pcode_serial()
+>    3. turn off IC.
+>    4.  run hyper terminal,  which connects to the HB through com port 2.
+> As soon as I type in the hyper terminal the HB
+>         heart beat stops.
+> 
+> 
+> I'm not using the serial_getchar(int c) command correctly can someone
+> inform me of my blunder.  
+> 
+> Thanks,
+> Casey   
+> 
+
+

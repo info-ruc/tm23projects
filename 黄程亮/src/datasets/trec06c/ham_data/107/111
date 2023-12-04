@@ -1,0 +1,190 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j9DIin5L024217
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Oct 2005 11:44:49 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 76EC9B493A0
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Oct 2005 11:44:49 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id B08E8B72091
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Oct 2005 11:44:47 -0700 (MST)
+Message-Id: <5.1.0.14.2.20051013113030.00bace98@psy1.psych.arizona.edu>
+Date: Thu, 13 Oct 2005 11:44:43 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Display error oddity
+In-Reply-To: <9ae8f64a0510131042l63b7ca31qf0fb1fcb3499d6b2@mail.gmail.co
+ m>
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="=====================_85997187==_.ALT"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+--=====================_85997187==_.ALT
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+At 12:42 PM 10/13/2005 -0500, you wrote:
+>I have a question about display error messages that are generated in the 
+>azk output.  Basically, the same script generates a very different pattern 
+>of display errors (or no errors) on two different machines.  Here is the 
+>scenario.  This is the script:
+>
+><ep> d30 f1 <cr><t 2000><id keyboard><id mouse><vm 
+>1024,768,768,32,60><nfb><eop>
+>+1  * "Test1" <msfd 500> /;
+>+2  * "Test2" <msfd 500> /;
+>0 "End";
+>
+>If I run this script on one computer and let it run with no responses, it 
+>generates the following output:
+>
+>Subject 1, 10/13/2005 12:24:57 on HEINEKEN, refresh 16.66ms, ID 1
+>   Item       RT
+>      1  -2000.00
+>!  Display error at msec 2561.41, tick 152 in item 2, frame "Test2"
+>!    moved into video memory 60 ticks late
+>!     (previous frame's duration will have been longer)
+>      2  -2000.00
+>!  Display error at msec 4610.93, tick 275 in item 0, frame "End"
+>!    moved into video memory 61 ticks late
+>!     (previous frame's duration will have been longer)
+>This surprised me b/c using a d of 30 should be way more time than was 
+>needed to prepare to present text.  Also the 60 & 61 additional ticks 
+>listed in the display error seemed way too long.  Then I realized that the 
+>time out of 2000 would obviously be delaying things if the participant 
+>responded real slow (or didnt response as in this simulation).  If I 
+>change the time out to 500 the delay errors go away.
+
+   Yeah, the time for the next frame is calculated from when the previous 
+display ended so a timeout that's longer than the display will screw up the 
+timing.  A 500ms frame plus a 500ms delay minus a two second response 
+timeout gives you around 60 ticks.
+
+>   I thought problem solved.  But, if I run the same original script on a 
+> different machine (with the time out of 2000), I DO NOT get any display 
+> errors:
+>Subject 1, 10/13/2005 12:28:35 on REDSTRIPE, refresh 16.68ms
+>   Item       RT
+>      1  -2000.00
+>      2  -2000.00
+>
+>If the time out was the source of the display errors, then it should occur 
+>on both machines, correct?  But if the timeout is not the source of the 
+>error, why does making the timeout <= to the duration of the item make the 
+>display errors go away on the first machine?
+
+   Could be a version thing, I just recently fixed the way <cr> was working 
+with <d> and your machines may have different version of DMDX on 
+them.  Prior to 3.1.4.1 a pretty un-rigorous piece of code would have not 
+had display errors when the subject's response went over the display 
+duration when <cr> and <d> were used together.  As long as the display was 
+longer than the RT things will have been fine (as long as you didn't have a 
+really fast CPU) but for poorly formed items like you have there it will 
+have been scheduling the display from the time that the previous item 
+finished, not it's display.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+You probably wouldn't worry about what people think of you if you could
+know how seldom they do.
+
+                                                  -  Olin Miller.
+
+
+--=====================_85997187==_.ALT
+Content-Type: text/html; charset="us-ascii"
+
+<html>
+At 12:42 PM 10/13/2005 -0500, you wrote:<br>
+<blockquote type=cite class=cite cite>I have a question about display
+error messages that are generated in the azk output.&nbsp; Basically, the
+same script generates a very different pattern of display errors (or no
+errors) on two different machines.&nbsp; Here is the scenario.&nbsp; This
+is the script: <br>
+&nbsp;<br>
+&lt;ep&gt; d30 f1 &lt;cr&gt;&lt;t 2000&gt;&lt;id keyboard&gt;&lt;id
+mouse&gt;&lt;vm 1024,768,768,32,60&gt;&lt;nfb&gt;&lt;eop&gt;<br>
++1&nbsp; * &quot;Test1&quot; &lt;msfd 500&gt; /; <br>
++2&nbsp; * &quot;Test2&quot; &lt;msfd 500&gt; /; <br>
+0 &quot;End&quot;;<br><br>
+If I run this script on one computer and let it run with no responses, it
+generates the following output:<br><br>
+Subject 1, 10/13/2005 12:24:57 on HEINEKEN, refresh 16.66ms, ID 1<br>
+&nbsp; Item&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RT<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp; -2000.00<br>
+!&nbsp; Display error at msec 2561.41, tick 152 in item 2, frame
+&quot;Test2&quot;<br>
+!&nbsp;&nbsp;&nbsp; moved into video memory 60 ticks late <br>
+!&nbsp;&nbsp;&nbsp;&nbsp; (previous frame's duration will have been
+longer)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp; -2000.00<br>
+!&nbsp; Display error at msec 4610.93, tick 275 in item 0, frame
+&quot;End&quot;<br>
+!&nbsp;&nbsp;&nbsp; moved into video memory 61 ticks late<br>
+!&nbsp;&nbsp;&nbsp;&nbsp; (previous frame's duration will have been
+longer) <br>
+This surprised me b/c using a d of 30 should be way more time than was
+needed to prepare to present text.&nbsp; Also the 60 &amp; 61 additional
+ticks listed in the display error seemed way too long.&nbsp; Then I
+realized that the time out of 2000 would obviously be delaying things if
+the participant responded real slow (or didnt response as in this
+simulation).&nbsp; If I change the time out to 500 the delay errors go
+away.</blockquote><br>
+&nbsp; Yeah, the time for the next frame is calculated from when the
+previous display ended so a timeout that's longer than the display will
+screw up the timing.&nbsp; A 500ms frame plus a 500ms delay minus a two
+second response timeout gives you around 60 ticks.<br><br>
+<blockquote type=cite class=cite cite>&nbsp; I thought problem
+solved.&nbsp; But, if I run the same original script on a different
+machine (with the time out of 2000), I DO NOT get any display errors:
+<br>
+<font size=2>Subject 1, 10/13/2005 12:28:35 on REDSTRIPE, refresh
+16.68ms<br>
+&nbsp; Item&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RT<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp; -2000.00<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp; -2000.00</font><br>
+&nbsp;<br>
+<font size=2>If the time out was the source of the display errors, then
+it should occur on both machines, correct?&nbsp; But if the timeout is
+not the source of the error, why does making the timeout &lt;= to the
+duration of the item make the display errors go away on the first
+machine? </font></blockquote><br>
+&nbsp; Could be a version thing, I just recently fixed the way &lt;cr&gt;
+was working with &lt;d&gt; and your machines may have different version
+of DMDX on them.&nbsp; Prior to 3.1.4.1 a pretty un-rigorous piece of
+code would have not had display errors when the subject's response went
+over the display duration when &lt;cr&gt; and &lt;d&gt; were used
+together.&nbsp; As long as the display was longer than the RT things will
+have been fine (as long as you didn't have a really fast CPU) but for
+poorly formed items like you have there it will have been scheduling the
+display from the time that the previous item finished, not it's
+display.<br>
+<br>
+<br>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/&quot;\</div>
+<div>&nbsp;-jonathan
+(j.c.f.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+\ /</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+X </div>
+<div>&nbsp;&nbsp;&nbsp; ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL&nbsp; /
+\ </div>
+<br>
+<div>You probably wouldn't worry about what people think of you if you
+could</div>
+<div>know how seldom they do.</div>
+<br>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-&nbsp; Olin Miller.</div>
+<br>
+</html>
+
+--=====================_85997187==_.ALT--
+
+

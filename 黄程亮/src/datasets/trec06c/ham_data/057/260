@@ -1,0 +1,52 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id AAA20053
+	for <handyboard@media.mit.edu>; Sat, 4 Dec 1999 00:07:14 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id AAA13571; Sat, 4 Dec 1999 00:07:13 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7173
+From: "Kah Mun" <lowk@union.edu>
+X-Real-Life-Name: Kah Mun
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Servomotor
+Posted-Date: Sat, 4 Dec 1999 05:06:26 GMT
+Date: Sat, 4 Dec 1999 05:06:26 GMT
+Organization: none
+Message-Id: <FM7A6q.ABn@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+
+i'm using digital pin 9 to generate the control signal for my TS-53 servo.
+however when i try to make it move, it only turns a little bit for the first
+command but just stops there, the motor continues vibrating though.
+
+the idea behind my code: set servo position to '3040', then wait 10 seconds.
+After that turn to '2000', wait 10 seconds and then back to '3040'. if the stop
+button is pressed, the loop terminates.
+
+void main()
+{
+      fd(1);               /* turns on motor driver 1  */
+      servo_a7_init(1);    /* enables digital pin 9 (Port A bit 7) */
+
+       while (stop_button()==0)
+	{
+          servo_a7_pulse=3040;  /*gives a 1.5 ms pulse
+          sleep(10.0);
+
+          servo_a7_pulse=2000;
+          sleep(10.0);
+         }
+
+      ao();
+      servo_a7_init(0);    /* disables digital pi 9
+} /* end*/
+
+
+
+please help!!
+

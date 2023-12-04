@@ -1,0 +1,114 @@
+Received: from helium.tip.nl (helium.tip.nl [195.18.64.71])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id QAA24246
+	for <handyboard@media.mit.edu>; Sun, 15 Mar 1998 16:01:26 -0500 (EST)
+Received: from default by helium.tip.nl with smtp
+	(Smail3.2 #23) id m0yEKYb-001Y5LC; Sun, 15 Mar 1998 22:02:57 +0100 (MET)
+Received: by localhost with Microsoft MAPI; Sun, 15 Mar 1998 22:04:12 +0100
+Message-Id: <01BD505E.499E4920.j.paludanus@tip.nl>
+From: Jaron Paludanus <j.paludanus@tip.nl>
+To: "'Anthony Oren Loeppert'" <oren@mail.utexas.edu>,
+        "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: RE: IC Pointer Questions
+Date: Sun, 15 Mar 1998 22:03:44 +0100
+X-Mailer: Microsoft Internet E-mail/MAPI - 8.0.0.4211
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Hi, thanks for your reply ...
+
+Why don't I use the encoder0_counts variable ?
+
+I want to create a multi-tasked environment with seperate processes for 
+each wheel to calculate wheel speeds. The same code will be used to 
+calculate speed for 4 wheels. What I realize now is that I can dereference 
+the velocity variable when using it. I was (am) very focussed on creating a 
+- simple - uniform structure describing the robot, without pointer 
+references to simplify coding and prevent errors. So what I thought up was;
+
+A memory location XXXX with contents AAAA is named "encoder0_velocity" when 
+using the compiler / interpreter. It would be very convieniant if I could 
+create a variable named "CurrentSpeed" using memory location XXXX as well. 
+Then I could use both names in the compiler/interpreter - to create clean 
+code - while actually describing one memory location containing AAAA.
+
+Maybe I could change the MC routines to use a structure to return their 
+value and recompile them to icb files? Just to clean up the code ? Or is 
+this extreme knit picking?
+
+   struct drivewheel wheel[4];
+
+   void launch () {
+      int i;
+      for (i=0;i<4;i++)
+         start_process( calculate_speed( i ) );
+   }
+
+   void calculate_speed( int index ) {
+      wheel[i].motor.speed.average = ( wheel[i].motor.speed.average * 9 + 
+wheel[i].motor.speed.current ) / 10;
+      wheel[i].wheel.speed.current = *wheel[i].encoder.velocity * 1000 / 
+64;
+      wheel[i].wheel.speed.average = ( wheel[i].wheel.speed.average * 9 + 
+wheel[i].wheel.speed.current ) / 10;
+   }
+
+
+
+-----Original Message-----
+From:	Anthony Oren Loeppert [SMTP:oren@mail.utexas.edu]
+Sent:	Sunday, March 15, 1998 7:55 PM
+To:	Jaron Paludanus; handyboard@media.mit.edu
+Subject:	Re: IC Pointer Questions
+
+>	struct _wheel {int radius;int ticks;};
+>	struct _encoder {int port;int *velocity ;int *count;};
+>	struct drivewheel {struct _encoder encoder;struct _wheel   wheel;}
+>wheel[4];
+>
+>	wheel[0].encoder.count= &encoder0_counts;
+>	*wheel[0].encoder.count= 0;			/*I want to get rid
+>of that dereferencing
+>asterix ...*/
+>
+>Is there a way I can declare "wheel.encoder.count" so that it exists as an
+>integer pointing to the same memory location as "encoder0_counts"?
+>"wheel[0].encoder.count= 0;" Would then be the same as "encoder0_counts=
+>0;"
+
+If I am understanding you right...  I haven't looked at the encoder
+routines yet, but I am assuming encoder0_counts is global.  Why not, just
+omit the pointer count from the _encoder struct and just use the global,
+since you already have it?  That aside, I'm don't know what you have
+against '*' in having the statement *wheel[0].encoder.count = 0;  It
+accomplishes what you want and that's going to be your only solution I
+think.  I'm not too familiar with IC, but I am guessing it adhears fairly
+closely to standard C in it's implementation.  You are wanting to use a
+feature of C++, pass by reference.  Standard C doesn't support it.
+
+void change_count(int& iamTheSaveVar)
+{
+	iamTheSaveVar=0;
+}
+
+int main()
+{
+	int somevar=1;
+	change_count(somevar);
+	return somevar;
+}
+
+in C++, this would effectively set somevar to 0, but I don't think that it
+would work in IC, but I haven't tried it.  I would but I am online and I
+only have on RS232 serial cable and it is connected to my modem right now
+:)  The passing by reference is not any different that passing a pointer
+and deferencing it.
+
+> Can I change the pointer of an existing integer?
+
+I'm not quite sure what you mean by that.
+
+
+
+
+

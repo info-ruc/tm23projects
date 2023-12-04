@@ -1,0 +1,52 @@
+Received: from hq.freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id MAA11137
+	for <handyboard@media.mit.edu>; Tue, 14 Apr 1998 12:20:19 -0400 (EDT)
+Received: (qmail+freegate 15392 invoked by alias); 14 Apr 1998 16:20:17 -0000
+Received: from ws154.hq.freegate.com (HELO freegate.com) (208.226.86.154)
+  by ns.hq.freegate.com with SMTP; 14 Apr 1998 16:20:17 -0000
+Message-Id: <35338D21.BC231AF2@freegate.com>
+Date: Tue, 14 Apr 1998 09:21:53 -0700
+From: Chuck McManis <cmcmanis@freegate.com>
+Reply-To: cmcmanis@freegate.com
+Organization: FreeGate Corporation
+X-Mailer: Mozilla 4.04 [en] (Win95; U)
+Mime-Version: 1.0
+To: "Bruce A. Moore" <bamoore@bloomington.in.us>
+Cc: handyboard@media.mit.edu
+Subject: Re: Servo Routines
+References: <199804131853.NAA30257@kirkwood.hoosier.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I have noticed in my experiments that the HB servo routines don't
+interact well with the LCD. In order to get them to work reliably
+in my Handyboard library I redesigned the way the LCD driver
+worked. Unfortunately for you that library was built for icc11,
+not IC so it won't help you.
+
+However, if someone else wants to fix this for the general case,
+here are the steps.
+
+1) In my case the problem arose because the LCD driver does a
+busy loop waiting for the LCD to be done before it writes a
+character. Depending on where in the cycle you 'hit' it, you can
+wait anywhere from 0 to 1mS. 
+
+2) The servos get to run when their controlling timer interrupts,
+however, because the LCD driver has to run in single chip mode,
+it is required to disable interrupts for its duration.
+
+I made things better in my driver by rewriting the LCD driver to
+be asynchronous. Basically the lcd_write routine queues a
+character to the LCD and then during system ticks the LCD driver
+checks the queue, and if it is non-empty, attempts to write one
+character. The magic is that if the LCD is busy it just returns
+immediately, assuming it will pick up the character on the next
+systick. That made the interrupt response time to the servos MUCH
+more predictable and I could run three with no chatter at all.
+The down side is that sometimes you will may wait nearly 2ms to
+write to the LCD however that is still a rate of 480 characters
+per second so its still more than too fast for humans.
+
+--Chuck
+

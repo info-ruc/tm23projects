@@ -1,0 +1,96 @@
+Received: from web37703.mail.mud.yahoo.com (web37703.mail.mud.yahoo.com [209.191.87.101])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with SMTP id k2ACp7g1028607
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Mar 2006 05:51:07 -0700
+Received: (qmail 70245 invoked by uid 60001); 10 Mar 2006 12:51:02 -0000
+Message-ID: <20060310125102.70236.qmail@web37703.mail.mud.yahoo.com>
+Received: from [130.241.178.51] by web37703.mail.mud.yahoo.com via HTTP; Fri, 10 Mar 2006 04:51:02 PST
+Date: Fri, 10 Mar 2006 04:51:02 -0800 (PST)
+From: Derek Eder <derek_eder@yahoo.com>
+Subject: [DMDX] RT measurement - sanity check please
+To: DMDX@psy1.psych.arizona.edu
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+I would like to ask for some indulgance and a sanity
+check (DMDX script check actually).
+
+I am not sure if my script is doing precisely what I
+intended because the resulting data smells fishy.
+
+Below is one line from an item file which I have
+broken up into conceptual chunks here:
+
+(chunk 1 - wait interstimulus interval with fixation
+cross) Item #23, display the character "+" for 223
+ticks
+
+(chunk 2 - display fixation and cue) display the
+characters "+" and "O" for 13 ticks (~200
+milliseconds) and start the RT clock with a timeout of
+2700 milliseconds
+
+(chunk 3 - display fix)  display a "+" alone for 49
+ticks (800 ms)
+
+(chunk 4 - display fix and target)  target = "<<<<<<"
+wait for response or end of timeout before moving to
+next item.)  
+
+
+
++23 <! spatial.F>  <fd 223>  <XYJustification 1> <XY
+0.5, 0.5>  <fm 0.542> "+"  /
+
+<fd 13>  <XYJustification 1> <XY 0.5, 0.5>  <fm 0.542>
+"+" , <fd 13> <XYJustification 1> <XY 0.5,0.541>  <fm
+1.008> "O" * <Timeout 2700 >  /
+
+<fd 49 > <XYJustification 1> <XY 0.5, 0.5>  <fm 0.542>
+"+" /
+
+<XYJustification 1> <XY 0.5, 0.5>  <fm 0.542> "+" ,
+<fd 106> <XYJustification 1> <XY 0.5, 0.459>  <fm
+1.008> ">>>>>" ;
+
+
+Now, the reaction time I really want to measure is
+from the onset of the target presentation (chunk 4),
+but to catch premature responses to the presentation
+of the cue (in chunk 2), I start the RT clock with the
+cue onset.
+
+So, to calculate the actual valid RT, I take the raw
+RT measurement and subtract 13 + 49 ticks (in
+milliseconds).
+
+The problem is that the data does not look right.  Is
+it possible that the RT clock is measuring from the
+start of chunk 3?
+
+Thanks a million!
+
+- Derek
+
+
+Derek Eder
+Bagaregårdsgatan 3E, nr 134
+SE 416 70 Göteborg (Gothenburg)
+Sverige (Sweden)
+
++46 (031) 25 97 07 (home)
++46 0709 721 283 (mobil)
+
+email:     derek_eder@yahoo.com
+web page:  www.derek-eder.org
+
+"Forgiveness means giving up any hope for a better past" - after Gil Fronsdal
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 
+

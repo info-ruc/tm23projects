@@ -1,0 +1,66 @@
+Received: from A1.atlis.com (host5.atlis.com [216.181.97.5])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id PAA12765
+	for <tex-fonts@math.utah.edu>; Tue, 23 Jul 2002 15:49:15 -0600 (MDT)
+Received: from atlis.com (host-216-153-178-55.choiceone.net [216.153.178.55])
+	by A1.atlis.com (8.11.6/8.11.6) with ESMTP id g6NLpU105241
+	for <tex-fonts@math.utah.edu>; Tue, 23 Jul 2002 17:51:30 -0400 (EDT)
+	(envelope-from wadams@atlis.com)
+Message-ID: <3D3DCF57.F31FF629@atlis.com>
+Date: Tue, 23 Jul 2002 17:49:10 -0400
+From: William Adams <wadams@atlis.com>
+Reply-To: wadams@atlis.com
+Organization: ATLIS Graphics & Design
+X-Mailer: Mozilla 4.75C-CCK-MCD {C-UDP; EBM-APPLE} (Macintosh; U; PPC)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: tex-fonts@sunshine.math.utah.edu
+Subject: Re: OpenType support (for TeX)
+References: <2.2.32.20020723205830.00e86fbc@pop.panix.com> <5.1.0.14.2.20020723172138.02796848@mail.ai.mit.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+(Berthold, this is somewhat added to from my private reply to you, but
+the substance is the same)
+
+Berthold said:
+>I guess you didn't read what I wrote. And it has been written many
+times before.
+>You can probably do a search on this group or comp.text.tex
+
+>TeX does all of this sort of thing, and in return, it cannot tolerate
+this 
+>happening "under the hood". It requires TFM metric files that it can 
+>believe in. TeX cannot work properly when things can change while 
+>it isn't looking.
+
+I don't see why / how TeX could care about things changing after it's
+done looking at things.
+
+As I understand it in TeX/GX, when the page is shipped out, where each
+line would
+normally be written to the .dvi file, it's instead passed to the
+QuickDraw/GX Line Layout Manager which sets said characters to that
+width according to the rules in the font(s). Apparently this is an easy way
+to do this since TeX is so resistant to doing letterspacing which would
+interfere with substituting (for example) a ct ligature with a the ct characters.
+
+So rather than doing this ``under the hood'', one way to achieve this is
+by latching onto TeX's output and resetting it somewhat so as to use
+OpenType fonts according to OpenType rules---I don't see why this would
+be a difficult thing to ``bolt-on'' to pdfTeX, modulo the difficulty of
+parsing the OpenType font rules.
+
+I've read the bit in _Digital Typography_ about the difficulties of
+extending TeX to larger character sets, and've looked over Omega a
+couple of times, so I've some inkling of the technical difficulties
+involved in doing this directly in TeX. However, I'm working up towards
+a long-term personal project
+which will need something like to these capabilities, and so am
+investigating how to do this sort of thing in TeX, or something like to
+it (one alternative I'm looking at is CCS, a proprietary batch
+pagination system which my employer developed a while back), because I
+simply can't stand Adobe's ideas of user interface and can't justify
+purchasing a new / high-end Mac or Windows machine.
+
+William
+

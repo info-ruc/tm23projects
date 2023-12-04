@@ -1,0 +1,142 @@
+Received: from hsun6.wi-inf.uni-essen.de by aixrs1.hrz.uni-essen.de (AIX 4.1/UCB 5.64/4.03)
+          id AA86280; Sun, 22 Dec 1996 17:10:31 +0100
+Received: from rachael.franken.de by hsun6.wi-inf.uni-essen.de (SMI-8.6/SMI-SVR4)
+	id RAA20385; Sun, 22 Dec 1996 17:11:29 +0100
+Received: from hub-wue.franken.de by rachael.franken.de with smtp
+	(Smail3.1.29.1 #8) id m0vbmno-000oJba; Sun, 22 Dec 96 13:14 MET
+Received: from oops.franken.de by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0vbmKK-000Bp3a; Sun, 22 Dec 96 12:44 MET
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0vbmGb-001ISMa; Sun, 22 Dec 96 12:40 MET
+Received: from hub-wue.franken.de by oops.franken.de  with smtp
+	(Linux Smail3.1.29.1 #1) id m0vbmGX-001ISKE; Sun, 22 Dec 96 12:40 MET
+Received: from outmail.zdv.uni-tuebingen.de by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0vblye-000Bp3C; Sun, 22 Dec 96 12:21 MET
+Received: from mailserv.uni-tuebingen.de by outmail.zdv.uni-tuebingen.de (4.1/ZDV-Uni-Tuebingen-1.0)
+	id AA05580; Sun, 22 Dec 96 12:21:42 +0100
+Received: from commlink.zdv.uni-tuebingen.de by mailserv.uni-tuebingen.de 
+          with SMTP (PP); Sun, 22 Dec 1996 12:21:34 +0100
+Received: (from pecrm01@localhost) 
+          by commlink.zdv.uni-tuebingen.de (8.6.12/8.6.12) id MAA11944;
+          Sun, 22 Dec 1996 12:21:31 +0100
+Date: Sun, 22 Dec 1996 12:21:29 +0100 (MEZ)
+From: Michael Ruder <michael.ruder@uni-tuebingen.de>
+To: isdn4linux@hub-wue.franken.de
+Subject: ISDNLOG und SAMBA: Versand von WinPopup-Meldungen
+Message-Id: <Pine.HPP.3.91.961222122056.11937A-100000@commlink.zdv.uni-tuebingen.de>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-isdn4linux@hub-wue.franken.de
+Precedence: bulk
+Reply-To: isdn4linux@hub-wue.franken.de
+Status:   
+
+Hallo!
+
+Da sind sie endlich, die Skripte fuer den Versand von WinPopUp-Meldungen.
+
+In die isdnlog.conf wird als allgemeines Event das START_Ring-Skript 
+eingetragen, dass bei eingehenden Anrufen einmal aufgerufen wird und mit 
+Send_WinPopup eine Meldung verschickt.
+
+Ausserdem habe ich sowohl bei Connect als auch bei Hangup bei meinem 
+Provider ein Skripte eingetragen: ZDV_Connect und ZDV_Hangup. Diese 
+beiden senden ebenfalls mit Send_WinPopup einen Hinweis, dass die 
+ISDN-Leitung gerade auf- bzw. abgebaut wird. (Allerdings nur, wenn eine 
+Datei /etc/isdnlog/isdn.debug existiert, so kann man dies relativ leicht 
+an und abschalten.)
+
+Das Hauptskript Send_WinPopup versendet mit smbclient die eigentlichen 
+Messages, in diesem Fall an die Rechner "mizar" und "alcor" (Das sollte 
+der TCP/IP-Name (aus dem Nameserver) der jeweiligen Rechner sein, oder 
+falls mit WINS gearbeitet wird, kann es auch der im Windows-Netzwerk
+eingetragene Name sein, am Besten nimmt man an beiden Stellen den 
+gleichen Namen.)
+
+Die Meldung im ersten Parameter wird an das Programm gepiped, da 
+smbclient sie normalerweise von der Tastatur einlesen wuerde. Ausserdem 
+kann man mit -U noch einen Absender angeben, den WinPopup anzeigt.
+
+Auf den jeweiligen Rechnern muss WinPopup (3.11/95) oder der 
+Nachrichtendienst (NT) gestartet sein.
+
+Als kleine Ergaenzung: Auch auf Linux-Rechnern kann man die WinPopups 
+empfangen, dann muss man allerdings im smb.conf die entsprechende Zeile 
+eintragen und ein Skript anlegen, was die Meldung irgendwie anzeigt oder 
+loggt.
+
+Falls noch weiteres Interesse an der Konfiguration von Samba besteht, 
+kann ich auch gerne mal meine Konfig-Dateien posten.
+
+Ich hoffe Ihr koennt was damit anfangen, die Skripte sind nicht gerade 
+elegant, aber ich hab sowas noch nicht oft gemacht.
+
+Viel Spass,
+
+-Michael
+
+---- isdnlog.conf ----
+MYMSNS=4
+MYPREFIX=07472
+START=IR=/etc/isdnlog/START_Ring $1 $2 $3;
+MSN1      Telefon      1 -
+MSN2      Telefax      1 -
+MSN3,1    Michael      1 - 
+MSN4,7    Teles        1 -
+PROVIDER  ZDV_Internet 1 ippp0 OC=/etc/isdnlog/ZDV_Connect; OH=/etc/isdnlog/ZDV_Hangup;
+
+---- START_Ring ---
+#!/bin/sh
+# Michael Ruder
+#
+# Version: 08.10.96
+#
+# /etc/isdnlog/START_Ring
+#
+
+/etc/isdnlog/Send_WinPopup 'Eingehender Anruf von '$2' auf '$3'.' &
+
+# if test $3="IRGENDEINE_NUMMER"; then
+#   isdnctrl dial ippp0
+# fi
+
+---- Send_WinPopup ----
+#!/bin/sh
+# Michael Ruder
+#
+# Version: 08.10.96
+#
+# /etc/isdnlog/Send_WinPopup
+#
+
+echo $1 | smbclient -M mizar -U ISDN-Administrator >/dev/null
+echo $1 | smbclient -M alcor -U ISDN-Administrator >/dev/null
+
+---- ZDV_Connect ----
+#!/bin/sh
+# Michael Ruder
+#
+# Version: 08.10.96
+#
+# /etc/isdnlog/ZDV_Connect
+#
+
+if test -e "/etc/isdnlog/isdn.debug"; then
+  /etc/isdnlog/Send_WinPopup 'Die ISDN-Leitung wird aufgebaut.' &
+fi
+
+---- Auschnitt aus smb.conf ----
+[global]
+   message command = mv %s %s.working; echo WinPopup-Message from %f@%m for %t: > %s; cat %s.working >> %s; wall %s; rm %s %s.working &
+
+       -Michael
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+ < Michael Ruder, Fax +49-7472-91382, email: Michael.Ruder@Uni-Tuebingen.DE >
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]

@@ -1,0 +1,84 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k4CMkrCV019148;
+	Fri, 12 May 2006 15:46:53 -0700
+Received: from localhost (legolas.email.arizona.edu [10.0.0.224])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP
+	id 9ABC2E0EA00; Fri, 12 May 2006 15:46:53 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP
+	id 92455E0E7E6; Fri, 12 May 2006 15:46:51 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060512153335.00ba4938@psy1.psych.arizona.edu>
+Date: Fri, 12 May 2006 15:46:49 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: configuration of IO card
+In-Reply-To: <9ae8f64a0605111535k6fc8ef9fn4c8741d9220e6505@mail.gmail.co
+ m>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 05:35 PM 5/11/2006 -0500, you wrote:
+>Hi Jonathan,
+>I am hoping you might consider (with my sponsorship if needed) an
+>additional method to set up the IO card.  I am running an experiment
+>that needs 18 output lines (8 for sending a trigger code to a physio
+>amp and 10 for controlling a shock generator) along with 2 input lines
+>(for two buttons).  I know that it is possible to split the C port
+>into C-upper and C-lower (two four bit "sub"-port).  At a minimum,
+>would it be possible to provide a queued device that configures A, B
+>and C-lower for output and C-upper for input.  (control port
+>configured as 136 DEC; from page 12 of the measurement computing
+>docs).
+
+   Faintly possible.  It breaks a long standing if somewhat redundant 
+DMastr convention where there are actually five input lines.  And I seem to 
+recall one of the new PIO cards not supporting the split C port but I could 
+be wrong there.
+
+
+>Even more flexible would be if you would provide a command that could
+>be inserted into the header to send any of the available configuration
+>codes to the control port when initializing the IO card.  That would
+>allow anyone to set up the card for all the various combo that are
+>available.
+
+   Not going to happen, there are no control codes with the modern cards.
+
+
+>An added benefit of this would be that C could be then used regularly
+>for input rather than output.  You might remember an earlier email I
+>sent to the list about problems with the way that the C port handles
+>output.  It appears that the lower and upper subport on C are not
+>perfectly in synch.
+
+   Depends on the I/O card, some of them require two commands to write to 
+the separate halves of the port and there's no way to synchronously set 
+them.  The usual solution is to use the 16 bit output device and only use 
+the high word which is the B port that is synchronous.
+
+>  B/c of this we get (very infrequent) errors when
+>using all 8 bits of C to either send triggers (we sometimes get
+>triggers that only include 4 of the 8 bits) or to control other
+>devices (our shock generator infrequently reads the C port incorrectly
+>and administers shock intensities that only represent 4 of the 8 bits
+>on C used to indicate intensity).
+>
+>Is this possible and are you willing to make either of these changes?
+
+
+   You would need to sponsor it and it's a non-trivial amount of work.  The 
+code is trivial but there are a large number of places that will need editing.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Wiker's Law:
+	Government expands to absorb revenue and then some.
+
+
+

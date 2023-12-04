@@ -1,0 +1,181 @@
+Received: from aragorn.csb.yale.edu (aragorn.csb.yale.edu [130.132.17.179])
+	by bofur.csb.yale.edu (8.8.7/8.8.5) with ESMTP id PAA13060
+	for <course@bofur.csb.yale.edu>; Sun, 18 Apr 1999 15:34:38 -0400
+Received: from daimler.ivy69.net (mail@net244-108.its.yale.edu [130.132.244.108])
+	by aragorn.csb.yale.edu (8.9.1/8.9.1) with ESMTP id PAA19865
+	for <course@aragorn.csb.yale.edu>; Sun, 18 Apr 1999 15:33:46 -0400 (EDT)
+Received: from mrk by daimler.ivy69.net with local (Exim 2.05 #1 (Debian))
+	id 10YxJH-0006og-00; Sun, 18 Apr 1999 15:32:55 -0400
+From: Michael Kosowsky <m@kosowsky.net>
+Date: 18 Apr 1999 14:40:09 -0400
+To: course@aragorn.csb.yale.edu
+Subject: Dynamic Programming
+References:  <3.0.3.32.19990415220143.0069b984>
+Message-Id: <E10YxJH-0006og-00@daimler.ivy69.net>
+
+
+The question is what does "dynamic programming" mean.  As a
+computer programmer I can't come up with a way of defining
+the phrase that would apply to any of the algorithms we
+discussed in class.
+
+A modern definition, taken from
+
+	Robert Sedgewick, Algorithms, Addison-Wesley, 1983.
+	(EAS QA76.6 S345 1983, also CCL)
+
+is:
+
+	The principle of divide and conquer has guided the
+	design of many of the algorithms we've studied: to
+	solve a large problem, break it up into smaller
+	problems which can be solved independently.  In
+	dynamic programming this principle is carried to an
+	extreme: when we don't know exactly which smaller
+	problems to solve, we simply solve them all, then
+	store the answers away to be used later in solving
+	larger problems.
+
+	... These problems involve looking for the "best"
+	way to do something, and they have the general
+	property that any decision involved in finding the
+	best way to do a small subproblem remains a good
+	decision even when that subproblem is included as a
+	piece of some larger problem. (p. 483)
+
+This definition indeed highlights some of the features of
+the SW algorithm.  But it gives no rationale for the name;
+none of the attributes of this class of algorithms suggests
+"dynamic."
+
+I've found an historical derivation.  Turns out there's a
+1957 work titled
+
+	Richard Bellman, Dynamic Programming, A Rand
+	Corporation Research Study, Princeton University
+	Press, 1957.
+	(available at Kline QA264 B44 1957, also CCL and EAS)
+
+In the introduction to the book, Bellman takes an
+epistomological look at mathematical modeling, and rails
+against the then current practice of changing problems that
+involve multiple stages into a single stage, multiple
+dimension problem (see below for stuff I started to write
+about that).  When a problem is solved that way,
+
+	... the mathematician has not discharged his
+	responsibilities.  The problem is not to be
+	considered solved in the mathematical sense until
+	the structure of the optimal policy is
+	understood. (p. ix)
+
+The rest of the book are techniques for explicitly thinking
+of problems in terms of their step by step nature, and
+indeed "dynamic programming" is coined to emphasize this
+approach:
+
+	The title is also derived this way.  The problems we
+	treat are programming problems, to use a terminology
+	now popular.  The adjective "dynamic," however,
+	indicates that we are interested in processes in
+	which time plays a significant role, and in which
+	the order of operations may be crucial. (p. xi)
+
+The phrase "to use a terminology now popular" refers to the
+use of "programming" to mean "tabulation method."  (Credit
+to Amar -- forgive me if I got your name wrong.)  It's the
+third definition of programming in the Oxford English
+Dictionary at http://jeeves.library.yale.edu/oed/, and
+predates the omnipresence of computers:
+
+
+	 3. Planning carried out for purposes of control,
+         management, or administration, esp. in economics.
+
+	 1943 Sun (Baltimore) 1 July 14/2 The President
+         transferred from Mr. Jones' RFC to Mr. Wallace's
+         BEW full control over the programming of imported
+         strategic materials.
+
+	 1959 Listener 21 May 884/2 The design of controls,
+	 the programming of production methods, and so
+	 forth.
+
+	 ...
+
+
+So, the name was created to highlight an aspect of an
+approach that no longer differentiates that approach from
+other similar approaches.  In other words, it was coined to
+point out what is isn't, but what it wasn't is no longer
+really what it isn't.
+
+Seems like a good time to hold a naming contest ...
+
+MK
+
+------------------------------------------------------------
+[Here's more detail about the introduction to Bellman's book,
+where I realized I was getting too far off point, but
+someone may find it interesting anyway:]
+
+Consider a multi-stage problem, e.g.  the
+"raise-counter-raise system of poker with its delicate
+overtones of bluffing" (a favorite of theoreticians).  How
+does a mathematician approach this problem?  One approach is
+to turn the multiple stages into multiple dimensions of a
+single stage problem, and then apply any of a plethora of
+techniques to the new problem.  Let's analyze a round of
+poker which allows only one raise.  Then "I bet $10 then you
+raise $5 then I call" might correspond to the point in three
+dimensional space with coordinates (x=10, y=15, z=15).  The
+analyst then places all of sorts of constraints on the
+possible coordinates.  For example, z must be greater than
+or equal to y which must be greater than or equal to x,
+except we allow a zero in any position to mean the player
+folds.  Another example is that there must be complex
+relationships imposed indicating how likely you are to call
+my bet given the amount I raise and the cards you hold and
+what you think I hold.  The analyst then finds the
+coordinates that give the maximum value of the appropriate
+function -- in this case a function representing how much I
+win -- subject to the constraints.
+
+Not only can these problems can be difficult to solve tbis
+way, but Bellman is also concerned that when we solve them
+analytically, we may not be left with any understanding of
+the answer:
+
+	Assume, however, that we have circumvented all these
+	difficulties and have attained a certain
+	computational nirvana.  Withal, the the
+	mathematician has not discharged his
+	responsibilities.  The problem is not to be
+	considered solved in the mathematical sense until
+	the structure of the optimal policy is
+	understood. (p. ix)
+
+Continuing in this vein:
+
+	Put another way, in place of determining the optimal
+	sequence of decisions from some FIXED state of the
+	system, we wish to determine the optimal decision to
+	be made at ANY state of the system.  Only if we know
+	the latter, do we understand the intrinsic structure
+	of the solution.  (p. xi)
+
+To illustrate, if we return to our round of poker, he
+demands an analysis that, given the current state of the
+system -- the cards in the player's hands, the betting
+history, ... -- yields the best next move.
+
+And then here's the derivation of "dynamic programming":
+
+	The title is also derived this way.  The problems we
+	treat are programming problems, to use a terminology
+	now popular.  The adjective "dynamic," however,
+	indicates that we are interested in processes in
+	which time plays a siginificant role, and in which
+	the order of operations may be crucial.
+
+

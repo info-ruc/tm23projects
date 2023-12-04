@@ -1,0 +1,128 @@
+Received: from ross.city.unisa.edu.au (ross.city.unisa.edu.au [130.220.84.23])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with SMTP id j894js5M005008
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 8 Sep 2005 21:45:55 -0700
+Received: from ross.city.unisa.edu.au ([130.220.84.23])
+ by ross.city.unisa.edu.au (SMSSMTP 4.0.5.66) with SMTP id M2005090914154910344
+ for <DMDX@psy1.psych.arizona.edu>; Fri, 09 Sep 2005 14:15:49 +0930
+Received: from ITUPROD-GT1.UniNet.unisa.edu.au (ituprod-gt1.levels.unisa.edu.au [130.220.79.35])
+	by ross.city.unisa.edu.au (8.12.10/8.12.10) with ESMTP id j894jnOD022220
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 9 Sep 2005 14:15:49 +0930 (CST)
+Received: from ITUPROD-EXCL1.UniNet.unisa.edu.au ([130.220.64.10]) by ITUPROD-GT1.UniNet.unisa.edu.au with Microsoft SMTPSVC(6.0.3790.211);
+	 Fri, 9 Sep 2005 14:15:49 +0930
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Subject: [DMDX] RE: Re: missing item number error
+Date: Fri, 9 Sep 2005 14:15:48 +0930
+Message-ID: <125E143C87C9D744AD879C611475D035027B39C4@ITUPROD-EXCL1.UniNet.unisa.edu.au>
+From: "Mark Conroy" <Mark.Conroy@unisa.edu.au>
+To: <DMDX@psy1.psych.arizona.edu>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi Jonathon,
+
+Thanks for your advice.  Unfortunately doing as you suggest did not
+help.  Therefore I am still stuck.  Besides, the syntax I originally
+used with the backslash definitely works without problem in my other
+file.  That is, the following causes no problem in my other file:
+
+0"READY - PRESS SPACEBAR";$
+\+10201<ln -3>"have",
+<ln -2>"house",
+<ln -1>"their",
+<ln -0>"could",
+<ln 1>"whole",
+<ln 2>"they",
+<ln 3>*!"painted"<c>;
+
+Have you got any other advice about what things may be causing a
+'missing item number' or things like 'RTF control word <\+> used not
+supported' errors?  I would appreciate any tips or clues.
+
+Mark
+
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of j.c.f.
+Sent: Friday, 9 September 2005 1:46 PM
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: missing item number error
+
+
+At 01:16 PM 9/9/2005 +0930, you wrote:
+>Hi,
+>
+>I have written a DMDX file which displays sentence anagrams.  I am
+>scrambling the items in the file within 4 blocks of 13.  The blocks are
+
+>fixed in position.  In other words, I don't want to scramble the 
+>blocks.  They will be in the same order on each trial.  So I have a 
+>scrambling parameter <s 13> in the parameter line and have backslahses
+(\) 
+>at appropriate points in the file.  I also have $ at appropriate points
+
+>such as to fix instructions and practice items.  Everything seems 
+>fine.  However an error message: 'missing item number' is produced at
+the 
+>same point in the file each time i run it in DMDX. When I run a syntax 
+>check I get the error message: 'RTF control word <\+> used not
+supported'.
+>
+>I have another very similar file with counterbalanced test items which
+>works fine. Therefore this file should also work easily.  Yet it 
+>doesn't.  I am completely stumped.  I can only think of one possible 
+>explanation.  Is it possible that Wordpad leaves some unwanted code in
+the 
+>background in the file which disrupts DMDX?  When i looked at the file
+in 
+>Notepad I noticed quite a lot of extra code which means nothing to 
+>me.  When I run the file I have 'ignore unknown RTF' enabled. Can
+anyone 
+>help me sort this one out?  I have pasted in relevant bits of the file
+below.
+
+   It's your backslash.  I'm impressed at the way it's breaking the
+parser 
+but for DMDX syntax it is a little malformed.  You need to have a new
+line 
+after your backslash:
+
+>0"READY - PRESS SPACEBAR";$
+>
+>\+11901<ln -3>"have",
+>
+><ln -2>"bike",
+
+It needs to be like this:
+
+>0"READY - PRESS SPACEBAR";$
+>
+>\
+>
+>+11901<ln -3>"have",
+>
+><ln -2>"bike",
+
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   We lie loudest when we lie to ourselves.
+
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+
+

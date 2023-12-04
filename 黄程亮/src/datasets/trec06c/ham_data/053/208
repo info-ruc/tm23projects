@@ -1,0 +1,57 @@
+Received: from bio.cse.psu.edu (galapagos.cse.psu.edu [130.203.12.17])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id NAA13761
+	for <9fans@cse.psu.edu>; Tue, 5 Oct 1999 13:49:22 -0400 (EDT)
+Received: (qmail 24392 invoked by uid 991); 5 Oct 1999 17:49:21 -0000
+Message-ID: <19991005174921.24391.qmail@g.bio.cse.psu.edu>
+From: steve.kilbane@ind.alstom.com
+To: 9fans@cse.psu.edu
+Date: Tue, 5 Oct 1999 14:03:18 +0100
+Subject: [9fans] Sun Ray: Deja vu
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+
+Sun's web site is currently full of "Sun Ray", its devastating new breakthrough
+in systems design, moving all the computation back into a central powerful
+server, and putting dumb, exchangable bitmap/keyboard/mouse units on the
+desktop.
+
+Right.
+
+It has a number of interesting aspects, not least of which is the bandwidth
+required. Instead of using something like bit(3) to do rendering on the
+terminal, Sun Ray has X clients render into a virtual frame buffer on the
+server, which is then zapped across to the terminal. This might be one of the
+reasons why Sun Ray requires a dedicated switched network, rather than being on
+the LAN.
+
+I didn't spot any mention of the distinction between cpu and file servers (since
+the server runs Solaris, I guess they're combined). As far as this goes, there
+is a solid border between cpu server and terminal: the terminal does no
+application processing.
+
+Authentication can be via normal login, or smart cards, with a smart card reader
+built into the terminal base unit.
+
+An interesting side-effect of using a proxy X server on the server is that
+sessions need not be terminated when you detach. They can continue, and be
+recovered when you log in again, at another terminal. Another devastating
+breakthrough, although there is no mention of "Teleporting", which Olivetti Labs
+did in the early 90s using proxy X servers.
+
+Supposedly, Citrix WinFrame stuff can be used to display Wintel apps on the same
+screen, seemingly at the same time, and with cut'n'paste between the Solaris and
+Wintel apps. Plus, Sun are pushing StarOffice as a means of getting access to
+most of what Wintel's needed for, without requiring Wintel client licences.
+
+Roughly speaking, this seems to take the hardware/administration aspects of the
+Plan 9 model, and apply them in a blunt manner to the existing Solaris system,
+with no other changes.
+
+I vaguely recall Brazil having a different graphics model, more suited to
+exploiting high-bandwidth networks. That wouldn't be another unrecognised
+ancestor of this, would it?
+
+steve
+

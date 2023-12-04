@@ -1,0 +1,49 @@
+Received: from enoch.et.byu.edu (enoch.et.byu.edu [128.187.3.102])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id DAA24880
+	for <handyboard@media.mit.edu>; Wed, 17 Mar 1999 03:21:19 -0500 (EST)
+Received: from localhost (hintonr@localhost)
+	by enoch.et.byu.edu (8.9.1/8.9.0) with ESMTP id BAA22425
+	for <handyboard@media.mit.edu>; Wed, 17 Mar 1999 01:21:17 -0700 (MST)
+X-Authentication-Warning: enoch.et.byu.edu: hintonr owned process doing -bs
+Date: Wed, 17 Mar 1999 01:21:17 -0700 (MST)
+From: Ryan Hinton <hintonr@et.byu.edu>
+To: handyboard@media.mit.edu
+Subject: Serial communications
+Message-Id: <Pine.GHP.4.10.9903170026130.22206-100000@enoch.et.byu.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+I'm using a Windows PC to try to communicate with the handy board
+using the posted serial routines (using the pcode port).  I can't get
+a single character to go through successfully.  My receive routine is
+set to display to the LCD as it receives data, but I don't get any
+output.  I tried the debug_serial routines from the same zip file, and
+they work fine.  So the problem seems to be somewhere in the PC->handy
+board COM interface.
+
+The symptoms are rather strange.  If I send five \xFF's, the HB will
+freeze after the first one, and start executing again after the fifth
+one.  For some hex values it will work (including \x70, \x80, \x66),
+and for others it won't (including \x00, \x01, \x41)--it will stay
+frozen until I send five of the characters it likes.  However, it
+never seems to really get the characters, because they never show up
+in any of my variables (nor on my display).
+
+My goal is to be able to get asynchronous communication between the PC
+and the HB--and have the HB keep working when it isn't receiving.  It
+needs, then, to detect the serial communication and read a set number
+of bytes off the line before it can go back to other work again.
+Right now I am implementing it with two processes: an RX process for
+receiving serial communication, and a work process.
+
+I appreciate any light anyone can shed on this subject.  Thanks for
+the help.
+
+-------------------
+Ryan Hinton ;)
+ryan_hinton@byu.edu
+http://www.et.byu.edu/~hintonr
+
+
+

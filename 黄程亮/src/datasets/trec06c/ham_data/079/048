@@ -1,0 +1,62 @@
+Received: from bureau6.utcc.utoronto.ca (bureau6.utcc.utoronto.ca [128.100.132.16])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB41MBT27730
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 20:22:11 -0500 (EST)
+Received: from webmail4.ns.utoronto.ca ([128.100.132.34] EHLO webmail4.ns.utoronto.ca ident: IDENT-NOT-QUERIED [port 63535]) by bureau6.utcc.utoronto.ca with ESMTP id <238904-17211>; Mon, 3 Dec 2001 20:22:06 -0500
+Received: by webmail4.ns.utoronto.ca id <164259-211>; Mon, 3 Dec 2001 20:21:48 -0500
+To: COM S 615 <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 68
+Message-ID: <1007428903.3c0c252730de0@webmail.utoronto.ca>
+Date: Mon, 03 Dec 2001 20:21:43 -0500 (EST)
+From: c.tavoularis@utoronto.ca
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: IMP/PHP IMAP webmail program 2.2.3
+
+This article presents Tapestry, an overlay routing infrastructure that provides 
+location independent routing to the closest copy of an object or service. 
+Tapestry is decentralized such that nodes maintain a fair amount of soft state 
+routing information in a simple, scalable and fault tolerant manner.
+
+Tapestry is based on Moore’s law to achieve stability through statistics by 
+creating redundant copies of objects. Tapestry employs a variation of Plaxton 
+mechanisms for locating and routing named objects. Object and node names, 
+independent of location, are random numbers of fixed length, and exist in the 
+same uniform namespace (created using hash functions). Routing is accomplished 
+digit by digit. Plaxton meshes are data structures at each node that contain a 
+routing map. Routing maps are organized in levels according to matching suffix 
+of a specific length.  The message is forwarded to the node at the next level 
+with an entry matching the next digit in the destination Id. This algorithm 
+guarantees a number of hops to the destination of order logarithm of the total 
+number of nodes. The maps to objects resemble an embedded set of trees, one 
+rooted at every node. Each object has a set of nodes to serve as its roots. 
+Plaxton only uses one root node per object, which sets the stage for single 
+points of failure. Tapestry also uses surrogate-routing, instead of global 
+information, to select root nodes. This method is dynamic for changing 
+environments, and deterministic so that any Id will be mapped to an existing 
+node. A node must publish objects it hosts to the root node of the object by 
+forwarding a message to it. Pointers along the path from host node to root node 
+are maintained. A new node can join by bootstrapping to a gateway node in the 
+network, and trying to route to itself while gathering copies of neighbor maps 
+along the way. It then must notify other nodes to include it in their routing 
+tables.
+
+Location-independent names of objects make it easy for applications to request 
+services, and at the closest possible location with high probability. 
+Replicated objects must maintain some consistency, although strict consistency 
+is not essential since re-requests can be implemented. Using a soft-state 
+approach, periodic update messages are sent to nearby nodes, such that caches 
+expire if updates are not being received over some time. This allows old 
+information to disappear gracefully. Location mappings are also soft-state and 
+servers must republish the existence of their objects. Immediate neighbors send 
+each other hearbeat messages so that node failures can be detected promptly. 
+Some explicit updating is used to reduce some of the bandwidth overhead caused 
+by soft state maintenance.
+
+Tapestry showed good performance characteristics including reasonable latency, 
+graceful degradation in the event of failures and small overhead. The 
+infrastructure adopted here proves that object and routing information 
+replication in large networks provide durability and performance enhancement, 
+while adding minimal overhead to deal with consistency. Tapestry upgrades 
+Plaxton mechanisms to provide adaptability and further fault tolerance.
+

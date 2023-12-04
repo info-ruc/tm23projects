@@ -1,0 +1,62 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [208.235.160.21])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id KAA30302
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 14 Jan 2000 10:41:57 -0700
+Received: (qmail 7964 invoked from network); 14 Jan 2000 17:32:41 -0000
+Received: from uofa-dsl-17.dakotacom.arizona.edu (HELO homebox) (150.135.175.17)
+  by breaker.dakotacom.net with SMTP; 14 Jan 2000 17:32:41 -0000
+Message-Id: <3.0.1.32.20000114104157.00693ba0@psy1.psych.arizona.edu>
+Date: Fri, 14 Jan 2000 10:41:57 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DirectSound error with sb awe 32
+In-Reply-To: <4.2.0.58.20000114175254.00975cc0@mailhost.psycho.univ-pari
+ s5.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 05:53 PM 1/14/00 +0100, you wrote:
+>Hi,
+>
+>I'm working on a P166MMX (with a sb awe 32) under win98 and directx7frn (I 
+>was previously on directx5 and had the same problem).  I have always the 
+>same error (even when I just resetted the machine):
+>
+>DirectSoundCreate failed
+>   DSERR_ALLOCATED (8878000a)
+>   The call failed because the resources (such as priority level) were
+>   already being used by another caller
+>
+>I suppressed every apps and it still occurs.
+>
+>Would someone have an idea?
+
+  You probably need to get better drivers for your sound card.  Although
+the error indicates that another process is responsible (not my fault, I
+don't write those error messages, blame M$) my guess is that when the
+drivers are not adequate no process can get DirectSound access to the card,
+although regular Windows sound requests may well still function.  The odd
+thing is is that call is not even asking for a priority level (the next one
+does that) so for it to fail there is most unusual, perhaps the
+configuration is hopelessly screwed up.  Perhaps you only have MSDOS
+drivers installed which win32 can use but DirectX cannot -- I say this
+because I think that almost any windows drivers are usable by DirectSound
+in the dreaded "emulated" mode, to find one not usable is indeed very special.
+
+  You might want to run / Program Files / DirectX / Setup / DxDiag and use
+the Sound / Test DirectSound button and see what happens.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+Computers can figure out all kinds of problems, except the things in
+the world that just don't add up.
+
+
+

@@ -1,0 +1,61 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j11FNrFJ012500
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 1 Feb 2005 08:23:53 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 7D7F8A6F3A7
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  1 Feb 2005 08:23:53 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-6.dsl.arizona.edu [128.196.237.6])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id B2D7CA6F448
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  1 Feb 2005 08:23:52 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050201081606.00ba4670@psy1.psych.arizona.edu>
+Date: Tue, 01 Feb 2005 08:23:50 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Query about unmapping buttons in the middle of a
+  program
+In-Reply-To: <20050201092703.56656.qmail@web25109.mail.ukl.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 09:27 AM 2/1/2005 +0000, you wrote:
+>Hi
+>
+>I've made a program in which the Space key is mapped to the ABORT response 
+>(I've done this because I'm using soundfiles, and I want the subject to be 
+>able to move on to the next sound file at any stage). At various stages in 
+>the program I'd like to unmap the Space key for a couple of lines, and 
+>then remap it again to the ABORT response (this is because the subject 
+>answers a yes / no question and I don't want them to accidentally abort). 
+>I've used the command <UnMapButton Space> (umb for short),  to do this (on 
+>its own line, preceeded by a line number), but DMDX doesn't seem to like 
+>at, and gives the error response ("misplaced keyword at beginning of 
+>line"). Is it possible to unmap buttons in the middle of a program and 
+>then remap them again?
+
+   Yes, but the keywords have to be in the body of the item, not before 
+it.  You've probably got:
+
++10 "frame" * ; <umb +space>
++11 "frame" * ;
+
+   You need:
+
++10 "frame" * <umb +space> ;
++11 "frame" * ;
+
+   However you can't un-map the abort key name.  You'll have to temporarily 
+map some other key that has a much lower chance of being accidentally hit 
+instead and then map the space bar back again.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   You stop believing in Santa Claus is when you start getting
+clothes for Christmas.
+
+
+

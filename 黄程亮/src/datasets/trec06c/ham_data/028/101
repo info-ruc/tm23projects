@@ -1,0 +1,102 @@
+Received: from io.unm.edu (io.unm.edu [129.24.8.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id JAA26319
+	for <handyboard@media.mit.edu>; Wed, 25 Nov 1998 09:57:29 -0500 (EST)
+From: somewhere@unm.edu
+Received: from unm.edu(cyrus.eece.unm.edu[129.24.24.214]) (3942 bytes) by io.unm.edu
+	via sendmail with P:esmtp/R:bind_hosts/T:inet_zone_bind_smtp
+	(sender: <somewhere@unm.edu>) 
+	id <m0zigNK-0000knC@io.unm.edu>
+	for <handyboard@media.mit.edu>; Wed, 25 Nov 1998 07:57:02 -0700 (MST)
+	(Smail-3.2.0.101 1997-Dec-17 #2 built 1998-Sep-15)
+Message-Id: <365C28C2.6E8DB2F0@unm.edu>
+Date: Wed, 25 Nov 1998 07:56:50 -0800
+X-Mailer: Mozilla 4.04 [en] (Win95; I)
+Mime-Version: 1.0
+To: "John A. Atkinson-Abutridy" <atkinson@inf.udec.cl>
+Cc: handyboard@media.mit.edu
+Subject: Re: Help
+References: <365A90BC.73AB78C8@inf.udec.cl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi John,
+
+It depends on what kind of circuit your infrared sensors are in.  An
+infrared diode or transistor can not be hooked directly into the HB.
+They have to be biased properly and the signal amplified to be
+compatible with either the digital or analog inputs.
+
+One way of getting useful information from your pair of sensors is to
+bias your raw sensors properly. For small targets at large distances,
+find a set of lenses from Edmund Scientific to focus your target image
+on the IR sensor.  The formulas for computing the focal lengths needed
+are in most basic Physics texts.  IR will focus like visible light
+except the focal length changes by a factor n because of the different
+frequency of light.  Then find two sets of three tubes (any material
+durable enough for the project)that will tightly slide over each other
+and are twice the focal length you will be using.  Mount the large lense
+in the middle of the big tube.  The other lense in the end of the second
+tube.  And the infrared sensor at the end of the smallest tube. A hot
+melt glue gun works well.  
+
+Make or find two small ferrous (iron based) metal enclosures to mount
+the sensors in.  Cut a round hole just large enough to allow the focused
+diameter of the IR light in. Position the IR sensor at a known distance
+from the front of the metal enclosure, but try to make the angle of the
+focus less than 45 degrees so that the sensor is mounted a short
+distance from the hole.  Again hot melt will secure it nicely if the
+metal is coarse sand papered first.  Mount the IR detector casing in the
+center of the end of the smallest tube (i.e. the focus of the lenses).
+Use a small length of triaxial cable to interface the IR sensor with
+your buffers/amplifiers.   Use the triax shield to ground the IR sensor
+metal enclosure.
+
+Reasons:  The ferrous enclosure is desirable because IR detectors are
+sensitive to electric fields and they will give false readings.  The
+sourse IR intensity drops with the square of the distance.  Therefore
+lenses increase the range of a sensor significantly and help to
+positively identify the position of the target.  If a broader field of
+view is desired at short ranges, the lenses can be omitted.
+
+To electronically interface the sensors.  A single source non-inverting
+op-amp can be used to tie directly into the Handy Board.  This will
+allow a gain adjustment to get whatever deviation you want from the
+signal.
+
+And/or feed each sensor into a differential op-amp with offset control
+to monitor the difference between the sensors.  If you are using two
+sensors, I'm guessing this is the signal you want anyway.
+
+Good luck in your experimentation,
+
+James Dunn
+
+
+
+
+John A. Atkinson-Abutridy wrote:
+> 
+> Hi, I need to send and receive IR signal (not from remote controller) in
+> the
+> Handyboard
+> 1.- Could  someone tell me what kind of routines I must use???
+> 
+> NOTE: I am not interested in getting codes from a RC, but also signal
+> to proccess differents intensities.
+> 
+> 2.- The HB has an own IR receiver, I bought two more IR sensors,
+> Must i connect them to the digital port 0,1,2,3 ????
+> 
+> Thank you
+> John
+> 
+> --
+> John A. Atkinson-Abutridy         EMAIL: atkinson@inf.udec.cl
+> Profesor Asistente
+> Dept. de Ingenieria Informatica   URL: http://www.inf.udec.cl/~atkinson
+> Universidad de Concepcion
+> Concepcion, CHILE
+> 
+> Phone: (56) (41) 204305
+> Fax  : (56) (41) 221770
+

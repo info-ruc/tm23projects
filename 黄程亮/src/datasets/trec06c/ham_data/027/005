@@ -1,0 +1,59 @@
+Received: from pat.bath.ac.uk (qmailr@pat.bath.ac.uk [138.38.32.2])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id DAA21272
+	for <9fans@cse.psu.edu>; Fri, 13 Nov 1998 03:16:30 -0500 (EST)
+Received: (qmail 28357 invoked from network); 13 Nov 1998 08:16:27 -0000
+Received: from ss1.bath.ac.uk (HELO bath.ac.uk) (mmdf@138.38.32.41)
+  by pat.bath.ac.uk with SMTP; 13 Nov 1998 08:16:27 -0000
+Received: from GATEWAY by bath.ac.uk with netnews
+	for 9fans@bath.ac.uk (9fans@cse.psu.edu)
+To: 9fans@cse.psu.edu
+Date: Thu, 12 Nov 1998 22:01:24 +0100
+From: Bengt Kleberg <bengt.kleberg@swip.net>
+Message-ID: <bengt.kleberg-1211982201240001@dialup230-3-60.swipnet.se>
+Organization: A Customer of Tele2
+References: <199811110855.JAA331408@relay.ch.genedata.com>
+Subject: Re: [9fans] kfs on sparc
+Source-Info:  From (or Sender) name not authenticated.
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+In article <199811110855.JAA331408@relay.ch.genedata.com>,
+9fans@cse.psu.edu wrote:
+
+> > Finally, the entry for the sparc in BOOTING(8) only mentions
+> > net booting. Can a Sun be made into a stand alone Plan9
+> > workstation?
+> 
+> good question. making a SPARC kernel with kfs is easy (the
+> Plan 9 FAQ even tells you how). booting that off the net is
+> similarly easy. booting from a local disc... that part has
+> escaped me. in the end i worked out that the only way it
+> was going to work was if i left a minimal Solaris partition
+> on my disc with the second- and third-stage boot loaders
+> and replaced the Unix kernel with the Plan 9 one. sadly a
+> friend had kindly installed Solaris 2.6 over Solaris 2.5 on
+> my little old IPC, and the boot loader in 2.6 only supports
+> ELF binaries.
+
+The only way to boot from a disk is to have a boot loader that supports
+plan9 kernels. Such a loader is installed if one use SunOS4 or OpenBSD
+(and apperantly old versions of Solaris? I tried 2.5, but it did not work
+for me)
+
+What one can do on a Solaris system is to get hold of the following SunOS4
+programs/data files:
+
+/boot
+/usr/kvm/mdec/installboot
+/usr/kvm/mdec/bootsd
+
+and do the following on a minimal 'a' partition (I had the /dev
+compatibility package installed on Solaris) on _another_ disk, not the
+Solaris boot disk:
+
+mount /dev/dsk/c0t1d0s0 /mnt
+cp /boot /mnt/boot
+/usr/kvm/mdec/installboot /mnt/boot /usr/kvm/mdec/bootsd /dev/rsd1a
+cp plan9kernel /mnt
+

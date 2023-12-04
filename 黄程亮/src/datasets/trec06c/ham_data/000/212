@@ -1,0 +1,30 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <2539>; Fri, 22 Oct 1993 10:25:38 -0400
+Received: from minster.york.ac.uk ([144.32.128.41]) by psuvax1.cse.psu.edu with SMTP id <292644>; Fri, 22 Oct 1993 10:10:53 -0400
+From:	forsyth@minster.york.ac.uk
+Date:	Fri, 22 Oct 1993 08:41:05 -0400
+To:	9fans@cse.psu.edu
+Message-ID: <swordfish.751299051@minster.york.ac.uk>
+subject: From addresses and upas
+
+there might be a compromise.
+
+we went through this here some time ago with an implementation of
+the smtp part of upas as mangled by System V.4 and
+somewhat unmangled by me.  it seems to be sufficient
+to have the smtpd pick the right name to put in the Unix
+`From ' header.  since it has already cracked the header and knows RFC822,
+it's a fairly simple change.  it takes the `From ' address from the first of
+Reply-to:, From:, Sender: and SMTP FROM:.  errors go to the SMTP FROM:.
+(there should never be a Sender: without a From: but we get junk mail
+from some machines.)
+
+the Reply command in the mail reader just uses the `From ' address,
+and needn't mess with the Wilt . (the Stilt) crud unless it wants to.
+
+i didn't understand the recent discussion
+until i realised that my From lines were being built as described by
+our Unix machine before being sent to me on Plan 9,
+and that's why my replies were going to the right address.
+it also makes the seemail face list more interesting.
+
+

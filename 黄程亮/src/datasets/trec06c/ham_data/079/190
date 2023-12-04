@@ -1,0 +1,249 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g1S00gG23005;
+	Wed, 27 Feb 2002 16:00:42 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id QAA26404;
+	Wed, 27 Feb 2002 16:54:43 -0500 (EST)
+Date: Wed, 27 Feb 2002 16:54:43 -0500 (EST)
+Received: by canaveral.red.cert.org; Wed, 27 Feb 2002 16:49:07 -0500
+Message-Id: <CA-2002-05.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-05 Multiple Vulnerabilities in PHP fileupload
+X-Mozilla-Status: 9001
+X-Mozilla-Status2: 00000000
+X-UIDL: 72
+Status: RO
+X-Status: $$$$
+X-UID: 0000000039
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-05 Multiple Vulnerabilities in PHP fileupload
+
+   Original release date: February 27, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Web servers running PHP
+
+Overview
+
+   Multiple  vulnerabilities  exist  in the PHP scripting language. These
+   vulnerabilities  could  allow  a  remote attacker to execute arbitrary
+   code with the privileges of the PHP process.
+
+I. Description
+
+   PHP is a scripting language widely used in web development. PHP can be
+   installed on a variety of web servers, including Apache, IIS, Caudium,
+   Netscape  and  iPlanet,  OmniHTTPd  and others. Vulnerabilities in the
+   php_mime_split  function  may  allow  an intruder to execute arbitrary
+   code  with  the  privileges of the web server. For additional details,
+   see
+
+     http://security.e-matters.de/advisories/012002.html
+
+   Web  servers  that  do not have PHP installed are not affected by this
+   vulnerability.
+
+   The  CERT/CC  is tracking this set of vulnerabilities as VU#297363. At
+   this  time,  these  vulnerabilities  have  not  been  assigned  a  CVE
+   identifier.
+
+II. Impact
+
+   Intruders  can  execute  arbitrary code with the privileges of the web
+   server, or interrupt normal operations of the web server.
+
+III. Solution
+
+Apply a Patch
+
+   Upgrade to PHP version 4.1.2, available from
+
+     http://www.php.net/do_download.php?download_file=php-4.1.2.tar.gz
+
+   If   upgrading   is  not  possible,  apply  patches  as  described  at
+   http://www.php.net/downloads.php:
+   * For PHP 4.10/4.11
+     http://www.php.net/do_download.php?download_file=rfc1867.c.diff-4.1.x.gz
+   * For PHP 4.06 
+     http://www.php.net/do_download.php?download_file=rfc1867.c.diff-4.0.6.gz
+   * For PHP 3.0 
+     http://www.php.net/do_download.php?download_file=mime.c.diff-3.0.gz
+
+   If  you  are  using  version  4.20-dev,  you  are not affected by this
+   vulnerability. Quoting from
+   http://security.e-matters.de/advisories/012002.htm:
+
+     "[U]sers  running  PHP 4.2.0-dev from cvs are not vulnerable to any
+     of  the  described  bugs  because the fileupload code was completly
+     rewritten for the 4.2.0 branch."
+
+Disable fileuploads
+
+   If  upgrading  is  not  possible or a patch cannot be applied, you can
+   avoid  these vulnerabilities by disabling fileupload support. Edit the
+   PHP configuration file php.ini as follows:
+
+     file_uploads = off
+
+   Note  that  this  setting  only  applies  to  version 4.0.3 and above.
+   However,  this  will prevent you from using fileuploads, which may not
+   be acceptable in your environment.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  When  vendors  report  new  information  to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+Apache Software Foundation
+
+   Information    about    this    vulnerability    is   available   from
+   http://www.php.net
+
+FreeBSD
+
+   FreeBSD  does not include any version of PHP by default, and so is not
+   vulnerable.  However,  the  FreeBSD Ports Collection does contain both
+   PHP3  and  PHP4  packages. Updates to the PHP packages are in progress
+   and corrected packages will be available in the near future.
+
+MandrakeSoft
+
+   MandrakeSoft distributes PHP in all distributions and we are currently
+   working  on  patching  our  versions of PHP for Linux-Mandrake 7.1 and
+   7.2;  Mandrake  Linux  8.0, 8.0/ppc, 8.1, and 8.1/ia64; Single Network
+   Firewall 7.2; Corporate Server 1.0.1.
+
+   We anticipate having the updates out by the end of the week.
+
+Microsoft
+
+   We do not use PHP in any products.
+
+NCSA
+
+   NCSA  does  not  include  PHP as an add-in or bundled component in any
+   products distributed.
+
+Red Hat
+
+   Red  Hat  was  notified  of  this  issue  on  27th  February 2002. All
+   supported  versions  of  Red Hat Linux ship with PHP packages that are
+   affected by these vulnerabilities. We will shortly be releasing errata
+   packages  which  contain patched versions that are not vulnerable. The
+   errata  packages and our advisory will be available on our web site at
+   the  URL  below. At the same time users of the Red Hat Network will be
+   able  to  update  their  systems to patched versions using the up2date
+   tool.
+
+          http://www.redhat.com/support/errata/RHSA-2002-035.html
+     _________________________________________________________________
+
+   The  CERT Coordination Center thanks Stefan Esser, upon whose advisory
+   this document is largely based.
+     _________________________________________________________________
+
+   Author: Shawn V. Hernan
+     _________________________________________________________________
+
+Appendix B. - References
+
+    1. http://www.kb.cert.org/vuls/id/297363
+    2. http://security.e-matters.de/advisories/012002.html
+    3. http://www.iss.net/security_center/static/8281.php
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-05.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+    Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+    Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+February 27, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPH1T3KCVPMXQI2HJAQGMbwP+NglOFSnTqmCynobjzrF8Onalm5cHNePn
++fTVP3JVrw5ktpyxtjnqveoMzaai0utVMlIDh4K34MOyipSD37W0ZLRezs0okyN0
+bQt1UTW+pfBQX8CsZ1anCncEmF0/+fBcl3iNtp7jAT99PJveRCsH8GJVpHx/4nT1
+pHvl8ng0VWs=
+=+NsK
+-----END PGP SIGNATURE-----
+

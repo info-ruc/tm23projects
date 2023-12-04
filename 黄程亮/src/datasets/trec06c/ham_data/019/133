@@ -1,0 +1,88 @@
+Received: from twins.twi.ch (twins.twi.ch [160.85.128.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id LAA23966
+	for <handyboard@media.mit.edu>; Sun, 28 Jun 1998 11:35:15 -0400 (EDT)
+Received: from twi.ch (alepc6.twi.ch [160.85.129.237])
+	by twins.twi.ch (8.8.8/8.8.8) with ESMTP id RAA18317;
+	Sun, 28 Jun 1998 17:34:29 +0200 (MET DST)
+Message-Id: <359662A0.3B25EF7B@twi.ch>
+Date: Sun, 28 Jun 1998 17:34:56 +0200
+From: Thomas Hauri <har@twi.ch>
+Organization: Technikum Winterthur Ingenieurschule
+X-Mailer: Mozilla 4.03 [de] (WinNT; I)
+Mime-Version: 1.0
+To: brian-c@technologist.com
+Cc: handyboard@media.mit.edu
+Subject: Re: micrcontroller speeds
+References: <199806271718.NAA29709@web01.globecomm.net>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi
+
+Replacing the 16MHz version with the 20 Mhz CPU would affect only the
+timer speed of the internal timers.
+We are using the MC and MD versoon of the 196.
+Connected to those timers are about the following :
+
+-PWM 1 & 2
+-Wavegenerator (if it has one)
+- timer unit (capture and compare unit)
+- counters
+- serial interface (UARTS)
+
+Maybe there is more, but at this time a can't think of any.
+
+What your main problem will be if using motion control is that your pwm
+will run at a 25% higher speed and the time critical stuff relaying on
+the timer structure. Further any real tme interrupts will run 25%
+faster.  Speed measurement using the timers will go wrong by 25%.
+
+You may have to change all the above to be sure your system doesn't do
+strange things.
+
+Hope this helps a little.
+
+BYE  Tom
+
+
+
+
+brian-c@technologist.com schrieb:
+
+> This question has nothing to do with the Handy Board
+> although it is a general question which I need some
+> help with.
+>
+> Previous students at the school I attend left behind
+> a robot which they worked on. The microcontroller was
+> Intel's 80C196. The microcontroller is shot however,
+> so we need to get a replacement. It is offered in both
+> 16 and 20 MHz versions. The original used in the robot
+> was the 16 MHz version, however we can only find the
+> 20 MHz version now.
+>
+> If I was to replace the 16 MHz controller with a
+> 20 MHz version would it affect any of the programming?
+> What would some effects be if any?
+>
+> Maybe direct help some of you big microcontroller
+> gurus would be best. (Fred, Randy,... hint,hint)  :)
+>
+> Thanks in advance,
+> _________________________________________________
+> =AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=
+=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=
+
+> Brian Carvalho              [ brian-c@ieee.org ]
+> DeVRY Institute
+> New Jersey
+> _________________________________________________
+> =AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=
+=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=
+
+> ---------------------------------------------------
+> Get free personalized email at http://www.iname.com
+
+
+
+

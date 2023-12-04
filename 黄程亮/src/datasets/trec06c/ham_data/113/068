@@ -1,0 +1,235 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.193])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0VGrB422473
+	for <egs+summary>; Tue, 31 Jan 2006 11:53:11 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id 12so1271450nzp
+        for <egs+summary>; Tue, 31 Jan 2006 08:53:10 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:sender:to:subject:mime-version:content-type;
+        b=tOkGSIi5KIhU0ATqKq0SR8QCW7E2M9VeCG2lPfHY+iiRB8LwmLHPs8TMtp10M0TLSd+7Rl+mz6Z/ifrZ8ywB4K629wU6fncKUNK2JMtxgqIAcTkOMn64LKkYCy2e5oe0lR/9rg1jBp6ZHDJ93tmdna7d2xRPb85nEDCdtFcUYjM=
+Received: by 10.64.243.17 with SMTP id q17mr2452889qbh;
+        Tue, 31 Jan 2006 08:53:10 -0800 (PST)
+Received: by 10.65.205.2 with HTTP; Tue, 31 Jan 2006 08:53:10 -0800 (PST)
+Message-ID: <554904a70601310853m24721ee8q872869d8ee53d9be@mail.gmail.com>
+Date: Tue, 31 Jan 2006 11:53:10 -0500
+From: "Takayuki Hoshi (TK)"
+To: CS615 Peer-to-Peer Systems Paper summary <egs+summary>
+Subject: PAPER 2 - Takayuki Hoshi
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_18295_29538092.1138726390477"
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,HTML_00_10,
+	HTML_MESSAGE,RCVD_BY_IP autolearn=no version=3.0.2
+X-Spam-Level: 
+
+------=_Part_18295_29538092.1138726390477
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+THE "CHORD" PAPER
+
+In this paper, the authors present the Chord protocol, a routing protocol
+for a
+peer-to-peer lookup service for Internet applications. It is a simple looku=
+p
+system
+which is load-balanced, fully decentralized, scalable, fault tolerant, and
+name-flexible, and which uses a simple but consistent hashing method to
+assign keys
+to nodes. It solves the problem of locating key in a collection of
+distributed nodes
+and maintains routing information with frequent node arrivals and
+departures. In a
+Chord network, identifiers are ordered on an identifier circle modulo 2^m
+where the
+successor function is extensively used for key assignment and where a node
+may have
+a finger table to accelerate lookups. In Chord, each node has to maintain
+only O(log
+N) state of other nodes and lookups need O(log N) messages; O( |keys|/N)
+keys are
+expected to update their finger tables when a node joins and leaves in an
+N-node
+network. The experimental results confirm the robustness in the case of nod=
+e
+failures and show that the path length for lookups is about a half lg N
+
+There are many differences between Chord and Pastry.  First, the design of
+Chord is
+significantly simpler than that of Pastry. This mainly comes from the fact
+that
+Chord's routing algorithm doesn't pay attention to key-prefixes and uses a
+simple
+hashing for key lookups with a small routing (finger) table.  As as result,
+each
+node in Chord is required to maintain little amount of information as
+opposed to
+Pastry whose nodes have to store significantly more information. Chord,
+unlike
+Pastry, holds provable correctness and provable performance, in addition to
+its
+naming flexibility.  One of the biggest issues of Chord, however, is that i=
+t
+doesn't
+consider locality since its neighbors are unrelated to network proximity.
+
+The contribution of the authors lies in providing the design of a simple,
+yet
+practical peer-to-peer protocol that can be easily implemented. Some of its
+future
+works may include modifications to the Chord protocol so that it considers
+locality,
+concentration on security and the issue of network overloading by malicious
+attacks
+like the Sybil attack.
+
+
+---------------------------------------------------------------------------=
+---------
+
+
+THE "TAPESTRY" PAPER
+
+In this paper, the authors present a scalable, decentralized,
+fault-tolerant, and
+adaptive infrastructure for wide-area location and routing called
+"Tapestry."  It is
+an overlay network, similar to Pastry, that uses a modified routing
+algorithm of
+Plaxton in desirable ways and provides an explicit notion of locality,
+achieving the
+location-independent routing of messages directly to the closest copy of an
+object.
+Each node stores a neighbor map similar to Pastry, pointers to its closest
+nodes
+matching the suffix for each level, and a backpointer list that points to
+nodes
+which point to the node. The whole network may be seen as a routing mesh of
+neighbors.  The routing information in this network is easily repaired and
+is purely
+soft state. Tapestry is also self-administering and resilient under heavy
+load. The
+experimental results demonstrate the high performance of Tapestry's
+decentralized
+object location & routing scheme and its fault-tolerance mechanisms.
+
+Despite the similarity, there are distinct differences between Tapestry and
+Pastry.
+First, whereas Pastry replicates the object and places replicas at random
+locations
+in the network, Tapestry promotes locating the nearest copy of an object fo=
+r
+each
+node, thereby reducing the network latency of message being sent to a
+particular
+node. Routing approaches are different as well; in particular, instead of
+the
+matching prefix method as in Pastry, each hop in Tapestry extends the
+matching
+suffix.  Also, Tapestry's surrogate routing gives assurance on the weaker
+bounds on
+the number of logical bounds in routing distances, thereby, unlike Pastry,
+giving a
+guarantee to find an object, if it is reachable.
+
+The contributions of the authors include the improvements to Plaxton's
+routing
+algorithm, augmenting robustness, scalability, dynamic adaptation, and
+self-administration. Tapestry's ability to deliver messages to the closest
+copy of
+objects (or services) in a location independent manner, is also notable. As
+the
+authors suggest, future works may include further performance analysis unde=
+r
+a
+variety of conditions and parameters and how it can be made more secure and
+resilient to malicious attacks.
+
+------=_Part_18295_29538092.1138726390477
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+<br>THE &quot;CHORD&quot; PAPER<br><br>In this paper, the authors present t=
+he Chord protocol, a routing protocol for a<br>peer-to-peer lookup service =
+for Internet applications. It is a simple lookup system<br>which is load-ba=
+lanced, fully decentralized, scalable, fault tolerant, and
+<br>name-flexible, and which uses a simple but consistent hashing method to=
+ assign keys<br>to nodes. It solves the problem of locating key in a collec=
+tion of distributed nodes<br>and maintains routing information with frequen=
+t node arrivals and departures. In a
+<br>Chord network, identifiers are ordered on an identifier circle modulo 2=
+^m where the<br>successor function is extensively used for key assignment a=
+nd where a node may have<br>a finger table to accelerate lookups. In Chord,=
+ each node has to maintain only O(log
+<br>N) state of other nodes and lookups need O(log N) messages; O( |keys|/N=
+) keys are<br>expected to update their finger tables when a node joins and =
+leaves in an N-node<br>network. The experimental results confirm the robust=
+ness in the case of node
+<br>failures and show that the path length for lookups is about a half lg N=
+<br><br>There are many differences between Chord and Pastry.&nbsp; First, t=
+he design of Chord is<br>significantly simpler than that of Pastry. This ma=
+inly comes from the fact that
+<br>Chord's routing algorithm doesn't pay attention to key-prefixes and use=
+s a simple<br>hashing for key lookups with a small routing (finger) table.&=
+nbsp; As as result, each<br>node in Chord is required to maintain little am=
+ount of information as opposed to
+<br>Pastry whose nodes have to store significantly more information. Chord,=
+ unlike<br>Pastry, holds provable correctness and provable performance, in =
+addition to its<br>naming flexibility.&nbsp; One of the biggest issues of C=
+hord, however, is that it doesn't
+<br>consider locality since its neighbors are unrelated to network proximit=
+y.<br><br>The contribution of the authors lies in providing the design of a=
+ simple, yet<br>practical peer-to-peer protocol that can be easily implemen=
+ted. Some of its future
+<br>works may include modifications to the Chord protocol so that it consid=
+ers locality,<br>concentration on security and the issue of network overloa=
+ding by malicious attacks<br>like the Sybil attack.<br><br><br>------------=
+------------------------------------------------------------------------
+<br><br><br>THE &quot;TAPESTRY&quot; PAPER<br><br>In this paper, the author=
+s present a scalable, decentralized, fault-tolerant, and<br>adaptive infras=
+tructure for wide-area location and routing called &quot;Tapestry.&quot;&nb=
+sp; It is
+<br>an overlay network, similar to Pastry, that uses a modified routing alg=
+orithm of<br>Plaxton in desirable ways and provides an explicit notion of l=
+ocality, achieving the<br>location-independent routing of messages directly=
+ to the closest copy of an object.
+<br>Each node stores a neighbor map similar to Pastry, pointers to its clos=
+est nodes<br>matching the suffix for each level, and a backpointer list tha=
+t points to nodes<br>which point to the node. The whole network may be seen=
+ as a routing mesh of
+<br>neighbors.&nbsp; The routing information in this network is easily repa=
+ired and is purely<br>soft state. Tapestry is also self-administering and r=
+esilient under heavy load. The<br>experimental results demonstrate the high=
+ performance of Tapestry's decentralized
+<br>object location &amp; routing scheme and its fault-tolerance mechanisms=
+.<br><br>Despite the similarity, there are distinct differences between Tap=
+estry and Pastry.<br>First, whereas Pastry replicates the object and places=
+ replicas at random locations
+<br>in the network, Tapestry promotes locating the nearest copy of an objec=
+t for each<br>node, thereby reducing the network latency of message being s=
+ent to a particular<br>node. Routing approaches are different as well; in p=
+articular, instead of the
+<br>matching prefix method as in Pastry, each hop in Tapestry extends the m=
+atching<br>suffix.&nbsp; Also, Tapestry's surrogate routing gives assurance=
+ on the weaker bounds on<br>the number of logical bounds in routing distanc=
+es, thereby, unlike Pastry, giving a
+<br>guarantee to find an object, if it is reachable.<br><br>The contributio=
+ns of the authors include the improvements to Plaxton's routing<br>algorith=
+m, augmenting robustness, scalability, dynamic adaptation, and<br>self-admi=
+nistration. Tapestry's ability to deliver messages to the closest copy of
+<br>objects (or services) in a location independent manner, is also notable=
+. As the<br>authors suggest, future works may include further performance a=
+nalysis under a<br>variety of conditions and parameters and how it can be m=
+ade more secure and
+<br>resilient to malicious attacks.<br><br><br><br>
+
+------=_Part_18295_29538092.1138726390477--
+

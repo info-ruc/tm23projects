@@ -1,0 +1,121 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j1OFpBFJ023355
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 24 Feb 2005 08:51:12 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id DF02CA83966
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 24 Feb 2005 08:51:11 -0700 (MST)
+Received: from KIFXP (mfg.Psych.Arizona.EDU [128.196.98.29])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 866BDA7F508
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 24 Feb 2005 08:51:11 -0700 (MST)
+From: "Kenneth Forster" <kforster@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: maze task-read error
+Date: Thu, 24 Feb 2005 08:51:11 -0700
+Message-ID: <002001c51a88$aa88e5a0$1d62c480@KIFXP>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+In-Reply-To: <564946378@web.de>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+> 
+> when running a syntax check dmdx isn't able to read the last line of the
+> experiment. here it is:
+> $
+> =57 * " That"c;
+> -57 * "myth  folks"c;
+> -57 * " still chains"c;
+> +57 * " air exists"c;
+> -57 * " in aunt"c;
+> +57 * " paper the"c;
+> +57 * " mother southern"c;
+> +57 *" watch. States."c;
+> 0 c;
+> 0 c;
+> 0 c;
+> 0 c;
+> $
+> 
+> 0! "End.";
+
+	The last item in a file should be an instruction enclosed in
+dollars, to make sure that the scrambling doesn't move it.  Thus:
+
+$0 "Thank you.  That's the end.";$
+
+Also, you shouldn't use the !. That is an instruction to DMDX to ignore what
+follows.
+
+
+> 
+> also i am not sure about how to abort an item after a wrong answer because
+> from what i understood one should use the keyword <branch> and then tell
+> the program with which item it shall continue but that would make a
+> randomization hard, wouldn't it? or is that why in other maze task many
+> sentences have the same item number?
+
+	A Maze task can have different item numbers for every item.  If you
+use the Variable Grouping option <vg N>, you can make sure that all items
+within a given sentence (including the "continue" item) are kept in
+position.
+
+	Here's an example:
+
+The experiment consists of 20 sentences, which should be presented in a
+random order. The item file would look something like this:
+
+<fd 50> <s 20> <vg 1000> <d 0> <vm 640,480,16,100><nfb><cr>
+$
+! Example of a Maze .rtf file.  Note the following important features:
+1.  The Variable Grouping parameter <vg 1000>.  This has the effect of
+converting 
+the item number 1001 to 1 during the scrambling operation (i.e., the item
+number is divided by the Variable Grouping parameter).  All items with the
+same number are then treated as a group as far as scrambling is concerned.
+2. <d 0> makes sure of a rapid response once a key is pressed.
+3. <nfb>  you don't want feedback.
+4. <cr> Continuous running is essential.  ;
+
+
+
+0 "Press the space bar for the next screen.";
+0 "Press the Right or Left key for whichever word",
+  <ln 1>"you think would continue the sentence.";
+0 "The following items are for practice.";$
+
+! Note that the sentence does not have $s around it.;
+
+=1001  %75"READY"/ *"The   x-x-x" c;
++1002  *"isn't   concert"<biw 1251> c;
++1003  *"swim   was"<biw 1251> c;
++1004  *"but   long"<biw 1251> c;
+-1005  *"and   guess"<biw 1251> c;
++1006  *"door   we"<biw 1251> c;
++1007  *"computer   enjoyed"<biw 1251> c;
+-1008  *"every   grind"<biw 1251> c;
+-1009  *"minute.   this."<biw 1251> c;
+
+1000 "CORRECT"/<branch 1250> ;
+1251   %40 "< <  error  > >"/@2 "Please proceed to the next item.";
+1250  c;
+
+The next sentence would then be listed.
+
+At the end, you would finish up with something like this:
+
+20000 "CORRECT"/<branch 20250> ;
+20251   %40 "< <  error  > >"/@2 "Please proceed to the next item.";
+20250  c;
+
+$0 "Thank you.  That's the end.";$
+
+
+--k.i.f.
+
+
+
+
+

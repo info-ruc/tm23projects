@@ -1,0 +1,251 @@
+Received: from MATHSTATION056.MIT.EDU (mathstation056 [18.87.1.156])
+	by jacobi.mit.edu (Postfix) with ESMTP
+	id B06F95A35A; Tue, 28 Feb 2006 12:28:48 -0500 (EST)
+Received: by MATHSTATION056.MIT.EDU (Postfix, from userid 17404)
+	id A014EBBCC6; Tue, 28 Feb 2006 12:28:48 -0500 (EST)
+Date: Tue, 28 Feb 2006 12:28:48 -0500
+From: Ross Lippert <lippert@math.mit.edu>
+To: spann@mit.edu, alvisio@mit.edu
+Cc: Ross Lippert <lippert@math.mit.edu>
+Subject: Re: tanh
+Message-ID: <20060228172848.GB31474@math.mit.edu>
+References: <20060228134903.GE28058@math.mit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060228134903.GE28058@math.mit.edu>
+User-Agent: Mutt/1.4.1i
+Status: RO
+X-Status: A
+Content-Length: 3288
+Lines: 86
+
+Oh, I should have also tanh-ed my variables:
+Break 2 [6]> (defvar x 1.4885222352166389226913452148437499999999999999d9)
+X
+Break 2 [6]> (defvar y 1.4885222352166389226913452148437500000000000000d9)
+Y
+Break 2 [6]> (tanh x)
+1.0d0
+Break 2 [6]> (tanh y)
+**overflow**
+
+So this shows that it really is storing this, even if it isn't
+printing it out at the prompt.
+
+
+-r
+On Tuesday, 28 February 2006 at  8:49:03 -0500, Ross Lippert wrote:
+> Break 29 [41]>  (tanh 1.4885222352166389226913452148437499999999999999d9)
+> 1.0d0
+> Break 29 [41]>  (tanh 1.4885222352166389226913452148437500000000000000d9)
+> **overflow**
+> 
+> Now, what does this mean?  Well, Andrew noticed that the literals in
+> clisp are more accurate than they would seem to have a right to be.
+> Marcelo noticed that this seems to be around (2^31-1)*log(2).  BTW do
+> we have a table with log(2) computed out to more than 16 digits that
+> we could use to understand the extra digits above?
+> 
+> Anyhow,
+> Break 30 [42]> (defvar x 1.4885222352166389226913452148437500000000000000d9)
+> X
+> Break 30 [42]>  (defvar y 1.4885222352166389226913452148437499999999999999d9)
+> Y
+> Break 30 [42]> (defvar eps  2.22044604925031d-16)
+> EPS
+> Break 30 [42]> (- x y)
+> 2.384185791015625d-7
+> Break 31 [43]> (- (* (+ 1d0 eps) y) y)
+> 2.384185791015625d-7
+> 
+> So that substraction and the printing suggests that once the literal is
+> bound to a variable that it loses this magic precision.  But it actually
+> happens sooner than that:
+> Break 31 [43]> (-  1.4885222352166389226913452148437500000000000000d9  1.4885222352166389226913452148437500000000000000d9)
+> 2.384185791015625d-7
+> 
+> Why doesn't - deserve that same precision as tanh, I don't know, but it is
+> possible that oce two variables are in the act, they get squeezed into
+> ieee floats before anything else.  What Andrew has noticed is that we can
+> "catch" clisp in the act of using higher precision floats by doing an
+> experiment with literals and tanh.
+> 
+> What I hoped to show with the above is just how many extra digits a
+> clisp literal must be carrying.
+> 
+> octave-2.1.57:7> x = 1.4885222352166389226913452148437500000000000000e9
+> x = 1488522235.21664
+> octave-2.1.57:8> dx= 0.0000000000000000000000000000000500000000000000e9
+> dx =  5.00000000000000e-23
+> octave-2.1.57:9> dy= 0.000000000000000000000000000000049999999999999e9
+> dy =  4.99999999999990e-23
+> octave-2.1.57:12> clisp_eps = (dx-dy)/x
+> clisp_eps =  6.75198291416038e-46
+> octave-2.1.57:14> log2(1/clisp_eps)
+> ans = 150.053381111497
+> 
+> So it seems like we have a 150 bit mantissa.  Why 150?  I find that very
+> odd.  Why not 128 or 256?  It isn't even 128+32!  Could they really have
+> a 32 bit exponent and 150 bit mantissa in an internal format?
+> 
+> Thank you both for your investigations.
+> 
+> -r
+> 
+> -- 
+> Ross A. Lippert
+> M.I.T., Department of Mathematics
+> Building 2, Room 335                    Voice (617) 253-7905
+> 77 Massachusetts Avenue                 FAX (617) 253-4358
+> Cambridge, MA 02139-4307                e-mail:  lippert@math.mit.edu
+
+-- 
+Ross A. Lippert
+M.I.T., Department of Mathematics
+Building 2, Room 335                    Voice (617) 253-7905
+77 Massachusetts Avenue                 FAX (617) 253-4358
+Cambridge, MA 02139-4307                e-mail:  lippert@math.mit.edu
+
+------------------------------------------------------------------
+
+Date: Sat, 4 Mar 2006 19:05:49 -0500
+From: "Tony Scelfo" <scelfo@gmail.com>
+Reply-To: tonys@mit.edu
+To: "Ross Lippert" <lippert@math.mit.edu>
+Subject: Re: Tanh Problem
+In-Reply-To: <20060304231313.GA25293@math.mit.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+References: <29501ff10603032150m27921ab6i5288f5913c4c3829@mail.gmail.com>
+	 <20060304175826.GB21864@math.mit.edu>
+	 <29501ff10603041304w3a9938b7lbaefc15c704d3e11@mail.gmail.com>
+	 <20060304231313.GA25293@math.mit.edu>
+X-Virus-Scanned: by amavisd-new at math.mit.edu
+Status: RO
+X-Status: A
+Content-Length: 4749
+Lines: 131
+
+That definitely breaks my theory.  I hadn't found a case where a
+double worked where a long had an overflow.
+
+Tony
+
+On 3/4/06, Ross Lippert <lippert@math.mit.edu> wrote:
+> I see.  So from the first hit on those google terms it would seem that
+> it is possible to have floats with an arbitrary bit length.  That's
+> interesting.
+>
+> But an internal conversion to an L number can't quite be what's going
+> on can it?
+>
+> [41]> (tanh 1.4885222352166389226913452148437499999999999999L9)
+> *** - floating point overflow
+> [42]> (tanh 1.4885222352166389226913452148437499999999999999d9)
+> 1.0d0
+>
+>
+>
+> -r
+> On Saturday,  4 March 2006 at 16:04:51 -0500, Tony Scelfo wrote:
+> > If you do a search on clisp long float in google, there is a reference
+> > page saying that the long float can have a mantissa of >=3D 64 bits.  I
+> > imagine that is how they are getting the 150 bit mantissa.
+> >
+> > Tony
+> >
+> > On 3/4/06, Ross Lippert <lippert@math.mit.edu> wrote:
+> > > I don't think it is the L numbers being used
+> > > (BTW I did not know about them until you told me, thanks).
+> > >
+> > > [11]> (/ (- (exp 1.0L-7) (exp -1.0L-7)) 2.0L0)
+> > > 9.999999999997532564L-8
+> > > [19]> (sinh 1.0d-7)
+> > > 1.0000000000000017d-7
+> > > [20]> (sinh 1.0L-7)
+> > > 1.0000000000000016666L-7
+> > >
+> > > The L numbers behave like numbers with a 64 bit mantissa.
+> > > This is roughly the extra sized mantissa you'd want to implement
+> > > a transcendental function using software arithmetic, but it
+> > > is clearly not what is going on here.
+> > >
+> > > The experiments the other two students did clearly indicate that
+> > > somewhere inside is a 150 bit mantissa 32 bit exponent float.
+> > > Now just where that float gets made, who knows.  It would be nice
+> > > to know how and why it is there.  Just out of curiousity.
+> > >
+> > >
+> > > -r
+> > >
+> > >
+> > > On Saturday,  4 March 2006 at  0:50:19 -0500, Tony Scelfo wrote:
+> > > > I was clicking around on the logs for question 2 and I took a minut=
+e
+> > > > to read what people had written in about the floating point overflo=
+w
+> > > > for tanh in clisp.
+> > > >
+> > > > Here is what I wrote on my problem set... I think it is somewhat re=
+levant.
+> > > >
+> > > > Clisp can represent numbers as:
+> > > > regular floats: 1e9
+> > > > double precision floats: 1d9
+> > > > long prevision floats: 1L9
+> > > >
+> > > > A close reading of the source might show that I am wrong to assume
+> > > > that clisp computes tanh directly by the (e^x - e^(-x))/(e^x +
+> > > > e^(-x)), but either way, the following observation is interesting.
+> > > >
+> > > > (exp 1e9) - floating point overflow
+> > > > (exp 1e-9) - 1.0
+> > > > (exp 1d9) - floating point overflow
+> > > > (exp 1d-9) - 1.000000001d0
+> > > > (exp 1L9) - 8.0029817706609725333L434294481
+> > > > (exp 1L-9) - 1.0000000010000000004L0
+> > > >
+> > > > For the evaluation of (tanh 1d9), it seems to me that clisp is
+> > > > changing the internal representation to 1L9 in order to be able to
+> > > > compute the two exponentials.
+> > > >
+> > > > Once we increase to (tanh 1d10), we get floating point overflows in
+> > > > the internal long floating point format.
+> > > >
+> > > > (exp 1e10) - floating point overflow
+> > > > (exp 1e-10) - 1.0
+> > > > (exp 1d10) - floating point overflow
+> > > > (exp 1d-10) - 1.0000000001d0
+> > > > (exp 1L10) - floating point overflow
+> > > > (exp 1L-10) - 1.0000000001L0
+> > > >
+> > > > That is why I think that (tanh 1d9) and (tanh 1L9) work while (tanh
+> > > > 1e9), (tanh 1e19), (tanh 1d10) and (tanh 1L10 have a floating point
+> > > > overflow.
+> > > >
+> > > > I did a bunch of google searching to figure out how tanh might be
+> > > > implemented in clisp.  I found descriptions of the long floating po=
+int
+> > > > representation along with a note saying that clisp won't convert
+> > > > regular floats to double precision or long precision in order to
+> > > > follow standards.  However, there was no similar statement to say t=
+hat
+> > > > clisp would not migrate double precision floats to long precision
+> > > > floats.
+> > > >
+> > > > Hope this helps figure out what is going on.
+> > > >
+> > > > Tony
+> > >
+> > > --
+> > > Ross A. Lippert
+> > > M.I.T., Department of Mathematics
+> > > Building 2, Room 335                    Voice (617) 253-7905
+> > > 77 Massachusetts Avenue                 FAX (617) 253-4358
+> > > Cambridge, MA 02139-4307                e-mail:  lippert@math.mit.edu
+> > >
+> > >
+

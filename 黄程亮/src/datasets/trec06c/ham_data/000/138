@@ -1,0 +1,37 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho with SMTP id <2580>; Fri, 30 Jul 1993 12:18:29 -0400
+Received: from minster.york.ac.uk ([144.32.128.41]) by psuvax1.cse.psu.edu with SMTP id <292558>; Fri, 30 Jul 1993 12:01:54 -0400
+From:	forsyth@minster.york.ac.uk
+Date:	Fri, 30 Jul 1993 11:48:48 -0400
+To:	9fans@cse.psu.edu
+Message-ID: <swordfish.744048081@minster.york.ac.uk>
+
+>> Has anyone ported the plan9 file server to a PC?
+>> thanks
+>> sean quinlan
+
+i did that a few months ago.  it only supports ISA at the moment
+(i haven't got an EISA yet to try), and thus only 16 Mbytes
+since i don't compensate for the limitations of the pc's DMA addressing.
+(it wouldn't be too hard: the SCSI adapter could allocate some
+space below 16meg and copy the data; whether that's sensible
+is another matter.)
+
+i run the file server on a 16Mb 486sx33 with an Ultrastor 14F
+and two Fujitsu SCSI-2 drives.  (it boots from a floppy.)
+the ethernets supported are those supported by the cpu/terminal kernel
+and also NE2100 clones, which use the AMD Lance
+(another device with addressing problems!).
+the 486sx33 serves a 486dx2-66 CPU server and a few terminals.
+i can't compare its performance to an SS2; i improvised
+a bootstrap for Plan 9 that went straight to the pc via 9sscd.
+
+the only host adapter supported is the Ultrastor 14F.  the driver should
+work with the 34F with at most minor changes, if any, but my 34F
+and not-quite-VESA motherboard don't agree, so i haven't been able to test it.
+a bus-mastering VESA device can avoid the 16Mb DMA restrictions, however,
+making an ISA/VESA pc more useful as a file server.
+i have an Adaptec 1542B/Bustek 542B driver, but it doesn't drive discs
+(it runs the 1542B in target mode, not initiator mode);
+still, most of what is required is there.
+
+

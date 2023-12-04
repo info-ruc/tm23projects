@@ -1,0 +1,43 @@
+Received: from imo27.mx.aol.com (imo27.mx.aol.com [198.81.17.71])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA23856
+	for <handyboard@media.mit.edu>; Mon, 30 Nov 1998 08:15:41 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo27.mx.aol.com (IMOv16.10) id SHLEa02196
+	 for <handyboard@media.mit.edu>; Mon, 30 Nov 1998 08:14:53 -0500 (EST)
+Message-Id: <7042dbd8.36629a4d@aol.com>
+Date: Mon, 30 Nov 1998 08:14:53 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Extra output for clocking
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Hugo Robertson:
+
+     One of the nice things about the 68HC11 chip is its well rounded timming
+system.  Grab your Handy board Technical reference manual and have a look at
+page 48.  PA0-3 are "Input Capture" pins.  When the logic level changes
+(according to the programmed level) this system time is captured and interrupt
+flags set.  The program can then tell exactly when something happened.
+PA3-PA6 are "Output Compare" pins.  Each of these pins can have a "time value"
+assigned to them which causes them to change state.  In addition there is a
+master time value which will change the state of all desired pins.  People use
+these two registers to set the update frequency and duty cycle of this group
+of pins to control servos (like the ones used in radio control airplains).
+Using these timer pins you should be able to get clock signals into the
+hundreds of kilohertz.
+     It looks like TOC3 is not being used, also TOC2 is going to the IR
+transmitter and might be available.   TOC5 goes to the piezo speaker, you
+could use this if you either remove the speaker or put up with the noise.
+     You may be able to control this system with peaks and pokes.  We will
+need to hear from an Instant C guru to see learn how to handle the interrupt
+flags.  Just peaking at the flag registers may be enough, unless their
+interrupt signal actually interrupts the CPU in which case you would need an
+interrupt service routine.  Any one care to comment on writing interrupt
+service routines for IC?
+
+hope this helps
+Pherd
+

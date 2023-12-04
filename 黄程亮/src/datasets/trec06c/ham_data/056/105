@@ -1,0 +1,82 @@
+Received: from mercury.mv.net (root@mercury.mv.net [199.125.85.40])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id JAA19564
+	for <handyboard@media.mit.edu>; Sat, 13 Nov 1999 09:13:18 -0500 (EST)
+Received: from g266 (bnh-aa1-225.mv.com [199.125.109.225]) by mercury.mv.net (8.8.8/mem-971025) with SMTP id JAB07247 for <handyboard@media.mit.edu>; Sat, 13 Nov 1999 09:13:15 -0500 (EST)
+Message-Id: <4.1.19991113090106.009a77c0@pop.mv.net>
+X-Sender: anatek-ba@pop.mv.net
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Sat, 13 Nov 1999 09:04:32 -0500
+To: handyboard@media.mit.edu
+From: John Bachman <bachman@anatek.mv.com>
+Subject: Re: IC trouble - function definition
+In-Reply-To: <H0000e110faeab32@MHS>
+References: <4.1.19991112144146.0093e7c0@pop.mv.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+Thanks for all the helpful device but the darned thing still does not work.  I have created a simplified program to try to figure out what I am doing wrong.  Here it is:
+
+/* A simplified program to figure out what is wrong */
+
+long time;
+
+void start()
+{
+       phony();
+
+       void phony()			/*  Line 9 syntax error is reported here */
+       {
+       		while (digital(2) == 1)
+                      		{
+			 time = mseconds();              
+			}
+       }
+}
+
+When I try to load it with IC I get a syntax error on line 9.  Can anyone tell me why?
+
+TIA
+
+
+At 03:41 PM 11/12/99 -0800, you wrote:
+>     John:
+>     
+>     If your function does not need a parameter passed to it
+>     just do:
+>     
+>     void detect_time2()
+>     {
+>     /* code here */
+>     }
+>     
+>     just like 
+>     int main()
+>     {
+>     /* code here */
+>     }
+>     
+>     Bart.
+>
+>
+>______________________________ Reply Separator 
+>_________________________________
+>Subject: IC trouble - function definition
+>Author:  Non-HP-bachman (bachman@anatek.mv.com) at HP-PaloAlto,mimegw2
+>Date:    11/12/99 11:44 AM
+>
+>
+>I am having trouble with function definitions.  Can someone tell me what is 
+>wron
+>g with this:
+>     
+>void detect_time_2 (void)
+>        { code here;}
+>     
+>I get a syntax error on the definition line and cannot figure out why.
+>     
+>TIA
+>     
+>John
+>
+
+

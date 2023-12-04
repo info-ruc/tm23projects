@@ -1,0 +1,81 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k221Hng1031072
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 1 Mar 2006 18:17:49 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 8FB95D1FDB8
+	for <DMDX@psy1.psych.arizona.edu>; Wed,  1 Mar 2006 18:17:49 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 58029D1FDBC
+	for <DMDX@psy1.psych.arizona.edu>; Wed,  1 Mar 2006 18:17:48 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060301180943.00ba4920@psy1.psych.arizona.edu>
+Date: Wed, 01 Mar 2006 18:17:47 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: fixed inter-onset interval for wavs of various
+  lengths
+In-Reply-To: <200603012358.k21NwFg1030663@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:58 PM 3/1/2006 +0000, you wrote:
+>Hello
+>
+>I'd like to use DMDX for an auditory lexical decision task.  My wav files 
+>vary
+>in length, but I want their  inter-onset interval (i.e. from start of one wav
+>to wav in the next item) to be a fixed interval.   Is this possible in DMDX
+>somehow or will I need to make my wav files all the same length?
+
+   Display them in a frame that has the longest duration desired and with a 
+an appropriate <Delay> parameter (it'll have to be big to allow for reading 
+the wave files) you'll have a constant start to start time.
+
+
+>The following is just given as a skeleton: it -- i.e. the frame duration
+>parameter doesn't now do what I want, but could it or some other 
+>combination of
+>parameters?  Apologies if I've overlooked relevant info in the list or help
+>files.
+>
+>! Refresh rate = 16.59 ms
+>! Inter-onset interval needs to be 2600 ms
+>
+><n 8> <azk> <cr> <nfb> <fd 146> <d 10> <t 2500> <id "keyboard"> <dbc 0> <dwc
+>000255000>
+>
+>0 "Press SPACEBAR to start";
+>250 <ms% 500> /;
+>
+>+100 * <wav 2> "rash"/;
+>-200 * <wav 2> "tranaliate"/;
+>+101 * <wav 2> "balustrade"/;
+>-201 * <wav 2> "blen"/;
+
+
+   So you'll have to look in the diagnostics.txt file generated after this 
+file has run and see how long the Preparation times are and pick a delay 
+parameter that's suitably longer, say 30 ticks if it's never taking close 
+to 500ms.  Then you'll want to fix the duration of the frames with the 
+remainder of 125 ticks (less one for the blank frame at the end of the item).
+
+<n 8> <azk> <cr> <nfb> <fd 146> <d 30> <t 2500> <id "keyboard"> <dbc 0> <dwc
+000255000>
+0 "Press SPACEBAR to start";
+250 <ms% 500> /;
++100 * <wav 2> "rash" %125 /;
+-200 * <wav 2> "tranaliate" %125 /;
++101 * <wav 2> "balustrade" %125 /;
+-201 * <wav 2> "blen" %125 /;
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Take the bull by the hand and avoid mixed metaphors.
+
+
+

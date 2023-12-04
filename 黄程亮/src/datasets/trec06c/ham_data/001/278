@@ -1,0 +1,44 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3009>; Mon, 28 Mar 1994 10:21:04 -0500
+Received: from plan9.research.att.com ([192.20.225.252]) by psuvax1.cse.psu.edu with SMTP id <292273>; Mon, 28 Mar 1994 10:07:03 -0500
+From:	rob@plan9.research.att.com
+To:	<9fans@cse.psu.edu>
+Date:	Mon, 28 Mar 1994 10:06:43 -0500
+Message-Id: <94Mar28.100703est.292273@psuvax1.cse.psu.edu>
+
+the sun is perhaps a poor choice for this test because its
+mmu and caches are pessimal for anything involving
+lots of processes.  the cost of flushing caches and mmu
+will dominate any operating system performance.
+in other words, the hardware is so expensive that
+software hardly matters.
+
+i tried the test on our challenge multiprocessors.
+
+10,000 fork/exit/wait.
+
+plan 9: real time 1.32 seconds.
+unix: real time 41.1 seconds.
+
+the unix system had more load, but was still
+pretty quiet.  system time was 27.9 seconds.
+
+on our seven-year-old SGI power machines,
+the test takes 6.26 seconds.  the time is about
+4 seconds on a single-processor MIPS magnum
+of the same vintage, so the multiprocessor
+part isn't very important.
+
+now scott's test was 1,000 forks on a sun; my test
+was 10,000.  on our at&t gnots, with 25MHz 68020's
+and awful mmu, it takes 75 seconds to do 10,000.
+our modern sparcstation-2 machine takes 34 seconds.
+(a newer machine than the magnum that takes 4 seconds.)
+you see, suns suck.  they really do.  the processors are
+borderline OK but the rest of the system hurts.  yesterday,
+quite independently, i was doing some tests of large-scale
+memory bandwidth and the suns were laughable.
+
+as for compiler names, the scheme we have is simple,
+consistent, and parsimonious.  if crypticness is the
+complaint, remember you're talking about a C compiler.
+

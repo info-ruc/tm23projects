@@ -1,0 +1,90 @@
+Received: from kwalsh4158.cs.cornell.edu (dhcp99-7.cs.cornell.edu [128.84.99.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id gACFW0Q27767
+	for <egs@cs.cornell.edu>; Tue, 12 Nov 2002 10:32:00 -0500 (EST)
+Message-Id: <5.1.1.6.0.20021112103129.00a8a380@popsrv.cs.cornell.edu>
+X-Sender: kwalsh@popsrv.cs.cornell.edu
+X-Mailer: QUALCOMM Windows Eudora Version 5.1.1
+Date: Tue, 12 Nov 2002 10:31:59 -0500
+To: egs@CS.Cornell.EDU
+From: Kevin Walsh <kwalsh@CS.Cornell.EDU>
+Subject: 615 PAPER 63
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+Can unstructured P2P systems perform as well as, or better than, more 
+structured P2P networks ? What are the design constraints of P2P systems 
+(e.g. typical system lifetimes, bandwidths, etc.) ? Please submit a 
+combined review under paper number (63).
+
+The small-world phenomenon: An algorithmic perspective
+Performance: P2P and the small world phenomena.
+A measurement study of peer-to-peer file sharing systems.
+
+The first of the three papers deals with a semi-structured network. The two 
+essential features of the network are a high-diameter dense and structured 
+lattice-type network, overlaid with random sparse long-range links. In this 
+particular proposal, each node has small and equal degree. Using a 
+reasonable definition of decentralized search algorithms, the paper 
+examines the upper and lower bounds on path lengths that might be found by 
+any search algorithm. It is found that if the long-range links are 
+distributed uniformly at random (a common assumption), then the average 
+path length is THETA(n^2/3), or exponential in the size of the network. 
+However, we may choose instead a long-range link distribution according to 
+d^-r where d is the distance between nodes, and r is a clustering 
+coefficient (high r gives very clustered long-range links, low r gives very 
+distant long-range links). In this case, it is found that for the optimal 
+choice r = 2, the inverse square distribution, search can be efficiently 
+performed in O((log n)^2) steps.
+
+The conclusion is it is possible to perform efficient decentralized search 
+in composite structured/unstructured networks if one chooses the long-range 
+links according to the right distribution. Compared to fully-structured 
+networks, this has less efficient routing (compare to O(log n) for 
+Chord/CAN/Pastry/etc), but has the advantage of very easy network 
+construction. Each node maintains only a very small number of long range 
+links, and these are randomized according to a easy-to-maintain distribution.
+
+There are some missing features of this type of structured/unstructured 
+network, however. First, we know from the other papers that Gnutella-like 
+networks tend to follow power-law degree distributions. A better search 
+should be possible in such a network by preferentially moving towards nodes 
+of high degree.
+
+The second paper, Performance, starts with a cute but perhaps meaningless 
+anecdotal review of the small-world phenomena. A review of the well-known 
+Watts and Strogatz paper on small world networks. The two interesting 
+points here are that very few random long-range links are needed to turn a 
+high-diameter network into a low-diameter network, and that the transition 
+between these two situations is not noticeable at the local level. As was 
+pointed out by Kleinberg, however, having a small world is not sufficient: 
+we must be able to efficiently find routes in the small world, also. And 
+here, again, the issue of degree distributions is ignored.
+
+Via simulation, the paper shows that Freenet can rewire a regular lattice 
+into a small-world type network. The simulation also indicates that Freenet 
+can find reasonably close-to-optimal paths in the network (median of 6 
+versus optimal 2 hops), but the distribution seems heavy-tailed, with some 
+paths as long as 100 hops.
+
+The other interesting discussion in this paper is the distribution of 
+degrees in Freenet. They find via simulation that the distribution looks 
+maybe like it might be a power law distribution. The authors claim that 
+Gnutella, on the other hand, does not have a power-law degree distribution, 
+and is essentially a random network (low clustering coefficient). In 
+Freenet, the only process to maintain clustering seems to be the 
+specialization of nodes argument. It is not clear if this does a good job 
+or not.
+
+Finally, the last paper presents interesting measurements of the nodes that 
+participate in peer-to-peer networks. The authors were able to crawl 
+between 8,000 and 10,000 Gnutella peers depending on the time of day, with 
+a high turnover rate. It is surprising that so many stayed connected all 
+night. Both Gnutella and Napster have a high percentage of low bandwidth 
+nodes (especially upstream bandwidth). Gnutella users are less likely to be 
+on a modem, perhaps an indication of Gnutella's overhead. Many peers are 
+connected by very high latency links, bad news for poor neighbor selection 
+strategies. Gnutella servers tended to be less available, even though the 
+machines were reachable with normal TCP/IP. Overall, in both systems users 
+appear to connect, remain on line for a short time, then disconnect.
+
+

@@ -1,0 +1,61 @@
+Received: from mvp.net (root@Walden.mo.Net [209.96.2.52])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA14307
+	for <handyboard@media.mit.edu>; Tue, 4 Aug 1998 15:40:10 -0400 (EDT)
+Received: from mvp.net (DialIP4-49.mvp.net [209.96.14.49])
+	by mvp.net (8.8.8/8.8.8) with ESMTP id OAA07364;
+	Tue, 4 Aug 1998 14:38:44 -0500 (CDT)
+Message-Id: <35C763F8.7089A0E6@mvp.net>
+Date: Tue, 04 Aug 1998 14:41:44 -0500
+From: Rick Moll <rickmoll@mvp.net>
+X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+Mime-Version: 1.0
+To: "Ross, Michael" <michael.ross@lmco.com>,
+        handyboard <handyboard@media.mit.edu>
+Cc: anton_attanayake@rd.qms.com, Rick Moll <rickmoll@mvp.net>
+Subject: Re: speed of the board
+References: <31889D453C9BD111A13600805FEA1B3EEA52B4@lm23mailb.hop.hou.lmsg.lmco.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+From:
+
+> anton_attanayake@rd.qms.com[SMTP:anton_attanayake@rd.qms.com]
+>
+>      I am worried about the 2MHz clock speed of the HB.  The robot that I
+>      am building has a mouse in the bottom of it and I am writing the
+>      program to read the number of digital pulses and calculate the
+>      position relative to the starting point.  There are many square roots
+>      and unit vector additions in the calculations.
+
+I assume you are going to need to do trig functions as well?
+
+I've written software that functions as a 2-D odometer, and uses encoders on the
+two wheels, and I had to write sin,cos,atan2 functions.
+
+How are you getting rotational information out of the mouse?  Does your robot
+not turn, or is the mouse offset from the centerline of the wheels so that you
+can calculate rotation from the x-axis, and use the y-axis to get
+forward/backward motion?
+
+Any way, I suspect that your either going to have to write a lot of assembly, or
+use some other language than IC.  I ended up writing an integer based trig
+library that allowed me to do a sin and cos calculation from inside an interrupt
+function; but I was using a faster processor and had a lot of memory to do table
+lookups.  I also had a lot of code of the form:
+
+    int a;
+    int b;
+    int c;
+
+    c = (int)(((long)a<<15)/c);
+
+which won't work in IC since it doesn't support long division, ARGH!
+
+Maybe if you gave us more details of what you're planning to do, we could be of
+more help.
+
+Later,
+
+    Rick
+
+

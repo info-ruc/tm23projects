@@ -1,0 +1,96 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.97.10])
+	by tartan.richmond.edu (8.9.0/8.9.0) with ESMTP id VAA18673;
+	Mon, 28 Jun 1999 21:49:56 -0400 (EDT)
+Received: from claspc1.cebaf.gov (claspc1.cebaf.gov [129.57.33.84])
+	by argyle.richmond.edu (8.9.0/8.9.0) with ESMTP id VAA27940;
+	Mon, 28 Jun 1999 21:49:55 -0400 (EDT)
+Received: (from freyberg@localhost)
+	by claspc1.cebaf.gov (8.8.7/8.8.7) id VAA14316;
+	Mon, 28 Jun 1999 21:50:45 -0400
+Date: Mon, 28 Jun 1999 21:50:45 -0400
+Message-Id: <199906290150.VAA14316@claspc1.cebaf.gov>
+From: Arne Freyberger <freyberg@claspc1.cebaf.gov>
+To: mvineyar@richmond.edu, ggilfoyl@richmond.edu
+CC: freyberg@cebaf.gov
+Subject: great balls of fire
+Reply-to: freyberg@cebaf.gov
+X-UIDL: 11ec922c229938db085d550d02bf87ca
+Status: RO
+X-Mozilla-Status: 8001
+
+
+Jerry and Mike,
+
+9:42pm....qstat -f shows:
+
+Queue Name                       Queue Type    Quan  Load          State
+----------                       ----------    ----  ----          -----
+psc10_gsim                       batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              340   0:13  r       RUNNING   06/28/99 21:32:22 
+    freyberg gsim.batc              347   0:20  r       RUNNING   06/28/99 21:32:25 
+psc11_gsim                       batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              334   0:7   r       RUNNING   06/28/99 21:32:21 
+    freyberg gsim.batc              335   0:8   r       RUNNING   06/28/99 21:32:21 
+psc12_gsim                       batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              336   0:9   r       RUNNING   06/28/99 21:32:21 
+    freyberg gsim.batc              337   0:10  r       RUNNING   06/28/99 21:32:22 
+psc2_gsim                        batch         2/2   1.77  aer     ALARM     
+    freyberg gsim.batc              348   0:21  r       RUNNING   06/28/99 21:32:25 
+    freyberg gsim.batc              349   0:22  r       RUNNING   06/28/99 21:32:26 
+psc3_gsim                        batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              343   0:16  r       RUNNING   06/28/99 21:32:23 
+    freyberg gsim.batc              344   0:17  r       RUNNING   06/28/99 21:32:24 
+psc4_gsim                        batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              338   0:11  r       RUNNING   06/28/99 21:32:22 
+    freyberg gsim.batc              339   0:12  r       RUNNING   06/28/99 21:32:22 
+psc5_gsim                        batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              332   0:5   r       RUNNING   06/28/99 21:32:20 
+    freyberg gsim.batc              333   0:6   r       RUNNING   06/28/99 21:32:21 
+psc6_gsim                        batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              328   0:1   r       RUNNING   06/28/99 21:32:20 
+    freyberg gsim.batc              329   0:2   r       RUNNING   06/28/99 21:32:20 
+psc7_gsim                        batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              341   0:14  r       RUNNING   06/28/99 21:32:22 
+    freyberg gsim.batc              342   0:15  r       RUNNING   06/28/99 21:32:23 
+psc8_gsim                        batch         2/2   1.70  er      UP        
+    freyberg gsim.batc              330   0:3   r       RUNNING   06/28/99 21:32:20 
+    freyberg gsim.batc              331   0:4   r       RUNNING   06/28/99 21:32:20 
+psc9_gsim                        batch         2/2   1.68  er      UP        
+    freyberg gsim.batc              345   0:18  r       RUNNING   06/28/99 21:32:24 
+    freyberg gsim.batc              346   0:19  r       RUNNING   06/28/99 21:32:25 
+
+
+----Pending Jobs ---------------------------------------------------------------
+freyberg gsim.batc     350   0:23 gsim                     QUEUED 06/28/99 21:32:26 
+
+This will continue to generate crap until I "qdel" the pending job.... A "top"
+on the machines shows each gsim job occupying 50% of the CPU resources.  I hope
+this means each gsim job has its own cpu....
+
+HOW:  First I am only using PRODUCTION celeg and gsim_batch, second I have some
+scripts in /home/freyberg/DQS_TEST/GSIM that run the job and make the next 
+script.
+
+In particular look at:  gsim.batch   and mk_gsim.batch
+
+I first tuned up gsim.batch such that it works, and then tuned up the
+perl script, mk_gsim.batch, so that when it reads in gsim.batch it
+spits out a new version gsim.batch that works.  I will work on a more
+object approach so that the user has a cleaner interface.
+
+But this script appears to work and you can try to modify it for your
+jobs.  To start the jobs one simply does "qsub -l gsim gsim.batch"
+once, which will then automatically recreate a new gsim.bat and submit
+that job...until all the queues are filled.
+
+I'll let this run until morning to see if everything holds together.
+
+Arne
+
+-- 
+Arne Freyberger         
+JLAB (Mail Stop 12H)    Phone: (757) 269-6268  
+12000 Jefferson Avenue  Pager: (757) 249-6268  freyberg@cebaf.gov
+Newport News, VA 23606   Phax: (757) 269-5800  http://claspc1.cebaf.gov  
+
+

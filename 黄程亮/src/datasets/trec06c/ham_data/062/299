@@ -1,0 +1,70 @@
+Received: from evtvir02.tc.fluke.com (evtvir02.tc.fluke.com [206.138.179.200])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with SMTP id MAA19841
+	for <handyboard@media.mit.edu>; Wed, 8 Mar 2000 12:57:36 -0500 (EST)
+Received: from 129.196.184.7 by evtvir02.tc.fluke.com (InterScan E-Mail VirusWall NT); Wed, 08 Mar 2000 09:57:09 -0800 (Pacific Standard Time)
+Received: from dogbert.tc.fluke.com (dogbert.tc.fluke.com [129.196.148.231])
+	by mailhub.tc.fluke.com (8.9.3/8.9.1) with SMTP id JAA09591;
+	Wed, 8 Mar 2000 09:57:08 -0800 (PST)
+Received: from localhost by dogbert.tc.fluke.com with ESMTP
+	(SMI-8.6/1.0) id JAA25502; Wed, 8 Mar 2000 09:57:03 -0800
+Date: Wed, 8 Mar 2000 09:57:03 -0800 (PST)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Gary Livick <glivick@pacbell.net>
+Cc: Julian <jf595@columbia.edu>, handyboard@media.mit.edu
+Subject: Re: Can I interface the Handy board to a PC to run there the robot's
+ brain?
+In-Reply-To: <38C5AA64.21322E1F@pacbell.net>
+Message-Id: <Pine.GSO.4.10.10003080939130.196-100000@dogbert.tc.fluke.com>
+X-Mailer: Pine 4.10
+Organization: Fluke Corporation
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Tue, 7 Mar 2000, Gary Livick wrote:
+
+> What in the world are you doing that you cannot get your program on the Handy
+> Board?  I am running a grid-based navigation routine using a 20 x 40 grid,
+> driving two motors, two servos and two wheel encoders, and doing obstacle
+> detection and position updating with an IR ranging sensor.  I run IC, which takes
+> up half of the 32K of external RAM, but even with all this I have several
+> thousand bytes of RAM left over.  I have never succeeded in using it all, but I'm
+> sure it can be done.  I'm just wondering how you did it.
+> 
+> If you can't get your program into RAM using IC, then you can switch to a
+> commercial C compiler such as ICC11 from Imagecraft, and get the 16K taking up by
+> the Pcode interpreter back for your own use.
+
+There are many applications where Interactive C won't work, some involving
+lack of memory, and some involving speed of execution.  I ended up needing
+to switch compilers for both reasons, but mostly because of the speed.  I
+do a lot of processing of data coming in on the serial input, and needed the
+speed to do it.
+
+As an alternative to the commercial stuff, there are gcc-2.8.1 and gcc-2.95.x
+patches that'll give you a nice free compiler with all the fixin's, but I'll
+warn you that it's much more complex to do anything with than Interactive C.
+Once you get your first program up and running under GCC though, following
+programs are quite easy to get compiled.
+
+Using GCC, I have full control over the entire 32k of RAM, and even the 256
+or 512 bytes in the processor itself.  There's a library also written for
+the Handyboard (thanks to everyone who contributed code for those!) which
+makes it a lot easier, but it sure isn't as simple as Interactive C to get
+up and running.
+
+Just thought it was time I let people know about this option again. I
+haven't mentioned it on the list for a while.
+
+	GCC-HC11 patches and Handyboard GCC Library
+	http://www.eskimo.com/~archer
+
+Note:  Stephane's port to gcc-2.95 appears to be much better and more
+complete than what I did, so lean towards his version.  He also uses the
+complete GNU toolchain, whereas I didn't.
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

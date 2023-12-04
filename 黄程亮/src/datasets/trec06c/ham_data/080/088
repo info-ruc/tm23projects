@@ -1,0 +1,121 @@
+Received: from rhenium (rhenium.btinternet.com [194.73.73.93])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id FAA27927
+	for <tex-fonts@math.utah.edu>; Wed, 27 Mar 2002 05:32:01 -0700 (MST)
+Received: from host213-122-25-25.in-addr.btopenworld.com ([213.122.25.25] helo=[213.1.165.170])
+	by rhenium with esmtp (Exim 3.22 #8)
+	id 16qCat-0000L1-01
+	for tex-fonts@math.utah.edu; Wed, 27 Mar 2002 12:32:00 +0000
+X-Sender: Sgt.Sunshine@mail.btinternet.com
+Message-Id: <l03130302b8c7684dea94@[213.1.165.170]>
+In-Reply-To: <E16qB6Q-0001DF-00@neodymium.btinternet.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Date: Wed, 27 Mar 2002 12:31:42 +0000
+To: "tex-fonts" <tex-fonts@sunshine.math.utah.edu>
+From: Rowland McDonnell <rowland.mcdonnell@physics.org>
+Subject: Re: fontinst question
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sunshine.math.utah.edu id FAA27928
+
+(I've quoted two different replies in this email - I hope this doesn't
+cause confusion or offence)
+
+>In the fontinst v1.8 manual (by Alan Jeffrey and Rowland McDonnell [sic!]),
+>it says:
+>
+>  If you would like to be on the
+>  \texttt{fontinst} mailing list, please mail
+>  \url{fontinst-request@cogs.susx.ac.uk}.
+
+<goes away to boil head>  Oh dear.  It does, doesn't it?  And it was me,
+not Alan, who added that bit.  You realise you just lost a wonderful
+opportunity to say `RTFM' to the idiot who WTFM?
+
+[snip]
+
+>>I've just tried installing the Adobe part of the Univers family using
+>>fontinst 1.801.  Using \latinfamily,
+>>
+>>punro8ac.afm
+>>punr8ac.afm
+>>punlo8ac.afm
+>>punl8ac.afm
+>>punbo8ac.afm
+>>punb8ac.afm
+>>
+>>get ignored.  Is this appropriate?  I can't help feeling that it'd make
+>>sense for \latinfamily to look out for condensed variants.
+>
+>\latinfamily wants condensed variants to be designated by "n",
+>as opposed to "c", until you put the following into fontinst.rc:
+
+Righto.  Hmm.  I see - so by default, fontinst looks for the `narrow'
+varient for the NFSS specifier `condensed'.  Not that daft, but (as you
+point out) something that needs documenting.
+
+Hmm.  A thought: would it make sense to have \latinfamily look for n *and*
+c for `condensed' by default?  And if so, does fontinst allow this?
+
+>\def\latin_widths{
+>   \latin_width{}{}
+>%   \latin_width{n}{c}
+>   \latin_width{c}{c}
+>   \latin_width{x}{x}}
+>
+><ot>
+>Maybe this should be documented in the fontinst guide :-)
+></ot>
+
+<chuckle>  Quite possibly...  My head's on a little straighter than it was
+and now I've got a 400MHz G4 superseding my old 25MHz 68LC040, I can do
+trial fontinst runs without having to make a cup of tea.  There's a
+fighting chance I'll kick the fontinst manual in to better shape before the
+end of the year.  And I might even read the bloody thing some day, eh? ;-)
+
+(for those who might be curious, I've got vast piles of notes about
+fontinst's operation, and these latest replies are being shoved there.
+What I need to do is play around some more and get a few more things about
+fontinst straight in my mind and *then* I can maybe re-write the manual
+some more; my hope is that all this help you've given *me* can be `saved
+for posterity' in a coherent manual.  If my flaky brain lets me finish it,
+that is.  I'm still very unreliable, I'm afraid.)
+
+>>>But aside from that, when I try installing the above founts using:
+>>[...]
+>>   \installfont{punr8tc}{punr8rc,latin}{T1}{t1} {pun}{mc}{n}{}
+>>[..]
+>
+>>I get the expected pl and vpl files, but no fd files.
+>
+>Maybe this works:
+>
+>    \installfont{punr8tc}{punr8rc,latin}{t1}{T1}{pun}{mc}{n}{}
+
+With the \installfamily commands added, it most certainly does.
+
+>I.e., the name of the encoding (T1) should be uppercased, matching
+>the \installfamily command, whereas the name of the related t1.etx
+>file should be lowercase  (the latter being relevant on Unix systems
+>only).
+
+[snip]
+
+Ah - yes, that makes sense.  What happened here was a mistake I made some
+years ago has propagated down the line to now.  Well, I'm learning, and
+fontinst is beginning to make some sort of sense to me.
+
+But it does need one extra, as pointed out by Lars Hellström (and as I used
+to know - mind like a sieve, me):
+
+>You have to say
+>
+>\installfamily{T1}{pun}{}
+>\installfamily{OT1}{pun}{}
+
+And *then* it all works properly.
+
+Thanks very much to both Lars and Walter,
+Rowland.
+
+
+

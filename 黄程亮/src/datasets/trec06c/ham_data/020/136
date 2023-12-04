@@ -1,0 +1,120 @@
+Received: from pan.wt.net (pan.wt.net [205.230.159.31])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id BAA13851
+	for <handyboard@media.mit.edu>; Fri, 17 Jul 1998 01:20:21 -0400 (EDT)
+From: michaelj@wt.net
+Received: from michaelj.wt.net (208-227-234-195.wt.net [208.227.234.195]) by pan.wt.net (8.8.5/8.7.3) with SMTP id AAA13238; Fri, 17 Jul 1998 00:20:35 -0500
+Message-Id: <000801bdb142$0f0b5240$c3eae3d0@michaelj.wt.net>
+To: "Mike Davis" <ipscone@halcyon.com>, <handyboard@media.mit.edu>
+Subject: Re: Simultaneous Control of Multiple Servos
+Date: Fri, 17 Jul 1998 00:15:23 -0500
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.2106.4
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.2106.4
+
+You are correct to assume that all legs should be in sync with each other
+and that all the legs on the ground should be moving at the same rate in the
+same direction to move straight (sometimes you don't want to move
+straight!). BUT now think of the speed of the processor and how many
+different pins can be turned on and off in a VERY short amount time. The
+servo pulse for each motor is about 50 hz but much of that time is spent
+waiting for the time to end the pulse and then waiting for the delay to end.
+Interlacing the signal control allows you to compress the time spent handing
+the signal generation because the processor can start and stop the pulse on
+several different motors in a much shorter time frame. This would make it
+appear as if the motor pulses were being done in parallel when in fact the
+signals were handled sequentially. See my crude example:
+
+S = start pulse
+T = terminate pulse
+- = active pulse
+. = inter-pulse delay
+
+S--------T..................................................................
+..................
+.S----T.....................................................................
+...................
+..S----------T..............................................................
+..................
+...S-----T..................................................................
+..................
+....S--------T..............................................................
+..................
+.....S--T...................................................................
+....................
+
+Note that the time delay between the start of one pulse and the start of the
+next is only the amount of time the processor needs to setup for it which
+may be only a couple of instructions. By ordering which motors are adjacent
+to each other in the sequence, you can minimize the effect of being "out of
+sync" (all swing motors on one side are adjacent followed by swing motors on
+the other side followed by lift motors on the first side, etc).
+
+Computers multitask the same way but because the switching happens at such a
+fast rate, it appears that everything is happening simultaneously. If you
+had a hundred legs you would probably need a faster CPU but you could still
+handle them in basicly the same way. Using a well designed interrupt-based
+timer you can even reduce the time spent is handling the leg motor motions
+and perform some sensing. If you reduce the flexibility of your walking
+gaits and only use the alternating tripod gait then two legs on each side
+can receive exactly the same signal since they always move exactly together.
+That would reduce the number of individual motor sequences you would have to
+manage.
+
+I hope I didn't ramble on too long and that this helps answer your
+questions.
+
+Mike
+
+
+
+-----Original Message-----
+From: Mike Davis <ipscone@halcyon.com>
+To: handyboard@media.mit.edu <handyboard@media.mit.edu>
+Date: Thursday, July 16, 1998 10:46 PM
+Subject: Simultaneous Control of Multiple Servos
+
+
+I have asked this before and not received much regarding this question.  So,
+here goes again.
+
+In building a walking robot, how important is it to control the motion of
+all legs
+simultaneously?
+
+Seems like that pulsing one at a time creates the situation where one leg
+drags
+the others.  I know there is a delay between the time an mcu command is
+issued and the time the pulse goes out, but still it seems like one leg
+would
+drag the others without some kind of parallel controller.  I also wonder
+about the
+ability of the serial controllers to perform simultaneous servo control.
+
+Seems like each leg should be programmed to walk identically, and that each
+would have a phase relationship with each other.  But all have to be moving
+in
+sync and not one at a time.  Is the HC11 a poor choice for this kind of
+motion?
+Or is it just fine?  Or does it require some kind of servo controller?
+Mostly I'm
+interested in the walking algorithm and synchronization control.
+
+Is this at all an important issue?  How is it addressed?  Any web info on
+this?  I
+have looked at many walking robot pages but have not seen this addressed.
+
+Thanks
+--
+-----------------------------------------------------------------
+ipscone@halcyon.com                                 Shoot-To-Win!
+
+Protect the 2nd Amendment!               Your rights may be next!
+-----------------------------------------------------------------
+
+
+

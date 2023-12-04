@@ -1,0 +1,85 @@
+Received: from tungsten (tungsten.btinternet.com [194.73.73.81])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with ESMTP id DAA26591
+	for <tex-fonts@math.utah.edu>; Wed, 27 Mar 2002 03:03:32 -0700 (MST)
+Received: from host213-122-30-81.in-addr.btopenworld.com ([213.122.30.81])
+	by tungsten with esmtp (Exim 3.22 #8)
+	id 16qAHC-0001NK-00
+	for tex-fonts@math.utah.edu; Wed, 27 Mar 2002 10:03:30 +0000
+X-Sender: Sgt.Sunshine@mail.btinternet.com
+Message-Id: <l03130300b8c7467bf84f@[213.122.29.39]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Wed, 27 Mar 2002 10:03:07 +0000
+To: "tex-fonts" <tex-fonts@sunshine.math.utah.edu>
+From: Rowland McDonnell <rowland.mcdonnell@physics.org>
+Subject: fontinst question
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sunshine.math.utah.edu id DAA26592
+
+This question probably ought to be sent to the fontinst mailing list, but
+I've changed email address since I subscribed to that one *and* lost the
+information on how to subscribe.  So for my first question: can anyone tell
+me how to subscribe to the fontinst mailing list?
+
+And for my second question, assuming that everyone subscribed to the
+fontinst list is subscribed to this one...
+
+I've just tried installing the Adobe part of the Univers family using
+fontinst 1.801.  Using \latinfamily,
+
+punro8ac.afm
+punr8ac.afm
+punlo8ac.afm
+punl8ac.afm
+punbo8ac.afm
+punb8ac.afm
+
+get ignored.  Is this appropriate?  I can't help feeling that it'd make
+sense for \latinfamily to look out for condensed variants.
+
+But aside from that, when I try installing the above founts using:
+
+\installfonts
+% begin Univers condensed install
+\transformfont{punr8rc}{\reencodefont{8r}{\fromafm{punr8ac}}}
+\transformfont{punro8rc}{\reencodefont{8r}{\fromafm{punro8ac}}}
+
+\transformfont{punl8rc}{\reencodefont{8r}{\fromafm{punl8ac}}}
+\transformfont{punlo8rc}{\reencodefont{8r}{\fromafm{punlo8ac}}}
+
+\transformfont{punb8rc}{\reencodefont{8r}{\fromafm{punb8ac}}}
+\transformfont{punbo8rc}{\reencodefont{8r}{\fromafm{punbo8ac}}}
+
+
+   \installfont {punr8tc} {punr8rc, latin} {T1}    {t1}  {pun}{mc}{n} {}
+   \installfont {punr8tc} {punr8rc, latin} {OT1}   {ot1} {pun}{mc}{n} {}
+   \installfont {punr8tc} {punr8rc, latin} {T1c}   {t1}  {pun}{mc}{sc}{}
+   \installfont {punr8tc} {punr8rc, latin} {OT1c}  {ot1} {pun}{mc}{sc}{}
+   \installfont {punr8tc} {punro8rc,latin} {T1}    {t1}  {pun}{mc}{sl}{}
+   \installfont {punr8tc} {punro8rc,latin} {OT1}   {ot1} {pun}{mc}{sl}{}
+
+   \installfont {punl8tc} {punl8rc, latin} {T1}    {t1}  {pun}{lc}{n} {}
+   \installfont {punl8tc} {punl8rc, latin} {OT1}   {ot1} {pun}{lc}{n} {}
+   \installfont {punl8tc} {punlo8rc,latin} {T1}    {t1}  {pun}{lc}{sl}{}
+   \installfont {punl8tc} {punlo8rc,latin} {OT1}   {ot1} {pun}{lc}{sl}{}
+
+   \installfont {punb8tc} {punb8rc, latin} {T1}    {t1}  {pun}{bc}{n} {}
+   \installfont {punb8tc} {punb8rc, latin} {OT1}   {ot1} {pun}{bc}{n} {}
+   \installfont {punb8tc} {punbo8rc,latin} {T1}    {t1}  {pun}{bc}{sl}{}
+   \installfont {punb8tc} {punbo8rc,latin} {OT1}   {ot1} {pun}{bc}{sl}{}
+
+% end Univers condensed install
+\endinstallfonts
+
+I get the expected pl and vpl files, but no fd files.  What do I have to do
+to persuade it to write the required fd file entries?  It strikes me that
+this ought to happen by default - if not, what *is* the point of the last 5
+arguments to \installfont?
+
+Anyone got any thoughts?
+
+Cheers
+Rowland.
+
+
+

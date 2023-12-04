@@ -1,0 +1,87 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.97.10])
+	by tartan.richmond.edu (8.9.0/8.9.0) with ESMTP id UAA20080
+	for <ggilfoyl@facstaff.richmond.edu>; Fri, 25 Jun 1999 20:38:31 -0400 (EDT)
+Received: from claspc1.cebaf.gov (claspc1.cebaf.gov [129.57.33.84])
+	by argyle.richmond.edu (8.9.0/8.9.0) with ESMTP id UAA25254
+	for <ggilfoyl@richmond.edu>; Fri, 25 Jun 1999 20:38:31 -0400 (EDT)
+Received: (from freyberg@localhost)
+	by claspc1.cebaf.gov (8.8.7/8.8.7) id UAA24463;
+	Fri, 25 Jun 1999 20:39:16 -0400
+Date: Fri, 25 Jun 1999 20:39:16 -0400
+Message-Id: <199906260039.UAA24463@claspc1.cebaf.gov>
+From: Arne Freyberger <freyberg@claspc1.cebaf.gov>
+To: ggilfoyl@richmond.edu
+In-reply-to: <37723115.7330DEB@richmond.edu> (message from gilfoyle on Thu, 24
+	Jun 1999 09:22:29 -0400)
+Subject: Re: richmond cluster
+Reply-to: freyberg@cebaf.gov
+References: <3770B321.5A20FE6F@richmond.edu> <199906231451.KAA03677@claspc1.cebaf.gov> <3770EBEA.162DB6CF@richmond.edu> <199906241120.HAA15857@claspc1.cebaf.gov> <37723115.7330DEB@richmond.edu>
+X-UIDL: c0d1db06cf7d6cc58af68f2f2ab129ef
+Status: RO
+X-Mozilla-Status: 8011
+
+jerry,
+
+I logged in from home and saw that you guys finished making the queues and setting
+up the other nodes....good work!!!
+
+I then did the following:
+
+edited /etc/rc.d/rc.local on all the machines so that dqs_execd is launched upon reboot
+of the machines
+
+made /data and /scratch world read/writable
+
+increased the maximum number of jobs a user can have queued(running and pending) to 100
+ it was 10...
+
+change the priority of the all the pscn_gsim queues to 10 (was 0...highest priority)
+this may change....it all depends on how you want to use the machines...
+
+changed the job limit from 4 to 2 per queue since there are two CPUs
+
+Then I mucked around trying to get the celeg-gsim chain working.. but the build on
+psc1 /home/clas is rather incomplete....In particular I had to build my own version
+of celeg (it built without a problem) but the parms area does not have clasbanks.ddl
+but instead a pointer to the location on the CUE machines.
+
+In addition Mike has all the /home/clas stuff under his domain  so I could not 
+modify it... I think he needs to go into: $CLAS_PACK/bankdefs and execute make
+and then copy the clasbanks.ddl in tothe CLAS_PARMS area.
+
+without clasbanks.ddl I can't get anywhere....
+
+Basically, I consider DQS "installed" you now how to add/delete queues so you can modify it
+however you like.  If you have any problems on the DQS side give me a ring.  
+
+Once there is an established build of all the components needed to run the gsim chain then
+I can fine tune my scripts. 
+
+There are several other issues that may or may not need consideration:
+
+1) Do you want to eliminate interactive logins on psc2-12???
+
+2) Get the UPS serial line hooked up, I'll forward you information on the 
+   cable.  I think the straight serial hook up will work but let me check first.
+
+3) how to collect the completed files from the gsim jobs
+
+4) deal with two jobs running simultaneously on one machine.  Presently my
+   scripts cannot deal withh this and there is a possibilty that the jobs
+   will stomp on each other....
+
+Also, upon departure from gottwald my right front tire was down to 25%...made to 
+a gas station on grove...pumped it up and we made it back to yorktown...wonder
+how full it will be tomorrow morning...
+
+Have a good weekend...
+
+Arne
+
+-- 
+Arne Freyberger         
+JLAB (Mail Stop 12H)    Phone: (757) 269-6268  
+12000 Jefferson Avenue  Pager: (757) 249-6268  freyberg@cebaf.gov
+Newport News, VA 23606   Phax: (757) 269-5800  http://claspc1.cebaf.gov  
+
+

@@ -1,0 +1,100 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.8/8.12.4) with ESMTP id h2A56MIA003944
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 9 Mar 2003 22:06:22 -0700
+Received: from anybodyi.u.arizona.edu (uofa-dsl-95.dakotacom.arizona.edu [150.135.175.95])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h2A5G03C006968
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 9 Mar 2003 22:16:00 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030309213843.00b128e8@psy1.psych.arizona.edu>
+Date: Sun, 09 Mar 2003 22:15:26 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Progressive demasking problem...
+In-Reply-To: <5.1.0.14.2.20030309222647.01c04838@pophost.mrc-cbu.cam.ac.
+ uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 10:42 PM 3/9/2003 +0000, you wrote:
+>Hi.  I have been playing around with DMDX to try and come up with a good 
+>way of doing progressive demasking.  I failed and was wondering if anyone 
+>had any ideas.  Here's the problem (refresh rate = 10ms for all examples 
+>below).  If you do it in a single frame, as below, it works well in terms 
+>of visibility of the item...
+>
+>+1 %29  "########" /  %1 * " house " / %28  "########" /  %2 " house " / 
+>%27  "########" /  %3 " house " / %26  "########" /  %4 " house " / 
+>%25  "########" /  %5 " house " / %24  "########" /  %6 " house " / 
+>%23  "########" /  %7 " house " / %22  "########" /  %8 " house " / 
+>%21  "########" /  %9 " house " / %20  "########" /  %10 " house " / 
+>%19  "########" /  %11 " house " / %18  "########" /  %12 " house " / 
+>%17  "########" /  %13 " house " / %16  "########" /  %14 " house " / 
+>%15  "########" /  %15 " house " / %14  "########" /  %16 " house " / 
+>%13  "########" /  %17 " house " / %12  "########" /  %18 " house " / 
+>%11  "########" /  %19 " house " / %10  "########" /  %20 " house " / 
+>%9  "########" /  %21 " house " / %8  "########" /  %22 " house " / 
+>%7  "########" /  %23 " house " / %6  "########" /  %24 " house " / 
+>%5  "########" /  %25 " house " / %4  "########" /  %26 " house " / 
+>%3  "########" /  %27 " house " / %2  "########" /  %28 " house " / 
+>%1  "########" /  %29 " house " / ;
+>
+>..however, DMDX has to wait until the frame is finished before it moves on 
+>to the next item, which means each frame is 29*300ms=8.7 seconds long, so 
+>the experiment will take forever if there are, as planned, 600 items (at 
+>least 1.5 hours).
+
+   Yeah, you're stuck with that, there's no way to dump the display queue.
+
+>   The other option is to use counters to loop and also to increment and 
+> decrement the item and the mask as done below (although I still need to 
+> sort out how to do the multiway branching such that when the subject 
+> responds it quits the loop and goes on to the next item)...
+>
+>1000 <set 1,29> <set 2, 29> <set 3,1>  ;
+>
+>+1 <%ctr 2> * "########" / <%ctr 3>  * " house " <dec 1> <inc 2> <dec 3> 
+><bicGT 1,0,-1>;
+>
+>..However, with this method of looping a single item, the word is much 
+>more visible.
+>
+>Any ideas?  Thank you!
+
+   "house" is being displayed during the inter item interval as DMDX 
+loops.  You want to set  the <delay> parameter real low if your machine can 
+do it and change your item to the following and take whatever you set 
+<delay> to plus one off the initial value of counter 2.  You have to add 
+one because the new last frame takes a tick to move onto the display:
+
++1 <%ctr 2> * "########" / <%ctr 3>  * " house " <dec 1> <inc 2> <dec 3> 
+<bicGT 1,0,-1> / "########";
+
+   You'll never be able to have a %1 "########" as is but you could always 
+hard code the last few iterations in the following item.  To handle the 
+looping you could use <BranchIfNoResponse> to continue the loop and a 
+<bicGT> to break out but of course you can't have two branches in the same 
+item and you can't have counter branches in a <mwb> so you'll have to have 
+something like this (assuming <delay 2>):
+
+~1000 <set 1,29> <set 2, 26> <set 3,1>;
+~1001 <bicLT 1,4,1005>;
++1002 <%ctr 2> * "########" / <%ctr 3>  * " house " <dec 1> <inc 2> <dec 3> 
+<binr -1001> / "########";
+~1003 <binr 1005> <! can't have BranchIfNotNoResponse...>;
+~1004 <bu 2000>;
++1005 %3  "########" / * %27 " house " / %2  "########" /  %28 " house " / 
+%1  "########" /  %29 " house " / ;
+
+   Not sure if my counter limits are exactly right but you should be 
+getting the idea.  You'll probably want to <emit> some counters too.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Experience is what you get when you were expecting something else.
+
+
+

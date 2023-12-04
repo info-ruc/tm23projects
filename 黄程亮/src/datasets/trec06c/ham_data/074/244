@@ -1,0 +1,85 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id KAA30017
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 24 Nov 2000 10:11:22 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.20) by deimos.email.Arizona.EDU (5.1.046)
+        id 3A1C4E370000FF73 for DMDX@psy1.psych.arizona.edu; Fri, 24 Nov 2000 10:11:20 -0700
+Message-Id: <5.0.0.25.2.20001124095417.009ebb40@psy1.psych.arizona.edu>
+Date: Fri, 24 Nov 2000 10:11:19 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: RT-Trigger-LOOP
+In-Reply-To: <3A1EA8C6.58EEDA7C@forenap.asso.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 06:43 PM 11/24/00 +0100, you wrote:
+>Hello ,
+>
+>I have 2 questions :
+>
+>1- In the following sequence (24 blocks indeed)
+>
+>I set <t 2500> (with all needed parameters)
+>
+>0 d10 <bmp> "img1" ;
+>250 d200 <bmp> "fram1" ;
+>+001 d1000 <bmp> *"img2" ;
+>0 d10  <bmp> "img2";
+>250 d10 <bmp>"fram2";
+>
+>250 d1000 <bmp> "img1" ;
+>250 d200 <bmp> "fram1" ;
+>+002 d1000 <bmp> *"img2" ;
+>0 d10  <bmp> "img2";
+>250 d10 <bmp>"fram2";
+>
+>250 d1000 <bmp> "img1" ;
+>250 d200 <bmp> "fram1" ;
+>-003 d1000 <bmp> *"img2" ;
+>0 d10  <bmp> "img2";
+>250 d10 <bmp>"fram2";
+>
+>0 d1000 "End" l;
+>
+>This was the only way I found
+>to avoid the img2 to disappear
+>(black screen) when the subject
+>answers, and to trigger with MRI.
+>
+>However if I increase t to 3000ms
+>some triggers are missed, in such way
+>that a delay is added to t value.
+>
+>Any advice ??
+
+   You need to include the parameter line, perhaps your blank screen is 
+caused by not having <nfb>.
+
+>2- How to include a trigger into a loop.
+>I try using a different number than 0
+>Unsuccessful.
+>Any help ?
+
+   When using <cr> the only way to wait for a request (in your case a 
+trigger from the MRI) is to have an item number of zero which is bad if you 
+want those items to be destinations for branches.  So either code your item 
+file to not use triggers as destinations for branches or alternatively you 
+can opt to not include <cr> in the parameter line in which case _every_ 
+item will wait for a request unless you include C option (or <c>) in the item.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   An empty bus travels fast.
+                                                     - Tom Weller
+
+
+

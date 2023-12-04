@@ -1,0 +1,38 @@
+Received: by psuvax1.cse.psu.edu id <34289>; Fri, 24 Feb 1995 17:13:36 -0500
+Received: from plan9.cs.york.ac.uk ([144.32.32.195]) by psuvax1.cse.psu.edu with SMTP id <34295>; Fri, 24 Feb 1995 17:12:15 -0500
+From:	forsyth@plan9.cs.york.ac.uk
+Date:	Fri, 24 Feb 1995 16:47:36 -0500
+To:	9fans@cs.psu.edu
+subject: version of the system for 68030 cards
+Message-Id: <95Feb24.171215est.34295@psuvax1.cse.psu.edu>
+Sender: owner-9fans
+Precedence: bulk
+Reply-To: 9fans
+
+a student here, Dave Stringer-Calvert, attempted to port the system to a Sun-3/80.
+he got most of the way through, but foundered on a lack of information from Sun
+about the way the Lance and DVMA interacted.
+i've now revised and completed the work to make a port of the Plan 9 cpu/terminal kernel
+to a 68030 VME system, the Eltec Eurocom 6.  we inherited
+quite a few of those cards, and we've now got some student projects using them under Plan 9.
+
+if anyone else has some Eltec 6 cards and is interested, let me know.
+the only bit still causing trouble is the wd33c93a scsi interface,
+where there seems to be some Eltec-specific subtlety. sometimes
+it works, but often it doesn't.  (i currently think they botched
+the interaction between DBA and single-byte mode.)  the system runs
+happily over the net from our file server, using the local bus Lance card.
+i have a replacement boot PROM for the card that will boot a kernel using
+BOOTP and TFTP.  i've also got reasonable drivers for the 8536 CIO that controls the parallel ports,
+and for a VIP-1024 VME frame grabber, which were needed for a project.
+the frame grabber provides both a file interface in '#v' and a segattach interface
+(doing the latter was fiddly, but i don't think it's my fault -- the mapping
+interface looks incomplete).
+
+i haven't done a 68k Alef port yet, but i'm thinking about it, because
+i'm fed up with not having it!
+
+i intend to port any new release of Plan 9 to the Eltec environment.
+
+
+

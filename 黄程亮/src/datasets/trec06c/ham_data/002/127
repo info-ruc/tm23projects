@@ -1,0 +1,295 @@
+Received: by cheltenham.cs.arizona.edu; Tue, 20 Dec 1994 01:18:11 MST
+To: icon-group-l@cs.arizona.edu
+Date: 20 Dec 1994 06:36:10 GMT
+From: Will Mengarini <mengarini@delphi.com>
+Message-Id: <3d5u0q$ocp@news.halcyon.com>
+Organization: Northwest Nexus Inc.
+Sender: icon-group-request@cs.arizona.edu
+References: <dkuhlmanD0wuqE.I5w@netcom.com>
+Subject: Re: Backtracking in Icon
+Errors-To: icon-group-errors@cs.arizona.edu
+
+dkuhlman@netcom.com (G. David Kuhlman) writes:
+
+>[...] in spite of the fact that I have a language
+>with a strong backtracking mechanism, I find that I
+>don't use it much, except of course, for trivial
+>constructs like
+>    (checkValid(x) | write("error"))
+>which I feel I have to write instead of an
+>'if' statement so that I can feel like a cool Icon programmer.
+>I'd be interested to know if others use backtracking more heavily [...]
+
+Here are two Icon programs that backtrack for parsing.
+I hope their length doesn't inconvenience anybody; I thought they
+were worth posting because the backtracking control structures look
+weird, & I'd be interested in seeing how other people prettyprint theirs.
+
+----------------------------------<snip>----------------------------------
+#        FNortPth.Icn (Full Norton Path) - Will Mengarini - 10 Aug 92
+
+#  Filter Norton FA | FS output so each line is 1 full file path
+
+#  Sample FA output excerpts preceded by column-ruler line:
+#
+#  123456789012345678901234567890
+#   D:\-\I
+#       deldupln.icn
+#       fnortpth.icn  Archive
+#       gug           Archive
+#
+#     33 files shown
+#     no files changed
+#
+#   D:\-\I\^
+#       deldupln.asv
+#       deldupln.icn  Archive
+#       reverse.icn
+#       scrap.b       Archive
+#       _.rst         Archive
+#
+#     9 files shown
+#     no files changed
+#
+#   Total of all files
+#     42 files shown
+#     no files changed
+
+#  Sample FS output excerpts preceded by column-ruler line:
+#
+#  123456789012345678901234567890
+#    D:\-\I
+#      whug              1,344 bytes
+#      fnortpth.icn        215 bytes
+#
+#         30,272 total bytes in 33 files
+#         77,824 bytes disk space occupied, 61% slack
+#
+#    D:\-\I\^
+#      deldupln.asv      1,122 bytes
+#      deldupln.icn      1,058 bytes
+#
+#         12,399 total bytes in 9 files
+#         24,576 bytes disk space occupied, 50% slack
+#
+#    Total of all files found
+#         42,671 total bytes in 42 files
+#        102,400 bytes disk space occupied, 58% slack
+#
+#   Drive usage
+#     33,435,648 bytes available on drive D:
+#     12,103,680 bytes unused on drive D:, 36% unused
+
+procedure main()
+   while read() ?(
+      # All & only lines containing "\\" are directories. They begin (after
+      # leading whitespace) with the drive letter, & end with "\\" only if
+      # they specify the root. There are no other words on such lines.
+      tab(many(' ')),
+      dir := tab(upto('\\')) || tab(0) || (move(-1) ~== "\\" | "")
+   )|(
+      # Lines containing file names begin with leading whitespace. Then
+      # come the name & extension as a single word with a separating ".";
+      # there's no whitespace between the name & extension, unlike the
+      # columnar format of FI & Dir. If the extension is empty, the "." is
+      # omitted. In FS, all file names are on lines ending with "bytes"; no
+      # other lines end with "bytes". In FA, file names are followed by a
+      # list of attributes like "Archive"; no other lines contain the words
+      # denoting those attributes; the list may be empty, in which case the
+      # line has only 1 word; no other lines have only 1 word except
+      # directory lines. Therefore, file names are all & only the initial
+      # words on lines that either have no other words & are not directory
+      # lines, | end with "bytes" | a word denoting an attribute.
+      ((
+         (
+            tab(many(' ')), tab(many(~' \\')), pos(0)
+               # We already know this isn't a directory line since control
+               # can't get this far unless the alternative that handles
+               # directory lines fails. However, the code is more robust if
+               # it doesn't depend on that, & inserting an extra char in a
+               # cset entails no extra run-time computation.
+         )|(
+            reverse(&subject) ? match(reverse(
+               "bytes" | "hive" | "d-Only" | "dden" | "stem"
+            ))
+         )
+      ) & &pos:=1 & (
+         tab(many(' ')), write(  dir || tab(upto(' ')|0)  )
+      ))
+   )|1
+end
+----------------------------------<snip>----------------------------------
+#                  IconGrp.Icn - Will Mengarini - 20 Oct 93
+
+# Takes a //cs.arizona.edu/.../icon/newsgrp/*.txt, which is unthreaded, &
+# rewrites it in threaded order. The [input, output] file is arg[[1,2]].
+
+# A 2-level ISAM is required to get everything right. First, index file 1
+# is written with each line corresponding to a message in the download.
+# Sorting this file by subject groups together all messages for each thread.
+# Then, index file 2 is written with each line corresponding to an entire
+# thread of messages. Index file 1 is then rewritten with the threads still
+# grouped, but now in chronological rather than alphabetical order; finally,
+# the same rewriting routine (procedure lookup) is used for the target file.
+
+# All this temporary data is kept in temporary files on disk rather than
+# in RAM, so large newsgroup files can be threaded.
+
+# The top line of each article is assumed & required to be the line that
+# begins with the heading "From icon-group-sender". This line not only marks
+# the beginning of an article, it also contains the date in a consistent
+# format, whereas "Date: " lines' formats vary.
+
+# This program was developed on a MS-DOS system, & requires the presence
+# of a sort utility that can accept I/O redirection using "<" & ">", & can
+# be told the starting column of the sort key using a syntax like
+# "/+41" (to start in column 41). If you want to run on a different system
+# that has a system sort with these functions but a different invocation
+# syntax, you need to change the 2 system() calls in main().
+# The temporary files have names ending in ".tmp".
+
+global subjectLength, whenLength, startAtLength, linesLength
+
+procedure main(arg)
+
+   subjectLength  := 40
+   whenLength     := 14
+   startAtLength  := 12
+   linesLength    := 05
+
+   arg[1] || arg[2] | stop( "Usage: IconGrp <input file> <output file>" )
+
+   write( "Writing index file 1" )
+   index1( arg[1], "IcnGrp1a.tmp" )
+
+   write( "Sorting index file 1" )
+   system( "sort <IcnGrp1a.tmp >IcnGrp1b.tmp" )
+
+   write( "Writing index file 2" )
+   index2( "IcnGrp1b.tmp", "IcnGrp2a.tmp" )
+
+   write( "Sorting index file 2" )
+   system( "sort <IcnGrp2a.tmp >IcnGrp2b.tmp /+" || subjectLength + 1 )
+
+   write( "Using index file 2 to rewrite index file 1" )
+   lookup( "IcnGrp2b.tmp", "IcnGrp1b.tmp", "IcnGrp1c.tmp" )
+
+   write( "Using index file 1 to rewrite BBS file" )
+   lookup( "IcnGrp1c.tmp", arg[1], arg[2] )
+
+   write( "IconGrp finished." )
+end
+
+procedure writeIndexLine( out, subject, when, startAt, lines )
+   writes( out, left(   subject,    subjectLength  ) )
+   writes( out, left(   when   ,    whenLength     ) )
+   writes( out, right(  startAt,    startAtLength  ) )
+   write ( out, right(  lines  ,    linesLength    ) )
+   return
+end
+
+procedure index1( in, out )
+
+   months := ["jan","feb","mar","apr","may","jun",
+              "jul","aug","sep","oct","nov","dec",""]
+
+   in  := open( in,  "r" ) | stop( "Couldn't open " || in )
+   out := open( out, "w" ) | stop( "Couldn't open " || out )
+
+   lineNumber := 0
+
+   while at := where(in) & line := !in & lineNumber +:= 1 do {
+      line ? ((
+
+         = "From icon-group-sender",
+         #
+         # Write data for previous article if there was one
+         #
+         if writeIndexLine( out, subject, when, startAt, \lines ) then {
+            write( "   index1: at = ", at )
+         } else {
+            "do not fail"
+         },
+         lines := 0, startAt := at,
+         #
+         # Parse the date; the line looks like
+         #     From icon-group-sender  Thu Mar 18 12:24:03 1993
+         # We are here --------------^
+         #
+         map(tab(0)) ? (
+            tab(find( months[month := (1 to *months)] )),
+               # We're now at the *start* of the month name
+            tab(many(~' ')), tab(many(' ')),
+            date := tab(many(&digits)), tab(many(' ')),
+            time := tab(many(~' ')), tab(many(' ')),
+            year := tab(0)
+         ),
+         if month = 13 then {
+            stop("Month not found on line # ",lineNumber)
+         } else {
+            when := year[3:0] || " " || right(month,2,"0") || " " ||
+                    right(date,2,"0") || " " || time[1+:5]
+         }
+
+      )|(
+
+         ="Subject: ", subject := tab(0),
+         #
+         # Extract the subject (which will define the thread)
+         #
+         (  map(subject) ?
+            (= "re:", tab(many(' ')), subject[1:&pos] := "")
+         )|(
+            "do not fail"
+         )
+
+      ))
+      lines +:= 1
+   }
+
+   writeIndexLine( out, subject, when, startAt, lines )
+   every close( in | out )
+end
+
+procedure index2( in, out )
+   in  := open( in,  "r" ) | stop( "Couldn't open " || in )
+   out := open( out, "w" ) | stop( "Couldn't open " || out )
+   while at := where(in) & line := !in do {
+      if subject ~=== line[1+:subjectLength] then {
+         write( "   index2: at = ", at )
+         writeIndexLine( out, \subject, when, startAt, lines )
+         line ? (
+            subject := move(subjectLength), 
+            when := move(whenLength)
+         )
+         lines := 0; startAt := at
+      }
+      lines +:= 1
+   }
+   writeIndexLine( out, subject, when, startAt, lines )
+   every close( in | out )
+end
+
+procedure lookup( index, in, out )
+   index    := open( index,  "r" ) | stop( "Couldn't open " || index    )
+   in       := open( in,     "r" ) | stop( "Couldn't open " || in       )
+   out      := open( out,    "w" ) | stop( "Couldn't open " || out      )
+   every !index ? (
+      move(subjectLength + whenLength),
+      at := move(startAtLength),
+      lines := move(linesLength)
+   ) do {
+      write( "   lookup: at == \"", at, "\", lines == \"", lines, "\"" )
+      seek( in, at )
+      every 1 to lines do write( out, read(in) )
+   }
+   every close( index | in | out )
+end
+
+----------------------------------<snip>----------------------------------
+
+Will Mengarini      <mengarini@delphi.com>      Be gentle, I'm from Delphi
+    "(sorry, I can't figure out how to edit with this mail-reader)"
+      --Marvin Minsky, quoted by Tom Maddox <tmaddox@halcyon.com>
+
+

@@ -1,0 +1,53 @@
+Received: from jcf (jcf.psych.Arizona.EDU [128.196.98.7])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id PAA22082
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 31 Jan 2000 15:12:04 -0700
+Message-Id: <3.0.6.32.20000131151205.007982a0@psy1.psych.arizona.edu>
+Date: Mon, 31 Jan 2000 15:12:05 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] DigitalVox and 1.1.15
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+  Ok, the Digital Vox is fixed in 1.1.15.  It was broken because DMDX
+didn't wait for the DirectSoundCaptureBuffer to finish at the end of each
+item, it would if the RecordVocal device was used in conjunction (it has
+to, can't write out the data till it's recorded) but not if just the
+DigitalVox was used.  And you're thinking why should it?  Because the
+DirectSoundCapture stuff only just works and I designed the DigitalVox
+assuming it really worked, to wit, I assumed that if you stopped a buffer
+recording it's pointers would all reset and the next time you started
+recording it would start filling the buffer at it's beginning.  Well it
+doesn't, it starts filling where you stopped it -- which makes a lot of
+sense if you are using a circular buffer and none whatsoever if using a
+regular buffer like DMDX uses.  
+
+  The upshot?  If you set a timelimit of 60000 DMDX will wait for 60000ms
+when using either the RecordVocal device or the DigitalVox device is used,
+like it was supposed to when I originally released it, regardless of when
+the DigitalVox triggers.
+
+  I'm looking at the code to see whether a circular buffer is feasable, I
+didn't write one originally as timeout values I was anticipating were in
+several second range, not the minute range and therefore waiting for the
+buffer to finish was no big deal (even if I did forget to put the code in
+that waited when only the DigitalVox was used).  Note, unless I include a
+new option for RecordVocal, it will still always wait the full timeout
+value.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+  No problem is too big it can't be run away from
+                                                         - Linus
+
+
+

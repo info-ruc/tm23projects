@@ -1,0 +1,191 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.13.6/8.13.6) with ESMTP id k3QLqxhQ028698
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 26 Apr 2006 14:53:00 -0700
+Received: from localhost (legolas.email.arizona.edu [10.0.0.224])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id E909FDE3C96
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 26 Apr 2006 14:52:59 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 099D9DEEBA4
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 26 Apr 2006 14:52:59 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060426144847.00ba4ef0@psy1.psych.arizona.edu>
+Date: Wed, 26 Apr 2006 14:52:57 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] DMDX 3.1.6.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+DMDX version 3.1.6.0 introduces the <sprintf> keyword:
+
+<sprintf N1[N2[N3[N4[N5[N6]]]]]>
+
+     When used the text of a frame is treated a C printf format string and 
+counters N1..6 (see <SetCounter>) are displayed.  Supersedes 
+<AppendCounter> and only one of <sprintf> or <AppendCounter> is allowed in 
+a frame.  If anyone needs more than six counters per frame I can increase 
+the limit easily.
+
+     DMDX only uses the integer and character data types and while you 
+could specify the string and floating point types all you'll probably do is 
+crash DMDX -- so don't use them.  <sprintf> is useful for doing things like 
+displaying a clock in MM:SS format:
+
+0 <set c1=millisectime/1000> <set c2=c1/60> <set c3=c1%60>
+         "The time is %02d:%02d" <sprintf 2,3>;
+
+     The relevant sections of the format string documentation follow:
+
+
+A format specification, which consists of optional and required fields, has 
+the following form:
+
+%[flags] [width] [.precision] type
+
+Each field of the format specification is a single character or a number 
+signifying a particular format option. The simplest format specification 
+contains only the percent sign and a type character (for example, %d). If a 
+percent sign is followed by a character that has no meaning as a format 
+field, the character is copied to the output string. For example, to print 
+a percent-sign character, use %%.
+
+The optional fields, which appear before the type character, control other 
+aspects of the formatting, as follows:
+
+type
+
+Required character that determines whether the associated argument is 
+interpreted as a decimal, octal or hexadecimal number or a character (see 
+Table 1).
+
+flags
+
+Optional character or characters that control justification of output and 
+printing of signs, blanks, decimal points, and octal and hexadecimal 
+prefixes (see Table 2). More than one flag can appear in a format 
+specification.
+
+width
+
+Optional number that specifies the minimum number of characters output. 
+(See printf Width Specification.)
+
+precision
+
+Optional number that specifies the maximum number of characters printed for 
+all or part of the output field, or the minimum number of digits printed 
+for integer values (see Table 3).
+
+
+Table 1   printf Type Field Characters
+The type character is the only required format field ; it appears after any 
+optional format fields. The type character determines whether the 
+associated argument is interpreted as a character or a number.
+Character
+Output Format
+c
+A character.
+d
+Signed decimal integer.
+i
+Signed decimal integer.
+o
+Unsigned octal integer.
+u
+Unsigned decimal integer.
+x
+Unsigned hexadecimal integer, using “abcdef.”
+X
+Unsigned hexadecimal integer, using “ABCDEF.”
+
+Table 2   Flag Characters
+The first optional field of the format specification is flags. A flag 
+directive is a character that justifies output and prints signs, blanks, 
+decimal points, and octal and hexadecimal prefixes. More than one flag 
+directive may appear in a format specification.
+Flag
+Meaning
+Default
+–
+Left align the result within the given field width.
+Right align.
++
+Prefix the output value with a sign (+ or –) if the output value is of a 
+signed type.
+Sign appears only for negative signed values (–).
+0
+If width is prefixed with 0, zeros are added until the minimum width is 
+reached. If 0 and – appear, the 0 is ignored. If 0 is specified with an 
+integer format (i, u, x, X, o, d) the 0 is ignored.
+No padding.
+blank (' ')
+Prefix the output value with a blank if the output value is signed and 
+positive; the blank is ignored if both the blank and + flags appear.
+No blank appears.
+#
+When used with the o, x, or X format, the # flag prefixes any nonzero 
+output value with 0, 0x, or 0X, respectively.
+No blank appears.
+
+printf Width Specification
+The second optional field of the format specification is the width 
+specification. The width argument is a nonnegative decimal integer 
+controlling the minimum number of characters printed. If the number of 
+characters in the output value is less than the specified width, blanks are 
+added to the left or the right of the values — depending on whether the – 
+flag (for left alignment) is specified — until the minimum width is 
+reached. If width is prefixed with 0, zeros are added until the minimum 
+width is reached (not useful for left-aligned numbers).
+The width specification never causes a value to be truncated. If the number 
+of characters in the output value is greater than the specified width, or 
+if width is not given, all characters of the value are printed (subject to 
+the precision specification).
+If the width specification is an asterisk (*), an int argument from the 
+argument list supplies the value. The width argument must precede the value 
+being formatted in the argument list. A nonexistent or small field width 
+does not cause the truncation of a field; if the result of a conversion is 
+wider than the field width, the field expands to contain the conversion result.
+Precision Specification
+The third optional field of the format specification is the precision 
+specification. It specifies a nonnegative decimal integer, preceded by a 
+period (.), which specifies the number of characters to be printed, the 
+number of decimal places, or the number of significant digits (see Table 
+3). Unlike the width specification, the precision specification can cause a 
+truncation of the output value. If precision is specified as 0 and the 
+value to be converted is 0, the result is no characters output, as shown below:
+/ <sprintf 1> "%.0d" /
+If the precision specification is an asterisk (*), an argument from the 
+argument list supplies the value. The precision argument must precede the 
+value being formatted in the argument list.
+The type determines the interpretation of precision and the default when 
+precision is omitted, as shown in Table 3.
+Table 3   How Precision Values Affect Type
+Type
+Meaning
+Default
+c, C
+The precision has no effect.
+Character is printed.
+d, i, u, o, x, X
+The precision specifies the minimum number of digits to be printed. If the 
+number of digits in the argument is less than precision, the output value 
+is padded on the left with zeros. The value is not truncated when the 
+number of digits exceeds precision.
+Default precision is 1.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Flugg's Law:
+	When you need to knock on wood is when you realize that the
+world is composed of vinyl, naugahyde and aluminum.
+
+
+
+

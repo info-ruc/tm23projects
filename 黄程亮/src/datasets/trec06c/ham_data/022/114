@@ -1,0 +1,73 @@
+Received: from tudedr.et.tudelft.nl (tudedr.et.tudelft.nl [130.161.33.163])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id QAA19046
+	for <handyboard@media.mit.edu>; Tue, 25 Aug 1998 16:10:08 -0400 (EDT)
+Received: from jeroen (vdvegt.et.tudelft.nl)
+ by ITS.TUDelft.NL (PMDF V5.1-10 #21918)
+ with SMTP id <01J11BDD9B028ZE0CD@ITS.TUDelft.NL> for handyboard@media.mit.edu;
+ Tue, 25 Aug 1998 22:10:02 +0200
+Date: Tue, 25 Aug 1998 22:08:07 +0200
+From: Jeroen van der Vegt <A.J.vanderVegt@ITS.TUDelft.NL>
+Subject: Analogue sonar design.
+To: HandyBoard mailing list <handyboard@media.mit.edu>
+Message-Id: <01bdd064$13cd4a90$0100a8c0@jeroen>
+Mime-Version: 1.0
+X-Mailer: Microsoft Outlook Express 4.71.1712.3
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Msmail-Priority: Normal
+X-Mimeole: Produced By Microsoft MimeOLE V4.71.1712.3
+X-Priority: 3
+
+Hi all,
+
+I'm trying to build a sonar circuit and connect it to my HandyBoard. I know
+Polaroid makes one, but I have no idea where to get it for little in Europe.
+
+I try to keep the interface as simple as possible, and I'll probably be
+using three signal wires:
+    1. A signal from the HB to the sonar-circuit, which should activate it -
+I want to set a flip-flop with it, and make sure it doesn't really matter
+how long the 'enable' signal is.
+    2. A digital signal from the circuit to the HB to send a signal when the
+measurement has been completed.
+    3. An analogue signal from the circuit to the HB, which will represent
+the distance measured by the sonar.
+
+Apart from these, there of course are 0V, 5V and perhaps 10V (directly from
+the battery, for the OpAmps). I'm also not sure yet wheter I'll be using the
+HB clock, or if I'm going to create a clock on the sonar board. The latter
+can quite easily be done using a 4060 chip - a 14 bit counter with internal
+oscillator, which I can use to count the number of pulses send at the same
+time.
+
+I've found the page on sonar at www.wizard.org, which gives an exellent
+explanation and circuit, and I'll be using the analogue circuits (the
+amplifier circuit, and the little circuit connected to the transmitting
+ultrasonic transducer) found there. I don't want to use the complete timing
+circuitry, since it would take at least four of the HB's digital inputs. I
+know I could use a D/A converter, which would probably be the easiest
+solution. But I would like to use as little IC's as possible, and it would
+be quite strange to convert a analogue signal (the time sounds needs to
+travel is analogue) to digital, than to an analogue signal (in the D/A
+converter), and back to digital in the HB.
+
+I want to create the analogue signal by (dis)charging a capacitor when the
+sonar starts beeping, and I want to read the voltage over the capacitor when
+a return signal is detected. The problem is, I don't know whether I can read
+a capacitor before it has (dis)charged completely, since the 6811 has to
+wait for a 'signal valid' signal on a digital input, and then it has to read
+an analogue input (which might take too long, especially if more programs
+are running). Also the input capacitance (and 48K resistance!) of the HB
+inputs could perhaps influence my readings.
+
+Does anybody have any idea whether using a analogue input is a good idea,
+and which size the capacitor should have at least for use with such an
+input. A circuit which can store a analogue value would be ideal, but I
+don't think something like that exists.
+(Original) idea's are also appreciated!
+
+Thanks in advance,
+
+Jeroen van der Vegt.
+
+

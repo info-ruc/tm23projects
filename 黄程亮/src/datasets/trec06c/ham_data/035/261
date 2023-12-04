@@ -1,0 +1,53 @@
+Received: from urth.netco.com (new-urth.netco.com [206.103.221.15])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id KAA00197
+	for <handyboard@media.mit.edu>; Mon, 15 Feb 1999 10:00:53 -0500 (EST)
+Received: from dm.wamnet.com([192.168.168.2]) (2301 bytes) by urth.netco.com
+	via sendmail with P:esmtp/R:inet_hosts/T:smtp
+	(sender: <tgb@cozy.wamnet.com>) 
+	id <m10CPVS-00DuCKC@urth.netco.com>
+	for <handyboard@media.mit.edu>; Mon, 15 Feb 1999 09:00:18 -0600 (CST)
+	(Smail-3.2.0.104 1998-Nov-20 #1 built 1998-Dec-7)
+Received: from cozy.wamnet.com(really [192.168.250.75]) by dm.wamnet.com
+	via sendmail with esmtp
+	id <m10CPVS-006vksC@dm.wamnet.com>
+	for <@mail-relay.wamnet.com:speidelh@met.mat.ethz.ch>; Mon, 15 Feb 1999 09:00:18 -0600 (CST)
+	(Smail-3.2 1996-Jul-4 #3 built 1996-Nov-12)
+Received: (from tgb@localhost) by cozy.wamnet.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA19058; Mon, 15 Feb 1999 09:00:16 -0600
+Date: Mon, 15 Feb 1999 09:00:16 -0600
+Message-Id: <199902151500.JAA19058@cozy.wamnet.com>
+From: Tom Brusehaver <tgb@cozy.wamnet.com>
+To: speidelh@met.mat.ethz.ch
+Cc: handyboard@media.mit.edu
+In-Reply-To: <36C825AB.66639BED@met.mat.ethz.ch> (message from Hannes on Mon,
+	15 Feb 1999 14:48:33 +0100)
+Subject: Re: Expansion board & V2X & sonar
+Reply-To: tgb@wamnet.com
+References:  <36C825AB.66639BED@met.mat.ethz.ch>
+
+
+>the SPI port D is tied up by the compass, I was wondering if directly
+>connecting the digital output-pins of the expansion board can be used to
+>trigger the sonar pulse and set the BINH. 
+
+I am the guy who wrote the V2X code that is on the HB web site.  I
+just got an expansion board, and am looking into v2X and sonar on the
+exp board right now.
+
+>                                               Will the triggering or 
+>blanking use more than the allowed 5 mA per output? Will the timing be accurate?
+>Instead of poking (0x1008, 0x20) like in sonar.c could I just use
+>set_digital_out(x) to start the ping (and turn on BINH 
+>in the same way)?? Would it be enough to just resolder the INIT and BINH
+>lines to the digital output ports of the expansion board or would I need
+>further modifications?
+
+I cannot find where there are pins for the SPI port on the expansion
+board.  Yup, the breadboard area would work, and I have thought of
+that.  
+
+The SPI port is maybe overkill, so I am thinking that I'll just have
+like a timed process that, say every 500msec (configurable), it takes
+a heading.  Then with the extra output pins, I'll be able to disable
+the compass, and send calibration signals, and resets.  I think it'll
+be better.  If anyone else is working on v2x, I'd love to hear about it.
+

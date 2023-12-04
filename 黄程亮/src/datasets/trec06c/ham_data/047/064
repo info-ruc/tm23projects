@@ -1,0 +1,58 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.196])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id OAA12435
+	for <handyboard@media.mit.edu>; Mon, 28 Jun 1999 14:15:49 -0400 (EDT)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Mon, 28 Jun 1999 11:15:37 -0800
+Received: from dogbert.tc.fluke.com (dogbert.tc.fluke.com [129.196.148.231])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id LAA12413;
+	Mon, 28 Jun 1999 11:15:37 -0700 (PDT)
+Received: from localhost by dogbert.tc.fluke.com with ESMTP
+	(SMI-8.6/1.0) id LAA21268; Mon, 28 Jun 1999 11:15:36 -0700
+Date: Mon, 28 Jun 1999 11:15:36 -0700 (PDT)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Sean Verret <sean_verret@pmc-sierra.bc.ca>
+Cc: handyboard@media.mit.edu
+Subject: Re: Moving Straight
+In-Reply-To: <3777A8A1.56352288@pmc-sierra.bc.ca>
+Message-Id: <Pine.GSO.4.10.9906281111180.25737-100000@dogbert.tc.fluke.com>
+X-Mailer: Pine 4.05
+Organization: Fluke Corporation
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Mon, 28 Jun 1999, Sean Verret wrote:
+
+> Is there anyone who has written or seen IC code that will keep a robot
+> moving straight with 2 DC motors and four side sensors?  2 on each
+> side.  The main reason I ask is because one of my DC motors seems to put
+> out more power that the other one and this moves faster  and my robot
+> like to turn into walls....
+> 
+> I'm using the analog sensor inputs with IR sensors - the values range
+> from 0-255
+> 255 being can't see anything, and 0 being right against a wall..
+> 
+> I was thinking something like - if back left > 128 speed up left motor
+> or decrease right motor speed and similar scenarios for the other
+> sensors....
+> 
+> I'm asking just to save myself some time....  If anyone can help that'd
+> be greatly appreciated!!
+
+Sorry, I do other things with my controllers than control robots (shame
+on me!).  From other discussions I've seen though, I would think that
+you could use some feedback from the turning shafts, like optical turns
+counters or some such.  I wouldn't imagine that trying to use IR sensors
+for distance would work very well.  If you were moving quite slowly, then
+maybe...
+
+Another thing that might make this easier is to use the smooth-PWM
+routines, which give you much finer control over the speed of each motor
+than the standard Interactive-C routines.  You'll still need to close
+the control loop though.
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

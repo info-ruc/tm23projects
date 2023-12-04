@@ -1,0 +1,198 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f5SIE3i20196;
+	Thu, 28 Jun 2001 11:14:03 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id LAA28669;
+	Thu, 28 Jun 2001 11:28:08 -0400 (EDT)
+Date: Thu, 28 Jun 2001 11:28:08 -0400 (EDT)
+Received: by canaveral.red.cert.org; Thu, 28 Jun 2001 11:21:08 -0400
+Message-Id: <CA-2001-14.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+Subject: CERT Advisory CA-2001-14
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: de4d45cc77b338e8001e59640cfa6b62
+Status: RO
+X-Status: $$$$
+X-UID: 0000000011
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-14 Cisco IOS HTTP Server Authentication Vulnerability
+
+   Original release date: June 28, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Cisco IOS systems using local authentication databases with the
+       HTTP server enabled
+
+Overview
+
+   A problem with the HTTP server component of Cisco IOS system software
+   allows an intruder to execute privileged commands on Cisco routers if
+   local authentication databases are used.
+
+I. Description
+
+   By sending a particular URL to a Cisco IOS device with the HTTP server
+   enabled, a remote attacker may be able to execute commands at the
+   highest privilege level (15). The malicious URL is of the following
+   form:
+
+          http://<address>/level/XX/exec/...
+
+   The value of XX is a number between 16 and 99. While a single
+   malicious URL will not work consistently against all devices, the
+   limited number of possible URLs can allow an attacker to try each URL
+   until the attack succeeds.
+
+   This problem occurs if the system is using a local authentication
+   database, but not if the Terminal Access Controller Access Control
+   System (TACACS+) or Radius authentication systems are used.
+
+   Cisco has published a security advisory describing this vulnerability
+   and its solutions, in more detail at:
+
+          http://www.cisco.com/warp/public/707/IOS-httplevel-pub.html
+
+II. Impact
+
+   A remote attacker can execute arbitrary commands at the highest
+   privilege level (15) on systems using local authentication databases
+   with the HTTP server enabled. This access allows a remote attacker to
+   inspect or change the configuration of the device, effectively
+   allowing complete control.
+
+III. Solution
+
+Upgrade your IOS Release
+
+   Cisco has published detailed information about upgrading affected
+   Cisco IOS software to correct this vulnerability. System managers are
+   encouraged to upgrade to one of the non-vulnerable releases.
+
+Disable the HTTP server
+
+   Because this problem exists in the handling of HTTP requests,
+   disabling the HTTP server prevents the vulnerability from being
+   exploited. Information about disabling the HTTP server is provided in
+   the Cisco security advisory on this topic.
+
+Enable TACACS+ or Radius Authentication
+
+   This vulnerability is not present when the Terminal Access Controller
+   Access Control System (TACACS+) or Radius authentication systems are
+   used. Enabling one of these authentication mechanisms in place of
+   local authorization databases will prevent the vulnerability from
+   being exploited. Information about enabling TACACS+ or Radius can be
+   found in the following Cisco document:
+
+          http://www.cisco.com/warp/public/480/tacplus.shtml
+
+Appendix A. - Vendor Information
+
+   This appendix contains information provided by vendors for this
+   advisory. When vendors report new information to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular vendor is not listed below, we have not received their
+   comments.
+
+Cisco Systems
+
+   Cisco has published a security advisory describing this vulnerability
+   at
+
+          http://www.cisco.com/warp/public/707/IOS-httplevel-pub.html
+     _________________________________________________________________
+
+   The CERT/CC thanks Cisco Systems for their advisory, on which this
+   document is based.
+     _________________________________________________________________
+
+   Author: Cory F. Cohen
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-14.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-17:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+June 28, 2001:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBOztJpAYcfu8gsZJZAQFoOgP/UBtU8yqFbhHf/xD82wCewpBi6NhBAk2M
+66WLouQrnXIMWzRWnLmRNV74p+7u+92IxFS/u+TqTzIfByUOtwXLswcRRvHlXYXk
+511yHK01wlfgtgv7wwg8doYyCUGPamznNnVEAnbZ/9zoM6Y1nuvUEUgOnvvT9ZMu
+sCRihIv2WGg=
+=THYA
+-----END PGP SIGNATURE-----
+

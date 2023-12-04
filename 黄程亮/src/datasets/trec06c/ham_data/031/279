@@ -1,0 +1,41 @@
+Received: from imo16.mx.aol.com (imo16.mx.aol.com [198.81.17.6])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA26012
+	for <handyboard@media.mit.edu>; Fri, 15 Jan 1999 16:46:39 -0500 (EST)
+From: GDFRITZ@aol.com
+Received: from GDFRITZ@aol.com
+	by imo16.mx.aol.com (IMOv18.1) id QYUPa27801
+	 for <handyboard@media.mit.edu>; Fri, 15 Jan 1999 16:43:47 -0500 (EST)
+Message-Id: <3dce887e.369fb693@aol.com>
+Date: Fri, 15 Jan 1999 16:43:47 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Scrolling through the LCD messages by the knob
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 4.0 for Windows 95 sub 205
+
+Simon,
+
+This shouldn't be too difficult to create...but it could be a real waste of
+memory unless it is real important issue.
+
+The reason why is that you would have to save the messages in memory.  You'd
+have to decide if you wanted to fill all the memory, or limit it to just xx
+number of lines/messages.
+
+I'm not the best programmer but I'd probably create a function that I would
+call each time I was to do a printf().  This function would be passed the
+value of the string to printf() and would store it in memory (an array, a
+stack, or a linked list...I'm not sure which would be best).  Then, based upon
+the number of lines/messages, you would relate that number to the 0-255 range
+of the display.
+
+What would you want to do while scrolling the messages and halfway, when the
+HB sends another Printf?  I'd suggest using the start, or stop switch to put
+it into scroll mode. then pressing it again takes it out of scroll mode and
+restores the display to the last active message.
+
+What do you think?
+
+Gerald
+

@@ -1,0 +1,122 @@
+Received: from news.rdc1.tx.home.com (ioracle@ha2.rdc1.tx.home.com [24.4.0.67])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id VAA09335
+	for <handyboard@media.mit.edu>; Tue, 30 Nov 1999 21:17:44 -0500 (EST)
+Received: from cx624894-a.meta1.la.home.com ([24.6.20.194])
+          by news.rdc1.tx.home.com (InterMail v4.01.01.00 201-229-111)
+          with SMTP
+          id <19991201021742.WXWT17153.news.rdc1.tx.home.com@cx624894-a.meta1.la.home.com>;
+          Tue, 30 Nov 1999 18:17:42 -0800
+Message-Id: <003901bf3ba2$9f141f20$c2140618@cx624894-a.meta1.la.home.com>
+From: "Terry Gathright" <terrygathright@home.com>
+To: "Gary Livick" <glivick@pacbell.net>
+Cc: "Alex Stewart" <robotman5@hotmail.com>, <handyboard@media.mit.edu>
+Subject: Re: Sharp GP2D12 (analog version) troubles
+Date: Tue, 30 Nov 1999 20:20:22 -0600
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+
+Gary
+Thanks for the info.
+Is it possible to connect and operate more than one GP2D12 to the handyboard
+at the same time?
+I wanted to work with four or more at the same time.
+Thanks, Terry
+-----Original Message-----
+From: Gary Livick <glivick@pacbell.net>
+To: Terry Gathright <terrygathright@home.com>
+Cc: Alex Stewart <robotman5@hotmail.com>; handyboard@media.mit.edu
+<handyboard@media.mit.edu>
+Date: Tuesday, November 30, 1999 5:51 PM
+Subject: Re: Sharp GP2D12 (analog version) troubles
+
+
+>Terry,
+>
+>I posted this awhile back.
+>
+>
+>Somebody asked the other day about a problem interfacing the Sharp
+>GP2D12.  I didn't see an answer, and I just did it myself and solved the
+>problem, so here is how to do it.
+>
+>For those who don't know, Sharp just came out with an IR ranging sensor
+>good out to about 30 inches that provides an analog signal related to
+>range.  The signal is not linear, but that can be dealt with in
+>software.  The area examined by the sensor is very narrow, so by
+>mounting it on a small servo and sweeping it while gathering range data,
+>a lot if information can be obtained about the immediate surroundings.
+>
+>The GP2D12 has a few advantages over sonar; 1. it is good down to about
+>5",  2. it is less than $15.00, 3. it refreshes about every 32 ms, and
+>4. it does not require a driver, you just plug it in and start reading
+>data.
+>
+>Hooking it up has one small gotcha with the HandyBoard and probably most
+>of the other MIT-spawned boards as well.  The output of the sensor wants
+>to see a floating pin, but the analog inputs on the HandyBoard are
+>pulled high by RP3, a 47k resistor pack.  To connect the sensor to the
+>HandyBoard, you have to cut a trace so the input can float on that pin.
+>That is easy enough to do, as the traces on the main board are easy to
+>identify, and easy to repair if you change your mind later and want to
+>restore the pin to normal.  However, some care must be taken to choose a
+>pin for an input.  If you just cut a trace for a pin at random, due to
+>the way the circuit is layed out you may just isolate the input pin from
+>the HC11 instead of removing the pull-up voltage.  Unless you want to
+>figure out what I'm talking about, use analog 5 to connect your GP2D12.
+>Trimming the trace between RP3 and that pin has the anticipated result.
+>
+>The sensors are available at http://www.acroname.com  Check out some of
+>my robots in the gallery while you are there.
+>
+>Gary Livick
+>
+>
+>
+>Terry Gathright wrote:
+>
+>> Hello Alex,
+>> I ordered two GP2DO2's from www.acroname.com a while back that worked
+great
+>> and am currently ordering two GP2DO12's. Sorry that I  cannot help solve
+>> your problem now but please post the solution for the mail list when
+someone
+>> responds.
+>> Thanks,Terry
+>> -----Original Message-----
+>> From: Alex Stewart <robotman5@hotmail.com>
+>> To: handyboard@media.mit.edu <handyboard@media.mit.edu>
+>> Date: Tuesday, November 30, 1999 4:00 PM
+>> Subject: Sharp GP2D12 (analog version) troubles
+>>
+>> >Hi
+>> > Recently Got a sharp Gp2D12 IR ranger , for those who dont know it
+>> >continusly gives a analog value in proportion to the distance to a
+object.
+>> >Problem: When I wired it up I got a constant 147-150 no matter were the
+>> >object was. Unplugged sensor I got 2?? so I know the port works. Any
+Ideis?
+>> >Could it be the 47k pull up? I heard it could be , and to fix you cut
+the
+>> >trace for one of the ports top disable the pull up, but which one ??
+tried
+>> >cutting analog 6 but then analog 6 wouldnt work? Help
+>> >
+>> >Thanx
+>> >
+>> >Robotman
+>> >
+>> >
+>> >P.S. Resolderd little gap I cut and analog 6 was restored.
+>> >Is there a web site with answers to above?
+>> >
+>> >______________________________________________________
+>> >Get Your Private, Free Email at http://www.hotmail.com
+>
+
+

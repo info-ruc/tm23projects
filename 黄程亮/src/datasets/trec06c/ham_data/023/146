@@ -1,0 +1,41 @@
+Received: from mvp.net (root@Walden.mo.Net [209.96.2.52])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id NAA02402
+	for <handyboard@media.mit.edu>; Tue, 29 Sep 1998 13:17:25 -0400 (EDT)
+Received: from mvp.net (DialIP7-15.mvp.net [209.96.75.15])
+	by mvp.net (8.8.8/8.8.8) with ESMTP id MAA19840;
+	Tue, 29 Sep 1998 12:31:53 -0500 (CDT)
+Message-Id: <361115F2.3373D20D@mvp.net>
+Date: Tue, 29 Sep 1998 12:16:34 -0500
+From: Rick Moll <rickmoll@mvp.net>
+X-Mailer: Mozilla 4.06 [en] (WinNT; U)
+Mime-Version: 1.0
+To: Javaid Iqbal <p2219212@student.mech.unsw.edu.au>
+Cc: handyboard@media.mit.edu
+Subject: Re: Multi dimentional Arrays
+References: <Pine.LNX.3.96.980929201627.14182A-100000@localhost>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Javaid Iqbal wrote:
+
+> Hi All,
+> I am trying to write a code for fuzzy logic and using Matrix havig a size
+> of 10X10, but it gives an error (stack overflow). When i reduce the size
+> of matrix to 6X6 it works perfectly.I am using IC 3.0.
+> Can I  use a matrix having a size greator than 6x6, if there is a way, can
+> anybody help me out.
+> Thanks in advance.
+
+I don't know how big the IC stack is, but I suspect you are overflowing it
+because you're allocating the array on the stack.  If it's an array of
+floating point the 10x10 array will be at least 400 bytes, and most likely
+larger.
+
+Try allocating the array as a static.  That is, declare it outside of the
+function.
+
+Later,
+
+    Rick
+
+

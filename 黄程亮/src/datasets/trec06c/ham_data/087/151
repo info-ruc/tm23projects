@@ -1,0 +1,44 @@
+Received: from deimos.email.Arizona.EDU (deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.12.8/8.12.4) with ESMTP id h2KM7uIA020388
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 20 Mar 2003 15:07:56 -0700
+Received: from 666-devel.u.arizona.edu (128.196.98.7) by deimos.email.Arizona.EDU (6.5.034)
+        id 3E79B95500014DFF for DMDX@psy1.psych.arizona.edu; Thu, 20 Mar 2003 15:16:33 -0700
+Message-Id: <5.1.0.14.2.20030320150232.00b13278@psy1.psych.arizona.edu>
+Date: Thu, 20 Mar 2003 15:16:33 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] DMDX 3.0.1.3
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   After many days of the most painful debugging I've ever had to do (and 
+that's saying something after twenty five years of programming) much along 
+the lines of searching for a needle in a haystack without knowing what a 
+needle is (sure would've made things easier if I'd had the library source) 
+I think I've finally figured out what was failing.  My initial kludge in 
+3.0.1.2 was in fact the right thing to do and the only real mystery was why 
+the protection fault wasn't thrown from the very earliest days of DMDX 3 
+when I switched to MS VC 6.  Turns out sscanf() calls strlen() which is 
+fine when you're processing a NULL terminated string but when scramble() is 
+processing parameters it's not processing a NULL terminated string, it's 
+parsing a memory mapped file which isn't NULL terminated.  Should've always 
+thrown a fault but it didn't.
+
+   DMDX 3.0.1.3 includes the kludge which has now become a fix and 
+additionally allows the hitting of ESC to stop a super long syntax check.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Under any conditions, anywhere, whatever you are doing, there
+is some ordinance under which you can be booked.
+                                  - Robert D. Sprecht (Rand Corp)
+
+
+

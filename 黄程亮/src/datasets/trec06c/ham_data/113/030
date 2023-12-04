@@ -1,0 +1,322 @@
+Received: from exchfe1.cs.cornell.edu (exchfenlb-1.cs.cornell.edu [128.84.97.33])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0UMvX429162
+	for <egs@unix.cucs>; Mon, 30 Jan 2006 17:57:33 -0500 (EST)
+Received: from EXCHVS1.cs.cornell.edu ([128.84.97.23]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 30 Jan 2006 17:57:33 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C625F0.8D25A96F"
+Subject: Paper 2
+Date: Mon, 30 Jan 2006 17:57:30 -0500
+Message-ID: <2EE48095D8C21643B0B70EC95F9BFBAFFBBD5E@EXCHVS1.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Paper 2
+Thread-Index: AcYl8Iykvepr6i/pSVe8WK30r0zylA==
+From: "Ian Kash" <kash>
+To: <egs+summary>
+X-OriginalArrivalTime: 30 Jan 2006 22:57:33.0241 (UTC) FILETIME=[8E0FB290:01C625F0]
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-5.3 required=5.0 tests=ALL_TRUSTED,AWL,BAYES_00,
+	HTML_MESSAGE,MIME_QP_LONG_LINE autolearn=ham version=3.0.2
+X-Spam-Level: 
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C625F0.8D25A96F
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Chord uses a ring structure like the Pastry ring and implements
+
+lookups on it in log n hops.  Each node stores a set of pointers where
+
+the ith is to the first node at least 2^{i-1} around the ring.  The
+
+target node can then be found in a logarithmic number of steps by
+
+following the "longest" finger less than the key.  This is similar to
+
+Pastry with b=3D2 (i.e. travelling halfway around involves flipping the
+
+first bit in binary).  Since the definition is more restrictive, it
+
+loses the ability of Pastry to choose any eligible node based on
+
+locality and to use other bases to reduce the number of hops.  Since
+
+Chord always transfers messages forwards, it loses the ability of
+
+Pastry to overshoot which may lead to a shorter path.  However, Chord
+
+gains in simplicity of the finger table.  It is much simpler to
+
+maintain than the Pastry routing table and thus the resulting network
+
+degrades more gracefully in the face of churn.
+
+=20
+
+The routing method for Tapestry is essentially the same as that of
+
+Pastry, however there are several important design differences for
+
+other portions of the system that result in improved robustness.
+
+Costly deletion operations are avoided by marking nodes invalid but
+
+not actually removing them for a period of time to give them a chance
+
+to recover.  While Pastry stores all the copies of an object in a
+
+single neighborhood, Tapestry uses a salt to scatter them through the
+
+ring.  This means that a problem in a single portion of the ring
+
+(whether due to local inconsistencies in routing information or
+
+malicious behavior) doesn't cause the object to become unreachable.
+
+The use of backpointers gives the flexibility to let those nodes
+
+pointing to a given node know to change their routing if the node is
+
+overloaded or wishes to leave the network gracefully (though at the
+
+cost of requiring additional state).  They also can help identify
+
+inconsistent views of the ring which can be a problem for Pastry.
+
+
+------_=_NextPart_001_01C625F0.8D25A96F
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<DEFANGED_META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<DEFANGED_meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+ <!-- <DEFANGED_STYLE>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+ --> </DEFANGED_STYLE>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Chord uses a ring structure like the Pastry ring and
+implements<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>lookups on it in log n hops.&nbsp; Each node stores a =
+set of
+pointers where<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>the ith is to the first node at least 2^{i-1} around =
+the
+ring.&nbsp; The<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>target node can then be found in a logarithmic number =
+of
+steps by<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>following the &quot;longest&quot; finger less than =
+the key.&nbsp;
+This is similar to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Pastry with b=3D2 (i.e. travelling halfway around =
+involves
+flipping the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>first bit in binary).&nbsp; Since the definition is =
+more
+restrictive, it<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>loses the ability of Pastry to choose any eligible =
+node
+based on<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>locality and to use other bases to reduce the number =
+of
+hops.&nbsp; Since<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Chord always transfers messages forwards, it loses =
+the
+ability of<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Pastry to overshoot which may lead to a shorter =
+path.&nbsp;
+However, Chord<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>gains in simplicity of the finger table.&nbsp; It is =
+much simpler
+to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>maintain than the Pastry routing table and thus the
+resulting network<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>degrades more gracefully in the face of =
+churn.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>The routing method for Tapestry is essentially the =
+same as
+that of<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Pastry, however there are several important design
+differences for<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>other portions of the system that result in improved
+robustness.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Costly deletion operations are avoided by marking =
+nodes
+invalid but<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>not actually removing them for a period of time to =
+give them
+a chance<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>to recover.&nbsp; While Pastry stores all the copies =
+of an object
+in a<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>single neighborhood, Tapestry uses a salt to scatter =
+them
+through the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>ring.&nbsp; This means that a problem in a single =
+portion of the
+ring<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>(whether due to local inconsistencies in routing =
+information
+or<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>malicious behavior) doesn't cause the object to =
+become
+unreachable.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>The use of backpointers gives the flexibility to let =
+those
+nodes<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>pointing to a given node know to change their routing =
+if the
+node is<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>overloaded or wishes to leave the network gracefully =
+(though
+at the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>cost of requiring additional state).&nbsp; They also =
+can help
+identify<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>inconsistent views of the ring which can be a problem =
+for
+Pastry.<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C625F0.8D25A96F--
+

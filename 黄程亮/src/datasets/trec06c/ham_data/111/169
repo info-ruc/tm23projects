@@ -1,0 +1,69 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k0CFqShY009287
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 12 Jan 2006 08:52:30 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 8A925C1A582
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 12 Jan 2006 08:52:28 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 5E528C1A017
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 12 Jan 2006 08:52:27 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060112084830.00ba4818@psy1.psych.arizona.edu>
+Date: Thu, 12 Jan 2006 08:52:24 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Wrong responses and timeouts
+In-Reply-To: <37E80E80B681A24B8F768D607373CA8001D42BE8@largo.campus.ncl.
+ ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+I'd just use a <call> in every item and have it do the branching with a 
+<MultiWayBranch>.  Something like:
+
+0 "instructions" <bu 1000>;
+~1 <mwb binr 2, biw 9999>;
+~2 <return>;
+
++1000 "probe" * <call 1>;
++1001 "probe" * <call 1>;
++1002 "probe" * <call 1>;
++1003 "probe" * <call 1>;
++1004 "probe" * <call 1>;
+
+9999 "end";
+
+At 11:33 AM 1/12/2006 +0000, you wrote:
+
+>I hope there's a simple answer to this.
+>
+>I have the Q key mapped as a negative response, with the item line ending 
+>with a 'branch if wrong' to the end of the script and that works just fine.
+>
+>However my user now wants an automatic timeout e.g. <t 4000> and when 
+>timed out, go onto the next item. If I introduce that, I find that a 
+>timeout acts as a wrong response, and branches to the end.
+>
+>What am I doing wrong - I want 'Q' to go to the end, but a timeout to go 
+>to the next item..
+>
+>P.s. 'branch if no response'  may work instead of the timeout, but 
+>requires me to edit every line of the script to tell it where the next line is.
+>
+>Chris Letts,
+>Technical Site Manager,
+>SECLS Speech & Language Section.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Lord Falkland's Rule: When it is not necessary to make a
+decision, it is necessary not to make a decision.
+
+
+

@@ -1,0 +1,83 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0VG0j403252
+	for <egs+summary>; Tue, 31 Jan 2006 11:00:45 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k0VG0gvg001112;
+	Tue, 31 Jan 2006 11:00:43 -0500 (EST)
+Received: from 128.253.122.16
+        by webmail.cornell.edu with HTTP;
+        Tue, 31 Jan 2006 11:00:43 -0500 (EST)
+Message-ID: <1280.128.253.122.16.1138723243.squirrel@webmail.cornell.edu>
+In-Reply-To: <1256.128.253.122.16.1138722260.squirrel@webmail.cornell.edu>
+References: <1256.128.253.122.16.1138722260.squirrel@webmail.cornell.edu>
+Date: Tue, 31 Jan 2006 11:00:43 -0500 (EST)
+Subject: PAPER 2
+From: "Gopal Parameswaran" <gp72>
+To: egs+summary
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+	All the three P2P systems discussed ie. Pastry, Chord and Tapestry are
+different forms of scalable de-centralized ring networks that allow for
+insertion and deletion of nodes from the network and support distributed
+hash table functionality. All the three systems are highly similar in
+their primary functionality but differ in their algorithms. Since they
+are all different forms of distributed hash tables they provide support
+getting and putting objects into the system based on keys and a lookup
+function that gives the address of the node that has the object. The leaf
+set in pastry and the finger set in Chord gives the proximity in logical
+space. Chord does not consider network proximity at all unlike Pastry
+where a neighborhood set is also maintained for routing to the nodes that
+are close by. Thus in the case of Chord the messages could travel longer
+distances to just go to a node in its neighborhood.
+	Pastry unlike Chord has a bigger table with routing information and hence
+even though it provides benefit for local searches more work needs to be
+done when nodes join and drop out of the system since every time a change
+occurs the tables maintained by pastry needs to be updated. Chord however
+seems to have an apparent issue with of orphan nodes when some nodes drop
+out of the system. Since a node's information is kept in a successor node
+if the successor node drops out of the system or a series of successor
+nodes drops out then the node could be left as an orphan with no
+connections to the node.
+	Chord unlike Pastry and Tapestry uses consistent hashing where each node
+has a certain fixed number of keys that it can allocate and if the need
+for the number of keys goes above than the node's capacity it can create
+virtual nodes. It provides an advantage when nodes are being added and
+dropped from the system since any remapping that needs to be done will be
+done locally leaving all other nodes unaffected.
+	Pastry handles fault tolerant location by maintaining more than one node
+Id of the network belonging to one digit for routing in the routing table
+so that if any one one node in its list has dropped out then it can be
+routed via another node. Tapestry on the other hand handles the fault
+tolerant location finding by defining multiple paths to resources that
+are cached and that leads to different independent paths in the search
+for the resource. Also Pastry and Chord uses TCP timeout to detect if the
+nodes are down or dead. Tapestry on the other hand introduces a key
+concept of each node identifying itself as alive at periodic intervals to
+help ensure its neighboring nodes that contain a reference to it that it
+is alive by sending small packets. Also in Tapestry unlike the other two
+systems the concept of a second chance is introduced for nodes that has
+failed to respond or timed out. This means that if a node fails to
+respond then a second message is send to that node after a reasonable
+amount of time to ensure that it is back up. This prevents unnecessary
+deletions and re-insertions of nodes into the system which could make a
+big difference especially if the network is unstable and nodes tend to
+drop out and rejoin due to network instabilities.
+	Finally to conclude all the three algorithms seems to focus a lot more on
+doing the least amount of node traversal as a performance metric rather
+than time spend in reaching a node to retrieve the information. The basic
+assumption is made that the time spend is proportional to the nodes
+traversed and also that logical closeness can emulate physical closeness
+by caching the resources or hashing the IP addresses.
+
+
+

@@ -1,0 +1,271 @@
+Received: from wss100.berkeley.edu (wss100.Berkeley.EDU [128.32.25.64])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g98NosiJ026458;
+	Tue, 8 Oct 2002 16:50:54 -0700 (PDT)
+Received: from uclink4.berkeley.edu (localhost.localdomain [127.0.0.1])
+	by wss100.berkeley.edu (8.11.6/8.11.6) with ESMTP id g98Noqp14462;
+	Tue, 8 Oct 2002 16:50:52 -0700
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g98NopLv019456;
+	Tue, 8 Oct 2002 16:50:51 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id g98LrwF01526;
+	Tue, 8 Oct 2002 17:53:58 -0400
+Date: Tue, 8 Oct 2002 17:53:58 -0400
+Message-Id: <CA-2002-28.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-28 Trojan Horse Sendmail Distribution
+Precedence: bulk
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 857
+Status: RO
+X-Status: $$$$
+X-UID: 0000000062
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-28 Trojan Horse Sendmail Distribution
+
+   Original release date: October 08, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Overview
+
+   The  CERT/CC  has received confirmation that some copies of the source
+   code  for the Sendmail package were modified by an intruder to contain
+   a Trojan horse.
+
+   Sites that employ, redistribute, or mirror the Sendmail package should
+   immediately verify the integrity of their distribution.
+
+I. Description
+
+   The  CERT/CC  has received confirmation that some copies of the source
+   code  for  the  Sendmail  package have been modified by an intruder to
+   contain a Trojan horse.
+
+   The following files were modified to include the malicious code:
+
+     sendmail.8.12.6.tar.Z
+     sendmail.8.12.6.tar.gz
+
+   These  files  began  to  appear  in  downloads  from  the  FTP  server
+   ftp.sendmail.org  on  or  around  September  28,  2002.  The  Sendmail
+   development  team  disabled  the  compromised FTP server on October 6,
+   2002  at  approximately  22:15  PDT.  It  does  not appear that copies
+   downloaded  via  HTTP contained the Trojan horse; however, the CERT/CC
+   encourages  users  who  may  have  downloaded the source code via HTTP
+   during  this  time  period  to take the steps outlined in the Solution
+   section as a precautionary measure.
+
+   The  Trojan  horse versions of Sendmail contain malicious code that is
+   run  during  the  process  of building the software. This code forks a
+   process  that  connects  to  a  fixed  remote server on 6667/tcp. This
+   forked  process  allows  the  intruder  to open a shell running in the
+   context  of  the  user  who  built  the Sendmail software. There is no
+   evidence  that  the  process  is  persistent  after  a  reboot  of the
+   compromised  system.  However,  a subsequent build of the Trojan horse
+   Sendmail package will re-establish the backdoor process.
+
+II. Impact
+
+   An  intruder  operating  from  the  remote  address  specified  in the
+   malicious  code  can  gain unauthorized remote access to any host that
+   compiled  a  version of Sendmail from this Trojan horse version of the
+   source  code.  The  level  of  access  would  be  that of the user who
+   compiled the source code.
+
+   It  is  important  to  understand that the compromise is to the system
+   that  is  used  to  build the Sendmail software and not to the systems
+   that run the Sendmail daemon. Because the compromised system creates a
+   tunnel to the intruder-controlled system, the intruder may have a path
+   through network access controls.
+
+III. Solution
+
+Obtain an authentic version Sendmail
+
+   The primary distribution site for Sendmail is
+
+          http://www.sendmail.org/
+
+   Sites  that  mirror  the Sendmail source code are encouraged to verify
+   the integrity of their sources.
+
+Verify software authenticity
+
+   We  strongly  encourage  sites  that recently downloaded a copy of the
+   Sendmail   distribution   to   verify   the   authenticity   of  their
+   distribution,  regardless  of  where  it was obtained. Furthermore, we
+   encourage  users  to  inspect  any and all software that may have been
+   downloaded  from  the compromised site. Note that it is not sufficient
+   to  rely  on  the  timestamps  or  sizes  of  the  file when trying to
+   determine whether or not you have a copy of the Trojan horse version.
+
+Verify PGP signatures
+
+   The  Sendmail source distribution is cryptographically signed with the
+   following PGP key:
+
+     pub    1024R/678C0A03    2001-12-18   Sendmail   Signing   Key/2002
+     <sendmail@Sendmail.ORG>
+     Key fingerprint = 7B 02 F4 AA FC C0 22 DA 47 3E 2A 9A 9B 35 22 45
+
+   The  Trojan  horse  copy  did not include an updated PGP signature, so
+   attempts  to  verify its integrity would have failed. The sendmail.org
+   staff  has  verified  that the Trojan horse copies did indeed fail PGP
+   signature checks.
+
+Verify MD5 checksums
+
+   In  the  absence  of  PGP,  you can use the following MD5 checksums to
+   verify the integrity of your Sendmail source code distribution:
+   Correct versions:
+
+     73e18ea78b2386b774963c8472cbd309 sendmail.8.12.6.tar.gz
+     cebe3fa43731b315908f44889d9d2137 sendmail.8.12.6.tar.Z
+     8b9c78122044f4e4744fc447eeafef34 sendmail.8.12.6.tar.sig
+
+   As a matter of good security practice, the CERT/CC encourages users to
+   verify,  whenever  possible, the integrity of downloaded software. For
+   more information, see
+
+          http://www.cert.org/incident_notes/IN-2001-06.html
+
+Employ egress filtering
+
+   Egress  filtering  manages  the flow of traffic as it leaves a network
+   under your administrative control.
+
+   In  the  case  of  the  Trojan  horse Sendmail distribution, employing
+   egress  filtering  can  help  prevent  systems  on  your  network from
+   connecting to the remote intruder-controlled system. Blocking outbound
+   TCP  connections  to  port  6667 from your network reduces the risk of
+   internal compromised machines communicating with the remote system.
+
+Build software as an unprivileged user
+
+   Sites  are  encouraged  to  build  software  from  source  code  as an
+   unprivileged,  non-root  user  on  the  system.  This  can  lessen the
+   immediate  impact  of  Trojan  horse software. Compiling software that
+   contains  Trojan  horses as the root user results in a compromise that
+   is  much  more  difficult  to reliably recover from than if the Trojan
+   horse is executed as a normal, unprivileged user on the system.
+
+Recovering from a system compromise
+
+   If  you  believe  a  system under your administrative control has been
+   compromised, please follow the steps outlined in
+
+          Steps for Recovering from a UNIX or NT System Compromise
+
+Reporting
+
+   The  CERT/CC  is  interested in receiving reports of this activity. If
+   machines  under  your  administrative  control are compromised, please
+   send  mail  to  cert@cert.org  with the following text included in the
+   subject line: "[CERT#33376]".
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+     _________________________________________________________________
+
+   The  CERT  Coordination  Center  thanks  the  staff  at  the  Sendmail
+   Consortium for bringing this issue to our attention.
+     _________________________________________________________________
+
+   Feedback  can  be  directed  to  the  authors:  Chad  Dougherty, Marty
+   Lindner.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-28.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+October 08, 2002: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPaNCtmjtSoHZUTs5AQHXrgQA2CkSFrIQxV9dLy07J0ezZgT2RrfCDpXY
+lPO0HhPe4kcbw4AMXs5LAjhA7DoW32PjAytRWOCNMu1FFDbl3eohf7OP2ZjtgYnD
+kwpfjPKVejJDD1BX2O/+jb1rlUKOm2tIt7NK+w8HKOKUYZal/x3RI3AxnAAGLv8A
+/DNWpyNYsGg=
+=fL1h
+-----END PGP SIGNATURE-----
+

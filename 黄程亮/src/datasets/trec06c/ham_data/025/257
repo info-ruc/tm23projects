@@ -1,0 +1,90 @@
+Received: from caldo.demon.co.uk (caldo.demon.co.uk [194.222.207.148])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id FAA14239
+	for <9fans@cse.psu.edu>; Tue, 3 Nov 1998 05:02:26 -0500 (EST)
+From: forsyth@caldo.demon.co.uk
+Message-Id: <199811031002.FAA14239@cse.psu.edu>
+To: 9fans@cse.psu.edu
+Date: Tue, 3 Nov 1998 10:10:30 GMT
+Subject: Re: [9fans] Publicly Accessible Plan 9 System?
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+i don't think the existing licence, although its terms are broad,
+allows providing access to people outside an organisation that
+has got a licence or a member with a licence.
+you might be able to try the 4 diskette demo system,
+but that typically isn't easy to install on an already partitioned
+PC (and you might not have one to spare anyhow).
+
+in the particular case of read(1), here's an example:
+
+	while(x=`{read})
+		echo $x
+
+it reproduces each line of a unicode file.  no doubt amongst other things
+read(1) can be used by rc scripts to read a little data from files, and
+to prompt for input (as in /rc/bin/termrc):
+
+		echo -n 'Mouse port is (ps2, 0 (DOS''s COM1), 1 (DOS''s COM2)):'
+		mouseport=`{read}
+		switch($mouseport){
+		case ps2 0 1
+			if(~ $monitor '') monitor=vga
+			aux/vga -l $vgasize
+			aux/mouse -dC $mouseport
+		case *
+			echo Cannot recognize mouse type "$"mouseport"
+		}
+
+or in a self-contained command following an example
+for the Bourne Shell in Kernighan & Pike's The Unix Programming Environment
+(as it then was).
+
+% cat pick.rc
+#!/bin/rc
+# pick -- echo selected items to the standard output
+fn ask {
+	echo -n $1^'? ' >/dev/cons
+	x=`{read </dev/cons}
+	switch($x) {
+	case [yY]*
+		echo $1
+	case [xX]* [qQ]*
+		exit ''
+	}
+}
+switch($#*){
+case 0
+	# standard input
+	while(a=`{read})
+		ask $a
+case *
+	for(a)
+		ask $a
+}
+
+note that inside `ask' echo and read are redirected to /dev/cons, so that
+the user is prompted even when pick's standard input and output
+are redirected (as is commonly the case).  by contrast, in case 0
+read isn't redirected because it's intended to read lines from the standard input.
+
+here are simple examples of pick:
+% pick /bin/*	# interactively select arguments
+/bin/2a? y
+/bin/2a
+/bin/2c? n
+/bin/2l? n
+/bin/5a? q
+
+% ls /bin | pick	# interactively select lines from standard input
+/bin/2a? y
+/bin/2a
+/bin/2c? n
+/bin/2l? y
+/bin/2l
+/bin/5a? n
+/bin/5c? q
+
+% echo `{ls | pick}	# compose with other commands
+

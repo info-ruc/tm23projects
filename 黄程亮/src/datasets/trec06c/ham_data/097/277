@@ -1,0 +1,112 @@
+Received: from smtp.pace.edu (smtp.pace.edu [198.105.44.9])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iAOHlSFJ012997
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 24 Nov 2004 10:47:29 -0700
+Message-Id: <200411241747.iAOHlSFJ012997@psy1.psych.arizona.edu>
+Received: from SalbodPsy (172.19.40.30) by smtp.pace.edu (LSMTP for Windows NT v1.1b) with SMTP id <0.ADAC2F41@smtp.pace.edu>; Wed, 24 Nov 2004 12:44:31 -0500
+From: "Stephen Salbod" <ssalbod@pace.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: Re: RE: DMDX 3.1.1.3
+Date: Wed, 24 Nov 2004 12:48:21 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <5.1.0.14.2.20041123181947.00ba46e0@psy1.psych.arizona.edu>
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi JCF,
+   I running the following script
+
+<azk><cr><fd 10><t 200><vm desktop><dbc 0><nfb><dwc 000255000>
+0 "Ready SPACEBAR";
+^001 * g "Amusement Park 014.jpg"/;
+0 "The End. Thank You.";
+
+I am getting a large discrepancy between passage of time I calculate and my
+stopwatch. I'll assume my stopwatch is correct therefore I need my mental
+model tweaked a little. 
+
+Stopwatch time = 2040ms - from the moment the spacebar is pressed to the
+moment the end is sounded.
+
+In the script:
+
+fd 10 = 10 x 16.4* = 164.00ms 
+t                  = 100.00ms
+
+Graphic file:
+Preparation A      =  42.83ms
+            B      =  18.22ms 
+
+
+ Subtotal          = 325.05ms
+
+    default ISI    = 500.00ms
+
+      Total        = 825.05ms
+
+	What is eating up the time? Is there a default I'm not taking into
+consideration? 
+
+	Thank you for any help you can offer.
+
+	And, I hope you have a Happy Thanksgiving <smile> , 
+
+--Steve 
+
+
+
+
+*I hand calculated (stopwatch) a tick to be around 16.4 using fd 100 vs fd
+200 is there a more precise method of computing a tick? 
+ 
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of j.c.f.
+Sent: Tuesday, November 23, 2004 8:24 PM
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: RE: DMDX 3.1.1.3
+
+At 06:09 PM 11/23/2004 -0500, you wrote:
+>You've done it again. You solved my image quality problem.
+>
+>I was using
+>
+>^001  *<jpeg 0.25,0.25,0.75,0.75> "Amusement Park 014"/;
+>^002 * <jpeg 0.25,0.25,0.75,0.75> "Amusement Park 027"/;
+>
+>your hint of the g, that is,
+>
+>^001 * g "Amusement Park 014.jpg"/;
+>^002 * g "Amusement Park 027.jpg"/;
+>
+>cleared up the image problem.
+
+   G is equivalent to <bmp> or <jpeg>, it just doesn't offer any 
+scaling.  The reason G fixes your artifacts is that it isn't scaling 
+anything, you're seeing the image as it is.  When you use <jpeg 
+0.25,0.25,0.75,0.75> DMDX scales the image to fit on half the screen 
+centered in the middle.  The scaling is done by GDI, the Graphics Device 
+Interface of Windows and it's a little rough and ready when it comes to 
+scaling things.  If Microsoft ever add a nice re-sampler to GDI then DMDX's 
+scaling of bitmaps will get nicer too.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   A mind is like a steel trap: Rusty, and illegal in 37 states.
+
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+

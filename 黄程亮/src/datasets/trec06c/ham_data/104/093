@@ -1,0 +1,163 @@
+Received: from aquila.its.unimelb.EDU.AU (smtp1.unimelb.edu.au [128.250.20.111])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j6K1wU5L022255
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 19 Jul 2005 18:58:31 -0700
+Received: from CONVERSION-DAEMON.SMTP.UNIMELB.EDU.AU by SMTP.UNIMELB.EDU.AU
+ (PMDF V6.2 #30995) id <01LQUIOFD1RKATXFV1@SMTP.UNIMELB.EDU.AU> for
+ DMDX@psy1.psych.arizona.edu; Wed, 20 Jul 2005 11:58:05 +1000
+Received: from Peterpc.psych.unimelb.edu.au
+ (peterpc.psych.unimelb.edu.au [128.250.173.146])
+ by SMTP.UNIMELB.EDU.AU (PMDF V6.2 #30995)
+ with ESMTP id <01LQUIOF72KEB3SLIS@SMTP.UNIMELB.EDU.AU> for
+ DMDX@psy1.psych.arizona.edu; Wed, 20 Jul 2005 11:58:05 +1000
+Date: Wed, 20 Jul 2005 11:58:04 +1000
+From: Peter Straffon <p.straffon@psych.unimelb.edu.au>
+Subject: [DMDX] Re:setup for default user ? (Win XP Pro) - ANSWER
+In-reply-to: <5.1.0.14.2.20050719165017.00ba4c90@psy1.psych.arizona.edu>
+To: DMDX@psy1.psych.arizona.edu
+Message-id: <6.2.1.2.2.20050720105941.0223eda0@mail.unimelb.edu.au>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii; format=flowed
+References: <5.1.0.14.2.20050719090050.00ba4838@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718185152.00ba4808@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718172338.00bcbf30@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718082358.00ba4820@psy1.psych.arizona.edu>
+ <6.2.1.2.2.20050718121101.028d7ed0@mail.unimelb.edu.au>
+ <5.1.0.14.2.20050718082358.00ba4820@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718172338.00bcbf30@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718185152.00ba4808@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050719090050.00ba4838@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050719165017.00ba4c90@psy1.psych.arizona.edu>
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+DMDX and Jonathan,
+         I have to publicly thank Jonathan for his help with this 
+problem.  I now have a solution, I think it can be improved but it 
+works.  The "Retrace Thread" problem was of my own making.  The default 
+user settings I was using appear to have been the fault and I have modified 
+them and they now work (if the user is in the Power Users group).
+
+The settings I have for the current user are below.  If you save them as a 
+.REG file and install them once the user has logged in you dont need to run 
+TimeDX.  You can also install them as the Default User settings but I have 
+had some problems with Win XP pro SP2 and suggest caution.  You do need to 
+open up the permissions on the DMDX program files directory (users need write).
+
+---------------------------------------------------------------------
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\DMDX]
+
+[HKEY_CURRENT_USER\Software\DMDX\3]
+
+[HKEY_CURRENT_USER\Software\DMDX\3\LastUsedItemFile]
+
+[HKEY_CURRENT_USER\Software\TimeDX]
+
+[HKEY_CURRENT_USER\Software\TimeDX\3]
+
+[HKEY_CURRENT_USER\Software\TimeDX\3\1]
+
+[HKEY_CURRENT_USER\Software\TimeDX\3\1\0 Primary Display Driver]
+
+[HKEY_CURRENT_USER\Software\TimeDX\3\1\0 Primary Display 
+Driver\800x600(600)_16bpp_0Hz]
+@="13 16.876 600 16.576"
+
+[HKEY_CURRENT_USER\Software\TimeDX\3\Capture_Driver]
+@="Primary Sound Capture Driver"
+
+[HKEY_CURRENT_USER\Software\TimeDX\3\Last_TimeDX_Videomode]
+@="800 600 600 16 0"
+
+[HKEY_CURRENT_USER\Software\TimeDX\3\Sound_Driver]
+@="Primary Sound Driver"
+
+[HKEY_CURRENT_USER\Software\TimeDX\3\Video_Driver]
+@="0 Primary Display Driver"
+----------------------------------------------------------------------
+
+The problem appears to have been fixed by the line
+[HKEY_CURRENT_USER\Software\TimeDX\3\1\0 Primary Display 
+Driver\800x600(600)_16bpp_0Hz]
+@="13 16.876 600 16.576"
+that was initially
+[HKEY_CURRENT_USER\Software\TimeDX\3\1\0 Primary Display 
+Driver\800x600(600)_16bpp_0Hz]
+@="-3 0.300 600 0.000"
+
+-note the refresh time is now included.
+
+Peter
+
+At 10:04 AM 20/07/2005, you wrote:
+>At 09:44 AM 7/20/2005 +1000, you wrote:
+>
+>>I dont think I was clear.  This is a problem as DMDX is not working.  If 
+>>I start DMDX and run a syntax check it takes minutes instead of the 
+>>normal sub second.  The syntax check processes a line about every 10 
+>>seconds and displays the "Retrace Thread" error at the end.
+>
+>   Yeah, the retrace thread gets killed at the end of the syntax check 
+> just like it would be killed at the end of a subject run.
+>
+>>   If I run the DMDX file (below) I get a blank screen with the mouse 
+>> pointer then after about a minute just a blank screen for over 10 
+>> minutes.  I've never tried the whole item as I assume its died.  When I 
+>> try and break out (escape) it takes minutes for it to respond and 
+>> sometimes the only thing that works is Ctrl-Alt-Del.  I have seen it 
+>> come up with some items but I could not say how long but a very long 
+>> time, nothing like the required rate of one every 3 second.
+>
+>   Sounds like something is going wrong and given the Retrace Threads lack 
+> of response it's reasonable to assume it's there.
+>
+>
+>>I have noticed that the task manage thinks CPU usage is 100% and moving 
+>>the user into the local administrator group allows it to work as 
+>>expected, moving them back to limited user breaks it again.  I'm not able 
+>>to get TimeDX to produce the error right now but the retrace test says:
+>>Registry key SOFTWARE\TimeDX\3\1\0\ Primary Display 
+>>Driver\800x600(600)_16bpp_0Hz
+>>Sleep time 13, TimeOut value 16.876, Max Lines to Blit 600, Refresh 
+>>interval 16.576
+>
+>   All good values.
+>
+>>Enhanced Retrace gives
+>>3% timed out retraces, Multiple misses 2%, Certain errors 2.31%
+>>
+>>Its a short task I just had 'lying around' that I have been using as a 
+>>test, please dont tell me its something about my task.
+>>
+>>><ep> N4 <azk> <cr> <fd 162> <t 2500> <id #keyboard> <dbc 0>  <dwc 
+>>>255255255> <nfb> <vm 800,600,600,16,0> <eop>
+>>>0 <%ms 500> "Test 1" <c>;
+>>>0 "Press SPACEBAR to start";
+>>>+1 <%ms 500> "+" /<wc 255000000> <mpr +#211> <mnr +#203> <mnr +#208> 
+>>><mnr +#205> *"Rabies"/;
+>>>+2 <%ms 500> "+" /<wc 000255150> <mnr +#211> <mpr +#203> <mnr +#208> 
+>>><mnr +#205> *"Dog"/;
+>>>+3 <%ms 500> "+" /<wc 000255000> <mpr +#211> <mnr +#203> <mnr +#208> 
+>>><mnr +#205> *"Cat"/;
+>>>+4 <%ms 500> "+" /< wc 255255000 > <mpr +#211> <mnr +#203> <mnr +#208> 
+>>><mnr +#205> *"Bite"/;
+>>>0 "The end. Thank you for taking part.";
+>
+>   Other than the fact that key mappings stay active once made so there's 
+> no need for repeated <mpr> and <mnr> keywords that looks fine.
+>
+>   Perhaps your video drivers are allergic to non-privileged user 
+> requests.  I take it EZ mode doesn't suffer from the sluggishness?  I'd 
+> be looking at new video drivers as DMDX has certainly been run in less 
+> privileged environments before and I sure can't think of anything to do 
+> with privilege level that would slow DMDX down.  Stop it working 
+> outright, yes, but slow, you're into the wild blue yonder there.
+>
+>
+>                                                /"\
+>  -jonathan (j.c.f.)                            \ /
+>                                                 X
+
+

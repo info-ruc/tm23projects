@@ -1,0 +1,77 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id VAA24389
+	for <handyboard@media.mit.edu>; Wed, 13 Sep 2000 21:41:00 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id VAA13310; Wed, 13 Sep 2000 21:41:15 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://news.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:8066
+From: Jerry Normandin <jerrynormandin@ne.mediaone.net>
+X-Real-Life-Name: Jerry Normandin
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: Jerry Normandin <jerrynormandin@ne.mediaone.net>
+Subject: Got some code for you:  Sonar on handy in feet & inches!
+Posted-Date: Thu, 14 Sep 2000 01:49:13 GMT
+Date: Thu, 14 Sep 2000 01:49:13 GMT
+Organization: None
+Message-Id: <39C02E99.A01A3D3E@ne.mediaone.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+Hi,
+
+I  wanted to see how to convert the sonar hits into feet in
+inches.  Well as the textbook rule goes it looke like it takes
+333.333 ticks = 1 inch round trip.   Since the timer is running
+2,000,000 counts per second.  But in real life I had to fudge it!
+Here's the code:
+
+Ignore the Infrared remote stuff. My test application is controlled
+by a remote control, to execute different portions of the code.
+I am working on one that calibrates the robots turns. Also I put my
+robot in expore mode by hitting a button, for off sonar, test the wheel
+encoders, and so on..
+well here's the code:
+void display_sonar ()
+
+{
+int result;
+ int feet;
+ int inches;
+ int sonar_time;
+float infeet;
+     sonar_init();
+while (irccmd != 63){
+  result = sonar_closeup();
+  if (result != -1 ) {
+ sonar_time = result/285;
+  feet = sonar_time/12;
+  inches =sonar_time-(feet*12);
+printf("dist: %d' %d\"\n",feet,inches);
+}
+  else {printf ("Out of Range!\n");}
+  msleep (50L);
+}
+ beep ();
+ beep ();
+ beep ();
+ alloff ();
+}
+
+I have no clue why I have to enter 285, is it because my "baffle" for
+the sonar is too tight? The clock is the same
+for Sonar Closeup.. just the BINH pulse is shorter right?  Does everyone
+else fudge it to get an accurate reading?
+I tested the code up against a tape measurer against a straight wall!
+Consistant readings up to 10 feet then
+poof out of range.  I was also playing with VR1 to see if I can cut the
+gain down can I get down to 1"
+NOPE.. 3" is the best I can do.
+
+
+OK.. anyone have some SLAVE SPI code for a compass on the Handiboard
+sharing sonar????????????????
+

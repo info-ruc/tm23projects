@@ -1,0 +1,74 @@
+Received: from mail.rdc2.mi.home.com (ha1.rdc2.mi.home.com [24.2.68.68])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id KAA04114
+	for <handyboard@media.mit.edu>; Sat, 13 Nov 1999 10:50:48 -0500 (EST)
+Received: from cc939825-a.stcl1.mi.home.com ([24.7.250.15])
+          by mail.rdc2.mi.home.com (InterMail v4.01.01.00 201-229-111)
+          with ESMTP
+          id <19991113155042.BKTS12614.mail.rdc2.mi.home.com@cc939825-a.stcl1.mi.home.com>;
+          Sat, 13 Nov 1999 07:50:42 -0800
+Date: Sat, 13 Nov 1999 10:50:38 -0500 (EST)
+From: David Kott <dakott@home.com>
+Sender: dakott@kott.media.mit.edu
+To: John Bachman <bachman@anatek.mv.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: IC trouble - function definition
+In-Reply-To: <4.1.19991113090106.009a77c0@pop.mv.net>
+Message-Id: <Pine.BSF.4.10.9911131048500.54286-100000@kott>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Sat, 13 Nov 1999, John Bachman wrote:
+
+> Thanks for all the helpful device but the darned thing still does not work.  I have created a simplified program to try to figure out what I am doing wrong.  Here it is:
+> 
+> /* A simplified program to figure out what is wrong */
+> 
+> long time;
+> 
+> void start()
+> {
+>        phony();
+> 
+>        void phony()			/*  Line 9 syntax error is reported here */
+>        {
+>        		while (digital(2) == 1)
+>                       		{
+> 			 time = mseconds();              
+> 			}
+>        }
+> }
+> 
+
+
+whoa!  Local function definitions.  Even GCC doesn't grok that.  Try
+extracting the function definition phony() from start() like so:
+
+
+long time;
+
+
+void 
+phony()
+{			
+	while (digital(2) == 1) {
+		time = mseconds();
+	}
+}
+
+
+void 
+start()
+{
+	phony();
+}
+
+
+-d
+
+
+
+
+Curiosity may, or may not, have killed Schrodinger's cat.
+                                                        -townba
+
+

@@ -1,0 +1,1437 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.202] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k165Lgr21826
+	for <egs+summary>; Mon, 6 Feb 2006 00:21:42 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id s18so987236nze
+        for <egs+summary>; Sun, 05 Feb 2006 21:21:41 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=jTAzBYdCaChsvw1zqaRo4QpqIWv/N/YhTInor6nB+c3PGyAPtdOBVGl9/x0rl8tOVHaongnHLmJxecpvOy0KSfDAJTB8vsd/VyerP4d4I0pITc2pltMCE5EzgCaBdxVLEmicQ/AcaIx6JclbQv+V9xQTSmthNTbPc4s26ko78B4=
+Received: by 10.37.2.65 with SMTP id e65mr3977481nzi;
+        Sun, 05 Feb 2006 21:21:41 -0800 (PST)
+Received: by 10.36.141.3 with HTTP; Sun, 5 Feb 2006 21:21:41 -0800 (PST)
+Message-ID: <9aa7a97d0602052121g3d0c107eoda6dd42b940486b7@mail.gmail.com>
+Date: Mon, 6 Feb 2006 00:21:41 -0500
+From: Andrew Cunningham <lackhand>
+To: egs+summary
+Subject: PAPER 4
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_26137_6449710.1139203301481"
+
+------=_Part_26137_6449710.1139203301481
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+_Viceroy:_A_Scalable_and_Dynamic_Emulation_of_the_Butterfly_
+Dahlia Malkhi, Moni Naor, David Ratajczak
+
+    The high-priority issues tackled by Viceroy are extreme-scale networks,
+which implies a large measure of service-robustness in the face of
+joins/exits, in addition to bottlenecks to service (due to the high
+throughput of searches), thus low congestion (which includes, in a
+semi-hierarchical scheme, the 'root'). The ring based structures we've
+studied already accomplished these goals; the real insight that Viceroy add=
+s
+is similar to those of CAN, in that instead of having the log(N) overhead
+that are demanded by caching shortcuts around the ring, it uses O(1)
+pointers, which means that the system is infinitely scalable with only loca=
+l
+updates on joins/drops. This would tend to indicate a tradeoff in favor of
+path length to resources; however, the paper notes that the performance is,
+with 'high probability', acceptable along this dimension as well. Instead o=
+f
+simply having a nodeID, each node also has an extra few bits, in that they
+have a level ID; thus each node maintains exactly seven pointers; a next an=
+d
+previous pointer around the nodeID space [0,1), pointers to the next and
+previous nodes in the ID space sharing the same level, pointers to a node
+with level one greater than ours 1/2^(that level) away and closeby, and one
+more to the level one less than ours also closeby.
+    Messages are routed to a node with level 1 -- this should take
+approximately log(N) steps, since there are log(N) levels and we can simply
+hop back and forth -- and then back down using the 1/2^i or "nearby" higher
+level links. The system is thus a sort of hierarchical system with multiple
+roots; it can route to the correct location by simply dropping in level
+until it cannot drop further, at which point a local search can be initiate=
+d
+(but with high probability, O(1) steps are necessary). This paper does not
+include its proof of correctness, but it is intuitively obvious, in that it
+is essentially a chord-like system, but with nested rings inside each ring;
+thus routing is essentially climbing to the innermost ring and then taking
+exponential hops to reach the correct spot in the address space.
+    The incredibly low overheads of this system lend to great performance;
+the multiple nodes capable of acting as a route allow good congestion
+control. In fact, the only real faults of the paper are real, rather than
+theoretical, performance; though metrics aren't provided, it's relatively
+trivial to see that each operation under this system requires much more
+lookup than under previous versions, as we must climb up to root, and then
+down to the "leaf" level; also, though trivial to implement, the network is
+somewhat fragile as only a single pointer in each direction is maintained a=
+t
+each level, meaning that sudden drops require more work. It is O(1) to 'fix=
+'
+this problem -- just fix some constant number of neighbors -- so this is
+something of a null complaint. Also, this paper relies significantly more
+upon good random distributions than others; the saneness and goodness
+properties are more intricate than most others, and the high reliance on
+very good structure means that while the network as a whole is robust, it's
+highly tuned performance is brittle, and it relies on complex, quickly
+sketched out background processes (buckets) to save it.
+    Though optimization techniques aren't provided, they don't need to be -=
+-
+as I've already remarked, most optimization techniques are extremely
+portable, and Viceroy benefits just as much as any other consistent hashing
+scheme.
+
+------=_Part_26137_6449710.1139203301481
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+&nbsp;&nbsp;&nbsp; <br>
+Andrew Cunningham<br>
+arc39<br>
+_Viceroy:_A_Scalable_and_Dynamic_Emulation_of_the_Butterfly_<br>
+Dahlia Malkhi, Moni Naor, David Ratajczak<br>
+<br>
+&nbsp;&nbsp; &nbsp;The high-priority issues tackled by Viceroy are
+extreme-scale networks, which implies a large measure of
+service-robustness in the face of joins/exits, in addition to
+bottlenecks to service (due to the high throughput of searches), thus
+low congestion (which includes, in a semi-hierarchical scheme, the
+'root'). The ring based structures we've studied already accomplished
+these goals; the real insight that Viceroy adds is similar to those of
+CAN, in that instead of having the log(N) overhead that are demanded by
+caching shortcuts around the ring, it uses O(1) pointers, which means
+that the system is infinitely scalable with only local updates on
+joins/drops. This would tend to indicate a tradeoff in favor of path
+length to resources; however, the paper notes that the performance is,
+with 'high probability', acceptable along this dimension as well.
+Instead of simply having a nodeID, each node also has an extra few
+bits, in that they have a level ID; thus each node maintains exactly
+seven pointers; a next and previous pointer around the nodeID space
+[0,1), pointers to the next and previous nodes in the ID space sharing
+the same level, pointers to a node with level one greater than ours
+1/2^(that level) away and closeby, and one more to the level one less
+than ours also closeby.<br>
+&nbsp;&nbsp; &nbsp;Messages are routed to a node with level 1 -- this
+should take approximately log(N) steps, since there are log(N) levels
+and we can simply hop back and forth -- and then back down using the
+1/2^i or &quot;nearby&quot; higher level links. The system is thus a sort o=
+f
+hierarchical system with multiple roots; it can route to the correct
+location by simply dropping in level until it cannot drop further, at
+which point a local search can be initiated (but with high probability,
+O(1) steps are necessary). This paper does not include its proof of
+correctness, but it is intuitively obvious, in that it is essentially a
+chord-like system, but with nested rings inside each ring; thus routing
+is essentially climbing to the innermost ring and then taking
+exponential hops to reach the correct spot in the address space.<br>
+&nbsp;&nbsp; &nbsp;The incredibly low overheads of this system lend to
+great performance; the multiple nodes capable of acting as a route
+allow good congestion control. In fact, the only real faults of the
+paper are real, rather than theoretical, performance; though metrics
+aren't provided, it's relatively trivial to see that each operation
+under this system requires much more lookup than under previous
+versions, as we must climb up to root, and then down to the &quot;leaf&quot=
+;
+level; also, though trivial to implement, the network is somewhat
+fragile as only a single pointer in each direction is maintained at
+each level, meaning that sudden drops require more work. It is O(1) to
+'fix' this problem -- just fix some constant number of neighbors -- so
+this is something of a null complaint. Also, this paper relies
+significantly more upon good random distributions than others; the
+saneness and goodness properties are more intricate than most others,
+and the high reliance on very good structure means that while the
+network as a whole is robust, it's highly tuned performance is brittle,
+and it relies on complex, quickly sketched out background processes
+(buckets) to save it.<br>
+&nbsp;&nbsp; &nbsp;Though optimization techniques aren't provided, they
+don't need to be -- as I've already remarked, most optimization
+techniques are extremely portable, and Viceroy benefits just as much as
+any other consistent hashing scheme.
+
+------=_Part_26137_6449710.1139203301481--
+
+From xthemage@mac.com  Mon Feb  6 18:37:38 2006
+Return-Path: <xthemage@mac.com>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DNS_FROM_RFC_POST 
+	autolearn=no version=3.1.0
+X-Spam-Level: 
+Received: from smtpout.mac.com (smtpout.mac.com [17.250.248.46] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k16Nbbr21385
+	for <egs+summary>; Mon, 6 Feb 2006 18:37:37 -0500 (EST)
+Received: from mac.com (smtpin08-en2 [10.13.10.153])
+	by smtpout.mac.com (Xserve/8.12.11/smtpout10/MantshX 4.0) with ESMTP id k16NbaGc026570
+	for <egs+summary>; Mon, 6 Feb 2006 15:37:36 -0800 (PST)
+Received: from [128.84.98.36] (dhcp98-36.cs.cornell.edu [128.84.98.36])
+	(authenticated bits=0)
+	by mac.com (Xserve/smtpin08/MantshX 4.0) with ESMTP id k16NbZxP007590
+	for <egs+summary>; Mon, 6 Feb 2006 15:37:36 -0800 (PST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <7D81569A-1802-4446-8CD5-BE1E56FF268F@mac.com>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary
+From: Oliver Kennedy <xthemage@mac.com>
+Subject: PAPER 4
+Date: Mon, 6 Feb 2006 18:38:05 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+Oh god, the theory, it burns.
+
+This week's paper describes a system called Viceroy.  In the spirit  
+of the first 4 papers, Viceroy implements an overlay network based on  
+some variant of a circle.  In fact, Viceroy is based largely on  
+Chord, and shares many of the same properties.  Unlike Chord however,  
+Viceroy uses a routing scheme that ensures a constant (small) number  
+of routing entries.  This scheme automatically adapts to an  
+increasing ring size by refining hop lengths as more nodes enter the  
+system without increasing the number of routing entries.  It does  
+this by establishing several "levels".  A node assigns itself to a  
+level as it joins.  Nodes are able to contact a nearby node above  
+themselves, and a nearby node below themselves.  Each node is also  
+able to contact a distant node in the level below it.  The distance  
+of this node is inversely and logarithmically proportional to the  
+level of the node.  Level ones are able to contact a Level two half  
+the ring away, while a level two node is able to contact a level  
+three located a quarter of the ring away.  The system scales the  
+number of levels in the system with the number of nodes in the  
+system, so routing never takes more hops than necessary.   
+Essentially, this behaves like Pastry's routing table with a 1 bit  
+digit, except a node is only responsible for one row of that table.
+
+The paper's assumption of a perfect world, with flowers and bunnies  
+and servers that don't fail is amusing at best.   Viceroy as written  
+lacks a recovery scheme (and I suspect one would be difficult to  
+implement).  While a node only needs to keep track of a constant  
+number of nodes, a very large number of nodes are dependent on that  
+node for routing.  In particular, all the elements above and below a  
+node in level are highly dependent on that node for their routing.   
+If a node fails without allowing others to route a message to the  
+nearest node of its level on the ring, then all the nodes below it  
+will simply fail.  The algorithm also assumes that all levels are  
+populated (equally).  It is entirely feasible for a node to add  
+itself as a L4 node during a period of high network usage, and then  
+be unable to communicate with the rest of the network when all of the  
+L3 nodes remove themselves.  On top of this, byzantine failures,  
+network partitions, and hotspots are as much of an issue as they are  
+in the prior papers.
+
+- Oliver Kennedy
+
+They laughed at Einstein.  They laughed at the Wright Brothers.  But  
+they
+also laughed at Bozo the Clown.
+                 -- Carl Sagan
+
+From kash  Mon Feb  6 20:17:47 2006
+Return-Path: <kash>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-4.9 required=5.0 tests=ALL_TRUSTED,AWL,BAYES_00,
+	HTML_MESSAGE autolearn=unavailable version=3.1.0
+X-Spam-Level: 
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k171Hkr19062
+	for <egs@unix.cucs>; Mon, 6 Feb 2006 20:17:46 -0500 (EST)
+Received: from EXCHVS1.cs.cornell.edu ([128.84.97.23]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 6 Feb 2006 20:17:46 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C62B84.4D484CF5"
+Subject: PAPER 4
+Date: Mon, 6 Feb 2006 20:17:44 -0500
+Message-ID: <2EE48095D8C21643B0B70EC95F9BFBAF01100613@EXCHVS1.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: PAPER 4
+Thread-Index: AcYrhExxYK2YZ+uOQ1+LtMfCE6rBRg==
+From: "Ian Kash" <kash>
+To: <egs+summary>
+X-OriginalArrivalTime: 07 Feb 2006 01:17:46.0486 (UTC) FILETIME=[4DA34160:01C62B84]
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C62B84.4D484CF5
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Vicerory is a ring-structured DHT with an additional "butterfy
+
+network" structure for the long range links.  This structure all them
+
+to provide provable expected O(log n) load and lookups and worst case
+
+(whp) O(log^2 n) load and lookups while only having a constant
+
+outdegree for each node.
+
+=20
+
+While the O(1) links is theoretically nice, it seems likely to require
+
+many more in a fault tolerant implementation.  Signifcantly more ring
+
+pointers are needed to protect against gaps from nodes leaving.  The
+
+butterfly structure is similarly fragile and even with the redundancy
+
+they propose as a possible solution, this still creates more links.
+
+They suggest that their "bucket" idea can help with fault tolerance,
+
+but the buckets seem to need quite a bit of communication to maintain
+
+a consistent view of the bucket and keep the right number of people at
+
+each level, so even if this is not actually another link it still
+
+consumes bandwidth for maintainance.  Also, the bucket splitting and
+
+merging due to churn may provide quite a bit of extra overhead.
+
+
+------_=_NextPart_001_01C62B84.4D484CF5
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<DEFANGED_META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<DEFANGED_meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+ <!-- <DEFANGED_STYLE>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+ --> </DEFANGED_STYLE>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Vicerory is a ring-structured DHT with an additional
+&quot;butterfy<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>network&quot; structure for the long range =
+links.&nbsp; This
+structure all them<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>to provide provable expected O(log n) load and =
+lookups and
+worst case<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>(whp) O(log^2 n) load and lookups while only having a
+constant<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>outdegree for each node.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>While the O(1) links is theoretically nice, it seems =
+likely
+to require<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>many more in a fault tolerant implementation.&nbsp; =
+Signifcantly
+more ring<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>pointers are needed to protect against gaps from =
+nodes
+leaving.&nbsp; The<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>butterfly structure is similarly fragile and even =
+with the
+redundancy<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>they propose as a possible solution, this still =
+creates more
+links.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>They suggest that their &quot;bucket&quot; idea can =
+help
+with fault tolerance,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>but the buckets seem to need quite a bit of =
+communication to
+maintain<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>a consistent view of the bucket and keep the right =
+number of
+people at<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>each level, so even if this is not actually another =
+link it
+still<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>consumes bandwidth for maintainance.&nbsp; Also, the =
+bucket splitting
+and<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>merging due to churn may provide quite a bit of extra
+overhead.<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C62B84.4D484CF5--
+
+From asr32  Tue Feb  7 00:13:06 2006
+Return-Path: <asr32>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 
+	autolearn=unavailable version=3.1.0
+X-Spam-Level: 
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k175D6r25535
+	for <egs+summary>; Tue, 7 Feb 2006 00:13:06 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k175D5Jp029641
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary>; Tue, 7 Feb 2006 00:13:05 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060206214452.01d9d028@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Tue, 07 Feb 2006 00:00:22 -0500
+To: egs+summary
+From: Ari Rabkin <asr32>
+Subject: PAPER 4
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+Viceroy:
+
+Viceroy is yet another ring-structured peer to peer system.  Unlike any 
+others we've considered, the degree of a node is small and constant in n 
+(in fact, it is 7).  Nodes are arranged in a "butterfly graph", with each 
+node having a level.  Nodes have links to adjacent nodes at a level, nodes 
+adjacent on the ring, and links up and down the hierarchy of levels.  This 
+approach still gives logarithmic-length paths.  The Viceroy topology makes 
+sense for very large networks, where even a logarithmic number of edges can 
+be prohibitively expensive.  Unlike most peer-to-peer systems, Viceroy 
+comes with proofs of correct operation.
+         Since Viceroy's links are fixed and deterministic, if there is 
+particularly heavy traffic between a pair of nodes, it will always flow 
+through the same set of nodes.  Viceroy makes no attempt at either 
+replication or load-balancing.  This means that if a particular item is in 
+high demand, the node containing it may become a bottleneck.  Due to the 
+determinism of the scheme, it could be possible for an attacker to predict 
+traffic, and in fact, to occupy every link around a given node.
+
+
+
+
+Ari Rabkin  asr32      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone 
+
+From niranjan.sivakumar  Tue Feb  7 00:22:13 2006
+Return-Path: <niranjan.sivakumar>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=AWL,BAYES_00 
+	autolearn=unavailable version=3.1.0
+X-Spam-Level: 
+Received: from xproxy.gmail.com (xproxy.gmail.com [66.249.82.193] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k175MDr28185
+	for <egs+summary>; Tue, 7 Feb 2006 00:22:13 -0500 (EST)
+Received: by xproxy.gmail.com with SMTP id h30so979011wxd
+        for <egs+summary>; Mon, 06 Feb 2006 21:22:13 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:reply-to:to:subject:date:user-agent:organization:mime-version:content-type:content-transfer-encoding:content-disposition:message-id:from;
+        b=sg7iLRFhJXdFd2E6FxGSyCFMTp13FSsHZPiKYXTKbSxiZAu9oiaARyXsGKLZkHcLxsYAu9Y1BFHaVm+7c88sOF2ddAKJ3vr84WZkHWyv74/Su5jlrSyi1q3ElBmmmwRHB977X3YPKDj/CMPaeIAB7Zdo+9UIml3SfmW4cuchDxo=
+Received: by 10.70.98.16 with SMTP id v16mr7239415wxb;
+        Mon, 06 Feb 2006 21:22:12 -0800 (PST)
+Received: from ?192.168.0.101? ( [69.207.63.116])
+        by mx.gmail.com with ESMTP id h18sm3843423wxd.2006.02.06.21.22.12;
+        Mon, 06 Feb 2006 21:22:12 -0800 (PST)
+Reply-To: ns253
+To: egs+summary
+Subject: PAPER 4
+Date: Tue, 7 Feb 2006 00:22:11 -0500
+User-Agent: KMail/1.9
+Organization: Cornell University
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200602070022.11629.ns253>
+From: Niranjan Sivakumar <niranjan.sivakumar>
+
+Niranjan Sivakumar
+
+Viceroy:  A Scalable and Dynamic Emulation of the Butterfly
+
+Viceroy shares many features with Chord and attempts to expand on Chord's 
+design.  Viceroy uses a sort of "nested" ring approach, and Viceroy nodes 
+contain some more links than those in Chord.  Viceroy nodes contain pointers 
+to next and previous nodes and additionally have links to two nodes in a 
+level below them (one close and one far) as well as a link to a level above 
+them (as long as they are not at level 1.)  This system allows benefits when 
+nodes add or leave the network; one of the main objectives of the project as 
+set out by the authors was to reduce the impact of nodes joining and leaving 
+the network.  
+
+One of the main flaws of this paper seems to be that it is very theoretical, 
+but does not seem to consider issues that may arise in a real implementation.  
+Like CAN, it is not clear if such a system has actually been deployed and 
+tested.  There is not much presented regarding how the system would deal with 
+misbehaving nodes or other faults.  There is a brief mention of fault 
+tolerance in the final section regarding "The Bucket Solution" related to 
+replicated data, but overall, the paper seems to present interesting ideas 
+that may be more difficult to implement than it may seem.
+
+From ids3  Tue Feb  7 01:14:15 2006
+Return-Path: <ids3>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k176EFr13932
+	for <egs+summary>; Tue, 7 Feb 2006 01:14:15 -0500 (EST)
+Received: from [128.253.212.208] (r253212208.resnet.cornell.edu [128.253.212.208])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k176EEKx004345
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary>; Tue, 7 Feb 2006 01:14:14 -0500 (EST)
+Message-ID: <43E83ABE.4060907>
+Date: Tue, 07 Feb 2006 01:14:22 -0500
+From: Ivan Stoyanov <ids3>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary
+Subject: PAPER 4
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+The Viceroy paper tries to make one important point: creating and 
+maintaining links between nodes on a p2p network is much more costly 
+than actual lookups. Therefore, a good system will achieve O(1) routing 
+information, while keeping lookups at O(logN), though with potentially 
+higher averages than systems like Chord, etc.
+
+Constant degree linkage is achieved by the following novelty. Instead of 
+having each node keep a link to a node 1/2^N way accros the circle, the 
+system organizes the nodes into levels. A node on level i keeps two 
+pointers--one to a node approximately 1/2^i way accros the circle on 
+level i-1, and another one, nearby in the circular space, also on level 
+i-1. While this keeps node links constant, it increases the average 
+number of lookups, because the message must go up to level 1 and then 
+find its way down the tree. Everything else in the paper is very similar 
+to a typical circular hashing structures like Chord.
+
+The paper is purely theoretical and provides proofs that are not present 
+in some other DHT papers. The authors never talk of an implementation. 
+The case they make for why link maintenance is more expensive and 
+important than data lookups is not supported empirically.
+
+From tudorm  Tue Feb  7 01:30:17 2006
+Return-Path: <tudorm>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.3 required=5.0 tests=AWL,BAYES_00 
+	autolearn=unavailable version=3.1.0
+X-Spam-Level: 
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k176UHr17640
+	for <egs@unix.cucs>; Tue, 7 Feb 2006 01:30:17 -0500 (EST)
+Received: from exchfe1.cs.cornell.edu ([128.84.97.33]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 7 Feb 2006 01:30:17 -0500
+Received: from [192.168.0.6] ([65.110.147.185]) by exchfe1.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 7 Feb 2006 01:30:16 -0500
+Message-ID: <43E83E37.10405>
+Date: Tue, 07 Feb 2006 01:29:11 -0500
+From: Tudor Marian <tudorm>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: egs+summary
+Subject: PAPER 4
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 07 Feb 2006 06:30:16.0756 (UTC) FILETIME=[F5AB6740:01C62BAF]
+
+Viceroy is yet another p2p system that builds upon the chord ring 
+structure - as a matter of fact it uses the very same way of splitting 
+the id space and holding successor nodes responsible for keys. The 
+difference is that aside the regular ring previous and next pointers, 
+the routing table at a node contains information about connectivity to 
+the other nodes laid down in a butterfly network which is O(1). A 
+butterfly network for n nodes has ((log n) + 1) levels, and basically 
+provides routing links between nodes from one level to another in (log 
+n) steps. Each node thus is associated a level, and it maintains 1 link 
+to a close node in the previous level and 2 links to the next level - 
+one edge to a closest node, and another to a node 1/(2^{level}) ring 
+away. This means that to zoom in a node far away, requests must be 
+routed first to the lowest level on the path, and then a big step 1/2 
+size along the ring can be taken (since there exists a pointer 
+approximately 1/2 ring away). A typical route will "climb" up the level, 
+and then sink down and zoom in the appropriate node. Note that 
+overshooting is possible, hence the routing differs from Chord and is 
+more similar to Pastry in this respect.
+
+Viceroy claims that with high probability the events of a node joining 
+and leaving induces O(log n) hops and requires only O(1) nodes to change 
+their state, yet the number of the nodes connected to a single node can 
+be as much as O(log n) (Theorem 6.6), therefore O(log n) nodes change 
+their state.
+
+Considering the LEAVE operation, it is mentioned again that 
+notifications are required *only* at the nodes with inbound connections 
+to the node leaving, yet this would asymptotically mean O(log n). 
+Furthermore there is no mention with respect to the behavior under 
+churn, not to mention nodes simply failing without notifying their 
+departure and the effects on the topology - what is the cost of taking 
+alternative routes, and how does the routing chooses such routes if ever?
+
+A solution is provided for the O(log n) in-degree problem (the bucket 
+solution) but this would require additional communication, moreover 
+there is no mention of additional pointers kept for failure recovery -- 
+basically the theoretical work provides a set of bounds that hold with 
+high probability and prove them based on techniques similar to the ones 
+used in small world graphs, and ignores any practical issues. For that 
+matter, I find it hard to believe that the system itself would not 
+present major implementation issues especially with all the rigidity of 
+the butterfly network and the bucket solution.
+
+Tudor
+
+From ryanp  Tue Feb  7 05:23:43 2006
+Return-Path: <ryanp>
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17ANhr22070
+	for <egs@unix.cucs>; Tue, 7 Feb 2006 05:23:43 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.28]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 7 Feb 2006 05:23:42 -0500
+Received: from [128.84.98.204] ([128.84.98.204]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 7 Feb 2006 05:23:42 -0500
+Message-ID: <43E8752E.4090601>
+Date: Tue, 07 Feb 2006 05:23:42 -0500
+From: "Ryan S. Peterson" <ryanp>
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary
+Subject: PAPER 4
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 07 Feb 2006 10:23:42.0345 (UTC) FILETIME=[91A6AF90:01C62BD0]
+
+Malkhi, et al., present Viceroy, a distributed hash table with 
+properties very similar to Chord's with one significant difference: all 
+nodes keep constant state in order to maintain the topology of the 
+network.  Instead of following a strict ring structure, each incoming 
+Viceroy node joins one of the existing log n "levels."  Each node then 
+creates two links up a level in the hierarchy and two links down.  The 
+linked nodes are chosen to create a butterfly network: in both the 
+higher and lower levels, one far-away node is chosen at random in the 
+space to serve as a way to jump across the network in as few hops as 
+possible, and the other chosen node is nearby to the other side, used 
+for traversing the tree by level when a lookup is already in the 
+vicinity of its target.  The close-by nodes are analogous to Chord's 
+predecessor and successor links, used for navigating within a small 
+region; the far-away nodes are similar to the nodes in Chord that serve 
+to halve the distance to the target.
+
+The most striking weakness of the Viceroy paper is lack of 
+implementation.  While the theory is sound, the authors make assumptions 
+that cause me to question the system's performance.  For example, the 
+theory assumes that nodes multiple nodes do not fail simultaneously.  In 
+general, it is common for systems that have not been tested in the 
+Internet, or at least in simulations, to contain unforeseeable problems. 
+  Overall, the authors compare Viceroy to Chord, with the added benefit 
+that each Viceroy node requires only a constant degree of seven instead 
+of a degree logarithmic in the number of nodes in the system.  However, 
+the lack of implementation and the assumption that nodes do not fail 
+simultaneously makes churn and failure a major problem for the system.
+
+Ryan
+
+From pjk25  Tue Feb  7 06:21:15 2006
+Return-Path: <pjk25>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17BLEr08061
+	for <egs+summary>; Tue, 7 Feb 2006 06:21:14 -0500 (EST)
+Received: from [10.0.1.3] (cpe-69-207-41-159.twcny.res.rr.com [69.207.41.159])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k17BLDFH012223
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary>; Tue, 7 Feb 2006 06:21:14 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+To: egs+summary
+Message-Id: <8C36661B-6711-44CE-8222-E1F854952FBB>
+Content-Type: multipart/signed; micalg=sha1; boundary=Apple-Mail-1--57046399; protocol="application/pkcs7-signature"
+From: Philip Kuryloski <pjk25>
+Subject: PAPER 4
+Date: Tue, 7 Feb 2006 06:23:46 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+
+--Apple-Mail-1--57046399
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset=US-ASCII;
+	delsp=yes;
+	format=flowed
+
+Viceroy functions as a distributed hash table implemented as a peer  
+to peer overlay network, in the same spirit as Koorde, CAN, Chord,  
+and other similar schemes.  Consistent hashing is used in Viceroy in  
+very much the same manner as in Chord.  It maintains constant degree  
+for each node, and logarithmic network diameter allowing for  
+efficient key/value lookup.  Minimization of congestion during  
+lookups is also considered paramount by Viceroy's developers.
+
+Viceroy uses the same key/server mapping scheme as Chord, with  
+servers and keys hashed across the unit circle, and keys managed by  
+their successor node in this mapping space.  Routing is achieved by  
+short range links to successors and predecessors, as well as a  
+constant number of random long range contacts, with a bias towards  
+closer points.  This results in the formation of an approximate  
+butterfly network, a tiered network not unlike the path of  
+coefficients in the calculation of a fast fourier transform (FFT).
+
+Viceroy differs from other DHT implementations in that it maintains  
+constant node degree, thereby associating a fixed linkage cost with  
+node failure.  It also differs in that nodes do not periodically poll  
+their neighbors to detect node failure.  Nodes are expected to notify  
+neighbors when leaving the network.  When nodes enter the network,  
+they consult the routing tables of their new neighbors similar to  
+Chord.  Viceroy also has a unique system for maintaining the inward  
+degree of nodes in order to reduce bottlenecks, called buckets, which  
+cuts the mapping ring into equal size groups of servers.
+
+Philip Kuryloski
+444 Rhodes Hall
+Cornell University
+Ithaca, NY 14853-5112
+
+607.255.4222
+pjk25
+
+
+
+
+--Apple-Mail-1--57046399
+Content-Transfer-Encoding: base64
+Content-Type: application/pkcs7-signature;
+	name=smime.p7s
+Content-Disposition: attachment;
+	filename=smime.p7s
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIIGFjCCAs8w
+ggI4oAMCAQICAw+L7TANBgkqhkiG9w0BAQQFADBiMQswCQYDVQQGEwJaQTElMCMGA1UEChMcVGhh
+d3RlIENvbnN1bHRpbmcgKFB0eSkgTHRkLjEsMCoGA1UEAxMjVGhhd3RlIFBlcnNvbmFsIEZyZWVt
+YWlsIElzc3VpbmcgQ0EwHhcNMDUwOTI2MTc1NzM0WhcNMDYwOTI2MTc1NzM0WjBDMR8wHQYDVQQD
+ExZUaGF3dGUgRnJlZW1haWwgTWVtYmVyMSAwHgYJKoZIhvcNAQkBFhFwamsyNUBjb3JuZWxsLmVk
+dTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALFkgyhHSufUWaYxKh+wvUSDmrM8cViE
+JjeRS7Ssdd5tf0ckH2iwktNuSkxSsavsmAY+8zahwJjwk/JWTVyOGW/QsjgA5zoTJeAz4ah/QcKZ
+hou20lN6NvlFZWA43b4/jwtpVVa2RMS1fitkEs7YA9N16akGyXCpJR2i6EVTk7tx8/zf7i7bqg4t
+tmbJaySQyMQ4QV1O+F00m+zms0WZN5XRDqPwU2/WZfUE5BK/pGLkkFheBGSJJssuOsct8ctup0AI
+fJLlLZZhBCEdNeM2x9KfQEm+Tk3Ty0zl0pOewe7oW9vgwBJ2LwTVurzQ7qXeq1VhkDmkQJOwjcxM
+ssGAPXMCAwEAAaMuMCwwHAYDVR0RBBUwE4ERcGprMjVAY29ybmVsbC5lZHUwDAYDVR0TAQH/BAIw
+ADANBgkqhkiG9w0BAQQFAAOBgQBanW/NR5+pfeGOS7lM21kLObfzzGKtHvTFZ/RS0cSgWSKaCZfx
+aLLhqC9EFFFxh0b4wn0zCTv4CQWhrpaPZZC7oroP70kqWypQdjFbQ2rlLrVVS8pE4gtjZnRPFMr0
+BEH+1K7kWB6kTHvg2eI1EotCI92yARGzlzKrXjPonHppijCCAz8wggKooAMCAQICAQ0wDQYJKoZI
+hvcNAQEFBQAwgdExCzAJBgNVBAYTAlpBMRUwEwYDVQQIEwxXZXN0ZXJuIENhcGUxEjAQBgNVBAcT
+CUNhcGUgVG93bjEaMBgGA1UEChMRVGhhd3RlIENvbnN1bHRpbmcxKDAmBgNVBAsTH0NlcnRpZmlj
+YXRpb24gU2VydmljZXMgRGl2aXNpb24xJDAiBgNVBAMTG1RoYXd0ZSBQZXJzb25hbCBGcmVlbWFp
+bCBDQTErMCkGCSqGSIb3DQEJARYccGVyc29uYWwtZnJlZW1haWxAdGhhd3RlLmNvbTAeFw0wMzA3
+MTcwMDAwMDBaFw0xMzA3MTYyMzU5NTlaMGIxCzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3dGUg
+Q29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1haWwg
+SXNzdWluZyBDQTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAxKY8VXNV+065yplaHmjAdQRw
+nd/p/6Me7L3N9VvyGna9fww6YfK/Uc4B1OVQCjDXAmNaLIkVcI7dyfArhVqqP3FWy688Cwfn8R+R
+NiQqE88r1fOCdz0Dviv+uxg+B79AgAJk16emu59l0cUqVIUPSAR/p7bRPGEEQB5kGXJgt/sCAwEA
+AaOBlDCBkTASBgNVHRMBAf8ECDAGAQH/AgEAMEMGA1UdHwQ8MDowOKA2oDSGMmh0dHA6Ly9jcmwu
+dGhhd3RlLmNvbS9UaGF3dGVQZXJzb25hbEZyZWVtYWlsQ0EuY3JsMAsGA1UdDwQEAwIBBjApBgNV
+HREEIjAgpB4wHDEaMBgGA1UEAxMRUHJpdmF0ZUxhYmVsMi0xMzgwDQYJKoZIhvcNAQEFBQADgYEA
+SIzRUIPqCy7MDaNmrGcPf6+svsIXoUOWlJ1/TCG4+DYfqi2fNi/A9BxQIJNwPP2t4WFiw9k6GX6E
+sZkbAMUaC4J0niVQlGLH2ydxVyWN3amcOY6MIE9lX5Xa9/eH1sYITq726jTlEBpbNU1341YheILc
+IRk13iSx0x1G/11fZU8xggLnMIIC4wIBATBpMGIxCzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3
+dGUgQ29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1h
+aWwgSXNzdWluZyBDQQIDD4vtMAkGBSsOAwIaBQCgggFTMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTA2MDIwNzExMjM0N1owIwYJKoZIhvcNAQkEMRYEFFBdRM8Osq5c
+8EAtH8qbpYXrp2B0MHgGCSsGAQQBgjcQBDFrMGkwYjELMAkGA1UEBhMCWkExJTAjBgNVBAoTHFRo
+YXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQZXJzb25hbCBGcmVl
+bWFpbCBJc3N1aW5nIENBAgMPi+0wegYLKoZIhvcNAQkQAgsxa6BpMGIxCzAJBgNVBAYTAlpBMSUw
+IwYDVQQKExxUaGF3dGUgQ29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVy
+c29uYWwgRnJlZW1haWwgSXNzdWluZyBDQQIDD4vtMA0GCSqGSIb3DQEBAQUABIIBACDon3ZHfgnu
+JluMQewDHvhDWCT+yPoy1puacQDc/gbG1TVRZTlBvT1++z3LZVu4ef1VjUDU4PUl9EJmgpG5ruF4
+zhmgb0mhYPXILV1sjnMopwpCkCy1TNFFJd7mFBnj/8GNCHv+5eHCXOWzs9Razb3ues0zF+tVmzvl
+agcKA3+reeVTumAGX9ZiFbeWvlEZNf9h+GAQv2r/5RZfvgEan93mGF3PtoM9Mf0zNml6C+ieZ+OS
+Go42w8SILbEPoHKo8hpvYLu2J+noq24SeRefgK48zLstGBb4ZywPn+3u0ZNDAvABWzOBNO/ClKbp
+j3H059HjWvh5fK9hhY+BRnkLcuQAAAAAAAA=
+
+--Apple-Mail-1--57046399--
+
+From nsg7  Tue Feb  7 09:27:00 2006
+Return-Path: <nsg7>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17ER0r16626
+	for <egs+summary>; Tue, 7 Feb 2006 09:27:00 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k17EQwNm001583
+	for <egs+summary>; Tue, 7 Feb 2006 09:26:58 -0500 (EST)
+Received: from 128.84.154.13 (proxying for unknown)
+        by webmail.cornell.edu with HTTP;
+        Tue, 7 Feb 2006 09:26:59 -0500 (EST)
+Message-ID: <38320.128.84.154.13.1139322419.squirrel@webmail.cornell.edu>
+Date: Tue, 7 Feb 2006 09:26:59 -0500 (EST)
+Subject: PAPER 4
+From: "Nicholas S Gerner" <nsg7>
+To: egs+summary
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+In "Viceroy..." Malkhi, et al. present another distributed hashtable,
+similar in many ways to Chord.  However, similar to CAN, in Viceroy each
+node has a constant out degree (in CAN each node has O(d) outdegree; in
+Viceroy this is truely constant, with outdegree 7).  Unlike CAN or Chord
+no proactive "stabilization" protocol is used to maintain the
+connectiveness (in large part due to the fact that Viceroy assumes that
+nodes do not arbitrarily fail).  Viceroy seeks to optimize three
+performance metrics: congestion (the max network load of any node), cost
+of join/leave, and lookup path length.
+
+Viceroy builds on Klienberg's small world phenomenon.  First, nodes lie on
+an identifier ring supplying a base overlay overwhich a network can be
+built according to Klienberg.  In addition to prev and next pointers,
+directed edges must be added randomly exponentially favoring farther away
+nodes.  To achieve this Viecroy has additional "level rings" corresponding
+to nodes with exponentially farther away random long-range edges.  Nodes
+randomly choose a level ring to live on.  Because Viceroy maintains next
+and prev pointers within the level rings, it can further add a "hopping"
+protocol to improve on Klienberg's log^2 path length bound.  Viceroy
+achieves O(log(n)) path lengths in this way.  The paper includes numerous
+proofs given their assumptions (and there are many) that with high
+probability path lengths are O(log(n)), congestion is O(log(n)/n) and out
+degree is 7.  The authors argue that this optimizes their three metrics.
+
+However, the authors admit that indegree of nodes can be as bad as
+O(log(n)), and despite the fact that edges are directed for routing, they
+are undirected for their leave protocol (which assumes nodes do not fail).
+ To address this they add another bucket protocol which also must maintain
+O(log(n)) state and update this on join and leave.  The authors do point
+readers to several other specific sources to address shortcomings, but do
+not present a way to integrate these alternatives with the Viceroy
+protocols.  This coupled with the many assumptions about node failures and
+lack of an empirical study leave me skeptical about the practial
+application of what is otherwise a fine presentation and application of
+theoretical results.
+
+--Nick
+
+From km266  Tue Feb  7 10:35:55 2006
+Return-Path: <km266>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-1.0 required=5.0 tests=AWL,BAYES_00,
+	FORGED_OUTLOOK_TAGS,HTML_MESSAGE autolearn=no version=3.1.0
+X-Spam-Level: 
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17FZtr09488
+	for <egs+summary>; Tue, 7 Feb 2006 10:35:55 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k17FZs7v000325
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary>; Tue, 7 Feb 2006 10:35:55 -0500 (EST)
+Message-ID: <000601c62bfc$380cbe30$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz>
+From: "Kevin" <km266>
+To: <egs+summary>
+Subject: PAPER 4
+Date: Tue, 7 Feb 2006 10:36:09 -0500
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0003_01C62BD2.4ECB4A30"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0003_01C62BD2.4ECB4A30
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+    Viceroy is yet-another-DHT with construction taken from CHORD and =
+integrated with Klienberg's small world phenomenon.  The difference =
+between CHORD and viceroy is the multi-level (ring within ring) =
+structure.  A node has links to the level/ring above it, ring below it, =
+and a prev/succ pointer.  The "down" pointers, the pointers to the ring =
+below the node, are spaced inverse exponentially to the level you are =
+at.  Therefore, level 1 nodes have links to nodes that are logically =
+distance 1/2 around the circle away.  Level 2 has links to 1/(2^2) or =
+1/4 around the circle, and so on.  In this manner, the Viceroy network =
+is successful at maintaining small amounts of state at each node, =
+claiming exactly 7 links.  Routing logically also takes log n steps.  =
+Joins allow nodes to enter in on any level they think is appropriate.  =
+They approximate the total number of nodes and enter in anywhere between =
+[1, log n].  Their way to approximate n is interesting and would seem to =
+work very well on average, but would intuitively give horrible results =
+every once in a while.
+    Viceroy seems like a great theory paper.  As a matter of fact, it =
+might actually work on a network with very few outages and trusted =
+nodes.  The compromise they made was state for reliability or =
+redundancy.  If a node fails instead of gracefully leaving, the data =
+would need to be recovered, most likely slowly (which they do not =
+explain).  The paper never takes server fails into account and gives up =
+in the leave procedure if too much contact is needed.  The paper also =
+assumes no partitioning of the network -- it flat out states that it =
+assumes any server can contact any other server on the physical layer =
+below it.  My impression of peer-to-peer overlay systems was for them to =
+be able to route better than the underlying internet in most cases, =
+which this does not.  If node distance is overly big on initial contact, =
+you can end up with a node sitting on a ring very far away from the rest =
+of the nodes.  I'm not sure of the exact repercussions of this, but it =
+can't be good.  Also, they mention a bucket solution for bounding =
+indegrees (which can be up to logn).  They do this in a distributed =
+manner, but it completely break everything.  Their biggest 'happy-point' =
+in the paper is their O(1) state which they break with buckets which =
+have to hold log n state.  They also trust their neighbors completely =
+with information -- if they fail, then the bucket is lost.  Security was =
+likewise completely overlooked.  A rogue node could devastate everything =
+especially with such little redundancy.  Overall, I would say 'OK in =
+theory, won't work in practice.'
+
+--Kevin
+------=_NextPart_000_0003_01C62BD2.4ECB4A30
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<DEFANGED_META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<DEFANGED_META content=3D"MSHTML 6.00.2900.2802" name=3DGENERATOR>
+ <!-- <DEFANGED_STYLE> --> </DEFANGED_STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; Viceroy is =
+yet-another-DHT with=20
+construction taken from CHORD and integrated with Klienberg's small =
+world=20
+phenomenon.&nbsp; The difference between CHORD and viceroy is the =
+multi-level=20
+(ring within ring) structure.&nbsp; A node has links to the level/ring =
+above it,=20
+ring below it, and a prev/succ pointer.&nbsp; The "down" pointers, the =
+pointers=20
+to the ring below the node, are spaced inverse exponentially to the =
+level you=20
+are at.&nbsp; Therefore, level 1 nodes have links to nodes that are =
+logically=20
+distance 1/2 around the circle away.&nbsp; Level 2 has links to 1/(2^2) =
+or 1/4=20
+around the circle, and so on.&nbsp; In this manner, the Viceroy network =
+is=20
+successful at maintaining small amounts of state at each node, claiming =
+exactly=20
+7 links.&nbsp; Routing logically also takes log n steps.&nbsp; Joins =
+allow nodes=20
+to enter in on any level they think is appropriate.&nbsp; They =
+approximate the=20
+total number of nodes and enter in anywhere between [1, log n].&nbsp; =
+Their way=20
+to approximate n is interesting and would seem to work very well on =
+average, but=20
+would intuitively give horrible results every once in a=20
+while.<BR>&nbsp;&nbsp;&nbsp; Viceroy seems like a great theory =
+paper.&nbsp; As a=20
+matter of fact, it might actually work on a network with very few =
+outages and=20
+trusted nodes.&nbsp; The compromise they made was state for reliability =
+or=20
+redundancy.&nbsp; If a node fails instead of gracefully leaving, the =
+data would=20
+need to be recovered, most likely slowly (which they do not =
+explain).&nbsp; The=20
+paper never takes server fails into account and gives up in the leave =
+procedure=20
+if too much contact is needed.&nbsp; The paper also assumes no =
+partitioning of=20
+the network -- it flat out states that it assumes any server can contact =
+any=20
+other server on the physical layer below it.&nbsp; My impression of =
+peer-to-peer=20
+overlay systems was for them to be able to route better than the =
+underlying=20
+internet in most cases, which this does not.&nbsp; If node distance is =
+overly=20
+big on initial contact, you can end up with a node sitting on a ring =
+very far=20
+away from the rest of the nodes.&nbsp; I'm not sure of the exact =
+repercussions=20
+of this, but it can't be good.&nbsp; Also, they mention a bucket =
+solution for=20
+bounding indegrees (which can be up to logn).&nbsp; They do this in a=20
+distributed manner, but it completely break everything.&nbsp; Their =
+biggest=20
+'happy-point' in the paper is their O(1) state which they break with =
+buckets=20
+which have to hold log n state.&nbsp; They also trust their neighbors =
+completely=20
+with information -- if they fail, then the bucket is lost.&nbsp; =
+Security was=20
+likewise completely overlooked.&nbsp; A rogue node could devastate =
+everything=20
+especially with such little redundancy.&nbsp; Overall, I would say 'OK =
+in=20
+theory, won't work in practice.'</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>--Kevin</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0003_01C62BD2.4ECB4A30--
+
+From victoria@cs.hmc.edu  Tue Feb  7 11:07:49 2006
+Return-Path: <victoria@cs.hmc.edu>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 
+	autolearn=unavailable version=3.1.0
+X-Spam-Level: 
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17G7mr21806
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Feb 2006 11:07:48 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id C9DA75323F; Tue,  7 Feb 2006 08:07:42 -0800 (PST)
+Date: Tue, 7 Feb 2006 08:07:42 -0800
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 4
+Message-ID: <20060207160742.GB11797@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+
+Viceroy is a p2p network which should provide better performance on the
+large, dynamic networks which have developed on the Internet.  Like
+Chord, Viceroy uses a DHT with constant hashing to manage the objects
+it stores.  Unlike Chord, each node in Viceroy only has to track O(1)
+neighbors in its routing table.  With a high probability, there will
+only be O(log n) steps required to route a message across the network.
+To accomplish this, Viceroy uses a series of interconnected rings,
+which it calls "levels".  When a node joins, it picks a level (l) and
+an index in that level (i) at random, and then connects to l as if l
+was a normal DHT ring, one node in l-1 at an index near i, and two
+nodes in l+1 - one near i, and one near i+(1/2^l).
+
+This paper does not discuss several important aspects of a p2p network
+in the real world.  Although there are provisions for nodes leaving
+the network, they do not discuss the possibility of nodes failing and
+leaving the network without notifying their neighbors.  At the very
+least, in the real world nodes will need multiple copies of the links
+discussed above.  There is also no experimental data in this paper,
+which could show system behavior under high churn.  Because nodes may
+switch levels when their successor leaves the network or moves, high
+churn could set off a nasty feedback loop.
+
+-- Victoria Krafft
+
+From ymir.vigfusson@gmail.com  Tue Feb  7 11:14:48 2006
+Return-Path: <ymir.vigfusson@gmail.com>
+Received: from uproxy.gmail.com (uproxy.gmail.com [66.249.92.206] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17GEmr24157
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Feb 2006 11:14:48 -0500 (EST)
+Received: by uproxy.gmail.com with SMTP id k40so38421ugc
+        for <egs+summary@cs.cornell.edu>; Tue, 07 Feb 2006 08:14:47 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=d7DxgOrByg8JqAffKQo7d0eRq/PR8sZl7ma5CDtOjA3frUrLba0MvjEse+zQ0WBzzSI9eu1rZM34iGDoDS9+xK1bNCSb1Bh3klO5/KBTfCwHp9xuuukAp6q0gryhR8D0hvG0NXGFtYBm1rRtVi1wXpYp57EtwcXCvxSVU52lzPY=
+Received: by 10.48.235.15 with SMTP id i15mr1615418nfh;
+        Tue, 07 Feb 2006 08:14:47 -0800 (PST)
+Received: by 10.49.43.1 with HTTP; Tue, 7 Feb 2006 08:14:47 -0800 (PST)
+Message-ID: <9302f1e20602070814h6c10b5c0kc34cb07293c9d465@mail.gmail.com>
+Date: Tue, 7 Feb 2006 11:14:47 -0500
+From: Ymir Vigfusson <ymir.vigfusson@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k17GEmr24157
+
+The motivation for the Viceroy paper was to explore
+the best congestion that could be achieved using
+constant linkage cost (seemingly the first paper to
+consider this) and logarithmic path lengths.
+
+Effectively, the network establishes Chord based
+routing rings on different levels such that a
+node determines its level at random (by estimating
+the size of the network).
+This kind of level-based tree construction is called
+a butterfly network.  A node connects with its
+successor and predecessor in its level ring
+along with short and long-range links to the upper
+and lower levels. This means that the out-degree of a
+node is constant, and is actually derived to be 7.
+
+Joins and parts in the network affect only a constant
+number of servers, and require O(log n) hops.
+
+Normal routing, after slightly extending the lookup
+mechanism, takes O(log n) steps with high probability.
+
+An immediate consequence of bounding the outdegree
+is that the network becomes sparse, i.e. edges become
+few, so the system has reduced fault tolerance. The
+paper does not address the issue other than proposing
+balancing of indegrees using so-called 'buckets' and
+saying something on the lines of "fault-tolerance can
+be achieved but the subject of another paper" (often
+called 'proof by future reference').
+
+- Ymir
+
+From sh366@cornell.edu  Tue Feb  7 11:28:14 2006
+Return-Path: <sh366@cornell.edu>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17GSEr28650
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Feb 2006 11:28:14 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k17GSCNm026622
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Feb 2006 11:28:13 -0500 (EST)
+Message-ID: <1774315988.1139329692386.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 7 Feb 2006 11:28:12 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 4
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k17GSEr28650
+
+<Paper Summary>
+* Viceroy is a butterfly network that ensures constant linkage cost and logarithmic path length, with best achievable congestion.
+* Each node in the Viceroy topology includes its identifier, its level, plus links to a successor and a predecessor, links to the next and previous nodes of the same level, one up link and two down links.
+* Routing of Viceroy occurs in three phases: (1) traverse up to the root, (2) traverse down the tree, and (3) traverse the ring either clockwise or counter-clockwise to the target. It proves that the path length is O(logn) with high probability.
+* A distributed coordination mechanism, buckets, is maintained for bounding the number of linkage changes when nodes join or leave the system.
+
+<Comments>
+* The disadvantage of Viceroy is that it’s complicated. I also doubt the stabilization of the system in face of churns, since nodes in Viceroy have to change their levels and lots of links once the node as their successor joins or leaves the system.
+* Besides, Viceroy may route farther than necessary in the case that the destination node is very close to the source node. This may be improved by checking the distance between the target object and the querying node first to learn if it's necessary to perform the 3-phase lookup.
+
+From asg46@cornell.edu  Tue Feb  7 12:06:59 2006
+Return-Path: <asg46@cornell.edu>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=AWL,BAYES_00 
+	autolearn=unavailable version=3.1.0
+X-Spam-Level: 
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17H6xr12405
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Feb 2006 12:06:59 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k17H6vNm026589
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Feb 2006 12:06:57 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Tue, 7 Feb 2006 12:06:58 -0500 (EST)
+Message-ID: <2974.128.84.98.90.1139332018.squirrel@webmail.cornell.edu>
+Date: Tue, 7 Feb 2006 12:06:58 -0500 (EST)
+Subject: paper 4 - viceroy
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+viceroy:
+
+it functions as a distributed hash table managing the distribution of data
+among a changing set of servers primarily in networks in which the scale
+and dynamism is great.
+
+The authors believe that the cost of updating links exceeds normal lookup
+costs -i.e. node insertion deletion are considered more important than
+node lookup.
+
+topology:
+
+viceroy consists of a ring and butterfly network. Each node has outdegree=7
+
+2 for the ring (predecssor and successor)
+5 for the butterfly ( 1 up ,2 down ,2 for the same level ring -
+predecessor and successor)
+
+A down-right edge is added to a long range contact at level l+1 at roughly
+1/(2^l) distance while the down-left edge is added at a close distance on
+level l+1.
+
+routing :
+it is carried out in 3 stages :
+1) climb to a level -1 node using up connections
+2) proceed down using down links moving to the left or right down link
+based on distance of target from current source - the closest down link is
+chosen.
+
+3) traverse along the level ring to reach the target.
+
+(note that the target may not be a leaf node i.e. routing may terminate
+before the third stage)
+"improved lookup" results when we also the global ring pointers for
+routing resulting in lookup complexity O(log n)
+
+
+The paper does not consider multiple join and leave operations
+concurrently such that it requires locking mechanisms on the state of the
+node.
+
+IDENTITY AND LEVEL SELECTION:
+each node randomly picks its id ( [0,1) ) and chooses it level using the
+following:
+it finds the successor of s and calculates n0=(1/d(s,succ(s)))
+n0 is assumed to be a good "ballpark" figure since nodes join at random.
+level = [1, log n0 ] -- picked at random from this range
+
+However, the paper is very vague as to how this level must be changed when
+log n0 changes and how such changes are notified.
+It may also be the case that the level has to be changed but this is not
+detectable at s.(in the boundary case a new node joins close to s'
+resulting in change of log n0 but there is
+no change in state of s)
+
+NODE JOIN:
+basically uses lookup to find successors and predecessors.
+
+
+NODE LEAVE :
+the paper does not explicitly mention a "ping" mechanism in case of failed
+nodes. Due to a constant out-degree, the amount pf pinging is less in this
+system as opposed to other systems studied so far.
+
+
+The paper also mentions a vague "bucket" policy to combat a worst case
+indegree of O(log n).
+
+
+
+
+
+
+
+From tc99@cornell.edu  Tue Feb  7 16:26:55 2006
+Return-Path: <tc99@cornell.edu>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.0 required=5.0 tests=none autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k17LQsr05742
+	for <egs@cs.cornell.edu>; Tue, 7 Feb 2006 16:26:54 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k17LQrNm003563
+	for <egs@cs.cornell.edu>; Tue, 7 Feb 2006 16:26:53 -0500 (EST)
+Received: from 132.236.227.131
+        by webmail.cornell.edu with HTTP;
+        Tue, 7 Feb 2006 16:26:53 -0500 (EST)
+Message-ID: <2458.132.236.227.131.1139347613.squirrel@webmail.cornell.edu>
+Date: Tue, 7 Feb 2006 16:26:53 -0500 (EST)
+Subject: paper 4
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Viceroy implements a combination ring-based and multi-level ring-based
+butterfly network overlay. To keep the update cost low, Viceroy keeps a
+low, fixed number of links for each node, sacrificing reliability in
+failure-prone/high churn networks for cheap updates.
+Viceroy keeps two kinds of rings: a global ring of all the nodes in the
+network, and a level-local ring of the nodes in the same level of the
+butterfly. Within each ring, routing is handled identically to Chord.
+However, Viceroy also keeps links between levels that are close or 1/2^L
+around the ring (where L is the level, so the higher the level, the closer
+the "far" link). The routing itself is done in three stages. First, is
+just traveral up from the inital to a node on the top level (level 1).
+Then the message is routed down levels, taking either the near or far
+down-link. Finally, when the message is either on the lowest level ring or
+will overshoot if routed down a level, successor/predecessor lookups are
+done using both the global ring and the current level-ring.
+
+Besides the fault-tolerance and failure-recovery issues that the authors
+deliberately traded off for more efficient joins and leaves, Viceroy also
+has the same problems as Chord with locality.
+The links that are maintained have no relation at all to physical
+distance. If they tried to add that by adding choices to the links, then
+updating the network would become proportionally more expensive.
+
+
+From gp72@cornell.edu  Fri May 12 00:09:26 2006
+Return-Path: <gp72@cornell.edu>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from iago.cs.cornell.edu (iago.cs.cornell.edu [128.84.96.10])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k4C49P227927
+	for <egs+summary@cs.cornell.edu>; Fri, 12 May 2006 00:09:25 -0400 (EDT)
+Received: from postoffice10.mail.cornell.edu ([132.236.56.14]) by iago.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 12 May 2006 00:08:34 -0400
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k4C48XWw011316;
+	Fri, 12 May 2006 00:08:34 -0400 (EDT)
+Received: from 128.84.98.245
+        by webmail.cornell.edu with HTTP;
+        Fri, 12 May 2006 00:08:34 -0400 (EDT)
+Message-ID: <2537.128.84.98.245.1147406914.squirrel@webmail.cornell.edu>
+Date: Fri, 12 May 2006 00:08:34 -0400 (EDT)
+Subject: PAPER 4
+From: "Gopal Parameswaran" <gp72@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Cc: gp72@cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-OriginalArrivalTime: 12 May 2006 04:08:34.0803 (UTC) FILETIME=[BCF0D430:01C67579]
+
+Viceroy is a constant degree routing network that uses an approximate
+butterfly network where the concept of rings at different levels are used
+where each node in a ring has a predecessor and a successor link along
+with five outgoing likes for long range contacts and each node is given a
+level at random such that at any time n servers are operational and one of
+log n levels are selected with equal probability. Routing in viceroy is
+achieved by going up each level till a level 1 node or the topmost level
+node is reached and then routed down to each level where every time either
+the short link is chosen or the long link is chosen based on the distance
+if it is less than 1/(2^l) until the node searched is found. Viceroy
+however would be susceptible to attack since if a group of nodes at a
+particular level is attacked it could affect the routing through that
+level for a certain group of nodes. Viceroy would need to maintain a set
+of closer lookups in each level to other nodes at that level which would
+help in rerouting the queries through other connections of neighbor nodes
+at the same level. Thus with a high degree of nodes leaving the system
+stability could become an issues with Viceroy. If a level 1 node in a ring
+goes down then the routing path would either change or get distorted until
+another node is promoted to a level 1 for that ring and the routing would
+take a longer time. These issues arise primarily due to the topology that
+is chosen where particular levels always need to be traversed.
+

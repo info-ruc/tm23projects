@@ -1,0 +1,55 @@
+Received: from rubens.artisan.calpoly.edu (root@whistler.artisan.calpoly.edu [129.65.2.41])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with ESMTP id UAA05344
+	for <handyboard@media.mit.edu>; Mon, 10 Jan 2000 20:32:13 -0500 (EST)
+Received: from gonzo (modem56-3-042.offcampus.calpoly.edu [129.65.106.42])
+	by rubens.artisan.calpoly.edu (8.8.6 (PHNE_17135)/8.8.6) with SMTP id RAA09596
+	for <handyboard@media.mit.edu>; Mon, 10 Jan 2000 17:32:06 -0800 (PST)
+From: "Bill Denzel" <wdenzel@polymail.cpunix.calpoly.edu>
+To: "Handyboard@Media. Mit. Edu" <handyboard@media.mit.edu>
+Subject: RE: More servo stuff
+Date: Mon, 10 Jan 2000 17:36:12 -0800
+Message-Id: <000401bf5bd4$3e94d980$0100000a@gonzo>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+Importance: Normal
+In-Reply-To: <Pine.GSO.4.10.10001101549370.29048-100000@typhoon.xnet.com>
+
+I had the same problem.  The servo would run fine if the program was not
+doing anything else.  But if I was updating the pwm to the motor ports then
+the servo would jitter.  I figured it was because the extra overhead was
+screwing up the timing on the signal wire to the servo. I solved it by
+placing a relay on the servo power wire.  The relay is powered by a digital
+output.  So I usually change the servo position in software first, ie servo5
+= 4000, then turn on the servo power by setting the digital output high,
+wait for about 1 sec, then turn the servo power back off.  I was very happy
+with this solution because it eliminated the jitter problem and also removed
+any battery drain due to the servo at idle.  I found that the servo had more
+than enough holding torque on its own with no power due to the large gear
+ratio.
+
+Bill Denzel
+
+-----Original Message-----
+From:	news-gateway@lugnet.com [mailto:news-gateway@lugnet.com] On Behalf Of
+James Munro
+Sent:	Monday, January 10, 2000 1:50 PM
+To:	handyboard@media.mit.edu
+Subject:	Re: More servo stuff
+
+> Try placing a capacitor across +5V and ground. Get something in the range
+> of 0.1 - 0.47 microfarads and just plug it into the headers on the HB.
+This
+> solved my problems.
+
+I did this but it didn't help.  *sigh*
+
+Thanks for the tip!
+
+
+

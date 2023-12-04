@@ -1,0 +1,166 @@
+Received: from caldo.demon.co.uk (caldo.demon.co.uk [194.222.207.148])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id NAA28171
+	for <9fans@cs.psu.edu>; Sun, 15 Nov 1998 13:17:28 -0500 (EST)
+From: forsyth@caldo.demon.co.uk
+Message-Id: <199811151817.NAA28171@cse.psu.edu>
+To: 9fans@cse.psu.edu
+Date: Sun, 15 Nov 1998 18:19:41 GMT
+Subject: re: [9fans] BSD Sockets
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+move
+	#include <stdio.h>
+	...
+	#include <string.h>
+above
+	#include <sys/types.h>
+(they can go a bit lower down but that's enough to have the libraries
+dealt with in the right order by the #lib system; alternatively enumerate them on the pcc
+command line as on a unix system)
+
+you can either include <bsd.h> to get the bzero stuff
+or do as i did, and replace bzero by memset and bcopy by memmove, with suitable
+changes to the corresponding argument lists.
+
+add
+	#include <unistd.h>
+after <sys/time.h> (say) to get the definition of system calls
+include write().  i believe its absence is a bug in the original source.
+
+then uncomment the calls to bzero, bcopy,  the use of tv_sec and
+tv_usec, not to mention the write that does the work.
+i left a comment round the write "." because that will only slow
+things down (for what it's worth on a benchmark like this).
+
+pcc gives ANSI C only (see the man page and the APE
+document); you'll need -D_POSIX_SOURCE to access
+the Posix extensions and -D_BSD_EXTENSION to access
+the BSD ones including sockets and associated sin:
+
+pcc -D_POSIX_SOURCE -D_BSD_EXTENSION tcpblast.c
+
+compiles it.  if it hangs during the connect() it (probably) means you
+haven't applied all the APE boddles required to swizzle things
+consistently on a little-endian machine.
+
+here's one i prepared earlier.
+
+/*
+ * tcpblast - test and estimate TCP throughput
+ *
+ * Daniel Karrenberg   <dfk@nic.eu.net>
+ */
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <time.h>
+#include <sys/time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BLKSIZE 1024
+
+struct sockaddr_in sock_in;
+struct servent *sp;
+struct hostent *host;
+
+long starts, startms, stops, stopms, expms;
+struct timeval ti;
+struct timezone tiz;
+
+char  greet[BLKSIZE] = "Hi!";
+int  nblocks;
+int f;
+
+int main(argc, argv)
+int argc; char **argv;
+{
+ register int i;
+
+ if (argc!=3)
+ {
+  fprintf(stderr, "usage: tcpblast destination nblkocks\n");
+  fprintf(stderr, "blocksize: %d bytes\n", BLKSIZE);
+  exit(1);
+ }
+
+ nblocks = atoi(argv[2]);
+ if (nblocks<=1 || nblocks>=10000)
+ {
+  fprintf(stderr, "tcpblast: 1 < nblocks <= 10000 \n");
+  exit(1);
+ }
+
+ memset(&sock_in, 0, sizeof (sock_in));
+ sock_in.sin_family = AF_INET;
+ f = socket(AF_INET, SOCK_STREAM, 0);
+ if (f < 0) {
+  perror("tcpblast: socket");
+  exit(3);
+ }
+ if (bind(f, (struct sockaddr*) &sock_in, sizeof (sock_in)) < 0) {
+  perror("tcpblast: bind");
+  exit(1);
+ }
+
+ host = gethostbyname(argv[1]);
+ if (host) {
+  sock_in.sin_family = host->h_addrtype;
+  memmove(&sock_in.sin_addr, host->h_addr, host->h_length);
+ } else {
+  sock_in.sin_family = AF_INET;
+  sock_in.sin_addr.s_addr = inet_addr(argv[1]);
+  if (sock_in.sin_addr.s_addr == -1) {
+   fprintf(stderr, "tcpblast: %s unknown host\n", argv[1]);
+   exit(1);
+  }
+ }
+ sock_in.sin_port = htons(9);
+
+ if (connect(f, (struct sockaddr*) &sock_in, sizeof(sock_in)) <0)
+ {
+  perror("tcpblast connect:");
+  exit(1);
+ }
+
+ if (gettimeofday(&ti, &tiz) < 0)
+ {
+  perror("tcpblast time:");
+  exit(1);
+ }
+ starts =  ti.tv_sec;
+ startms = ti.tv_usec / 1000L;
+
+
+ for (i=0; i<nblocks; i++)
+ {
+  if (write(f, greet, BLKSIZE) != BLKSIZE)
+   perror("tcpblast send:");
+  /*write(1, ".", 1);*/
+ }
+
+ if (gettimeofday(&ti, &tiz) < 0)
+ {
+  perror("tcpblast time:");
+  exit(1);
+ }
+ stops =  ti.tv_sec;
+ stopms = ti.tv_usec / 1000L;
+
+ expms = (stops-starts)*1000 + (stopms-startms);
+ printf("\n%d KB in %ld msec", nblocks, expms);
+ printf("  =  %.1f kbit/s", (double) (nblocks*BLKSIZE) / expms *
+8000.0);
+ printf("  =  %.1f kByte/s", (double) (nblocks*BLKSIZE) / expms * 1000);
+
+ printf("  =  %.1f MByte/s\n", (double) (nblocks*BLKSIZE) /
+(double)(expms*1024.0));
+return(0);
+}
+

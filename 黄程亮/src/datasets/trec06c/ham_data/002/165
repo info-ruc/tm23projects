@@ -1,0 +1,46 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Sat, 31 Dec 1994 04:30:29 MST
+Received: from agate.Berkeley.EDU by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA02500; Sat, 31 Dec 1994 04:30:26 MST
+Received: by agate.berkeley.edu (8.6.8.1/1.33)
+	id CAA22674; Sat, 31 Dec 1994 02:30:20 -0800
+Received: from GATEWAY by agate with netnews
+	for icon-group@cs.arizona.edu (icon-group-l@cs.arizona.edu)
+To: icon-group-l@cs.arizona.edu
+Date: 31 Dec 1994 09:32:36 GMT
+From: Will Mengarini <mengarini@delphi.com>
+Message-Id: <3e38fk$4is@news.halcyon.com>
+Organization: Northwest Nexus Inc.
+Sender: icon-group-request@cs.arizona.edu
+References: <788737393snz@skin.demon.co.uk>
+Subject: Re: MS-DOS Icon and Ctrl C
+
+Nic@skin.demon.co.uk (Nic Gibson) writes:
+
+>Has anyone got a suggestion that would allow me to handle ^C keypresses
+>directly? I've putting together an interactive program that really could use
+>the ability to read ^C as input, do some stuff and then quit. Any suggestions
+>short of modifying the iconx source gratefully received.
+
+This
+   procedure main(arg)
+      writes( "Input a char: " )
+      c := getche();
+      write(); write( "c: ", image(c) )
+   end
+works for me, with Icon 8.8 for MS-DOS; both ^C & ^Break are echoed
+as the charset's graphic for Ascii ^C, then the program continues.
+
+Note that non-Ascii keystrokes like Alt-whatever will generate 2
+getch{,e}() returns, the first null; if you use getch{,e}() you'll
+probably want to allow for that. 
+
+Will Mengarini  <mengarini@delphi.com>  In a profound sense, we are
+                                        ultimately all from Delphi
+
+"Walking is a prescribed health activity, buddy.  If you go unsupervised,
+ without a prescription, & then you get yourself in trouble, who gets
+ the rap?  The city does.  So you got to have that prescription.  Did you
+ know that almost all auto damage involving auto-pedestrian accidents
+ results from non-prescription walking?"
+      --from a Mark Rich story in the Nov 94 /Analog Science Fiction & Fact/
+

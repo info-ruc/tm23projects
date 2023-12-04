@@ -1,0 +1,109 @@
+Received: from corporate1.osec.com (host3.sdisac.com [204.253.175.3])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA07029
+	for <handyboard@media.mit.edu>; Tue, 16 Mar 1999 13:52:01 -0500 (EST)
+Received: from osec102.erols.com by corporate1.osec.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.0.1460.8)
+	id GVWCHQJT; Tue, 16 Mar 1999 10:48:57 -0800
+Received: by osec102.erols.com with Internet Mail Service (5.0.1457.3)
+	id <GV0328JH>; Tue, 16 Mar 1999 13:54:33 -0500
+Message-Id: <D1C6ABF12D15D1119A2D006097BCFD46195ACA@osec102.erols.com>
+From: "Russell, Casey" <crussell@osec.com>
+To: handyboard@media.mit.edu
+Subject: Interrupt Driven Binary programs
+Date: Tue, 16 Mar 1999 13:54:32 -0500
+X-Priority: 3
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.0.1457.3)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
+If I want to install an interrupt driven binary file to the handy board,
+do I have to place it in the "system interrupt" that runs at 1000Htz?
+Can I use the clock on the 6811?  I want to sample an event running
+above 1000Htz, is this possible?  Bellow is a listing of the code I have
+written to measure a pulse width using hardware interrupts, when this
+code is compiled using Norton Lab's ICB assembler server no errors are
+found.  Once I load the created .icb file through IC I receive this
+error "Fatal internal error: Non-contiguous binrecs in concat" and
+windows shuts down IC.  I am at my wits end and could use some help on
+this problem.  Thanks.
+
+Casey Russell
+Crussel@osec.com
+
+
+BASE			EQU	$1000
+TIC3			EQU	$1014		* Timer Input Capture
+register 3
+TCTL2			EQU	$1021		* Timer Control register
+2
+TMSK1			EQU	$1022		* main Timer interrupt
+Mask register 1
+TFLG1			EQU	$1023		* main Timer interrupt
+Flag register 1
+HPRIO			EQU	$103C		* Highest Priority
+Interrupt and misc
+TIC3INT		EQU	$EA		* Timer Input Capture 3
+	
+IC3MOD			FDB		0
+IC3DUN			FDB		0
+HPW				FDB		0
+FIRST_EDGE			FDB		0
+variable_pulsewidth	FCB		0
+variable_wavelength 	FDB		0
+
+
+
+		ORG 	MAIN_START
+		SEI
+		LDAA	#$7E
+		STAA	TIC3INT
+		LDX	#TIMES
+		STX	TIC3INT+1
+
+subroutine_get_times:
+		LDAA	#%00000001		*CAPTURE ON RISING EDGE
+		STAA	TCTL2 				
+		LDAA	#$FF
+		STAA	IC3MOD		*FF-IC3 OFF,0-1ST,1-LAST EDGE
+		CLR	IC3DUN		*SIGNAL PULSE NOT DONE
+		BCLR	TFLG1,%11111110	*CLEAR IC3F
+		BSET	TMSK1,$01		*ENABLE IC3 INTERRUPTS
+		CLI
+WAIT		LDAA	IC3DUN		*SETS AFTER PULSE DONE
+		BEQ	WAIT			*LOOP TILL PULSE IS
+TIMED
+		SEI				*DISABLE INTERRUPTS
+		LDD	HPW
+		STD	variable_pulsewidth
+		RTS
+
+TIMES		INC	IC3MOD		*$FF->0 AT 1ST EDGE, 0->1 AT 2ND
+EDGE
+		BNE	FALL_EDGE		*IF NOT 0, THIS IS
+TRAILING EDGE
+
+****************PROCESS LEADING EDGE OF PULSE**********************
+		LDD	TIC3			*READ TIME OF FIRST EDGE
+		STD	FIRST_EDGE
+
+****************RECONFIGURE FOR FALLING EDGE***********************
+
+		BCLR	TCTL2,$03		*EDG3B:EDG3A->0:0
+		BSET	TCTL2,$02		*EDG3B:EDG3A->1:0
+		BRA	RETURN		*DONE PROCESSING FIRST EDGE
+
+****************PROCESS FALLING EDGE OF PULSE**********************
+FALL_EDGE	LDD	TIC3			*GET TIME OF TRAILING
+EDGE
+		SUBD	FIRST_EDGE		*TIME OF LAST MINUS TIME
+OF FIRST
+		STD	HPW			
+		BCLR	TCTL2,$03		*DISABLE IC3
+		LDAA	#1
+		STAA	IC3DUN		*SIGNAL PULSE MEASURED
+
+RETURN	BCLR	TFLG1,%11111110	*CLEAR IC3F
+		RTI				*RETURN FROM IC3 SERVICE
+
+
+

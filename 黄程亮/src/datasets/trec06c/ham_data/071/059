@@ -1,0 +1,62 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id VAA21121
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 1 Sep 2000 21:12:48 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.30) by deimos.email.Arizona.EDU (5.1.046)
+        id 39AF04DC00015097 for DMDX@psy1.psych.arizona.edu; Fri, 1 Sep 2000 21:12:47 -0700
+Message-Id: <4.3.2.7.2.20000901205453.00a96c80@psy1.psych.arizona.edu>
+Date: Fri, 01 Sep 2000 21:12:46 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] algorithms
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Any math wizard out there know of someone's algorithm to determine the 
+frequency of a signal given the times of a number of not necessarily 
+consecutive samples?  I'm thinking of retrograding version 2 back to 
+version 1's retrace rate determination code, or doing some sort of blend of 
+the two.  The trouble with version 1's method of noting the time that 
+retraces occur at is that it misses a number of them, just what percentage 
+depends on the machine and phase of the moon -- it has a number of kludges 
+in there that get it right the vast majority of times, however it's by no 
+means 100%, fortunately (or unfortunately, depends which view you take, if 
+it repeatedly screwed up I'd have done something about it) repeating the 
+test is very likely to not repeat any error.  The trouble with version 2's 
+approach, to perform a given number of flips and note how long they all 
+took is that on some machines, notably ones with NVIDIA video cards using 
+Detonator 3 drivers and possibly whatever cards Mike has been having 
+trouble with, is that a constant (it would appear) number of frames can get 
+added into the mix, it appears to be 2 frames, so using 100 flips actually 
+gets 102 which is what I suspect gives me a consistent retrace interval of 
+12.00ms when it should be 11.75, 200 flips gives half the error again, 10x 
+the flips 1 tenth the error indicating a constant number of extra 
+frames.  Which would be fine if it did it on everybody's video cards, but 
+it doesn't, the reason the code is the way it is is that it works on every 
+other machine I've tested it on.
+   So either someone comes up with a wondrous formula that solves this 
+conundrum or I put another kludge in there.  Which of course does nothing 
+for the more scary part of the problem and that is that the existing 
+retrace sync routines also seem to get blown out of the water by these 
+stinking drivers too, 98% multiply missed retraces is pretty impressive 
+when I've overridden the automatic values and entered correct ones.  They 
+get out of phase and don't get back in phase which makes me think that the 
+driver is just point blank not telling me when the vertical retrace is 
+occurring.  All I can hope for is that there is some obvious error I've 
+made but I'm having trouble believing that, the code works with other drivers.
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Look under the sofa cushion; you will be surprised at what you
+find.
+
+
+

@@ -1,0 +1,165 @@
+Received: from siberia.it.earthlink.net (siberia.it.earthlink.net [207.217.88.20])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id WAA03007
+	for <handyboard@media.mit.edu>; Mon, 14 Dec 1998 22:31:26 -0500 (EST)
+Received: from earthlink.net (localhost [127.0.0.1])
+	by siberia.it.earthlink.net (8.8.5/8.8.5) with ESMTP id TAA09691;
+	Mon, 14 Dec 1998 19:28:34 -0800 (PST)
+Message-Id: <199812150328.TAA09691@siberia.it.earthlink.net>
+X-Mailer: exmh version 2.0zeta 7/24/97
+To: Will <willbain@cs.umt.edu>
+Subject: Small Contribution... 
+Cc: handyboard@media.mit.edu, fnees@netco.com.br
+Newsgroups: comp.lang.tcl, comp.robotics.misc
+Date: Mon, 14 Dec 1998 19:28:34 -0800
+From: Andre Philippi <philippi@earthlink.net>
+
+
+Howdy Folks,
+
+I just finish writing the first version of ICD; 
+a small Expect server, that listens for TCP/IP requests on port 2010, 
+and forwards them to IC (Interactive C).
+
+Use it to make web, email, and even 2 way paging 
+interfaces to the Handy Board :)
+
+You'll need TCL 7.6 or above, Expect, and IC.
+
+Enjoy,
+
+Andre Philippi.
+
+
+#!/usr/local/bin/expect
+
+################################################################################
+# $Id: icd,v 1.1 1998/12/15 02:21:00 philippi Exp philippi $                   #
+################################################################################
+#                                                                              #
+#       ICD 1.0 - Interactive C Daemon                                         #
+#                                                                              #
+#       Created : 12/14/98                                                     #
+#       Author  : Andre Philippi                                               #
+#       Email   : philippi@earthlink.net                                       #
+#                                                                              #
+#       You are free to use, copy, modify, and redistribute ICD,               #
+#       so long as you don't remove or alter this header.                      # 
+#                                                                              #
+################################################################################
+
+###############################
+proc icCommand {sock command} {
+	global prompt icprompt ic_id
+
+	set spawn_id $ic_id
+	send "$command\r"
+	
+	expect {
+		"*\nC> " {
+			set output [string trimright $expect_out(0,string) $icprompt]
+			puts -nonewline $sock $output
+			puts -nonewline $sock $prompt
+		}
+		timeout {
+			puts $sock "Error.\n"		
+			puts -nonewline $sock $prompt		
+		}
+	}
+}
+
+###################################
+proc handleClient {sock clientIp} {
+	
+	set clientCommand [gets $sock]
+			
+	if {[eof $sock]} {
+		close $sock
+	} else {		
+		switch -exact $clientCommand {
+			quit      {close $sock}
+			default   {icCommand $sock $clientCommand}
+		}
+	}
+}
+
+####################################
+proc acceptClient {sock addr port} {
+	global prompt connected 
+	
+	set clientIp $addr
+
+	fileevent $sock readable [list handleClient $sock $clientIp]
+	fconfigure $sock -buffering none -blocking 0
+	puts $sock ""
+	puts $sock $connected
+	puts -nonewline $sock $prompt
+}
+
+#################
+proc startIc {} {
+	global ic ic_id
+	
+	spawn $ic
+	set ic_id $spawn_id
+	
+	expect {
+		"*\nC> " {
+			puts "\nIC Started..."
+			send "beep();\r"
+		}	
+		timeout {
+			puts "IC Init Error..."
+			close 
+			wait 
+			exit
+		}
+	}
+}
+
+################################################################################
+#                                     MAIN                                     #
+################################################################################
+
+log_user 	0
+set timeout 	60
+set serverPort	2010
+set ic 		/home/philippi/packages/ic-sparc-solaris-2853/bin/ic
+set connected 	"Interactive C Daemon 1.0 - Type \"help\" for assistance."
+set contact	"philippi@earthlink.net"
+set prompt	"ICD1.0>"
+set icprompt	"C> "
+
+startIc
+
+socket -server acceptClient $serverPort
+puts "\nListening to port $serverPort...\n"
+vwait events
+
+################################################################################
+# To Do / Consider :                                                           #
+################################################################################
+#                                                                              #
+# - Queueing & locking for multiuser support.                                  #
+# - User authentication & access restriction for some functions (unload, etc.).#
+# - Creation of an ICD protocol definition ?                                   #
+# - Java applet client.                                                        #
+#                                                                              #
+################################################################################
+# $Log: icd,v $
+# Revision 1.1  1998/12/15 02:21:00  philippi
+# Initial revision...
+#                                                                              
+################################################################################
+
+
+
+
+=================================================================
+ Andre Philippi - Applications Developer   | Phone: 626-296-5016
+ philippi@corp.earthlink.net               | Fax:   626-296-5113
+ Earthlink Network, Inc.                   | 3100 New York Drive
+ http://www.earthlink.net                  | Pasadena, CA  91107
+=================================================================
+
+
+

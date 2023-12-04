@@ -1,0 +1,123 @@
+Received: from interval.louisiana.edu (localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id i89CMK3Q009670
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Thu, 9 Sep 2004 07:22:20 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id i89CMKv2009669
+	for reliable_computing-outgoing; Thu, 9 Sep 2004 07:22:20 -0500 (CDT)
+Received: from fe7.cox-internet.com (fe7.cox-internet.com [66.76.2.52])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id i89CMB6m009665
+	for <reliable_computing@interval.louisiana.edu>; Thu, 9 Sep 2004 07:22:17 -0500 (CDT)
+Received: from Inspiron-8200 ([68.226.133.93]) by fe7.cox-internet.com
+          (InterMail vK.4.04.00.03 201-232-140-20030416 license 2c0225210a073aa8d80c3b96b8e7ebaa)
+          with SMTP id <20040909122206.VCYV1407.fe7@Inspiron-8200>;
+          Thu, 9 Sep 2004 07:22:06 -0500
+Message-Id: <2.2.32.20040909122341.009c2d44@pop.louisiana.edu>
+X-Sender: rbk5287@pop.louisiana.edu
+X-Mailer: Windows Eudora Pro Version 2.2 (32)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Thu, 09 Sep 2004 07:23:41 -0500
+To: George Corliss <George.Corliss@marquette.edu>,
+        "Rosa, Andrea" <A.Rosa@napier.ac.uk>,
+        <reliable_computing@interval.louisiana.edu>
+From: "R. Baker Kearfott" <rbk@louisiana.edu>
+Subject: Re: intervals for integer programs
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+Dr. Rosa,
+
+Actually, what George suggests is a fairly widely-used technique in
+global optimization, not confined to interval methods:  One replaces
+a constrained minimization problem by another problem whose minimum
+is less than or equal to the minimum of the original problem;  this
+derived problem is called a "relaxation."  The solution to the
+relaxation over a sub-region of the search region then provides a
+lower bound over any global optimum constrained to that subregion.
+Upper bounds to the global optimum are obtained by 
+evaluating the objective at feasible points.  The subregion can
+then be eliminated from further search if the lower bound is greater
+than the upper bound on the optimum.
+
+The above "branch and bound" technique, to my knowledge, is more-or-less
+"standard" for solving mixed integer programming problems (i.e.
+replacing the integers by continuous variables as George Corliss
+indicated, etc.).  Interval methods in particular supply the 
+following additional features:
+
+1. Validation, that is mathematically certain bounds
+
+2. Several alternate ways of obtaining bounds on ranges 
+
+3. the "interval Newton" acceleration procedure.
+
+A good starting point for further research might be Arnold Neumaier's
+web page:
+
+http://solon.cma.univie.ac.at/~neum/glopt.html
+
+Sincerely,
+
+R. Baker Kearfott
+
+At 06:00 AM 9/9/2004 -0500, George Corliss wrote:
+>Dear Dr. Rosa,
+>
+>I cannot point you to references, but I can offer that one approach I
+>suppose is considered well known in the community is to apply interval
+>methods to the continuous problem.  When the interval of real numbers
+>contains only one integer, snap to that integer.  You sort of run a
+>continuous algorithm with a tolerance of 0.99.
+>
+>Others may have more directly applicable references.
+>
+>Dr. George F. Corliss
+>Electrical and Computer Engineering
+>Marquette University
+>PO Box 1881 
+>1515 W. Wisconsin Ave.
+>Milwaukee WI 53201-1881 USA
+>414-288-6599; Fax: 288-5579; Dept. 288-6280
+>George.Corliss@Marquette.edu
+>
+>
+>> 
+>> Dear list members,
+>> 
+>> I have recently become interested in interval methods as a means of solving
+>> non-linear non-convex optimisation problems and I am looking to employ
+them in
+>> my own fields of work (traffic and transport engineering and econometrics).
+>> 
+>> However, part of the problems I'd like to work on with intervals are actually
+>> integer programs and I do not have, so far, a clear grasp of how applicable
+>> are interval methods in this case.
+>> 
+>> Could you point me to papers, books sections or other resources
+discussing the
+>> applications of interval methods to the solution of (non-linear) integer
+>> programs?
+>> 
+>> Many thanks 
+>> 
+>> Dr Andrea Rosa 
+>> SBE - Napier University
+>> Edinburgh, UK 
+>> tel  ++44 (0) 131 455 2223
+>> fax ++44 (0) 131 455 2239
+>> 
+>
+>
+>>
+
+---------------------------------------------------------------
+R. Baker Kearfott,    rbk@louisiana.edu   (337) 482-5346 (fax)
+(337) 482-5270 (work)                     (337) 993-1827 (home)
+URL: http://interval.louisiana.edu/kearfott.html
+Department of Mathematics, University of Louisiana at Lafayette
+(Room 217 Maxim D. Doucet Hall, 1403 Johnston Street)
+Box 4-1010, Lafayette, LA 70504-1010, USA
+---------------------------------------------------------------
+
+
+

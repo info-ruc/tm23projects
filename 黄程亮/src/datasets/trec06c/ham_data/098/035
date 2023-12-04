@@ -1,0 +1,56 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iB2KuMFJ002151
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 2 Dec 2004 13:56:22 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 6B1DEA199CC
+	for <DMDX@psy1.psych.arizona.edu>; Thu,  2 Dec 2004 13:56:22 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 1E149A1B0B6
+	for <DMDX@psy1.psych.arizona.edu>; Thu,  2 Dec 2004 13:56:22 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041202133124.00ba4c88@psy1.psych.arizona.edu>
+Date: Thu, 02 Dec 2004 13:56:20 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] DMDX 3.1.2.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   This release of DMDX rectifies an oversight where the +DigitalVOX 
+response is repeatedly presented.  Hasn't been a problem till the recent 
+use of zillion responses with the VOX.  The code was intended to be in 
+there and indeed part of it was, it's just that not all of it was fully 
+implemented -- now it is.
+
+   That's the x.x.x.1 part of the release, the x.x.2.x part of the release 
+is a rather substantial set of changes made in tracking down a crash here 
+that no one should notice but you never can tell.  Changes include fixes in 
+the way errors are handled in the real time routines that shouldn't affect 
+anyone because those errors are fatal ones (ie DMDX could lockup up or 
+crash without an error message, now there should be one), DMDX now also 
+pumps the windows message queue dry in between items which could 
+conceivably affect some people that are pushing DMDX to the limit (but I'd 
+be really impressed, longest time I noticed the 900Mhz Duron busy there was 
+still less than a millisecond).  Previously it would only process a single 
+message per item in a continuous running job which could cork things up a 
+bit, now it'll get them all.  And a few other changes like video service 
+routine not doing anything when the job is terminated because on a slow 
+machine it can wind up doing bad things -- none of which anyone should 
+notice but they are all changes to deep nitty gritty bits of DMDX so be 
+warned.  If anything people should notice a significant up tick in the 
+responsiveness of DMDX to ESC when trying to abort continuous running jobs.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Five is a sufficiently close approximation to infinity.
+
+                                                  -  Robert Firth
+
+
+

@@ -1,0 +1,35 @@
+Received: from zadok.eeng.dcu.ie (zadok.eeng.dcu.ie [136.206.35.7])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id OAA27147
+	for <handyboard@media.mit.edu>; Thu, 12 Feb 1998 14:00:08 -0500 (EST)
+Received: from thorung.eeng.dcu.ie by zadok.eeng.dcu.ie (4.1/SMI-4.1)
+	id AA25766; Thu, 12 Feb 98 18:52:09 GMT
+Received: by thorung.eeng.dcu.ie (Linux Smail3.1.28.1 #5)
+	id m0y33og-000FRzC; Thu, 12 Feb 98 18:56 GMT
+Message-Id: <m0y33og-000FRzC@thorung.eeng.dcu.ie>
+Date: Thu, 12 Feb 98 18:56 GMT
+From: roneill@thorung.eeng.dcu.ie ("Richard O'Neill [94094039-EE]")
+To: handyboard@media.mit.edu
+Subject: a scary story
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+
+Just an interesting (or perhaps not) story about what just happened to me 
+this week while putting my Handy-Board together. I was on the section 
+where you put on the digital input circuitry, and all was going well so far - it 
+loads pcode_hb.s19, hooks up to IC and executes commands from the PC. 
+So far so good, but having loaded HBTEST.C and trying to run 
+"testdigitals()", nothing happened when I pressed START. OK, started 
+debugging and then things started going terribly wrong. Somehow I fried an 
+led and then the display started to act funny. I could still download 
+"pcode_hb.s19" and connect to IC, and even execute commands, but the 
+display was either displaying nothing, or displaying half of the "startup 
+display message" or displaying it in bits... It was really weird. Then, it 
+stopped communicating with the computer altogether, which wasn't good, 
+so I really thought I'd actually fried something else. I tested the memory and 
+the address latches and they were OK, and then miraculously, it worked!
+After loading the pcode though, you had to flip the on/off switch (as the 
+handy board doesn't have a RESET switch) to start the IC programme.
+However, it kept losing the pcode when I did this. I eventually worked out, 
+that if you flick the switch very fast, this doesn't happen, so now I only 
+have to debug the digital inputs again.
+

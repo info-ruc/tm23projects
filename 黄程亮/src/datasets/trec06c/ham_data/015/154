@@ -1,0 +1,84 @@
+Received: from quasar.newtonlabs.com (root@quasar.newtonlabs.com [206.125.74.97])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id UAA23296
+	for <handyboard@media.mit.edu>; Fri, 24 Apr 1998 20:03:30 -0400 (EDT)
+Received: from bogomips.newtonlabs.com (rsargent@bogomips.newtonlabs.com [206.125.74.108])
+          by quasar.newtonlabs.com (8.8.4/8.8.4) with ESMTP
+	  id RAA06920; Fri, 24 Apr 1998 17:03:23 -0700
+Received: (from rsargent@localhost)
+	by bogomips.newtonlabs.com (8.8.5/8.8.5) id RAA15564;
+	Fri, 24 Apr 1998 17:02:56 -0700
+Date: Fri, 24 Apr 1998 17:02:56 -0700
+Message-Id: <199804250002.RAA15564@bogomips.newtonlabs.com>
+From: Randy Sargent <rsargent@newtonlabs.com>
+To: handyboard@media.mit.edu
+Subject: Smooth PWM routines for IC 3.1/3.2
+
+
+Thanks to Julian Skidmore and Scott Seaton, we have a version of pcode and
+libraries for IC 3.1/3.2 which implement Julian's "smooth pwm" routines for
+the MIT Handyboard.
+
+To grab these, please go to the following address:
+
+ftp://newtonlabs.com/contrib/smooth-pwm
+
+I've included the "README" file from the directory at the end of this
+message to inform those who don't already know how Julian's modification
+might help you.
+
+Many thanks to Julian and Scott for contributing this feature.
+
+-- Randy
+
+---------------
+
+README for IC 3.1 Smooth PWM routines for the MIT Handyboard
+4/24/98
+
+The files in this directory are contributed by 
+
+            Julian Skidmore <skidmorj@cs.man.ac.uk>
+
+and
+
+            Scott Seaton <Scott.Seaton@Aus.Sun.COM>
+
+The "Smooth PWM" routines, designed by Julian Skidmore, allow for
+finer control of the amount of power going to the 4 motor outputs on
+the MIT Handyboard.  
+
+While the "motor" library function appears to allow 100 forward power
+levels and 100 backwards power levels, in fact, the -100 to 100 is
+quantized to 8 forward and 8 backwards power levels in the standard
+library and pcode.
+
+Julian's modifications to the pcode and library allow for full -100 to 100
+resolution for setting power.  This can be particularly useful when running
+low-voltage motors on the Handyboard, where power levels need to be kept
+low.
+
+--------------------------
+
+TO INSTALL:
+
+Simply copy pcode_hb.s19 and lib_hb.c into your IC libraries
+directory.  You might want to back up the old versions of the same
+files first.
+
+Next, be sure to download the updated pcode file.  You should see
+"SMOOTHPWM" on the LCD screen on bootup.
+
+Note that if the new library is used with the old pcode, or
+vice-versa, the "motor" command will not behave at all linearly with
+respect to the power command (although 0 and 100 will still work as
+normal).
+
+If you have problems downloading pcode_hb.s19 and lib_hb.c, you can
+instead download and unzip "smooth.zip", which contains the same files.
+
+
+----------------------------------------------------------------
+Randy Sargent                        Newton Research Labs
+President                            Robotic Systems and Software
+rsargent@newtonlabs.com              http://www.newtonlabs.com/
+

@@ -1,0 +1,151 @@
+Received: from mail.ptd.net (srv1.ptd.net [204.186.0.131])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id JAA00702
+	for <handyboard@media.mit.edu>; Wed, 3 Mar 1999 09:23:06 -0500 (EST)
+Received: (qmail 24936 invoked from network); 3 Mar 1999 14:23:03 -0000
+Received: from cable032207.cable.str.ptd.net (HELO softech.ptdprolog.net) (204.186.32.207)
+  by mail.ptd.net with SMTP; 3 Mar 1999 14:23:03 -0000
+Reply-To: "Carlos Fernandez" <softech@ptdprolog.net>
+From: "Carlos Fernandez" <softech@ptdprolog.net>
+To: "Daniel Kornhauser (Comp)" <daniel@laguna.fmedic.unam.mx>
+Cc: "Handy Board" <handyboard@media.mit.edu>
+Subject: Re: Stepper Motors
+Date: Wed, 3 Mar 1999 09:22:09 -0500
+Message-Id: <01be6581$394eba80$cf20bacc@softech.ptdprolog.net>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.71.1712.3
+X-Mimeole: Produced By Microsoft MimeOLE V4.71.1712.3
+
+I purchase the motors from Jameco.
+
+I connected the stepper motors on the motor headers.
+
+From left to right ( left meaning next to the RJ jack ) in this sequence:
+Brown, Skip,Red,Blue,Skip,Yellow.
+
+What do you mean by the pattern in the LED's ?
+
+
+-----Original Message-----
+From: Daniel Kornhauser (Comp) <daniel@laguna.fmedic.unam.mx>
+To: Carlos Fernandez <softech@ptdprolog.net>
+Date: Tuesday, March 02, 1999 8:54 AM
+Subject: Re: Stepper Motors
+
+
+>
+>
+>On Mon, 1 Mar 1999, Carlos Fernandez wrote:
+>
+>> Hi, am just getting started with the Handy Board.  I was wondering if you
+>> could help me.  I am trying to control some stepper motors.  The steppers
+>> are 2 phase bipolar stepper motors.  I connected them just like you said
+in
+>
+>Where did you get your motors from ????
+>
+>> your page, but when I tell them to move they don't.  They move forward
+and
+>> backward and tremble then stop.
+>
+>This could be caused by :
+>
+>1 Incorect wiring
+>2 You trying to move them to fast...
+>
+>
+>>
+>> This stepper motors have four wires.  Brown +A, Red -A, Blue +B,
+Yellow -B.
+>
+>This aren't exactly my colors :-(.
+>I think The A means that the Brown and Red are in the same coil ??
+>
+>>
+>> I connect them :
+>>     Brown, Skip,Red,Blue,Skip,Yellow.
+>
+>In what pins do you conect them ???
+>
+>>
+>> With the stepper motors I received a paper that says:
+>>
+>>     Step        +A        +B        -A        -B
+>>
+>>         1            +          +           -           -
+>>         2            -           +          +           -
+>>         3            -            -          +           +
+>>         4            +           -          -            +
+>>         5            +          +          -            -
+>>
+>> I was not sure how to read this, but hey whats the worst that could
+>> happened.
+>
+>Well it seems clear that A+ And A- are in a same coil because they are
+>allways in oposite potencials...
+>Did you check that the patern you generate with the leds in you handy
+>board ???
+>
+>> I wrote a small program trying to interpret this:
+>>
+>>     void Stepper(void);
+>>         int intSteps=30;
+>>         int intStep;
+>>         lng lngDelay = 5L;
+>>         for (intStep = 0; intStep < intSteps; intStep++)    {
+>>             /* step 1 */
+>>             fd(0);
+>>             fd(1);
+>>             msleep(lngDelay);
+>>             /* step 2 */
+>>             fd(1);
+>>             bk(0);
+>>             msleep(lngDelay);
+>>             /* step 3 */
+>>             bk(0);
+>>             bk(1);
+>>             msleep(lngDelay);
+>>             /* step 4 */
+>>             fd(0);
+>>             bk(1);
+>>             msleep(lngDelay);
+>>             /* step 5 */
+>>             fd(0);
+>>             fd(1);
+>>             }
+>>     ao();
+>> }
+>>
+>> The program does not work.  The stepper motor does the same thing, it
+>> varibrates, moves forward a little, moves back a little and stops.
+>
+>Sorry I don't remember what patern does fd and bk generate in the output
+>of the handy board.
+>But with the information you have on you motor the job does not appear
+>dificult, you just have to try bk(0), bk(1), fd(0) and fd(1) and see what
+>patern they generate and mach it with the specification you gave me above.
+>Notest that steps 1 and 5 are the same, so you should have a 4 diferent
+>paterns, the same that generates bk and fd....
+>
+>>
+>> If you could give me any help I would really appreciate it.
+>
+>Hope I could help, you job seem fairly easy, you just have to try to find
+>the solution a little more. And try to find an other motor to play with
+>there is plenty of broken floppys. Sometimes the step motor can just be
+>broken....
+>
+>>
+>> Thanks
+> De nada....
+>
+>
+> Daniel Korhauser
+>
+>
+
+

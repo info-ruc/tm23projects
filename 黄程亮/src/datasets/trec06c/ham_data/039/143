@@ -1,0 +1,82 @@
+Received: from smtp2.a2000.nl (spartacus.a2000.nl [62.108.1.20])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id DAA30768
+	for <handyboard@media.mit.edu>; Tue, 16 Mar 1999 03:10:59 -0500 (EST)
+Received: from node063e.a2000.nl ([62.108.6.62] helo=winplayer)
+	by smtp2.a2000.nl with smtp (Exim 2.02 #4)
+	id 10MowE-0002SL-00
+	for handyboard@media.mit.edu; Tue, 16 Mar 1999 09:10:58 +0100
+From: "M.J. Matthijsse" <marobi@direct.A2000.nl>
+To: "Handyboard (E-mail)" <handyboard@media.mit.edu>
+Subject: RE: INTERACTIVE C AND THE .ICB COMPILER
+Date: Tue, 16 Mar 1999 09:11:55 +0100
+Message-Id: <000001be6f84$a8fa6160$0200a8c0@winplayer.marobi.nl>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2377.0
+Importance: Normal
+In-Reply-To: <D1C6ABF12D15D1119A2D006097BCFD46190907@osec102.erols.com>
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3155.0
+
+Russell
+
+You are making a mistake in you addressing-mode.
+You do a: STAB	TFLG1,X, where TFLG1 = $1023 and you initialise X=#$1000
+The assembler gets confused and generates bogus output, including a warning.
+
+You need to set TFLG1 EQU $23.
+
+You need to so that with more of your definitions or change you address-mode
+to:
+	STAB	TFLG1
+
+Get rid of your warnings and it should load ok.
+Be sure to strip_cr you icb-file.
+
+Rgrds Rien
+Email:rien@direct.A2000.nl
+
+
+>       -----Original Message-----
+>       From: Russell, Casey [mailto:crussell@osec.com]
+>       Sent: Monday, March 15, 1999 8:31 PM
+>       To: handyboard@media.mit.edu
+>       Subject: INTERACTIVE C AND THE .ICB COMPILER
+>
+>
+>       Hello,
+>
+>       My problem lies with the downloading of a constructed
+>       .icb file created
+>       for the .icb compiler from Newton Labs.  I have written
+>       a .asm file and
+>       compiled it using the web page
+>       http://www.newtonlabs.com/ic/icb-200.html
+>       .  The code
+>       compiles successfully and when I copy the associated .icb
+>       file and try to download the code using IC 3.2 I
+>       receive this message
+>       "Fatal internal error: Non-contiguous binrecs in
+>       concat"  then windows
+>       informs me that an illegal operation was performed and
+>       shuts down IC.
+>       Below is a copy of the .asm file and the .icb file.
+>       Any help on this
+>       matter would be greatly appreciated.  Thank You.
+>
+>
+>
+>       Casey Russell
+>       Crussell@osec.com
+>       540-663-0995
+>
+>
+>
+>
+>
+>
+
+

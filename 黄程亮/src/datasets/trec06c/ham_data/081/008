@@ -1,0 +1,75 @@
+Received: from mail.VR-Web.de (mail.vr-web.de [195.243.197.42])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with SMTP id LAA24891
+	for <tex-fonts@math.utah.edu>; Wed, 1 May 2002 11:27:31 -0600 (MDT)
+Message-Id: <200205011727.LAA24891@sunshine.math.utah.edu>
+Received: (qmail 32136 invoked by uid 101); 1 May 2002 17:27:29 -0000
+Received: from pd902b8a4.dip0.t-ipconnect.de (HELO localhost) (217.2.184.164)
+  by svtrick2.entenhausen.vpn with SMTP; 1 May 2002 17:27:29 -0000
+From: "Walter Schmidt" <was@VR-Web.de>
+To: "Michael Sternberg" <sternberg@phys.uni-paderborn.de>,
+        "tex-fonts@math.utah.edu" <tex-fonts@sunshine.math.utah.edu>
+Date: Wed, 01 May 2002 19:27:27 +0200 (MSZ)
+Reply-To: "Walter Schmidt" <was@VR-Web.de>
+Priority: Normal
+X-Mailer: PMMail 2.20.2380 for OS/2 Warp 4.0
+In-Reply-To: <20020501183015.B39@phys.upb.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Subject: Re: math fonts for presentations
+
+On Wed, 1 May 2002 18:30:15 +0200, Michael Sternberg wrote:
+
+>    o hvmath:  In my opinion, this is too heavy, and has too large
+>	an x-height, leading to a crowded looking page.
+
+Helvetica is MUCH larger than CM.  As a result, many dimensions
+in your document, particularly the leading (distance between the 
+lines), are too small for Helvetica.  _This_ is the reason, 
+why it looks bad!
+
+In addition to hvmath.sty, there is an improved package 
+hvmaths.sty on CTAN (*), which lets you scale the Helvetica 
+fonts, so that they match the size of CM.  Besides, the leading 
+should be increased somewhat, since Helvetica has a larger 
+x-height than CM, even when scaled to the same height of the 
+capital letters.  
+
+For instance, scaling down Helevtica to about 93% of its 
+natural size and increasing the distance between the lines 
+to about 105% gives a good result:
+
+  \usepackage[scaled=0.93]{hvmaths}
+  \linespread{1.05}
+  \normalfont
+
+The required \linespread depends on the line width and 
+should be judged visually.
+
+(*) CTAN:macros/latex/contrib/supported/psnfssx/hvmath/
+
+
+>	Micropress provides 300dpi pk-fonts suitable for print preview,
+>	which is what I used for a test.
+
+Hmm... the prefabricated bitmap fonts cannot be scaled, 
+of course.  But --  believe me -- it will look really good 
+with scalable Type1 fonts :-)
+
+
+>    o cmbright:  As the name implies, this is rather light and thus,
+>	not quite unsuitable for projection.  
+
+You mean "not suitable"?
+Well, it was not particularly designed for that purpose.
+
+>       However, I find the
+>	font genuinely appealing in regular text.
+
+:-)
+
+best wishes
+
+Walter
+
+

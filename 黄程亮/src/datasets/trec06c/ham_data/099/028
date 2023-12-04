@@ -1,0 +1,158 @@
+Received: from canaveral.indigo.cert.org ([192.88.209.130] verified)
+  by calmail-fe3.berkeley.edu (CommuniGate Pro SMTP 4.2.6)
+  with ESMTP-TLS id 29200899; Wed, 26 Jan 2005 16:42:09 -0800
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/1.31) with ESMTP id j0R0MUJd005677;
+	Wed, 26 Jan 2005 19:33:10 -0500
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/Submit/1.1) with SMTP id j0QN3OLZ000553;
+	Wed, 26 Jan 2005 18:03:24 -0500
+Date: Wed, 26 Jan 2005 18:03:24 -0500
+Message-Id: <TA05-026A.19797@us-cert.gov>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: US-CERT Technical Cyber Security Alert TA05-026A -- Multiple Denial-of-Service Vulnerabilities in Cisco IOS 
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000115
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+                Technical Cyber Security Alert TA05-026A
+        Multiple Denial-of-Service Vulnerabilities in Cisco IOS
+
+   Original release date: January 26, 2005
+   Last revised: --
+   Source: US-CERT
+
+Systems Affected
+
+     * Cisco routers and switches running IOS in various configurations
+
+Overview
+
+   Several denial-of-service vulnerabilities have been discovered in
+   Cisco's Internet Operating System (IOS). A remote attacker may be able
+   to cause an affected device to reload the operating system.
+
+I. Description
+
+   Cisco has published three advisories describing flaws in IOS that
+   could allow a remote attacker to cause an affected device to reload.
+   Further details are available in the following vulnerability notes:
+
+   VU#583638 - Cisco IOS contains DoS vulnerability in MPLS packet
+   processing
+
+   The IOS implementation of Multi Protocol Label Switching (MPLS)
+   contains a vulnerability that allows malformed MPLS packets to cause
+   an affected device to reload. An unauthenticated attacker can send
+   these malformed packets on a local network segment that is connected
+   to a vulnerable device interface.
+
+   VU#472582 - Cisco IOS IPv6 denial-of-service vulnerability
+
+   A vulnerability in the way that IOS handles a sequence of specially
+   crafted IPv6 packets could cause an affected device to reload,
+   resulting in a denial of service. The vulnerability is exposed on both
+   physical interfaces (i.e., hardware interfaces), and logical
+   interfaces (i.e., software defined interfaces such as tunnels) that
+   are configured for IPv6.
+
+   VU#689326 - Cisco IOS vulnerable to DoS via malformed BGP packet
+
+   An IOS device that is enabled for Border Gateway Protocol (BGP) and
+   set up with the bgp log-neighbor-changes option is vulnerable to a
+   denial-of-service attack via a malformed BGP packet.
+
+II. Impact
+
+   Although the underlying causes of these three vulnerabilities is
+   different, in each case a remote attacker could cause an affected
+   device to reload the operating system. This creates a
+   denial-of-service condition since packets are not forwarded through
+   the affected device while it is reloading. Repeated exploitation of
+   these vulnerabilites would result in a sustained denial-of-service
+   condition.
+
+   Since devices running IOS may transit traffic for a number of other
+   networks, the secondary impacts of a denial of service may be severe.
+
+III. Solution
+
+Upgrade to a fixed version of IOS
+
+   Cisco has updated versions of its IOS software to address these
+   vulnerabilities. Please refer to the "Software Versions and Fixes"
+   sections of the Cisco Security Advisories listed in Appendix A for
+   more information on upgrading.
+
+Workaround
+
+   Cisco has also published practical workarounds for VU#689326 and
+   VU#583638. Please refer to the "Workarounds" section of each Cisco
+   Security Advisory listed in Appendix A for more information.
+
+   Sites that are unable to install an upgraded version of IOS are
+   encouraged to implement these workarounds.
+
+Appendix A. References
+
+     * Cisco Security Advisory: Crafted Packet Causes Reload on Cisco
+       Routers -
+       <http://www.cisco.com/warp/public/707/cisco-sa-20050126-les.shtml>
+     * Cisco Security Advisory: Multiple Crafted IPv6 Packets Cause
+       Reload -
+       <http://www.cisco.com/warp/public/707/cisco-sa-20050126-ipv6.shtml>
+     * Cisco Security Advisory: Cisco IOS Malformed BGP Packet Causes
+       Reload -
+       <http://www.cisco.com/warp/public/707/cisco-sa-20050126-bgp.shtml>
+     * US-CERT Vulnerability Note VU#583638 -
+       <http://www.kb.cert.org/vuls/id/583638>
+     * US-CERT Vulnerability Note VU#472582 -
+       <http://www.kb.cert.org/vuls/id/472582>
+     * US-CERT Vulnerability Note VU#689326 -
+       <http://www.kb.cert.org/vuls/id/689326>
+     _________________________________________________________________
+
+   Feedback can be directed to the authors: Will Dormann, Chad Dougherty,
+   and Damon Morda
+     _________________________________________________________________
+
+   This document is available from:
+      <http://www.us-cert.gov/cas/techalerts/TA05-026A.html>
+     _________________________________________________________________
+
+   Copyright 2005 Carnegie Mellon University.
+   Terms of use: <http://www.us-cert.gov/legal.html>
+     _________________________________________________________________
+
+   Revision History
+
+   January 26, 2005: Initial release
+
+
+                       Last updated January 26, 2005 
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iQEVAwUBQfgfthhoSezw4YfQAQJQKAf8DxKPd+9aXGsomYzRhFPyCcnjEfy6dv/N
+3GcqV8GR5WyshB207vhvw1PDfZdQVFIXiNr/xE9dmBKEhm38En3a70DnVe2UCmXO
+UobYXGk9tSW+pnR7Cdd3hc8yeZq0ys+LFKF/sztgpPJji/zFWojPnuS1wCcYggA1
+kuGCQ9VD6My64Hlh/PStCYqx5C9azgGHNv086W6fQyCssgjwBz51YxdV9gZ9wJUt
+I8LGjq6T0Fp+5kEEd9SPoUjA+r7bNft3xUPAabb+N4dt8sZUYqzXDP71lYYXgZay
+z2FE7jkbtX/LYVQCiA4LfgGCbw1sI6p+UQABtj74CPte2CyJZO5hJw==
+=aHIO
+-----END PGP SIGNATURE-----
+

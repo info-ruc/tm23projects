@@ -1,0 +1,147 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.204])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j9DHg55L023696
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Oct 2005 10:42:05 -0700
+Received: by zproxy.gmail.com with SMTP id o1so431590nzf
+        for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Oct 2005 10:42:04 -0700 (PDT)
+Received: by 10.37.22.45 with SMTP id z45mr1502127nzi;
+        Thu, 13 Oct 2005 10:42:04 -0700 (PDT)
+Received: by 10.37.18.30 with HTTP; Thu, 13 Oct 2005 10:42:04 -0700 (PDT)
+Message-ID: <9ae8f64a0510131042l63b7ca31qf0fb1fcb3499d6b2@mail.gmail.com>
+Date: Thu, 13 Oct 2005 12:42:04 -0500
+From: John Curtin <jjcurtin@wisc.edu>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Display error oddity
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_2005_2242656.1129225324255"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+------=_Part_2005_2242656.1129225324255
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+I have a question about display error messages that are generated in the az=
+k
+output. Basically, the same script generates a very different pattern of
+display errors (or no errors) on two different machines. Here is the
+scenario. This is the script:
+ <ep> d30 f1 <cr><t 2000><id keyboard><id mouse><vm
+1024,768,768,32,60><nfb><eop>
++1 * "Test1" <msfd 500> /;
++2 * "Test2" <msfd 500> /;
+0 "End";
+
+If I run this script on one computer and let it run with no responses, it
+generates the following output:
+
+Subject 1, 10/13/2005 12:24:57 on HEINEKEN, refresh 16.66ms, ID 1
+Item RT
+1 -2000.00
+! Display error at msec 2561.41, tick 152 in item 2, frame "Test2"
+! moved into video memory 60 ticks late
+! (previous frame's duration will have been longer)
+2 -2000.00
+! Display error at msec 4610.93, tick 275 in item 0, frame "End"
+! moved into video memory 61 ticks late
+! (previous frame's duration will have been longer)
+This surprised me b/c using a d of 30 should be way more time than was
+needed to prepare to present text. Also the 60 & 61 additional ticks listed
+in the display error seemed way too long. Then I realized that the time out
+of 2000 would obviously be delaying things if the participant responded rea=
+l
+slow (or didnt response as in this simulation). If I change the time out to
+500 the delay errors go away. I thought problem solved. But, if I run the
+same original script on a different machine (with the time out of 2000), I
+DO NOT get any display errors:
+Subject 1, 10/13/2005 12:28:35 on REDSTRIPE, refresh 16.68ms
+Item RT
+1 -2000.00
+2 -2000.00
+ If the time out was the source of the display errors, then it should occur
+on both machines, correct? But if the timeout is not the source of the
+error, why does making the timeout <=3D to the duration of the item make th=
+e
+display errors go away on the first machine?
+ Thanks for any insight
+ J
+
+--
+John J. Curtin, Ph.D.
+Assistant Professor of Psychology
+University of Wisconsin
+1202 West Johnson St.
+Madison, WI 53706
+
+Email: jjcurtin@wisc.edu
+Website: http://dionysus.psych.wisc.edu
+Office: 608-262-0387
+Lab: 608-262-5621
+Cell: 608-217-6221
+Fax: 608-262-4029
+
+------=_Part_2005_2242656.1129225324255
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<div>I have a question about display error messages that are generated in t=
+he azk output.&nbsp; Basically, the same script generates a very different =
+pattern of display errors (or no errors) on two different machines.&nbsp; H=
+ere is the scenario.&nbsp; This is the script:
+</div>
+<div>&nbsp;</div>
+<div>&lt;ep&gt; d30 f1 &lt;cr&gt;&lt;t 2000&gt;&lt;id keyboard&gt;&lt;id mo=
+use&gt;&lt;vm 1024,768,768,32,60&gt;&lt;nfb&gt;&lt;eop&gt;</div>
+<div>+1&nbsp; * &quot;Test1&quot; &lt;msfd 500&gt; /; <br>+2&nbsp; * &quot;=
+Test2&quot; &lt;msfd 500&gt; /; <br>0 &quot;End&quot;;</div>
+<div>
+<p>If I run this script on one computer and let it run with no responses,&n=
+bsp;it generates the following output:</p>
+<p>Subject 1, 10/13/2005 12:24:57 on HEINEKEN, refresh 16.66ms, ID 1<br>&nb=
+sp; Item&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RT<br>&nbsp;&nbsp;&nbsp;&nbsp;=
+ 1&nbsp; -2000.00<br>!&nbsp; Display error at msec 2561.41, tick 152 in ite=
+m 2, frame &quot;Test2&quot;<br>!&nbsp;&nbsp;&nbsp; moved into video memory=
+ 60 ticks late
+<br>!&nbsp;&nbsp;&nbsp;&nbsp; (previous frame's duration will have been lon=
+ger)<br>&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp; -2000.00<br>!&nbsp; Display error =
+at msec 4610.93, tick 275 in item 0, frame &quot;End&quot;<br>!&nbsp;&nbsp;=
+&nbsp; moved into video memory 61 ticks late<br>!&nbsp;&nbsp;&nbsp;&nbsp; (=
+previous frame's duration will have been longer)
+</p></div>
+<div>This surprised me b/c using a d of 30 should be way more time than was=
+ needed to prepare to present text.&nbsp; Also the 60 &amp; 61&nbsp;additio=
+nal ticks listed in the display error seemed way too long.&nbsp; Then I rea=
+lized that the time out of 2000 would obviously be delaying things if the p=
+articipant responded real slow (or didnt response as in this simulation).&n=
+bsp; If I change the time out to 500 the delay errors go away.&nbsp; I thou=
+ght problem solved.&nbsp; But,&nbsp;if I run the same original script on&nb=
+sp;a different machine (with the time out of 2000),&nbsp;I DO NOT get any d=
+isplay errors:
+</div>
+<div><font size=3D"2">Subject 1, 10/13/2005 12:28:35 on REDSTRIPE, refresh =
+16.68ms<br>&nbsp; Item&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RT<br>&nbsp;&nbs=
+p;&nbsp;&nbsp; 1&nbsp; -2000.00<br>&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp; -2000.0=
+0</font></div>
+<div><font size=3D"2"></font>&nbsp;</div>
+<div><font size=3D"2">If the time out was the source of the display errors,=
+ then it should occur on both machines, correct?&nbsp; But if the timeout i=
+s not the source of the error, why does making the timeout &lt;=3D to the d=
+uration of the item make the display&nbsp;errors go away on the first machi=
+ne?
+</font></div>
+<div><font size=3D"2"></font>&nbsp;</div>
+<div><font size=3D"2">Thanks for any insight</font></div>
+<div><font size=3D"2"></font>&nbsp;</div>
+<div><font size=3D"2">J</font></div>
+<div><br>-- <br>John J. Curtin, Ph.D. <br>Assistant Professor of Psychology=
+ <br>University of Wisconsin <br>1202 West Johnson St. <br>Madison, WI 5370=
+6 <br><br>Email: <a href=3D"mailto:jjcurtin@wisc.edu">jjcurtin@wisc.edu</a>
+ <br>Website: <a href=3D"http://dionysus.psych.wisc.edu">http://dionysus.ps=
+ych.wisc.edu</a><br>Office: 608-262-0387 <br>Lab: 608-262-5621 <br>Cell: 60=
+8-217-6221 <br>Fax: 608-262-4029 </div>
+
+------=_Part_2005_2242656.1129225324255--
+

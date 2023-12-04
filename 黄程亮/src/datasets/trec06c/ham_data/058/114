@@ -1,0 +1,55 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id WAA14400
+	for <handyboard@media.mit.edu>; Sun, 12 Dec 1999 22:51:14 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id WAA13893; Sun, 12 Dec 1999 22:51:13 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7210
+From: "John Cromer" <cro@astro.caltech.edu>
+X-Real-Life-Name: John Cromer
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: Inversine sine function
+Posted-Date: Mon, 13 Dec 1999 03:50:39 GMT
+Date: Mon, 13 Dec 1999 03:50:39 GMT
+Organization: Caltech
+Message-Id: <FMnuoF.AKE@lugnet.com>
+References: <002701bf4512$aecf1cc0$2b1225d8@jmm>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+In lugnet.robotics.handyboard, Jean-Michel Mongeau writes:
+>Hello,
+>    I would like to calculate an inverse sine (arcsin) function for one of
+>my
+>application. Does anyone know the algorithm of this trigonometric function?
+>
+>Thank you,
+>J.M. Mongeau
+
+You might give this a try (for -1 < x < 1):
+
+ArcSin(x) = x + a(1)*x^3 + a(2)*x^5 + a(3)*x^7 + ... etc.
+
+with
+a(1) = 0.1666666667
+a(2) = 0.0750000000
+a(3) = 0.0446428571
+a(4) = 0.0303819444
+a(5) = 0.0223721599
+a(6) = 0.0173527644
+a(7) = 0.0139648437
+a(8) = 8.0115518009 (?)
+a(9) = 0.0097616095
+a(10)= 0.0083903358
+
+Caveats:  I've never used this series.  It's from Jan Tuma, Handbook of
+Numerical Calculations in Engineering, McGraw-Hill, 1989, p 184-185.
+The value for coeffecient a(8) sure looks like a typo.
+
+Good luck.
+
+John C.
+

@@ -1,0 +1,79 @@
+Received: from cornell.edu (cornell.edu [132.236.56.6])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id gACGbQQ18622
+	for <egs@cs.cornell.edu>; Tue, 12 Nov 2002 11:37:26 -0500 (EST)
+Received: from zoopark.cornell.edu (syr-24-58-46-186.twcny.rr.com [24.58.46.186])
+	by cornell.edu (8.9.3/8.9.3) with ESMTP id LAA17802
+	for <egs@cs.cornell.edu>; Tue, 12 Nov 2002 11:37:26 -0500 (EST)
+Message-Id: <5.1.0.14.2.20021112113637.00ad4470@postoffice.mail.cornell.edu>
+X-Sender: mvp9@postoffice.mail.cornell.edu (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Tue, 12 Nov 2002 11:37:19 -0500
+To: egs@CS.Cornell.EDU
+From: mike polyakov <mvp9@cornell.edu>
+Subject: 615 PAPER 63
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+The papers presented today evaluate unstructured (p2p) networks from both a 
+theoretical and experimental points of view.  The Kleinberg explores the 
+expected searchability of a family of networks such as those formed by 
+people within the US.  Most importantly he identifies a second parameter of 
+a network, besides network diameter, that controls the distribution of 
+links from a node wrt distance.  At a critical threshold, where the ratio 
+of long range links to local ones is just right, the network acquires the 
+small-world property such that any two points can be connected by very few 
+hops.  When that parameter varies from its threshold of 2, there are either 
+too many long links (so can't see what's around you) or not enough of them 
+to make good progress.  This provides a theoretical basis and explanation 
+for any good performance of unstructured p2p networks.
+
+The chapter from the O'Reilly deals with gnutella and freenet and performs 
+simulation to explore their similarity to a small-world model that 
+Kleinberg described.  They find that freenet does indeed form a small-world 
+graph, where it remains highly clustered but its path length drops to log 
+N.  Further, they find that it scales at log N of network size, so that at 
+200,000 nodes the median path length is about 20.  It is not terribly 
+impressive, since 200K isn't that many and 20 hops (and often worse) can 
+take considerable time.  A somewhat surprising find is that the ratio of 
+request pathlength to characteristic pathlength, that is routing 
+performance, remains similar regardless of scale.
+
+Of gnutella, the O'Reilly chapter has a different story.  Its graph is 
+random (and thus with low clustering coefficient), and so the 
+characteristic pathlength is short.  Since queries are done breadth first, 
+the short paths are fully exploited.  Thus, the performance of searches can 
+scale well arbitrarily high, but unfortunately the bandwidth consumed by 
+the queries becomes hard limitation.
+
+Finally, the Saroiu et al paper makes observations about usage in the 
+actual gnutella (and napster) networks.  They find orders of magnitude 
+difference between users in terms of bandwidth, amount shared, reliability, 
+etc. and recommend that network protocols regulate and take advantage of 
+these differences.  Surprisingly, they find that gnutella DOES form a 
+small-world, such that taking only 4% of the nodes out leaves it far less 
+connected.
+
+So, how do these unstructured p2p networks compare with structured 
+ones?  Kleinberg shows that these networks can organize such that 
+pathlengths exist that are as short as those in structured nets, and with 
+appropriate routing, good performance can be achieved.  The experiments 
+show that freenet and gnutella possess the routing capability to take 
+advantage of the short paths formed in the graph.  However, they are far 
+more brittle, than structured networks.  In freenet, finding short paths 
+depends on good decisions, which are occasionally lacking, destroying 
+performance.  Also, like in gnutella, while short paths are likely, they 
+are not at all certain.  In other words, there are no guarantees.  Since 
+both systems depend on having a small set of well connected nodes, they are 
+also more susceptible to attacks and non-random failures.
+
+P2P systems have to deal with many constraints.  Users may come onto the 
+networks only for brief times (and rarely for long) creating a dynamic 
+environment, where few paths remain stable; so information has to be 
+updated constantly.  A considerable portion of the users are free riders, 
+causing contributing users to experience poor performance and possibly 
+leading to a spiraling effect where the contributors leave, further 
+degenerating system state.  There is a great disparity between users in all 
+respects  bandwidth, reliability, amount shared, etc, that should be taken 
+into account to increase performance.  Finally, there are legal and 
+reliability issues creating pressure for maximum decentralization.  
+

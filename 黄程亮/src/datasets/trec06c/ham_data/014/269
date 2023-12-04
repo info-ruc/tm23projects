@@ -1,0 +1,69 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id NAA08930
+	for <handyboard@media.mit.edu>; Wed, 15 Apr 1998 13:36:39 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id NAA24881;
+	Wed, 15 Apr 1998 13:36:35 -0400 (EDT)
+Message-Id: <199804151736.NAA24881@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: smwong@post1.com
+Cc: handyboard@media.mit.edu
+Subject: Re: 64K RAM? 
+In-Reply-To: Your message of "Wed, 15 Apr 1998 23:04:01 +0800."
+             <3534CC61.4DB669BC@post1.com> 
+Date: Wed, 15 Apr 1998 13:36:35 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+This is a common question, so I went ahead and put an answer in the
+FAQ.  Take a look at:
+
+  http://el.www.media.mit.edu/projects/handy-board/faq/index.html#moremem
+
+Here's what it now says:
+
+------------------------------------------------------------------------
+    IS IT POSSIBLE TO EXPAND THE HANDY BOARD'S MEMORY TO 64K?
+    
+    Actually, this is hard to do. Here's why:
+    
+    1.There is a compromise in the design that traded off a wasteful use
+    of the lower 32K of memory for fewer chips used in creating the motor
+    output, digital input, and expansion bus circuits. Basically, 16K of
+    the lower 32K is used to map four input latches and four output
+    latches to the microprocessor (see more info in the memory map
+    answer).
+    
+    What this means is that in order to recapture the lower 32K, the
+    addressing circuit that drives the 'HC138 chip (which then drives
+    these latches) would need to be modified. Presently, the 'HC138 is
+    wired to the 68HC11, using the A15, A14, A13, and A12 signals. To
+    recapture the address space, many more address signals would need to
+    be combined to force the HC138 to enable itself only when a narrow
+    band of addresses were accessed. Then, an additional RAM could be
+    mapped to the lower 32K bank not used by this remapped 'HC138 circuit.
+    
+    2.Interactive C
+    would need to be recompiled. Interactive C was designed with certain
+    assumptions about the architecture of the target system; one of those
+    included a 32K RAM. Various modifications to Interactive C (largely,
+    the redefining of compile-time constants) would be necessary for it to
+    use a different memory architecture.
+    
+    This said, it is relatively straightforward to build a 
+    serially-accessible external memory for data storage. For example, see
+    Jim Fong's SPI-based EEPROM application note.
+
+------------------------------------------------------------------------
+
+
+
+In your message you said:
+> Hello, I wonder if anyone knows if I can expand the Handyboard's memory
+> to the maximum of 64KB simply be wiring in a 128kb SRAM (A16 unused so
+> it becomes 64kb) with D0-D7 to the data bus as usual and A0-A14 to the
+> existing RAM socket and A15 from the expansion header directly to the
+> RAM's A15? Would IC need any modification or anything? Thanks!
+> 
+> 
+

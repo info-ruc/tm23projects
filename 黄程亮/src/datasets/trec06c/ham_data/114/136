@@ -1,0 +1,46 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1E5SGt25727
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 00:28:16 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1E5SFnC002790
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 00:28:16 -0500 (EST)
+Message-ID: <1474820170.1139894894454.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 14 Feb 2006 00:28:14 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 6
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1E5SGt25727
+
+The two papers to be discussed today present replication (and search) methods to achieve excellent lookup performance in structured and unstructured peer-to-peer systems, respectively.
+
+“Search and Replication in Unstructured Peer-to-peer Networks”
+<Paper Summary>
+* Compared with structured peer-to-peer systems that are currently only prevalent in the research literature, unstructured peer-to-peer systems such as Napster and Gnutella are actively used on the Internet; they are extremely resilient to transient population of nodes (joining and leaving the system) and capable of handling partial-match queries.
+* To solve the problems of scalability and large loads for lookups in unstructured systems, this paper explores, through simulation, alternatives to Gnutella’s search method, data replication strategy and network topology.
+* For the search method, it first suggests an expanding-ring approach (gradually increasing the TTL until the object is found) to reduces unnecessary query message traverses in the system. It then proposes a multiple-walker random walk with checking/state-keeping approach (sending k query messages, each takes it’s own route and periodically checks whether to proceed until one finds the object) that further solves the problems of message overhead and duplication in the flooding-based query. Finally, it points out three principles of scalable searches in unstructured systems: adaptive termination, message duplication and granularity of coverage.
+* For the replication strategy, it first compares three replication strategies for Geometric and Pareto query distributions and shows that the square-root replication is theoretically optimal among uniform and proportional replications in terms of average search size. It then proposes a random replication approach (extending path replication but having no topological effects in path replication, by randomly replicating the object on p of the nodes along the paths k walkers visited) that performs close to square-root.
+* Simulations for the above methods are run in three pairs of combinations of query distribution and replication distribution; performance of the methods is evaluated in probability of successful queries, number of hops in finding an object, average query messages a node has to process, number of nodes each query message traverse through and number of messages the busiest node has to process. It concludes that, in network topology, uniformly random graphs yields the best performance among power-law random graph and Gnutella-style graph (because of their high degree nodes) with flood-style search.
+
+<Limitations>
+* It uses only partial criteria in evaluating the search and replication strategies; the performance issues in real peer-to-peer systems are more complicated than those.
+* Even though much improved in this paper, the routing latencies of unstructured systems are still much larger than those in structured systems.
+
+
+<Paper Summary: Beehive>
+* Beehive is a proactive replication framework that can provide constant (O(1)) lookup performance for common, power law, query distributions. It operates on top of prefix-routing distributed hash tables and can serve as a substrate for latency-sensitive applications such as DNS.
+* Beehive replication mechanism is an extension of the observation that query path can be reduced by one hop if an object is replicated at all nodes preceding the object on the query paths. The replication level, in this paper, is determined according to objects’ popularity and to meet C, the fraction of queries that are satisfied at the source, specified by the user.
+* Beehive combines a local measurement, from the analytical model, and limited aggregation to estimate the relative popularities of objects, and it runs a replication protocol to adaptively implement the optimal solution provided by the above two: each node independently decides whether to replicate the object on nodes with one less matching digit than it. Beehive also guarantees the consistency between the object and its replicas by the use of version number.
+* Layered on top of Pastry, Beehive is required to replicate objects in the leaf nodes because Pastry maps objects to the numerically closest node in the ID space, in which objects may share no prefixes with the home node.
+* The experimental (using DNS as a driving application) results show that Beehive outperforms passive caching in terms of average latency, storage requirement, network load and bandwidth consumption. They also show that Beehive adapts quickly to flash crowds and changes of query distributions.
+
+<Limitation of Beehive>
+* Beehive exploits several properties of Pastry, especially the base-b digit identifier structure in its replication protocol. It is therefore infrastructure-dependent and needs to be modified to be applied in other routing protocols.
+
+
+<Comments>
+Beehive presents a proactive replication framework layered on top of structured distributed hash tables for power law query distributions. The other presents a random replication approach that is close to optimal for Geometric distributions and Pareto distributions in unstructured peer-to-peer systems. Are there any proposed replication mechanisms that are independent of routing infrastructures as well as query distributions?
+

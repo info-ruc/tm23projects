@@ -1,0 +1,64 @@
+Received: from exchfe1.cs.cornell.edu (exchfe1.cs.cornell.edu [128.84.97.27])
+	by sundial.cs.cornell.edu (8.11.7/8.11.7/M-3.12a) with ESMTP id h82EQDj07938
+	for <egs@unix.cucs>; Tue, 2 Sep 2003 10:26:13 -0400 (EDT)
+Received: from mail.cs.cornell.edu ([128.84.97.27]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 2 Sep 2003 10:25:56 -0400
+Received: from dhcp98-136.cs.cornell.edu ([128.84.98.136]) by mail.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 2 Sep 2003 10:25:56 -0400
+Subject: 615 Paper 1
+From: Biswanath Panda <bpanda@cs.cornell.edu>
+To: egs@cs.cornell.edu
+Content-Type: text/plain
+Organization: 
+Message-Id: <1062512773.25849.10.camel@dhcp98-136.cs.cornell.edu>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
+Date: 02 Sep 2003 10:26:13 -0400
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 02 Sep 2003 14:25:56.0630 (UTC) FILETIME=[1F86D360:01C3715E]
+
+Summary on "Highly Dynamic Destination-Sequenced Distance-Vector Routing
+(DSDV) for Mobile Computers"
+
+This paper provides a new approach to the classic Distance Vector
+Routing Protocol and makes it suitable to use in a ad-hoc environment.
+This is a proactive routing protocol.
+
+Like in Distance Vector Routing each station of the network maintains a
+routing table which contains the path to each other station in the
+network. In order to take care of the dynamically varying topology of
+the ad-hoc network routing updates are transmitted periodically by all
+stations to their neighbours(This period is calculated based on a metric
+which takes into account the time difference between the first and best
+route arrivals for a station). Updates are also sent if there is
+substantial change in a route like a broken link(the "inf" metric
+symbolizes such change in the route) The updates contain the sequence
+number of the update from the sender, the destination address, number of
+hops, and the sequence number of this route as stamped by the
+destination. These updates enable stations to modify and keep their
+routing tables up-to-date. When station receives an update it sees if
+there are any routes with newer sequence numbers or better metrics. The
+policy of choosing paths with better metrics when seq number is same may
+cause route fluctuations at an alarming rate. Therefore the protocol
+takes extra care to damp these fluctuations.
+
+The protocol is loop free because the next node indicators to each
+destination induce a tree rooted at that destination. When a node i
+receives an update from k regarding the path to x, the path can be
+something like x........ki. Now x starts the broadcast with a seq no.
+'s'. This 's' increases as we go towards i. i chooses k as next hop only
+if current seq number is less than s. For i to form loop in the next hop
+it has to choose a node from x.....k, which is not possible as they have
+sequence numbers lower than current sequence number at i.
+
+
+The paper does not mention clearly how the sequence are created and
+incremented. This makes understanding the proof of the protocol being
+loop free difficult and unclear. The paper basically talks about a
+modified distance vector routing protocol but gives no idea as to why it
+works better in an ad-hoc environment. There are no results to show that
+the protocol works better in an adhoc environment as compared to the
+standard Dist Vector Algo. Future work is to simulate results based on
+this protocol.
+
+

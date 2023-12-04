@@ -1,0 +1,108 @@
+Received: from arachne.eng.utah.edu (arachne.eng.utah.edu [155.99.222.1])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id KAA17614
+	for <handyboard@media.mit.edu>; Wed, 16 Feb 2000 10:13:49 -0500 (EST)
+Received: from lab1-8.eng.utah.edu (lab1-8.eng.utah.edu [155.99.222.57])
+	by arachne.eng.utah.edu (8.9.1a/8.9.1) with ESMTP id IAA13839;
+	Wed, 16 Feb 2000 08:13:48 -0700 (MST)
+Received: from localhost (kleang@localhost)
+	by lab1-8.eng.utah.edu (8.9.3/8.9.3) with ESMTP id IAA29011;
+	Wed, 16 Feb 2000 08:13:47 -0700 (MST)
+X-Authentication-Warning: lab1-8.eng.utah.edu: kleang owned process doing -bs
+Date: Wed, 16 Feb 2000 08:13:47 -0700 (MST)
+From: Kam Leang <kleang@eng.utah.edu>
+To: Jonathan Swaby <jonathan.swaby@vpss.gatech.edu>
+Cc: Adam Oliver <oli@wantree.com.au>,
+        "'Handyboard Mailing List'" <handyboard@media.mit.edu>
+Subject: Re: Slower serial connection
+In-Reply-To: <3.0.5.32.20000216091820.0198bd70@pop.prism.gatech.edu>
+Message-Id: <Pine.4.10.10002160758360.28963-100000@lab1-8.eng.utah.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hi everyone!
+
+The RF tx/rx units shown on the page were from Ming Microsystems.  They
+were rated for 1200 baud, but I've been able to transmit/receive slower
+using the Parallax Inc. RF boards, which were rated for 300 baud.  For
+slower serial communication, you can set the Baud-rate control register
+(BAUD 102B) to an appropriate value based on the info from the 68HC11 pink
+book (Part #M68HC11RM/AD, available from Motorola for free).  For example:
+
+ poke(0x3c, 1);     /*Disable pcode character receive mode*/ 
+ poke(0x102b,0x33);         /*Set serial baud rate to 1200*/ 
+
+BTW, my homepage address has moved to:
+http://www.leang.com/kam
+
+Good luck,
+--kam
+
+On Wed, 16 Feb 2000, Jonathan Swaby wrote:
+
+> Try this web page:
+> http://www.mech.utah.edu/~kleang/robotics/info/roboinfo.html . It should
+> have what you want. I have not tried it myself, but I do have the
+> reciever/transmitter pair described on the page.
+> 
+> 
+> At 09:25 PM 2/16/00 +0800, Adam Oliver wrote: 
+> 
+> >>>>
+> 
+> <excerpt><fontfamily><param>Arial</param><smaller>Is it possible to slow
+> down the speed of the serial interface on the Handyboard? I have just
+> gotten hold of a couple of RF transmit/receive pairs, but they are only
+> able to go up to about 1200 baud or so. I don't intend using IC over the
+> link, just a simple serial program to send/receive small amounts of data. 
+> 
+> </smaller></fontfamily>  
+> 
+> <fontfamily><param>Arial</param><smaller>Can this be done, and if so, how
+> would I go about it? My assembly coding is less than fantastic, so if
+> anyone has any code etc they'd like to share I would not complain :-) If
+> not, any tips/suggestions would be greatly appreciated.
+> 
+> </smaller></fontfamily>  
+> 
+> <fontfamily><param>Arial</param><smaller>many thanks
+> 
+> Adam Oliver
+> 
+> </smaller></fontfamily>  
+> 
+> </excerpt><<<<<<<<
+> 
+> 
+> 
+> 
+> <bold><bigger>Jonathan Swaby
+> 
+> </bigger>Computer Services Specialist IV
+> 
+> Student Affairs 
+> 
+> Phone: 404-894-5889
+> 
+> Fax:   404-894-9928
+> 
+> <color><param>0000,0000,8080</param><bigger><bigger>
+> Georgia</bigger></bigger></color></bold><bigger><bigger><italic><color><param>8080,8080,0000</param>Institute
+> 
+> of</color></italic><bold><color><param>0000,0000,8080</param>Tech</color></bold><italic><color><param>8080,8080,0000</param>nology
+> 
+> </color></italic></bigger></bigger>
+> 
+> 
+> 
+
+                                                ______    ______
+---------------------------------------------- |_    _|  |_    _|
+ Kam Leang                                       |  |______|  |______
+ University of Utah                              |  |_    _|  |_    _| 
+ Department of Mechanical Engineering            |  | |  | |  | |  |
+ MEB Room 2202 Salt Lake City, UT 84112          |  |_|__|_|  | |  |
+ (Tel) 801.581.7105  (Fax) 801.585.9826          \ ___________/ |  |
+ http://www.leang.com/kam                             |  |______|  |
+----------------------------------------------------- \ ___________/
+
+

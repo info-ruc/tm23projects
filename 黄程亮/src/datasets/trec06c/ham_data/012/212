@@ -1,0 +1,65 @@
+Received: from mail.utexas.edu (mail.utexas.edu [128.83.126.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id NAA25491
+	for <handyboard@media.mit.edu>; Sun, 15 Mar 1998 13:54:07 -0500 (EST)
+Received: (qmail 25306 invoked by uid 0); 15 Mar 1998 18:54:05 -0000
+Received: from dial-121-39.ots.utexas.edu (HELO ?128.83.221.39?) (128.83.221.39)
+  by mail.utexas.edu with SMTP; 15 Mar 1998 18:54:05 -0000
+Message-Id: <v03007800b131c93bdfb1@[128.83.176.121]>
+In-Reply-To: <01BD501C.34A3D360.j.paludanus@tip.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Sun, 15 Mar 1998 12:54:30 -0600
+To: Jaron Paludanus <j.paludanus@tip.nl>, handyboard@media.mit.edu
+From: Anthony Oren Loeppert <oren@mail.utexas.edu>
+Subject: Re: IC Pointer Questions
+
+>	struct _wheel {int radius;int ticks;};
+>	struct _encoder {int port;int *velocity ;int *count;};
+>	struct drivewheel {struct _encoder encoder;struct _wheel   wheel;}
+>wheel[4];
+>
+>	wheel[0].encoder.count= &encoder0_counts;
+>	*wheel[0].encoder.count= 0;			/*I want to get rid
+>of that dereferencing
+>asterix ...*/
+>
+>Is there a way I can declare "wheel.encoder.count" so that it exists as an
+>integer pointing to the same memory location as "encoder0_counts"?
+>"wheel[0].encoder.count= 0;" Would then be the same as "encoder0_counts=
+>0;"
+
+If I am understanding you right...  I haven't looked at the encoder
+routines yet, but I am assuming encoder0_counts is global.  Why not, just
+omit the pointer count from the _encoder struct and just use the global,
+since you already have it?  That aside, I'm don't know what you have
+against '*' in having the statement *wheel[0].encoder.count = 0;  It
+accomplishes what you want and that's going to be your only solution I
+think.  I'm not too familiar with IC, but I am guessing it adhears fairly
+closely to standard C in it's implementation.  You are wanting to use a
+feature of C++, pass by reference.  Standard C doesn't support it.
+
+void change_count(int& iamTheSaveVar)
+{
+	iamTheSaveVar=0;
+}
+
+int main()
+{
+	int somevar=1;
+	change_count(somevar);
+	return somevar;
+}
+
+in C++, this would effectively set somevar to 0, but I don't think that it
+would work in IC, but I haven't tried it.  I would but I am online and I
+only have on RS232 serial cable and it is connected to my modem right now
+:)  The passing by reference is not any different that passing a pointer
+and deferencing it.
+
+> Can I change the pointer of an existing integer?
+
+I'm not quite sure what you mean by that.
+
+
+
+

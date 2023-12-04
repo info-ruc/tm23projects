@@ -1,0 +1,46 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA28379
+	for <handyboard@media.mit.edu>; Mon, 7 Dec 1998 20:08:31 -0500 (EST)
+Received: from cam.org (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id UAA22792 for <handyboard@media.mit.edu>; Mon, 7 Dec 1998 20:08:25 -0500 (EST)
+Message-Id: <366C7C6E.B1F16A86@cam.org>
+Date: Mon, 07 Dec 1998 20:10:06 -0500
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.5b2 [en] (Win95; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Re: start_process() questions
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Shiva Sinha wrote:
+
+> I'm using start_process() to run a set of processes. My questions() are:
+>
+> 1. does start_process() re-initailize all the called process's (local)
+> variables every time it calls the process?
+
+Yes.  The subroutine acts just like any other function that you call.
+
+> 2. If the process does not complete before its alloted time, does it
+> continue from where it ended (from the previous call), or start at the
+> beginning again?
+
+Once you do a start_process, that subroutine will run indepently and
+concurrently with your main program.  It does not "run out of time"...  it will
+continue to run until it completes.  You do not want to call start_process again
+(unless you know the subroutine has finished and you want it to run again)
+because then you would have two independent copies of the subroutine both
+running.
+
+> I ask these questions because I have code that runs normally for the first
+> few seconds, then suddenly goes through the processes much faster.
+
+No doubt this is because you are starting multiple copies of the process as I
+mentioned above.
+
+Good luck,
+/Max
+

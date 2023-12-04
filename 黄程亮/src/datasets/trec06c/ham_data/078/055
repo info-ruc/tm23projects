@@ -1,0 +1,67 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9NG0ao11735
+	for <egs@cs.cornell.edu>; Tue, 23 Oct 2001 12:00:36 -0400 (EDT)
+Received: from descartes (descartes.ee.cornell.edu [128.84.236.60])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id f9NG18N30473
+	for <egs@cs.cornell.edu>; Tue, 23 Oct 2001 12:01:08 -0400
+Date: Tue, 23 Oct 2001 12:00:08 -0400 (EDT)
+From: Prince Samar <samar@ece.cornell.edu>
+X-Sender: samar@descartes.ee.cornell.edu
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 26
+Message-ID: <Pine.GSO.4.21.0110231159340.12898-100000@descartes.ee.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+26) Performance Comparison of two On-Demand Routing Portocols for Ad hoc
+Networks.
+
+This paper compares the performance of two popular on-demand ad hoc
+routing protocols: DSR and AODV. Even though the two protocols reactively
+find a route to the destination, they differ in many aspects which makes
+them perform quite differently in different scenarios. Important
+differences between the protocols are:
+1. DSR is based on source routing and has access to a lot more routing
+information at each node as compared to AODV which is based on distance
+vectors.
+2. The destination replies to many copies of the same query reaching it
+along different paths in DSR. In AODV, the destination replies to only the
+first copy of the query reaching it. Thus, a single route request cycle in
+DSR generates a lot of information which is cached in all the nodes
+receiving (or overhearing) the reply packet.
+3. DSR does not expire stale routes or prefer fresher routes. Thus the
+aggressive caching of DSR has the drawback of polluting the caches of
+other nodes too and may severely affect the performance of TCP.
+4. The route error messages have the effect of deleting all the routes
+containing the failed link in AODV. In DSR, the route error message
+travels back only along the failed route at hand.
+
+The simulation model used consists of 802.11 MAC, radio range of 250m,
+nominal bit rate of 2 Mbps, a send buffer of 64 packets and 50 (100) nodes
+in an area of 1500m x 300m (2200m x 600m). The velocity of the nodes is
+uniformly distributed between 0-20m/s and a random waypoint model is used.
+The metrics evaluated are: packet delivery fraction, end-to-end delay,
+routing load and MAC load.
+
+In terms of metrics like delay and trroughput, the simulation results show
+that DSR usually performs better on a lower scale and when the network
+conditions are not stressful. AODV tends to out-perform DSR in more
+stressful conditions. DSR almost always has a lower routing load than
+AODV. But when one looks at the total MAC load, DSR was found to generate
+higher overall network load than AODV in the high mobility or high traffic
+scenarios. The increase in the MAC load for DSR is attributed to the fact
+that DSR retuns many routes to the source which are unicasted back. In low
+mobility cases, DSR works great but its performance degrades below AODV in
+high mobility cases mainly due to its aggressive use of route caches where
+the routes are not timed-out.
+
+It would have been interesting to see how these two protocols scale to
+bigger networks with a few hundred nodes. Also the choice of the elongated
+rectangluar network area again may not necessarily show the whole picture
+related to these two protocols. The authors mention a few ideas which may
+possibly improve the performace of these two protocols. The main among
+them are: expiring stale routes in DSR, using congestion related metrics,
+removing aged packets from the netwrok and studying in greater detail the
+effects of interactions between protocol layers.
+

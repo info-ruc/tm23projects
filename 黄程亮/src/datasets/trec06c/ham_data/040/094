@@ -1,0 +1,68 @@
+Received: from mail.montana.com (mailA.montana.com [199.2.139.116])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA29639
+	for <handyboard@media.mit.edu>; Sun, 28 Mar 1999 12:30:33 -0500 (EST)
+Received: from cs.umt.edu (mso5-204.montana.com [208.4.224.204])
+	by mail.montana.com (8.9.2.Beta4/8.9.4) with ESMTP id KAA00324;
+	Sun, 28 Mar 1999 10:39:47 -0700 (MST)
+Message-Id: <36FE66B1.87993FFC@cs.umt.edu>
+Date: Sun, 28 Mar 1999 10:28:17 -0700
+From: Will Bain <willbain@cs.umt.edu>
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: MSMKatz <msmkatz@wxs.nl>,
+        Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Help needed!
+References: <36FD7600.13804CC@wxs.nl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+MSMKatz wrote:
+<snip> 
+> After this, the following messages appear on my pc:
+> "synchronizing with board"
+> "pcode version 3.10 present on board"
+> "loading c:\system\icw32\libs\lib_hs.lis"
+> "loading c:\system\icw32\libs\lib_hb.c"
+> "loading c:\system\icw32\libs\r22_ir.lis"
+> "loading c:\system\icw32\libs\r22_ir.icb"
+> "loading c:\system\icw32\libs\r22_ir.c"
+> "initializing interrupts"
+> 
+> After this last message, nothing.. The pc keeps waiting for a signal
+> from the Handy Board that isn't there and I have to abort IC.
+<snip>
+
+Marc, I wonder if the hardware is perfectly ok, but you're inadvertently
+attempting to load the wrong software.  I'm not sure where your
+lib_hs.lis came from or why IC automatically loads it, but I think it
+might be loading the wrong libraries.  I was under the impression that
+the r22 files listed above were for the MIT 6.270 controller board or
+the Rug Warrior board (I can't remember which).
+
+When I start up IC, it automatically loads the files listed in
+lib_hb.lis, of which there are only two:
+
+Synchronizing with board
+Pcode version 3.10 present on board
+Loading D:\PROGRAMS\IC\libs\lib_hb.lis.
+Loading D:\PROGRAMS\IC\libs\lib_hb.c.
+Loading D:\PROGRAMS\IC\libs\lib_hb.icb.
+Initializing interrupts
+Downloading 1142 bytes (addresses 8000-8475): 1142 loaded
+Downloading 40 bytes (addresses 8476-849D): 40 loaded
+Downloading 16 bytes (addresses 849E-84AD): 16 loaded
+Code loaded.
+
+This seems to work fine on my Handy Board; perhaps you could try this on
+yours and let us know if that solves the problem.  Best of luck to you!
+
+-- Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                                            I can't take a
+Will Bain,                                well-tanned person seriously.
+& Tatoosh                                             --Cleveland Amory
+

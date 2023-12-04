@@ -1,0 +1,60 @@
+Received: from parsifal.zhwin.ch (parsifal.zhwin.ch [160.85.128.4])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA18284
+	for <handyboard@media.mit.edu>; Thu, 4 Mar 1999 13:21:52 -0500 (EST)
+Received: from zhwin.ch (pchar.zhwin.ch [160.85.130.120]) by parsifal.zhwin.ch with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2232.9)
+	id F3WSX66Q; Thu, 4 Mar 1999 19:23:27 +0100
+Message-Id: <36DECFCB.AFC8D0EC@zhwin.ch>
+Date: Thu, 04 Mar 1999 19:24:11 +0100
+From: Thomas Hauri <har@zhwin.ch>
+X-Mailer: Mozilla 4.5 [en] (WinNT; I)
+X-Accept-Language: de-CH,de-DE,en
+Mime-Version: 1.0
+To: Barry Brouillette <barry@SGI.com>
+Cc: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Re: Sharp GP2D02 code available
+References: <97F46F47437ED211A7E80004ACE83EF90C9287@det-amsa003e--n.detroit.sgi.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Thanks Barry, great work.
+
+I do have one little question:
+As I read the data sheet of the GP2D02 (
+http://www.sharpsma.com/products/opto/pdf/gp2d02.pdf )
+I saw some timing specifications that i think are not taken care of in your
+software. Please correct me if I'm wrong.
+The timing chart shows the reading of the data with a pulse length of 0.2ms or
+less, but the whole reading sequence needs to bee longer than 1ms. Therefor the
+highpulses and the lowpulses must not be shorter than 67us. As far as I found
+out analyzing your software (I counted the cpu cycles of the software part the
+reads the 8 bit distance) reading each bit takes about 50us. The highpulse being
+not longer than 10us lets the low pulse be around 40us. Both pulsewidth are
+shorter than the pulsewidth recommended in Sharps timing chart.
+Now either I'm reading the chart wrong or you are lucky :)) to get those sensors
+running.
+Please tell me who makes the mistake.
+
+I will be writing a driver for 8 sensores. Therefor I'd like to know if all
+sensors work with your software.
+
+Thanks a lot for your effort and your help.
+
+Tom
+
+
+
+--
+Thomas Hauri
+ZHW Zuercher Hochschule Winterthur
+University of applied sciences
+Technikumstr.9 /PF
+CH-8401 Winterthur
+Switzerland
+
+Phone : +41 52 267 74 79
+Fax    :  +41 52 268 74 79
+Mail  :   har@zhwin.ch
+HP    :   http://www.zhwin.ch
+
+
+

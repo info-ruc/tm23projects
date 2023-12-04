@@ -1,0 +1,65 @@
+Received: from bureau6.utcc.utoronto.ca (bureau6.utcc.utoronto.ca [128.100.132.16])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f8PFTQq18410
+	for <egs@cs.cornell.edu>; Tue, 25 Sep 2001 11:29:27 -0400 (EDT)
+Received: from webmail2.ns.utoronto.ca ([128.100.132.25] EHLO webmail2.ns.utoronto.ca ident: IDENT-NOT-QUERIED [port 64123]) by bureau6.utcc.utoronto.ca with ESMTP id <238382-3997>; Tue, 25 Sep 2001 11:29:16 -0400
+Received: by webmail2.ns.utoronto.ca id <24410-13842>; Tue, 25 Sep 2001 11:28:55 -0400
+To: COM S 615 <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 10
+Message-ID: <1001431728.3bb0a2b0e7d68@webmail.utoronto.ca>
+Date: Tue, 25 Sep 2001 11:28:48 -0400 (EDT)
+From: c.tavoularis@utoronto.ca
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: IMP/PHP IMAP webmail program 2.2.3
+
+ABR (Associativity-Based Routing) is a simple straightforward on-demand 
+protocol that attempts to make use of stability in ad hoc routing. ABR employs 
+the unique concept of associativity to determine the amount of stability in 
+routes. It is measured in terms of the number of ticks, or beacons, 
+successfully exchanged between neighbors. The longer a pair of nodes are co-
+reachable, the higher the number of ticks. If a node and its neighbor move out 
+of each other’s reach, their common node ticks are reset indicating movement or 
+instability.
+
+ABR uses broadcast and point-to-point routing to reactively construct, and 
+reconstruct routes. A source node initiates a broadcast query (BQ), which is 
+propagated through all possible routes to the destination (DEST). DEST chooses 
+a single route based on highest associativity (and shortest route if there is a 
+tie), and forwards a REPLY along that route. Each node keeps track of its 
+neighbors and hop counts to the source and destination. The Route Re-
+construction (RRC) Phase is invoked when an existing route changes. Nodes that 
+lose a link along a path become pivoting nodes. A downstream pivoting node will 
+send Route Notifications (RN) downstream to remove invalid routes. An upstream 
+pivoting node will initiate a Localized Query (LQ), by broadcasting messages, 
+to try to partially rebuild the path from itself. It will only select a new 
+route that is shorter or equal to the previous route. If no suitable partial 
+path to DEST is found before an LQ_TIMEOUT, the path will backtrack upstream 
+and repeat LQ until the pivoting node is ½ the number of hops of the original 
+path. At that point, it will send RNs upstream to erase the entire route and 
+the source starts a new BQ. This algorithm is particularly efficient in dense 
+node populations, where partial routes are easier to find, and therefore 
+reduces re-construction time and avoids the maintenance of multiple routes. It 
+may not perform as well in sparse environments.
+
+As an on-demand protocol, ABR requires nodes to maintain a moderate amount of 
+information (single path to node without maintaining entire path in each node), 
+and forwarding of routing packets is also moderate since periodic broadcasts 
+are not required. Therefore, it is fair to say that ABR has the potential to 
+perform well in large-scale networks, but this issue is not addressed in this 
+paper. An interesting study would be to simulate ABR in high population 
+networks. In addition, it is not clear how ABR will react when a network 
+partition occurs.
+
+ABR applies well to BS-oriented WLANs, as it can exploit the stability of 
+existing base stations, and provide recovery from BS failure. The associativity 
+measure may not be as successful in mobile ad hoc networks. The rule of 
+associativity states that after instability, or node migration, a node will be 
+stable for some time. In ABR, the application of this rule is modified, and is 
+used such that the longer a node has been stable within a group of neighbors, 
+the more likely it will continue to be stable. Therefore it is not a direct 
+application of the rule, nor is it guaranteed to select the most stable routes, 
+since a node that was moving could suddenly become stable, and vice versa. To 
+improve selection of stable routes, ABR can consider node speed in addition to 
+associativity states.
+

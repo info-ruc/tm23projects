@@ -1,0 +1,77 @@
+Received: from helium.tip.nl (helium.tip.nl [195.18.64.71])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id IAA28183
+	for <handyboard@media.mit.edu>; Sun, 15 Mar 1998 08:08:12 -0500 (EST)
+Received: from default by helium.tip.nl with smtp
+	(Smail3.2 #23) id m0yEDAt-001X1SC; Sun, 15 Mar 1998 14:09:59 +0100 (MET)
+Received: by localhost with Microsoft MAPI; Sun, 15 Mar 1998 14:11:10 +0100
+Message-Id: <01BD501C.34A3D360.j.paludanus@tip.nl>
+From: Jaron Paludanus <j.paludanus@tip.nl>
+To: "HandyBoard (E-mail)" <handyboard@media.mit.edu>
+Subject: IC Pointer Questions
+Date: Sun, 15 Mar 1998 13:27:01 +0100
+X-Mailer: Microsoft Internet E-mail/MAPI - 8.0.0.4211
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Howdy all,
+
+I finally attached an infrared reflectance sensor to my handyboard and it 
+works! With my non-existent electronic experiences I managed to solder a 
+resistance (330 ohms) to a three-legged sensor similar to the four-legged 
+variant mentioned in the FAQ.
+
+So I ordered IC 3.2 and received a registration key the following day (good 
+work Newton) and started setting up the project for my LARVE (Little 
+Autonomous Robot VEhicle). I used to be an administrative programmer in 
+dBase and Clipper 87 but am new to C and have to rely on the excellent book 
+"The C Programming Language" from Kernighan/Ritchie (Prentice-Hall).
+
+I now come across the first two problems I just can't find a solution for 
+myself,
+I'm probably overseeing something or what?
+
+-1- My robot has four drivewheels, each connected to a motor and a 
+reflectance sensor. I want to use a data structure array to store all 
+parameters, settings and readings for each wheel. The m/c routine creates a 
+variable "encoder0_counts" while I want to use the structure element 
+"wheel[i].encoder.count".
+
+When I use pointers in the declarations of the encoder structure I also 
+have to change the syntax of the routines to deference the pointers. This 
+is NOT what I want.
+
+	struct _wheel {int radius;int ticks;};
+	struct _encoder {int port;int *velocity ;int *count;};
+	struct drivewheel {struct _encoder encoder;struct _wheel   wheel;} 
+wheel[4];
+
+	wheel[0].encoder.count= &encoder0_counts;
+	*wheel[0].encoder.count= 0;			/*I want to get rid of that dereferencing 
+asterix ...*/
+	
+Is there a way I can declare "wheel.encoder.count" so that it exists as an 
+integer pointing to the same memory location as "encoder0_counts"? Can I 
+change the pointer of an existing integer?
+"wheel[0].encoder.count= 0;" Would then be the same as "encoder0_counts= 
+0;"
+
+-2- I want to initialize an array "char readings[256]" to hold the 
+measurements during calibration. But it leads to one of those well 
+explained <lol> memory errors. Of course it can be declared globally but 
+then it will take up space while only used when calibrating. Can I increase 
+the stack size for a function without starting it as a seperate process? Or 
+can I set TICKS to 1000 and will the process act as a normal function?
+
+
+
+Can anyone be of help?
+
+Thanks,
+
+Jaron Paludanus
+j.paludanus@tip.nl
+The Netherlands
+Europe
+
+

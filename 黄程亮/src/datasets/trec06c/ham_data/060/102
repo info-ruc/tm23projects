@@ -1,0 +1,94 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with ESMTP id PAA14593
+	for <handyboard@media.mit.edu>; Thu, 27 Jan 2000 15:48:03 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id PAA12520; Thu, 27 Jan 2000 15:48:02 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7366
+From: "mike mcfarlane" <mcfarlane_mike@hotmail.com>
+X-Real-Life-Name: Mike McFarlane
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: PID Control
+Posted-Date: Thu, 27 Jan 2000 20:47:20 GMT
+Date: Thu, 27 Jan 2000 20:47:20 GMT
+Organization: essex
+Message-Id: <Fp0Hqw.93n@lugnet.com>
+References: <OF344312BF.86948ED6-ON86256873.0057EC70@LocalDomain>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+>     May I obtain also the code that you mentioned? I'm supposing the code
+>was used at the HandyBoard?
+
+Yep ... and no.
+
+The following was applied to a pneumatic cylinder controlled via an Amplicon
+Liveline I/O
+card and an SMC proportional valve (ie not Lego).
+code
+*********************************************
+
+pidloop:
+  	'e = error, sp = set point (desired value), pv = process value
+'(current value)
+	'x100 to convert to a percentage
+	'ie error is a percentage difference between your desired value and the
+	'current value
+  e = (sp - pv) * 100
+	'a deadband is used to avoid hunting
+	'ie if the percentage error is small then do nothing (or loop here)
+	'deadband - initially set to 1
+  IF (e ^ 2) < .25 THEN GOTO pidloop
+	'sum the errors
+  sum = sum + e
+  	'this PID equn should work fine, there are a few different ones out
+        'there
+	'k = gain (speed of algorithm response), Dt = change in time (how
+        'often
+	'you run the PID algorithm), Ti = integral time (accuracy of response)
+	'Td = derivative time (stability of control), reqp = control effort
+        'as a %
+  reqp = (k * e) + ((k * (Dt / Ti)) * sum) + ((k * (Td / Dt)) * (e - Eold))
+	'clip the control effort to be a percentage between 0 and 100
+  ReqUnclip = reqp
+  IF reqp < 0 THEN reqp = .1
+  IF reqp > 100 THEN reqp = 100
+  Eold = e
+  GOTO pidloop
+END SUB
+
+*********************************************************
+The output reqp is the value you should output from your controller to the
+system. e.g.
+Say you use a controller that has an output range of 0 to 10 V and reqp is
+25%. Hence you out 2.5V.
+The value of K, Ti and Td will be different for each system controlled. One
+way to gain the values is
+with Ziegler and Nichols methods. Simple empirical methods. (see Integrated
+electrical
+and electronic engineering for mechanical engineers, C Fraser and J Milne,
+McGraw Hill, 1994, ISBN
+0-07-707973-6). An example set of values for my pneumatic system were K = 5,
+Ti = 0.04,
+Td = 0.05. Set Dt, the time, to what you want, try 0.5 to 1 sec, depends on
+your system.
+I seem to remember I ran Dt at a few milliseconds for my app. Meant messing
+with
+the PC clock. Have code if you want it.
+Remember to only run the loop every Dt increment, it does not run continuously.
+I totally recommend the listed book. Superb sections on Basic and C
+programming, control
+theory and electronics. I am a bit biased as the authors were two of my Uni
+lecturers.
+I can also post details on Ziegler and Nichols methods if you want and
+I think I have a QB prog that allows you to play with the values and see their
+effect on the system. Also a pdf of my Masters that this was taken from that
+has info on the theory of PID and some of the testing I did with it.
+Just shout if you do not understand or want more help. It has been a couple of
+years since I looked at this stuff and so my comments may be a bit cryptic.
+Mike
+ps apologies for the formatting, pasted it in from notepad
+

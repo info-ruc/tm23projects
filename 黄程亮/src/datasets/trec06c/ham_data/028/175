@@ -1,0 +1,97 @@
+Received: from carina.unm.edu (carina.unm.edu [129.24.8.17])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id LAA21680
+	for <handyboard@media.mit.edu>; Sat, 28 Nov 1998 11:50:10 -0500 (EST)
+From: jdunn@unm.edu
+Received: from unm.edu(ppp-037.unm.edu[129.24.14.37]) (3638 bytes) by carina.unm.edu
+	via sendmail with P:esmtp/R:bind_hosts/T:inet_zone_bind_smtp
+	(sender: <jdunn@unm.edu>) 
+	id <m0zjnZQ-0000dQC@carina.unm.edu>
+	for <handyboard@media.mit.edu>; Sat, 28 Nov 1998 09:50:08 -0700 (MST)
+	(Smail-3.2.0.101 1997-Dec-17 #2 built 1998-Sep-15)
+Message-Id: <3660293A.DE32C286@unm.edu>
+Date: Sat, 28 Nov 1998 09:47:54 -0700
+X-Mailer: Mozilla 4.02 [en] (Win95; I)
+Mime-Version: 1.0
+To: Handy Board <handyboard@media.mit.edu>,
+        phillip chia <philchia@singnet.com.sg>
+Subject: Re: How to use the addition analog port ?
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+You can time share both your digital and your analog so long as your signal
+update speeds are not critical.
+
+Use a 4 to 8 demultiplexing chip for 4 of your digital I/O and an 8 to 4
+multiplexer for the other 4.  This effectively provides 8 digital inputs
+and 8 digital outputs.  Extra assembly language needs to be done to encode
+and decode the respective signals.  I'm sure there is a memory efficient
+way of doing this.  The increased update times should be relatively minor
+depending upon the programming technique used.
+
+For more analog I/O, take one or more of the digital outputs and switch
+banks of analog signals to the analog inputs you have through solid state
+relays (there are IC chips made for this purpose with 8 bi-directional
+channels on a single chip).  You can select each of the analog ports as
+either inputs or outputs independently for each bank by associating the
+setup with the particular multiplexed digital output. For signals that need
+to be monitored more frequently, they can be tied in to more than one bank,
+or you can sacrifice the number of analog channels and use some of your
+multiplexed digital inputs for interrupts to get immediate attention.
+
+If all of the digital I/O is used to select analog I/O, you could monitor
+or transmit 2 to the 8th times 8 standard analog plus 4 SP0 analog, or 3072
+mixed analog inputs/outputs.  And these can be used for digital inputs as
+well by doing a comparison (ie >127 is a 1) of the registers for inputs and
+selecting 255 for 1 or 0 for zero for digital outputs.
+
+Keep in mind though that the update time increases only for each bank of
+analog that you setup and select.  Another way of increasing your update
+rate would be selecting those banks that need shorter update times more
+often and conditionally looking at others.
+
+There are other methods of bank switching analog and digital signals that
+could allow hundreds of billions of I/O, but the above implementation is
+relatively straight forward to understand and implement.
+
+
+phillip chia wrote:
+> 
+> Hi,
+> I need additional port for the analog input. I have used up 7 analog ports
+> and 9 digital ports.  Hence, I need additional port from the HD. I came to
+> know that there are 4 extra analog port on the HD just above the analog
+> port 0 to 3. These additional ports are connected to PE0 to PE3 . HOW
+> should i command these ports to receive the input signal ? Eg,  if
+> analog(3) <127 {........}. Then, How should I use such command for PE0 to
+> PE3 to operate on the HD?
+> 
+> Besides, Is there any way to expand the input for the usage of digital port
+> since the 9 digital ports i have finished used up ?
+> 
+> rgds, 
+     
+-- 
+James Dunn
+NASA/Pursue Sensor Fusion and Mobile Navigation
+jdunn@unm.edu
+Chat# 14708321
+
+Like a rose, life is sweet,
+with just enough thorns
+to make it interesting.
+      _,--._.-,
+     /\_r-,\_ )
+   .-.) _;='_/ (.;
+    \ \'     \/S )
+     L.'-. _.'|-'
+     <_`-'\'_.'/
+      *-._( \
+      ___   \\,     ___
+      \ .'-. \\ .-'_. /
+       '._' '.\\/.-'_.'
+          '--``\('--'
+                \\
+                `\\,
+                  \|
+
+

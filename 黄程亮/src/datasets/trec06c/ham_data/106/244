@@ -1,0 +1,143 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.13.5/8.13.5) with ESMTP id j93K3fOa006719
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 3 Oct 2005 15:03:43 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.33) with SMTP id j93K3bik029455;
+	Mon, 3 Oct 2005 15:03:37 -0500 (CDT)
+Received: from ironman.mail.utexas.edu (ironman.mail.utexas.edu [128.83.32.51])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.33) with ESMTP id j93K3Kv8029417
+	for <cs382m@lists.cc.utexas.edu>; Mon, 3 Oct 2005 15:03:23 -0500 (CDT)
+Received: from nobodaddy.cs.utexas.edu (128.83.120.154)
+  by ironman.mail.utexas.edu with ESMTP; 03 Oct 2005 15:03:16 -0500
+X-IronPort-MID: 1739814933
+X-SBRS: 4.2
+X-BrightmailFiltered: true
+X-Brightmail-Tracker: AAAAAA==
+X-Ironport-AV: i="3.97,169,1125896400"; 
+   d="scan'208"; a="1739814933:sNHT1463717846"
+Received: from rosanky.cs.utexas.edu (mgebhart@rosanky.cs.utexas.edu [128.83.120.40])
+	by nobodaddy.cs.utexas.edu (8.13.5/8.13.5) with ESMTP id j93K3G2I012457
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <cs382m@lists.cc.utexas.edu>; Mon, 3 Oct 2005 15:03:16 -0500 (CDT)
+Received: (from mgebhart@localhost)
+	by rosanky.cs.utexas.edu (8.13.5/8.13.5/Submit) id j93K3Glp020662;
+	Mon, 3 Oct 2005 15:03:16 -0500
+Date: Mon, 3 Oct 2005 15:03:16 -0500 (CDT)
+From: Mark Gebhart <mgebhart@cs.utexas.edu>
+To: cs382m@lists.cc.utexas.edu
+Subject: [CS382M:14] Re: trouble finding a pentium III you can access?
+In-Reply-To: <43418899.4000506@yahoo.com>
+Message-ID: <Pine.LNX.4.63.0510031501560.20640@rosanky.cs.utexas.edu>
+References: <Pine.LNX.4.63.0510031303130.26222@lutie.cs.utexas.edu>
+ <43418899.4000506@yahoo.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Reply-To: cs382m@lists.cc.utexas.edu
+Sender: owner-cs382m@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+
+bowmore.cs.utexas.edu has a PIII:
+
+bowmore.cs.utexas.edu% more /proc/cpuinfo
+processor       : 0
+vendor_id       : GenuineIntel
+cpu family      : 6
+model           : 7
+model name      : Pentium III (Katmai)
+stepping        : 3
+cpu MHz         : 598.506
+cache size      : 512 KB
+fdiv_bug        : no
+hlt_bug         : no
+f00f_bug        : no
+coma_bug        : no
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 2
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 sep mtrr pge mca cmov 
+pat pse36 mmx fxsr sse
+bogomips        : 1192.75
+
+
+On Mon, 3 Oct 2005, Jeff Diamond wrote:
+
+> Except that the newer Xeons are Pentium IVs with a larger cache.  I'd be a 
+> little suspicious about a 1.80 GHz Xeon since I'm not aware of Pentium III 
+> based processors exceeding 1.4 GHz....
+> - Jeff
+>
+> Kartik K. Agaram wrote:
+>
+>> It turns out Xeons are just Pentium IIIs with a larger cache. Use those.
+>> 
+>> Kartik
+>> 
+>> $ for i in `cshosts publinux`; do echo ===$i; ssh $i cat /proc/cpuinfo; 
+>> done |grep -i "===\|xeon"
+>> ===antones
+>> ===archeologist
+>> ===backroom
+>> ===backyard
+>> ===baluchitherium
+>> ===beerland
+>> ===black
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> ===blindfold
+>> ===bollard
+>> ===boom
+>> ===booze
+>> ===brokenspoke
+>> ===bubble
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> ===bugbear
+>> ===bulkhead
+>> ===cactuscafe
+>> ===can-of-grease
+>> ===capstan
+>> ===carousel
+>> ===cobra
+>> ===cofferdam
+>> ===continental
+>> ===cream-pie
+>> ===darjeeling
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> ===davit
+>> ===deadeye
+>> ===deadrise
+>> ===dilithium-crystal
+>> ===doppelganger
+>> ===drawbridge
+>> ===earl-gray
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> ===elysium
+>> ===emos
+>> ===fidleyhutch
+>> ===figurehead
+>> ===fountain
+>> ===galley
+>> ===gangway
+>> ===genmai
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> ===grayswandir
+>> ===green
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> model name    : Intel(R) XEON(TM) CPU 1.80GHz
+>> ===green-slime
+>> ===gunwale
+>> ===halyard
+>> ...
+>> =eof
+>> 
+>> 
+>> 
+>
+
+

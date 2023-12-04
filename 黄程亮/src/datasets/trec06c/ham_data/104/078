@@ -1,0 +1,69 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j6J1xi5L018622;
+	Mon, 18 Jul 2005 18:59:44 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP
+	id 39E2CAECD3C; Mon, 18 Jul 2005 18:59:44 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP
+	id 95703AE7D91; Mon, 18 Jul 2005 18:59:43 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050718185152.00ba4808@psy1.psych.arizona.edu>
+Date: Mon, 18 Jul 2005 18:59:39 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DMDX setup for default user ? (Win XP Pro)
+In-Reply-To: <6.2.1.2.2.20050719104544.02957298@mail.unimelb.edu.au>
+References: <5.1.0.14.2.20050718172338.00bcbf30@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718082358.00ba4820@psy1.psych.arizona.edu>
+ <6.2.1.2.2.20050718121101.028d7ed0@mail.unimelb.edu.au>
+ <5.1.0.14.2.20050718082358.00ba4820@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050718172338.00bcbf30@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 10:54 AM 7/19/2005 +1000, you wrote:
+>jonathan,
+>         I'm not going to be able to setup for each user, we run classes 
+> with 100+ students over a week.  In the past we have setup a single "DMDX 
+> user" that they all used but we found that things go wrong when "helpful" 
+> students change things.  I had wanted a setup that I could apply as the 
+> "default user" so each time a student logs in they get a new copy.  If 
+> you dont think this is possible then maybe we will have to us the "EZ" 
+> mode.  I have till Thursday to work on this, if you can make any 
+> suggestions it would be a great help.
+>
+>I've found that I need to give everybody permissions to the registry DMDX 
+>and TimeDX keys, write permissions to the DMDX program directory and am 
+>trying to get a working set of defaults to copy into the per user (current 
+>user) settings.
+
+   DMDX tries to access the HKLM tree of the registry for all keys, if it 
+can't get the permissions it needs it then tries the HKLU branch.  There's 
+one HKLM (the local machine) and there's a HKLU (local user) branch per 
+user.  So by default you shouldn't have to do any tinkering with registry 
+permissions as long as you're using a really recent version of DMDX (as I 
+fixed some detail to do with this a short while ago).  Theoretically you 
+should be able to set things up for the administrator and then the less 
+privileged users won't be able to change those things if you don't give 
+them permissions to run TimeDX but should be able to save settings on a per 
+user basis.
+
+   Only stuff in addition to the changes in the code for registry keys is 
+that I've had to do is to give write permissions to everyone so DMDX can 
+create it's intermediate files in / Program Files / DMDX.  Guess one day 
+I'll change the code to try a different location for those if it fails to 
+get write access too.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+So, what's with this guy Gideon, anyway?  And why can't he ever
+remember his Bible?
+
+
+

@@ -1,0 +1,204 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id gBCILpCW029111;
+	Thu, 12 Dec 2002 10:21:52 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id gBCGHFl25817;
+	Thu, 12 Dec 2002 11:17:15 -0500
+Date: Thu, 12 Dec 2002 11:17:15 -0500
+Message-Id: <CA-2002-35.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-35 Vulnerability in RaQ 4 Servers
+Precedence: bulk
+Status: RO
+X-Status: $$$$
+X-UID: 0000000070
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-35 Vulnerability in RaQ 4 Servers
+
+   Original release date: December 11, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Sun  Cobalt  RaQ  4  Server Appliances with the Security Hardening
+       Package installed
+
+Overview
+
+   A remotely exploitable vulnerability has been discovered in Sun Cobalt
+   RaQ  4  Server  Appliances  running  Sun's  Security Hardening Package
+   (SHP).  Exploitation  of this vulnerability may allow remote attackers
+   to execute arbitrary code with superuser privileges.
+
+I. Description
+
+   Cobalt  RaQ 4 is a Sun Server Appliance. For background information on
+   Cobalt  RaQ 4, please see the COBALT RaQ 4 User Manual. Sun provides a
+   Security Hardening Package (SHP) for Cobalt RaQ 4. Although the SHP is
+   not installed by default, many users choose to install it on their RaQ
+   4  servers.  For background information on the SHP, please see the SHP
+   RaQ 4 User Guide.
+
+   A  vulnerability  in  the  SHP  may allow a remote attacker to execute
+   arbitrary  code  on a Cobalt RaQ 4 Server Appliance. The vulnerability
+   occurs   in  a  cgi  script  that  does  not  properly  filter  input.
+   Specifically,  overflow.cgi  does not adequately filter input destined
+   for  the  email  variable. Because of this flaw, an attacker can use a
+   POST  request  to fill the email variable with arbitrary commands. The
+   attacker  can then call overflow.cgi, which will allow the command the
+   attacker  filled the email variable with to be executed with superuser
+   privileges.
+
+   An exploit is publicly available and may be circulating.
+
+   Further information about this vulnerability may be found in VU#810921
+   in the CERT/CC Vulnerability Notes Database.
+
+II. Impact
+
+   A  remote  attacker  may be able to execute arbitrary code on a Cobalt
+   RaQ 4 Server Appliance with the SHP installed.
+
+III. Solution
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   As  vendors report new information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not  listed  below,  we  have not received their comments.
+   Please contact your vendor directly.
+
+Workarounds
+
+   Block   access  to  the  Cobalt  RaQ  4  administrative  httpd  server
+   (typically  ports  81/TCP and 444/TCP) at your network perimeter. Note
+   that  this  will  not  protect  vulnerable  hosts  within your network
+   perimeter.  It  is  important to understand your network configuration
+   and service requirements before deciding what changes are appropriate.
+
+Caveats
+
+   The  patch  supplied  by  Sun  removes  the  SHP  completely.  If your
+   operation requires the use of the SHP, you may need to find a suitable
+   alternative.
+
+Appendix A. - Vendor Information
+
+Sun Microsystems
+
+   Sun  confirms  that  a  remote root exploit does affect the Sun/Cobalt
+   RaQ4  platform  if  the  SHP  (Security  Hardening  Patch)  patch  was
+   installed.
+
+   Sun  has  released  a  Sun Alert which describes how to remove the SHP
+   patch:
+
+       http://sunsolve.Sun.COM/pub-cgi/retrieve.pl?doc=fsalert/49377
+
+   The removal patch is available from:
+
+ http://ftp.cobalt.sun.com/pub/packages/raq4/eng/RaQ4-en-Security-2.0.1-SHP_REM.pkg
+
+Appendix B. - References
+
+1. CERT/CC Vulnerability Note: VU#810921 - http://www.kb.cert.org/vuls/id/810921
+2. Sun SHP RaQ 4 User Guide - http://www.sun.com/hardware/serverappliances/pdfs/support/RaQ_4_SHP_UG.pdf
+3. COBALT RaQ 4 User Manual - http://www.sun.com/hardware/serverappliances/pdfs/manuals/manual.raq4.pdf
+     _________________________________________________________________
+
+   grazer@digit-labs.org publicly reported this vulnerability.
+     _________________________________________________________________
+
+   Author: Ian A. Finlay.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-35.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+December 11, 2002: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPfe3rGjtSoHZUTs5AQGi9gP/YKUB3k9mabWL7w3OYun7zPpsYqtRRFgE
+zpG77X/wKuHoUjxMArn0thzBeGmpmM0WJ7o3boggArwmgLgm6XQTJyg76JDHKEU5
+/ozCZnhd4C39veE08rL1qQgXYIlo56QIANDdCnBchl6Fe/41XYjKblIhlxItRfbM
+2bpmCCLvQzk=
+=5ayh
+-----END PGP SIGNATURE-----
+
+

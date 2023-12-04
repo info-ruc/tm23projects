@@ -1,0 +1,74 @@
+Received: from alpha.delta.edu (alpha.delta.edu [161.133.129.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id EAA08185
+	for <handyboard@media.mit.edu>; Sat, 18 Jul 1998 04:31:51 -0400 (EDT)
+Received: from pm295-29.dialip.mich.net by alpha.delta.edu; (5.65v3.0/1.1.8.2/06Jan97-0932AM)
+	id AA07368; Sat, 18 Jul 1998 04:35:21 -0400
+Received: from kott.my.domain (dakott@kott.my.domain [192.168.0.1])
+	by kott.my.domain (8.8.8/8.8.5) with SMTP id VAA13323;
+	Fri, 17 Jul 1998 21:40:22 -0400 (EDT)
+Date: Fri, 17 Jul 1998 21:40:21 -0400 (EDT)
+From: David Kott <dakott@alpha.delta.edu>
+Sender: dakott@kott.my.domain
+To: adekolaf@is2.dal.ca
+Cc: "handyboard@media.mit.edu" <handyboard@media.mit.edu>
+Subject: Re: LM20X21A
+In-Reply-To: <199807160204.XAA31710@alf.glinx.com>
+Message-Id: <Pine.BSF.3.96.980717212414.13289A-100000@kott.my.domain>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Wed, 15 Jul 1998 adekolaf@is2.dal.ca wrote:
+
+> Hello all:
+> 
+> Does anyone know how to program a character into Sharp  Dot Matrix 
+> LCD LM20X21A ? I want to add the greek character, miu ( the one that 
+> looks like italized 'u') I will be very grateful if anyone can help 
+> me out this.
+> 
+> Cheer!
+> 
+> Felix Adekola
+> 
+> 
+
+Erm... I am just guessing here, but, I don't think it would be
+unreasonable to suspect that this particular LCD uses the Hitachi LCD
+chipset that just about every LCD manufacturer utilizes.. and every LCD
+chip fab'r emulates.  HM44780 is it?  I'm not sure.  However, if it does
+indeed utilize this chipset, one merely presents a particular 8 bit code
+to the instruction register and then for each particular CGRAM address
+you present the 8 bit raster character image line for the character.
+You would encode the image thusly:
+
+  76543210  (bit locations in the aforementioned 5 bytes)
+1 ........
+2 .1....1.
+3 .1....1.
+4 .11111..
+5 1.......
+
+
+where the .'s I have depicted are zeros, and the 1's are.. *shock* ones.
+
+So, the following bytes would form (something) like the character I think
+you want:
+
+{ 0x00,0x42,0x42,0x7C,0x80 }
+
+I am not sure about the bit order, or the command to initiate the
+character ram transfer...... or even where said character ram resides..
+but.. that's the (extremely) general way to approach custom characters
+with the (alleged) HM44780 chipset.
+
+							-d
+
+
+The box said "Requires Windows 95/NT or better"...
+                                                 So I got Unix.
+
+Free the Source.  Free your Computer... http://www.FreeBSD.org
+                                          http://www.NetBSD.org
+                                            http://www.OpenBSD.org
+
+

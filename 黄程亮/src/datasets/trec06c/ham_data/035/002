@@ -1,0 +1,46 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id VAA15301
+	for <handyboard@media.mit.edu>; Tue, 9 Feb 1999 21:51:30 -0500 (EST)
+Received: from cam.org (Dialup-515.HIP.CAM.ORG [199.84.45.10])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id VAA25468; Tue, 9 Feb 1999 21:50:16 -0500 (EST)
+Message-Id: <36C0F3E9.A8BC08D4@cam.org>
+Date: Tue, 09 Feb 1999 21:50:18 -0500
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.5 [en] (Win95; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: "Naser A. Ameen" <naa6195@silver.sdsmt.edu>
+Cc: Virtual Friends <handyboard@media.mit.edu>
+Subject: Re: I need a little help with understanding processes
+References: <Pine.A41.4.05.9902091340460.18636-100000@silver.sdsmt.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+The most common problem many people have regarding processes is that they
+incorrectly assume you should call start_process repeatedly in order to
+keep a background process running.
+
+This is completely wrong, and it will crash the system one way or another.
+
+You should call start_process only once for any one background process that
+you want to run.  When you start a subroutine with start_process, that
+subroutine will start running completely independently of your main
+program, or in other words, execution will continue immediately with
+whatever follows your start_process call while the subroutine runs on its
+own at the same time.  Typically a routine designed to be called by
+start_process will contain an endless loop, which is just fine providing
+that you only do a start_process on it only once.
+
+If you call start_process for the same subroutine a second time before the
+first subroutine ends you will end up having 2 copies of the same
+subroutine running at the same time along with your main program.  If your
+main program continues calling start_process repeatedly you will get
+hundreds of copies of the subroutine running at the same time until
+eventually (within a few seconds) the system will crash, normally with a
+stack overflow error, although just about anything else could be possible
+depending on the specifics of your program.
+
+
+
+

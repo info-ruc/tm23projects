@@ -1,0 +1,108 @@
+Received: from easy.stallion.com (easy.stallion.com [204.31.184.2])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id KAA12866;
+	Fri, 9 Jul 1999 10:49:20 -0400 (EDT)
+Received: from stallion.stallion.oz.au by easy.stallion.com id aa26171;
+          9 Jul 99 7:49 PDT
+Received: from cluster.stallion.oz.au by stallion.stallion.oz.au id aa12534;
+          10 Jul 99 0:48 AEST
+Received: from babylon5.stallion.oz.au by cluster.stallion.oz.au id aa25104;
+          10 Jul 1999 0:48 AEST
+Message-Id: <37860BD4.1A2F5671@stallion.oz.au>
+Date: Sat, 10 Jul 1999 00:48:52 +1000
+From: Aaron Dwyer <aaron@stallion.oz.au>
+Organization: Stallion Technologies
+X-Mailer: Mozilla 4.61 [en] (Win98; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Fred Martin <fredm@media.mit.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: encoders and analog ports
+References: <199907081913.PAA17730@aleve.media.mit.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+thanks fred.
+
+i'm now using the servo_a7.icb routines to drive my servo.
+
+i am still experiencing problems with the analog ports.
+
+i have cascading if then else statements that yield varying responses
+from my 5 analog ldr's. i have put printf's throughout these statements
+to work out what is going on.
+
+with the fencrd0.icb file loaded the other analog ports randomly produce
+values on them.
+
+i've turned off my servo (removed servo_a7.icb from the startup) for now
+until the analog ports and fencrd0.icb are sorted out, and the problem
+is still there.
+
+since the fencrd0.icb reprograms the a/d port. could it be reprogramming
+it all the time hence the bogus values on the other a/d ports?
+
+i have replaced the 47K res pack with 100K for a better voltage divider
+on the ldr's. i can't see that causing it any problems.
+
+i've tried a different handyboard to rule out a hardware issue.
+
+i don't even have any code for the fencrd0.icb to use yet. it is just
+loaded at startup.
+
+any ideas?
+
+thanks.
+
+Fred Martin wrote:
+> 
+> my shaft encoder routines are not compatible with the old servo routines.
+> 
+> please try the new servo routines at
+> 
+>   http://el.www.media.mit.edu/projects/handy-board/software/libs.html
+> 
+> fred
+> 
+> >hi there
+> >
+> >i'm not yet receiving this list so could any replies please not leave
+> >out my direct email.
+> >
+> >my problem is thus.
+> >
+> >i've got 5 of the hb's analog ports used by ldr's. they all work fine
+> >and have done so as line detectors for 3 years now.
+> >
+> >i have just recently ripped a mouse apart and am trying to have a shaft
+> >encoder.
+> >
+> >this has also been successful to a certain degree. using the hb
+> >fencdr0.icb i get a nice velocity and everything is fine with the
+> >encoder part.
+> >
+> >however i've found that having the fencdr0.icb loaded the ldr's which
+> >are attached to the other analog ports are returning wild readings. if i
+> >manually in ic, read the sensors analog(1); and such they read back ok.
+> >but since i have my sensor code in a spawned process maybe this has
+> >something to do with it??
+> >
+> >so i'm assuming that the fencdr0.icb is somehow interfering with the ldr
+> >analog readings. spurious readings mean no robot = can't have encoder
+> >running at the same time. bugger.
+> >
+> >has anyone else every run across this problem. i did a search using the
+> >cool mailing search provided and was a bit swamped.
+> >
+> >thanks
+> >aaron.
+> >--
+> >_____________________________________________________________________
+> >Aaron Dwyer
+> >http://members.xoom.com/aarondwyer
+> >
+
+-- 
+_____________________________________________________________________
+Aaron Dwyer                                     Stallion Technologies
+http://members.xoom.com/aarondwyer           http://easy.stallion.com
+

@@ -1,0 +1,56 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k227Axt02173
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 02:10:59 -0500 (EST)
+Received: from [128.253.212.208] (r253212208.resnet.cornell.edu [128.253.212.208])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k227AxnD002509
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 02:10:59 -0500 (EST)
+Message-ID: <44069A82.50909@cornell.edu>
+Date: Thu, 02 Mar 2006 02:10:58 -0500
+From: Ivan Stoyanov <ids3@cornell.edu>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 11
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Serving DNS using a Peer-to-Peer Lookup Service
+
+The paper addresses some of the shortcomings in the current DNS system. 
+DNS is difficult to administer and there exists a coupling between 
+ownership of domains and responsibility of serving data for them. The 
+solution that the authors propose is to have a global DHT where clients 
+can enter their data and have it handled by the system that provides 
+other extras, such as fault tolerance and load balancing. The problem 
+with this approach is that it comes at a price - DHTs lookup time is 
+O(logN), which is unacceptable for such latency-sensitive applications. 
+The suggested implementation provides no optimizations other than 
+traditional caching and not surprisingly the results show no improvement 
+at all.
+
+The paper poses one other issue. Domain owners in the current DNS system 
+may have the painful task of configuring DNS servers, but at least they 
+have all the incentives they need. In a global public DNS DHT, it is not 
+clear what incentives will nodes have to run servers rather than free ride.
+
+The Design and Implementation of a Next Generation Name Service for the 
+Internet
+
+This paper solves the problem with DHT performance for latency-sensitive 
+applications by using proactive replication. The system proposed, 
+CoDoNS, uses the Beehive framework to achieve O(1) lookup time on 
+average. In addition, it fully exploits the benefits of a DHT, namely 
+load-balancing, scalability, decentralization, self-organization, 
+failure resilience, etc.
+
+The properties of DNS (infrequent object mutation and Zipf-like demand 
+distribution) are particularly well-suited for the Beehive framework. 
+Most of the discussion in this paper is based on the Beehive paper, 
+including popularity delta calculation and flash crowds adaptation. In 
+addition, the authors propose a scheme for gradual introduction of 
+CoDoNS as a backup or replacement of legacy DNS. The paper does not 
+address the issue of incentives.
+

@@ -1,0 +1,70 @@
+Received: from zinger.cs.cornell.edu (zinger.cs.cornell.edu [128.84.96.55])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OHWMh20629
+	for <egs@sundial.cs.cornell.edu>; Tue, 24 Sep 2002 13:32:22 -0400 (EDT)
+From: Emin Gun Sirer <egs@CS.Cornell.EDU>
+Received: (from egs@localhost)
+	by zinger.cs.cornell.edu (8.11.3/8.11.3/C-3.2) id g8OHWMa12895
+	for egs; Tue, 24 Sep 2002 13:32:22 -0400 (EDT)
+Date: Tue, 24 Sep 2002 13:32:22 -0400 (EDT)
+Message-Id: <200209241732.g8OHWMa12895@zinger.cs.cornell.edu>
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 19
+
+
+>From linga@CS.Cornell.EDU Tue Sep 24 11:59:20 2002
+>Date: Tue, 24 Sep 2002 11:59:19 -0400 (EDT)
+>From: Prakash Linga <linga@CS.Cornell.EDU>
+>To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+>Subject: PAPER #19
+>
+>
+>
+>CEDAR
+>
+>The goal of this paper is provide quality of service (QoS) routing in MANET.
+>Here bandwidth is used as the QoS metric. So the goal is to find a route from
+>source to destionation satisfying the b/w requirements with high probability,
+>given that there is one. Concentration here is on coming up with a robust
+>algorithm which may be way off from the optimal.
+>Main idea is to work with the core (a dominating set of the network which
+>approximates the minimum dominating set). Core is formed using only local
+>computation and local state using constant time (each node does a small amount
+>of work in parallel.) Each core node performs route computation for the nodes
+>in its domain and also maintains the local topology. Core broadcast is
+>achieved using a reliable unicast mechanism while avoiding redundant message
+>transfers by monitoring RTS/CTS packets.
+>Only b/w information of stable links is propagated through the core network
+>(info about dynamic or low b/w links is kept local). This is done using slow-
+>moving increase waves and fast-moving decrease waves. When the b/w of a link
+>(ab) changes (increases/decreases beyond a threshold) either node a or b will
+>inform its dominator about the change and that will propage the change across
+>the core n/w using increase/decrease waves. The maximum distance a link state
+>can travel is proportional to the b/w of that link so that a lot of nodes know
+>about the good links.
+>QoS routing has three key steps:
+>-discover the location of destination and establish a ccore path to the same.
+>-now by finding the shortest-widest furthest admissible path along the core
+>path and iterating, we find a short stable admissible QoS route from source to
+>destination.
+>-in face of link failures or topology changes dynamically reestablish the
+>routes for ongoing connections.
+>Performance evaluation: Three main kinds of results: characteristics of the
+>basic routing algorithm, performance of QoS routing and performance in case of
+>failures/mobility.
+>Pros: One of the first to talk about QoS routing in adhoc networks. They give
+>a list of goals for QoS routing in adhoc networks. Results show the proof of
+>concept and satisfactory performance numbers.
+>Cons: Only QoS metric used here is b/w. Other metrics like delay, jitter etc
+>have not been considered. It is not clear why robustness is much more important
+>than optimality (finding close to the best possible). Experiment/Simulation
+>results are not complete; try out with larger number of nodes and more
+>realistic topologies. Here they state that their goal is robustness and not
+>optimality. There are many details which need to worked out (like how good an
+>idea is caching RTS/CTS, how often do we send information about b/w updates,
+>how does using reliable unicast to simulate core broadcast compare to naive
+>broadcasting and hoping redundancy would take care of transmission failures or
+> have some other scheme to take care of failures). Future work would include
+>addressing the issues discussed above.
+>
+>
+

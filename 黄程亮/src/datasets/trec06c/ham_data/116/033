@@ -1,0 +1,87 @@
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1SHcOt28711
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 12:38:25 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id E34EF5327E; Tue, 28 Feb 2006 09:38:18 -0800 (PST)
+Date: Tue, 28 Feb 2006 09:38:15 -0800
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 10
+Message-ID: <20060228173815.GA14542@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+
+
+These papers explore solutions to the free rider problem.  The
+networks we have examined so far do not have any way to require peers
+which use the network to contribute resources to it, and studies have
+shown that a noticeable portion of the people using a network do not
+contribute to it.  These papers present four different systems which
+attempt to address this problem; Samsara, PPay, Sharp, and Karma.
+
+Samsara is designed to enforce fairness in a peer-to-peer storage
+system.  It does this by requiring that each time peer A stores a file
+on peer B, peer B is given a claim to an equal amount of space on peer
+A.  After this exchange takes place, A+B both check up on each other,
+to ensure faithfulness.  In order to avoid having a large overhead in
+claimed but unused storage space, claims can be chained together.
+That is, if A has a claim on B, and B has a claim on C, B can use its
+claim on C to satisfy A's claim.  However, if C fails or cheats, then
+B is held responsible.  When a node fails, it is punished in a
+probabilistic fashion.  This allows for nodes experiencing transient
+failures to recover, but their data will probably be removed if the
+node fails for too long.
+
+This does not fix the problems of malicious nodes, or nodes which will
+refuse to transfer all of the data back when the person who stored the
+data wants to recover it.  In light of the cost of uploading large
+amounts of data, especially with DSL with slow upload speeds, or
+traffic shapers, it would be possible for a peer to store data and
+respond to queries, and only fail when someone attempts to upload a
+lot of data from it.
+
+PPay addresses this problem from a different angle, proposing the idea
+of a micropayment system, where each peer must pay a small amount for
+each download.  PPay offers a scheme for floating currency, so a
+broker only needs to be involved to create and delete accounts, and
+redeem the currency.  The requirement that each person using the
+network have an account with the broker creates a serious problem for
+many networks, however.  Networks which wish to provide a level of
+anonymity for their users will not be able to do so under this scheme;
+A could prove that B was part of the network, and the records at the
+broker will provide B's identity.
+
+Sharp is a resource management system which uses the concept of claims
+from Samsara, but extends them so claims can represent any resource,
+and can be signed over to a third party.  They avoid a centralized
+server by having each site sign the claims for its resources, giving
+us self-certifying resource claims.  They also demonstrate how
+individual sites can work together to form an economy, trading resource
+claims and managing the available resources in a secure fashion.  A
+large scale prototype of this system has been run successfully on
+PlanetLab.
+
+Karma is a system which keeps track of resource consumption and
+contribution in a peer-to-peer network.  For each node, this is
+represented by a single scalar value, called the node's karma.  The
+karma which each user has is tracked by a group of nodes, called a
+bank set, and each transaction in the network is counted as it occurs.
+Every so often, the karma values are re-scaled to prevent inflation or
+deflation of karma.
+
+The Karma protocols rely on the assumption that no more than a
+fraction of the nodes in the system are malicious; a system running it
+could still be vulnerable to Sibyl attacks.  Also, since each node
+starts out with some initial karma, a node could simply join, use that
+karma up, quit, and then re-join with a new identity.  The potential
+damage done by a single node is limited by requiring each node to
+solve a cryptographic puzzle to join, but this is still a cause for
+concern.  Also, I'm curious how much overhead the Karma system
+generates; each transaction now requires action on the part of the
+entire bank set, rather than just the two nodes engaging in the
+transaction, and the nodes on the path between them.
+
+-- Victoria Krafft
+

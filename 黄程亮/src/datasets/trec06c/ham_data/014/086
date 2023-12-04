@@ -1,0 +1,203 @@
+Received: from griffin.itc.gu.edu.au (griffin.itc.gu.edu.au [132.234.250.8])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id SAA02659
+	for <handyboard@media.mit.edu>; Mon, 6 Apr 1998 18:12:46 -0400 (EDT)
+Received: from kraken.itc.gu.edu.au (nkraken.itc.gu.edu.au [132.234.250.31]) by griffin.itc.gu.edu.au (8.8.5/8.7.3) with ESMTP id IAA17548 for <handyboard@media.mit.edu>; Tue, 7 Apr 1998 08:12:42 +1000 (EST)
+Received: from ipnet.ins.gu.edu.au (gcstaff.ins.gu.edu.au [132.234.11.140])
+	by kraken.itc.gu.edu.au (8.8.5/8.8.5) with ESMTP id IAA24002
+	for <handyboard@media.mit.edu>; Tue, 7 Apr 1998 08:08:50 +1000 (EST)
+Received: from GCSTAFF/SpoolDir by ipnet.ins.gu.edu.au (Mercury 1.40);
+    7 Apr 98 08:12:48 +1000
+Received: from SpoolDir by GCSTAFF (Mercury 1.40); 7 Apr 98 08:12:26 +1000
+From: "Charles Hacker EAS" <C.Hacker@ste.gu.edu.au>
+Organization: Griffith University
+To: handyboard@media.mit.edu
+Date: Tue, 7 Apr 1998 08:12:18 +1000
+Subject: Machine code PRINT routine
+Reply-To: c.hacker@eas.gu.edu.au
+X-Confirm-Reading-To: c.hacker@eas.gu.edu.au
+X-Pmrqc: 1
+Priority: normal
+X-Mailer: Pegasus Mail for Windows (v2.52)
+Message-Id: <D2DF83386@ipnet.ins.gu.edu.au>
+
+Hello All,
+
+I have been able to get a machine code print routine to work.
+The code that will print two lines to the LCD screen follows.
+
+Fred Martin had requested I send the code to the HandyBoard list.
+
+Note that No interrupts have been set up.  
+
+The Print screen routine is copied to Zero page with each 
+new character printed, (to account for interrupts etc trashing zero 
+page as well).
+
+I had a few problems getting the display to work, and had to 
+obtain a manual for the display.
+Some problems I discovered:
+
+1.  You need to Turn Display On first, (with an $0C code).
+
+2.  The display in One line is so dark, the words can not be seen.
+     The display thus needs to be operated in two line display.
+
+3.  The screen buffer is bigger than the display.  Hence you need to
+     write multiple characters to the end of line one, to get to line 
+     two.
+
+
+__________________________________________
+
+* HC11 - Equates
+*
+PORTA        EQU        $00                        ; Port A data register
+PORTB        EQU        $04                        ; Port B data register
+PORTC        EQU        $03                        ; Port C latched data register
+PORTD   EQU        $08                        ; Port D data register
+PORTE        EQU        $0A                        ; Port E data register
+DDRC        EQU        $07                        ; Data Direction register for port C
+HPRIO        EQU        $3C                        ; Highest Priority Interrupt and misc.
+*
+* Display Equates
+*
+LCDtmpA
+        EQU        $0009
+LCDrout
+        EQU        $0010
+*
+        ORG        $BFFE
+        FDB        $8000         ;org to the reset vector
+*
+*  Start of Prog
+*
+        ORG        $8000        
+        LDS        #$E000
+*
+*  Do Print to screen
+*
+        JSR        CPYprt
+        LDAA        #$00                        
+        LDAB        #$0C                        ; Display On /  Cursor Off / Flash Off
+        JSR        LCDrout
+*
+        JSR        CPYprt
+        LDAA        #$00                        
+        LDAB        #$38                        ; Two Display
+        JSR        LCDrout
+*
+        JSR        CPYprt
+        LDAA        #$00                        
+        LDAB        #$03                        ; Home and Clear Display
+        JSR        LCDrout
+*
+        LDX        #Line1                        ; Tell to Print Line 1
+        STX        SCRend
+PL1        JSR        CPYprt
+        LDAA        #$02                        
+        LDX        SCRend
+        LDAB        $00,X
+        INX
+        STX        SCRend
+        JSR        LCDrout
+        LDX        SCRend
+        CPX        #Line2
+        BNE        PL1
+*
+        LDAA        #24                        ; Move to Next Line
+NewL        STAA        SCRend
+        JSR        CPYprt
+        LDAA        #$02                        
+        LDAB        #40
+        JSR        LCDrout
+        LDAA        SCRend
+        DECA
+        BNE        NewL
+*
+        LDX        #Line2                        ; Tell to Print Line 2
+        STX        SCRend
+PL2        JSR        CPYprt
+        LDAA        #$02                        
+        LDX        SCRend
+        LDAB        $00,X
+        INX
+        STX        SCRend
+        JSR        LCDrout
+        LDX        SCRend
+        CPX        #Lend
+        BNE        Pl2
+*
+AGAIN        LDAA        #$FA
+        STAA        $7000
+*
+        LDX        #$8000                ; Delay for count
+LOP1        DEX
+        BNE        LOP1
+*
+        LDAA        #$F5
+        STAA        $7000
+*
+        LDX        #$8000                ; Delay for count
+LOP2        DEX
+        BNE        LOP2
+*
+        JMP        AGAIN
+*
+Line1        FCC        'Print Line 1 !!!'
+Line2        FCC        'This is Line 2 !'
+Lend        FCB        $00
+*
+*
+*  Copy print routine to Zero Page
+*
+CPYprt        LDX        #SCRbeg
+        LDY        #LCDrout
+LCDloop
+        LDAA        0,X
+        STAA        0,Y
+        INX
+        INY
+        CPX        #SCRend
+        BNE        LCDloop
+        RTS
+*
+*   Print Routine:  A - Command, B - Data
+*     Copied to Zero Page memory and Run there
+*
+SCRbeg        SEI                                ; disable interrupts
+        LDX        #$1000
+        BCLR        HPRIO,X %00100000        ; put into single chip mode
+        BCLR        PORTA,X %00010000        ; turn off LCD E line
+        STAA        LCDtmpA                        ; Temp A store
+        CLR        DDRC,X                        ; make port C input
+LCDBsy        LDAA        #1
+        STAA        PORTB,X                        ; read operation from LCD (AKF-added ',X')
+        BSET        PORTA,X %00010000        ; frob LCD on
+        LDAA        PORTC,X                        ; get status
+        BCLR        PORTA,X %00010000        ; frob LCD off
+        ANDA        #$80                        ; bit 7 is busy flag
+        BNE        LCDBsy
+        LDAA        #$FF
+        STAA        DDRC,X                        ; make port C output
+        LDAA        LCDtmpA                        ; Temp A store
+        STAA        PORTB,X                        ; high byte is control
+        STAB        PORTC,X                        ; low byte is data
+        BSET        PORTA,X %00010000
+        BCLR        PORTA,X %00010000        ; frob LCD
+        BSET        HPRIO,X %00100000        ; put into expanded chip mode
+        CLI                                ; enable interrupts
+        RTS                                ; return to monitor command loop
+SCRend        RMB        2
+
+
+
+Charles Hacker
+School of Engineering
+Griffith University - Gold Coast
+PMB 50 Gold Coast Mail Centre
+Southport Queensland 9726
+Australia.
+Email - C.Hacker@eas.gu.edu.au
+Ph. (07) 55948 670
+Fax.(07) 55948 065
+

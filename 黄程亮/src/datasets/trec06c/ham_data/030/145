@@ -1,0 +1,66 @@
+Received: from teta.cpovo.net ([200.248.147.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id HAA29087
+	for <handyboard@media.mit.edu>; Mon, 21 Dec 1998 07:54:28 -0500 (EST)
+X-Internal-Id: 367B879E00001E09
+Received: from lmello (200.248.147.124) by teta.cpovo.net (NPlex 2.0.108); 20 Dec 1998 02:30:12 -0200
+Message-Id: <000801be2bd1$4b47aba0$7c93f8c8@lmello>
+From: "Cesar Mello" <cmello@cpovo.net>
+To: <handyboard@media.mit.edu>, "James Jones" <jonesj5@ocps.k12.fl.us>
+Subject: Re: stepper motors from 5 1/4 drives
+Date: Sun, 20 Dec 1998 02:02:52 -0200
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+
+Hi!
+
+
+>Okay, another newbie question:  What do I need to take out of the 5 1/4
+>drive, other than the motor to get this to work?  Also, what about drivers
+>for the same?  Anyplace I can get more info on this? I have a bunch of old
+>drives laying around.
+
+
+okay, another newbie reply :-) After I received this message I opened
+several 5 1/4 drives that were going to trash at my job and took all the
+stepper motors and integrated circuits. Here's what I figured out:
+
+1 - All the stepper motors I found have 5 wires, one of them is black. You
+connect this black wire to a common source (could be gnd). The others go to
+your driver. In the simplest case this can be 4 buffers. You have to put 12
+vdc on ONE of these wires at a time, sequentially. The sequence order
+determines the direction.
+
+2 - If you want your motor to rotate only in one way, you can use one of
+your hb outputs as a clock for a counter as 4017. Each pulse makes your
+motor rotate 1.8 degrees, so you need 200 pulses for a revolution.
+
+3 - If you want it to rotate in the two ways, you can use 2 outputs from
+your hb and wire them to a diode matrix,so that you place a 2-bit binary
+word and get 4 decimal distinct outputs. Then you increment the value of
+this word to rotate in a way, and decrement it to rotate in the other way.
+
+4 - The driver I found on some floppy drives was uln2003an. But keep all the
+socketed integrated circuits. Anyway you can always use 4 transistors :-)
+and I'd suggest that.
+
+If you want some circuits I have some, so please ask me.
+
+I generally use very common parts like diodes because I don't live in your
+electronics paradise (USA).
+
+Another way you can have some fun is connecting those diode matrixes to your
+pc paralell port. You can easily connect 4 stepper motors and exercise your
+algorithms.
+
+Hope this could help!
+
+See you,
+Cesar
+
+

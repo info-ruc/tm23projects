@@ -1,0 +1,73 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id DAA20846
+	for <handyboard@media.mit.edu>; Wed, 3 Nov 1999 03:26:12 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id DAA06480; Wed, 3 Nov 1999 03:26:11 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7023
+From: hw@xs4all.nl (Hans Westerbeek)
+X-Real-Life-Name: Hans Westerbeek
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: hw@xs4all.nl
+Subject: Re: building a remote debugger for win32 -- need help
+Posted-Date: Wed, 3 Nov 1999 08:25:07 GMT
+Date: Wed, 3 Nov 1999 08:25:07 GMT
+Organization: MirrorB Inc.
+Message-Id: <381fee4e.598382@lugnet.com>
+References: <381f6d27.3689855@lugnet.com> <003801bf2591$43ac1560$0a4067d8@beatie>
+Precedence: list
+
+On Wed, 3 Nov 1999 00:20:42 GMT, handyboard@media.mit.edu (Christopher
+Prosser) wrote:
+
+>I don't claim to be an expert on this, but here are my ideas. To get a clean
+>HB up and running you need to do the following (assuming talkeree.s19 is
+>larger than 256 bytes)
+>1) Start off by booting the HB into bootstrap mode. This makes the board
+>listen to the serial line at 7812 baud if I recall correctly.
+>2) Feed it 256 bytes. These 256 bytes go at 0x0000. At the end of the 256
+>bytes the chip will jump to 0x0000 and start executing.
+>3) Hopefully the 256 byte program you loaded is now able to load the much
+>larger and more interesting program from the SCI into RAM. (this would be
+>talkeree.s19).
+>4) Now that talkeree is loaded you should be able to restart the board
+>(power cycle) and have it come up running talkeree and talk to it using the
+>serial port. I don't know anything about talkeree. I'm sure it has its own
+>preferences over baud rate, parity, etc that you'll need to find out.
+
+Ok thnx i will try this. I should note that don't have the exact
+handyboard. Ours is called the botboard but it's based on the same mcu
+and works fine with pcbug11.
+
+>Personally, I would only do work where I added value. There are lots of
+>bootstrap downloaders for the handyboard (HBDL is my favorite) that will
+>take care of that initial 256 byte bootstrap and then download a s19 file.
+>You can probably even find the source code for one to incorporate if you are
+>hell bent on having it integrated in your project.
+
+Well we're aiming for a real environment and therefore i think it
+would be elegant to have incorporate it. Ofcourse I thought the same:
+why redo somebody's work... So I emailed Vladim to see if I could get
+his sourcecode and do some cutting and pasting, but I didn't get a
+response so I thought that maybe he's not MIT anymore...
+
+
+>  Since I don't really know how talkeree works, this might be out in left
+>field, but there is something to keep in mind. If you plan on using the LCD,
+>you will most likely  need to modify talkeree.
+
+My board doesn't have an LCD:-) Besided we want to use the same
+debugging interface for simulated and remote debugging.
+
+>  Good luck!  BTW, will the project be GPLed? The windows version of
+>Interactive C pales in comparison with the Mac.
+
+I'm a big fan of open source so yeah if I call the shots it will be.
+But our mentor wanted us to develop it for use here at the uni.. We
+haven't really discussed it yet but you have my vote:-)
+
+Byebye!
+Hans
+

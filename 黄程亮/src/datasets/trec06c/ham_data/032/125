@@ -1,0 +1,62 @@
+Received: from egr.msu.edu (jeeves.egr.msu.edu [35.9.37.127])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA23767
+	for <handyboard@media.mit.edu>; Wed, 20 Jan 1999 20:50:55 -0500 (EST)
+Received: from mulder.egr.msu.edu (mulder [35.9.37.247])
+	by egr.msu.edu (8.9.1/8.9.1) with ESMTP id UAA17139
+	for <handyboard@media.mit.edu>; Wed, 20 Jan 1999 20:50:50 -0500 (EST)
+From: Keith - Lui <luikeith@egr.msu.edu>
+Received: (from luikeith@localhost)
+	by mulder.egr.msu.edu (8.9.1/8.9.1) id UAA22938
+	for handyboard@media.mit.edu; Wed, 20 Jan 1999 20:50:50 -0500 (EST)
+Message-Id: <199901210150.UAA22938@mulder.egr.msu.edu>
+Subject: PVM output
+To: handyboard@media.mit.edu
+Date: Wed, 20 Jan 1999 20:50:50 -0500 (EST)
+X-Mailer: ELM [version 2.4ME+ PL31 (25)]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Dear all,
+
+I looked at the lib_hb file and found the portion for motor outputs.
+
+void motor(int m, int speed)
+{
+  if (speed>100) speed=100;
+  if (speed<-100) speed=-100;
+  if (speed >= 0)
+    _set_motor(m, 0, (255*speed)/100);
+  else
+    _set_motor(m, 1, (-255*speed)/100);
+}
+
+
+void _set_motor(int motor, int dir, int speed)
+{
+    bit_set(0x0e, 1 << (4 + motor));    /* turn motor on */
+    if (dir)
+    bit_set(0x0e, 1 << motor);  /* set direction for backward */
+    else
+    bit_clear(0x0e, 1 << motor);    /* set dir for forward */
+    _motor_speed[motor]= speed;
+    _set_motor_speeds();
+}
+
+void _set_motor_speeds()
+{
+    int speed01= (_motor_speed[0] << 8)
+      + _motor_speed[1];
+    int speed23= (_motor_speed[2] << 8)
+      + _motor_speed[3];
+
+    pokeword(0x22, speed01);
+    pokeword(0x24, speed23);
+}
+
+Did anyone tried modified it from PVM to constant DC outputs?
+
+Advice please.
+
+Keith
+

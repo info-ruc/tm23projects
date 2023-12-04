@@ -1,0 +1,70 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k27Geat00645
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Mar 2006 11:40:36 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k27GeZ4I003424
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Mar 2006 11:40:35 -0500 (EST)
+Message-ID: <000b01c64205$e49ef450$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 12
+Date: Tue, 7 Mar 2006 11:40:49 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+PAST is a persistent storage system built upon Pastry.  PAST works by 
+associating an immutable fileID with each immutable file.  The fileID is a 
+hash of file name, (owner's) public key, and a salt.  The file is then 
+stored at the Pastry node whose nodeID is closest to the fileID.  In order 
+to maintain the file, the keeper of the file sends it out to several of its 
+leaf nodes (k of them) and tells them to store the file as well.  If they do 
+not have enough space to store the file, they can store a pointer to the 
+file and then hand the actual file off to another node.  Once the file is in 
+the system, you have to know a file's ID in order to look it up.  You can 
+also reclaim a file knowing the fileid and owner credentials.  Reclaiming is 
+much like deleting, except that the operation is not guaranteed to succeed. 
+In addition to the k-extra nodes that are storing the file, a replicating 
+caching scheme allows the file to be stored at other points in the system to 
+allow for quicker retrieval and lookup.
+    One of the interesting designs in this paper was for the security.  The 
+authors recommend using smartcards which store public/private key pairs. 
+This seems to imply that a central authority or, at the very least, a large 
+amount of cooperation between peers exists.  Because PAST uses files (unlike 
+blocks like CFS), several nodes could have a large amount of storage 
+overhead.  The authors' remedy is to add indirection and therefore more 
+latency while decreasing the structure of the underlying network.
+
+CFS is a distributed filesystem for, once again, immutable files.  It 
+reminds me a lot of the Linux filesystem, with inodes and pointers pointing 
+to other files, directories, or inodes.  Files are no longer stored in one 
+lump, but are broken up into blocks.  These blocks are stored at a 
+pre-determined number of successors (CHORD built upon DHash, not PASTRY in 
+this paper) in order to maintain the file.  These blocks are then 
+distributed and have pointers to them.  The pointers to them are just a hash 
+of the contents of the block.  Therefore, each inode only needs to keep 
+track of hashes.  Each machine in the system has a root block which is 
+signed (and therefore more trustable).  Unlike PAST, each file has a 
+lifetime (which the owner can ask to extend) and therefore storage is not 
+necessarily persistent.
+    It seems that this system is more fragile than the first.  Assuming we 
+have a k of 5 and half the nodes in the system go down with probability 1/2 
+and in CFS the file is broken up into 1000 chunks, then we see that the 
+chance of losing a file in PAST is (1/2)^5=1/32.  In CFS we expect to lose 
+1/32 of our file (which is ~32 blocks of data).  We expect to lose the same 
+amount in PAST, but it is the deviation that matters.  It is a tradeoff 
+between losing large amounts of data infrequently or losing a small amount 
+of data more frequently.  Furthermore, CFS seems to have a large amount of 
+lookup overhead, needing to do lots of lookups in order to find the file and 
+then to download it. 
+

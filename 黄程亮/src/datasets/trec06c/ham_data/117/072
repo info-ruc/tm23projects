@@ -1,0 +1,77 @@
+Received: from smtpout.mac.com (smtpout.mac.com [17.250.248.97] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29IFHt15636
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 13:15:17 -0500 (EST)
+Received: from mac.com (smtpin01-en2 [10.13.10.146])
+	by smtpout.mac.com (Xserve/8.12.11/smtpout06/MantshX 4.0) with ESMTP id k29IFG90021718
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 10:15:16 -0800 (PST)
+Received: from [128.84.98.36] (dhcp98-36.cs.cornell.edu [128.84.98.36])
+	(authenticated bits=0)
+	by mac.com (Xserve/smtpin01/MantshX 4.0) with ESMTP id k29IFDKl025963
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 10:15:16 -0800 (PST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <8490D031-582C-48E1-8E1E-3B7C49D54CF2@mac.com>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Oliver Kennedy <xthemage@mac.com>
+Subject: PAPER 13
+Date: Thu, 9 Mar 2006 13:15:09 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+RON is based on the assumption that the current internet routing  
+protocol BGP is crap.  To an extent, this is true.  BGP is designed  
+to operate with minimum overhead, and has to deal with the economic  
+policies of all the organizations that provide connections along a  
+particular route.  Consequently, sub-optimal routes are often chosen  
+due to out of date information or unusual policy decisions.  RON  
+attempts to out-think BGP by choosing its own path, and forcing BGP  
+to route packets accordingly.  It does this by creating an overlay  
+network.  Clients insert packets into the overlay at the closest node  
+and the node closest to the destination forwards them appropriately.   
+Since a RON is a fully connected graph, in the ideal situation a  
+route will be only one hop.  If the network connection between two  
+nodes begins to degrade, the RON will attempt to reroute the packet  
+through another node.
+
+There are a handful of concerns with this system.  Firstly, the fact  
+that the RON is a fully connected graph means that each node has O 
+(N^2) state.  This could cause significant scaling issues as the RON  
+begins to see more users.  Secondly, since each RON node is  
+constantly pinging every other RON node, the network overhead  
+associated with the above state is likely to get out of hand  
+quickly.  The paper places a theoretical 50 node size limit on the  
+network, but as the traffic flowing through the RON grows, the  
+individual nodes will become swamped unless more router nodes are  
+added.  Moreover, if the internet were to shift over to RON  
+completely, then a large number of existing routes would become  
+obsolete and unnecessary.
+
+One hop source routing takes a similar approach.  Instead of using a  
+network of nodes, it places a series of routers on the internet.  If  
+a routing failure occurs between the source and the destination, it  
+instead tries routing through an intermediary node rather than using  
+a complex overlay network.  The downside to this is that the nodes  
+must be known to each source in advance.  A centralized discovery  
+service provides a single point of failure, and a distributed  
+protocol still requires some form of bootstrap host.  Furthermore,  
+deployment of these nodes could get difficult.  Deploying them over a  
+global testbed is trivial, but it would be difficult to get a  
+corporation to deploy such a router.  Why should they pay for someone  
+else's bandwidth?
+
+
+-Oliver Kennedy
+
+Computer science isn't about computers any more than astronomy is about
+telescopes.
+                 -- Dijkstra
+
+
+
+- Oliver Kennedy
+
+They laughed at Einstein.  They laughed at the Wright Brothers.  But  
+they
+also laughed at Bozo the Clown.
+                 -- Carl Sagan
+

@@ -1,0 +1,78 @@
+Received: from magnum.cooper.edu (magnum.cooper.edu [199.98.16.4])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with SMTP id NAA27757
+	for <handyboard@media.mit.edu>; Thu, 23 Mar 2000 13:45:46 -0500 (EST)
+Received: from zeus.cooper.edu by magnum.cooper.edu with SMTP id AA24143
+  (5.65c/IDA-1.4.4 for <handyboard@media.mit.edu>); Thu, 23 Mar 2000 13:46:18 -0500
+Received: from localhost by zeus.cooper.edu with SMTP id AA28967
+  (5.67b/IDA-1.5); Thu, 23 Mar 2000 13:42:09 -0500
+Date: Thu, 23 Mar 2000 13:42:09 -0500 (EST)
+From: Chen Yung Hsu <hsu3@cooper.edu>
+To: Frankie Lai <97139371d@polyu.edu.hk>
+Cc: handyboard@media.mit.edu
+Subject: Re: Handyboard in mix with SSC II Servo Controller
+In-Reply-To: <FrvGyG.FJz@lugnet.com>
+Message-Id: <Pine.GSO.3.95.1000323133906.28921B-100000@zeus.cooper.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hi!  I've tried connecting the SSC II to the handyboard through a
+telephone wire (and when that didn't work) through the configurating
+header at the upper right corner of the SSC II circuit board.  I've
+downloaded the proper library to the handyboard and I've run the commands.
+The SSC II seems to accept the commands fine but the servo still isn't
+working.  I'm really at a loss here can anyone help?
+
+=)chen
+
+On Thu, 23 Mar 2000, Frankie Lai wrote:
+
+> Hi,
+> 
+> There are several steps you should follow.
+> 1..Download the 9600 serial driver form
+> http://lcs.www.media.mit.edu/groups/el/projects/handy-
+> board/software/serial.html
+> remind you that if you use SSC controllers, download the inverted version.
+> 
+> 2...Refer to you SSC manual, connect the serial in pin to PA7 of handyboard,
+> PA7 is the digital input9 of HB. Then connect the ground pin to the ground of
+> HB, if you do not know where it is, refer to the HB manual, there are lots of
+> GND pin on HB.
+> 
+> 3...After connecting everything, load the driver you downloaded into HB,
+> remember to put it in libs directory.
+> 
+> 4...A new function will appear, named pa7i9600. Just use this function to sent
+> signals to SSC. An example like following:
+> 
+> pa7i9600(255)
+> pa7i9600(3)
+> pa7i9600(167)
+> 
+> total 3 signals to call a servo move, the first bit is for initialise the SSC,
+> the second one is the servo number, and the last on is the position you want
+> it to go.
+> 
+> Hopes help!!!!!
+> 
+> Frankie Lai 97139371d@polyu.edu.hk
+> 
+> 
+> 
+> 
+> 
+> In lugnet.robotics.handyboard, Zheng Xu writes:
+> >Hi,
+> >
+> >We are trying to conntect Handyboard to SSC II Mini Servo Controller so we can
+> >control more servo motors. Can anyone tell us how to connect these two pieces
+> >and work them together?
+> >
+> >Also, where is the serial output of the Handyboard, and ground?
+> >
+> >thanks in advance,
+> >
+> >Zheng
+> 
+
+

@@ -1,0 +1,59 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA04118
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 27 Oct 1999 09:05:44 -0700
+Received: from homebox ([150.135.175.43])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with SMTP id JAA39138
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 27 Oct 1999 09:05:44 -0700
+Message-Id: <3.0.1.32.19991027090541.00695aa0@psy1.psych.arizona.edu>
+Date: Wed, 27 Oct 1999 09:05:41 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DMDX and Chinese
+In-Reply-To: <3.0.5.32.19991027141614.0082e100@pophost.mrc-cbu.cam.ac.uk
+ >
+References: <3.0.1.32.19991019090917.006963cc@psy1.psych.arizona.edu>
+ <3.0.5.32.19991019115357.008ad6b0@pophost.mrc-cbu.cam.ac.uk >
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 02:16 PM 10/27/99 +0100, you wrote:
+>Sorry for the delay in getting back about this...
+>
+>>At 11:53 AM 10/19/99 +0100, you wrote:
+>>>Time for a new non-Latin alphabet language and the concomitant problems.
+>>>In Chinese Windows 98, in TimeDX\Input, when we run the test of the
+>>>keyboard, this works fine and even displays chinese for the last three
+>>>items ('power', 'sleep', 'wake').  However when we try to run an RTF file
+>>>in DMDX, we get an error message about not being able to find the input
+>>>device 'keyboard'.  I assume this is some kind of keyboard driver problem?
+>
+>
+>>  Look at the device name in TimeDX, I'll bet it's not "Keyboard".  You
+>>need "id chineseforkeyboard".  Same thing goes for other language versions
+>>of win32.
+>
+>When we run TimeDX, the device name is in Chinese and says simply
+>'keyboard' (so I am told by Tai-Li).  I tried  <id "chineseforkeyboard">
+>and got the same error message about unknown device again. 
+
+  Well the code in TimeDX that displays the names of devices is the same
+code in DMDX that does a stricmp() so if it can't find a device it's
+because the strings don't match.  Either you are missing something cruel
+like a trailing space or the item file has some special RTF code that isn't
+getting parsed out correctly (which I'd bet is impossible).
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+  Success, as I see it, is a result, not a goal.
+                                  - Gustave Flaubert (1821-1880)
+
+
+

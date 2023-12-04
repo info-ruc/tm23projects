@@ -1,0 +1,264 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f33IW9f12116;
+	Tue, 3 Apr 2001 11:32:09 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA19015;
+	Tue, 3 Apr 2001 14:03:32 -0400 (EDT)
+Date: Tue, 3 Apr 2001 14:03:32 -0400 (EDT)
+Received: by canaveral.red.cert.org; Tue, 3 Apr 2001 13:58:13 -0400
+Message-Id: <CA-2001-06.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+Subject: CERT Advisory CA-2001-06
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 190da9d936be780e253c9f75f28a9988
+Status: RO
+X-Status: $$$$
+X-UID: 0000000006
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-06 Automatic Execution of Embedded MIME Types
+
+   Original release date: April 03, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * All versions of Microsoft Internet Explorer 5.5 SP1 or earlier,
+       except IE 5.01 SP2
+     * Any software which utilizes vulnerable versions of Internet
+       Explorer to render HTML
+
+Overview
+
+   Microsoft Internet Explorer has a vulnerability triggered when parsing
+   MIME parts in a document that allows a malicious agent to execute
+   arbitrary code. Any user or program that uses vulnerable versions of
+   Internet Explorer to render HTML in a document (for example, when
+   browsing a filesystem, reading email or news messages, or visiting a
+   web page), should immediately upgrade to a non-vulnerable version of
+   Internet Explorer.
+
+I. Description
+
+   There exists in Internet Explorer a table which is used to determine
+   how IE handles MIME types when it encounters MIME parts in any type of
+   HTML document, be it email message, newsgroup posting, web page, or
+   local file. This table contains a set of entries that cause Internet
+   Explorer to open the MIME part without giving the end user the
+   opportunity to decide if the MIME part should be opened. This
+   vulnerability allows an intruder to construct malicious content that,
+   when viewed in Internet Explorer (or any program that uses the IE HTML
+   rendering engine), can execute arbitrary code. It is not necessary to
+   run an attachment; simply viewing the document in a vulnerable program
+   is sufficient to execute arbitrary code.
+
+   For more details, see Microsoft Security Bulletin MS01-020 on this
+   topic at:
+
+    http://www.microsoft.com/technet/security/bulletin/MS01-020.asp
+
+   There have been reports that simply previewing HTML content (as in a
+   mail client or filesystem browser) is sufficient to trigger the
+   vulnerability. The impact of viewing malicious code in this manner is
+   being evaluated.
+
+   The CERT/CC is currently unaware of any reports of this vulnerability
+   being used to successfully attack a system. Demonstration code
+   exploiting this vulnerability has been published in several public
+   forums. This vulnerability is being referenced in CVE as CAN-2001-0154
+   and by the CERT/CC as VU#980499.
+
+II. Impact
+
+   Attackers can cause arbitrary code to be executed on a victim's system
+   by embedding the code in a malicious email, or news message, or web
+   page.
+
+III. Solution
+
+Apply the patch from Microsoft
+
+   Apply the patch from Microsoft, available at:
+
+    http://www.microsoft.com/windows/ie/download/critical/Q290108/default.asp
+
+   As noted in the 'Caveats' section of the Microsoft advisory, end users
+   must apply this patch to supported versions of Microsoft's browser.
+   This means IE must be upgraded to IE 5.01 Service Pack 1 or IE 5.5
+   Service Pack 1 before users can apply this patch. Users who have not
+   previously upgraded will incorrectly receive a message stating that
+   they do not need to apply this patch, even though they are vulnerable.
+   Users are advised to upgrade to IE 5.5 SP1, IE 5.01 SP1 or SP2 (which
+   has this patch incorporated in it) and apply the appropriate patch.
+
+   An excerpt from MS01-020:
+
+ Caveats:
+ If the patch is installed on a system running a version of IE other
+ than the one it is designed for, an error message will be displayed
+ saying that the patch is not needed. This message is incorrect, and
+ customers who see this message should upgrade to a supported version
+ of IE and re-install the patches.
+
+Appendix A. - Vendor Information
+
+   This appendix contains information provided by vendors for this
+   advisory. When vendors report new information to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular vendor is not listed below, we have not received their
+   comments.
+
+
+Cyrusoft International, Inc.
+
+   Mulberry does not use Internet Explorer to render HTML within Mulberry
+   itself and is not vulnerable to these kinds of problems. Users can
+   save HTML attachments to disk and then view those in browsers
+   susceptible to this problem, but this requires the direct intervention
+   of the user to explicitly save to disk - simply viewing HTML in
+   Mulberry does not expose users to these kinds of problems.
+
+   Our HTML rendering is a basic styled-text only renderer that does not
+   execute any form of scripts. This is true on all the platforms we
+   support: Win32, Mac OS (Classic & X), Solaris, linux.
+
+   An official statement about this is available on our website at:
+
+    http://www.cyrusoft.com/mulberry/htmlsecurity.html
+
+
+Lotus Development Corporation
+
+   Notes does not use IE to render HTML-formatted mail messages.
+
+
+Microsoft Corporation
+
+   Please see the advisory (MS01-020, "Incorrect MIME Header Can Cause IE
+   to Execute E-mail Attachment") related to this issue at:
+
+    http://www.microsoft.com/technet/security/bulletin/MS01-020.asp
+
+   A patch is available for this issue at:
+
+    http://www.microsoft.com/windows/ie/download/critical/Q290108/default.asp
+
+
+Netscape Communications Corporation
+
+   Netscape is currently investigating the impact this vulnerability, if
+   any, has on users of the Netscape browser.
+
+
+Opera Software
+
+   Opera does not use Internet Explorer or any other external software to
+   render HTML.
+
+
+QUALCOMM Incorporated
+
+   It is unclear at this time what impact, if any, this vulnerability has
+   on Eudora clients.
+
+
+Appendix B. - References
+
+    1. Havrilla, J., and Hernan, S., "CERT Vulnerability Note VU#980499:
+       Certain MIME types can cause Internet Explorer to execute
+       arbitrary code when rendering HTML", March 2001.
+       https://www.kb.cert.org/vuls/id/980499
+   _________________________________________________________________
+
+   Microsoft has acknowledged Juan Carlos Cuartango for bringing this
+   issue to their attention.
+
+   This document was written by Jeffrey S. Havrilla and Shawn V. Hernan.
+   If you have feedback, comments, or additional information about this
+   issue, please send us email.
+   ______________________________________________________________________
+   
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-06.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-20:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+April 03, 2001:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP for Personal Privacy 5.0
+Charset: noconv
+
+iQCVAwUBOsoNNQYcfu8gsZJZAQFd3gQAkCKdIcdKJ/gaii0odrJdM/jlZUv7MYYf
+R8LUHkV1dUTxEI/SRrKtAoEsf/UVVgZI4PGBB/pyptkmSv2axMWf4AD1Ubful712
+ojVaHG7hJuV5RNiw2yE/R4AoWZ5GbdaQByYWpCB+OfwNzsz/7MYibjI6xUtvqRvV
+JxYMB6q5TqM=
+=B0Bv
+-----END PGP SIGNATURE-----
+

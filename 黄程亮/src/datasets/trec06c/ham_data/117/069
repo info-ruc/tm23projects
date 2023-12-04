@@ -1,0 +1,81 @@
+Received: from gse.harvard.edu (gse.harvard.edu [128.103.178.24])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k29JRQg1023088
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 9 Mar 2006 12:27:26 -0700
+Received: from [128.103.177.96] (account cerrutca HELO [128.103.177.96])
+  by gse.harvard.edu (CommuniGate Pro SMTP 4.3.7)
+  with ESMTPSA id 35338328 for DMDX@psy1.psych.arizona.edu; Thu, 09 Mar 2006 14:27:20 -0500
+Date: Thu, 09 Mar 2006 14:28:00 -0600
+From: Carlo Cerruti <cerrutca@gse.harvard.edu>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] lag time
+Message-ID: <2147483647.1141914480@[128.103.177.96]>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi,
+
+I'm having a problem with a long (half second) lag time between segments of 
+my trials.  Each problem my subjects do actually has three parts, which I'd 
+like to appear seamless on the screen, but I'm gettting an unfortunate 
+blank screen while dmdx moves from one to the next.  In the program below 
+you can see that the first part is a word problem that stays on screen for 
+5 seconds, then replaced by an abstract picture for 5s, and then the word 
+problem returns.  The major problem is that when the screen is blank the 
+timer is also off -- and this means that if subjects respond during this 
+interval it goes unrecorded.
+
+You can see below that I've tried to use the media life command to buffer 
+the pic:
+
+0 <sd> <ml 1000> <bmp> "AbPic4" ;
+
+I also tried:
+
+0 %0 <ml 1000> <bmp> "AbPic4" ;
+
+(If you try to run the program below you probably need to change the font 
+color of the program so it's not black on a black screen; also insert a bmp 
+pic in line 0122; and not that i'm working at a laptop so the refresh rate 
+in the parameter line is set to 60.)
+
+THANKS,
+
+Carlo Cerruti
+
+
+
+
+<ep> <df Verdana> f0 d0 <dfs 22> <id "keyboard"> <vm 1024, 768, 768, 16, 
+60> <id digitalvox> <xyjustification 1> <id recordvocal 2000> <cr>
+<DefaultBackgroundColor black>
+<eop>
+
+0 @-6”In this experiment you will see three words on every trial.”,
+@-5”Your task is to think of a fourth word that can be combined with”,
+@-4"each of the others to make a common word or phrase.",
+@-3"Please keep your eyes on the screen.",
+@-1”You have up to 30 seconds for each trial.”,
+@1”If you think of the answer,”,
+@2”say the solution word into the microphone.”,
+@4”Please do not speak until you have the answer.”,
+@6”Press the space bar to begin one review trial,",
+@7"and to move from trial to trial.”;
+
+0 <sd> <ml 1000> <bmp> "AbPic4" ;
+
++0121 <t 5000> <%ms 750> <y 384> "+" / %15  / * <y 334> "FLAKE", <y 384> 
+"MOBILE", <y 434> "CONE"  / ! <bic 0124> ;
++0122 <t 5000> * <xy 522, 384> g"AbPic4" / ! <bic 0124> ;
++0123 <t 20000> * <y 334> "FLAKE", <y 384> "MOBILE", <y 434> "CONE" / ! 
+<bic 0124> ;
+~0124 ;
+0 <y 334> "FLAKE", <y 384> "MOBILE", <y 434> "CONE", <xy 422, 284> "SNOW";
+
+0 "THANK YOU FOR YOUR PARTICIPATION.";
+
+
+

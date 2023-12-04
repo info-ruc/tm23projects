@@ -1,0 +1,57 @@
+Received: from home.mcmanis.com (adsl-209-76-108-61.dsl.snfc21.pacbell.net [209.76.108.61])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with SMTP id CAA23078
+	for <handyboard@media.mit.edu>; Wed, 12 Apr 2000 02:09:01 -0400 (EDT)
+Received: (qmail+freegate 14315 invoked by alias); 12 Apr 2000 06:08:59 -0000
+Received: from ws37-n0.hq.home.mcmanis.com (HELO yikes.mcmanis.com) (192.168.110.37)
+  by hq.home.mcmanis.com with SMTP; 12 Apr 2000 06:08:59 -0000
+Message-Id: <4.3.1.2.20000411230810.02235640@208.226.86.10>
+X-Sender: cmcmanis@208.226.86.10
+X-Mailer: QUALCOMM Windows Eudora Version 4.3.1
+Date: Tue, 11 Apr 2000 23:12:02 -0700
+To: "Sean Verret" <verret@ee.ualberta.ca>, <handyboard@media.mit.edu>
+From: Chuck McManis <cmcmanis@mcmanis.com>
+Subject: Re: More torque
+In-Reply-To: <NDBBLMDGGLCFFHHADFFFGEFHCDAA.verret@ee.ualberta.ca>
+References: <200004102337.TAA12491@ml.media.mit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+One word "Chopper"
+
+Nearly every commercial stepper motor driver I have ever seen uses a 
+chopper circuit. This is because torque is related to current (actually its 
+related to magnetic flux but that's related to current :-). The operation 
+of a chopper is pretty simple, you slam a "huge" voltage on your motor with 
+a circuit the measures the current through the motor, (voltage comparator 
+across a .1 ohm resistor is good for this) and then when it gets to the max 
+current you "chop" the voltage off. (usually by turning off a MOSFET) When 
+the current gets a bit below where you want it you turn the voltage back 
+on. (this provides "holding" torque) It is all a simple feedback circuit 
+and requires no software at all.
+
+
+--Chuck
+
+At 11:31 PM 4/11/00 -0600, Sean Verret wrote:
+>Is there an easy way to get more torque out of a stepper motor?  Upping the
+>voltage is not an option at this time.  I've already decreased the width of
+>the pulses enough (so that it has enough torque to start on its own without
+>a push) that it goes rather slow.  Speeding up the pulses doesn't allow it
+>to start - maybe my wheels are too slippery?  Maybe putting some sort of
+>grip on them....  I'm just throwing out some ideas here - please throw out
+>some more if you've tried anything like this before...  oh yeah - setting up
+>a gear box is most likely out of the option due to my current time
+>constraints.
+>
+>Thanks in advance for all your help.
+>
+>Sean Verret
+>B.Sc. Electrical Engineering 2000
+>University of Alberta
+>mailto:verret@ee.ualberta.ca
+>http://www.ee.ualberta.ca/~verret/
+>Phone: (780) 439-0329
+>Fax: (206) 493-2713
+
+
+

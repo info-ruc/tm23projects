@@ -1,0 +1,195 @@
+Received: from wproxy.gmail.com (wproxy.gmail.com [64.233.184.204])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j77Hmk5L008835
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 7 Aug 2005 10:48:47 -0700
+Received: by wproxy.gmail.com with SMTP id i25so859226wra
+        for <DMDX@psy1.psych.arizona.edu>; Sun, 07 Aug 2005 10:48:41 -0700 (PDT)
+Received: by 10.54.121.6 with SMTP id t6mr341183wrc;
+        Sun, 07 Aug 2005 10:48:40 -0700 (PDT)
+Received: by 10.54.69.5 with HTTP; Sun, 7 Aug 2005 10:48:38 -0700 (PDT)
+Message-ID: <9ae8f64a05080710487dbb3361@mail.gmail.com>
+Date: Sun, 7 Aug 2005 12:48:38 -0500
+From: John Curtin <jjcurtin@gmail.com>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: question about timing in a fMRI experiment
+Cc: "Deborah L. Kerr" <dkerr@wisc.edu>
+In-Reply-To: <5.1.0.14.2.20050806130829.00ba4780@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+References: <11b5aa311b464d.11b464d11b5aa3@wiscmail.wisc.edu>
+	 <5.1.0.14.2.20050805204653.00ba4788@psy1.psych.arizona.edu>
+	 <5.1.0.14.2.20050806130829.00ba4780@psy1.psych.arizona.edu>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi Jonathan,
+Thanks for all the help, we appreciate it.  The problem continues. 
+First, we provide a summary to your questions and recommendations over
+the last few emails.  Next, we provide a much simpler item file with
+almost everything (counters for display times and time outs,
+pre-loading BMP file, etc) stripped out.  It still produces the same
+inconsistent timing using RCOT.  The zil file output from two runs of
+this item file is also provided.  Any other thoughts?
+
+****************
+HERE ARE PREVIOUS QUESTIONS AND ANSWERS (IN CAPS)
+****************
+Hmm, it's a pretty slow machine that can't load a bitmap in half a
+second. But you should be checking the preparation times regardless.
+
+JUST TO BE CLEAR, THE LONG DELAYS WERE NOT DETERMINED SOLELY BASED ON
+TIME NEED TO PRESENT THE BMPS.  WE ADDED EXTRA TIME TO THE DELAYS FOR
+TIMING ISSUES RELATED TO THE TASK.  ITS NOT A PARTICULARLY OLD OR SLOW
+COMPUTER AND WE COULD HAVE USED SHORTER DELAYS IF NEEDED.
+
+
+Not all items will get displayed as errors, for instance I suspect
+instructions are free of any diagnostics for lateness. So your D of 1
+might be catching the odd instruction, you've also got comments in
+there which will also be affected by the D of 1. Try a D of two or
+three and see if the problem doesn't go away
+
+NO INSTRUCTION ITEMS OCCUR ONCE WE START THE TIMING SO THEY COULD NOT
+BE THE SOURCE OF THE INCONSISTENCY.
+
+YOU MENTION COMMENTS AS A POSSIBLE SOURCE OF THE PROBLEM.  I WOULD
+HAVE ASSUMED THAT TEXT THAT IS COMMENTED OUT WAS DISCARDED PRIOR TO
+RUNTIME WHEN DMDX PARSED THE ITEM FILE.  JUST FOR CLARIFICATION, IS
+THIS NOT TRUE?   REGARDLESS, IF I DELETE ALL THE COMMENT LINES, THE
+TIMING INCONSISTENCY REMAINS
+
+AS I MENTIONED IN AN EARLIER POST, ALTHOUGH WE HAD D1 IN THE HEADER,
+WE OVERRODE THAT ON EVERY TRIAL.  HOWEVER, TO BE RIGOROUS, WE CHANGED
+THE D IN THE HEADER TO D20 (AND EVEN D60) AND THE PROBLEM REMAINS.  I
+HAVE ALSO CHECKED ALL THE PRESENTATION TIMES AND NONE ARE LONGER THAN
+15 MS WHEN WE PRE-LOAD THE BMP FILE SO APPARENTLY EVEN THOSE TRIALS
+ARE PREPARED VERY QUICKLY.
+
+The other thing that people hit all the time with constant ISIs is
+having a timeout that's longer than a display. As long as the subject
+responds before the display's duration is up the stimuli are all
+perfectly timed, as soon as a response comes in that's a little too
+long the inter trial timing goes off. I can't tell what the syntax of
+your item is from the archives as it's formatting has been mangled but
+it looks like you're using counters both for the frame duration and
+the timeout. For debugging purposes in the frames that use the
+counters I would <emit> each one and check that their values do indeed
+meet the required criteria.
+
+WE WERE AWARE OF THE REQUIREMENT TO HAVE THE DISPLAY TIME LONGER THAN
+THE TIMEOUT AND HAVE CHECKED THIS AS WELL.  MOREOVER, WE ARE NOT
+RESPONDING ON ANY TRIAL TO AVOID ANY PROBLEM THAT MIGHT POSSIBLY
+RESULT FROM DIFFERENT RESPONSE TIMES.  ON EVERY TRIAL, THERE IS NO
+RESPONSE AND THE TRIAL TIMES OUT.  ON EVERY TRIAL, THE TIMEOUT IS
+SHORTER THAN THE DELAY FOR THE FRAME WITHIN WHICH WE COLLECT THE
+RESPONSE
+
+**********************
+Here is the new, very simple item file that also produces the problem.
+ If you like, I can send you the bmp file so that you can run this
+item file and verify the problem yourself.  We have observed the
+problem previously on multiple machines (although, this very simple
+item file has only be tested on one right now b/c I am at home today).
+ The script and zil file from two runs are provided below.  As you can
+see the timing is quite variable across items when using RCOT to
+record this.
+
+**********************
+The Item File:  This is the exact item file we are running.
+*********************
+
+<ep> d60 f1 <ID "keyboard"> <cr> <t 200> <nfb> <zil> <zor>  <vm
+800,600,600,16,60> <rcot> <eop>
+0   "Press SPACE to BEGIN";
++11   * <bmp> "blue" <% 20>  /;
++11   * <bmp> "blue" <% 20>  /;
++11   * <bmp> "blue" <% 20>  /;
++11   * <bmp> "blue" <% 20>  /;
++11   * <bmp> "blue" <% 20>  /;
++11   * <bmp> "blue" <% 20>  /;
++11   * <bmp> "blue" <% 20>  /;
+100000  "the end";
+
+*******************
+The Zil File output
+*******************
+
+Subjects incorporated to date: 002
+Data file started on machine EVO
+
+**********************************************************************
+Subject 1, 08/07/2005 12:44:51 on EVO, refresh 16.66ms, ID 1       COT
+Item 11, COT 0.00, No Responses.
+Item 11, COT 1349.56, No Responses.
+Item 11, COT 2682.45, No Responses.
+Item 11, COT 4032.01, No Responses.
+Item 11, COT 5364.90, No Responses.
+Item 11, COT 6697.79, No Responses.
+Item 11, COT 8030.69, No Responses.
+
+**********************************************************************
+Subject 2, 08/07/2005 12:45:13 on EVO, refresh 16.66ms, ID 2       COT
+Item 11, COT 0.00, No Responses.
+Item 11, COT 1349.55, No Responses.
+Item 11, COT 2699.11, No Responses.
+Item 11, COT 4048.66, No Responses.
+Item 11, COT 5381.56, No Responses.
+Item 11, COT 6731.12, No Responses.
+Item 11, COT 8080.68, No Responses.
+
+
+
+
+
+On 8/6/05, j.c.f. <jforster@psy1.psych.arizona.edu> wrote:
+> At 08:52 PM 8/5/2005 -0700, you wrote:
+> 
+> >   Not all items will get displayed as errors, for instance I suspect
+> > instructions are free of any diagnostics for lateness.  So your D of 1
+> > might be catching the odd instruction, you've also got comments in there
+> > which will also be affected by the D of 1.  Try a D of two or three and
+> > see if the problem doesn't go away.
+> 
+> 
+>   The other thing that people hit all the time with constant ISIs is
+> having a timeout that's longer than a display.  As long as the subject
+> responds before the display's duration is up the stimuli are all perfectly
+> timed, as soon as a response comes in that's a little too long the inter
+> trial timing goes off.  I can't tell what the syntax of your item is from
+> the archives as it's formatting has been mangled but it looks like you're
+> using counters both for the frame duration and the timeout.  For debugging
+> purposes in the frames that use the counters I would <emit> each one and
+> check that their values do indeed meet the required criteria.
+>                                                /"\
+>  -jonathan (j.c.f.)                            \ /
+>                                                 X
+>     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+> 
+>   People with narrow minds usually have broad tongues
+> 
+> 
+> ====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+> 
+
+
+-- 
+John J. Curtin, Ph.D. 
+Assistant Professor of Psychology 
+University of Wisconsin 
+1202 West Johnson St. 
+Madison, WI 53706 
+
+Email: jjcurtin@wisc.edu 
+Website: http://dionysus.psych.wisc.edu
+Office: 608-262-0387 
+Lab: 608-262-5621 
+Cell: 608-217-6221 
+Fax: 608-262-4029
+
+

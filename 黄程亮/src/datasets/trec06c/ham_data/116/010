@@ -1,0 +1,109 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1S7MCt08206
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 02:22:13 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1S7MBwq022711
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 02:22:12 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060223232734.02fe92c0@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Tue, 28 Feb 2006 02:22:17 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 10
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+Samsara:
+         Samsara is a system for fair disk space exchange.  The basic idea 
+is that machine A is willing to store files for machine B, provided that 
+machine B stores a "claim" on behalf of A.  This claim can later be 
+transferred, so that B is storing files on behalf of A, in effect.  If 
+users are unavailable, their stored data is removed, on a probabilistic 
+basis designed to differentiate short outages from permanent cheating.  The 
+system is aimed to stop greedy users, not malicious ones.  This is not 
+necessarily a weakness, depending on the target user base.
+         These scheme, to the extent that it works, works only for storage 
+(permanent or RAM).  It has a number of shortcomings.  Much of the time, 
+one might be willing to store on behalf of others more data than one wishes 
+to store--some users are generous, particularly if the protocol is being 
+used on a corporate or academic intranet.  Samsara does encourage such 
+flexible policies.
+
+
+Sharp:
+         Unlike Samsara, Sharp attempts to solve the general 
+resource-exchange problem, by building very basic primitives for resource 
+exchange.  The fundamental abstraction in Sharp is the ticket, a 
+non-binding, time-limited, agreement to supply some resource.  Tickets are 
+transferrable and divisable, and are cryptographically signed in such a way 
+that the chain of transmission can be audited.  Since tickets are 
+non-binding, the ticket issuer can oversubscribe --and then act sensibly if 
+presented with too many tickets.  Sharp is an extremely flexible mechanism, 
+that puts few limitations in the way of agents seeking to implement policy.
+         The authors cite oversubscription and transferable tickets as 
+major contributions; this seems a perilous mix.  If tickets are passed 
+through k holders, and each holder oversubscribes by a factor of r, then 
+the total OD ratio will be r^k, which can be significantly greater than r 
+even though no particular principal is responsible for this state of 
+affairs; it may be wiser to bar all agents except the original ticket 
+issuer from oversubscription.
+
+PPay:
+         Ppay offers a micropayment scheme, suitable for purchasing 
+resources from peer to peer networks.  The system divides the world into 
+[trusted] brokers and users, and allows users to transfer coins in a 
+traceable way.  PPay in fact offers a number of protocols, for user-user 
+transfers, user-broker transfers, and user-user, mediated by broker.  The 
+key motivation is to push work from the broker to the owner of a coin.  The 
+PPay model has a number of tunable parameters, in particular, the fees 
+charged by brokers for minting and reassigning coins.
+         The marginal value of money is very different for different 
+individuals; it seems possible that there's no set of fees that is 
+sufficient both to allow a large user base and to ensure that nobody is 
+prepared to run an attack.  For instance, I may be willing to spend a 
+significant amount of money to impoverish someone else.  The authors 
+simulate their system to measure load on brokers.  It seems likely that 
+this could be modelled analytically, giving precise closed-form solutions 
+for broker load in terms of user preference distributions.  Though the 
+authors do not mention it, a protocol seems necessary to allow two users to 
+find out if they both trust the same broker, in order to exchange coins 
+that will be accepted.  (Imagine user A trying to pay B with a coin issued 
+by the People's Bank of Cuba).  It's not clear that the authors are solving 
+the right problem: centralized systems, such as PayPal, seem well adapted 
+to this environment.  A last pedantic point: coins are "minted", not 
+"printed".  ;)
+
+Karma:
+
+         Karma is a quite general distributed resource exchange system. It 
+only requires a secure P2P substrate, and some resource that can be 
+represented as a byte string, and then offers secure transfers and secure 
+balances.  Using secure routing in the overlay, the Karma system is able to 
+replicate node balances in the overlay, and then to only transfer resources 
+when the balance is sufficient.  This cleverly exploits existing work in 
+secure routing and simultaneous-exchange: the new insight seems to be that 
+these can be combined, with replicated nodes keeping balances.  The scheme 
+is very simple, and secure against balances being altered maliciously as 
+well as non-payment.
+         Karma has a few important vulnerabilities.  First, since sybil 
+attacks are possible, an attacker can dishonestly acquire significant 
+Karma.  Note that an attacker does not need a majority in any bank-set, but 
+merely a steady drip of sybils to feed him Karma.  Karma does not provide 
+any guidance for pricing resources; such prices would presumably be 
+determined by the amount of Karma in circulation--the average disposable 
+income of a node.  This means that a powerful attacker or group of 
+attackers could hoard Karma to depress prices (could get a corner on 
+Karma).  The Karma is still in the system, so the inflation system will not 
+devalue it, but the Karma won't be in circulation either.  (Amusingly 
+enough, Jay Gould tried to do this with gold in 1869.)
+
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

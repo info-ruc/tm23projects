@@ -1,0 +1,133 @@
+Received: from geo-www.er.usgs.gov (root@geo-www.er.usgs.gov [130.11.54.23])
+	by gnv.3001data.com (8.8.7/8.8.7) with ESMTP id NAA01999
+	for <hphillips@gnv.3001data.com>; Fri, 25 May 2001 13:14:53 -0400
+Received: from gsvaresh01.er.usgs.gov (gsvaresh01.er.usgs.gov [130.11.45.64])
+	by geo-www.er.usgs.gov (8.9.3/8.9.3) with ESMTP id OAA21885
+	for <mp-users@geology.usgs.gov>; Fri, 25 May 2001 14:43:39 -0400
+Received: from usgs.gov ([130.11.54.210])
+          by gsvaresh01.er.usgs.gov (Lotus Domino Release 5.0.7)
+          with ESMTP id 2001052514433790:57743 ;
+          Fri, 25 May 2001 14:43:37 -0400 
+Sender: peter@geo-www.er.usgs.gov
+Message-ID: <3B0EA7D4.900CE1D6@usgs.gov>
+Date: Fri, 25 May 2001 14:43:32 -0400
+From: "Peter N. Schweitzer" <pschweitzer@usgs.gov>
+Organization: U.S. Geological Survey
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Curtis Price <cprice@usgs.gov>
+CC: mp-users@geo-www.er.usgs.gov
+Subject: Re: skip extensions
+References: <3B059C2E.F94632D1@usgs.gov> <3B07D5D9.32CBE788@usgs.gov> <3B0C2806.279F7E8E@usgs.gov>
+X-MIMETrack: Itemize by SMTP Server on gsvaresh01/SERVER/USGS/DOI(Release 5.0.7 |March
+ 21, 2001) at 05/25/2001 02:43:37 PM,
+	Serialize by Router on gsvaresh01/SERVER/USGS/DOI(Release 5.0.7 |March 21, 2001) at
+ 05/25/2001 02:43:39 PM,
+	Serialize complete at 05/25/2001 02:43:39 PM
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+
+Curtis Price wrote:
+> I went on to try editing esri xml files with tkme...
+> 
+> When I use the config file to edit a file with tkme, the
+> ESRI extensions come back out way down at the end of the file.
+> 
+> (Originally they were at the top.)
+> 
+> Is this by design, that the parser reorders all the XML?
+> Is it likely this will cause problems?
+
+Curtis, mp-users,
+
+The problem is that XML is not nice about element ordering.
+Specifically, the people who developed XML thought that it
+would be a breeze to keep elements in order.  So they made
+it extraordinarily difficult to write a DTD in which the
+elements can appear in any order.  Consequently, our XML
+DTD (and the ESRI XML DTD) require things to be in order.
+But if you use extensions (such as in ESRIprof80.ext), 
+the standard DTD doesn't include them, so putting them in
+anywhere breaks the element order constraint.  Moreover
+the element ordering in the ESRI DTD is different from
+that in the FGDC DTD because of (and only because of) the
+use of the ESRI extensions.  This is not to pick on ESRI;
+the same could be said of the Biological profile. 
+
+If you only use standard elements, it's to your advantage
+to keep them in the order specified by the standard, since
+your records can then be passed by a validating XML parser
+using the DTD.  But if you use extensions, then you have to
+use a DTD that includes them if you want to pass the record
+through a validating XML parser.  What should mp do?  It 
+doesn't know how you intend to use the XML record subsequently.
+So it assumes you're using only the standard elements and so
+writes them all out first, in the order they appear in the
+Standard.  Extensions are then written out after the standard
+elements so as not to disrupt the order of the standard ones.
+
+(By "after the standard elements" I mean that wherever you
+have an extension, *at that level of the hierarchy* the
+standard elements are written first.  So Attribute is
+written with its standard children first, then the ESRI
+Attribute_Type, Attribute_Width, Attribute_Precision after
+all of the standard children of that particular Attribute.
+The hierarchical structure is retained, but the order may
+be changed.)
+
+However, as you note, some wish to use Tkme to edit metadata
+that was first created by ArcCatalog.  This works, but it does
+move the ESRI extensions around in the file.  What's inelegant
+about this is that most people won't ever need to or want to
+use an XML parser to validate, so we're bending the metadata
+out of shape for a relatively rare exigency.
+
+My solution is to change the tools to recognize a directive 
+in the config file which, when set, makes the XML output in
+the order it was received.  So write
+
+output
+  xml
+    order as-is
+
+to tell mp, mq, xtme, or Tkme to leave the elements in the
+order they got them.  The default is still to order them as
+they occur in the Standard:
+
+output
+  xml
+    order standard
+
+If you specify "standard" as the value, this gives you the
+current-default behavior of reordering the elements to fit
+the CSDGM.
+
+So the "as-is" order, combined with the new ESRIprof80.ext
+file, allows you to edit ArcCatalog metadata in place without
+messing up anything that ESRI has already done for you.  For
+those who might wish to take advantage of Tkme's snippets
+features, for example, to paste commonly-used bits of metadata
+into their records, this could be a helpful method.
+
+The other use people make of this element ordering is to
+prepare metadata for import into SMMS.  The SGML ingest
+feature of SMMS works only if the elements are in the standard
+order (at least this was true some time ago), so the neat 
+trick was to use mp to generate XML, swap the SGML directive
+for the XML directive in the output, and treat the modified
+XML output as SGML, feeding it to SMMS.  That procedure is 
+left intact by this change.
+
+These changes are incorporated in the current versions of
+the source package, the Linux package, and both Windows packages.  
+I have not yet updated the Solaris or SGI packages.
+
+Please let me know if this doesn't meet your needs, or if
+I can provide additional information or assistance.
+
+Peter
+-- 
+Peter N. Schweitzer (MS 918, U.S. Geological Survey, Reston, VA 20192)
+(703) 648-6533  FAX: (703) 648-6560  email: pschweitzer@usgs.gov
+<http://geology.usgs.gov/peter/>

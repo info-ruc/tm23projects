@@ -1,0 +1,86 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29Gimt16265
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 11:44:48 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k29GilW2015011
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 11:44:48 -0500 (EST)
+Message-ID: <000301c64398$c733d270$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 13
+Date: Thu, 9 Mar 2006 11:44:47 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+RON creates an overlay on top of the internet that actively looks for better 
+paths to route packets.  It keeps a complete list of neighbors and 
+periodically (very often, actually) pings them to determine whether they are 
+down.  If they are down, then another set of packets is sent to determine 
+whether it was a freak accident (some minimal packet loss) or a real outage. 
+This second stream of packets is done in quick succession and once it has 
+determined that the path is down, an alternate path to the destination is 
+picked.  Because of this active approach and its application-level 
+implementation, RON can determine whether it wants to send packets to a 
+certain host depending on latency, throughput, or packet loss.  FTP, for 
+example, should have a high throughput while latency does not matter.   On 
+the other hand, we have HTTP which cares about latency but generally does 
+not care about throughput since most web pages are small in size.  You can 
+also imagine an application that needs to get a packet to its destination, 
+no matter how long or how slowly it takes to get there, that would favor a 
+packet-loss light link.  RON reroutes packets with just one intermediary 
+node, claiming that this was sufficient to see marked improvement.  In the 
+results section, RON is shown to have route packets much more reliably than 
+the current BGP system.  It delivers packets quicker and recovers from 
+faults much quicker (on average less than 20 seconds as opposed to several 
+minutes).
+    The major downfall of RON seems to be the massive amount of background 
+information that is flowing through it.  The authors put a chart of 
+bandwidth usage vs number of nodes in the system.  At 50 nodes, the system 
+is using ~35kpbs, which is incredible.  They note that this is one tenth of 
+the current broadband speed.  This seems too high for the gains the system 
+produces.  My cable modem seems to have problem getting to the internet 
+about once a week for half an hour (as a pessimistic estimate, it is usually 
+more like once a month for 15 minutes).  My upload bandwidth is close to 
+150kpbs.  I would not want to allocate almost a quarter of my bandwidth for 
+those thirty minute of internet connectivity.  Furthermore, it is usually 
+the gateway I am connected to at my ISP that is down.  No internet traffic 
+can get to me and vice versa: RON would not be able to solve that problem. 
+RON allows quicker and more robust communication at the cost of bandwidth, a 
+tradeoff that might be made when bandwidth is cheaper.
+
+SOSR takes a different approach than RON.  It seems to be more on the 
+passive rather than overly active side of things.  The paper first delves 
+into a detailed study of link failures and packet loss.  They created their 
+own traceroute program to actively find the node that is down in order to 
+determine exactly if it was possible to route around the failure.  They 
+found that a large part of failures are at last-hop or end-systems.  These 
+kinds of failures cannot be routed around.  If my computer or my ISP goes 
+down, there is no way for anyone to reach me.  They suggest multi-homing 
+(having multiple ISPs) as a solution to this, noting that there is no 
+routing protocol that can handle this kind of failure.  The paper finds that 
+active RON-like systems have huge overhead and decide to develop a system 
+that has no a-priori knowledge of internet states.  They create something 
+called random-k.  Basically, when a path outage is detected, you route to k 
+random intermediaries that forward the packet for you.  Unless all k 
+intermediaries fail to route the packet or the path reapirs itself, the 
+packet is successfully routed.  You can then talk through the successful 
+intermediary in order to get your packets out to your destination.  They 
+found that round-4 was the best tradeoff and worked well.  In the end, the 
+system's passive approach scales better.
+    SOSR is not as successful as RON in getting a path to a destination. 
+This seems obvious from RON's active pinging and fault recovery.  On the 
+other hand, SOSR has minimal bandwidth overhead.  The lack of security seems 
+to also be an issue, but something that might be better for a followup 
+paper. 
+

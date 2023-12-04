@@ -1,0 +1,77 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j8D5AR5L001538
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 12 Sep 2005 22:10:27 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 5520EB278FB
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 12 Sep 2005 22:10:27 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id B7FB9B09580
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 12 Sep 2005 22:10:26 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050912215945.00bc3350@psy1.psych.arizona.edu>
+Date: Mon, 12 Sep 2005 22:10:21 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Simon task
+In-Reply-To: <7bccaff90509122110317bb3ed@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 09:40 AM 9/13/2005 +0530, you wrote:
+>Dear Sir,
+>Thank you for your software DMDX. I have been using this software for
+>many research papers. Even I am using this software for my thesis
+>work.
+>
+>Currently I am working on Simon task and stuttering. In my experiment
+>I need to present two rectangles of two colors like green and yellow
+>in two corners of the monitor. The subjects response would be pressing
+>"m" key for green and "Z" key for green. I made the rectangles
+>MSPaint and saved as two different bmp files, and I wrote the key as
+>follows (just an example):
+>
+><n 1> <azk> <cr> <t 3000> <id "keyboard"> <dwc 0>
+>
+>0 "press space" /;
+>
+>+1 * <bmp> <x 0> <y 0> "red" / <bmp> <ln 1> <x 1> <y 0> "green" <ms% 3000>
+>/;
+>
+>0 "THANKS" /;
+>
+>but DMDX displays only the green on the left side of the monitor.
+>Kindly help me in solving this problem.
+>  who ever works on "Simon Task" can help me. Your help would be appreciat
+
+
+   Well you've specified that the two rectangles are to be drawn nearly on 
+top of each other so you'll only be seeing the second one of them.  And <ln 
+1> doesn't mean anything with bitmaps.
+
+   Typically when I'm displaying bitmaps in the fashion you're describing I 
+set <xyjustification> to 1 so coordinates represent the middle of images 
+and I use the fractional coordinate system like this:
+
+<n 1> <azk> <cr> <t 3000> <id "keyboard"> <dwc 0> <xyjustification 1>
+0 "press space" /;
++1 * <bmp> <x 0.25> <y 0.5> "red" / <bmp> <x 0.75> <y 0.5> "green" <ms% 3000>
+/;
+0 "THANKS" /;
+
+
+   Be aware that if you try and put an image too far off the screen 
+(sometimes any amount off the screen) it won't be displayed.  You're also 
+using the default video mode which is generally a bad idea these days 
+unless you're using really old hardware.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Integrity has no need for rules.
+
+
+

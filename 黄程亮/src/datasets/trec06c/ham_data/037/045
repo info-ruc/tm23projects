@@ -1,0 +1,58 @@
+Received: from cyberus.ca (mail.cyberus.ca [209.195.95.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id XAA15669
+	for <handyboard@media.mit.edu>; Mon, 22 Feb 1999 23:01:59 -0500 (EST)
+Received: from cyberus.ca (ip40.ts6.mn.dialup.ottawa.cyberus.ca [209.195.85.40]) by cyberus.ca (8.8.8/Cyberus Online Inc) with ESMTP id XAA15359; Mon, 22 Feb 1999 23:01:23 -0500 (EST)
+Message-Id: <36D22864.F4724582@cyberus.ca>
+Date: Mon, 22 Feb 1999 23:02:44 -0500
+From: Laszlo Roska <lroska@cyberus.ca>
+X-Mailer: Mozilla 4.5 [en] (Win98; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Ian Hojnicki <damasta@camelot.bradley.edu>
+Cc: Handyboard <handyboard@media.mit.edu>, lroska@cyberus.ca
+Subject: Re: Stupid Sonars
+References: <Pine.3.87.9902212333.A28963-0100000@camelot.bradley.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Try connecting a 4.7K pull up resistor to VCC on the ECHO pin before the
+diode.
+the echo pin is open collector and pull up is provided by the handy
+board digital input when used as described in the handy board
+instruction.  When you add the diode
+this no longer works because the echo pin is no longer pulled up to vcc.
+
+                         	0 Vcc      0 Vcc
+                          	|	   |	
+                          	|          |
+                          	<          <
+                          	> 4.7K     > 4.7K
+                          	<          <
+                          	|          |
+                          	|          |
+ handy Board  --------|>|-------.----------|---- To Polaroid 6500 #1
+                  |  D1 1N914              |
+                  |                        |
+                  |                        |
+                  |---|>|------------------.---- To polaroid 6500 #2
+
+                     D2 1N914 
+
+P.S. let me know if it works
+
+Ian Hojnicki wrote:
+> 
+> I have a extremely complicated two polaroid sensor set up going on...  I
+> had a diode connected to each of the ECHO lines so that I can combine the
+> two lines together...  However, no signal passes through this setup...
+> However, I have validified the fact that they work independently...  My
+> question is Fred or anybody else on this god forsaken planet, can I use
+> BOTH TIC2 and TIC3 for the sensors???  I would share all of the other
+> lines except for the ECHO lines...  If I can use both of them, what would
+> be the corresponding addresses that I would need to poke and clear to
+> make this work???  I have no clue as to where to look up this
+> information, so I decided to just ask this question...  I would
+> appreciate a speedy response...
+> 
+> Ian
+

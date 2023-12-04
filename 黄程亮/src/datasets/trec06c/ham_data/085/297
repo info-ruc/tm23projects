@@ -1,0 +1,83 @@
+Received: from sirius.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [193.63.252.1])
+	by psy1.psych.arizona.edu (8.12.4/8.12.4) with ESMTP id h0LHsdMS010038
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jan 2003 10:54:39 -0700
+Received: from [193.63.253.227] (helo=PC195.mrc-cbu.cam.ac.uk)
+	by sirius.mrc-cbu.cam.ac.uk with esmtp (Exim 4.12)
+	id 18b2U8-0004to-00
+	for DMDX@psy1.psych.arizona.edu; Tue, 21 Jan 2003 17:46:52 +0000
+Message-Id: <5.1.1.6.2.20030121173322.06814350@193.63.253.1>
+Date: Tue, 21 Jan 2003 17:47:03 +0000
+To: DMDX@psy1.psych.arizona.edu
+From: Matt Davis <matt.davis@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Re: using external trigger to execute DMDX functions
+In-Reply-To: <se2d7be5.028@dss2.med.gu.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Easily done - and an interesting project!
+
+The trick would be to wire up the R-wave detector to Bit 0 of the PIO 
+(which is the request line). Then make sure that you are running in 
+"subject request mode" (ie. not <CR>) and voila, your trials will be 
+triggered by the occurrence of an R-Wave. You might also want to put some 
+blank item 0 events between your trials, so that there is a longer gap 
+between stimuli.
+
+Hope this helps,
+
+Matt
+
+
+
+At 16:56 21/01/2003 +0100, you wrote:
+>I'd appreciate some feedback on the viability of a concept that I would 
+>like to implement in DMDX.
+>
+>The background is a study of neural and autonomic responses to 
+>stimuli.  It is well known that some neural and autonomic responses to 
+>stimuli (e.g. heart rate deceleration ~ orienting response) are dependent 
+>on when in the cardiac cycle the stimulus is delivered.
+>
+>The concept is simple:  a reaction time measurement to an occasional 
+>(random ISI) stimulus, except that the stimulus is always delivered 200 
+>msec after an ECG R-wave.
+>
+>Do you suppose that DMDX could wait for a PIO-12 input trigger signal 
+>(from a ECG R-wave detector), wait 200 msec, execute a stimulus 
+>presentation,  gather a reaction time and then go to sleep for some 
+>seconds (random ISI) before triggering on the next available R-wave?
+>
+>I suppose that the fMRI peoples must want to coordinate DMDX with scans as 
+>well?
+>
+>Thanks,
+>
+>Derek
+>
+>
+>P.S., I am forced to use the Novell GroupWise email   program and have 
+>absolutely no control over the encoding format of my mails (i.e., HTML vs. 
+>plain text)
+>
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+****************************************************
+  Matt Davis
+  MRC Cognition and Brain Sciences Unit
+  15 Chaucer Road, Cambridge, CB2 2EF
+
+  email: matt.davis@mrc-cbu.cam.ac.uk
+    tel: 01223 355 294 (#266)
+    Fax: 01223 359 062
+
+****************************************************
+
+

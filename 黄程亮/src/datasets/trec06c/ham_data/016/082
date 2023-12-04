@@ -1,0 +1,59 @@
+Received: from helium.tip.nl (helium.tip.nl [195.18.64.71])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id RAA14716
+	for <handyboard@media.mit.edu>; Mon, 4 May 1998 17:19:48 -0400 (EDT)
+Received: from nowayhose by helium.tip.nl with smtp
+	(Smail3.2 #23) id m0yWSh0-001YK0C; Mon, 4 May 1998 23:22:34 +0200 (MET DST)
+Received: by localhost with Microsoft MAPI; Mon, 4 May 1998 23:26:36 +0200
+Message-Id: <01BD77B4.15096DC0.j.paludanus@tip.nl>
+From: Jaron Paludanus <j.paludanus@tip.nl>
+To: "HandyBoard (E-mail)" <handyboard@media.mit.edu>
+Subject: Working with a different compiler 2
+Date: Mon, 4 May 1998 23:07:08 +0200
+X-Mailer: Microsoft Internet E-mail/MAPI - 8.0.0.4211
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Howdy All,
+
+I am in a happy mood today. I finally got to the 'hello world' stage.
+
+All I had to do was count the number of interrupts, * 2 (16 bit addresses), 
+subtract this from BFFF which is the reset vector and thus supply BFD6 to 
+my linker to start its vector table.
+
+I learned a lot from the responses people gave me, thanks ! I came to a 
+solution by taking the time and actively looking for a solution using the 
+tools I have.  Yes I am proud today.
+
+Using the following code;
+
+@port volatile unsigned char MOTOR @0x7000;
+void main ()
+{
+	int i,j;
+	while (1) {
+		for (i=0;i<=255;i++) {
+ 			MOTOR= i;
+			for (j=0;j<4000;j++) {
+				_asm("nop\n");
+			}
+		}
+	}
+}
+
+I managed to make my motor leds flicker,
+the @0x7000 is a efficient way to use memory mapped peripherals
+the included NOP instruction was just to slow things down and to try the 
+so-called in-line assembly.
+After creating big database applications for companies I am as happy as a 
+kid with my Christmas lighting.
+
+QUESTION - Why can the whole memory range from 7000 - 7fff be used to set 
+the motor drivers or to fetch the digital input signals?
+
+thanks everybody,
+I'll continue my quest ...
+
+Jaron
+

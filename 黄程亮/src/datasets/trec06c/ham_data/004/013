@@ -1,0 +1,57 @@
+Received: from mcp.csh.rit.edu (mcp-low.csh.rit.edu [129.21.60.9]) by cse.psu.edu (8.8.5/8.7.3) with SMTP id MAA24671 for <9fans@cse.psu.edu>; Mon, 17 Feb 1997 12:45:35 -0500 (EST)
+Received: from chico-low.csh.rit.edu (chico-low.csh.rit.edu [129.21.60.8]) by mcp.csh.rit.edu (8.6.10/8.6.10) with SMTP id MAA20597 for <9fans@cse.psu.edu>; Mon, 17 Feb 1997 12:42:48 -0500
+Message-Id: <199702171742.MAA20597@mcp.csh.rit.edu>
+X-Authentication-Warning: mcp.csh.rit.edu: Host chico-low.csh.rit.edu didn't use HELO protocol
+Reply-To: tad@mail.csh.rit.edu
+To: 9fans@cse.psu.edu
+Subject: porting question about "initcode"...
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <4260.856201292.1@chico-low.csh.rit.edu>
+Date: Mon, 17 Feb 1997 12:41:32 -0500
+From: Tad Hunt <tad@chico-low.csh.rit.edu>
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+    I'm porting the most recent plan9 distribution to the DECstation 5000/1xx
+series workstations.  I'm moving along fairly well, but I've got one
+real question stumping me.  The DECstation 5000 is a mips R3000 machine,
+so I have been basing my port on the indigo3k port.  In indigo3k/main.c
+ in userinit() (line 356), the author maps in a page for the text segment
+ and then memcpys the entire initcode array onto that page.
+
+    The array is simply a hexdump of the entire "init.out" executable.  That
+means that the initcode array contains three things: the plan9 exec header,
+the text segment, and the data segment.  If I disassemble the init.out
+executable, the instruction ( MOVW $setR30(SB),R30 ) sets the
+data offset pointer to where it expects the data segment to live:
+
+ 0x1000:       23bdfff4        addi    sp,sp,-12
+ 0x1004:       afbf0000        sw      r31,0(sp) 
+ 0x1008:       3c1e0000        lui     r30,0	      <- MOVW $setR30(SB), R30
+ 0x100c:       37de908e        ori     r30,r30,0x908e <-
+ 0x1010:       27c1800a        addiu   r1,r30,-32758
+ 0x1014:       23a2000c        addi    r2,sp,12
+ 0x1018:       afa10004        sw      r1,4(sp)
+ 0x101c:       0c00041b        jal     0x106c
+ 0x1020:       afa20008        sw      r2,8(sp)
+ 0x1024:       24010010        li      r1,16
+ 0x1028:       afa10004        sw      r1,4(sp)
+ 0x102c:       24010013        li      r1,19
+ 0x1030:       0000000c        syscall
+
+    But the data segment is really on the first page of the executable
+because the entire executable was just copied to the page allocated to it.
+Thus exec("/boot") fails and falls through to the "print r1" system call loop.
+
+    My question is how does this init process work on an indigo3k?
+(I don't have access to one, so I can't test it out).  I suppose
+I could map in a data page for that information myself, but a quick look
+at the other ports shows them doing the same thing as the indigo3k port.
+(And then main.c would have to know about Exec headers.)  Am I just
+missing something really obvious?
+
+Thanks!
+    -Tad
+

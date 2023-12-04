@@ -1,0 +1,134 @@
+Received: from lyra.den.mmc.com (lyra.den.mmc.com [160.205.32.38])
+	by mail1.its.rpi.edu (8.8.5/8.8.5) with ESMTP id PAA48198
+	for <selmer@rpi.edu>; Sat, 21 Jun 1997 15:08:05 -0400
+Received: from phad.den.mmc.com (phad.den.mmc.com [160.205.32.46]) by lyra.den.mmc.com (8.7.5/8.7.3) with SMTP id NAA29259 for <selmer@rpi.edu>; Sat, 21 Jun 1997 13:07:34 -0600 (MDT)
+X400-Received: by /c=us/admd=telemail/prmd=mmc/; converted ( IA5-Text);  Relayed; 
+  21 Jun 1997 13:07:33 -0600
+X400-Received: by mta lmagMTA in /c=us/admd=telemail/prmd=mmc/; converted (
+   IA5-Text);  Relayed; 21 Jun 1997 13:07:33 -0600
+X400-MTS-Identifier: [/c=us/admd=telemail/prmd=mmc/; 01B7033AC26750BF-lmagMTA]
+Content-Identifier: 01B7033AC26750BF
+Content-Return: Allowed
+X400-Content-Type: P2-1988 ( 22 )
+Conversion: Allowed
+Original-Encoded-Information-Types: IA5-Text
+Priority: normal
+Disclose-Recipients: Prohibited
+Alternate-Recipient: Allowed
+X400-Originator: Protima.X.Banerjee@lmco.com
+X400-Recipients: non-disclosure;
+Message-Id: 
+  <01B7033AC26750BF*/c=us/admd=telemail/prmd=mmc/o=den/ou=ccmail/s=Banerjee/g=Protima/i=X/@MHS>
+Date: 21 Jun 1997 13:07:33 -0600
+From: "Protima X Banerjee" <Protima.X.Banerjee@lmco.com>
+To: hyr@cs.rpi.edu (Return requested), selmer@rpi.edu (Return requested)
+Subject: Re: Project 3
+MIME-Version: 1.0
+X-UIDL: a27062be0e6ff9e737f799bfafcb6d10
+Status: RO
+X-Status: 
+
+
+
+     
+        Also, on that same note, I've also been taking a
+        look at the read-eval-print loops for the I/O and
+        in that area I'm not quite sure how to write rules.
+
+        Could you explain this please?
+
+        Thank you,
+        Protima
+
+
+______________________________ Reply Separator _________________________________
+Subject: Project 3
+Author:  Protima X Banerjee at VF-B19-CC-P
+Date:    6/21/97 2:56 PM
+
+
+     
+     Hi,
+     
+     I've been having the following problems with the match 
+     function when it is re-defined to use $ variables.
+     
+     First of all, it keeps giving me errors whenever the $ 
+     variable is at the begining of the list, but it is some- 
+     times okay if the $ variable is at the end of the list.
+     
+     When there are two $ variables, it makes the first 
+     one null, and allocates all the list to the second 
+     variable.
+     
+     I have no idea where this is going wrong, and how to 
+     start de-bugging it.
+     
+     I'm enclosing a copy of my code, please take a look at 
+     it and let me know if you can offer any hints.
+     
+     Thank you,
+     
+     Protima
+     
+     
+     
+     
+     
+     
+     ;;; This function is called by match1 and tries to match the sequence 
+     ;;; variable with () and the rest of pat with the rest of the tree. 
+     (defun backtrack-match (v pat tree sqce pairs)
+        "This function is called by match1 and tries to match the sequence 
+     variable with () and the rest 
+     of the pat with the rest of the tree."
+        (cond ((null pat) (cons (list v (append sqce tree)) pairs))
+              ((match1 pat tree (cons (list v sqce) pairs))) 
+              ((null tree) nil)
+              (t (backtrack-match v pat (rest tree)
+                  (append sqce (list (first tree))) pairs)))) 
+     
+     ;;; Returns a list of pairs.  Each pair contains a variable and its 
+     corresponging term.
+     ;;; is returned if a single variable is associated with more than one 
+     terms, or
+     ;;; if the lists do not match.  This is the "helper" function for 
+     match.
+     (defun match1 (pat lst pairs)
+        "Returns a list of pairs.  Each pair contains a variable, and its 
+     corresponding term.  Returns 
+     nil if a single variable is associated with more than one term, or if 
+     the lists do not match."
+        (check-type pat list)
+        (check-type lst list)
+        (check-type pairs list)
+        (cond ((and (null pat) (null lst)) pairs)
+              ((svariablep (first pat))
+               (backtrack-match (first pat) (rest pat) lst '() pairs))
+              ((listp (first pat)) 
+               (match1 (rest pat) (rest lst) (match1 (first pat) (first 
+     lst) pairs)))
+              ((and (variablep (first pat)) (not (boundp (first pat) 
+     pairs)))
+               (match1 (rest pat) (rest lst) 
+                 (cons (list (first pat) (first lst)) pairs)))
+              ((and (variablep (first pat))
+                    (not (eql (bound-to (first pat) pairs) (first lst))))
+                  nil)
+              (t (match1 (rest pat) (rest lst) pairs))))
+     
+     
+     ;;; Returns a list of pairs.  Each pair contains a variable and its 
+     corresponging term.
+     ;;; is returned if a single variable is associated with more than one 
+     terms, or
+     ;;; if the lists do not match. 
+     (defun match (pat lst)
+       "Returns a list of pairs.  Each pair contains a variable, and its 
+     corresponding term.  Returns 
+     nil if a single variable is associated with more than one term, or if 
+     the lists do not match."
+        (match1 pat lst ()))
+     
+     
+

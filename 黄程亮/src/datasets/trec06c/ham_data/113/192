@@ -1,0 +1,137 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k15CrGg1019477
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 5 Feb 2006 05:53:16 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 1B8D4CBC31C
+	for <DMDX@psy1.psych.arizona.edu>; Sun,  5 Feb 2006 05:53:16 -0700 (MST)
+Received: from [192.168.0.100] (c-24-131-190-132.hsd1.ma.comcast.net [24.131.190.132])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 446D2CBB9E8
+	for <DMDX@psy1.psych.arizona.edu>; Sun,  5 Feb 2006 05:53:14 -0700 (MST)
+Message-ID: <43E5F545.9060200@u.arizona.edu>
+Date: Sun, 05 Feb 2006 07:53:25 -0500
+From: Scott Hayes <smhayes@u.arizona.edu>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: questions about COT
+References: <5.1.0.14.2.20060204162807.00bcde58@psy1.psych.arizona.edu> <000701c62a0b$72ff0400$0401a8c0@Sharon>
+In-Reply-To: <000701c62a0b$72ff0400$0401a8c0@Sharon>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Don't forget that the scanner "discards" reps(TRs) at the beginning of a 
+functional scan.  The default is 2 reps, but the scanner drift issue is 
+really present a bit longer, so I changed the default to discard the 
+first 6 reps.  Others keep the default of discarded reps =2, but then 
+delay the start of stimulus presentation until the scanner drift issue 
+subsides (6 reps) or fill this time with "dummy trials" since the 
+imaging data will be useless (later you discard these trials at the fMRI 
+data analysis stage).  The bottom line is that even if you've triggered 
+the scanner w/ DMDX, you're start time for your DMDX program and 
+acquisition of your fMRI data probably aren't synchronized, unless 
+you've designed your DMDX program to account for discarded reps (again, 
+discarded reps varies by people's preferences, so you'll have to check 
+the defaults of the imaging protocol you're using).  If you haven't 
+written DMDX code to account for this, then you'll need to change your 
+COTs to account for this discrepancy as well. 
+
+Shiaohui Chan wrote:
+
+> Thanks, Jonathan!
+>
+> I will run the file again and see what the time difference is.
+>
+> shiaohui
+> ----- Original Message ----- From: "j.c.f." 
+> <jforster@psy1.psych.arizona.edu>
+> To: <DMDX@psy1.psych.arizona.edu>
+> Sent: Saturday, February 04, 2006 4:34 PM
+> Subject: [DMDX] Re: questions about COT
+>
+>
+>> At 01:54 AM 2/4/2006 -0700, you wrote:
+>>
+>>> I knew it today that I should have included 101 as an item, and that 
+>>> line should look like this:
+>>>
+>>>     +101 * <o 255> %1 / <o 254> %1/ "READY" <fd 724>/;"
+>>>
+>>> and the azk file should start with something like below:
+>>>
+>>>     Item 101, COT 0.000 (and some RT)
+>>>     Item 1046, COT 13513.02 (and some RT)
+>>>
+>>>
+>>> I will correct this in my future script, but I want to understand my 
+>>> error better, so here are the questions:
+>>>
+>>> In my experiment, the fMRI scanner won't start collecting data until 
+>>> 12 seconds after the spacebar of the computer is hit (to start 
+>>> DMDX).  Since SOAs (relative to scanner data collection) instead of 
+>>> COTs are needed in image processing, the usual way to translate a 
+>>> COT value to an SOA value is to subtract 12 seconds from each COT 
+>>> value.
+>>>
+>>> 1) Where in the line does the scanner start?   <o 255> %1 / <o 254> 
+>>> %1/ "READY" <fd 724>/;
+>>
+>>
+>>   Probably the with the <O 254>.
+>>
+>>>
+>>> 2) Except for the first item, is my azk file really different from 
+>>> the "should-be" azk file?
+>>
+>>
+>>   Dunno, I don't remember details of everything I've ever done.  
+>> People that use  the scanner regularly are going to have a better 
+>> idea than I am.
+>>
+>>>
+>>> The following two questions are related to Question 1:
+>>>
+>>> 3) The presentation computer I used has a refresh rate of 16.58 ms, 
+>>> so I actually put a little bit more than 12 seconds on item 101.  I 
+>>> guess the scanner had started collecting data before the "COT=0.00" 
+>>> time point in my azk file.  Am I right?
+>>
+>>
+>>   If what you say is so, yes.
+>>
+>>>
+>>> 4) If I still want to use the data that I collected (I collected two 
+>>> pilot subjects with this script), should I correct my COTs?  I.e., 
+>>> should I add 5.92 ms, 4.92 ms, or 3.92 ms to each of the COT value, 
+>>> depending on when the scanner is started?  (I got the value of 5.92 
+>>> ms by subtracting 12000 ms from 724x16.58 (= 12003.92) plus two %1's).
+>>
+>>
+>>   I would run the file again with a clockon in the first item and see 
+>> what it is by item 1046 and add that to clock on times in the first run.
+>>
+>>                                                /"\
+>>  -jonathan (j.c.f.)                            \ /
+>>                                                 X
+>>     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+>>
+>> If frogs had wings, they wouldn't be bouncing around on their bums.
+>>
+>>
+>> ====================================================================
+>>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>>  'unsubscribe' by itself with no quotes in the body of the email
+>>  to be removed from the list.  The list archive is available here:
+>>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>> ==================================================================== 
+>
+>
+> ====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+
+

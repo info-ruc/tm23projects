@@ -1,0 +1,64 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.12.10/8.12.10) with ESMTP id h9KF5QwT020556;
+	Mon, 20 Oct 2003 10:05:26 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.9.3p2/8.9.3/cc-lists.mc-1.30) with SMTP id KAA29664;
+	Mon, 20 Oct 2003 10:03:35 -0500 (CDT)
+Received: from mail.cs.utexas.edu (root@mail.cs.utexas.edu [128.83.139.10])
+	by iceman.cc.utexas.edu (8.9.3p2/8.9.3/cc-lists.mc-1.30) with ESMTP id KAA29645
+	for <cs352h@lists.cc.utexas.edu>; Mon, 20 Oct 2003 10:03:21 -0500 (CDT)
+From: skeckler@cs.utexas.edu
+Received: from fuller.cs.utexas.edu (skeckler@fuller.cs.utexas.edu [128.83.120.177])
+	by mail.cs.utexas.edu (8.12.10/8.12.10) with ESMTP id h9KF3INl023136;
+	Mon, 20 Oct 2003 10:03:18 -0500 (CDT)
+Received: (from skeckler@localhost)
+	by fuller.cs.utexas.edu (8.12.10/8.12.9/Submit) id h9KF3HfR028288;
+	Mon, 20 Oct 2003 10:03:17 -0500 (CDT)
+Date: Mon, 20 Oct 2003 10:03:17 -0500 (CDT)
+Message-Id: <200310201503.h9KF3HfR028288@fuller.cs.utexas.edu>
+To: cs352h@lists.cc.utexas.edu
+Subject: Questions on the LC3.5 ISA
+Reply-To: skeckler@cs.utexas.edu
+Sender: owner-cs352h@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+
+CS352H-ers,
+
+One more:
+
+> How should the nzp registers be set for the load operations?  
+
+In general any instruction that writes the register file should set
+the NZP bits according to the register being written into the register
+file.  Thus for a load, you actually have to wait to see what value
+comes back from memory.  For the purposes of this problem, just set
+NZP according to the output of the ALU.
+
+> jsrr is
+> not defined in the .h file, should we be doing something for that?
+
+Note that the JSR and JSRR have the same opcode (top 4 bits) but
+differ in the 5th bit from the top.  For the purposes of the ALU, you
+don't need to distinguish between them.
+
+> Also, trap is defined in the .h file but what operation needs to be
+> done for that?
+
+Trap should produce a 16-bit result with the top 8 bits set to zero
+and the bottom 8 bits set to the bottom 8 bits of the IR.  Recall that
+the TRAP instruction indexes into the trap vector (stored in memory)
+to fetch the next PC to jump to.
+
+
+Cheers,
+
+Steve Keckler                     Computer Architecture and Technology Lab
+Assistant Professor               Tel:    (512) 471-9763
+Department of Computer Sciences   Dept:   (512) 471-7316
+1 University Station C0500        Fax:    (512) 232-1413
+The University of Texas at Austin E-mail:  skeckler@cs.utexas.edu
+Austin, TX 78712-1188             http://www.cs.utexas.edu/users/skeckler
+                                  
+
+

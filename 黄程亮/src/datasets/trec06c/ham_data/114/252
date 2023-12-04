@@ -1,0 +1,95 @@
+Received: from mailbox3.ucsd.edu (mailbox3.ucsd.edu [132.239.1.55])
+	by euclid.ucsd.edu (8.11.7p1+Sun/8.11.6) with ESMTP id k1H0Elo05192
+	for <wstein@math.ucsd.edu>; Thu, 16 Feb 2006 16:14:47 -0800 (PST)
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.206])
+	by mailbox3.ucsd.edu (8.13.5/8.13.5) with ESMTP id k1H0Ecip062564
+	for <wstein@ucsd.edu>; Thu, 16 Feb 2006 16:14:39 -0800 (PST)
+Received: by zproxy.gmail.com with SMTP id s1so301115nze
+        for <wstein@ucsd.edu>; Thu, 16 Feb 2006 16:14:38 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=QUPGTBOLZtYBxvviuJkOQCt2gAT0QyeNszTUqzzNErBYjX8s25TVD+m5O67gEQZq0CYARulistuN7d/e8uL9+RxD5nEK8JT0puQZ/03lHZBr4ggmcLALZOuwJdQ5wZFDCzxH7cjjcvcEwXescS9sW/0p2pL/6op4RiSqwQujbaw=
+Received: by 10.65.116.5 with SMTP id t5mr599530qbm;
+        Thu, 16 Feb 2006 16:14:38 -0800 (PST)
+Received: by 10.65.145.7 with HTTP; Thu, 16 Feb 2006 16:14:37 -0800 (PST)
+Message-ID: <5850a51c0602161614p322616f4rc531cbf4be749296@mail.gmail.com>
+Date: Thu, 16 Feb 2006 16:14:37 -0800
+From: Barry Smith <barryrsmith@gmail.com>
+To: William Stein <wstein@ucsd.edu>
+Subject: Re: bernfrac
+In-Reply-To: <200601082158.34196.wstein@ucsd.edu>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset=ISO-8859-1
+Content-Disposition: inline
+References: <200601082158.34196.wstein@ucsd.edu>
+X-Greylisting: NO DELAY (Qualified relay host);
+	processed by UCSD_GL-v2.1 on mailbox3.ucsd.edu;
+	Thu, 16 February 2006 16:14:39 -0800 (PST)
+X-Spam-Level: Level 
+X-Spamscanner: mailbox3.ucsd.edu  (v1.6 Aug  4 2005 15:27:38, -2.8/5.0 3.0.4)
+X-MailScanner: PASSED (v1.2.8 48181 k1H0Ecip062564 mailbox3.ucsd.edu)
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by euclid.ucsd.edu id k1H0Elo05192
+X-UIDL: b8e907ff5b6a6dd4e3c41c34005dbbc3
+X-Bogosity: Unsure, tests=bogofilter, spamicity=0.520000, version=0.95.2
+X-UID: 
+Status: RO
+X-Status: RAC
+X-KMail-EncryptionState: N
+X-KMail-SignatureState: N
+X-KMail-MDN-Sent:  
+
+Hi,
+
+Thanks for your previous e-mail about bernfrac.  I found your talk
+today very interesting.  I have a couple of results whereby I can
+calculate class numbers of cyclic cubic fields of prime conductor p
+for primes p of the form p = (a^2 + 27)/4 and of the form p = (1 +
+27*b^2)/4 if I can compute a couple of Bernoulli numbers.  In
+particular, in the first case, the class number h is characterized by
+the congruence
+
+h \equiv -3/2 B_{r}/r B_{2*r}/(2*r) mod p where r is (p-1)/3
+
+and in the second case,
+
+h \equiv -1/18 B_{r}/r B_{2*r}/(2*r) mod p where r is (p-1)/3.
+
+I have been toying with the idea of making a big table of class
+numbers, but I am not very tech savvy and I have a lot to work on as
+it is.
+
+Also, I have been wondering if calculating the inverses of numbers mod
+p would be any faster than the usual algorithm using the following
+algorithm:
+if you want the inverse of a mod p, run the Euclidean algorithm with
+a*p + 1 and p^2 as your starting values instead of a and p.  The first
+remainder you get that is less than p is the inverse of a mod p.  It
+saves you the trouble of having to backtrack once you find that the
+GCD of a,p is 1, but on the other hand, you have to make a comparison
+of the remainder with p at each step.  The number of steps to reach
+the inverse in my method can be shown to be the same as the number of
+steps to reach the GCD when running the Euclidean algorithm with a and
+p.  Of course, the original algorithm is so fast that I don't suppose
+it matters.  I just think mine is charming, and a little mysterious.
+
+Best Regards,
+Barry
+
+
+On 1/8/06, William Stein <wstein@ucsd.edu> wrote:
+> Barry,
+>
+> The PARI command is bernfrac.  For smallish k it computes B_k very quickly,
+> where smallish means < 20000, say.  For k = 100000 it takes just over a minute
+> to compute B_100000, which is a number with over 370000 decimal digits.
+> See http://modular.ucsd.edu/edu/fall05/168/projects/ for a student project
+> about this.
+>
+>  -- William
+>
+
+
+

@@ -1,0 +1,57 @@
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29GnRt17843
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 11:49:28 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id 7B26053267; Thu,  9 Mar 2006 08:49:21 -0800 (PST)
+Date: Thu, 9 Mar 2006 08:49:18 -0800
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 13
+Message-ID: <20060309164918.GA16553@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+
+With the current BGP routing protocols, the Internet can take several
+minutes to reconfigure the routes used when failures occur.  Andersen
+et al. presents a scheme for building resilient overlay networks
+(RONs), which will detect failures, and recover from them, much more
+rapidly.  Essentially, a RON is made up of several nodes in different
+routing domains.  Those nodes form virtual links to each other, and
+route data between nodes.  They keep track of link performance, and
+re-route to get around virtual link failures, and to improve
+performance.
+
+While the results of their studies show that RONs improve performance
+for the nodes connected to the RON, they have not examined the extra
+load a RON places on a network.  The aggressive probing of link
+conditions is likely to slow down other network traffic, and place
+increased load on the network.  While this may be a worthwhile
+tradeoff for some applications, it should probably not be used to
+improve general Internet traffic.  In addition, RONs only work for a
+relatively small set of nodes.  The authors propose running multiple
+RONs to get around this limitation, but that would use up even more
+resources from the underlying networks.
+
+Gummadi et al. present a much less resource intensive scheme for
+handling failures, one-hop routing.  In this plan, if the direct route
+to a host fails, then the machine trying to reach it will attempt to
+route the packet through some number of intermediary nodes; if none of
+the intermediaries can reach the destination either, then the packet
+is lost.  Their experiments show that if four intermediaries (out of
+the 39) are randomly chosen, and the packet is routed through them,
+then about 60% of failures to reach popular servers could be routed
+around.  Only 66% of these failures could possibly be routed around;
+the rest are failures too close to the server.
+
+The characterization of Internet failures in this paper is also
+interesting; it shows that for most broadband hosts, and many popular
+servers, routing protocols cause temporary, and unnecessary, outages
+fairly frequently.  Network reliability for popular servers is only
+about 99.6%, which suggests that the Internet is still inherently
+unreliable, even for very popular sites, which presumably have
+expensive and high-quality connections to the rest of the network.
+
+-- Victoria Krafft
+

@@ -1,0 +1,62 @@
+Received: from ml.media.mit.edu (root@ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA00448
+	for <handyboard@media.mit.edu>; Mon, 15 Feb 1999 11:44:28 -0500 (EST)
+Received: from localhost (fredm@localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id LAA23153;
+	Mon, 15 Feb 1999 11:44:16 -0500 (EST)
+Message-Id: <199902151644.LAA23153@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: fredm@localhost [127.0.0.1] didn't use HELO protocol
+To: tgb@wamnet.com
+Cc: speidelh@met.mat.ethz.ch, handyboard@media.mit.edu
+Subject: Re: Expansion board & V2X & sonar 
+In-Reply-To: Your message of "Mon, 15 Feb 1999 09:00:16 CST."
+             <199902151500.JAA19058@cozy.wamnet.com> 
+Date: Mon, 15 Feb 1999 11:44:16 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+re: exp bd SPI pins:
+
+* 2 of the pins are used by the sonar and aren't separately
+available.
+* the other 2 SPI pins are at PCB holes J20 and J21.
+
+see the schem for details:
+
+  http://el.www.media.mit.edu/projects/handy-board/hbexp30/expsch30.gif
+
+if you need all 4 spi pins for something, leave out the j11 sonar
+connector and tap the signals from there.
+
+fred
+
+In your message you said:
+> 
+> >the SPI port D is tied up by the compass, I was wondering if directly
+> >connecting the digital output-pins of the expansion board can be used to
+> >trigger the sonar pulse and set the BINH. 
+> 
+> I am the guy who wrote the V2X code that is on the HB web site.  I
+> just got an expansion board, and am looking into v2X and sonar on the
+> exp board right now.
+> 
+> >                                               Will the triggering or 
+> >blanking use more than the allowed 5 mA per output? Will the timing be accur
+ate?
+> >Instead of poking (0x1008, 0x20) like in sonar.c could I just use
+> >set_digital_out(x) to start the ping (and turn on BINH 
+> >in the same way)?? Would it be enough to just resolder the INIT and BINH
+> >lines to the digital output ports of the expansion board or would I need
+> >further modifications?
+> 
+> I cannot find where there are pins for the SPI port on the expansion
+> board.  Yup, the breadboard area would work, and I have thought of
+> that.  
+> 
+> The SPI port is maybe overkill, so I am thinking that I'll just have
+> like a timed process that, say every 500msec (configurable), it takes
+> a heading.  Then with the extra output pins, I'll be able to disable
+> the compass, and send calibration signals, and resets.  I think it'll
+> be better.  If anyone else is working on v2x, I'd love to hear about it.
+> 
+

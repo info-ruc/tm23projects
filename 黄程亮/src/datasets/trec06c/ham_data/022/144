@@ -1,0 +1,66 @@
+Received: from imo27.mx.aol.com (imo27.mx.aol.com [198.81.17.71])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id MAA14948
+	for <handyboard@media.mit.edu>; Thu, 27 Aug 1998 12:09:35 -0400 (EDT)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo27.mx.aol.com (IMOv16.3) id SZIBa20442
+	 for <handyboard@media.mit.edu>; Thu, 27 Aug 1998 12:09:01 -0400 (EDT)
+Message-Id: <e6384102.35e5849d@aol.com>>
+Date: Thu, 27 Aug 1998 12:09:01 EDT
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Steppr motor pulse problem
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Phillip
+
+     First step is to put a piece of tape on the shaft so that you can clearly
+see the shaft turn.
+     Next determine what kind of motor you have (you have probably already
+done this).  Get an ohm meter and determine which wires are connected to
+which.  There are two general styles of steppers.  The first has a common wire
+which is connected to +Supply and four more wires that are grounded in
+sequence.  If your motor has five wires it is a good bet that it is this one
+and the actual resistance values will tell you the common.  Sometimes the
+common wire is split between two coil phases giving you a six wire motor.  The
+two commons are +Supply and the remaining four are grounded in sequence, but
+the sequence will alternate between the two separate commons.  I have
+forgotten the name of the motors but the advantage of them is cheap and easy
+drive electronics.  The other style of motor is more common and is called
+BiPolar as the coils are to be energised in both polarities and the drive
+electronics must drive each "signal" wire equally well to both ground and
+supply.  These motors generally have four wires (and more times than not I
+have found them to be Red, Blue, Yellow and White).  Once again check which
+wires are connected together.  You might find for example Red connected to
+blue and Yellow connected to white.
+     Next move the motor by applying voltages by hand with alligator clips.
+Use the smallest voltage needed to make the motor move (no point heating the
+thing with rated voltage.  Next apply the power to the wires in alternating
+sequence and make written notes as to which way the shaft moves.  Eventually
+you will arrive at a sequence that continues to move the shaft in a consistant
+direction.  Write this pattern down neatly on a sheet of paper that you can
+find again.  You will be looking at this paper for the rest of your life (as I
+am doing now).
+     Next measure the sequence produced by your computer and make it match the
+colors you wrote on that sheet of paper.  Then move on to determining the
+ramping rates and maximum speeds that you can use with your stepper under load
+(lovingly applied by a pair of fingers).
+     By way of a starting point the sequence that I found to work for that
+color set I mention earlier for BiPolars is as follows:
+
+     Red   Blue   Yellow   White
+        +       -
+                            +          -
+         -       +
+                             -          +
+
+     By the way the Handy Board has four BiPolar outputs from the motor driver
+strip.  You should be able to just Poke this pattern out and drive two
+steppers if the L293s (or a stacked pair of them) will give you enough
+current.
+
+Hope this helps,
+Pherd
+

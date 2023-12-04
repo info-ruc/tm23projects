@@ -1,0 +1,519 @@
+Received: from fzr600.yamaha (root@YAMAHA.CS.UTK.EDU [128.169.93.175]) 
+        by CS.UTK.EDU with ESMTP (cf v2.9s-UTK)
+	id QAA24073; Fri, 19 Feb 1999 16:33:56 -0500 (EST)
+Received: by cs.utk.edu
+	via send-mail from stdin
+	id <m10DxZS-000xRFC@fzr600.yamaha> (Debian Smail3.2.0.102)
+	for plank@cs.utk.edu; Fri, 19 Feb 1999 16:34:50 -0500 (EST) 
+Message-Id: <m10DxZS-000xRFC@fzr600.yamaha>
+Date: Fri, 19 Feb 1999 16:34:50 -0500 (EST)
+From: rich@cs.utk.edu (Rich the Wolski)
+To: plank@cs.utk.edu
+Subject: STIGMATA 99 reviews
+Status: RO
+
+>From pc99@cs.usask.ca Wed Jan 13 11:54 PST 1999
+Received: from cs.usask.ca (cs.usask.ca [128.233.130.77])
+	by gremlin.ucsd.edu (8.9.1a/8.9.1) with ESMTP id LAA23909
+	for <rich@cs.ucsd.edu>; Wed, 13 Jan 1999 11:54:31 -0800 (PST)
+Received: from skorpio.usask.ca (skorpio.usask.ca [128.233.128.5])
+	by cs.usask.ca (8.9.0/8.9.0) with ESMTP id NAA11620
+	for <rich@cs.ucsd.edu>; Wed, 13 Jan 1999 13:59:44 -0600 (CST)
+Received: (from pc99@localhost)
+	by skorpio.usask.ca (8.9.0/8.9.0) id NAA02444;
+	Wed, 13 Jan 1999 13:54:28 -0600 (CST)
+Date: Wed, 13 Jan 1999 13:54:28 -0600 (CST)
+From: Program Chair - SIGMETRICS 99 <pc99@cs.usask.ca>
+Message-Id: <199901131954.NAA02444@skorpio.usask.ca>
+To: rich@cs.ucsd.edu
+Subject: 1999 ACM SIGMETRICS paper 1035.5144 reviews
+Content-Type: text
+Content-Length: 22256
+Status: O
+
+----- Review of Paper 1035.5144 -------
+
+Title:	 Predicting the CPU Availability of Time-shared Unix Systems
+Reviewer type : 	PC member
+Reviewer:	0-0
+
+Originality:        [ 2]
+Technical merit:    [ 2]
+Readability:        [ 3]
+Relevance:          [ 3]
+Overall rating:     [ 2]
+Recommended Action:	Weak Reject
+
+   ---Comments for the Author---
+In this paper, the authors discussed forecasts of CPU availability on
+time-shared Unix systems.
+In general,  I feel  although the application that the authors studied is
+very interesting,
+ the technical contents of this paper are weak and need to be improved,
+
+In the first part of the paper, the authors discussed measurement using
+"uptime",
+"vmstat" and a probe process. The equations (1) and (5) are not clear to
+me. I am not convinced
+the forms of these two equations and how they related to each other. It
+seems that the cpu_availability
+computed in Equations (1) and (2) are not the same thing as that of the
+probe process. Therefore,
+I doubt whether the measurement accuracy section (section 2.2) is
+meaningful. Another factor effecting the
+accuracy of measurement is the stochastic nature of a probe process and the
+ two measures. However, this was not
+considered by the authors.
+
+In the second part of the paper, the authors discussed results of
+prediction. By looking at the figures (1) and (3),
+it looks like that the CPU_availability has periodic components as
+evidenced by auto-correlation function.
+This should be explained. Also, since the authors used one-day-long data, I
+ doubt whether the data is stationary
+and whether the approaches generally used for a stationary process is still
+ valid.  In addition, the authors stated
+"self-similarity is often interpreted as an indication of
+unpredictability". I would not agree this statement
+because it has been known that long-range dependency may help prediction
+(see reference [1]).
+
+
+[1] Jan Beran. "Statistics for Long-Memory Processes", Chapman & Hall,
+1994.
+
+----- Review of Paper 1035.5144 -------
+
+Title:	 Predicting the CPU Availability of Time-shared Unix Systems 
+Reviewer type : 	PC member
+Reviewer:	0-1
+
+Originality:        [2]
+Technical merit:    [2]
+Readability:        [3]
+Relevance:          [3]
+Overall rating:     [2]
+Recommended Action:	Weak Reject
+
+   ---Comments for the Author---
+This paper considers the problem of predicting available CPU performance
+to support dynamic schedulers, motivated partly by recent advancements in
+distributed system environments.
+
+The basic problem I have with this paper is that it makes a relatively
+small technical contribution to the field that is not sufficient to
+warrant acceptance in the Sigmetrics program.
+
+Most of the methods used in section 3 assume that the time series is
+stationary, but the authors do not seem to have tested for stationarity.
+These tests must be performed (if they haven't been) and the paper needs
+to describe the results of these tests.  If the time series data is not
+stationary (which wouldn't be surprising), then most of the methods in
+section 3 are not being correctly applied.
+
+Also, were the experiments presented in section 2 repeated for different
+days and periods?  If so, then these results should be presented.  If not,
+then the authors should conduct more than a single set of experiments and 
+present these results in section 2.
+----- Review of Paper 1035.5144 -------
+
+Title:	 Predicting the CPU Availability of Time-shared Unix Systems 
+Reviewer type : 	PC member
+Reviewer:	1-0
+
+Originality:        [1]
+Technical merit:    [1]
+Readability:        [2]
+Relevance:          [1]
+Overall rating:     [1]
+Recommended Action:	Reject
+
+   ---Comments for the Author---
+This paper presents a measurement study on the efficacy of
+a method for measuring CPU availability in order to effectively
+schedule applications in a meta-computing setting.
+Via measurements, the author(s) illustrate the effectiveness of
+two Unix utilities to measure load versus the NWS sensor
+that combines both Unix utilities to compute the network load.
+The experimental platform is composed by three graduate student
+workstations and three departmental servers at UCSD.
+The author(s) report the mean error of the three methods during
+a 24 hour period, they continue by presenting the forecasting of
+CPU availability using the three methodologies, and conclude that
+the prediction error is at an acceptable level.
+Finally, they characterize the degree of workload self-similarity in both
+short and long term. Their conclusion that recent history is often
+a good prediction of short-term future is not surprising given the
+nature of burstiness of workload that has been reported by many previous
+studies on similar settings.
+
+My main reservation has to do with the general approach. Isn't it more
+useful to be able to predict how much time  each of the executing jobs still
+needs to finish? It seems that being able to predict the remaining
+execution time of the job (in the same spirit as in the Harchol-Walter&Downey
+sigmetrics'96 paper) would be of great use to scheduling in a meta-computing
+setting. The analysis of the self-similar behavior (especially the
+long-term behavior) does not seem to be as relevant as the remaining execution time
+of the current jobs, especially when we are approaching the  problem
+purely from the scheduling point of view.
+
+Characterization studies are by nature inductive, covering only one
+set of the possibilities. The referee's suggestion is that the authors
+should experiment more (i.e., looking at more machines of different types
+and at various time-frames -- could the reported results change from day to day?)
+to support better their conclusions and to give more validity to
+their observations.
+For instance, reporting only the mean error on measurements across
+the whole 24 hour period can be misleading -- at some observation
+instances, it is possible that errors are really high while at
+others errors are not as bad (e.g., it will be interesting to report the
+variance of the measurement errors on table 1). If such a situation occurs,
+the scheduler can be mislead.
+
+----- Review of Paper 1035.5144 -------
+
+Title:	 Predicting the CPU Availability of Time-shared Unix Systems 
+Reviewer type : 	referee
+Reviewer:	2-0
+
+Originality:        [3]
+Technical merit:    [3]
+Readability:        [3]
+Relevance:          [4]
+Overall rating:     [3]
+Recommended Action:	Weak Accept
+
+   ---Comments for the Author---
+
+(Summary of my understanding of the paper)
+
+This paper studies short (10 second horizon) and medium term (5 minute
+horizon) forecasting of the CPU availability of time-shared Unix
+systems.  The authors begin by showing that CPU availability, by which
+they mean the percentage of the machine cycles that a potential new
+normal priority process would be served, can be accurately measured
+using information provided by the standard uptime and vmstat utilities
+under normal conditions.  They introduce a hybrid sensor that performs
+more accurately when there are reduced priority processes, but find
+that it has difficulty detecting long-running processes.  Next, they
+evaluate the one-step-ahead (10 seconds into the future) prediction
+error of prediction algorithms implemented in the Network Weather
+Service on a small collection of measurement traces with a 10 second
+granularity.  The main result here is that the one-step-ahead
+prediction error is on par with the measurement error, which bodes
+well for using prediction.  However, they find that their traces
+exhibit self-similarity (an effect noted by others), which leads them
+to believe that longer term prediction may be difficult.  Happily,
+this does not appear to be the case, and they are able to make useful
+predictions of the average availability over the next five minutes.
+
+(Comments)
+
+I'm most impressed by the first part of the paper.  Showing that one
+can (in most cases) accurately estimate the percentage of the CPU a
+new process would get from measurements of the load average and other
+metrics that are available at user-level is a useful contribution.
+Although the sample size from which the conclusion is drawn is
+somewhat small (six machines, 24 hours), the result jibes with my
+experience.  Given the data, it is difficult to judge how useful the
+hybrid sensor is.
+
+The second part of the paper, which studies prediction, is less
+convincing.  Although I am familiar with the prediction methods used
+in the Network Weather Service, I'm at a loss as to which of these is
+actually being studied in this paper.  It is indeed very interesting
+that one-step-ahead (10 second) prediction errors for CPU availability
+are about the same as the measurement error.  However, the authors
+don't offer an explanation for why this is so, and in the absence of a
+description of the prediction method, it is difficult for the reader
+to consider.  Perhaps prediction decorrelates measurement error which
+results in some gain for short term predictions?  
+
+It would be very useful to see what "gain" prediction provides over
+the raw variance of the signal.  The point of prediction is to provide
+a more tightly bounded, high confidence estimate of future
+availability.  I would like to see how much tighter the bounds are
+given prediction.
+
+The study of the autocorrelation structure of CPU availability and the
+confirmation of self-similarity is interesting.  However, Section 3.2
+addresses one-step-prediction errors for the series aggregated over 5
+minutes, which is not exactly the "medium term" I was expecting from
+the abstract.  I was expecting an analysis of k-step-ahead errors on
+the original series.  It isn't too surprising that the aggregated
+series doesn't become vastly less predictable.  Suppose the prediction
+error for k-ahead is N(0,s_k), then prediction error for the n step
+ahead aggregate is N(0,sqrt(sum(s_k^2,k=1..n))), which for s_k=S is
+N(0,sqrt(n)*S) - ie, the error grows as O(sqrt(n)) with aggregation
+level n.  Of course, how true this analysis is depends on how white
+and normal the prediction errors are, which isn't explained.
+
+(Minor nitpicks)
+
+pp. 2, last line:  chaotic systems are not the simplest systems that
+display self-similarity - let's not throw out fractional ARIMAs, FGNs,
+etc. just yet.  Furthermore, they are not necessarily unpredictable.
+See, for example:
+
+@Book{ABARBANEL-CHAOTIC-DATA-BOOK,
+  author =       "Henry Abarbanel",
+  title =        "Analysis of Observed Chaotic Data",
+  publisher =    "Springer",
+  year =         "1996",
+  series =       "Institute for Nonlinear Science",
+}
+
+pp. 4:  While the image of grad students devoting themselves to research
+at the end of the semester was hilarious, I would have prefered to
+also have a more detailed description of the machines and workloads.
+Furthermore, from your description, it seems like the data is really
+representative of your department's end-of-the-semester behavior, not
+the overall behavior.
+
+Reporting absolute error as a percentage is confusing.  I know what
+you meant, but I had to keep reminding myself.
+
+I really would have liked to see a comparison of prediction error and
+the variance of what was being predicted.
+
+pp. 9: I believe that this known as a multiple experts problem in AI.
+You may want to look at 
+
+@InProceedings{ON-LINE-LEARNING-MTS-PROCESS-MIGRATION-CBURCH-COLT97,
+  author =       "Avrim Blum and Carl Burch",
+  title =        "On-line Learning and the Metrical Task System
+                  Problem",
+  pages =        "45--53",
+  booktitle = "Proceedings of the 10th Annual Conference on
+                  Computational Learning Theory ({COLT} '97)",
+  year =         "1997",
+}
+
+pp. 12: I would really avoid dragging in chaos when it may not be
+necessary.  The simplest self-similar systems are not chaotic, and
+many chaotic systems are predictable.
+
+Using graphs instead of tables would help the presentation
+considerably.
+
+Some refs you may want to consider adding:
+
+@Article{WORKSTATION-AVAIL-STATS-CONDOR,
+  author =	 "Matt W. Mutka and Miron Livny",
+  title =	 "The Available Capacity of a Privately Owned
+		  Workstation Environment",
+  journal =	 "Performance Evaluation",
+  year =	 "1991",
+  volume =	 "12",
+  number =	 "4",
+  pages =	 "269--284",
+  month =	 "July",
+}
+
+@TechReport{DINDA-LOAD-PRED-TR-98,
+  author =	 "Peter A. Dinda and David R. O'Hallaron",
+  title =	 "An Evaluation of Linear Models for Host Load Prediction",
+  institution =  "School of Computer Science, Carnegie Mellon University",
+  year =	 "1998",
+  number =	 "CMU-CS-TR-98-148",
+  month =	 "November",
+}
+
+@Unpublished{PRED-BASED-SCHED-DIST-COMP-SAMADANI-UNPUB-96,
+  author =       "Mehrdad Samadani and Erich Kalthofen",
+  title =        "On Distributed Scheduling Using Load Prediction From
+                  Past Information",
+  note =         "Abstracts published in Proceedings of the 14th annual
+                  {ACM} Symposium on the Principles of Distributed
+                  Computing (PODC'95, pp. 261) and in the Third
+                  Workshop on Languages, Compilers and Run-time
+                  Systems for Scalable Computers (LCR'95, pp. 317--320)",
+  year =         "1996",
+}
+
+
+----- Review of Paper 1035.5144 -------
+
+Title:	 Predicting the CPU Availability of Time-shared Unix Systems 
+Reviewer type : 	PC member
+Reviewer:	3-0
+
+Originality:        [2]
+Technical merit:    [2]
+Readability:        [3]
+Relevance:          [2]
+Overall rating:     [2]
+Recommended Action:	Weak Reject
+
+   ---Comments for the Author---
+ 
+In this paper, the authors study the problem of making short term and medium term forecasts of CPU availability on time-shared UNIX systems. 
+
+The authors show that (a) simple techniques are reasonably
+effective in predicting short-term CPU loads/availability (b) CPU load traces exhibit self-similarity.
+
+The authors claim that conclusion (a) above is surprising. On the other hand, most of the classical studies on load-sharing  in distributed systems (the Eager, Lazowska, Zahorjan paper for example) take for granted that current load is a reasonable indicator of load in the near future. While the authors have studied the problem of short
+term load prediction more thoroughly, in my opinion, they have merely confirmed the conventional wisdom. The fact that the authors work is motivated by "application level scheduling" for parallel programs -- as opposed to load sharing in distributed systems -- does not affect the problem of load prediction.
+
+As to conclusion (b) above regarding self-similarity, the authors state that self-similar behavior does not seem to affect the effectiveness of short-term load prediction. As such, this result seems to have no ramifications for cpu scheduling, etc.  At this stage, when all kinds of computer systems phenomena (file traffic, network traffic,
+etc.) have been shown to self similar, yet another self similarity result is not interesting by itself.
+
+Some other concerns/comments:
+ 1)  Both the measurement techniques presented in the paper appear to not work in certain situations -- as pointed out by the authors. Another situation in which the "NWS-hybrid" technique will probably be inaccurate is when the host being measured is running I/O intensive applications.
+ 2) The authors analysis is based on a single 24 hour period. They should verify their results for additional days.
+ 
+Overall, I believe that while this paper is interesting, its research contribution is small. 
+
+
+----- Review of Paper 1035.5144 -------
+
+Title:	 Predicting the CPU Availability of Time-shared Unix Systems 
+Reviewer type : 	PC member
+Reviewer:	4-0
+
+Originality:        [2]
+Technical merit:    [3]
+Readability:        [3]
+Relevance:          [3]
+Overall rating:     [3]
+Recommended Action:	Weak Accept
+
+   ---Comments for the Author---
+
+Summary:
+
+  The paper show how simple estimates of future CPU availability can
+  be based on past behaviour with suprising accuracy.  The show that
+  both the next 10 seconds and the next 5 minutes estimates to be
+  in error by about 10% for several unix workstations.
+  The authors claim that such information will be helpful in guiding
+  metacomputing scheduling decisions.
+
+Comments:
+
+  - I question whether a 5 minute window is really very useful for
+    metacomputing.  This is my major objection to the paper.
+    In a local area network with a fast interconnect this may be fine,
+    but in a distributed system the overhead to start a remote computation
+    may require a good estimate for a longer window of time.
+
+  - The proposed techniques in this paper seem to be only an epsilon
+    contribution beyond those in references 29-31.
+
+
+----- Review of Paper 1035.5144 -------
+
+Title:	 Predicting the CPU Availability of Time-shared Unix Systems 
+Reviewer type : 	referee
+Reviewer:	5-0
+
+Originality:        [2]
+Technical merit:    [2]
+Readability:        [3]
+Relevance:          [3]
+Overall rating:     [2]
+Recommended Action:	Weak Reject
+
+   ---Comments for the Author---
+(Minor nitpick about the paper's submission process:  it was all but
+impossible to not figure out who wrote the paper, given their repeated
+mention of UCSD and the previous NWS work, and their direct citation of
+the NWS stuff by Wolski et. al.  Oops!  No matter.)
+
+Generally, this paper is good.  I believed the premise, and it did a fine
+job of treating both the strengths and the weaknesses of the approach.  This
+adds credibility to the work.
+
+But, there are three big weaknesses to this paper, in my opinion:
+
+1.  The paper promises to on their availbility prediction mechanisms and
+    the efficacy of their approach.  About 1/2 the paper delivers on this,
+    but more than 7 pages are devoted to a self-similarity philosophical
+    discussion.  While there is some place for this in this paper, I think
+    it needs to be greatly reduced in emphasis, as it distracts and
+    detracts from the overall message of the paper.  Also, there are some
+    technical problems with their self-similarity discussion:
+  
+    a.  All of the self-similarity measurement tools they mention (e.g.
+        Pox plots) depend on the process being measured exhibiting
+        stationarity (i.e. the average of the time series doesn't change
+        over time).  Even the definition of self-similarity depends on
+        this feature.  CPU load is likely stationary over millisecond to
+        many minutes or small number of hours time scales, depending on the
+        nature of the jobs being run, but stationarity almost certainly
+        goes out the window in day or more time scales, given that daily
+        cycles and such kick in.  It's not meaningful to talk about
+        self-similarity given non-stationary processes.
+
+    b.  Use Occam's razor:  is self-similarity and long-term
+        autocorrelation the simplest abstraction to use to talk about
+        what's going on in figures 1 and 2, or are very human effects like
+        specific long-term jobs being launch dominating these pictures?
+
+2.  Nearly no discussion is given to how this tool is going to be used,
+    or what sorts of systems will be studied with it.  The authors directly
+    admit (as they correctly should) that the accuracy of their predictions
+    varies greatly with the nature of the jobs being run on the machines
+    under observation, and the predictions can be tuned if the nature of
+    the jobs are somewhat known.  Right now, the paper implicitly spins the
+    tool as a general-purpose prediction tool, but as such, it will perform
+    poorly given the huge number of special-case jobs that break the
+    assumptions of the tool.
+
+    Should this tool be used to load balancing of processes in
+    a dedicated cluster-of-workstations doing a fine-grained parallel job?
+    (Certainly not, given the 10 second prediction granularity.)  Will it
+    be used for the one-time selection of an unloaded host to batch-execute
+    a job on?  What other sorts of applications are relevant and
+    non-relevant for this tool?
+
+    Will many users of a shared collection of CPUs be using this tool?  If
+    so, will they all pounce on the least-loaded CPU every cycle, instantly
+    making it the most loaded CPU and thereby introducing nasty feedback
+    effects like in naive transport congestion control or routing
+    implementations?  Or, is the tool intended for a single user of a
+    dedicated pool of resources?
+   
+    These sorts of questions and usage models need to be addressed, and
+    either explicitly dealt with or explicitly dismissed as out of the
+    scope of the paper.
+
+3.  I'm a big fan of demonstrating the effectiveness of a tool by using it
+    in a real situation, and telling anecdotal or measurement evidence of
+    how well it performed for the real-world task.  This sort of stuff
+    should be added to the paper, I think.  Show me interesting
+    observations that you could make that were enabled by the use of
+    your system.
+
+Some other nitpicks:
+
+ - it's only briefly mentioned in a single sentence in the second paragraph
+   of page 5 that the prediction interval is for the subsequent 10 seconds
+   of CPU time.  All of the graphs and tables should explicitly declare
+   this sort of relevant time quantum that pertains to the data presented.
+   It's too easy to make false assumptions about what's being reported
+   otherwise.
+
+ - I don't like how the measurement errors are presented in the tables.
+   Assume that the measured CPU availility is 80%, and the predicted
+   availability is 10%.  Is the measurement error supposed to be:
+
+    error = (80%/10%) = factor of 8 = 800% (relative) error
+
+    error = abs(80%-10%) = 70% (absolute) difference error
+
+   Obviously equations 4 and 5 suggest the latter, but if percentages are
+   reported in an error, that usually means the error reported is a
+   relative number.  Just looking at the tables, I mistakenly assumed the
+   former while quickly scanning through the paper.
+
+ - Are there other timescales of interest other than 10seconds?  Can the
+   system be easily modified to report other timescales for prediction, or
+   multiple timescales (optimally)?  
+
+ - what other systems are there that attempt to do this
+   sort of prediction?  How does your system stack up to
+   theirs, and why?  There is currently __no__ related
+   work presented in this paper, which is a huge hole.
+
+

@@ -1,0 +1,60 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id QAA30840
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 4 Oct 1999 16:55:18 -0700
+Received: from cg6.psych.arizona.edu (cg6.psych.arizona.edu [128.196.98.27])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with SMTP id QAB20936
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 4 Oct 1999 16:55:17 -0700
+Message-Id: <3.0.6.32.19991004165532.009d0210@pop.u.arizona.edu>
+Date: Mon, 04 Oct 1999 16:55:32 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: Kenneth Forster <kforster@u.arizona.edu>
+Subject: [DMDX] Re: Timing accuracy
+In-Reply-To: <Pine.HPX.4.10.9910041133310.5884-100000@pavo.U.Arizona.EDU
+ >
+References: <3.0.6.32.19990930150634.007a5100@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:46 AM 10/4/99 -0700, C.Fort wrote:
+>Has anyone else had similar inconsistencies with the timing of a program's
+>length?
+
+In case this talk of DMDX timing errors unsettles anyone, let me reassure
+those who have not tried it for themselves -- DMDX is very accurate.
+
+I just ran a test on one of our lab machines (nothing running in the
+background except net traffic).
+
+I looked up the refresh time: 13.7 ms (72 hz).
+Then I prepared the following item:
+
+	0 %300 "Begin timer......."/ %4320 "NOW"/ %72 "STOP!!!";
+
+4320 ticks = 72 x 60, so this should give 60 secs as the interval between
+the second and third frames.
+
+I ran this 4 times, and got the following values (using my Ultimate Sports
+Alarm Chrono stopwatch made in China, retail: free with a subscription to
+TIME):  59.13, 59.38, 59.34, 59.47.
+
+Hmmm.  Average = 59.33.  Not quite 60.00, but not too bad.
+
+And then I remembered I was using the Primary display for timing, not the
+secondary display.  So I checked the refresh time for the primary display
+using TimeDX.  
+
+The correct refresh time was 13.734 ms.  
+
+Guess what (4320 x 13.734)/1000 equals?  Right -- 59.33!
+
+So the point is that if you ask DMDX to control the time, it will.  If you
+are interested in the time it takes to complete a whole series of items,
+then you need to specify the exact inter-item interval using the d
+parameter, as Jonathan indicated.
+
+--Ken Forster
+
+

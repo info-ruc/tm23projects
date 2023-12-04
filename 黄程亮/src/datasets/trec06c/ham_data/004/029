@@ -1,0 +1,90 @@
+Received: from [206.229.41.51] by PACEVM.DAC.PACE.EDU (IBM VM SMTP V2R3)
+   with TCP; Mon, 24 Feb 97 12:52:10 EST
+From: "Joseph Bergin"  <berginf@pace.edu>
+Reply-To: "Joseph Bergin"  <berginf@pace.edu>
+To: appel@princeton.edu
+Subject: Java compiler book and tools
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+X-Mailer: POPmail 2.3b7
+
+I recently got copies of your Java and ML compiler books. They are very nice and
+I will probably adopt them in future in my compiler courses. Regarding your 
+tools, however. Some machines can't effectively use a command line for inputting
+names of files and other things. Therefore I have developed the following class 
+that can be used to put an interface on the tools such as JavaLex and CUP.  They
+should work with any system, but are necessary on something like the Macintosh. 
+They may be freely distributed, but keep my authorship please.  
+
+---------cut here-------------
+
+package AUX;
+
+import java.awt.Frame;
+import java.awt.FileDialog;
+
+/**
+* BlowPipe can be used to put an interface on programs that normally accept
+* instructions
+* from the command line.  Therefore it can be used to make standard unix tools 
+* more friendly to Macintosh and Windows systems. <p>
+* To use this, put calls to these functions into your main(String [] argv) 
+* function at the beginning, 
+* before you start to decode argv.  For example, to decode one argument, that is
+* to be taken as the input file use: <p> <code> <pre>
+*  public static void main ( String argv[] ) throws java.io.IOException
+*   {	arg = new String[1];
+*	arg[0] = AUX.BlowPipe.getOldFileName(null);
+*	. . .
+*	</pre> </code><p>
+* as the beginning of your main function.
+* 
+* <p>
+* Note that all functions in this class are static.  You cannot create an object
+* of type BlowPipe.  It is just a code encapsulator.  <p>
+* @version 1.0
+* @author <a href= "http://csis.pace.edu/~bergin/">Joseph Bergin, Pace 
+University .</a>
+*/
+public class BlowPipe
+{	
+/**
+   * Return the fully qualified path and file reference for an input file.
+   * @param parent The frame of your application object (or null).
+   * @return file name string prepended with directory information.
+*/
+	public static String getOldFileName(Frame parent)
+	{	FileDialog fd = new FileDialog(parent, "Old File Name", FileDialog.LOAD);
+		fd.setDirectory(".");
+		fd.show();
+		System.out.println(fd.getDirectory() + fd.getFile());
+		return fd.getDirectory()+ fd.getFile();
+	}
+/**
+   * Return the fully qualified path and file reference for an output file.
+   * @param parent The frame of your application object (or null).
+   * @return file name string prepended with directory information.
+*/
+	public static String getNewFileName(Frame parent)
+	{	FileDialog fd = new FileDialog(parent, "Old File Name", FileDialog.SAVE);
+		fd.setDirectory(".");
+		fd.show();
+		System.out.println(fd.getDirectory() + fd.getFile());
+		return fd.getDirectory()+ fd.getFile();
+	}
+/**
+   * Return argument strings such as switches.
+   * Not implemented at this time.  Returns null. 
+*/
+	public static String getArgString()
+	{ return null; // not yet implemented
+	}
+private BlowPipe(){};
+}
+---------cut here-------------
+
+
+Joseph Bergin, Professor
+Pace University, Computer Science, One Pace Plaza, NY NY 10038
+EMAIL berginf@pace.edu
+HOMEPAGE http://csis.pace.edu/~bergin/

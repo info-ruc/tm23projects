@@ -1,0 +1,74 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id SAA17784;
+	Fri, 13 Feb 1998 18:22:42 -0500 (EST)
+Received: from daddy (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id SAA04692; Fri, 13 Feb 1998 18:22:40 -0500 (EST)
+Message-Id: <34E4D573.25ADBEA3@cam.org>
+Date: Fri, 13 Feb 1998 18:21:24 -0500
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.0 [en] (Win95; I)
+Mime-Version: 1.0
+To: "Fred G. Martin" <fredm@media.mit.edu>,
+        Jan-Sipke van der Veen <veenjs@cs.utwente.nl>
+Cc: handyboard@media.mit.edu
+Subject: Re: Interrupt for serial data
+X-Priority: 3 (Normal)
+References: <199802132239.RAA08707@ml.media.mit.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Fred G. Martin wrote:
+
+> Jan-Sipke,
+>
+> You're really pretty far away from having this
+> work.  It's not just a
+> matter of redirecting the serial interrupt; when
+> you get there, you
+> have to:
+>
+> * store incoming character in a buffer
+> * advance the buffer pointer
+> * check the buffer for overruns
+>
+> then you need a separate subroutine which
+> fetches the character from
+> the buffer (checking first if there is anything
+> there), and decrements
+> the buffer point.
+>
+> learning how to write interrupt code is probably
+> the hardest part of
+> assembly programming.  my best advice to you is
+> to simply write code
+> on the PC side to slow down your transmit
+> character rate until things
+> work. and make sure on the HB side, you're in a
+> tight loop receiving
+> characters when communications are in progress.
+
+Sipke obviously realizes that more work is needed,
+and justs want to get to step 1 first by
+recognizing the interrupt.  That is exactly what I
+would do too.
+
+I've been thinking about writing an
+interrupt-driven serial receive routine too, but
+haven't had the time for it yet.  Such a method
+would be magnitudes better than the 'tight-loop'
+reception method which I find always gives me
+trouble once my program gets complicated enough to
+not run as fast as I would like.
+
+On the other hand, maybe there's a comprimise
+approach:  Try writing 'C' code that you run as a
+seperate high priority process to poll for serial
+input and buffer it, and add a support routine
+that your normal code can call to pull characters
+out of that buffer.
+
+/Max
+
+
+

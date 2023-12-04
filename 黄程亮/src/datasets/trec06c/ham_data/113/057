@@ -1,0 +1,71 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0VExN410726
+	for <egs+summary>; Tue, 31 Jan 2006 09:59:23 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k0VExLvg019209
+	for <egs+summary>; Tue, 31 Jan 2006 09:59:21 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Tue, 31 Jan 2006 09:59:22 -0500 (EST)
+Message-ID: <1673.132.236.227.119.1138719562.squirrel@webmail.cornell.edu>
+Date: Tue, 31 Jan 2006 09:59:22 -0500 (EST)
+Subject: PAPER 2
+From: "Nicholas S Gerner" <nsg7>
+To: egs+summary
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+Chord and Tapestry both present distributed datastructures similar to
+Pastry.  Both use a ring overlay to route messages with a key identifier
+to a node with the id nearest to the message's identifier (although
+Tapestry doesn't describe its overlay as a ring).  However, both Chord and
+Tapestry use more proactive protocols to maintain network state
+information.
+
+While Pastry maintains a table of nodes in an exponentially expanding
+ring, Chord maintains information about one other node at exponentially
+expanding intervals (called the finger table).  Specifically, node with id
+n stores the IP of the node responsible for key n+2^i for each i up to the
+length of the identifier.  In Chord, destinations are located by moving
+exponentially closer to the destination, but recursively returning the
+destination IP, requring an explicit round-trip.  Chord network state is
+maintained by a "stabilization" protocol which periodically contacts the
+successor (next pointer in the ring) asking for its predecessor (which
+should be the current node, or else that node should be the current node's
+successor).  The finger table is similarly periodically updated.  Node
+failures are handled by keeping a list of r possible successors and
+updating this list with the stabilization protocol.  This is in contrast
+to Pastry which maintains network state reactively to detection of node
+failure or node joins.
+
+Tapestry maintains a route table similarly to Pastry.  In Tapestry
+information about objects in the network are published to the node
+responsible for the object.  Information is cached along the path from the
+originating node to the node responsible for that object.  Node insertion
+is handled similarly to Pastry.  Object caches at nodes are periodically
+updated or removed.  Periodic heart-beats are sent between neighbors to
+verify connectivity.  Failed nodes are not immediately removed from state
+and are kept for some period to speed up recovery of repaired nodes.
+
+The proactive protocols employed by both Chord and Tapestry incur an
+overhead for network state maintenance.  Both systems still involve
+significant node arrival message exchanges (Chord involves log^2 message
+exchanges).  The Tapestry paper admits that this cost of republishing
+object locations (updating caches along the way) can be too high, but
+modifies its approach by adding a node disconnect protocol.  It seems that
+proactive schemes to network state maintenance don't handle arbitrary node
+failures and incur too high a cost for what all papers assume is the
+common case: nodes remain alive indefinately (which may be a faulty
+assumption).
+
+--Nick Gerner
+

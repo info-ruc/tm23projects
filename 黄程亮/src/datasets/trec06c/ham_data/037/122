@@ -1,0 +1,74 @@
+Received: from mailsrv1.engr.uconn.edu (mailsrv1.engr.uconn.edu [137.99.15.67])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id SAA16601
+	for <handyboard@media.mit.edu>; Wed, 24 Feb 1999 18:05:23 -0500 (EST)
+Received: from carmen.uconn.edu (carmen [137.99.10.24])
+	by mailsrv1.engr.uconn.edu (8.9.1a/8.9.1) with SMTP id SAA03336;
+	Wed, 24 Feb 1999 18:04:52 -0500 (EST)
+Received: from localhost by carmen.uconn.edu (4.1/SMI-4.1)
+	id AA01733; Wed, 24 Feb 99 18:14:20 EST
+Date: Wed, 24 Feb 1999 18:14:19 -0500 (EST)
+From: Robert McCartney <robert@engr.uconn.edu>
+X-Sender: robert@carmen
+To: phillip chia <philchia@singnet.com.sg>
+Cc: handybd <handyboard@media.mit.edu>
+Subject: Re: How to measure the signal Voltage ?
+In-Reply-To: <199902241616.AAA28155@copper.singnet.com.sg>
+Message-Id: <Pine.SUN.3.95.990224174926.1725C-100000@carmen>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+not knowing anything about the sensor, but guessing (hoping) that it
+behaves like an open collector gate, this is what i would do--fool 
+with the sensor on the bench to determine how it works before i 
+let it near the HB.
+
+1. power up the sensor, measure the voltage between output signal and
+ground.  if there is an active output (0-12 v, say), you should be 
+able to detect it--move some reflective thing near and away from the 
+sensor.
+
+2. if there is a voltage out > 5v, you could use an optoisolator, ensuring 
+that the HB never gets more than 5v.  this should be easy since the 
+HB has pullups tied to the inputs, but means an extra part.
+
+3. if there is no signal out, add a pullup resistor from the signal to 
+high.  now measure the range of output: it should be something like 
+0 to whatever the high voltage is (0 = detect, high = no detect).  
+if you use a 47k pullup to +5 v, you will see the range that the HB
+sees, since the HB has 47k pullups to +5V.  if that range is ok, then
+you should be ok to simply hook the signal to the appropriate input
+on the HB.
+
+hope this helps.
+r.
+
+On Thu, 25 Feb 1999, phillip chia wrote:
+
+> Hi Everybody,
+> I am using the retroreflective sensor to an object . The sensor is came
+> from Masushita NAIS brand name. It has 3 wires . ONe for the +ve supply ,
+> one for the -ve supply, one for the output signal line. The sensor is using
+> a NPN type. The voltage is 12V and current is not more than 320 mA 
+> operation.  This sensor casn be tune in its distance according to the need.
+> 
+> 
+> Question :
+> 1) The signal line will plug into the handyboard on the digital or analog
+> port. However, the port can only support 5V. If the sensor is operate at
+> 12V, is there any HARM  to plug the signal line into the port ?  If YES,
+> how should I prevent it?
+> 
+> 2) How should I take measuremnt on the signal line using Multimeter to
+> measure the output voltage before enter into the digital or analog port ?
+> 
+> 3) Please enlighten me how to differentiate the differences between NPN and
+> PNP type? Is there any significant ot use either one of them ?
+> 
+> 4) Since the digital  or analog ports support only 5V operation , can it
+> support a 12V sensor to comply to the HD?
+> 
+> rgds,
+> phillip
+> 
+
+

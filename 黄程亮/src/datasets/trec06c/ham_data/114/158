@@ -1,0 +1,69 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1EH1Nt03871
+	for <egs@unix.cucs>; Tue, 14 Feb 2006 12:01:23 -0500 (EST)
+Received: from EXCHVS1.cs.cornell.edu ([128.84.97.23]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 14 Feb 2006 12:01:23 -0500
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Subject: Paper 6
+Date: Tue, 14 Feb 2006 12:01:21 -0500
+Message-ID: <2AA53C9C489B0049B43E56D28088677B40D168@EXCHVS2.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Paper 6
+thread-index: AcYxiEf8nitBYb2eQ06y43HtmdGJIg==
+From: "Kelvin So" <kelvinso@cs.cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+X-OriginalArrivalTime: 14 Feb 2006 17:01:23.0078 (UTC) FILETIME=[48A5DA60:01C63188]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1EH1Nt03871
+
+	"Search and Replication in Unstructured Peer-to-Peer Networks"
+presents a study on replication and search techniques on decentralized and
+unstructured peer-to-peer networks, such as Gnutella. Beehive presents a
+replication technique, which achieves O(1) average lookup while using low
+storage requirements, bandwidth overhead and network load, using for
+structured peer-to-peer network. 
+	Lv et. al. looks at different search and replications techniques for
+decentralized and unstructured peer-to-peer networks. The paper focuses on
+Gnutella-like systems instead of other structured peer-to-peer systems
+because it is used by large community of Internet users and it does not have
+serious research. Gnutella uses flooding with TTL(Time-To-Live) to propagate
+query in the network, but flooding would cause large load on the client.
+Therefore, they look at alternative search techniques. The first one they
+look at is expanding ring search. It starts using flooding with a TTL = 1,
+then it iteratively increases the TTL until it finds the object. The second
+approach they look at is random walk. Through the simulations under various
+network environments (Random, Power-law Random Graph, Gnutella-like, Grid)
+and two different query distributions, they show that both expanding ring
+search and random walk reduce network load by a lot when searching an object.
+In particular, random walk can reduce two orders of magnitude in network
+load. Also, they look at replication techniques, such as uniform replication,
+proportional replication and square-root replication. They show that
+square-root replication is optimal. Finally, they evaluate owner replication,
+path replication and random replication (instead of caching in the path of
+the query search, random replication cache in k random location if query
+visits k nodes), and show that random replication does better than path
+replication. However, in their simulations, they do not show bandwidth
+consumption which is used to replicate the objects in high-churn network. The
+bandwidth consumption can be high when the network has high degree of churns
+because it is wasteful to constantly cache objects on the short-lived node.
+	In the second Beehive, Ramasubramanian et. al. show an proactive
+replication framework in structured peer-to-peer network, which can achieve
+average O(1) lookup latency. Query distributions are commonly Zipf-like. In
+Zipf-like distribution, there are a few objects that are very popular while a
+lot of nodes with very small demand. The most important idea is to replicate
+the objects based on their popularity. If the object is popular, it will be
+replicated everywhere in the system. If the object is not popular, it will be
+replicated in very few nodes and it will take longer time to route to those
+objects. Therefore, it can achieve an average O(1) lookup performance. By
+using zipf-like distribution, they analytically derive such optimal number of
+replicas needed to achieve O(1) lookup performance. Then, they show how to
+implement such a system on top of Pastry. Finally, they present results from
+a prototype implementation of peer-to-peer DNS service and show that it can
+achieve good performance and can adapt to flash crowds. 
+	
+

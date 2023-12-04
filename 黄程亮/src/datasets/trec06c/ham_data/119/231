@@ -1,0 +1,34 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2U6DUY09300
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 01:13:30 -0500 (EST)
+Received: from localhost (cpe-69-207-49-126.twcny.res.rr.com [69.207.49.126])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2U6DRm4026348
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 01:13:29 -0500 (EST)
+Date: Thu, 30 Mar 2006 01:13:27 -0500
+From: Niranjan Sivakumar <ns253@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 17
+Message-Id: <20060330011327.8ae92581.ns253@cornell.edu>
+Organization: Cornell Law School
+X-Mailer: Sylpheed version 2.2.3 (GTK+ 2.8.13; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Niranjan Sivakumar
+
+Incentives Build Robustness in BitTorrent
+Bullet:  High Bandwidth Data Dissemination Using an Overlay Mesh
+SplitStream:  High-Bandwidth Multicast in Cooperative Environments
+
+BitTorrent presents a system where files are split into pieces and sent to a number of downloaders such that they can share the pieces that they have, and eventually the entire file, with other nodes in the system to relieve stress on the origin of the file.  A central system, called a tracker, is used to coordinate and maintain information about nodes that are connected to the system and the pieces that they maintain.  Hashes of pieces are maintained to allow for verification as the download progresses.  Peers try to match up such that they have disjoint sets of pieces such that they can provide maximum benefit to each other.  Furthermore, some incentives are built into the system by having nodes prefer to upload to nodes that provide good speed in return.  Pieces of files are distributed randomly at first, and then rarest first once peers are established in order to reduce the risk of a file becoming unavailable due to a small number of missing pieces.  BitTorrent provides!
+  an optional choking mechanism to improve overall performance.
+
+Bullet, much like BitTorrent, also breaks files into pieces and tries to match peers with disjoint sets of pieces to help each other finish downloads.  Bullet is based on a tree structure for the underlying network, but augments this by allowing for cross-links that ultimately form a mesh that is based on a tree.  This mesh allows for parallel perpendicular downloads that increase resilience against failure.  Bullet employs a technique called RanSub to coordinate information about nodes within the system.  Rounds in RanSub are known as epochs and alternate between collection and distribution.  Participants in the system collect data about a random set of descendants and send it up the tree.  This is followed by the distribution phase, where the collected data is used to distribute uniformly random sets of nodes down the tree.  A TCP friendly rate control scheme is employed to avoid congestion.
+
+SplitStream also attempts to leverage tree based structure and dividing data that is being transmitted over the network.  SplitStream divides data into stripes and sets up a tree for each stripe.  By having a number of trees, the inherent load imbalance of each tree is distributed to even out the aggregate load.  SplitStream requires that the tree-based multicast is provided externally.  The example provided is to rely on Scribe, and in turn Pastry, to provide this functionality.  
+
+The most prominent issue with BitTorrent is the reliance on a centralized tracker system.  Although the tracker provides for a performance increase, it makes the system somewhat fragile.   Bullet and SplitStream do not have a centralized weakpoint.  However, although both Bullet and SplitStream seem to be more versatile than BitTorrent in terms of the content that they can be used to deliver, each node in their system is required to shoulder some of the burden that would otherwise be centralized.  SplitStream and Bullet also do not seem to have the same incentives, or a matching system, like in BitTorrent perhaps allowing freeloaders or misbehaving nodes to take advantage of them.
+

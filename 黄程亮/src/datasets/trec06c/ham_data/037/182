@@ -1,0 +1,101 @@
+Received: from parsifal.zhwin.ch (parsifal.zhwin.ch [160.85.128.4])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id LAA19255
+	for <handyboard@media.mit.edu>; Fri, 26 Feb 1999 11:00:59 -0500 (EST)
+Received: from zhwin.ch (pchar.zhwin.ch [160.85.130.120]) by parsifal.zhwin.ch with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2232.9)
+	id F3WSXNTC; Fri, 26 Feb 1999 17:02:29 +0100
+Message-Id: <36D6C5C3.250D40F8@zhwin.ch>
+Date: Fri, 26 Feb 1999 17:03:15 +0100
+From: Thomas Hauri <har@zhwin.ch>
+X-Mailer: Mozilla 4.5 [en] (WinNT; I)
+X-Accept-Language: de-CH,de-DE,en
+Mime-Version: 1.0
+To: Hans Venema <csg710@cs.rug.nl>
+Cc: handyboard@media.mit.edu
+Subject: Re: Handyboard >32Kb RAM
+References: <Pine.HPX.4.10.9902261335570.13216-100000@rug103.cs.rug.nl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+> Hello again,
+>
+> Sorry I made a calculation error. If the processor is 8-bit then 32K is
+> the maximum possible RAM. So I think no upgrade is possible.
+
+Actually its 64K for the HC11 cause it has a 16 Bit address bus. 16^2 =
+65536 = 64K
+But the upper address space is used by the I/O and expansionboards.
+There are some little empty spaces which could be used for additional RAM.
+There are several mailings explaining how to expand  the RAM.
+
+****************************************************************************************
+
+Mail written by Fred G. Martin. Wed, 15 Apr 1998 13:36:35
+
+This is a common question, so I went ahead and put an answer in the
+FAQ.  Take a look at:
+
+  http://el.www.media.mit.edu/projects/handy-board/faq/index.html#moremem
+
+Here's what it now says:
+
+------------------------------------------------------------------------
+    IS IT POSSIBLE TO EXPAND THE HANDY BOARD'S MEMORY TO 64K?
+
+    Actually, this is hard to do. Here's why:
+
+    1.There is a compromise in the design that traded off a wasteful use
+    of the lower 32K of memory for fewer chips used in creating the motor
+    output, digital input, and expansion bus circuits. Basically, 16K of
+    the lower 32K is used to map four input latches and four output
+    latches to the microprocessor (see more info in the memory map
+    answer).
+
+    What this means is that in order to recapture the lower 32K, the
+    addressing circuit that drives the 'HC138 chip (which then drives
+    these latches) would need to be modified. Presently, the 'HC138 is
+    wired to the 68HC11, using the A15, A14, A13, and A12 signals. To
+    recapture the address space, many more address signals would need to
+    be combined to force the HC138 to enable itself only when a narrow
+    band of addresses were accessed. Then, an additional RAM could be
+    mapped to the lower 32K bank not used by this remapped 'HC138 circuit.
+
+    2.Interactive C
+    would need to be recompiled. Interactive C was designed with certain
+    assumptions about the architecture of the target system; one of those
+    included a 32K RAM. Various modifications to Interactive C (largely,
+    the redefining of compile-time constants) would be necessary for it to
+    use a different memory architecture.
+
+    This said, it is relatively straightforward to build a
+    serially-accessible external memory for data storage. For example, see
+    Jim Fong's SPI-based EEPROM application note.
+
+------------------------------------------------------------------------
+
+
+
+In your message you said:
+> Hello, I wonder if anyone knows if I can expand the Handyboard's memory
+> to the maximum of 64KB simply be wiring in a 128kb SRAM (A16 unused so
+> it becomes 64kb) with D0-D7 to the data bus as usual and A0-A14 to the
+> existing RAM socket and A15 from the expansion header directly to the
+> RAM's A15? Would IC need any modification or anything? Thanks!
+>
+>
+
+****************************************************************************************************
+
+Thomas Hauri
+ZHW Zuercher Hochschule Winterthur
+University of applied sciences
+Technikumstr.9 /PF
+CH-8401 Winterthur
+Switzerland
+
+Phone : +41 52 267 74 79
+Fax    :  +41 52 268 74 79
+Mail  :   har@zhwin.ch
+HP    :   http://www.zhwin.ch
+
+
+

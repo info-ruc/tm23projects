@@ -1,0 +1,76 @@
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LHa3t06257
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 12:36:03 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id 10F265322B; Tue, 21 Feb 2006 09:35:57 -0800 (PST)
+Date: Tue, 21 Feb 2006 09:35:56 -0800
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 8
+Message-ID: <20060221173556.GA11127@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+
+All of the papers for this class examine the problems inherent in
+securing a peer-to-peer network.  Within a peer-to-peer network, we
+need some way of authenticating the nodes; otherwise, a sibyl attack,
+where a single physical machine can join the network many times.  If a
+single machine can do this, it compromises the network's reliability,
+since that machine crashing will cause a large portion of the network
+to fail.  Ideally, we would like each physical machine which will be
+present in the network to have a unique identifier, such as a
+public/private key pair signed by a trusted authority.  However, we
+cannot use a single central authority, because then that authority
+could be compromised.  In the Sybil paper, it is shown that without a
+logically centralized authority, Sybil attacks are always possible
+unless some rather implausible assumptions are made about coordination
+and resource parity among entities in the network.
+
+The next paper, on Eclipse attacks, paints an even grimmer picture.
+In many peer-to-peer networks, it is possible for a small number of
+nodes to eclipse nodes in the network, dropping or rerouting messages
+to those nodes.  Some types of peer-to-peer networks are more
+vulnerable to this than others.  The authors propose that Eclipse
+attacks can be defended against by setting limits on the in degree of
+nodes in the network, since attacking nodes will need many in going
+connections. Those limits will be enforced by anonymous auditing.
+This entire structure relies on nodes having certified keys, and only
+a small portion of the network being compromised.  Ignoring that
+little detail, it seems that this scheme would cause increased network
+traffic, especially if the attacking nodes attempted to disrupt the
+network by running frequent audits on other nodes.  There is no
+information about the impact of auditing on the network performance,
+especially in a large network, where a small fraction of the nodes
+auditing the same node at the same time might overwhelm its network
+connection.
+
+The third paper proposes a secure routing protocol which works
+efficiently for small numbers of compromised nodes, and continues to
+work until up to 25% of the nodes in the network have been
+compromised.  They assume the existence of a trusted CA, which assigns
+appropriate and non-conflicting node ids.  Once secure node ids are
+assigned, the next area of concern is the routing table.  While only a
+fraction of the nodes in the network are bad, they could provide bad
+routing data, and fill the routing tables of valid nodes with more
+faulty nodes.  The proposed solution is to maintain two routing
+tables, one using network proximity to provide improved service, and
+one constrained so that it cannot be filled with faulty nodes.  The
+proximity table will be used unless problems with message delivery are
+detected, at which point a node will fall back on the constrained
+table.  To ensure that a message is routed properly, the node sending
+it tries a failure test, and if the results of the message are not
+correct, then the node will have its neighbors send out the message as
+well.  By only relying on redundant routing when there is a problem
+with the network, this scheme does not produce too much overhead for a
+small number of faulty nodes.
+
+The main problem I have with this scheme is that it prevents many of
+the optimizations normally used to improve peer-to-peer performance.
+Load balancing by changing node ids or using virtual nodes is not
+possible.  This scheme also does not help unstructured networks such
+as Gnutella.
+
+-- Victoria Krafft
+

@@ -1,0 +1,205 @@
+Received: from ms-smtp-03.rdc-nyc.rr.com ([24.29.109.7] verified)
+  by svm.vetmed.wisc.edu (CommuniGate Pro SMTP 4.2.7)
+  with ESMTP id 1464342 for gel-software@svm.vetmed.wisc.edu; Tue, 25 Jan 2005 16:16:21 -0600
+Received: from ms-mss-03 ([10.10.4.15])
+	by ms-smtp-03.rdc-nyc.rr.com (8.12.10/8.12.7) with ESMTP id j0PMGEGi006217
+	for <gel-software@svm.vetmed.wisc.edu>; Tue, 25 Jan 2005 17:16:15 -0500 (EST)
+Received: from rdc-nyc.rr.com (localhost [127.0.0.1])
+ by ms-mss-03.rdc-nyc.rr.com
+ (iPlanet Messaging Server 5.2 HotFix 1.21 (built Sep  8 2003))
+ with ESMTP id <0IAW008BS8J2Q6@ms-mss-03.rdc-nyc.rr.com> for
+ gel-software@svm.vetmed.wisc.edu; Tue, 25 Jan 2005 17:16:14 -0500 (EST)
+Received: from [10.10.6.26] (Forwarded-For: [146.95.148.70])
+ by ms-mss-03.rdc-nyc.rr.com (mshttpd); Tue, 25 Jan 2005 17:16:14 -0500
+Date: Tue, 25 Jan 2005 17:16:14 -0500
+From: wmccaig@nyc.rr.com
+Subject: Re: Differences in output between old version and new version of Mauve
+To: GEL software mailing list <gel-software@svm.vetmed.wisc.edu>
+Reply-to: wmccaig@nyc.rr.com
+Message-id: <1b7c2b11b7c7fa.1b7c7fa1b7c2b1@rdc-nyc.rr.com>
+MIME-version: 1.0
+X-Mailer: iPlanet Messenger Express 5.2 HotFix 1.21 (built Sep  8 2003)
+Content-type: text/plain; charset=us-ascii
+Content-language: en
+Content-transfer-encoding: 7BIT
+Content-disposition: inline
+X-Accept-Language: en
+Priority: normal
+X-Virus-Scanned: Symantec AntiVirus Scan Engine
+
+Aaron,
+
+Thank you for the quick response to my questions, I do appreciate it.  I am, in fact, registered with the mailing list, though I have not received any messages before this one.  I had re-registered this morning, just in case.
+
+Following is the information from the output of Mauve which I mentioned in my earlier message.  This is utilizing the older version of Mauve.  The reason I am confused is because I can run the newer version with no problems, but get this message with the old version. I've had this happen on several machines.  I am uncertain if there is a conflict or not with having both versions installed at the same time.  At any rate, here is the information.  Thank you again for your help.
+
+William
+
+
+Executing: 
+./mauveAligner -o /home/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40 --i
+sland-size=50 --island-output=/home/william/mauve_output/279_B31_JD1_N40/279_B31
+_JD1_N40.islands --backbone-size=50 --max-backbone-gap=50 --backbone-output=/hom
+e/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40.backbone --id-matrix=/hom
+e/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40.id_matrix --output-alignm
+ent=/home/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40.alignment --outpu
+t-guide-tree=/home/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40.guide_tr
+ee /home/william/sequences/mauve/279-plasmids-Assembly-9-28-04.fas /home/william
+/sequences/mauve/279-plasmids-Assembly-9-28-04.fas.sml /home/william/sequences/m
+auve/Borrelia_burgdorferi_B31.genome /home/william/sequences/mauve/Borrelia_burg
+dorferi_B31.genome.sml /home/william/sequences/mauve/JD1-Assembly-9-28-04.fas /h
+ome/william/sequences/mauve/JD1-Assembly-9-28-04.fas.sml /home/william/sequences
+/mauve/N40-Assembly-10-3-04.fas /home/william/sequences/mauve/N40-Assembly-10-3-
+04.fas.sml 
+Sequence loaded successfully.
+/home/william/sequences/mauve/279-plasmids-Assembly-9-28-04.fas 523576 base pair
+s.
+Sequence loaded successfully.
+/home/william/sequences/mauve/Borrelia_burgdorferi_B31.genome 1519856 base pairs
+.
+Sequence loaded successfully.
+/home/william/sequences/mauve/JD1-Assembly-9-28-04.fas 1518917 base pairs.
+Sequence loaded successfully.
+/home/william/sequences/mauve/N40-Assembly-10-3-04.fas 1342546 base pairs.
+Using 21-mers for initial seeds
+Creating sorted mer list
+Create time was: 1 seconds.
+Creating sorted mer list
+Create time was: 1 seconds.
+Creating sorted mer list
+Create time was: 1 seconds.
+Creating sorted mer list
+Create time was: 1 seconds.
+0%..99%..Exited with code: 139
+
+
+----- Original Message -----
+From: Aaron Darling <darling@cs.wisc.edu>
+Date: Tuesday, January 25, 2005 3:45 pm
+Subject: Re: Differences in output between old version and new version of Mauve
+
+> William,
+> 
+> Thanks for the e-mail.  As you guessed, the difference in the 
+> number of 
+> Intervals between Mauve versions results from both more sensitive 
+> alignment and a file format change.
+> The output from the new version of Mauve includes an Interval entry 
+> for 
+> every unaligned region in addition to intervals for the aligned 
+> regions.  This was done to support the sequence similarity display 
+> in 
+> the latest version.
+> 
+> If your previous alignment had 57 intervals and the new one has 
+> 359, 287 
+> of which are unaligned intervals, it sounds like 15 intervals can 
+> be 
+> attributed to greater sensitivity in the new aligner version.
+> 
+> Yes, I agree it's wasteful to include entries containing nothing 
+> but 
+> gaps as part of the unaligned intervals.  A future Mauve release 
+> may 
+> economize the file format.
+> 
+> As for the exiting with error codes, this message is somewhat 
+> misleading.  The actual error code number has no significance.  The 
+> relevant error should be displayed in the text of the log window.  
+> If 
+> you can send me a copy of the error message text I can try to help 
+> you 
+> track down the problem.
+> 
+> -Aaron
+> 
+> 
+> William McCaig wrote:
+> 
+> >Hello there,
+> >
+> >I'm having a problem with the Mauve alignment program and was 
+> wondering if 
+> >someone could help me to figure out what exactly is going on.  I 
+> was using an 
+> >older version of Mauve, 20040708, and recently switched to the 
+> newest one, 
+> >20041216.
+> >
+> >The problem is as follows:
+> >
+> >Running both versions with the exact same 4 alignment files, at 
+> the default 
+> >settings, produces two different sets of results.  In the old 
+> version, for 
+> >instance, I wind up with an IntervalCount of 57, while with the 
+> newer version 
+> >it's 359.  I'm not certain if the default settings changed between 
+> the two 
+> >versions, or if this is a result of the "inexact seeds" resulting 
+> in "more 
+> >sensitive alignments" that was mentioned in the ChangeLog.  
+> >
+> >However, I have also noticed a number of Intervals located near 
+> the end of 
+> >the .alignment file that appear to contain an entry for only one 
+> of the four 
+> >sequences.  That is, one sequence has an entry and the other three 
+> are 
+> >nothing but gaps.  This is in the newer output file generated and 
+> is not 
+> >located in the old one at all.  Is there some setting I am missing 
+> that 
+> >changed between Versions that would result in this output.  Doing 
+> a count of 
+> >the intervals, there are 287 or so of these Interval entries.  
+> Perhaps I'm 
+> >not understanding the exact format of the MultiFASTA output file, 
+> but it 
+> >seems kind of pointless to have an entry where the sequences you 
+> are 
+> >comparing to are all gaps.  
+> >
+> >I believe that these entries make no difference when it comes to 
+> using the 
+> >Java Viewer that is included with Mauve, but I actually need the 
+> .alignment 
+> >output file.
+> >
+> >Also, a number of times I have gotten an exit status with error 
+> code 139.  I'm 
+> >not certain what that or any of the other codes mean.  I can't 
+> figure out 
+> >exactly what is going wrong, except it appears to happen on one of 
+> my 
+> >machines with one version and not on another.  
+> >
+> >Any help at all with this would be greatly appreciated.  
+> >
+> >Thank you, in advance,
+> >
+> >William
+> >
+> >#############################################################
+> >This message is sent to you because you are subscribed to
+> >  the mailing list <gel-software@svm.vetmed.wisc.edu>.
+> >To unsubscribe, E-mail to: <gel-software-off@svm.vetmed.wisc.edu>
+> >To switch to the DIGEST mode, E-mail to <gel-software-
+> digest@svm.vetmed.wisc.edu>>To switch to the INDEX mode, E-mail to 
+> <gel-software-index@svm.vetmed.wisc.edu>
+> >Send administrative queries to  <gel-software-
+> request@svm.vetmed.wisc.edu>>
+> >  
+> >
+> 
+> #############################################################
+> This message is sent to you because you are subscribed to
+>  the mailing list <gel-software@svm.vetmed.wisc.edu>.
+> To unsubscribe, E-mail to: <gel-software-off@svm.vetmed.wisc.edu>
+> To switch to the DIGEST mode, E-mail to <gel-software-
+> digest@svm.vetmed.wisc.edu>To switch to the INDEX mode, E-mail to 
+> <gel-software-index@svm.vetmed.wisc.edu>
+> Send administrative queries to  <gel-software-
+> request@svm.vetmed.wisc.edu>
+> 
+

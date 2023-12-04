@@ -1,0 +1,65 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.13.5/8.13.5) with ESMTP id j9IME82Y005914
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 18 Oct 2005 17:14:09 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.33) with SMTP id j9IMDu2v022327;
+	Tue, 18 Oct 2005 17:14:04 -0500 (CDT)
+Received: from ironmaiden.mail.utexas.edu (ironmaiden.mail.utexas.edu [128.83.32.53])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.33) with ESMTP id j9IMDciu022259
+	for <cs382m@lists.cc.utexas.edu>; Tue, 18 Oct 2005 17:13:43 -0500 (CDT)
+Received: from nobodaddy.cs.utexas.edu (128.83.120.154)
+  by ironmaiden.mail.utexas.edu with ESMTP; 18 Oct 2005 17:13:43 -0500
+X-IronPort-MID: 1656291427
+X-SBRS: 4.2
+X-BrightmailFiltered: true
+X-Brightmail-Tracker: AAAAAA==
+X-Ironport-AV: i="3.97,229,1125896400"; 
+   d="scan'208"; a="1656291427:sNHT13858888"
+Received: from lutie.cs.utexas.edu (akkartik@lutie.cs.utexas.edu [128.83.120.83])
+	by nobodaddy.cs.utexas.edu (8.13.5/8.13.5) with ESMTP id j9IMDgqH018462
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <cs382m@lists.cc.utexas.edu>; Tue, 18 Oct 2005 17:13:43 -0500 (CDT)
+Received: (from akkartik@localhost)
+	by lutie.cs.utexas.edu (8.13.5/8.13.5/Submit) id j9IMDg6l026876;
+	Tue, 18 Oct 2005 17:13:42 -0500
+Date: Tue, 18 Oct 2005 17:13:42 -0500 (CDT)
+From: "Kartik K. Agaram" <akkartik@cs.utexas.edu>
+To: cs382m@lists.cc.utexas.edu
+Subject: [CS382M:23] HW#2 and HW#3: Errata and clarifications
+Message-ID: <Pine.LNX.4.63.0510181656450.25757@lutie.cs.utexas.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Reply-To: cs382m@lists.cc.utexas.edu
+Sender: owner-cs382m@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+3.1: Several people grouped instructions 6 and 7 together and said they 
+could be issued together. The question states that we're considering a 
+dynamic pipeline without speculation, which means we cannot group together 
+instructions across basic blocks. 6 doesn't necessarily fall through to 7 
+since the compiler has freedom in picking the fall-through case between 
+the then and else.
+
+3.18:
+   i) Clarification: My solution assumes a Tomasulo pipeline like Figure
+      3.29 with a cycle delay for forwarding using the CDB. Notice that
+      the question doesn't require it and doesn't specify a pipeline.
+   ii) Erratum: The SD instructions shouldn't have the 'M' stage in the
+      second, speculative case. Follow the example of figure 3.34.
+   iii) Erratum: My solution for the second, speculative case omits a data
+      dependence between Instruction 4 of iteration 1 and instruction 1 of
+      iteration 2. Later portions of the schedule will have to be worked
+      out after taking this into account.
+
+5.3 b): The solution as handed out incorrectly reads the block size as 32
+bytes; it should be 16 bytes if you assume the stride on the x axis to be
+measured in bytes, or 64 bytes if you assume the stride to be measured in
+words. The note in the solution is crucial to getting a correct reading.
+
+Sorry about the confusion; feel free to contact me for further
+clarification or regrading issues.
+
+Kartik
+
+

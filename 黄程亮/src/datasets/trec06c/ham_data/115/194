@@ -1,0 +1,85 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1NGrHt11165
+	for <egs+summary@cs.cornell.edu>; Thu, 23 Feb 2006 11:53:17 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1NGrGPH027179
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 23 Feb 2006 11:53:17 -0500 (EST)
+Message-ID: <000501c63899$a4fbb970$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 9
+Date: Thu, 23 Feb 2006 11:53:16 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+The first paper (A Measurement Study of Peer-to-Peer File Sharing Systems) 
+is a focused study on the usage patterns of people on the Gnutella and 
+Napster file-sharing networks.  The authors developed a web-crawling-like 
+system to scan the p2p infrastructure of the two networks.  They gathered 
+information on number of files shared, reported bandwidth, actual bandwidth 
+(by measuring it themselves), current # of uploads, current # of downloads, 
+and other information.  They monitored Napster for four days and the 
+Gnutella network for eight days.  Their results seemed to show that people 
+on the Gnutella network were almost "better" than those people on the 
+Napster network.  On average, their latencies were lower, their bandwidths 
+were higher, and they misreported less.  Their initial reaction was the 
+tech-savvy nature of people who used the Gnutella network (therefore having 
+higher bandwidth connections).  One of the big takeaways of this paper was 
+the heterogeneity of the users.  Many users (especially those on slower 
+connections) acted more like clients while those on faster connections acted 
+more like servers.  The authors kept making the argument that future p2p 
+system designers should create systems which take this into account and do 
+not assume everyone has a similar speed connection.
+    One of the arguments the authors also constantly made was that software 
+should not ask users for their bandwidth and other information, but rather 
+that the software should measure that itself.  It seems almost ironic that 
+they first say that high speed connections act like servers and are (on 
+average) up more frequently and for longer durations yet they do not trust 
+the end user.  It seems like the high speed connections are already doing a 
+favor to the network by being up so much, it seems as if the authors do not 
+trust the users.  Other problems (such as small sample size) are an issue, 
+but this is resolved in the second paper.
+
+The second paper,  Measurement, Modeling, and Analysis of a Peer-to-Peer 
+File-Sharing Workload, was a detailed look at the Kazaa file sharing 
+network.  This paper had a much longer sampling period (over half a year) 
+which allowed the authors to view human-related cycles (such as college 
+students going home over summer-break and coming back in the fall).  One of 
+the first things the paper seems to point out is that people are willing to 
+wait for content.  Unlike web surfing (where people normally don't wait for 
+more than a few seconds before moving on to the next, possibly competing, 
+site), people who downloaded content through Kazaa had no problem waiting a 
+day, a week, or even longer to get files.  People, they discovered, are 
+patient!  The next takeaway from this paper was that files on the Kazaa 
+network did not follow a Zipf-like distribution.  Unlike DNS queries and 
+other internet systems, the content, when graphed on a log-log plot, was 
+clearly not Zipf.  They explain this by the fetch-at-most-once concept. 
+Basically, once you have a media file you no longer need to download it. 
+You have it stored locally and the external network's version is 
+immutable -- there is no reason to download it again.  The phenomenon of 
+"the new song" which is often immediately popular, might skew the network to 
+be more zipf like temporarily, but then quickly dies back down as more and 
+more people have the file.  The authors also measure something else of 
+interest: the number of requests for small files (those under 10 megabytes) 
+greatly outnumber (by over 10x) requests for large (>100 megabytes) files 
+while the actual transferred bytes show that 65% of the bytes transferred 
+are for big files and closer to 15% for smaller files.
+    All in all, the papers were useful for determining the behaviors of the 
+system and the users and should give insight to future p2p developers. 
+While not all of the schemes are immediately realizable (like locality in 
+the second paper, which will be difficult with hashing), they give good 
+pointers.
+
+--Kevin 
+

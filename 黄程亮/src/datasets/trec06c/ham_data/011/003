@@ -1,0 +1,53 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id IAA20898
+	for <handyboard@media.mit.edu>; Wed, 11 Feb 1998 08:46:23 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id IAA23730;
+	Wed, 11 Feb 1998 08:46:17 -0500 (EST)
+Message-Id: <199802111346.IAA23730@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: veenjs@cs.utwente.nl (Jan-Sipke van der Veen)
+Cc: handyboard@media.mit.edu
+Subject: Re: Serial line interrupt 
+In-Reply-To: Your message of "Mon, 09 Feb 98 15:23:34 +0100."
+             <199802091423.PAA28559@hypnos.cs.utwente.nl> 
+Date: Wed, 11 Feb 98 08:46:17 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+you could write an ICB driver that accepts the incoming serial char
+interrupt and buffers it up.
+
+other than that slowing down the PC is probably the best option.
+
+fred
+
+In your message you said:
+> Hello all,
+> 
+> I'm currently trying to communicate between the Handy Board and a PC (i486) 
+> using the existing serial line between the two. Sending data from the handy 
+> Board to the PC is no problem. An interrupt handler puts all incoming serial 
+> data into a buffer, which the main program can read from.
+> 
+> Sending data from the PC to the Handy Board is another story. The serial 
+> routines on http://www.ai.mit.edu/people/rsargent/ic/serialio.html work fine 
+if 
+> the PC isn't sending very fast. The current 'solution' is to put the PC in a 
+> short loop after it has sent a character to slow it down. But that's not a ve
+ry 
+> elegant solution.
+> 
+> Is there a way to use the same technique on the handy Board as on the PC (usi
+ng 
+> an interrupt handler)? If so, has anyone used that approach and is willing to
+ 
+> share this code?
+> 
+> If there is a simpler way of doing things, I would also be glad to know about
+ 
+> it.
+> 
+> Jan Sipke van der Veen
+> 
+

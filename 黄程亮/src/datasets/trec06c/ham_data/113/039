@@ -1,0 +1,134 @@
+Received: from uproxy.gmail.com (uproxy.gmail.com [66.249.92.194] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0V5ea419337
+	for <egs+summary>; Tue, 31 Jan 2006 00:40:36 -0500 (EST)
+Received: by uproxy.gmail.com with SMTP id m2so113150ugc
+        for <egs+summary>; Mon, 30 Jan 2006 21:40:35 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=bRAucrFBINuKwCH1E4BdFME/YXUw/CoLrK3dLypF1JXFXD72g8uS2HtcZHBssQ0+ZNFkpYGuvXGbo8ZYOcdjzT1I+dTJOR/upg3/MVp3mqO3lc/eFiqErjHL9yERsN+DTESpOd4Ph9/VZbw01bqNPK6NuHQgfOyELC3kx4tGzHk=
+Received: by 10.49.20.3 with SMTP id x3mr965197nfi;
+        Mon, 30 Jan 2006 21:40:35 -0800 (PST)
+Received: by 10.49.43.1 with HTTP; Mon, 30 Jan 2006 21:40:35 -0800 (PST)
+Message-ID: <9302f1e20601302140h3bb8217dx160fba081f4ea150@mail.gmail.com>
+Date: Tue, 31 Jan 2006 00:40:35 -0500
+From: Ymir Vigfusson <ymir.vigfusson>
+To: egs+summary
+Subject: PAPER 2
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_11473_17681844.1138686035041"
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,HTML_00_10,
+	HTML_MESSAGE,RCVD_BY_IP autolearn=no version=3.0.2
+X-Spam-Level: 
+
+------=_Part_11473_17681844.1138686035041
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Some differences between the three ring-based P2P protocols: Pastry, Chord
+and Tapestry (intentionally not using Pastry as a basis).
+
+Unlike both Pastry and Tapestry, the vanilla Chord does not take any networ=
+k
+topology (i.e. latencies and/or geographic distances) into account
+when creating its network. The authors mention some potential improvements
+in this respect in their Future Work section, mainly by taking network
+delay into account when picking nodes from the intervals in the ID ring.
+Pastry has a routing table that it tries to maintain as being "close" nodes
+as
+far as it can, while Chord depends on successors and fingers that may not b=
+e
+at all close (its routing scheme has only one dimension). Chord can also
+produce some weird network pathologies, such as disjoint rings (that cannot
+be stablized) or touching rings that share one node in common.
+
+When considering where things are put, both Pastry and Chord map things to
+random places so they may be scattered all over. Tapestry tries to exploit
+locality
+by optimize its neighbours, trying to maintain "close" nodes as neighbours =
+(
+w.r.t. network latency) so that when you ask for an object, there should be
+a copy
+close by. Both Pastry and Tapestry try to replicate copies of objects,
+except that Pastry does this at random, while Tapestry does this by
+considering the network
+latencies (doing optimally if latency of the N^2 node pairs are known).
+
+Pastry has a lookup time of O(lg N) in both worst-case and average case and
+a routing table of size O(2^b * log_{2^b} N) (plus leafs).
+Chord has average lookup time of (lg N)/2, has a routing table with O(lg N)
+entries and with high probability uses O(lg^2 N) messages to join/part a
+node from its network.
+Tapestry tries to "keep things close" and maintains a neighbour map of size
+O(log N) neighbours, and message path length with O(log N) hops.
+In effect (since the base of the logarithm is irrelevant in the order), all
+three protocols keep track of O(log N) neighbours and can route through
+O(log N) hops.
+
+In terms of simplicity of the protocols: Chord and Pastry are rather minima=
+l
+and simple protocols with the only complex functions involving joins/parts
+and network rapir,
+Tapestry is a more complex beast with that requires a bunch of involved
+considerations (maintaining closeness, finding hotspots, caches etc.).
+
+That's all I can think of right now :) Hope to see more in class tomorrow.
+
+- Ymir
+
+------=_Part_11473_17681844.1138686035041
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Some differences between the three ring-based P2P protocols: Pastry, Chord =
+and Tapestry (intentionally not using Pastry as a basis).<br><br>Unlike bot=
+h Pastry and Tapestry, the vanilla Chord does not take any network topology=
+ (
+i.e. latencies and/or geographic distances) into account<br>when creating i=
+ts network. The authors mention some potential improvements in this respect=
+ in their Future Work section, mainly by taking network<br>delay into accou=
+nt when picking nodes from the intervals in the ID ring. Pastry has a routi=
+ng table that it tries to maintain as being &quot;close&quot; nodes as
+<br>far as it can, while Chord depends on successors and fingers that may n=
+ot be at all close (its routing scheme has only one dimension). Chord can a=
+lso<br>produce some weird network pathologies, such as disjoint rings (that=
+ cannot be stablized) or touching rings that share one node in common.=20
+<br><br>When considering where things are put, both Pastry and Chord map th=
+ings to random places so they may be scattered all over. Tapestry tries to =
+exploit locality<br>by optimize its neighbours, trying to maintain &quot;cl=
+ose&quot; nodes as neighbours (
+w.r.t. network latency) so that when you ask for an object, there should be=
+ a copy<br>close by. Both Pastry and Tapestry try to replicate copies of ob=
+jects, except that Pastry does this at random, while Tapestry does this by =
+considering the network=20
+<br>latencies (doing optimally if latency of the N^2 node pairs are known).=
+<br><br>Pastry has a lookup time of O(lg N) in both worst-case and average =
+case and a routing table of size O(2^b * log_{2^b} N) (plus leafs).&nbsp;  =
+<br>
+Chord has average lookup time of (lg N)/2, has a routing table with O(lg N)=
+ entries and with high probability uses O(lg^2 N) messages to join/part a n=
+ode from its network.<br>Tapestry tries to &quot;keep things close&quot; an=
+d maintains a neighbour map of size O(log N) neighbours, and message path l=
+ength with O(log N) hops.
+<br>In effect (since the base of the logarithm is irrelevant in the order),=
+ all three protocols keep track of O(log N) neighbours and can route throug=
+h O(log N) hops.<br><br>In terms of simplicity of the protocols: Chord and =
+Pastry are rather minimal and simple protocols with the only complex functi=
+ons involving joins/parts and network rapir,=20
+<br>Tapestry is a more complex beast with that requires a bunch of involved=
+ considerations (maintaining closeness, finding hotspots, caches etc.). <br=
+><br>That's all I can think of right now :) Hope to see more in class tomor=
+row.
+<br><br>- Ymir<br><br>
+
+------=_Part_11473_17681844.1138686035041--
+

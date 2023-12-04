@@ -1,0 +1,150 @@
+Received: from madcap.apk.net (madcap.apk.net [207.54.158.16])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id LAA10211
+	for <handyboard@media.mit.edu>; Thu, 15 Jun 2000 11:07:03 -0400 (EDT)
+Received: from junior.apk.net (drushel@junior.apk.net [207.54.158.20]) by madcap.apk.net (8.9.3/8.9.3/apk.990812+rchk1.22+bspm1.13.1.5) with ESMTP id KAA03753 for <handyboard@media.mit.edu>; Thu, 15 Jun 2000 10:52:54 -0400 (EDT)
+Received: (from drushel@localhost)
+	by junior.apk.net (8.9.3/8.9.3) id KAA22509
+	for handyboard@media.mit.edu; Thu, 15 Jun 2000 10:52:49 -0400 (EDT)
+From: Richard Drushel <drushel@apk.net>
+Message-Id: <200006151452.KAA22509@junior.apk.net>
+X-Real-To: handyboard@media.mit.edu
+Subject: new version of Rich Drushel's random.c libarary for IC
+To: handyboard@media.mit.edu
+Date: Thu, 15 Jun 2000 10:52:49 -0400 (EDT)
+X-Mailer: ELM [version 2.5 PL1]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+	I have created a new and better version of my random.c IC library
+for pseudo-random number generation.  The old version had an algorithm that
+I cooked up myself, and while it was fun to program, and fun to get working
+in a multitasking environment (locking state machines and all that), the
+truth is, the algorithm was not very random.
+
+	The new version implements the ran0() generator from "Numerical
+Methods in C", version 2.0 (1992), pp. 278-279.  I have preserved the
+calling interface to my old random.c functions, however, so all existing
+code should be completely compatible with the new random.c.  I also added
+some new functions, much requested by my Autonomous Robotics students, to
+generate random numbers between any specified range.
+
+	So, if you're using my old random.c, *please* throw it away and
+replace it with the new one, available via anonymous ftp at:
+
+	ftp://junior.apk.net/pub/users/drushel/rfd-ic/random.c
+
+The old random.c is still there, renamed to random_old.c.
+	This code was developed and tested using the freeware 2.81 version
+of IC, and runs on both Handy Boards and 6.270 boards.  It is no longer
+dependent upon my math.c math function library.
+
+	What follows are (1) function descriptions, and (2) results of
+the benchmarking and statistical validation tests I did on the old and
+new versions of the pseudo-random number generators.  The new code is
+much smaller, much more random, and 3x faster.
+
+	If you have any questions or comments, please let me know.  I
+apologize for how kludgy and unrandom the old version of random.c was; but
+life is a learning experience, right? :-)
+
+	*Rich*
+
+/*****************************************************************************/
+/*                                                                           */
+/*  PUBLIC FUNCTIONS:                                                        */
+/*                                                                           */
+/*  These functions may be used freely by user programs.                     */
+/*                                                                           */
+/*  int random(int mod)     ;Random integers from peeking at 2 MHz system    */
+/*                          ;clock.  mod is a modulo value which can range   */
+/*                          ;2 to 32767.                                     */
+/*                          ;Code by Fred G. Martin from lib_hb.c            */
+/*                          ;Note by RFD:  provided for backward             */
+/*                          ;compatibility with existing code.  Use in new   */
+/*                          ;programs is not encouraged.                     */
+/*                                                                           */
+/*  void randomize(int seed)    ;Reseeds random number generator to user-    */
+/*                              ;defined seed                                */
+/*                              ;Non-reentrant, so waits until busy flag     */
+/*                              ;_RND_BUSY is cleared.                       */
+/*                              ;Originally made thread-safe by DFM          */
+/*                              ;4/27/1997                                   */
+/*                                                                           */
+/*  float rndf01(int arg)   ;Returns a pseudo-random number (float, range    */
+/*                          ;0 to 1) based on value of arg:                  */
+/*                          ; arg>0   returns random number                  */
+/*                          ; arg==0  returns last random number (for debug) */
+/*                          ; arg<0   reseeds random number generator        */
+/*                                    with the last randomize() seed value   */
+/*                                    and returns the first number in that   */
+/*                                    series                                 */
+/*                          ;rndf01() is the common workhorse routine for    */
+/*                          ;All the other random number routines *except*   */
+/*                          ;random().                                       */
+/*                          ;Note:  rndf01() is *NOT* reentrant!!            */
+/*                          ;It sets a busy flag _RND_BUSY if another        */
+/*                          ;process is currently calling rndf01().          */
+/*                          ;Originally made thread-safe by DFM 4/24/1997    */
+/*                                                                           */
+/*  int rnd(int arg)        ;Returns a pseudo-random number (16-bit signed   */
+/*                          ;int, range -32768 to 32767) based on value of   */
+/*                          ;arg, as in rndf01().                            */
+/*                          ;Provided for backward compatibility with <2.0   */
+/*                          ;versions of random.c.  Now identical to         */
+/*                          ;rndrangei(-32768,32767,arg).                    */
+/*                                                                           */
+/*  int rndrangei(int ilo, int ihi, int arg)    ;Returns a pseudo-random     */
+/*                                              ;number (16-bit signed int)  */
+/*                                              ;in the range ilo to ihi.    */
+/*                                              ;arg is as in rndf01().      */
+/*                                                                           */
+/*  float rndrangef(float flo, float fhi, int arg)  ;Returns a pseudo-random */
+/*                                                  ;number (float) in the   */
+/*                                                  ;range flo to fhi.  arg  */
+/*                                                  ;is as in rndf01().      */
+/*                                                  ;This routine is used by */
+/*                                                  ;all the rndrange_()     */
+/*                                                  ;functions.              */
+/*                                                                           */
+/*  long rndrangel(long llo, long lhi, int arg) ;Returns a pseudo-random     */
+/*                                              ;number (32-bit signed long) */
+/*                                              ;in the range llo to lhi.    */
+/*                                              ;arg is as in rndf01().      */
+/*                                                                           */
+/*****************************************************************************/
+
+/*                          ;        random.c RAM footprint (bytes)          */
+/*                          ;=============================================== */
+/*                          ;               v1.2            984              */
+/*                          ;               v2.0            486              */
+/*                                                                           */
+/*                          ;           statistical information              */
+/*                          ; (30000 calls, scaled to 0-99, binsize 1, mean  */
+/*                          ; counts/bin, standard error of the mean, min    */
+/*                          ; counts/bin, max counts/bin)                    */
+/*                          ;=============================================== */
+/*                          ;                     mean    s.e.m.  min   max  */
+/*                          ; random()           300.00   15.00     0   587  */
+/*                          ; pre-2.0 rnd()      300.00   34.84    14  2858  */
+/*                          ; 2.0 rnd()          300.00    1.66   256   345  */
+/*                          ; rndf01()           300.00    1.66   256   356  */
+/*                          ; MS QuickBASIC 4.5  300.00    1.73   261   342  */
+/*                                                                           */
+/*                          ;               timing information               */
+/*                          ;       (mean of 30000 calls, msec/value)        */
+/*                          ;=============================================== */
+/*                          ;           random()              1.68           */
+/*                          ;           pre-2.0 rnd()        28.88           */
+/*                          ;           2.0 rnd()            10.16           */
+/*                          ;           rndf01()              7.76           */
+/*                          ;           rndrangei()           9.94           */
+/*                          ;           rndrangef()           9.36           */
+/*                          ;           rndrangel()          10.84           */
+/*                                                                           */
+-- 
+Richard F. Drushel, Ph.D.            | "Aplysia californica" is your taxonomic
+Department of Biology, Slug Division | nomenclature.  /  A slug, by any other
+Case Western Reserve University      | name, is still a slug by nature.
+Cleveland, Ohio  44106-7080  U.S.A.  |     -- apologies to Data, "Ode to Spot"
+

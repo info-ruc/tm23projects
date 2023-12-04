@@ -1,0 +1,101 @@
+Received: from mailhost.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [192.153.213.178])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id DAA21427
+	for <dmdx@psy1.psych.arizona.edu>; Thu, 19 Oct 2000 03:57:08 -0700
+Received: from pc111 by mailhost.mrc-cbu.cam.ac.uk
+	  with Sendmail (8.9.3/V3080601); Thu, 19 Oct 2000 11:57:08 +0100 (BST)
+Message-Id: <3.0.5.32.20001019115430.00a99720@pophost.mrc-cbu.cam.ac.uk>
+Date: Thu, 19 Oct 2000 11:54:30 +0100
+To: DMDX@psy1.psych.arizona.edu
+From: Matt Davis <matt.davis@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Re: 2wordsperline
+In-Reply-To: <39EEE1F7.DEEA903E@forenap.asso.fr>
+Mime-Version: 1.0
+Content-Type: text/enriched; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 13:58 19/10/00 +0200, you wrote:
+
+>I tried also the following
+
+>+001 <<ms% 4000> *"lieu    cave"/;
+
+>250  <<ms% 1000>
+
+>it is working but because the length of the couples are not constant
+
+>each target is moving non the center line.
+
+
+This is the right way to do it however, you need to make sure of two
+things:
+
+
+1) that you use a non-proportional font like "courier". If you use
+"times" or "arial" then the different widths of the letters make it
+impossible to align the inside edge of the word.
+
+
+2) that the total number of characters in each line is the same. DMDX
+centres the display on the screen based on the total width of characters,
+so you need to make sure this is the same for every line in your item
+file. Thus each line should be set up like the following example (I've
+used a . instead of spaces to make it more obvious what I've done - if
+you view this email in Courier then things should be even clearer).
+
+
+<bigger>+1 *  "....ash....bacon.." /; 
+
++2 *  "..bacon....game..." /; 
+
++1 *  "longest....ash...." /; 
+
++2 *  "..bacon....longest" /; 
+
+
+What you need to do is fill out each side of the display to make a
+constant number of characters for each word (irrespective of the number
+of letters in the word). So the word "ash" needs four extra spaces to
+match it to the longest word "longest" which has seven letters.
+
+
+You can put these extra spaces into your file by hand, however, you may
+find it quicker to create the text sections in a spreadsheet package like
+Excel. You can use text formulae like "len", "rept", "concatenate", to
+automatically put the right number of spaces in the right places.
+
+
+</bigger>Hope this helps,
+
+
+Matt
+
+
+PS This feels like a bit of a hack... it would be better if there was a
+way of specifying <<right justify> or <<left justify> for text strings.
+That way you could use <<x> and <<y> to do this sort of display using
+proportional fonts. Any chance of putting this into the next version,
+Jonathan?
+
+
+
+
+****************************************************
+
+ Matt Davis
+
+ MRC Cognition and Brain Sciences Unit
+
+ 15 Chaucer Road, Cambridge, CB2 2EF
+
+
+ email: matt.davis@mrc-cbu.cam.ac.uk
+
+   tel: 01223 355 294 (#621)
+
+   Fax: 01223 359 062
+
+
+****************************************************
+

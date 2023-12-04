@@ -1,0 +1,206 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1SGDLt03697
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 11:13:21 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1SGDJDB016639;
+	Tue, 28 Feb 2006 11:13:19 -0500 (EST)
+Received: from 128.253.122.16
+        by webmail.cornell.edu with HTTP;
+        Tue, 28 Feb 2006 11:13:20 -0500 (EST)
+Message-ID: <3587.128.253.122.16.1141143200.squirrel@webmail.cornell.edu>
+Date: Tue, 28 Feb 2006 11:13:20 -0500 (EST)
+Subject: PAPER 10
+From: "Gopal Parameswaran" <gp72@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Cc: gp72@cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Samsara:
+ This paper discuss enforcement of fairness in peer-to-peer systems to
+ensure that certain nodes
+do not share storage space in proportion to their consumption. The authors
+claim that since the
+befits of using the system accrues individually but the costs are shared
+certain users would have
+ little incentive to share and contribute beyond the minimum required.
+Also on a secondary note
+ many users would under report their available resources to avoid
+providing them to others. This
+would destroy the fairness balance in the system. One approach would be to
+use a centralized
+administration but that would defeat the purpose and advantages of a peer
+to peer system and
+hence instead of looking into a centralized system that would result in
+centralized administrative
+overheads the concept of claims and claim forwarding is explored where
+each node has to
+provide compensatory storage allocation space for as much storage it is
+consuming in the
+network or its neighbor nodes. Samsara is based on a symmetric
+distribution of storage space
+between two neighbouring nodes where each of the two pairs stores each
+others data and if
+one of the nodes stops storing then the other node also relinquishes the
+storage facility. As
+ the authors asserts, this system has two main disadvantages, in that they
+assume that the
+nodes are reliable and the that the nodes are not subject to transient
+failures. A transient
+failure in any node would virtually wipe out the data that is being
+stored. This issue is corrected
+by using a probabilistic model for removing data from the nodes for nodes
+that fail at any time
+thus ensuring that the data is still present on some node by the time that
+the node comes back up.
+The system would punish thus nodes that are off line a lot more and these
+are assumed to be the
+cheating nodes. This model also by claim forwarding can form chains that
+are cyclic and thus
+eliminating the need for storing the claims at any node. However in the
+case of such cyclic chain
+formations the authors claim that the system can tolerate single failures
+though it is not that evident
+since if it tolerates single failures in this instance then a cheating
+node could take advantage of this.
+
+Addition of Nodes : When nodes are added to the network then Samara
+requires that each node
+should allocate and initialize storage space on the node by logically
+filling it with storage claims that
+can be used by another node to fill it with its data and when data is
+written then claims can be issued
+for data that is written with a claim generated being a SHA1 hash of the
+index of the storage location
+and a secret pass phrase and a symmetric key. This system of storage
+guarantees that no tampering
+of the stored data has taken place by taking a hash of the first set of
+data object and then using that to
+take the has of the second and so on till all the n objects have been
+hashed. This is a great method of
+preventing data being tampered and at the same time ensuring that
+bandwidth is not wasted in each
+query.
+
+Node failures:
+Samara with a probabilistic model ensures that even if there is grace
+period attack on the system
+the long term impact are nullified since in the long term such nodes would
+lose data.
+
+
+Sharp:
+SHARP or (Secure Highly Available Resource Peering) discusses the
+certified resources management in a peer to peer network for claims by
+using tickets and leases that allow coordinated resource management while
+allowing local control of resources.  Although most of the focusing this
+paper is directed at Planet Lab this paper does provide an insight into
+how certificates can be used to authenticate nodes and how leases or soft
+state timed claims that expire after a specified period can be used to
+recover the resources which could get lost when a claim holder fails.
+Claim holders are given a probabilistic assurance regarding their claims
+and so that ensures the same added advantages as discussed in the Samsara
+model with regards to transient failures in the nodes. In Sharp the global
+resource trading and resource discovery is similar to Samsara in terms of
+pair wise barter exchange since bartering between two nodes help in
+removing the need of a central agreement. However since Sharp claims are
+self certifying the lack of a central agreement makes the system prone to
+attacks by malignant users who can pretend to be different nodes at
+different times and still use the lease timeout method to attack the
+system. That is because each node makes its own identification and
+certificate. However if the node certification is centralized or based on
+a centralized certificate store to ensure the validity of the nodes then
+this system would be more secure. Also the certificate made for each new
+node that enters the system should have its network card identifier or
+some other unique identifier stored along with certificates or have
+certificates generated from the net ID’s to prevent impersonation.
+In Sharp the resources at each site are controlled by a site authority
+which maintains hard states about resource status and slices and handles
+the claims at allocating the resources at that site. The process of the
+ticket and lease allocation is based on soft claims tickets and hard
+claims or leases to preserve local autonomy and control over resources.
+Leases help prevent a failed node or a compromised ticket’s value to eth
+duration of the ticket’s term. This concept of tickets and leases also
+help in delegation responsibility to the nodes and ensures that nodes that
+issue oversubscribed tickets are help responsible and are removed from the
+system and also are given a chance to restore the status in the system.
+Thus this system allows for control over the usage of the resources of the
+network.
+
+PPay:
+Ppay is a protocol to make micro payments in peer to peer systems and
+treats the idea of a secure
+network where financial renumeration are made and fraud prevention is done
+not by preventing
+fraud but by making it not profitable. This would be more useful in a
+gaming world where virtual
+money is used rather than for a real peer to peer application since the
+elimination of a centralized
+broker and the usage of transactions that are reconciled only a later
+stage would really run into
+issues when dealing with high valued transactions. So as the authors
+assert this system only works
+for micro payments. The system is based on transferable coins that can be
+transferred in a
+transaction and constitutes an buy or a sell in the network with a local
+fraud prevention built in ,
+ int the form of prevention of  a duplicate transfer of a coin. However
+the protocol is optimistic
+and in case of node failures would need to wait for the node to come back
+up at which juncture
+ the transaction is fulfilled or considered to be a fraudulent one and
+rejected or handled  by the
+broker. This system however using the concept of floating self managed
+currency that is validated
+and reconciled when the user leaves the system or cashes in provides a
+stability to the system.
+The authors further issues the concept of limit certificates to ensure
+that only the broker prints the
+money by having the broker issue limit certificates to the nodes when they
+join the system. Even
+though this is a very interesting paper on the extension of peer to peer
+and its applicability to
+systems that need not manage small transactions they are are not really
+suited for any real world
+financial systems.
+
+Karma
+This paper discusses a peer to peer resource sharing network that handles
+the issues of nodes that
+consume more than they contribute by implementing a tracking mechanism
+where each nodes
+contribution and consumption is used to create a metric called karma which
+is used as a financial
+resource for each node that it needs to consume resources. A node cannot
+consume a resource
+from another node if the karma required for the object is less than the
+karma that he has. It
+implements by using local banks or banksets which are groups of nodes that
+keep track of the set
+of karma that belong to the users. Thus a local bankset controls the karma
+associated with the local
+nodes associated with the bankset. For each transfer of a resource a
+payment is made to the
+source node by the destination node and the transactions are cleared by
+the banksets
+corresponding to the two nodes. Thus it kind of creates the effects of
+local clearinghouses.
+Karma also prevents the karma of the nodes to not go out of bound by
+offsetting the values at end
+of certain epochs by reducing the values all the across the network though
+it is not clear how it is
+achieved when transactions could still be in process. Karma could however
+have the same potential
+issues that all the other papers discussed above have, that is since
+initally every node is given a
+certain karma, a set of malicious nodes where one node acts as a
+contributer and a set of other
+nodes consume from it and re-enter the system every time to claim the
+initial karma and again
+claim from the contributer node. Thus the karma of the contributor node
+could be made to increase.
+

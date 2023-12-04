@@ -1,0 +1,257 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id fBD1SvI11885;
+	Wed, 12 Dec 2001 17:28:57 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id SAA24493;
+	Wed, 12 Dec 2001 18:12:58 -0500 (EST)
+Date: Wed, 12 Dec 2001 18:12:58 -0500 (EST)
+Received: by canaveral.red.cert.org; Wed, 12 Dec 2001 18:07:37 -0500
+Message-Id: <CA-2001-34.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-34 Buffer Overflow in System V Derived Login
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3aec0ba057b711eb2f87d4b17439446e
+Status: RO
+X-Status: $$$$
+X-UID: 0000000031
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-34 Buffer Overflow in System V Derived Login
+
+   Original release date: December 12, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * IBM AIX versions 4.3 and 5.1
+     * Hewlett-Packard's HP-UX
+     * SCO OpenServer 5.0.6 and earlier
+     * SGI IRIX 3.x
+     * Sun Solaris 8 and earlier
+
+Overview
+
+   Several  applications  use  login  for authentication to the system. A
+   remotely  exploitable  buffer  overflow  exists  in login derived from
+   System V. Attackers can exploit this vulnerability to gain root access
+   to the server.
+
+I. Description
+
+   Several  implementations of login that are derived from System V allow
+   a  user  to  specify  arguments  such  as environment variables to the
+   process.  An array of buffers is used to store these arguments. A flaw
+   exists  in the checking of the number of arguments accepted. This flaw
+   permits the array of buffers to be overflowed.
+
+   On most systems, login is not suid; therefore, it runs as the user who
+   called  it.  If,  however, login is called by an application that runs
+   with  greater  privileges  than  those of the user, such as telnetd or
+   rlogind,  then  the  user  can  exploit this vulnerability to gain the
+   privileges  of  that  program. In the case of telnetd or rlogind, root
+   access is gained.
+
+   Since  in.telnetd  and  in.rlogind  are  available over the network, a
+   remote  attacker  without  any previous access to the system could use
+   this vulnerability to gain root access to the system.
+
+   If  a  program  that invokes login is suid (or sgid) USER_A, then this
+   can be exploited to gain the privileges of USER_A.
+
+   An exploit exists and may be circulating.
+
+II. Impact
+
+   This vulnerability can be remotely exploited to gain privileges of the
+   invoker  of  login. In the case of a program such as telnetd, rlogind,
+   or other suid root programs, root access is gained.
+
+III. Solution
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   As  vendors report new information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not  listed  below,  we  have not received their comments.
+   Please  review  the VU#569272 for your vendor's status or contact your
+   vendor directly.
+
+Restrict access to login
+
+   We  recommend  disabling  TELNET,  RLOGIN  and other programs that use
+   login  for  authentication.  Do not use programs that use a vulnerable
+   login  for  authentication.  Note  that  some  SSH applications can be
+   configured  to  use login for authentication. If this configuration is
+   selected, then you will still be vulnerable.
+
+   If  you  cannot  disable  the  service, you can limit your exposure to
+   these vulnerabilities by using a router or firewall to restrict access
+   to port 23/TCP (telnet) and port 513/TCP (rlogin). Note that this does
+   not protect you against attackers from within your network.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+Apple Computer, Inc.
+
+   Mac OS X and Mac OS X Server are not vulnerable.
+
+Caldera
+
+   We  are  not  using  a  SystemV based /bin/login, we are using the BSD
+   originated rlogin tools. All OpenLinux products are 'Not Vulnerable'.
+
+Compaq Computer Corporation
+
+   Compaq's Tru64 Software is not impacted by this reported problem.
+
+Cray Inc.
+
+   Cray  Inc.  has  determined  that  its  implementation of login is not
+   vulnerable to the situation described in VU#569272.
+
+Hewlett-Packard
+
+   HP-UX  is  NOT  Exploitable,  even  though  HP-UX does have the buffer
+   overflow,  and  hence  is listed as "effected" above. In any case, the
+   buffer overflow has been fixed by HP.
+
+IBM
+
+   IBM's  AIX  operating system, versions 4.3 and 5.1, are susceptible to
+   this  vulnerability.  We  have  prepared  an  emergency  fix ("efix"),
+   "tsmlogin_efix.tar.Z", and it is available for downloading from:
+   
+   ftp://aix.software.ibm.com/aix/efixes/security
+
+   The  APAR  assignment  for  AIX  5.1 is IY26221, and will be available
+   soon. The APAR for AIX 4.3 is pending, as a new level of 4.3 is nearly
+   available.  The "README" file at the above FTP site will be updated to
+   provide the official fix information and availability.
+
+NetBSD
+
+   NetBSD does not use a System V derived login, and therefore, NetBSD is
+   not vulnerable.
+
+Red Hat
+
+   Red  Hat  Linux  does  not  use  a System V derived /bin/login, and is
+   therefore not vulnerable to this.
+
+Sun Microsystems
+
+   Sun  has  developed  a  fix  and  T-patches are being tested. Official
+   patches  will  be  released  shortly and Sun will issue a Sun Security
+   Bulletin when they are available.
+     _________________________________________________________________
+
+   The  CERT Coordination Center thanks Internet Security Systems and Sun
+   Microsystems for the technical information they provided.
+     _________________________________________________________________
+
+   Feedback  on  this  document  can  be directed to the author, 
+   Jason A. Rafail
+     _________________________________________________________________
+
+   References
+     * http://www.kb.cert.org/vuls/id/569272
+     * http://www.kb.cert.org/vuls
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-34.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+December 12, 2001 : Initial Release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPBfg3qCVPMXQI2HJAQE8swP/SGmx37pJWLq9fWhwx/xzu/DSwf8AnjjP
+jYbOqE+Iy17YOlI38q1MMh3ifgWoQSW6EeCWlt+Wu6R19APdfbuIbEv+/1iDP+6/
+VZK+nnjs4F/i7rWcW0vH8jojFrNkXpAfuZIMEkvzcS/EkrgCisIiB3x9t75CQT+6
+V7+HUmMS7+0=
+=aq9W
+-----END PGP SIGNATURE-----
+

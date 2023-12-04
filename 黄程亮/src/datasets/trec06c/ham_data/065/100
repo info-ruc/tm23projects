@@ -1,0 +1,56 @@
+Received: from madcap.apk.net (madcap.apk.net [207.54.158.16])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id KAA02397
+	for <handyboard@media.mit.edu>; Wed, 5 Apr 2000 10:46:35 -0400 (EDT)
+Received: from junior.apk.net (drushel@junior.apk.net [207.54.158.20]) by madcap.apk.net (8.9.3/8.9.3/apk.990812+rchk1.22+bspm1.13.1.5) with ESMTP id KAA04029 for <handyboard@media.mit.edu>; Wed, 5 Apr 2000 10:33:37 -0400 (EDT)
+Received: (from drushel@localhost)
+	by junior.apk.net (8.9.3/8.9.3) id KAA10681
+	for handyboard@media.mit.edu; Wed, 5 Apr 2000 10:33:36 -0400 (EDT)
+From: Richard Drushel <drushel@apk.net>
+Message-Id: <200004051433.KAA10681@junior.apk.net>
+X-Real-To: handyboard@media.mit.edu
+Subject: Re: LED's
+To: handyboard@media.mit.edu
+Date: Wed, 5 Apr 2000 10:33:36 -0400 (EDT)
+In-Reply-To: <FsJoM5.717@lugnet.com> from "Derek Healy" at Apr 05, 2000 01:10:53 PM
+X-Mailer: ELM [version 2.5 PL1]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+[Derek Healy] spake unto the ether:
+
+> Hi, could anyone tell me how I might light LED's in sequence so that they
+> would simulate a rev counter of an automobile & to also simulate the speed
+> counter.
+
+	This is just an idea skeleton, but not too hard to flesh out, if
+you've worked with TTL.  The Handy Board memory map maps some upper 32K
+addresses to I/O "ports".  Look at the schematic and you can see which
+addresses generate which enable lines.  Some are used already, but some
+are free.  Put an 8-bit latch on one of the output ports.  Have your
+software map whatever your actual speed values are from 0-7.  Use this
+0-7 value to set the highest bit and every one below it in the latch.
+Attach LEDs to the latch outputs.  If you do it right, you should get the
+rising/falling bargraph effect you're looking for.
+
+	Numeric example:  say your hardware returns a 16-bit unsigned
+integer (range 0-65535).  Divide 65536 into 8 equal parts so you know
+where the threshold changes are:  0, 8192, 16384, 24567, 32768, 40960,
+49152, and 57344.  Read your speed value and use these thresholds to map
+it to 0-7.  Say the value was 22438; that maps to level 2.  So, set bits
+2, 1, and 0 at the memory address corresponding to your output latch.
+The corresponding 3 LEDs should light.  If the speed went up to 39345,
+that's level 4, so set bits 4-0 in the output latch; if the speed fell to
+4154, that's level 0, so set bit 0 in the output latch.
+
+	The actual hardware to do this can be easily reverse-engineered
+from the Handy Board schematic, as Fred does exactly the same thing for
+motor outputs; just drive LEDs instead of motors.
+
+	*Rich*
+-- 
+Richard F. Drushel, Ph.D.            | "Aplysia californica" is your taxonomic
+Department of Biology, Slug Division | nomenclature.  /  A slug, by any other
+Case Western Reserve University      | name, is still a slug by nature.
+Cleveland, Ohio  44106-7080  U.S.A.  |     -- apologies to Data, "Ode to Spot"
+

@@ -1,0 +1,108 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA06960
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 25 Oct 2000 09:32:09 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by deimos.email.Arizona.EDU (5.1.046)
+        id 39F617820000E5BC for DMDX@psy1.psych.arizona.edu; Wed, 25 Oct 2000 09:32:07 -0700
+Message-Id: <5.0.0.25.2.20001025091203.009e2eb0@psy1.psych.arizona.edu>
+Date: Wed, 25 Oct 2000 09:32:06 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: PreciseTimingAgain
+In-Reply-To: <39F70E8A.6D801311@forenap.asso.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 06:47 PM 10/25/00 +0200, you wrote:
+>Dear all,
+>
+>I am back with the following code (example)
+>(the TTL from the scanner is triggering DMDX)
+>
+>0  "TTL Puse 1"  ;
+>250 <bmp> <ms% 3000> "Image1"/;
+>250 <bmp> <ms% 6000> "Frame1"/;
+>+001 <bmp> <ms% 3000> *"Image2"/;
+>250 <bmp> <ms% 6000> "Frame2"/;
+>
+>and so on for 24 loops (96 images) ==> delays adding up !!!
+>
+>I am recording 1 set of images every 3s.
+>The sequence is stopping earlier than DMDX !!!
+>
+>I did put  (1 tick is 13.4 ms here) 30 tick means
+>
+>250 <d 30><bmp> <ms% 2598> "Image1"/;
+>250 <d 30><bmp> <ms% 5598> "Frame1"/;
+>+001 <d 30><bmp> <ms% 2598> *"Image2"/;
+>250 <d 30><bmp> <ms% 5598> "Frame2"/;
+>
+>Still the same (not right ending both scannerand DMDX);
+>
+>Has somebody some trick to do so (is DMDX usefull with FMRI?)
+
+   You might wan to try the above with a Delay parameter as well, it not 
+only sets the default delay between items, it forces DMDX to throw an error 
+if it can't meet the requirements (so you can scale things 
+appropriately.  Note the erase frame at the end of your items takes 1 tick 
+to be displayed too.
+
+>Is the only solution to trigger each loop on even each image display ??
+>How experienced FMRI people handle DMDX ??
+>
+>I thought that any videocard had 2 pages memory.
+
+   Probably many more, you can see how many DMDX is using by looking the 
+top of the diagnostics text display.  It varies depending on the video mode.
+
+>Is ther a possible way to upload
+>Frame1 on page 2 when displaying Image1 on page 1
+>Then
+>Then upload
+>Image2 on page 1 when displaying Frame1 on page 2
+>and so on
+
+   Not unless you make them part of one item.
+
+>This is EXPE6 stratgy to avoid this black waiting time
+>in between bmps related to PreparationA and Preparation B
+
+   You might want to try something like the following:
+
+d223
+0  "TTL Puse 1"  ;
+250 d1 <bmp>"Image1";
+250 <bmp> "Frame1";
++001 d447 <bmp> *"Image2";
+250 <bmp> "Frame2";
+250 d447...
+
+   That way the delay for the following item sets the display duration of 
+the previous item (because they aren't erased and are just left on the 
+screen).  Image reading will occur during the display of the previous items.
+
+>Thanks for help, suggestions and comments
+>and even thinking of usefull nodification in timing
+>management to better fit DMDX into FMRI field.
+
+   FMRI timing is always tricky but never impossible, there are numerous 
+people here using FMRI, perhaps they can send you some of their scripts for 
+examples.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Lackland's Laws:
+	(1) Never be first.
+	(2) Never be last.
+	(3) Never volunteer for anything
+
+
+

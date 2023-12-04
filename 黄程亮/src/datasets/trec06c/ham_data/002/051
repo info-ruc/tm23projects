@@ -1,0 +1,41 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3009>; Fri, 27 May 1994 09:50:25 -0400
+Received: from minster.york.ac.uk ([144.32.128.41]) by psuvax1.cse.psu.edu with SMTP id <292651>; Fri, 27 May 1994 09:14:48 -0400
+Date:	Fri, 27 May 1994 08:25:00 -0400
+To:	9fans@cse.psu.edu
+Message-ID: <swordfish.770044344@minster.york.ac.uk>
+From:	forsyth@plan9.cs.york.ac.uk
+Subject: minor change to smtpd.y (and yesterday)
+
+yesterday i couldn't receive mail from 3mail.3com.com, since
+smtpd rejected the `mail from:' as having a syntax error.
+the grammar in /sys/src/cmd/upas/smtp/smtpd.y is taken directly from
+RFC 821, but (it turns out) RFC 1123 section 2.1 makes a blanket change
+to all applications regarding host name formats, thus requiring a change to
+the rfc821 grammar (but without specifying the change).
+
+here are some diffs; the line numbers might not agree -- i haven't
+got the CDROM online at the moment.
+
+cpu% diff `{yesterday -940501 smtpd.y} .
+90,92c90,91
+< name		: a			={ $$ = cat(&$1, 0, 0, 0, 0 ,0, 0); }
+< 		| a ld-str		={ $$ = cat(&$1, &$2, 0, 0, 0 ,0, 0); }
+< 		| a ldh-str ld-str	={ $$ = cat(&$1, &$2, &$3, 0, 0 ,0, 0); }
+---
+> name		: ld-str		={ $$ = cat(&$1, 0, 0, 0, 0 ,0, 0); }
+> 		| let-dig ldh-str ld-str ={ $$ = cat(&$1, &$2, &$3, 0, 0 ,0, 0); }
+
+when first doing that diff, i discovered that several of the diagnostics
+in /rc/bin/yesterday are not sent to the standard error; here are the diffs for that:
+
+term% diff `{yesterday /rc/bin/yesterday} .
+76c76
+< 		'is not a backup day'
+---
+> 		'is not a backup day' >[1=2]
+82c82
+< 	echo 'yesterday: can''t find directory'
+---
+> 	echo 'yesterday: can''t find directory' >[1=2]
+
+

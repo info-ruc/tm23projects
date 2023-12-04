@@ -1,0 +1,58 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Wed, 28 Dec 1994 11:41:39 MST
+Received: from noao.edu by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA22417; Wed, 28 Dec 1994 11:41:38 MST
+Received: from orpheus.gemini.edu by noao.edu (4.1/SAG-Noao.G96)
+	id AA13719; Wed, 28 Dec 94 11:41:37 MST; for icon-group@cs.arizona.edu
+Received: by orpheus.gemini.edu (5.0/SMI-SVR4-SAG03X)
+	id AA15285; Wed, 28 Dec 1994 11:41:10 +0700
+Date: Wed, 28 Dec 1994 11:41:10 +0700
+From: swampler@noao.edu
+Message-Id: <9412281841.AA15285@orpheus.gemini.edu>
+Subject: Re: Truth-Table generator
+To: mslamm@pluto.mscc.huji.ac.il
+Cc: icon-group@cs.arizona.edu
+Content-Length: 1301
+
+You wrote:
+
+>>I rather wanted an all generator solution myself. But the problem is that 
+>>my truth tables ma have more than two variables (t1 and t2, above). Now 
+>>this makes it a bit harder to do it like this...
+
+If the number of variables is fixed, you can extend the code (though it
+starts getting uglier, fast):
+
+procedure main()
+
+   every (t1 := (0|1)) & (t2 := (0|1)) & (t3 := (0|1)) do {
+      every writes(format( t1 | t2 | t3			# variables
+                           "|" |			# separator
+                           iand(t1,t2) | ior(t1,t2) |	# functions
+			   ixor(t1,t2) | iand(t1, ior(t2,t3)) |
+                           ior(iand(t1,t2),iand(t1,t3))
+                  ))
+      write()
+      }
+
+end
+
+There are tricks lying around to generalize to the 'n'th case with generators,
+but I've forgotten them!  I was hoping someone would take the solution
+I mailed and generalize it... If I remember, the tricks were pretty ugly.
+I think I'd just brute force, but maybe change the above formatting slightly
+to:
+
+   every (t1 := (0|1)) &
+         (t2 := (0|1)) &
+         (t3 := (0|1))
+      do {...
+
+
+
+--
+Steve Wampler - swampler@gemini.edu [Gemini 8m Telescopes Project (under AURA)]
+--
+The Gods that were smiling when you were born are laughing now.
+			          -- found in a fortune cookie
+
+

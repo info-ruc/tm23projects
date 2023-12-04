@@ -1,0 +1,74 @@
+Received: from mailer3.bham.ac.uk (mailer3.bham.ac.uk [147.188.128.54])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id KAA12539
+	for <handyboard@media.mit.edu>; Thu, 2 Mar 2000 10:19:22 -0500 (EST)
+Received: from bham.ac.uk ([147.188.128.127])
+	by mailer3.bham.ac.uk with esmtp (Exim 3.02 #16)
+	id 12QXNo-0007Sv-00; Thu, 02 Mar 2000 15:19:20 +0000
+Received: from bham-eee-fs4.bham.ac.uk ([147.188.147.167])
+	by bham.ac.uk with esmtp (Exim 3.10 #1)
+	id 12QXNo-0003WC-00; Thu, 02 Mar 2000 15:19:20 +0000
+Received: by BHAM-EEE-FS4 with Internet Mail Service (5.5.2650.21)
+	id <G145MXYA>; Thu, 2 Mar 2000 15:19:19 -0000
+Message-Id: <9FDFD60B9F3AD311A1400008C79F4B54111006@BHAM-EEE-FS4>
+From: "E158 (M.FAZAL)" <M.FAZAL@bham-eee-fs4.bham.ac.uk>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Cc: "'James Munro '" <jimmn@xnet.com>
+Subject: RE: servo motors
+Date: Thu, 2 Mar 2000 15:19:18 -0000 
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
+>I'm not that familiar with the routines but it looks like you're shutting
+>off the servos before they can move.
+
+Yes you are right, i just figured out too. i have to give at least 0.3secs
+for the servo to move to the required position.
+
+>I also believe once you turn off the servo it won't hold it's position any
+>longer.  
+
+actually the servo doesn't move when you turn it off. if you don't turn it
+off some small movements are observed. i think its due to some small changes
+in the pulse timing. so i found it is better to actually move to the
+required position and turn the servo off. this way it holds it position
+firmly.
+
+cheers again
+fazal 
+
+
+-----Original Message-----
+From: James Munro
+To: E158 (M.FAZAL)
+Cc: lugnet.robotics.handyboard@lugnet.com
+Sent: 3/2/00 2:48 PM
+Subject: Re: servo motors
+
+> wrote the following very simple code, and it doesnt work. can anyone
+spot
+> the problem.
+> 
+> 
+> void main()
+> {
+> 	servo_on();	/* on servo */
+> 	servo(3800);	/* full left turn */
+> 	servo_off();	/* off servo */
+> 	fd(0);          /* motor 0 on */
+>         sleep(2.0);	/* for 2 secs */
+> 	servo_on();	/* on servo */
+> 	servo(2500);	/* mid position */
+> 	servo_off();
+> }
+ 
+What is it supposed to be doing?  When you say _it_ doesn't work, what
+exactly is not working?  I'm not that familiar with the routines but it
+looks like you're shutting off the servos before they can move.  I also
+believe once you turn off the servo it won't hold it's position any
+longer.  
+ 
+-Jim Munro
+<jimmn@xnet.com>
+

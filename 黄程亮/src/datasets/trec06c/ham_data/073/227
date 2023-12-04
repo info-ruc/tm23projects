@@ -1,0 +1,106 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id MAA04414
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 24 Oct 2000 12:12:57 -0700
+Received: from jcf.u.arizona.edu (128.196.98.7) by deimos.email.Arizona.EDU (5.1.046)
+        id 39E4C0E1000F98F4 for DMDX@psy1.psych.arizona.edu; Tue, 24 Oct 2000 12:12:55 -0700
+Message-Id: <5.0.0.25.2.20001024115832.009dca50@psy1.psych.arizona.edu>
+Date: Tue, 24 Oct 2000 12:12:56 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: 
+In-Reply-To: <00b201c03def$ff74d9e0$57a08490@nsw.bigpond.net.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 05:24 AM 10/25/00 +1000, you wrote:
+>Dear all,
+>
+>Hope someone would be able to offer me some advice on this as I am stuck
+>on the following :
+>
+>I want to display a two video files (discrimination task)
+>on the same item  with a blank screen displaying in between (either 1500 or
+>500 msec). And within my design, i have three different presentation
+>conditions, with auditory-only (the item was presented with a still picture
+>with the audio input), Visual-only (visual input with the person
+>articulating the words but with no audio output), and last Audio-visual
+>(with both audio and visual output).and, only the Auditory-only 500 msec
+>condition seems to be playing up.
+>
+>I had the following code written
+>
+>Auditory-only trial: 500msec
+>
+>+250  "ready" / <dv -1,-1, 352,264> "A_Fan1a.mov" <pdvf 27> <pdvt 63> /
+><ms% 333> / <dv -1, -1, 352,264>  "A_Fan1b.mov" <pdvf 28> <pdvt 64>  <dv*
+>32>  ;
+>
+>1500msec condition : AO
+>
+>+250  "ready" / <dv -1,-1, 352,264> "A_Fan1a.mov" <pdvf 27> <pdvt 63> /
+><ms% 1333> / <dv -1, -1, 352,264>  "A_Fan1b.mov" <pdvf 28> <pdvt 64>  <dv*
+>32>  ;
+>
+>Visual -only trial: 500msec
+>
+>+250  "ready" / <dv -1,-1, 352,264> "V_fan1a.mov" <pdvf 8> <pdvt 62> / <ms%
+>333> / <dv -1, -1, 352,264>  "V_fan1b.mov" <pdvf 8> <pdvt 63> <dv* 12>  ;
+>
+>1500msec:
+>
+>+250  "ready" / <dv -1,-1, 352,264> "V_fan1a.mov" <pdvf 8> <pdvt 62> / <ms%
+>1333> / <dv -1, -1, 352,264>  "V_fan1b.mov" <pdvf 8> <pdvt 63> <dv* 12>  ;
+>
+>
+>in the AO 500 msec condition, the still face component was remain on the
+>screen during the 500msec or sometimes.no gap in between.  the blank screen
+>is not displaying consistently. but the audio component was playing like
+>normal.
+>
+>And this is only happening in the AO 500 msec condition, AO- 1500 msec
+>trials were playing the same as other  AV/VO trials with a blank screen gap
+>between.
+>
+>The audio trials were intending to be playing from certain no. frame (as
+>where the actually audio component starts), different from other AV/VO
+>trials in which all items start from the 8th frame of the video file.
+>Although the AO comprised of a still face, it is saved as a quicktime movie
+>file as other AV,VO files.
+>
+>I tried also to written the AO code, so that it plays from the 8th frame of
+>the files and having the clock on the 12th frame as other AV/VO , but still
+>playing up.
+
+   You can't leave a frame of Digital Video on the screen.  If you're 
+having trouble with unusual DV files it's because the codecs installed on 
+your machine that are being used to play them back can't understand your 
+unusual format.  I'd suggest making .BMP of the still frame you want and 
+then using the <StreamingAudio> keyword instead.  BTW, <sa> should be able 
+to play just the audio portion of the existing digital video, it should 
+just ignore the video component.
+
+
+>and also can anyone tells me whats this dialogue box says : "Multiple use of
+>BIC" referring to ? it keeps poping up at the start up of  DMDX  (the 2.2.00
+>version)
+
+   Well that's really interesting, that's an internal diagnostic telling me 
+that I've used the mnemonic BIC twice, dunno why I don't see it here 
+because the mnemonic for <CallIfCorrect> was <bic> instead of <cic>.  More 
+multimon weirdness, damn.  Fixed in 2.2.02 that's up there now.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   When things are going well, something will go wrong.
+
+
+

@@ -1,0 +1,484 @@
+Received: from vo-dca-ex01.valueoptions.com (pix28.vbh.com [208.141.66.28])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id KAA17393
+	for <handyboard@media.mit.edu>; Tue, 1 Jun 1999 10:24:40 -0400 (EDT)
+Received: by vo-dca-ex01.phc.com with Internet Mail Service (5.5.2232.9)
+	id <LF09QNYQ>; Tue, 1 Jun 1999 10:24:10 -0400
+Message-Id: <132E2FC27BE7D2118F4C0008C75D5E22022213@VO-BOS-EX01>
+From: "Weng, Andrew" <Andrew.Weng@valueoptions.com>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Encoder routines..
+Date: Tue, 1 Jun 1999 05:21:54 -0400 
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2232.9)
+Content-Type: multipart/mixed;
+	boundary="----_=_NextPart_000_01BEAC3A.6A051552"
+
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+------_=_NextPart_000_01BEAC3A.6A051552
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BEAC3A.6A051552"
+
+
+------_=_NextPart_001_01BEAC3A.6A051552
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
+Some of you have asked for the modifications I made to the encoder routines
+to work with quadrature encoders.  
+The real work of reading the encoders is done by the LS7084 from US digital
+(www.usdigital.com - $3.05).  The chip takes the A and B channel inputs from
+the encoder and outputs a pulse for each tick and a direction (HI or LOW).
+Because the pulse is too narrow for the HB to read directly, one channel is
+also connected to the HB input for the qencoder routines.
+I modified the sencdr2 and sencdr4 routines to expect the input on port 2
+(or 4) and the direction on port 3 (or 5).  Each "tick" is counted only on
+the rising edge so the encoder2_counts variable matches the specs of the
+encoder.  I also removed the encoder2_velocity variable.
+I hope to do more with the LS7084 and make a complete "smart" PID sub-system
+(PIC??)  Any comments or suggestions would help.
+-Drew
+
+
+------_=_NextPart_001_01BEAC3A.6A051552
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+5.5.2232.0">
+<TITLE>Encoder routines..</TITLE>
+</HEAD>
+<BODY>
+
+<P><FONT SIZE=3D2>Some of you have asked for the modifications I made =
+to the encoder routines to work with quadrature encoders.&nbsp; </FONT>
+<BR><FONT SIZE=3D2>The real work of reading the encoders is done by the =
+LS7084 from US digital (www.usdigital.com - $3.05).&nbsp; The chip =
+takes the A and B channel inputs from the encoder and outputs a pulse =
+for each tick and a direction (HI or LOW).&nbsp; Because the pulse is =
+too narrow for the HB to read directly, one channel is also connected =
+to the HB input for the qencoder routines.</FONT></P>
+
+<P><FONT SIZE=3D2>I modified the sencdr2 and sencdr4 routines to expect =
+the input on port 2 (or 4) and the direction on port 3 (or 5).&nbsp; =
+Each &quot;tick&quot; is counted only on the rising edge so the =
+encoder2_counts variable matches the specs of the encoder.&nbsp; I also =
+removed the encoder2_velocity variable.</FONT></P>
+
+<P><FONT SIZE=3D2>I hope to do more with the LS7084 and make a complete =
+&quot;smart&quot; PID sub-system (PIC??)&nbsp; Any comments or =
+suggestions would help.</FONT></P>
+
+<P><FONT SIZE=3D2>-Drew</FONT>
+</P>
+
+<P><FONT FACE=3D"Arial" SIZE=3D2 COLOR=3D"#000000"></FONT><FONT =
+FACE=3D"Arial" SIZE=3D2 COLOR=3D"#000000"></FONT><FONT FACE=3D"Arial" =
+SIZE=3D2 COLOR=3D"#000000"></FONT><FONT FACE=3D"Arial" SIZE=3D2 =
+COLOR=3D"#000000"></FONT>&nbsp;
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BEAC3A.6A051552--
+
+------_=_NextPart_000_01BEAC3A.6A051552
+Content-Type: application/octet-stream;
+	name="QENCOD2.ASM"
+Content-Disposition: attachment;
+	filename="QENCOD2.ASM"
+Content-Location: ATT-0-B44109CD2618D311965B00805FE68D92-Q
+	ENCOD2.ASM
+
+* icb file: "qencod2.asm"
+
+* handy board shaft encoders with direction bit
+* samples at 250 Hz. rate
+
+* operates off of system interrupt
+
+*  Fred Martin
+*  22 Apr 1996
+*  Modified by Drew Weng
+*  Encoder on Port 4, Direction bit on port 5
+
+*  25 Apr 1999
+* 6811 registers
+BASE	EQU	$1000
+ADCTL	EQU	$1030	; A/D Control/status Register
+ADR1	EQU	$1031	; A/D Result Register 1
+TOC4INT	EQU	$E2	; Timer Output Compare 4
+
+ANLGPORT EQU	4
+DIRBIT   EQU    5
+
+
+* zero-page global variables
+system_time_hi	EQU	$12
+system_time_lo	EQU	$14
+
+	ORG	MAIN_START
+
+* low and high thresholds for counting pulses
+variable_encoder4_low_threshold:		FDB	50
+variable_encoder4_high_threshold:		FDB	200
+
+* tick and velocity counts
+variable_encoder4_counts:			FDB	0
+
+* internal variables
+encoder_state:					FCB	0
+last_counts:					FDB	0
+
+
+* install module into 1 kHz IC system interrupt on TOC4
+subroutine_initialize_module:
+	LDX	#$BF00			; pointer to interrupt base
+* install ourselves onto system interrupt
+* get current vector; poke such that when we finish, we go there 
+	LDD	TOC4INT,X		; SystemInt on TOC4
+	STD	interrupt_code_exit+1
+
+* install ourself as new vector
+	LDD	#interrupt_code_start
+	STD	TOC4INT,X
+
+* reset encoder variables
+	LDD	#0
+	STAA	encoder_state
+	STD	variable_encoder4_counts
+	STD	last_counts
+
+	RTS
+
+
+* encoder interrupt code:
+*	check for transition every 4th time called (250 Hz)
+* 	calculate velocities at about 16 Hertz (exactly:  1000 / 64 Hz.)
+interrupt_code_start:
+	LDAA	system_time_lo+1	; lowest byte
+	ANDA	#%00000011
+	BNE	interrupt_code_exit
+
+	LDX	#BASE
+
+* get analog reading
+	LDAA	#ANLGPORT
+	STAA	ADCTL,X
+	BRCLR	ADCTL,X $80 *
+	LDAA	ADR1,X
+
+	TST	encoder_state
+* if zero, look for rising edge
+	BNE	test_falling
+	CMPA	variable_encoder4_high_threshold+1
+        BLO     interrupt_code_exit
+* got it! increment
+got_click:
+* get direction bit
+	LDAA	#DIRBIT
+	STAA	ADCTL,X
+	BRCLR	ADCTL,X $80 *
+	LDAA	ADR1,X
+
+	CMPA	variable_encoder4_high_threshold+1
+	BLO	dirlow
+* direction bit high, increment count
+	LDY	variable_encoder4_counts
+	INY
+	STY	variable_encoder4_counts
+	LDAA	encoder_state
+	EORA	#$FF
+	STAA	encoder_state
+
+        BRA     interrupt_code_exit
+dirlow:
+        LDY     variable_encoder4_counts
+	DEY
+        STY     variable_encoder4_counts
+	LDAA	encoder_state
+	EORA	#$FF
+	STAA	encoder_state
+
+        BRA     interrupt_code_exit
+
+test_falling:
+	CMPA	variable_encoder4_low_threshold+1
+        BLO     set_low
+        BRA     interrupt_code_exit
+
+set_low:
+	LDAA	encoder_state
+	EORA	#$FF
+	STAA	encoder_state
+
+interrupt_code_exit:
+	JMP	$0000		/* this value poked in by init routine */
+
+
+------_=_NextPart_000_01BEAC3A.6A051552
+Content-Type: application/octet-stream;
+	name="qencod2.icb"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="qencod2.icb"
+Content-Location: ATT-1-B54109CD2618D311965B00805FE68D92-Q
+	ENCOD2.ICB
+
+S1238020003200C80000000000CEBF00ECE2FD80A7CC8043EDE2CC0000B78026FD8024FD=
+9E=0A=
+S123804080273996158403265DCE10008604A7301F3080FCA6317D8026263CB180232546=
+62=0A=
+S12380608605A7301F3080FCA631B18023251418FE8024180818FF8024B6802688FFB780=
+BC=0A=
+S123808026202318FE8024180918FF8024B6802688FFB78026200FB1802125022008B680=
+97=0A=
+S10C80A02688FFB780267E00004B=0A=
+S9030000FC=0A=
+S123872B003200C80000000000CEBF00ECE2FD87B2CC874EEDE2CC0000B78731FD872FFD=
+44=0A=
+S123874B87323996158403265DCE10008604A7301F3080FCA6317D8731263CB1872E2546=
+1A=0A=
+S123876B8605A7301F3080FCA631B1872E251418FE872F180818FF872FB6873188FFB787=
+5B=0A=
+S123878B31202318FE872F180918FF872FB6873188FFB78731200FB1872C25022008B687=
+19=0A=
+S10C87AB3188FFB787317E00001C=0A=
+S9030000FC=0A=
+6811 assembler version 2.1  10-Aug-91=0A=
+  please send bugs to Randy Sargent (rsargent@athena.mit.edu)=0A=
+  original program by Motorola.=0A=
+"qencod2.c"(75): Warning --- Value Truncated=0A=
+"qencod2.c"(77): Warning --- Value Truncated=0A=
+"qencod2.c"(88): Warning --- Value Truncated=0A=
+"qencod2.c"(90): Warning --- Value Truncated=0A=
+"qencod2.c"(75): Warning --- Value Truncated=0A=
+"qencod2.c"(77): Warning --- Value Truncated=0A=
+"qencod2.c"(88): Warning --- Value Truncated=0A=
+"qencod2.c"(90): Warning --- Value Truncated=0A=
+=0CADCTL      1030 *0016 0075 0076 0088 0089 =0A=
+ADR1       1031 *0017 0077 0090 =0A=
+ANLGPORT   0004 *0020 0074 =0A=
+BASE       1000 *0015 0071 =0A=
+DIRBIT     0005 *0021 0087 =0A=
+TOC4INT    00e2 *0018 0047 0052 =0A=
+dirlow     878e *0103 0093 =0A=
+encoder_state 8731 *0038 0056 0079 0098 0100 0107 0109 0119 0121 =0A=
+got_click  876b *0085 =0A=
+interrupt_code_exit 87b1 *0123 0048 0069 0083 0102 0111 0116 =0A=
+interrupt_code_start 874e *0066 0051 =0A=
+last_counts 8732 *0039 0058 =0A=
+set_low    87a9 *0118 0115 =0A=
+subroutine_initialize_module 8734 *0043 =0A=
+system_time_hi 0012 *0025 =0A=
+system_time_lo 0014 *0026 0067 =0A=
+test_falling 87a2 *0113 0081 =0A=
+variable_encoder4_counts 872f *0035 0057 0095 0097 0104 0106 =0A=
+variable_encoder4_high_threshold 872d *0032 0082 0092 =0A=
+variable_encoder4_low_threshold 872b *0031 0114 =0A=
+=1A=FF
+------_=_NextPart_000_01BEAC3A.6A051552
+Content-Type: application/octet-stream;
+	name="QENCODE.ASM"
+Content-Disposition: attachment;
+	filename="QENCODE.ASM"
+Content-Location: ATT-2-B64109CD2618D311965B00805FE68D92-Q
+	ENCODE.ASM
+
+* icb file: "qencode.asm"
+
+* handy board shaft encoders with direction bit
+* samples at 250 Hz. rate
+
+* operates off of system interrupt
+
+*  Fred Martin
+*  22 Apr 1996
+*  Modified by Drew Weng
+*  Encoder on Port 2, Direction bit on port 3
+
+*  25 Apr 1999
+
+* 6811 registers
+BASE	EQU	$1000
+ADCTL	EQU	$1030	; A/D Control/status Register
+ADR1	EQU	$1031	; A/D Result Register 1
+TOC4INT	EQU	$E2	; Timer Output Compare 4
+
+ANLGPORT EQU	2
+DIRBIT   EQU	3
+
+* zero-page global variables
+system_time_hi	EQU	$12
+system_time_lo	EQU	$14
+
+	ORG	MAIN_START
+
+* low and high thresholds for counting pulses
+variable_encoder2_low_threshold:		FDB	50
+variable_encoder2_high_threshold:		FDB	200
+
+* tick and velocity counts
+variable_encoder2_counts:			FDB	0
+
+* internal variables
+encoder_state:					FCB	0
+last_counts:					FDB	0
+
+
+* install module into 1 kHz IC system interrupt on TOC4
+subroutine_initialize_module:
+	LDX	#$BF00			; pointer to interrupt base
+* install ourselves onto system interrupt
+* get current vector; poke such that when we finish, we go there 
+	LDD	TOC4INT,X		; SystemInt on TOC4
+	STD	interrupt_code_exit+1
+
+* install ourself as new vector
+	LDD	#interrupt_code_start
+	STD	TOC4INT,X
+
+* reset encoder variables
+	LDD	#0
+	STAA	encoder_state
+	STD	variable_encoder2_counts
+	STD	last_counts
+
+	RTS
+
+
+* encoder interrupt code:
+*	check for transition every 4th time called (250 Hz)
+* 	calculate velocities at about 16 Hertz (exactly:  1000 / 64 Hz.)
+interrupt_code_start:
+	LDAA	system_time_lo+1	; lowest byte
+	ANDA	#%00000011
+	BNE	interrupt_code_exit
+
+	LDX	#BASE
+
+* get analog reading
+	LDAA	#ANLGPORT
+	STAA	ADCTL,X
+	BRCLR	ADCTL,X $80 *
+	LDAA	ADR1,X
+
+	TST	encoder_state
+* if zero, look for rising edge
+	BNE	test_falling
+	CMPA	variable_encoder2_high_threshold+1
+        BLO     interrupt_code_exit
+* got it! increment
+got_click:
+* get direction bit
+	LDAA	#DIRBIT
+	STAA	ADCTL,X
+	BRCLR	ADCTL,X $80 *
+	LDAA	ADR1,X
+
+	CMPA	variable_encoder2_high_threshold+1
+	BLO	dirlow
+* direction bit high, increment count
+	LDY	variable_encoder2_counts
+	INY
+	STY	variable_encoder2_counts
+	LDAA	encoder_state
+	EORA	#$FF
+	STAA	encoder_state
+
+        BRA     interrupt_code_exit
+
+* direction bit low, decrement count
+dirlow:
+	LDY	variable_encoder2_counts
+	DEY
+	STY	variable_encoder2_counts
+	LDAA	encoder_state
+	EORA	#$FF
+	STAA	encoder_state
+
+        BRA     interrupt_code_exit
+
+test_falling:
+	CMPA	variable_encoder2_low_threshold+1
+        BLO     set_low
+        BRA     interrupt_code_exit
+
+set_low:
+	LDAA	encoder_state
+	EORA	#$FF
+	STAA	encoder_state
+
+interrupt_code_exit:
+	JMP	$0000		/* this value poked in by init routine */
+
+
+------_=_NextPart_000_01BEAC3A.6A051552
+Content-Type: application/octet-stream;
+	name="qencode.icb"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="qencode.icb"
+Content-Location: ATT-3-B74109CD2618D311965B00805FE68D92-Q
+	ENCODE.ICB
+
+S1238020003200C80000000000CEBF00ECE2FD80A7CC8043EDE2CC0000B78026FD8024FD=
+9E=0A=
+S123804080273996158403265DCE10008602A7301F3080FCA6317D8026263CB180232546=
+64=0A=
+S12380608603A7301F3080FCA631B18023251418FE8024180818FF8024B6802688FFB780=
+BE=0A=
+S123808026202318FE8024180918FF8024B6802688FFB78026200FB1802125022008B680=
+97=0A=
+S10C80A02688FFB780267E00004B=0A=
+S9030000FC=0A=
+S123872B003200C80000000000CEBF00ECE2FD87B2CC874EEDE2CC0000B78731FD872FFD=
+44=0A=
+S123874B87323996158403265DCE10008602A7301F3080FCA6317D8731263CB1872E2546=
+1C=0A=
+S123876B8603A7301F3080FCA631B1872E251418FE872F180818FF872FB6873188FFB787=
+5D=0A=
+S123878B31202318FE872F180918FF872FB6873188FFB78731200FB1872C25022008B687=
+19=0A=
+S10C87AB3188FFB787317E00001C=0A=
+S9030000FC=0A=
+6811 assembler version 2.1  10-Aug-91=0A=
+  please send bugs to Randy Sargent (rsargent@athena.mit.edu)=0A=
+  original program by Motorola.=0A=
+"qencode.c"(75): Warning --- Value Truncated=0A=
+"qencode.c"(77): Warning --- Value Truncated=0A=
+"qencode.c"(88): Warning --- Value Truncated=0A=
+"qencode.c"(90): Warning --- Value Truncated=0A=
+"qencode.c"(75): Warning --- Value Truncated=0A=
+"qencode.c"(77): Warning --- Value Truncated=0A=
+"qencode.c"(88): Warning --- Value Truncated=0A=
+"qencode.c"(90): Warning --- Value Truncated=0A=
+=0CADCTL      1030 *0017 0075 0076 0088 0089 =0A=
+ADR1       1031 *0018 0077 0090 =0A=
+ANLGPORT   0002 *0021 0074 =0A=
+BASE       1000 *0016 0071 =0A=
+DIRBIT     0003 *0022 0087 =0A=
+TOC4INT    00e2 *0019 0047 0052 =0A=
+dirlow     878e *0105 0093 =0A=
+encoder_state 8731 *0038 0056 0079 0098 0100 0109 0111 0121 0123 =0A=
+got_click  876b *0085 =0A=
+interrupt_code_exit 87b1 *0125 0048 0069 0083 0102 0113 0118 =0A=
+interrupt_code_start 874e *0066 0051 =0A=
+last_counts 8732 *0039 0058 =0A=
+set_low    87a9 *0120 0117 =0A=
+subroutine_initialize_module 8734 *0043 =0A=
+system_time_hi 0012 *0025 =0A=
+system_time_lo 0014 *0026 0067 =0A=
+test_falling 87a2 *0115 0081 =0A=
+variable_encoder2_counts 872f *0035 0057 0095 0097 0106 0108 =0A=
+variable_encoder2_high_threshold 872d *0032 0082 0092 =0A=
+variable_encoder2_low_threshold 872b *0031 0116 =0A=
+=1A=FF
+------_=_NextPart_000_01BEAC3A.6A051552--
+

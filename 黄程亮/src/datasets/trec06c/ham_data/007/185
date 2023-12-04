@@ -1,0 +1,75 @@
+Received: from mx2.cac.washington.edu (mx2.cac.washington.edu [140.142.33.1])
+          by groupfs.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id VAA26193 for <mailarch+pine-info@groupms.cac.washington.edu>; Fri, 16 Jan 1998 21:07:38 -0800 (PST)
+Received: from lists3.u.washington.edu (root@lists3.u.washington.edu [140.142.56.3])
+          by mx2.cac.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with ESMTP
+	  id VAA28540; Fri, 16 Jan 1998 21:07:33 -0800
+Received: from host (lists.u.washington.edu [140.142.56.13])
+          by lists3.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with SMTP
+	  id VAA16801; Fri, 16 Jan 1998 21:04:33 -0800
+Received: from mx3.u.washington.edu (mx3.u.washington.edu [140.142.13.230])
+          by lists.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.05) with ESMTP
+	  id VAA29288 for <pine-info@lists.u.washington.edu>; Fri, 16 Jan 1998 21:02:43 -0800
+Received: from mole.slip.net (mole.slip.net [207.171.193.16])
+          by mx3.u.washington.edu (8.8.4+UW97.07/8.8.4+UW97.09) with SMTP
+	  id VAA04834 for <pine-info@u.washington.edu>; Fri, 16 Jan 1998 21:02:41 -0800
+Received: from slip-3.slip.net [207.171.193.17] (batchman)
+	by mole.slip.net with smtp (Exim 1.73 #2)
+	id 0xtQP0-0007N9-00; Fri, 16 Jan 1998 21:02:38 -0800
+Message-Id: <Pine.GSO.3.96.980116205717.20285A-100000@slip-3>
+Date: Fri, 16 Jan 1998 21:02:38 -0800 (PST)
+Sender: PINE-INFO-owner@u.washington.edu
+Precedence: bulk
+From: Shoeless in San Jose <batchman@slip.net>
+To: "Pine Discussion Forum" <pine-info@u.washington.edu>
+Subject: Re: Using Pine with messages sent in http
+In-Reply-To: <Pine.LNX.3.96.980117132847.8297A-100000@mail-ethernet-syd01.syd.net.au>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-To: Pine Discussion Forum <pine-info@u.washington.edu>
+X-Sender: batchman@slip-3
+X-Listprocessor-Version: 8.1 beta -- ListProcessor(tm) by CREN
+
+On Sat, 17 Jan 1998, John Heenan wrote:
+
+> Thanks for your reply Vinnie.  
+> 
+> I have been able to add an /etc/mailcap entry for text/HTML to
+> enable HTML to be shown.  Part of my original problem was that
+> text/plain was not even being displayed.  This problem has been
+> fixed up also. It appears http emailers also send a plain version of
+> http. 
+
+Usually.  I've seen one lately that didn't.  Since I hadn't gotten
+this set up till now, thanks to you folks, I'd just skip it.
+
+> An /etc/mailcap entry that worked for me is
+> text/HTML; lynx -force_html -dump %s; copiousoutput
+
+This is what got it working.  I tried the script below; it would
+display the message which was unreadable otherwise (unless I saved and
+viewed the file), but it still contained all the HTML tags.  The one
+above works; the one below didn't quite cut it:
+
+text/html;lynx -force_html %s;test=test -n "$LYNX_VERSION"
+text/html; shownonascii iso-8859-1 %s; copiousoutput
+text/html; shownonascii iso-8859-8 %s; copiousoutput
+text/html; shownonascii iso-8859-7 %s; copiousoutput
+
+> With regard to piping the output to Lynx, I don't think there is a
+> way within Lynx for it to accept a html file to be proceesed from
+> standard input.  However piping the output to a script could set up
+> a file for lynx to read from and then send output to standard output
+> for the viewer. 
+
+I tried piping it through Lynx which was suggested earlier.  I was
+using the four-line script above (haven't tried it with the new
+one-liner, but it's more work to do that anyway), and it just locked
+up.  Couldn't suspend the job; could only cut the connection and
+re-logon, so I think I'll stick with the one-liner.  That fixed the
+problem.
+
+Greg
+batchman@slip.net
+
+

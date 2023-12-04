@@ -1,0 +1,110 @@
+Received: from ross.city.unisa.edu.au (ross.city.unisa.edu.au [130.220.84.23])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with SMTP id j8K6O75M017493
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 19 Sep 2005 23:24:08 -0700
+Received: from ross.city.unisa.edu.au ([130.220.84.23])
+ by ross.city.unisa.edu.au (SMSSMTP 4.0.5.66) with SMTP id M2005092015535816901
+ for <DMDX@psy1.psych.arizona.edu>; Tue, 20 Sep 2005 15:53:58 +0930
+Received: from ITUPROD-GT1.UniNet.unisa.edu.au (ituprod-gt1.levels.unisa.edu.au [130.220.79.35])
+	by ross.city.unisa.edu.au (8.12.10/8.12.10) with ESMTP id j8K6NoOD002975
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 20 Sep 2005 15:53:58 +0930 (CST)
+Received: from ITUPROD-EXCL1.UniNet.unisa.edu.au ([130.220.64.10]) by ITUPROD-GT1.UniNet.unisa.edu.au with Microsoft SMTPSVC(6.0.3790.211);
+	 Tue, 20 Sep 2005 15:53:50 +0930
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Subject: [DMDX] RE: RE: Re: missing item number error
+Date: Tue, 20 Sep 2005 15:53:49 +0930
+Message-ID: <125E143C87C9D744AD879C611475D035027B3A08@ITUPROD-EXCL1.UniNet.unisa.edu.au>
+From: "Mark Conroy" <Mark.Conroy@unisa.edu.au>
+To: <DMDX@psy1.psych.arizona.edu>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi Jonathon,
+
+Thanks for the advice regarding the problem below.  I have since solved
+the problem and the file is now working...altghough I am still not
+exactly sure how I did it.  I think it had something to do with a
+surplus $ character somewhere in the file.  Once I fixed this, it didn't
+seem to matter that I had the backslash \ next to the + character and
+the item number, as in:
+ \+10201<ln -3>"have",
+DMDX still recognised the backslash. Nevertheless I took your advice and
+I did rewrite the file to put backslashes on separate lines....just to
+be safe.
+
+Mark
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of j.c.f.
+Sent: Saturday, 10 September 2005 1:27 AM
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] RE: Re: missing item number error
+
+At 02:15 PM 9/9/2005 +0930, you wrote:
+>Hi Jonathon,
+>
+>Thanks for your advice.  Unfortunately doing as you suggest did not 
+>help.  Therefore I am still stuck.  Besides, the syntax I originally 
+>used with the backslash definitely works without problem in my other 
+>file.  That is, the following causes no problem in my other file:
+>
+>0"READY - PRESS SPACEBAR";$
+>\+10201<ln -3>"have",
+
+   It certainly should function, the only criteria I remember adding to
+scramble for a backslash was that it had to be at the start of line.
+General religious reasons make me follow it with white space however.
+
+><ln -2>"house",
+><ln -1>"their",
+><ln -0>"could",
+><ln 1>"whole",
+><ln 2>"they",
+><ln 3>*!"painted"<c>;
+>
+>Have you got any other advice about what things may be causing a 
+>'missing item number' or things like 'RTF control word <\+> used not 
+>supported' errors?  I would appreciate any tips or clues.
+
+   Somehow or other DMDX isn't seeing the backslash as a backslash.
+Either it's some extended character that just happens to look like a
+backslash or the RTF is badly formed.  RTF codes all begin with a
+backslash, you don't see them because Word or whatever it is that you
+are using interprets them like DMDX does and displays meaningful text.
+Open an item file in a text editor (Notepad if you don't have a better
+one) one day and you'll see what I mean.  In fact it'd be interesting to
+see just what it is that your file has in it.  What's happening is that
+somehow your backslash isn't being seen as the text of the item file but
+an RTF control word, hence it sees \+ which isn't an RTF control word.
+Backslashes if they're really backslashes are stripped out by Scramble
+so DMDX's item parser would never see them in normal operation so when
+you ignore unknown RTF DMDX's item parser sees it and is looking for a
+item CR indicator or an item number and it throws the syntax error.
+Very weird that the RTF parser would see it as a backslash but Scramble
+won't.
+
+   Try deleting and retyping the offending section.  Or you can pour the
+item file though WordPad and see if it can't strip the poorly formed
+section out.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   We lie loudest when we lie to ourselves.
+
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+
+

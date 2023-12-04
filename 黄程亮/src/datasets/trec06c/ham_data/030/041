@@ -1,0 +1,146 @@
+Received: from ml.media.mit.edu (root@ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA21475
+	for <handyboard@media.mit.edu>; Tue, 15 Dec 1998 08:27:52 -0500 (EST)
+Received: from localhost (fredm@localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id IAA06794;
+	Tue, 15 Dec 1998 08:27:50 -0500 (EST)
+Message-Id: <199812151327.IAA06794@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: fredm@localhost [127.0.0.1] didn't use HELO protocol
+To: "Leenman, Eric (Eric)" <eleenman@lucent.com>
+Cc: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Re: SRAM and orLCD problem 
+In-Reply-To: Your message of "Tue, 15 Dec 1998 08:53:36 +0100."
+             <DF6A41214893D11187BA00805F851C1A3B7B3C@NL0030EXCH001U> 
+Date: Tue, 15 Dec 1998 08:27:49 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+eric, i don't have a definitive answer, but here are two things:
+
+1.  You *NEED* the reset chip, whether it's a DS1233 or the MC34064HC,
+I don't care, but you must have a device that asserts reset (pulls the
+line low) when the system voltage falls below 4.5v.  Otherwsie, the
+RAM will not hold its contents when you turn the board off.
+
+So, plesae get the proper component, and remove your jumper from the
+BATT LED.  Put an LED in there!
+
+
+2.  The board is *designed to operate in special test mode*!!  So make
+sure MODB is connected to Ground!
+
+
+there is more information about the design of the 6.270 board (which
+is the precursor to the Handy Board) in the Appendix B document at:
+
+  http://el.www.media.mit.edu/projects/handy-board/techdocs/
+
+Please read it.
+
+Fred
+
+
+In your message you said:
+> Hi,
+> 
+> I'm tring to assembly a Handy board and I get to section 6. "The beeper and
+> LCD circuit". 
+> In section 4 I've got the pcode_hb downloaded in the 68HC11A1 and the error
+> when DL.EXE comes in the second phase. (I use the DOS version from Randy
+> Sargent on a 486SX Intel machine)  Now I got stuck with the LCD. I don't get
+> interactive C V 2.81 9/29/93, I get 16 black characters on the first row.
+> Also the charge LED was flickering on and off or was shining very weak. 
+> 
+> I have checked all the addresslines, datalines, control lines for breaks,
+> tripled checked the orientation or more the HC132, HC373 and the SRAM. Tried
+> another , SRAM, 74HC132, the LCD, and checked 74HC373. 
+> 
+> That was all OK I have deassembled the board to section four so the SRAM is
+> not on it. Download the pcode_hb.s19 again. The strange thing now is that I
+> don't get the error again when DL.EXE comes in the second phase when it
+> tries to access the memory. Why???
+> 
+> Also the GREEN PWR led (or TX led) is in the first phse of DL flickering on
+> and off but in the second phase almost not. Does the first phase hang up up
+> the download protocol of DL.EXE? 
+> 
+> 
+> This is what DL print on the monitor screen:
+> 
+> C:\IT\IC\dl pcode_hb.s19
+> 6811 s19 file downloader version 7.31 1994
+> 	Copy right Randy Sargent 1994
+> using port com 1
+>  
+> Please place the board in download mode and press return,
+> To quit, press Q
+> For help, press h
+> Downloading 256 byte bootstrap (229 data)
+> .....................................................................
+> .....................................................................
+> .....................................................................
+> ........................................_____________________________
+> Download succesfull
+> Config 0x0C
+> loading pcode_hb.s19
+> 
+> Sending pcode_hb.19
+> .....................................................................
+> .....................................................................
+> .....................................................................
+> ...................................................................Done.
+> Press the board RESET button to start pcode_hb.s19
+> Press any key to exit...
+> Bye!
+> )
+> 
+> 
+> Finally tried another processor and another SRAM. I don't see the flickering
+> now with the other SRAM so maybe the SRAM is defected but with the other
+> processsor and the SRAM I still don't see Interactive C on my LCD. The LCD's
+> I use is a 2 row*16 and a 1*16. The one row gives 8 black blocks on it's
+> row. It is possible that these are defect because this where not new but the
+> 2*16 I got from my work of the shelff?
+> 
+> I'm wandering if it could be the 
+> a)	PCODE_HB.S19 or the downloader? Should I use DLM in stead off DL? 
+> b)	Can it be the contrast of the LCD?
+> c)    Can it be the MC34064HC Reset circuit? ( I have used this one because
+> the DS1233-10 is hard to get hear in the Netherlands) Therefore I have also
+> let out the BATT led (and connected the tow holes of the LED to each other
+> so that the reset output is pulled up to VCC with the resistor)
+> 
+> Other questions I have is:
+> 
+> 1) Why is MODB connected to GND instead of VCC? In the Motorola spec
+> MC68HC11A8 the normal Handy Board is the special test operating mode. It
+> says in this section (when MODB=GND) that it is getting his interupt and
+> reset vectors out of external memory locations BFC0-BFFF instead of internal
+> memory FFC0-FFFF. I don't know what the PCODE_HB.S19 does but this seam
+> strange to me.  When you connect MODB to VCC it is in the expanded
+> Multplexed mode. and then the reset and interrupt vectors is got from
+> internal memory.
+> 
+> Getting back to my first problem, when I connect MODB to VCC ( by connecting
+> it to MODA) I see the R/W# toggle on my oscillescoop and see the green PWR
+> led go on and off ones a second. That assumes that the processor is
+> executing the PCODE_HB startup code and tries to tranmit data to the PC.
+> When I connect it to ground the level of the R/W# pin stays at 5 volt and I
+> see glitches from about one volt around the steady high level.
+> 
+> 2) Is it possible to zip the archive files. I would be much easier to
+> download them and review them locally.
+> 
+> 3) I'm a newbee with a mailing list, sorry and sorry for asking but when I'm
+> joining this list do I get hundreds of email every day or do you get ones a
+> week the latest emails or how those this works? I don't know if I should
+> join this list but the archives have already helped me lot.
+> 
+> I hope any one is formilliar with this thing and can help me out. Please
+> send email to: eleenman@lucent.com
+> 
+> Thanks in advance and greetings from the lowlands in the Netherlands.
+> 
+> Eric Leenman
+> 
+

@@ -1,0 +1,76 @@
+Received: from dec1.wi-inf.uni-essen.de (IDENT:root@dec1.wi-inf.uni-essen.de [132.252.53.1])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id QAA04596
+	for <handyboard@media.mit.edu>; Tue, 1 Aug 2000 16:25:24 -0400 (EDT)
+Received: from dec1.wi-inf.uni-essen.de (dial-99-246.wu-wien.ac.at [137.208.99.246])
+	by dec1.wi-inf.uni-essen.de (8.9.3/8.9.3) with ESMTP id WAA17771;
+	Tue, 1 Aug 2000 22:25:18 +0200
+Message-Id: <398731D1.1E213A6A@dec1.wi-inf.uni-essen.de>
+Date: Tue, 01 Aug 2000 22:23:45 +0200
+From: Stephan Adelsberger <astephan@dec1.wi-inf.uni-essen.de>
+X-Mailer: Mozilla 4.6 [de] (Win98; I)
+X-Accept-Language: de
+Mime-Version: 1.0
+To: Jens Graf <JensGraf@gmx.de>, handyboard@media.mit.edu
+Subject: Re: GP2D02 - problems?
+References: <000301bff217$40f48700$6397b8d4@grafinsky>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+No, the GPD02 value is never zero.
+Here is a table with my readings and the corresponding
+distance.
+
+distance  value
+in cm
+
+110      68
+100      70
+90       71
+80       72
+75       74
+70       75
+65       76
+60       79
+55       81
+50       83
+45       87
+40       91
+35       97
+30       106
+25       117
+20       135
+15       167
+10       233
+
+This values may vary a bit. The sensor is designed for  distances above 10 cm.
+If the
+distance < 10 cm, the values are useless (the values drop again).
+
+However, there is a much more elegant solution
+using the following formula by  Ben Jackson (ben@ben.com):
+
+>In lugnet.robotics.handyboard, Jean-Michel Mongeau writes:
+>Does anyone how I could create a lookup table or an algorithm to convert the
+>output of the Sharp GP2D02 (0 to 255 = byte) to values between 10 and 80 cm,
+>which is the reading capability of the IR?
+
+
+>You mean like value = 10 + ((70 * b) / 256) ?
+
+A more precise formula from the same author is:
+distance = 0.1233 * (1.0320^(float)GP2D02_15)+ 9.3078
+(see: http://www.lugnet.com/robotics/handyboard/?n=7313).
+
+For more infos and hints on sensors, especially on GP2D02, visit my home page
+(http://dec1.wi-inf.uni-essen.de/~astephan/index/index_l.htm) and click on
+sensors.
+
+Hope this helps
+Stephan Adelsberger
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Stephan Adelsberger
+stephan@adelsberger.com
+http://go.to/robot
+
+

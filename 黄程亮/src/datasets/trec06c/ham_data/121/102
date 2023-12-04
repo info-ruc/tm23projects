@@ -1,0 +1,57 @@
+Received: from penguin.cs.cornell.edu (penguin.cs.cornell.edu [128.84.96.11])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3BFtE208108
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 11:55:14 -0400 (EDT)
+Received: from turing.cs.hmc.edu ([134.173.42.99]) by penguin.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 11 Apr 2006 11:55:07 -0400
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id 7040F53230; Tue, 11 Apr 2006 08:34:40 -0700 (PDT)
+Date: Tue, 11 Apr 2006 08:34:40 -0700
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 20
+Message-ID: <20060411153440.GB23822@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+X-OriginalArrivalTime: 11 Apr 2006 15:55:08.0017 (UTC) FILETIME=[4E75AE10:01C65D80]
+
+Scribe and Siena are both attempting to provide the same
+functionality: the ability for nodes to dynamically create a variety
+of groups, and receive information sent to those groups.
+
+Scribe is another tree-based multicast scheme, although it allows any
+node with the appropriate credentials to broadcast to the multicast
+group.  Scribe is built on top of Pastry, and it takes advantage of
+the underlying structure Pastry provides.  Scribe creates multicast
+groups by assigning each group a groupID in the address space,
+designating the node with the address closest to the groupID as the
+rendez-vous node for the group, and building a content distribution
+tree out from that node.  Because of the nature of Pastry routing, the
+content distribution tree may include nodes which are not part of the
+multicast group; if node A has to route through node B to reach the
+rendez-vous node, then node B becomes part of the distribution tree.
+Scribe does not store information about all the nodes in the multicast
+group at the rendez-vous node.  Instead, that information is stored
+locally.
+
+Scribe scales well, and supports multiple multicast groups easily.
+However, it relies on the underlying Pastry network to provide
+locality.  It may also route multicast messages through nodes which
+are not interested in those messages.  While the number of hops to
+route between nodes in the tree is O(log(n)), it will still increase
+the latency in delivering messages to the multicast group, and use up
+more bandwidth than is strictly necessary.
+
+Siena is a much more general design for a publish/subscribe system.
+Within the paper, several possible designs are discussed, and the
+underlying topology is left as a fairly general acyclic graph.  Within
+this graph, filters are applied as close to the source as possible,
+which will help minimize the bandwidth used. Siena could be run on top
+of either a peer-to-peer or a hierarchical network, although the
+authors argue that a peer-to-peer network is better under most
+circumstances, and the experimental results suggest that this is true
+for larger systems.
+
+-- Victoria Krafft
+

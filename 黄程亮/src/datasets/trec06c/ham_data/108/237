@@ -1,0 +1,127 @@
+Received: from envelope.itsc.cuhk.edu.hk (envelope.itsc.cuhk.edu.hk [137.189.8.181])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jA66Y15L000638
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 5 Nov 2005 23:34:02 -0700
+Received: from envelope.itsc.cuhk.edu.hk (localhost.localdomain [127.0.0.1])
+	by envelope.itsc.cuhk.edu.hk (8.12.10/8.12.10) with ESMTP id jA66XuQk012723
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 6 Nov 2005 14:33:56 +0800
+Received: from envelope.itsc.cuhk.edu.hk (localhost.localdomain [127.0.0.1])
+	by envelope.itsc.cuhk.edu.hk (8.12.10/8.12.10) with ESMTP id jA66XuNp012718
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 6 Nov 2005 14:33:56 +0800
+Received: (from apache@localhost)
+	by envelope.itsc.cuhk.edu.hk (8.12.10/8.12.10/Submit) id jA66XucB012716
+	for DMDX@psy1.psych.arizona.edu; Sun, 6 Nov 2005 14:33:56 +0800
+Received: from 058177124071.ctinets.com (058177124071.ctinets.com [58.177.124.71]) 
+	by webmail.cuhk.edu.hk (IMP) with HTTP 
+	for <s037627@localhost>; Sun,  6 Nov 2005 14:33:56 +0800
+Message-ID: <1131258836.436da3d41377d@webmail.cuhk.edu.hk>
+Date: Sun,  6 Nov 2005 14:33:56 +0800
+From: s037627@mailserv.cuhk.edu.hk
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Problems of two sequential stimuli, and RT problems
+MIME-Version: 1.0
+Content-Type: text/plain; charset=BIG5
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi everybody,
+
+I am preparing a experiment on a notebook. In each trial of the experiment, two
+visual stimuli, a cross and a circle, will be shown sequentially. There are
+four combinations, including that a cross is shown first and then a circle is
+shown; a circle first and then a cross; 2 circle are shown sequentially; 2
+cross shown sequentially. Each stimulus would last for 75ms, and ISI would be
+varied from 500ms, 300ms, 100ms, 50ms, 10ms. The instruction given to the
+subject is that when he see cross, he need to press A; when he see circle, he
+need to press L. A correct repsone for each trial including 2 presses which are
+in corect order. We try to write the program like this:
+
+ 
+
+ <n 12> <g 2> <s 12> <fbl +1><azk> <cr> <fd 0> <t 4000> <id "keyboard"> <dbc
+255255255><dwc 0><vm 1024 768 768 16 0>
+
+
+$ 
+0 <umr><mr "+Space"><umpr> <umnr>
+
+<ln -1><bmp> "press two pics";
+
+0 <ln -1> <bmp> "see x press A";
+
+0 <ln -1><bmp> "see O press L"; 
+
+0 <ln -1><bmp> "space";
+
+
+
+
+250 <ms% 500> /; 
+$ 
+
++1 * <ms% 75> <bmp> "cross" /* <ms% 500> <bmp> "white"/* <ms% 75> <bmp>
+"circle"/<mpr "+A"><mnr "+L">/<cfb ¡§correct¡¨> <nfbt> <wfb "wrong">;
+
+ 
+
+-2 *<mpr "+A"><mnr "+L">/<cfb ¡§correct¡¨> <nfbt> <wfb "wrong">;
+
+ 
+
+ 
+
+However, there are several problems. First, when subject press the first
+button,
+he need to wait for a while before he press the second button though i have set
+<fd 0>. Then the RT of subject would not accurate. Second, For ISI is 500ms
+like the above, the subject may press the button once he see the first stimulus
+before the second stimulus is shown. But, we cannot spilt the 2 stimulus in
+each
+trial into 2 lines. That is write the programe like this :
+
+ 
+
+ 
+
++1 * <ms% 75> <bmp> "cross"/<ms% 500> <bmp> "white"//<mpr "+A"><mnr "+L">/<cfb
+¡§correct¡¨> <nfbt> <wfb "wrong">;
+
+ 
+
+-2 *<ms% 75> <bmp> "circle"/<mpr "+A"><mnr "+L">/<cfb ¡§correct¡¨> <nfbt> <wfb
+"wrong">;
+
+ 
+
+Because we use five ISI: 500ms, 300ms,, 100ms, 50ms, 10ms. For the short ISI,
+like 10ms, if we split the 2 stimulus into 2 lines, the subject would not have
+enough time to repsond.
+
+ 
+
+The third problem is the feedback. If the subject press incorrect button for
+the
+first stimulus, but he press correct button for the second stimulus, a feedback
+"wrong" would be shown followed by a feedback "correct". A correct reponse for
+each trial involves 2 presses in correct order. And the condition just
+described is a wrong repsonse instead of a wrong and then correct response. 
+
+ 
+
+I know what I said is a bit complicated, hope you will undersatnd what I said.
+I
+don't know how to use DMDX to write a programme that can record RT for 2
+responses in each trial.
+
+ 
+
+Thanks,
+
+Kevin
+
+
+
+-------------------------------------------------
+This e-mail is sent by CUHK WebMail http://webmail.cuhk.edu.hk
+

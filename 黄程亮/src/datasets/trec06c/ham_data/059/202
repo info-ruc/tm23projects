@@ -1,0 +1,105 @@
+Received: from bunyip.flash.net (bunyip.flash.net [209.30.2.15])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with ESMTP id HAA24189
+	for <handyboard@media.mit.edu>; Mon, 17 Jan 2000 07:10:04 -0500 (EST)
+Received: from [209.30.189.147] (p147.amax8.dialup.sjc1.flash.net [209.30.189.147])
+	by bunyip.flash.net (8.9.3/Pro-8.9.3) with ESMTP id GAA19883
+	for <handyboard@media.mit.edu>; Mon, 17 Jan 2000 06:10:02 -0600 (CST)
+Message-Id: <200001171210.GAA19883@bunyip.flash.net>
+X-Mailer: Microsoft Outlook Express for Macintosh - 4.01 (295) 
+Date: Mon, 17 Jan 2000 04:09:27 -0800
+Subject: Can't get input capture to work
+From: "Rick Violet" <radagast@flash.net>
+To: HandyBoardList <handyboard@media.mit.edu>
+Mime-Version: 1.0
+X-Priority: 3
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+
+I'm hoping someone can help me figure out the problem with the following
+driver. 
+
+Ultimately I want to simulate a sony IR remote control using a 6.270 board.
+
+I acquired the sony-ir.asm and tried it out, but that wasn't working; so I
+trimmed it down to the following driver in hopes to get something working.
+
+The driver sets up a falling edge input capture interrupt routine which sets
+a flag 
+to show that the routine was executed.
+
+I hook up a micro-switch to port A pin 0. I press the switch by hand while
+my C test program runs.
+The test program shows a transition but the interrupt doesn't execute, so
+I'm puzzled. 
+It's bound to be a simple error, but after many hours of trying, I'm
+stumped. Anyone have suggestions?
+
+Here's the driver code....
+
+*---------------------------------------------
+    org    MAIN_START
+
+*---------------------------------------------
+TCTL2      EQU $1021    ; Timer Control register 2
+TMSK1      EQU $1022    ; main Timer interrupt Mask register 1
+TIC1INT    EQU $EE      ; Timer Input Capture 1
+
+*--------------------------------------------- 
+variable_flag  FDB  0   ; set by TIC1INT service handler
+
+*--------------------------------------------- 
+subroutine_enable:
+    LDX  #$BF00         ; assume special mode
+    BSET TMSK1,X $04    ; set IC1I, enable TIC1INT interrupt
+    BSET TCTL2,X $20    ; capture falling edge
+    BCLR TCTL2,X $10     
+    RTS
+
+*--------------------------------------------- 
+subroutine_disable:
+    LDX  #$BF00         ; assume special mode
+    BCLR TMSK1,X $04    ; clear IC1I, diable TIC1INT interrupt   
+    RTS
+
+*--------------------------------------------- 
+subroutine_initialize_module:
+    LDX  #$BF00         ; assume special mode
+    LDD  #ir_routine    ; install interrupt vector
+    STD  TIC1INT,X
+    LDD  #0             ; clear flag
+    STD  variable_flag
+    RTS
+
+*--------------------------------------------- 
+ir_routine:
+    LDD  #1             ; set flag
+    STD  variable_flag
+    RTI
+*--------------------------------------------- 
+*--------------------------------------------- 
+
+Here's the C test code....
+
+/*---------------------------------------------*/
+void main()
+{ 
+    printf( "RUN\n" );
+    enable(0);
+    while( PA0() == 0){}
+    printf( "PRESSED\n" );
+    while( PA0() == 1){}
+    disable(0);
+    printf( "DONE %d\n", flag );
+}
+
+/*---------------------------------------------*/
+int PA0()
+{ 
+    return !( peek(0x1000) & 0x01 );
+}
+
+
+Any suggestions would be greatly appreaciated.
+
+-Rick
+

@@ -1,0 +1,83 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k14NYkg1015337
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 4 Feb 2006 16:34:46 -0700
+Received: from localhost (gimli.email.arizona.edu [10.0.0.223])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 94442CB45D8
+	for <DMDX@psy1.psych.arizona.edu>; Sat,  4 Feb 2006 16:34:46 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 67A19CB0BF4
+	for <DMDX@psy1.psych.arizona.edu>; Sat,  4 Feb 2006 16:34:45 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060204162807.00bcde58@psy1.psych.arizona.edu>
+Date: Sat, 04 Feb 2006 16:34:42 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: questions about COT
+In-Reply-To: <006101c62968$93dcda60$0401a8c0@Sharon>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 01:54 AM 2/4/2006 -0700, you wrote:
+>I knew it today that I should have included 101 as an item, and that line 
+>should look like this:
+>
+>     +101 * <o 255> %1 / <o 254> %1/ "READY" <fd 724>/;"
+>
+>and the azk file should start with something like below:
+>
+>     Item 101, COT 0.000 (and some RT)
+>     Item 1046, COT 13513.02 (and some RT)
+>
+>
+>I will correct this in my future script, but I want to understand my error 
+>better, so here are the questions:
+>
+>In my experiment, the fMRI scanner won't start collecting data until 12 
+>seconds after the spacebar of the computer is hit (to start DMDX).  Since 
+>SOAs (relative to scanner data collection) instead of COTs are needed in 
+>image processing, the usual way to translate a COT value to an SOA value 
+>is to subtract 12 seconds from each COT value.
+>
+>1) Where in the line does the scanner start?   <o 255> %1 / <o 254> %1/ 
+>"READY" <fd 724>/;
+
+   Probably the with the <O 254>.
+
+>
+>2) Except for the first item, is my azk file really different from the 
+>"should-be" azk file?
+
+   Dunno, I don't remember details of everything I've ever done.  People 
+that use  the scanner regularly are going to have a better idea than I am.
+
+>
+>The following two questions are related to Question 1:
+>
+>3) The presentation computer I used has a refresh rate of 16.58 ms, so I 
+>actually put a little bit more than 12 seconds on item 101.  I guess the 
+>scanner had started collecting data before the "COT=0.00" time point in my 
+>azk file.  Am I right?
+
+   If what you say is so, yes.
+
+>
+>4) If I still want to use the data that I collected (I collected two pilot 
+>subjects with this script), should I correct my COTs?  I.e., should I add 
+>5.92 ms, 4.92 ms, or 3.92 ms to each of the COT value, depending on when 
+>the scanner is started?  (I got the value of 5.92 ms by subtracting 12000 
+>ms from 724x16.58 (= 12003.92) plus two %1's).
+
+   I would run the file again with a clockon in the first item and see what 
+it is by item 1046 and add that to clock on times in the first run.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+If frogs had wings, they wouldn't be bouncing around on their bums.
+
+
+

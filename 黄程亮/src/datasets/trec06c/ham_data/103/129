@@ -1,0 +1,92 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j5K6TGNb017884
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Mon, 20 Jun 2005 01:29:17 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id j5K6TG65017883
+	for reliable_computing-outgoing; Mon, 20 Jun 2005 01:29:16 -0500 (CDT)
+Received: from bayes.math.uni-paderborn.de (bayes.math.uni-paderborn.de [131.234.116.40])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j5K6T6Us017879
+	for <reliable_computing@interval.louisiana.edu>; Mon, 20 Jun 2005 01:29:12 -0500 (CDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by bayes.math.uni-paderborn.de (Postfix) with ESMTP id 26D9DE00009B
+	for <reliable_computing@interval.louisiana.edu>; Mon, 20 Jun 2005 08:28:49 +0200 (CEST)
+Received: from bayes.math.uni-paderborn.de ([127.0.0.1])
+	by localhost (bayes [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+	id 07309-08 for <reliable_computing@interval.louisiana.edu>;
+	Mon, 20 Jun 2005 08:28:45 +0200 (CEST)
+Received: from bursar.math.uni-paderborn.de (bursar.math.uni-paderborn.de [131.234.107.110])
+	by bayes.math.uni-paderborn.de (Postfix) with ESMTP id 48957E00008F
+	for <reliable_computing@interval.louisiana.edu>; Mon, 20 Jun 2005 08:28:45 +0200 (CEST)
+To: reliable_computing@interval.louisiana.edu
+Subject: Re: Arctan2
+References: <BED225C6.18BA4%George.Corliss@Marquette.edu>
+	<42ACD828.2050608@mindspring.com>
+From: Christopher Creutzig <ccr@mupad.de>
+Date: Mon, 20 Jun 2005 08:28:45 +0200
+In-Reply-To: <42ACD828.2050608@mindspring.com> (Alan Eliasen's message of
+	"Sun, 12 Jun 2005 18:49:44 -0600")
+Message-ID: <Christopher-Creutzig-wqsis09sfs2.fsf@bursar.math.uni-paderborn.de>
+User-Agent: Gnus/5.110003 (No Gnus v0.3) Emacs/21.3.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: by mailscan-system at math.uni-paderborn.de
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+Alan Eliasen <eliasen@mindspring.com> writes:
+
+>> [-pi, pi], according to the set definition
+>>    { arctan(y,x) | x in X, y in Y }.
+>
+>    I agree that's the most obvious answer given conventions for the
+> range of arctan, but I'd argue that that jump in range could be
+> considered somewhat arbitrary.  If you look at the graph, you can see
+> that we could consider arctan to map out a sort of helix, continually
+
+ This is always the case when considering what essentially are
+multivalued functions.  You have to implicitly or explicitly chose a
+branch and evaluate the function on this branch instead of its Riemann
+hypersurface.  (What you are considering can be viewed as a
+fundamental function of one complex variable, namely arg.)  (Note that
+you should declare explicitly which "side" the branch cut itself
+belongs to.  Standard notation in the CAS community is "counter
+clockwise continuous", i.e., to have arg, ln, etc. be continuous when
+approaching the negative real axis from above.)  Also note that the
+Riemann surface and its image may be much more complicated than for a
+simple arg.  Have a look at the graph of the complex arcsine function
+at http://mathworld.wolfram.com/InverseSine.html and think about
+continuing the graph -- especially for the real part.
+
+> the "top")  Rather than forcing that particular (somewhat arbitrary)
+> discontinuity, we could theoretically continue the helix downward and
+> map the points in quadrant IV to something less than -pi, and maintain
+> continuity between quadrants III and IV.  It diverges from the usual
+
+ You could, but that would violate inclusion monotonicity, which would
+for many applications be a really bad thing.  And what would you do
+with ([-1,1], [-1,1])?  Your argument above would suggest to return
+the real axis.
+
+ There is another possibility of handling the admittedly arbitrary
+branch cut, namely to return the union of two intervals.  The
+advantage of this approach is to significantly reduce overestimation;
+the disadvantage is that further up in the algorithms you may need to
+limit the number of intervals by explicitly enlarging selected ones to
+avoid an exponential explosion.  Then again, often, you do not need
+to.
+
+>    Does anyone have strong feelings on making an arctan implementation
+> work this way--that is, returning something beyond [-pi, pi]?  It seems
+> quite a bit more elegant and gives tighter interval bounds to do so.
+
+ As I said above: Inclusion monotonicity is something you should
+strongly consider supporting.  It would be potentially disastrous to
+have a bisectioning algorithm and then not have 
+arg(-1+[-1,-1,3]*I) subset arg(-1+[-1,1/2]*I).
+
+-- 
+    +--+
+   +--+|   
+   |+-|+            Christopher Creutzig (ccr@mupad.de)
+   +--+                     Tel.: 05251-60-5525
+

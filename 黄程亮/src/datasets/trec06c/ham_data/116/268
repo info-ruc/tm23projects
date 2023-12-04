@@ -1,0 +1,78 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k27HeYg1007163
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 7 Mar 2006 10:40:34 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id B7268D395A9
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  7 Mar 2006 10:40:34 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id CAC03D37CF6
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  7 Mar 2006 10:40:31 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060307103701.00ba4e80@psy1.psych.arizona.edu>
+Date: Tue, 07 Mar 2006 10:40:29 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: special characters
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+Yeah, not going to happen, sorry.  The \u and a number of other unicode 
+control words were added to the RTF specification after or during DMDX's 
+design and they're real unicode.  It's interesting looking at your file 
+because there are constructs like this:
+
+" \f2\u20776?\f1  \f2\'97\'44\f1  \f2\u20772?\f1  "
+
+It switches back to the 8 bit codes that DMDX can handle (\'97\'44) in the 
+middle of two 16 bit codes (\u20776 and \u20772).  I tried replacing 
+\u20776 with two 8 bit codes that would be binarily equivalent to it 
+however that's not how unicode kludges work apparently.  Word and Wordpad 
+can display the characters because they are unicode applications (or at the 
+very least unicode aware applications), DMDX isn't and won't be any time soon.
+
+At 08:18 AM 3/7/2006 -0700, you wrote:
+
+>Yeah, your file is using an RTF control word DMDX doesn't know, \u.  I'll 
+>see if I can't decipher how to use it but given that it looks like a 
+>unicode specific control word and DMDX is most specifically not a unicode 
+>aware application and any support it does have for it is strictly smoke 
+>and mirrors that Microsoft has built into the OS I don't hold much hope of 
+>getting it to work any time soon.  That and I'm pretty busy for the next 
+>day or two...
+>
+>At 04:34 PM 3/7/2006 +1100, you wrote:
+>>Hi Jonathan
+>>
+>>Thanks very much.  The first few trials are Devangari and Bengali, later 
+>>ones are Cyrillic, etc, and a few other scripts.  You find them when 
+>>making the rtf file in word by inserting special characters, and they are 
+>>in the arial unicode font.  I need them for a symbol memory task that 
+>>uses letter-like symbols which are not already known to the participant.
+>>
+>>Virginia
+>>
+>>
+>>A. Prof. V. M. Holmes
+>>Department of Psychology
+>>University of Melbourne
+>>Parkville, Vic, 3010, Australia
+>>
+>>phone:    61 3 8344 6368
+>>facs:       61 3 9347 6618
+>>Staff website:  psych.unimelb.edu.au/people/staff/HolmesV.html
+>>Laboratory 
+>>website:  psych.unimelb.edu.au/research/psycholinguistics/index.html
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   The only difference between a rut and a grave is the depth.
+
+
+

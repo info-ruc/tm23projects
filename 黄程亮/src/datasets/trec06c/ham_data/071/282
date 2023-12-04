@@ -1,0 +1,54 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id VAA06338
+	for <handyboard@media.mit.edu>; Sat, 16 Sep 2000 21:20:46 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id VAA20369; Sat, 16 Sep 2000 21:21:11 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://news.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:8070
+From: Jerry Normandin <jerrynormandin@ne.mediaone.net>
+X-Real-Life-Name: Jerry Normandin
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: Jerry Normandin <jerrynormandin@ne.mediaone.net>
+Subject: Sonar and Compass together on expansion board.
+Posted-Date: Sun, 17 Sep 2000 01:28:52 GMT
+Date: Sun, 17 Sep 2000 01:28:52 GMT
+Organization: None
+Message-Id: <39C41E53.718D0FA3@ne.mediaone.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+          I am working in adapting a PNI compass to the handyboard.
+And I have a 6500 sonar board
+connected to the expansion board, here's my idea:
+Use a Lithium 3.6V battery to save calibration settings after poweroff
+M/S is jumper selectable
+Calibrate is Jumper Selectable
+Raw is jumper Selectable
+P/C goes to a data out port, that way we can either poll or go into
+continous mode.
+SDO goes to MISO
+SDI goes to   MOSI
+SCK to SCLK
+Enable goes to a Data Out.
+
+NOW, to fix the shortage of  Data Out I am going to use a few three to
+8-decoders to increase my
+"Enable" lines.  So we can get  more lines that way, my IRPD that needs
+to fire off 8 Infrared LEDs
+needs ro tie up three + lines ( I don't now If I am going to use some
+logic to decode the state that
+all three lines are low to light the 1st LED, or use the next led port..
+
+Don't know what is best yet.
+I thnk the clock  that drives BINH won't be a problem because it's a
+blanking signal to the sonar, we
+just don't ping the sonar when we clock out data from the compass.  And
+when we are done we
+disable the compass and start pinging again.   Does this make sense, Am
+I looking at this right?
+Thanks!
+

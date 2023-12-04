@@ -1,0 +1,75 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA03799
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 24 Oct 2000 09:36:31 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by phobos.email.Arizona.EDU (5.1.046)
+        id 39E3B4460010CAB6 for DMDX@psy1.psych.arizona.edu; Tue, 24 Oct 2000 09:36:29 -0700
+Message-Id: <5.0.0.25.2.20001024092625.009d7b70@psy1.psych.arizona.edu>
+Date: Tue, 24 Oct 2000 09:36:28 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: pin-connection/bmp-database
+In-Reply-To: <5.0.0.25.2.20001024091551.009e2eb0@psy1.psych.arizona.edu>
+References: <39F5ABC2.B5ABD0@forenap.asso.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 09:22 AM 10/24/00 -0700, you wrote:
+
+>>1- Pin connection : according to the scheme in the help
+>>we just have to connect one button to pin 31 , the second
+>>to pin 11 with a request button to pin 37.
+
+   Wrong, the diagram is for illustration purposes, it is not showing you 
+connections.  Never saw anyone misinterpret that diagram before.  The input 
+pins are 37, 36, 35, 34, and 33, of which you will more than likely only be 
+interested in the first three.  A literal connection diagram would be:
+
+                               +5v  <---------o---+
+pin 37 --------------------+  pin 18         |   |
+pin 36 -----------------+  |                 \   \
+pin 35 -                |  +-------+   4.7k  /   /
+pin 34 -                |          |         \   \
+pin 33 -                +--+       |         |   |        \
+pin 32 -                   |       |         |   |          \
+pin 31 -                   |       +---------o----------o     o----+
+pin 30 -                   |                     |                 |
+                            |                     |        \        |
+pin 10 -                   |                     |          \      |
+pin 11 -                   +---------------------o------o     o----o
+pin 12 -                                                  n.o.     |
+pin 13 - pb3: aux input Bit11                           switches   |
+pin 14 - pb4: aux input Bit12                                      |
+pin 15 - pb5: aux input Bit13                                   -------
+pin 16 - pb6: aux input Bit14                                     ---
+pin 17 - pb7: aux input Bit15                                      .
+
+                                                                 ground
+                                                                 pin 19
+   The third button connects to pin 35.
+
+>>I have been asked on how this is progammed in the source
+>>code ??? In other words what will happened if the pin nb are changed ??
+>
+>   You would use the keywords (such as <mpr>) that map responses to 
+> different bits of the PIO-12.
+
+   You will also have to change <mip> if you use other pins for input.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Lackland's Laws:
+	(1) Never be first.
+	(2) Never be last.
+	(3) Never volunteer for anything
+
+
+

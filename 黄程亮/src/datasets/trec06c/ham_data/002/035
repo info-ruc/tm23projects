@@ -1,0 +1,33 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3016>; Fri, 6 May 1994 21:34:30 -0400
+Received: from plan9.research.att.com ([192.20.225.252]) by psuvax1.cse.psu.edu with SMTP id <296718>; Fri, 6 May 1994 21:28:15 -0400
+From:	philw@plan9.research.att.com
+To:	9fans@cse.psu.edu
+Date:	Fri, 6 May 1994 21:22:38 -0400
+Message-Id: <94May6.212815edt.296718@psuvax1.cse.psu.edu>
+
+>From: euler.Berkeley.EDU!serge
+>
+>>Brazil allows file systems to be mounted with a recover option
+>>which does exactly what you ask.
+>
+>Pardon me, can you tell me what Brazil is?  Thank you very much.
+
+Brazil is the name of the research version on Plan 9 we are currently
+working on.
+
+>From:	Scott Schwartz <groucho.cse.psu.edu!schwartz>
+>
+>One annoying thing in Unix is when you say something like
+>open("/no/such/directory/or/file",0), it tells you that it something
+>doesn't exist, but doesn't say what, which sometimes makes for
+>uninformative error messages.  Now that we have errstr, instead of just
+>errno, it would be delightful if it would encode something about
+>what went wrong, so that perror could say something like
+>	open: failed because directory 'such' does not exist
+
+This has nothing to do with the plan 9 kernel. The errstr is produced by
+whatever file system you are connected to. However, while the file
+system could be modified to do this it does not seem unreasonable
+to expect the application programmer to print adequate information
+especially with the werrstr library function and %r format.
+

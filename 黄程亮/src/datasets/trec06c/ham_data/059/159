@@ -1,0 +1,58 @@
+Received: from hplms26.hpl.hp.com (hplms26.hpl.hp.com [15.255.168.31])
+	by rockfort.hpl.hp.com (8.8.6 (PHNE_17190)/8.8.6 HPLabs Workstation) with ESMTP id OAA02140
+	for <jeant@rockfort.hpl.hp.com>; Fri, 14 Jan 2000 14:42:16 -0800 (PST)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38])
+	by hplms26.hpl.hp.com (8.9.3 (PHNE_18979)/HPL-PA Relay) with ESMTP id OAA15920
+	for <jeant@rockfort.hpl.hp.com>; Fri, 14 Jan 2000 14:29:05 -0800 (PST)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m129F9W-0027dhC@rachael.franken.de>
+	for rockfort.hpl.hp.com!jeant; Fri, 14 Jan 2000 23:25:06 +0100 (MET)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m129F9O-002OspC; Fri, 14 Jan 100 23:24 MET
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id XAA01906;
+	Fri, 14 Jan 2000 23:23:21 +0100
+Date: Fri, 14 Jan 2000 23:23:21 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Jean Tourrilhes <jeant@rockfort.hpl.hp.com>
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, kaf@fc.hp.com
+Subject: Re: Pcnet32 troubles...
+Message-ID: <20000114232321.B1888@alpha.franken.de>
+References: <20000114135947.A2095@rockfort.hpl.hp.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <20000114135947.A2095@rockfort.hpl.hp.com>; from Jean Tourrilhes on Fri, Jan 14, 2000 at 01:59:47PM -0800
+Status: RO
+X-Status: A
+Content-Length: 1024
+Lines: 25
+
+On Fri, Jan 14, 2000 at 01:59:47PM -0800, Jean Tourrilhes wrote:
+> 	I just updated one of my PCs to 2.2.14 and I have trouble with
+> the pcnet32 driver. The same driver was working fine in 2.2.13. I
+> didn't had the chance to try 2.3.X on this box (for some reasons, I
+> still need 2.2.X).
+
+you will probably see the same problem with 2.3.
+
+> 
+> pcnet32.c: PCI bios is present, checking for devices... 
+> Found PCnet/PCI at 0x6800, irq 11. 
+> eth0: PCnet/FAST 79C971 at 0x6800, 00 20 0c 10 56 02 
+>     tx_start_pt(0x0400):  64 bytes, BCR18(9861):BurstWrEn BurstRdEn NoUFlow  
+>     SRAMSIZE=0x0000, SRAM_BND=0x4000, assigned IRQ 11. 
+
+looks like board doesn't have any external SRAM attached, but the current
+driver always enables SRAM for 971. I'll prepare a patch for testing
+over the weekend.
+
+Thomas.
+
+-- 
+   This device has completely bogus header. Compaq scores again :-|
+It's a host bridge, but it should be called ghost bridge instead ;^)
+                                        [Martin `MJ' Mares on linux-kernel]
+

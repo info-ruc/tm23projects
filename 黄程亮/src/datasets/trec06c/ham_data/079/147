@@ -1,0 +1,247 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g0OMnRB29788;
+	Thu, 24 Jan 2002 14:49:28 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA29244;
+	Thu, 24 Jan 2002 14:54:59 -0500 (EST)
+Date: Thu, 24 Jan 2002 14:54:58 -0500 (EST)
+Received: by canaveral.red.cert.org; Thu, 24 Jan 2002 14:46:16 -0500
+Message-Id: <CA-2002-02.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-02 Buffer Overflow in AOL ICQ
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 25
+Status: RO
+X-Status: $$$$
+X-UID: 0000000036
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-02 Buffer Overflow in AOL ICQ
+
+   Original release date: January 24, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * AOL Mirabilis ICQ Versions 2001A and prior
+     * Voice  Video  &  Games  plugin  installed  with  AOL Mirabilis ICQ
+       Versions 2001B Beta v5.18 Build #3659 and prior
+
+Overview
+
+   There is a remotely exploitable buffer overflow in ICQ. Attackers that
+   are able to exploit the vulnerability may be able to execute arbitrary
+   code  with  the  privileges  of  the  victim  user.  Full  details are
+   discussed  in  VU#570167.  An exploit is known to exist, but we do not
+   believe  it  has been distributed in the wild. We have not seen active
+   scanning  for  this vulnerability, nor have we received any reports of
+   this vulnerability being exploited.
+
+I. Description
+
+   ICQ is a program for communicating with other users over the Internet.
+   ICQ  is  widely used (by over 122 million people according to ICQ Inc,
+   an  AOL Time Warner owned subsidiary). A buffer overflow exists in the
+   ICQ  client  for  Windows.  The  buffer  overflow  occurs  during  the
+   processing  of  a  Voice  Video  & Games feature request message. This
+   message is supposed to be a request from another ICQ user inviting the
+   victim to participate interactively with a third-party application. In
+   versions prior to 2001B, the buffer overflow occurs in code within the
+   ICQ  client.  In version 2001B the code containing the buffer overflow
+   was moved to an external plug-in.
+
+   Therefore,  all  versions  prior  to  the  latest  build  of 2001B are
+   vulnerable. Upon connection to an AOL ICQ server, vulnerable builds of
+   the  2001B  client  will  be  instructed  by the server to disable the
+   vulnerable plug-in. Since versions of the ICQ client prior to 2001B do
+   not  have  an  external  plug-in  to disable, they are vulnerable even
+   after  connecting  to  the server. AOL Time Warner is recommending all
+   users  of vulnerable versions of ICQ upgrade to 2001B Beta v5.18 Build
+   #3659.
+
+   During  normal  operation,  ICQ clients can exchange messages with one
+   another through the ICQ servers or via a direct connection. The buffer
+   overflow  specifically occurs during the processing of the Voice Video
+   & Games request via a Type, Length, Value (TLV) tuple with type 0x2711
+   from the ICQ server, or via a crafted direct connection request.
+
+   Some  versions  of the ICQ client open port 4000/UDP for client-server
+   communication.   Other   versions   open   port   5190/TCP   for  this
+   communication.  As with the previously reported AIM vulnerability, AOL
+   has  modified  the  ICQ  server  infrastructure  to  filter  malicious
+   messages  that  attempt  to  exploit this vulnerability, preventing it
+   from  being  exploited  through  an  AOL  ICQ  server.  Exploiting the
+   vulnerability   through   other   means   (man-in-the-middle  attacks,
+   third-party  ICQ  servers,  DNS  spoofing, network sniffing, etc.) may
+   still  be  possible.  Also,  since  UDP  packets can be broadcast on a
+   network,  a  malicious TLV packet with a spoofed source IP address may
+   be accepted as a legitimate server message.
+
+   The ICQ client also listens on a variably assigned TCP port for direct
+   connection  requests.  A  person  who  wishes  to  establish  a direct
+   connection  can  query  an ICQ server for the IP address and listening
+   port of the victim. Versions 2000A and prior accept direct connections
+   from  anyone  by  default.  Later versions of ICQ can be configured to
+   accept  direct connections from anyone. Since ICQ requests can be sent
+   directly  from  one  client  to  another,  blocking requests through a
+   central  server  is not a completely effective solution. The effective
+   solution  is  to  apply a patch, when available, that fixes the buffer
+   overflow,  or  upgrade  to 2001B Beta v5.18 Build #3659 with the Voice
+   Video & Games feature disabled.
+
+   This  vulnerability  has been assigned the identifier CAN-2002-0028 by
+   the Common Vulnerabilities and Exposures (CVE) group:
+
+   http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2002-0028
+
+II. Impact
+
+   An  attacker  can  execute  arbitrary  code with the privileges of the
+   victim user.
+
+III. Solution
+
+   All  users  should  upgrade  to  version 2001B Beta v5.18 Build #3659.
+   There is currently no patch available for the ICQ plug-in for 2001B or
+   versions  of  the  ICQ client prior to 2001B. Version 2001B Beta v5.18
+   Build  #3659's  installer  will  delete  the  vulnerable  plug-in.  In
+   addition,  for  users  who log in to the server with versions of 2001B
+   prior to Beta v5.18 Build #3659, access to the vulnerable plug-in will
+   be  disabled.  Users  with  versions  prior  to  2001B must upgrade to
+   mitigate this vulnerability.
+
+Block ICQ/SMS requests at the firewall
+
+   Blocking  connections  to  login.icq.com and access to ports 4000/UDP,
+   5190/TCP  and  the  TCP port that your client chooses to listen on may
+   prevent  exploitation  of this vulnerability. Note that the client may
+   establish  a  new  listening  port each time it is run. Note also that
+   this  does  not  protect you from attacks within the perimeter of your
+   firewall.
+
+Block untrusted messages
+
+   ICQ  permits  the  user to deny direct connections from anyone without
+   authorization  or  accept direct connections from known peers only. We
+   recommend    denying    direct   connections   from   anyone   without
+   authorization.  By  accepting direct connections from known peers, you
+   may  still be vulnerable to attacks that originate from known peers if
+   the peer has been compromised.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  When  vendors  report  new  information  to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+   AOL Time Warner
+
+     See http://web.icq.com/help/quickhelp/1,,117,00.html
+   _________________________________________________________________
+
+   The CERT Coordination Center thanks Daniel Tan and AOL Time Warner for
+   their assistance in discovering and analyzing this vulnerability.
+   _________________________________________________________________
+
+   Author: Jason A. Rafail
+   _________________________________________________________________
+
+Appendix B. - References
+
+    1. http://www.kb.cert.org/vuls/id/570167
+    2. http://www.securityfocus.com/bid/3813
+    3. http://web.icq.com/help/quickhelp/1,,117,00.html
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-02.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+   January 24, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPFBhSKCVPMXQI2HJAQH5HAQAgW7wzSjezC68o+q8fDGgokZzgEK8+28I
+9PS9W4/Ah48+6LEnIW1gE0yfqTnt/vIONFZf0Wy2hfgUTJbLAj3kA5lGiCIu7aog
+XSUwSnY7YOYa7i6tEWL0OoFWVtAWDlCf6ty1bt5UQqVAiLZcMzJlCehnLK/WHYq8
+FrCx65d/sR0=
+=DlDC
+-----END PGP SIGNATURE-----
+

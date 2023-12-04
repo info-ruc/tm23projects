@@ -1,0 +1,73 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1E6oot16606
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 01:50:51 -0500 (EST)
+Received: from [128.253.212.208] (r253212208.resnet.cornell.edu [128.253.212.208])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1E6opDP021629
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 01:50:51 -0500 (EST)
+Message-ID: <43F17DD0.4090507@cornell.edu>
+Date: Tue, 14 Feb 2006 01:50:56 -0500
+From: Ivan Stoyanov <ids3@cornell.edu>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 6
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+The first paper proposes two optimizations for query and replication in 
+unstructured p2p systems. The authors acknowledge the limitations of 
+Gnutella-style floodings and evaluate two alternative query  algorithms. 
+The first one is "expanding ring", where the originator sends successive 
+floods with increasing TTL, waits for the results of the current round 
+to come back before issuing the next round of messages. In "multiple 
+random walk", the node sends multiple messages to a random subset of its 
+neighbors so that each message is in success forwarded to a different 
+subset of the neighbor's neighbors. The walk is stoped either with a TTL 
+or by having the walker periodically check with the originator whether 
+the object has been found.
+
+The authors also prove that square-root replication is optimal and 
+provide experiments show that it is achieved by replicating object a 
+number of times proportional to the size of the path - for example, like 
+in Freenet, simply on all nodes along the path. The most important graph 
+in the paper shows that using the optimal technique 80% of the queries 
+are successful in two hops, and 98% in 8 hops, which is relatively good 
+for unstructured systems.
+
+
+Beehive is a framework built on top of Pastry, which uses proactive 
+replication to achieve average O(1) lookup performance for queries, with 
+sub-one best case and O(logN) worst case. It builds on the fact that 
+object popularity in a large number of systems follows a power low 
+distribution. Therefore, replicating the most popular objects on a large 
+number of nodes will tremendously shift the average towords a constant. 
+This architecture is particularly designed for latency-sensitive 
+applications for which the typical O(logN) DHTs do not work.
+
+An object of popularity i is replicated to the i-th neighborhood of the 
+home node (the set of nodes that share common prefix of length i with 
+the home node). To find the appropriate level for each object, the 
+system provides an analytical model that takes as input the number of 
+requests for each object and the desired average lookup time. The number 
+of requests for each object is determined by a dedicated monitoring 
+protocol. The third piece of the system is the actual replication 
+protocol that copies of objects (or pointers to objects) throughout the 
+network.
+
+A particularly strong achievement of Beehive is resilience against 
+"flash crowds", althogh figure 6 shows that passive caching does 
+comparably well.
+
+It seems like proactive replication will only work in power low 
+distribution context. Otherwise, the network load will be too high to 
+offset the improved performance. It is also not clear how well Beehive 
+handles frequent object mutations. Nevertheless, since the system seems 
+to be designed particularly as a DNS replacement, these assumptions are 
+relatively safe.
+
+The paper does not mention defense against nodes that report erroneous 
+access numbers and thus potentially changing the popularity landscape.
+

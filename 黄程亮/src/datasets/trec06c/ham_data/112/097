@@ -1,0 +1,106 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k0N4fNhY017521
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 22 Jan 2006 21:41:23 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id C05BCC5109B
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 22 Jan 2006 21:41:23 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.Arizona.EDU [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id B7FB5C92E62
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 22 Jan 2006 21:41:20 -0700 (MST)
+Message-Id: <5.1.0.14.2.20060122213929.00bc1470@psy1.psych.arizona.edu>
+Date: Sun, 22 Jan 2006 21:41:16 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DMDX RTF strange conversion - adding spaces in
+  filenames
+In-Reply-To: <6.2.5.6.2.20060123150636.021bac28@psych.unimelb.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+That's certainly a good one.  If you send me (not the list) the item file 
+I'll take a look at it next week when I get time.
+
+At 03:13 PM 1/23/2006 +1100, you wrote:
+>Hi,
+>         I'm still working on the lockup but I have noticed another 
+> strange behavior on DMDX 3.1.4.1.   I have a file that looks fine in 
+> WORDPAD or WORD but when I parse it (with ignore unknown on) it adds 
+> extra spaces that confuse the image file path.
+>
+>I have an RTF file that says
+>>0 m1=<umnr><umpr><mpr +1><mnr +2><mnr +3><mnr +4><mnr +5>= c;
+>>0 m2=<umnr><umpr><mpr +2><mnr +3><mnr +4><mnr +5><mnr +1>= c;
+>>0 m3=<umnr><umpr><mpr +3><mnr +4><mnr +5><mnr +1><mnr +2>= c;
+>>0 m4=<umnr><umpr><mpr +4><mnr +5><mnr +1><mnr +2><mnr +3>= c;
+>>0 m5=<umnr><umpr><mpr +5><mnr +1><mnr +2><mnr +3><mnr +4>= c ;
+>>0 m6=<umnr><umpr><mpr +space>= c;
+>>
+>>0 "Passage comprehension." ,
+>><ln +1>  "Press the spacebar for example passage." ;
+>>
+>>+1 ~6 * <bmp> "c:\512335\slide1" ;
+>>+2 ~2 * <bmp> "c:\512335\slide2" ;
+>>+3 ~4 * <bmp> "c:\512335\slide3" ;
+>
+>the plain text of this section of the RTF is
+>>\pard\cf0\lang1033 0 m1=<umnr><umpr><mpr +1><mnr +2><mnr +3><mnr +4><mnr 
+>>+5>= c;\par
+>>0 m2=<umnr><umpr><mpr +2><mnr +3><mnr +4><mnr +5><mnr +1>= c;\par
+>>0 m3=<umnr><umpr><mpr +3><mnr +4><mnr +5><mnr +1><mnr +2>= c;\par
+>>0 m4=<umnr><umpr><mpr +4><mnr +5><mnr +1><mnr +2><mnr +3>= c;\par
+>>0 m5=<umnr><umpr><mpr +5><mnr +1><mnr +2><mnr +3><mnr +4>= c ;\par
+>>0 m6=<umnr><umpr><mpr +space>= c;\par
+>>\pard\nowidctlpar\cf1\lang3081\par
+>>\lang1033\i\f1\fs24 0 "Passage comprehension." ,\par
+>>\cf0\lang3081\i0 <ln +1> \cf1  \lang1033\i "Press the spacebar for 
+>>example passage." ;\par
+>>\lang3081\i0\f0\fs20\par
+>>\pard\cf0\lang1033 +1 ~6 * <bmp> "c:\\512335\\slide1" ;\par
+>>+2 ~2 * <bmp> "c:\\512335\\slide2" ;\par
+>>+3 ~4 * <bmp> "c:\\512335\\slide3" ;\par
+>>+4 ~3 * <bmp> "c:\\512335\\slide4" ;\par
+>
+>but when I look at RTFPARSED.ITM I see
+>>0 m1=<umnr><umpr><mpr +1><mnr +2><mnr +3><mnr +4><mnr +5>= c;
+>>0 m2=<umnr><umpr><mpr +2><mnr +3><mnr +4><mnr +5><mnr +1>= c;
+>>0 m3=<umnr><umpr><mpr +3><mnr +4><mnr +5><mnr +1><mnr +2>= c;
+>>0 m4=<umnr><umpr><mpr +4><mnr +5><mnr +1><mnr +2><mnr +3>= c;
+>>0 m5=<umnr><umpr><mpr +5><mnr +1><mnr +2><mnr +3><mnr +4>= c ;
+>>0 m6=<umnr><umpr><mpr +space>= c;
+>>
+>>0 "{\f1 \fs24 \i \cf1 Passage comprehension." ,
+>><ln +1>  "{\f1 \fs24 \i \cf1 Press the spacebar for example passage." ;
+>>
+>>+1 ~6 * <bmp> "{c:\\512335\\slide1" ;
+>>+2 ~2 * <bmp> "{c:\\ 512335\\ slide2" ;
+>>+3 ~4 * <bmp> "{c:\\ 512335\\ slide3" ;
+>>+4 ~3 * <bmp> "{c:\\ 512335\\ slide4" ;
+>
+>NOTE the extra spaces in the bitmap names for slide2 etc.
+>
+>I tried this on two different machines and get the same result.
+>
+>Can anyone make a suggestion as to what is going on here
+>
+>Peter
+>
+>  Peter Straffon                         p.straffon@psych.unimelb.edu.au
+>  School of Behavioural Science       Phone +61(3) 83447773
+>  The University Of Melbourne                 AUSTRALIA.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+The only possible interpretation of any research whatever in the
+'social sciences' is: some do, some don't.
+
+                                             -  Ernest Rutherford
+
+
+

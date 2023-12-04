@@ -1,0 +1,51 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fA1Gq1R17042
+	for <egs@popsrv.cs.cornell.edu>; Thu, 1 Nov 2001 11:52:01 -0500 (EST)
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
+Subject: 615 PAPER 30
+Date: Thu, 1 Nov 2001 11:52:00 -0500
+Message-ID: <706871B20764CD449DB0E8E3D81C4D430213A7C0@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 PAPER 30
+Thread-Index: AcFi9YHdtWCom8v9EdW5awCQJ59Etw==
+From: "Ranveer Chandra" <ranveer@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id fA1Gq1R17042
+
+The design and implementation of an intentional naming system
+
+This paper presents an interestng concept: decoupling the IP address
+from the resource name.  Clients of a resource need not keep track of
+changes in IP address or network route to the resource server.  A
+request for a resource is specified as a name or descriptive attribute.
+The request is routed to the resolver which further routes packets to
+the resource matching the request attribute.  The address of the
+resource is either sent back to the client in the case of early binding
+or the request is further sent to one or many resources depending on the
+late binding mechanism specified: anycast or multicast.  The resolvers
+maintain an overlay network that keep a consistent view of the available
+resources.
+
+The idea of decoupling server IP addresses from the resource name is a
+very interesting concept.  This scheme would be specially beneficial in
+mobile applications where the servers offering the same resource might
+change over time based on the location.   The intentional naming scheme
+borrows the idea of the SFS and is an effective  model for resource
+requests.  
+
+However, the main drawback of INS is the proactive maintenance of the
+overlay network.  If used in an ad hoc setting, this scheme would be
+increasingly expensive, at least as expensive as maintaining a multicast
+tree.  Maintaining such overlay networks for different virtual spaces
+would definitely affect the scalability of INS.  In my opinion, an
+interesting modification to INS could be a reactive approach, with
+caching, to search for resources, such that frequently used resources
+are stored in cache and the updates for lesser used ones do not congest
+the network.
+

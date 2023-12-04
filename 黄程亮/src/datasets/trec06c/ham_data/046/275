@@ -1,0 +1,62 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.97.10])
+	by tartan.richmond.edu (8.9.0/8.9.0) with ESMTP id UAA27813
+	for <ggilfoyl@facstaff.richmond.edu>; Tue, 22 Jun 1999 20:49:25 -0400 (EDT)
+Received: from claspc1.cebaf.gov (claspc1.cebaf.gov [129.57.33.84])
+	by argyle.richmond.edu (8.9.0/8.9.0) with ESMTP id UAA09912
+	for <ggilfoyl@richmond.edu>; Tue, 22 Jun 1999 20:49:24 -0400 (EDT)
+Received: (from freyberg@localhost)
+	by claspc1.cebaf.gov (8.8.7/8.8.7) id UAA05979;
+	Tue, 22 Jun 1999 20:50:05 -0400
+Date: Tue, 22 Jun 1999 20:50:05 -0400
+Message-Id: <199906230050.UAA05979@claspc1.cebaf.gov>
+From: Arne Freyberger <freyberg@claspc1.cebaf.gov>
+To: ggilfoyl@richmond.edu
+Subject: DQS up on psc1
+Reply-to: freyberg@cebaf.gov
+X-UIDL: 8b13d5cea958eca300ca667b52399ba7
+Status: RO
+X-Mozilla-Status: 8001
+
+
+Gerry,
+
+I have DQS up and running on psc1 (qmaster and dqs_execd).
+I also created GSIM queues for the nodes....try to execute
+the following command:  qstat -f
+
+You sould get a dump of all the queues ..and they 
+will show up as UNKNOWN since I have not start
+the dqs services on the other nodes...
+
+I did make one gsim slot  on psc1 just to see if things are working.
+
+To submit a job to run in the gsim queue you need to execute:
+qsub -l gsim  my_gsim_script
+
+And DQS will pick the first "gsim" queue available.
+Each queue will accept two simulataneous jobs and
+there is a hard time limit of 16hours...
+
+I also altered /etc/csh.cshrc on psc1 to put /usr/local/bin in the
+predefined path.
+
+I also made soft links to the /home/clas/DQS/bin/* to entries in
+/usr/local/bin.
+
+Anyway things are pretty close...but I basically have to repeat
+what I did on psc1 11 times ... plus deal with reconfiguring the
+nfs mounts...
+
+Once I have things working I'll write some example scripts that
+hopefully will make things easier....
+
+Good Night....
+Arne
+
+-- 
+Arne Freyberger         
+JLAB (Mail Stop 12H)    Phone: (757) 269-6268  
+12000 Jefferson Avenue  Pager: (757) 249-6268  freyberg@cebaf.gov
+Newport News, VA 23606   Phax: (757) 269-5800  http://claspc1.cebaf.gov  
+
+

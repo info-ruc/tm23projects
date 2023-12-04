@@ -1,0 +1,50 @@
+Received: from evtvir02.tc.fluke.com (a235017.ext.fluke.com [208.238.235.17])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id NAA27252
+	for <handyboard@media.mit.edu>; Fri, 3 Dec 1999 13:33:46 -0500 (EST)
+Received: from 129.196.184.7 by evtvir02.tc.fluke.com (InterScan E-Mail VirusWall NT); Fri, 03 Dec 1999 10:15:24 -0800 (Pacific Standard Time)
+Received: from dogbert.tc.fluke.com (dogbert.tc.fluke.com [129.196.148.231])
+	by mailhub.tc.fluke.com (8.9.3/8.9.1) with SMTP id KAA08856;
+	Fri, 3 Dec 1999 10:15:23 -0800 (PST)
+Received: from localhost by dogbert.tc.fluke.com with ESMTP
+	(SMI-8.6/1.0) id KAA07988; Fri, 3 Dec 1999 10:15:21 -0800
+Date: Fri, 3 Dec 1999 10:15:21 -0800 (PST)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: "Fred G. Martin" <fredm@media.mit.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: Where is dl for unix?
+In-Reply-To: <FM6CKn.K1s@lugnet.com>
+Message-Id: <Pine.GSO.4.10.9912031007430.21392-100000@dogbert.tc.fluke.com>
+X-Mailer: Pine 4.10
+Organization: Fluke Corporation
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Fri, 3 Dec 1999, Fred G. Martin wrote:
+
+> they're in the IC distribution tar file.  see the link for Unix versions at
+> <http://el.www.media.mit.edu/projects/handy-board/software/base.html>
+
+Another note regarding this:  The dl that I'm using is an a.out version
+rather than an elf executable, and I quite often need to use it on a Red
+Hat 6.x version of Linux.  Red Hat 6.0 and later doesn't have a.out support
+running automatically, so as root you need to load
+"/lib/modules/<kernel version>/fs/binfmt_aout.o"
+
+"insmod binfmt_aout.o" is the command I think.  I don't remember whether
+you need the ".o" or not, but use "insmod binfmt_aout" if not.
+
+For those that are curious:  a.out is the old executable format used
+for Linux, and elf is the newer format.  The command above just adds
+in a kernel module to the running kernel to enable it to recognize and
+use a.out executables.  It will have no ill effects.
+
+The other fix for this problem is to recompile dl from sources, but I
+haven't gotten around to doing this yet.  Once I do that it'll be an
+elf executable.
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

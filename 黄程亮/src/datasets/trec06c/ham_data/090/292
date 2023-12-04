@@ -1,0 +1,73 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.12.10/8.12.10) with ESMTP id h9SLiVwT001667;
+	Tue, 28 Oct 2003 15:44:33 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.9.3p2/8.9.3/cc-lists.mc-1.30) with SMTP id PAA25895;
+	Tue, 28 Oct 2003 15:41:27 -0600 (CST)
+Received: from mail.cs.utexas.edu (root@mail.cs.utexas.edu [128.83.139.10])
+	by iceman.cc.utexas.edu (8.9.3p2/8.9.3/cc-lists.mc-1.30) with ESMTP id PAA25870
+	for <cs352h@lists.cc.utexas.edu>; Tue, 28 Oct 2003 15:41:26 -0600 (CST)
+From: skeckler@cs.utexas.edu
+Received: from fuller.cs.utexas.edu (skeckler@fuller.cs.utexas.edu [128.83.120.177])
+	by mail.cs.utexas.edu (8.12.10/8.12.10) with ESMTP id h9SLfNNl019162;
+	Tue, 28 Oct 2003 15:41:23 -0600 (CST)
+Received: (from skeckler@localhost)
+	by fuller.cs.utexas.edu (8.12.10/8.12.9/Submit) id h9SLfMCT027675;
+	Tue, 28 Oct 2003 15:41:23 -0600 (CST)
+Date: Tue, 28 Oct 2003 15:41:23 -0600 (CST)
+Message-Id: <200310282141.h9SLfMCT027675@fuller.cs.utexas.edu>
+To: cs352h@lists.cc.utexas.edu
+In-reply-to: <Pine.LNX.4.58.0310281439470.30431@marlinspike.cs.utexas.edu>
+	(message from Nitya Oberoi on Tue, 28 Oct 2003 14:53:54 -0600 (CST))
+Subject: Re: Assignment 4 Query
+References:  <Pine.LNX.4.58.0310281439470.30431@marlinspike.cs.utexas.edu>
+Reply-To: skeckler@cs.utexas.edu
+Sender: owner-cs352h@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+
+>   While working on project 4, we weren't able to figure out exactly what the
+>   "lc35_vsim .... " command was for.
+>
+>   Is it for running the hex code? because if it is, then it's not giving us
+>   the right values in the registers when we try to add two numbers.
+
+
+If you look inside the make_lc35 script
+
+  csh> make_lc35 lc35.f
+
+you will see that it produces an executable named lc35_vsim, instead
+of "simv".  I created the script so you wouldn't have to deal with
+some of the messiness of creating the verilog simulator executable.
+
+The way to run this is with a command like the following:
+
+  csh> lc35_vsim +vhex+fib.vhex +maxc5000
+
+This tells it to read the program from the file fib.vhex and to
+execute at most 5000 cycles.  Note that the .vhex file differs from
+the .hex file, and it is created when you assemble your .asm using
+the following program.
+
+  csh> lc35_asm fib.asm
+
+You should be able to follow the recipe at:
+
+  http://www.cs.utexas.edu/users/skeckler/cs352h/handouts/lc35.txt
+
+and obtain the proper results.
+
+Cheers,
+
+Steve Keckler                     Computer Architecture and Technology Lab
+Assistant Professor               Tel:    (512) 471-9763
+Department of Computer Sciences   Dept:   (512) 471-7316
+1 University Station C0500        Fax:    (512) 232-1413
+The University of Texas at Austin E-mail:  skeckler@cs.utexas.edu
+Austin, TX 78712-1188             http://www.cs.utexas.edu/users/skeckler
+                                  
+
+
+
+

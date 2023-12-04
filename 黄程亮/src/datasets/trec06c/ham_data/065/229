@@ -1,0 +1,48 @@
+Received: from mercury.bath.ac.uk (exim@mercury.bath.ac.uk [138.38.32.81])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id NAA04582
+	for <9fans@cse.psu.edu>; Mon, 10 Apr 2000 13:44:36 -0400 (EDT)
+Received: from news by mercury.bath.ac.uk with local (Exim 3.12 #1)
+	id 12ei8H-0003WX-00
+	for 9fans@cse.psu.edu; Mon, 10 Apr 2000 18:37:53 +0100
+Received: from GATEWAY by bath.ac.uk with netnews
+	for 9fans@cse.psu.edu (9fans@cse.psu.edu)
+To: 9fans@cse.psu.edu
+Date: Mon, 10 Apr 2000 17:36:53 GMT
+From: td@pixar.com (Tom Duff)
+Message-ID: <10004101018.ZM257989@marvin>
+Organization: Plan 9 mailing list
+Content-Type: text/plain; charset=us-ascii
+References: <viro@math.psu.edu>
+Reply-To: td@pixar.com
+Subject: Re: [9fans] truncate syscall
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+> mmap(). truncate() is a bad name - it's setsize(). IOW, it can extend
+> files. Add the mmap() semantics in that respect and there you go -
+> open()/ftruncate() to set the size/mmap() the region/start working; is
+> quite common. Yes, you can kludge around it with lseek();write(); but
+> that's a kludge, unless we accept that zero-length write() changes the
+> file size. Which is not true under a lot of Unices (I seriously suspect
+> that it's explicitly prohibited by POSIX or something like that).
+
+	int f=create("file", OREAD, 0666);
+	if(n){
+		seek(f, n-1, 0);
+		write(f, "", 1);
+	}
+
+What exactly is kludgy about this?
+
+I've been using UNIX & Plan 9 for 26 years,
+and not once have I wanted to chop the tail
+off a file.  I find it really hard to believe
+that you need this so badly that you want to
+change 9p.  Why can't you afford to rewrite
+the file?
+
+
+-- 
+Tom Duff.  This work was funded by The Corporation for Public Vaporware.
+

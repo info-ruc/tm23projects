@@ -1,0 +1,57 @@
+Received: from Altitude.CAM.ORG (Altitude.CAM.ORG [198.168.100.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id LAA07679
+	for <handyboard@media.mit.edu>; Sat, 28 Mar 1998 11:39:40 -0500 (EST)
+Received: from Daddy.4Mercier (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Altitude.CAM.ORG (8.8.4/8.8.4) with ESMTP
+	  id LAA19831; Sat, 28 Mar 1998 11:39:32 -0500 (EST)
+Message-Id: <351D27B6.25F45B9F@cam.org>
+Date: Sat, 28 Mar 1998 11:39:20 -0500
+From: Max Davies <mdavies@cam.org>
+X-Mailer: Mozilla 4.0 [en] (Win95; I)
+Mime-Version: 1.0
+To: Mike Vande Weghe <vandeweg@parlance-ncs.com>
+Cc: Handy Board <handyboard@media.mit.edu>
+Subject: Re: 68HC11 register locations?
+X-Priority: 3 (Normal)
+References: <351BC2E9.227E604D@nameconnector.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Mike Vande Weghe wrote:
+
+> I'm writing an assembly routine under IC on the
+> Handy Board, but I'm
+> getting a little confused about the memory
+> locations of the 68HC11
+> registers.  The Motorola manual shows that the
+> registers associated with
+> the input and output timers are in the $1000
+> range....
+
+The correct actual addresses are indeed all in the
+$10xx range.  When you index off either the X or Y
+register, the offset value is only 8 bits, or 0 to
+$FF.  This is why you're getting the warning
+messages, the high order $1000 is being ignored.
+
+You do not have to use the indexed method to
+address the registers, these are all equivilent:
+
+        LDA    #$1020
+and
+        LDX    #$1000
+        LDA    $20,X
+and
+        LDX    #$1000
+        LDA    $1020,X    <--- gives warning, high
+order $1000 ignored.
+
+The equates allow you to use either direct or
+indexed addressing to get at the registers.  The
+only reason for using the indexed method is to
+save 1 byte on each such instruction.
+
+/Max
+
+
+

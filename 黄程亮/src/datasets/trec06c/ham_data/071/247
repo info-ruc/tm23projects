@@ -1,0 +1,77 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id LAA21903
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 14 Sep 2000 11:21:42 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.33) by deimos.email.Arizona.EDU (5.1.046)
+        id 39B79FA800089F01 for DMDX@psy1.psych.arizona.edu; Thu, 14 Sep 2000 11:21:40 -0700
+Message-Id: <5.0.0.25.2.20000914104244.009d5e50@psy1.psych.arizona.edu>
+Date: Thu, 14 Sep 2000 11:21:38 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Critical Errors
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Well, despite being fried from the flu I think I finally have an 
+explanation for the trouble my home development box has been having 
+tracking the retrace (I can actually think for a few hours in the 
+morning).  It gets back to the buffering up of commands that the Detonator 
+3 drivers are doing and is possibly related to the extreme speed of my CPU 
+as well (800MHz Athlon TBird).  Basically when TimeDX's Time Video test is 
+running you have two threads active, one keeping track of the retrace and 
+the other madly pumping diagnostic information to the display with no 
+letup.  When that information is being blitted to the screen the retrace 
+tracking thread cannot poll for the retrace's status, hence the maximum 
+blit parameter.  If the retrace thread never sleeps then the thread that's 
+displaying stuff never gets to do anything, hence the sleep time.  So the 
+retrace thread goes to sleep after it's detected a retrace for a period of 
+time that will allow it to wake up with enough milliseconds in hand such 
+that any blit requested by the other thread will have time to complete 
+before the next retrace is due to occur, sleep_time + max_blit_time < 
+retrace_interval.  Enter the buffering of commands.  Now what happens is 
+that the routine producing video data does a blit and the driver says, 
+sure, fine, gimme another, and because the CPU's fast enough it says, fine, 
+here's another, and maybe another...  Finally the retrace thread wakes up 
+blocking the thread producing all these blits and it goes to poll the 
+retraces' status.  But you can't poll the retrace with all these buffered 
+up blits in there so the video drivers finish all the blits, so we have 
+sleep_time + N * max_blit_time > retrace_interval.  Bummer, it never gets 
+to see the retrace.  Reducing the maximum blit size doesn't help, they just 
+get buffered up into one big blit.  Actually, the GeForce2 MX is so damned 
+fast that 480 lines can be blitted in a very small number of milliseconds 
+and because the CPU is so damned fast it can generate another whole page of 
+video data and ask for that to be blitted too, as well as a flip in between 
+them.  Setting the timeout interval to an outrageously high value (like 
+17.5ms for a 11.75ms retrace) limits the amount of time that the retrace 
+thread goes to sleep for (because it spent all that extra time madly seeing 
+if the retrace occurred) and thus limits the rate of blits that the other 
+thread produces thus allowing the retrace thread to actually see some 
+retraces.  If I limit the sleep time to 4ms I get the same effect.
+   The good news is that as DMDX is running under normal circumstances it's 
+not blitting data to the video display as the display is active (ie. as the 
+data is being presented to a subject), it's usually got all of that done 
+ahead of time because most video cards used these days have enough memory 
+to buffer all frames of a given item up before it's display (certainly 
+every video card likely to have the problems outlined here has).  So as 
+it's preparing a display there might be some trouble tracking the retrace 
+but that literally does not matter.  The only instance where there might be 
+some trouble would be with digital video displays, but even then I'm 
+doubtful, digital video tends to be at 30Hz so there's a whole frame of 
+idle time, at 11.75Hz almost two idle frames.
+   So the solution to the problem is likely to be a TimeDX only fix, no 
+reason to panic folks.
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Everything put together, falls apart, sooner or later.
+
+
+

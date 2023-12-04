@@ -1,0 +1,585 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9KHR2WJ022693
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Thu, 20 Oct 2005 12:27:02 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.4/Submit) id j9KHR2Lb022692
+	for reliable_computing-outgoing; Thu, 20 Oct 2005 12:27:02 -0500 (CDT)
+Received: from interval.louisiana.edu (rbk5287@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9KHQwKo022688
+	for <reliable_computing@interval.louisiana.edu>; Thu, 20 Oct 2005 12:26:59 -0500 (CDT)
+Received: (from rbk5287@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.4/Submit) id j9KHQwoK022687
+	for reliable_computing@interval.louisiana.edu; Thu, 20 Oct 2005 12:26:58 -0500 (CDT)
+Received: from smtp9.poczta.onet.pl (smtp9.poczta.onet.pl [213.180.130.49])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9HJ2QPR015059
+	for <reliable_computing@interval.louisiana.edu>; Mon, 17 Oct 2005 14:02:57 -0500 (CDT)
+Received: from a220.traco.pl ([217.97.166.220]:42245 "EHLO andrzej")
+	by ps9.test.onet.pl with ESMTP id <S4817622AbVJQTAU>;
+	Mon, 17 Oct 2005 21:00:20 +0200
+From: "Andrzej Pownuk" <andrzej@pownuk.com>
+To: <reliable_computing@interval.louisiana.edu>
+Subject: RE: How to solve DAE with an interval initial condition or an interval parameter?
+Date: 	Mon, 17 Oct 2005 21:00:21 +0200
+Message-ID: <!~!UENERkVCMDkAAQACAAAAAAAAAAAAAAAAABgAAAAAAAAAHPX/iKG7QE2v4jesvF98sMKAAAAQAAAApKbDCO6ev0eGn/5oNHKdFQEAAAAA@pownuk.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_002D_01C5D35D.C9D0C9D0"
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Thread-Index: AcXTH3psYXg+uzEJRjuGzULcGRP6kQAKarGg
+In-Reply-To: <20051017132826.A557D10DFD2E@sjtu.edu.cn>
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_002D_01C5D35D.C9D0C9D0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+If you have particular problem then you know more or less how the solution
+y=y(t,h) behave (h is an interval parameter, t is a time). 
+
+Then you can calculate the derivative of the solution y with respect to the
+interval parameters [h] (i.e. dy/dh). That should be easy. You can calculate
+this for the mid point of the interval [h]=[h_inf,h_sup]. If width of the
+interval [h] (or interval vector) is sufficiently small and the sign of the
+derivative is constant then you can calculate the extreme values of the
+solution using the endpoints of the interval [h] (or interval vector). 
+
+I know that this is very simply method but in most cases it is sufficient.
+
+If you need more accurate results then you can expand the derivative using
+Taylor series 
+
+ 
+
+dy(h)/dh= dy(h0)/dh+ d^2y(h0)/dh^2*(h-h0)+.
+
+ 
+
+and after that check the sign of the derivative. Look at high order
+monotonicity tests here:
+
+http://andrzej.pownuk.com/~andrzej/publications/Pownuk%20A.,%20Numerical%20s
+olutions%20of%20fuzzy%20partial%20differential%20equations%20and%20its%20app
+lications%20in%20computational%20mechanics.pdf
+
+ 
+
+If the interval [h] is very wide then you can divide it into smaller parts
+and repeat above procedure. 
+
+ 
+
+If the sign of the derivative is not constant then . you can divide the
+interval [h] into smaller parts and check monotonicity again. Well if the
+solution behave really bad then . . I do not know what to do :). 
+
+Some information about the solution you can get after calculation of the
+solution for the endpoints of the interval [h] and some points in the middle
+of the interval [h]. However the results may be very inaccurate.
+
+ 
+
+Above described algorithms do not give you the results with guaranteed
+accuracy . however sometimes . in my case (civil mechanical engineering
+examples) these methods give you accurate results in 90% of cases (in my
+opinion). If one calculate the interval solution using above described
+methodology then the interval solution has always physical interpretation. 
+
+ 
+
+There are lot of engineering papers in which the solution is calculated only
+for endpoints and sometimes that is enough in practice.
+
+http://andrzej.pownuk.com/IntervalEquations.htm
+
+http://andrzej.pownuk.com/fuzzyPDE.htm
+
+ 
+
+In some cases you can also get good results with guaranteed accuracy using
+interval methods (for example using constraint satisfaction approach or some
+kind of validated Taylor methods). 
+
+However if the t is very large the results may be overestimated then we will
+get a lot of solutions 
+
+which do not correspond to any parametric solution and because of that do
+not have any physical interpretation 
+
+(in such cases it is almost meaningless). 
+
+If the approximation of the interval solution is good then there are no such
+problems even if the interval solution belong to very large interval (i.e.
+even very wide interval solution may have very clear meaning and physical
+interpretation).
+
+ 
+
+Regards,
+
+ 
+
+Andrzej Pownuk
+
+http://andrzej.pownuk.com <http://andrzej.pownuk.com/> 
+
+ 
+
+ 
+
+> My research field is Multibody Dynamics and the core of the simulation is
+to solve the differenial-algebraic equations.
+
+> such as ,  { y\' =f(y,t)
+
+>                    {  g(y,t)=0
+
+> 
+
+> now ,i want to solve DAE with an interval initial condition or an interval
+parameter.
+
+> 
+
+> but, I think the main difficulty is how to ensure abs(g(y,t)) is small
+enough , if not so ,the DAE\'s structure will be destroied.
+
+> 
+
+> I find the the amount of articles about this topic is very few , I will be
+grateful to any comments helpful. 
+
+> As we know , some non-linear function will be sensitive to initial value.
+
+> 
+
+> for example , y\' =f(y,t)     y0=[y0_min , y0_max]
+
+> the interval at the t_end will be very large so the result will be
+meaningless ,right?
+
+ 
+
+
+------=_NextPart_000_002D_01C5D35D.C9D0C9D0
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:st1=3D"urn:schemas-microsoft-com:office:smarttags" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<title>How to solve DAE with an interval initial condition or an =
+interval
+parameter?</title>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"City"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"place"/>
+<!--[if !mso]>
+<style>
+st1\:*{behavior:url(#default#ieooui) }
+</style>
+<![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:SimSun;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"\@SimSun";
+	panose-1:0 0 0 0 0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:SimSun;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p
+	{mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:SimSun;}
+span.Stylwiadomocie-mail18
+	{mso-style-type:personal-reply;
+	font-family:Arial;
+	color:navy;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext=3D"edit">
+  <o:idmap v:ext=3D"edit" data=3D"1" />
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=3DPL link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>If you have =
+particular
+problem then you know more or less how the solution y=3Dy(t,h) behave (h =
+is an
+interval parameter, t is a time). <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>Then you can =
+calculate
+the derivative of the solution y with respect to the interval parameters =
+[h]
+(i.e. dy/dh). That should be easy. You can calculate this for the mid =
+point of
+the interval [h]=3D[h_inf,h_sup]. If width of the interval [h] (or =
+interval
+vector) is sufficiently small and the sign of the derivative is constant =
+then
+you can calculate the extreme values of the solution using the endpoints =
+of the
+interval [h] (or interval vector). <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>I know that this =
+is very
+simply method but in most cases it is =
+sufficient.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>If you need more =
+accurate
+results then you can expand the derivative using <st1:City =
+w:st=3D"on"><st1:place
+ w:st=3D"on">Taylor</st1:place></st1:City> series =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>dy(h)/dh=3D =
+dy(h0)/dh+
+d^2y(h0)/dh^2*(h-h0)+&#8230;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>and after that =
+check the
+sign of the derivative. Look at high order monotonicity tests =
+here:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><a
+href=3D"http://andrzej.pownuk.com/~andrzej/publications/Pownuk%20A.,%20Nu=
+merical%20solutions%20of%20fuzzy%20partial%20differential%20equations%20a=
+nd%20its%20applications%20in%20computational%20mechanics.pdf">http://andr=
+zej.pownuk.com/~andrzej/publications/Pownuk%20A.,%20Numerical%20solutions=
+%20of%20fuzzy%20partial%20differential%20equations%20and%20its%20applicat=
+ions%20in%20computational%20mechanics.pdf</a><o:p></o:p></span></font></p=
+>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>If the interval =
+[h] is
+very wide then you can divide it into smaller parts and repeat above =
+procedure.
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>If the sign of =
+the
+derivative is not constant then &#8230; you can divide the interval [h] =
+into
+smaller parts and check monotonicity again. Well if the solution behave =
+really
+bad then &#8230; &#8230; I do not know what to do :). =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>Some information =
+about
+the solution you can get after calculation of the solution for the =
+endpoints of
+the interval [h] and some points in the middle of the interval [h]. =
+However the
+results may be very inaccurate.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>Above described
+algorithms do not give you the results with guaranteed accuracy &#8230; =
+however
+sometimes &#8230; in my case (civil mechanical engineering examples) =
+these
+methods give you accurate results in 90% of cases (in my opinion). If =
+one
+calculate the interval solution using above described methodology then =
+the
+interval solution has always physical interpretation. =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>There are lot of
+engineering papers in which the solution is calculated only for =
+endpoints and
+sometimes that is enough in practice.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><a
+href=3D"http://andrzej.pownuk.com/IntervalEquations.htm">http://andrzej.p=
+ownuk.com/IntervalEquations.htm</a><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><a
+href=3D"http://andrzej.pownuk.com/fuzzyPDE.htm">http://andrzej.pownuk.com=
+/fuzzyPDE.htm</a><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>In some cases =
+you can
+also get good results with guaranteed accuracy using interval methods =
+(for example
+using constraint satisfaction approach or some kind of validated =
+<st1:City
+w:st=3D"on"><st1:place w:st=3D"on">Taylor</st1:place></st1:City> =
+methods). <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>However if the t =
+is very
+large the results may be overestimated then we will get a lot of =
+solutions <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>which do not =
+correspond to
+any parametric solution and because of that do not have any physical =
+interpretation
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>(in such cases =
+it is almost
+meaningless). <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>If the =
+approximation of
+the interval solution is good then there are no such problems even if =
+the interval
+solution belong to very large interval (i.e. even very wide interval =
+solution
+may have very clear meaning and physical =
+interpretation).<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>Regards,<o:p></o:=
+p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>Andrzej =
+Pownuk<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><a
+href=3D"http://andrzej.pownuk.com/">http://andrzej.pownuk.com</a><o:p></o=
+:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; My research =
+field is
+Multibody Dynamics and the core of the simulation is to solve the
+differenial-algebraic equations.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; such as =
+,&nbsp; {
+y\' =3Df(y,t)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp; =
+g(y,t)=3D0<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; now ,i want =
+to solve
+DAE with an interval initial condition or an interval =
+parameter.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; but, I =
+think the
+main difficulty is how to ensure abs(g(y,t)) is small enough , if not so =
+,the
+DAE\'s structure will be destroied.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; I find the =
+the
+amount of articles about this topic is very few , I will be grateful to =
+any
+comments helpful. <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; As we know =
+, some
+non-linear function will be sensitive to initial =
+value.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; for example =
+, y\'
+=3Df(y,t)&nbsp;&nbsp;&nbsp;&nbsp; y0=3D[y0_min , =
+y0_max]<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'>&gt; the =
+interval at the
+t_end will be very large so the result will be meaningless =
+,right?<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+lang=3DEN-US
+style=3D'font-size:10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p>=
+</span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_002D_01C5D35D.C9D0C9D0--
+
+

@@ -1,0 +1,67 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3B8ID221882
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 04:18:13 -0400 (EDT)
+Received: from [192.168.0.100] (user-10mt73g.cable.mindspring.com [65.110.156.112])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k3B8IC8B015324
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 04:18:12 -0400 (EDT)
+Mime-Version: 1.0 (Apple Message framework v749.3)
+Content-Transfer-Encoding: 7bit
+Message-Id: <0D420561-B74A-4FAD-B9B3-20CCAFD96241@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 20
+Date: Tue, 11 Apr 2006 04:18:18 -0400
+X-Mailer: Apple Mail (2.749.3)
+
+SCRIBE:
+Scribe is a distributed multicast scheme built on top of a Pastry  
+network.  Any node can form a group, which can encompass any number  
+of nodes in the network.  A best effort multicast is provided by Scribe.
+
+Each scribe group has a group id in the same space as Pastry node  
+ids.  This allows the node closest to the group id in the identifier  
+space to serve as the root of the multicast routing tree.  Reverse  
+routing is applied to generate a multicast tree, a node wishing to  
+enter the group routes to the root, and nodes along the path to the  
+route become forwarders.  As the route to the root converges to a  
+small set of nodes near the root, the tree is efficient.  Heartbeat  
+messages are periodically exchanged to maintain an unbroken tree.
+
+The authors simulated a 100,000 node scribe network.  Scribe provides  
+an average delay less than twice that of IP multicast.  Several  
+points at which the structure of the scribe network breaks down.
+
+
+SIENA:
+
+The goal which is to be achieved by a multicast overlay is  
+essentially the same challenge as is prompted by the creation of an  
+efficient multicast system: a message from a single source must reach  
+a number of other subscribers.  However, Siena and Scribe differ in  
+that while Scribe multicasts using a tree topology, Siena uses a more  
+general graph.  The chief insight of Siena is that there is likely  
+some commonality to distinct event subscriptions, realizing the  
+overlap in these subscriptions.  The authors give the example of a  
+stock price as a notification, where users subscribe to some set of  
+stock prices that they would like to subscribe to updates for.  A  
+basic set of filters can be described in a subscription if only  
+certain data is desired.  The subscription features of Siena are much  
+richer than Scribe as well as many other P2P multicast systems.
+
+The authors mention a centralized, acyclic P2P, and general P2P as  
+potential network architectures to implement their system.  They also  
+mention that data could be cached close to the poster or close to the  
+subscriber.  Although they describe these possibilities, they do not  
+go so far as to select a certain scheme.
+
+Siena primarily describes the management of data or streams to  
+support a rich publish/subscribe model.  The authors do not, however,  
+provide strong preference for different types of underlying P2P  
+structures or many other aspects of the network.  Thus, it is  
+difficult to compare Scribe and Siena.  Both address the fundamental  
+multicast question, although both assume a very different type or  
+class of data.
+

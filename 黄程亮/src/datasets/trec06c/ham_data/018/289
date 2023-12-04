@@ -1,0 +1,83 @@
+Received: from mclean2-mail.usae.bah.com (mclean2-mail.usae.bah.com [156.80.5.110])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id KAA23121
+	for <handyboard@media.mit.edu>; Mon, 22 Jun 1998 10:39:30 -0400 (EDT)
+Received: from bah.com ([156.80.81.222]) by mclean2-mail.usae.bah.com
+          (Netscape Messaging Server 3.01)  with ESMTP id AAA20150;
+          Mon, 22 Jun 1998 10:37:30 -0400
+Message-Id: <358E6C94.1C197D24@bah.com>
+Date: Mon, 22 Jun 1998 10:39:16 -0400
+From: "Sathe Dilip" <sathe_dilip@bah.com>
+Organization: BAH
+X-Mailer: Mozilla 4.03 [en] (Win95; U)
+Mime-Version: 1.0
+To: handyboard <handyboard@media.mit.edu>,
+        Robot Board <robot-board@cmf.nrl.navy.mil>,
+        The Plumber <jhoffman@it.sait.ab.ca>
+Subject: Re: Cheap air flow sensor
+References: <3.0.1.32.19980615141121.008092a0@email.psu.edu> <35867FF7.40B36567@bah.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Finally I managed to put the schematic of Wind-O-meter described in the
+Elektor publication in ASCII.  Pl. set your reader font to something
+like courier to view it properly.  I have taken some liberty with the
+opamp symbol to accomodate some component connections.
+
+                                                           
+                                                          +5V 
+       0--------0-------0-----------------------------------  
+  0----)--------)-------)--------------------------------0    
+  |    |        |       |                                |    
+  |    |        #       #                       /--------)-,  
+  |    |        #33K    #33K                   / 100K    | |  
+  |    |        #       #                 ,-##/##-,      | |  
+  |    |        |       |                 |       |      | |  
+  |   _|_       |       |                 |  ,-||-0 56pF | |  
+  #  |M |       |       |     10K       |\|5 |8   |1     | |  
+  #  |__|       0-------)-----####------| '~~'~~~~'~\    | |  
+  #10K |        |   ,---0              3|+           \6__0 |  
+  |R1  |        |   |   |     10K       |    IC 3130 /   | |  
+  |    |    ,---0   |   0-----####--0---|-          /    | |  
+  |    |C   |   |   | |/            |  2|/~~~~~~~~~~     | |  
+  | B|/     | |/ C  '-|  T3         |                    | |  
+  '--| T1   '-|     B |\            |      10M           | |  
+     |\      B|\ T2     |E          '------####----------' |  
+       |E       |E      |                                  |  
+ BC639 |  BC549C| BC549C|                                  |  
+       |        |       |                              0V  |  
+       0--------0-------0----------------------------------0- 
+
+
+M is a 50 mA meter (collector of T1).  Opamp supply connections not
+shown.
+T1 and T2 are maintained in good thermal contact by glueing them
+together using a heat conductive adhesive.  This pair is used as the
+probe to check wind speed/air leaks.  T2 is maintained at a constant
+temperature by the opamp and T1.  When wind/leak is present, the pair is
+cooled - more current has to flow through T1 to maintain the temp.  This
+current is indicated by the meter. T3 acts as a reference diode.
+
+The description says - A high sensitivity is obtained by making the
+temp. of T2 about 5 degrees higher than its surroundings. This is
+achieved by presetting the meter to give an offset of about 5 mA when
+there is no wind blowing. BC 639 can be replaced by a BC 547 type. R1 is
+selected so that the current through T1 is not excessive. Hope this
+helps.
+
+Dilip
+
+
+Sathe Dilip wrote:
+> 
+> Elektor had published a similar circuit for detecting air leaks.  The
+
+SNIP
+
+> Dilip
+> 
+> Jonathan Swaby wrote:
+> >
+> > Does anyone know of a cheap way to construct an air flow sensor? I was
+
+SNIP
+

@@ -1,0 +1,423 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f6PLCPk10456;
+	Wed, 25 Jul 2001 14:12:25 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA26035;
+	Wed, 25 Jul 2001 14:39:58 -0400 (EDT)
+Date: Wed, 25 Jul 2001 14:39:58 -0400 (EDT)
+Received: by canaveral.red.cert.org; Wed, 25 Jul 2001 14:34:41 -0400
+Message-Id: <CA-2001-22.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-22
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: bb031ad6c08bb79bd1d1cf707dc749d4
+Status: RO
+X-Status: $$$$
+X-UID: 0000000016
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-22 W32/Sircam Malicious Code
+
+   Original release date: July 25, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   * Microsoft Windows (all versions)
+
+Overview
+
+   "W32/Sircam" is malicious code that spreads through email and
+   potentially through unprotected network shares. Once the malicious
+   code has been executed on a system, it may reveal or delete sensitive
+   information.
+
+   As of 10:00EST(GMT-4) Jul 25, 2001 the CERT/CC has received reports of
+   W32/Sircam from over 300 individual sites.
+
+I. Description
+
+   W32/Sircam can infect a machine in one of two ways:
+     * When executed by opening an email attachment containing the
+       malicious code
+     * By copying itself into unprotected network shares
+
+ Propagation Via Email
+
+   The virus can appear in an email message written in either English or
+   Spanish with a seemingly random subject line. All known versions of
+   W32/Sircam use the following format in the body of the message:
+
+   English 
+       Hi! How are you?
+       [middle line]
+       See you later. Thanks
+   
+   Spanish
+       Hola como estas ?
+       [middle line]
+       Nos vemos pronto, gracias.
+
+   Where [middle line] is one of the following:
+
+   English
+       I send you this file in order to have your advice
+       I hope you like the file that I sendo you
+       I hope you can help me with this file that I send
+       This is the file with the information you ask for
+
+   Spanish
+       Te mando este archivo para que me des tu punto de vista
+       Espero te guste este archivo que te mando
+       Espero me puedas ayudar con el archivo que te mando
+       Este es el archivo con la informacion que me pediste
+
+   Users who receive copies of the malicious code through electronic mail
+   might recognize the sender. We encourage users to avoid opening
+   attachments received through electronic mail, regardless of the
+   sender's name, without prior knowledge of the origin of the file or a
+   valid digital signature.
+
+   The email message will contain an attachment whose name matches the
+   subject line and has a double file extension (e.g. subject.ZIP.BAT or
+   subject.DOC.EXE). The CERT/CC has confirmed reports that the first
+   extension may be .DOC, .XLS, or .ZIP. Anti-virus vendors have referred
+   to additional extensions, including .GIF, .JPG, .JPEG, .MPEG, .MOV,
+   .MPG, .PDF, .PNG, and .PS. The second extension will be .EXE, .COM,
+   .BAT, .PIF, or .LNK. The attached file contains both the malicious
+   code and the contents of a file copied from an infected system.
+
+   When the attachment is opened, the copied file is extracted to both
+   the %TEMP% folder (usually C:\WINDOWS\TEMP) and the Recycled folder on
+   the affected system. The original file is then opened using the
+   appropriate default viewer while the infection process continues in
+   the background.
+
+   It is possible for the recipient to be tricked into opening this
+   malicious attachment since the file will appear without the .EXE,
+   .BAT, .COM, .LNK, or .PIF extensions if the "Hide file extensions for
+   known file types" is enabled in Windows. See IN-2000-07 for additional
+   information on the exploitation of hidden file extensions.
+
+   W32/Sircam includes its own SMTP client capabilities, which it uses to
+   propagate via email. It determines its recipient list by recursively
+   searching for email addresses contained in all *.wab (Windows Address
+   Book) files in the %SYSTEM% folder. Additionally, it searches the
+   folders referred to by
+
+          HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Exp
+          lorer\Shell Folders\Cache
+
+          HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Exp
+          lorer\Shell Folders\Desktop
+
+   for files containing email addresses. All addresses found are stored
+   in SC??.DLL or S??.DLL files hidden in the %SYSTEM% folder.
+
+   W32/Sircam first attempts to send messages using the default email
+   settings for the current user. If the default settings are not
+   present, it appears to use one of the following SMTP relays:
+     * prodigy.net.mx
+     * NetBIOS name for 'MAIL'
+     * mail.<defaultdomain> (e.g., mail.example.org)
+     * dobleclick.com.mx
+     * enlace.net
+     * goeke.net
+
+ Propagation Via Network Shares
+
+   In addition to email-based propagation, analysis by anti-virus vendors
+   suggests that W32/Sircam can spread through unprotected network
+   shares. Unlike the email propagation method, which requires a user to
+   open an attachment to infect the machine, propagation of W32/Sircam
+   via network shares requires no human intervention.
+
+   If W32/Sircam detects Windows networking shares with write access, it
+    1. copies itself to \\[share]\Recycled\SirC32.EXE
+    2. appends "@ win\Recycled\SirC32.exe" to AUTOEXEC.BAT
+
+   If the share contains a Windows folder, it also
+    3. copies \\[share]\Windows\rundll32.exe to
+       \\[share]\Windows\run32.exe
+    4. copies itself to \\[share]\Windows\rundll32.exe
+    5. when virus is executed from rundll32.exe, it calls run32.exe
+
+ Infection process
+
+    1. When installed on a victim machine, W32/Sircam installs a copy of
+       itself in two hidden files:
+
+          + %SYSTEM%\SCam32.exe
+          + Recycled\SirC32.exe
+
+       Installing in Recycled may hide it from anti-virus software since
+       some do not check this folder by default.
+       Based on external analyses, there is also a probability that
+       W32/Sircam will copy itself to the %SYSTEM% folder as ScMx32.exe.
+       In that case, another copy is created in the folder referred to by
+       HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explor
+       er\Shell Folders\Startup (the current user's personal startup
+       folder). The copy created in that location is named Microsoft
+       Internet Office.exe. When the affected user next logs in, this
+       copy of W32/Sircam will be started automatically.
+
+    2. The registry entry
+       HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunSe
+       rvices\Driver32 is set to %SYSTEM%\SCam32.exe so that W32/Sircam
+       will run automatically at system startup.
+
+    3. The registry entry HKEY_CLASSES_ROOT\exefile\shell\open\command is
+       set to "C:\Recycled\SirC32.exe" "%1" %*", causing W32/Sircam to
+       execute whenever another executable is run.
+
+    4. A new registry entry, HKEY_LOCAL_MACHINE\Software\SirCam, is
+       created to store data required by W32/Sircam during execution.
+
+    5. W32/Sircam searches for filenames with .DOC, .XLS, .ZIP extensions
+       in the folders referred to by
+
+                HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersi
+                on\Explorer\Shell Folders\Personal
+
+                HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersi
+                on\Explorer\Shell Folders\Desktop
+
+       While the personal folder may vary with configuration, it is often
+       set to \My Documents or \Windows\Profiles\%username%\Personal. A
+       list of these files is stored in %SYSTEM%\scd.dll.
+
+    6. W32/Sircam attaches its own binary to selected files it finds and
+       stores the combined file in the Recycled folder.
+
+II. Impact
+
+   W32/Sircam can have a direct impact on both the computer which was
+   infected as well as those with which it communicates over email.
+
+     * Breaches of confidentiality: The malicious code will at a minimum
+       search through select folders and mail potentially sensitive
+       files. This form of attack is extremely serious since it is one
+       from which it is impossible to recover. Once a file has been
+       publicly distributed, any potentially sensitive information in it
+       cannot be retracted.
+
+     * Limit Availibility (Denial of Service)
+
+          + Fill entire hard drive: Based on external analyses, on any
+            given day, there is a probability that it will create a file
+            named C:\Recycled\sircam.sys which consumes all free space on
+            the C: drive. A full disk will prevent users from saving
+            files to that drive, and in certain configurations impede
+            system-level tasks (e.g., swapping, printing).
+
+          + Propagation via mass emailing: W32/Sircam will attempt to
+            propagate by sending itself through email to addresses
+            obtained as described above. This propagation can lead to
+            congestion in mail servers that may prevent them from
+            functioning as expected.
+            NOTE: Since W32/Sircam uses native SMTP routines connecting
+            to pre-defined mail servers, propagation is independent of
+            the mail client software used.
+
+     * Loss of Integrity: Published reports indicate that on October 16
+       there is a reasonable probability that W32/Sircam will attempt to
+       recursively delete all files from the drive on which Windows is
+       installed (typically C:).
+
+III. Solution
+
+ Run and Maintain an Anti-Virus Product
+
+   It is important for users to update their anti-virus software. Most
+   anti-virus software vendors have released updated information, tools,
+   or virus databases to help detect and partially recover from this
+   malicious code. A list of vendor-specific anti-virus information can
+   be found in Appendix A.
+
+   Many anti-virus packages support automatic updates of virus
+   definitions. We recommend using these automatic updates when
+   available.
+
+ Exercise Caution When Opening Attachments
+
+   Exercise caution when receiving email with attachments. Users should
+   never open attachments from an untrusted origin, or ones that appear
+   suspicious in any way. Finally, cryptographic checksums should also be
+   used to validate the integrity of the file.
+
+   The effects of this class of malicious code are activated only when
+   the file in question is executed. Social engineering is typically
+   employed to trick a recipient into executing the malicious file. The
+   best advice with regard to malicious files is to avoid executing them
+   in the first place. The following tech tip offers suggestions as to
+   how to avoid them:
+
+          Protecting yourself from Email-borne Viruses and Other
+          Malicious Code During Y2K and Beyond
+
+ Filter the Email or use a Firewall
+
+   Sites can use email filtering techniques to delete messages containing
+   subject lines known to contain the malicious code, or they can filter
+   all attachments.
+
+   Likewise, a firewall or border router can be used to stop the
+   W32/Sircam outbound SMTP connections to mail servers outside of the
+   local network. This filtering strategy will prevent further
+   propagation of the worm from a particular host when the local mail
+   configuration is not used.
+
+Appendix A. - Vendor Information
+
+  Aladdin Knowledge Systems
+
+          http://www.esafe.com/home/csrt/valerts2.asp?virus_no=10068
+
+  Central Command, Inc.
+
+          http://support.centralcommand.com/cgi-bin/command.cfg/php/endus
+          er/std_adp.php?p_refno=010718-000010
+
+  Command Software Systems
+
+          http://www.commandsoftware.com/virus/sircam.html
+
+  Computer Associates
+
+          http://www.cai.com/virusinfo/encyclopedia/descriptions/s/sircam
+          137216.htm
+
+  Data Fellows Corp
+
+          http://www.datafellows.com/v-descs/sircam.shtml
+
+  McAfee
+
+          http://vil.mcafee.com/dispVirus.asp?virus_k=99141&
+
+  Norman Data Defense Systems
+
+          http://www.norman.com/virus_info/w32_sircam.shtml
+
+  Panda Software
+
+          http://www.pandasoftware.es/vernoticia.asp?noticia=987
+
+  Proland Software
+
+          http://www.pspl.com/virus_info/worms/sircam.htm
+
+  Sophos
+
+          http://www.sophos.com/virusinfo/analyses/w32sircama.html
+
+  Symantec
+
+          http://www.symantec.com/avcenter/venc/data/w32.sircam.worm@mm.h
+          tml
+
+  Trend Micro
+
+          http://www.antivirus.com/vinfo/virusencyclo/default5.asp?VName=
+          TROJ_SIRCAM.A
+
+   You may wish to visit the CERT/CC's Computer Virus Resources Page
+   located at: 
+   
+     http://www.cert.org/other_sources/viruses.html
+   
+   ______________________________________________________________________
+
+   Authors: Roman Danyliw, Chad Dougherty, Allen Householder
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-22.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-17:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+    Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+    Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+   July 25, 2001: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBO18P/QYcfu8gsZJZAQH2XAP/dFPRLX4MGRYxKSc67J+hRclhijxGIFn+
+Jo7M4jWb2GeImjxdzRO5bbqGHUfV7Jm7gjXRdIdBTJuK0xIN2tdGjdp3/kEbaWE7
+oqise1azNitAWSn2pEaVXidHyY3wm3ed5XHKZmShU/5PXGoa/avhnXqRrv7p/yup
+hBWgsoeBiLI=
+=WuU+
+-----END PGP SIGNATURE-----
+

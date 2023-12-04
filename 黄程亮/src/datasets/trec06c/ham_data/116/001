@@ -1,0 +1,344 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.199] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1S0agt24602
+	for <egs+summary@cs.cornell.edu>; Mon, 27 Feb 2006 19:36:42 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id 13so1038820nzp
+        for <egs+summary@cs.cornell.edu>; Mon, 27 Feb 2006 16:36:41 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=cB5OJ375pqU3f7wXhG2e9VpcIYzob3SgVNgj0Vvx8v99cO6wCN5ya+2te+2Tzh35te+ZK/V/TFda85tqx3d5EkxRKxnNdJ7hqw1bl2bLMbIpV5VLnpfGaRMkRFi2Qc+Ofs1lz2KDjSfNJtd5A7BRXBCGoqD5MFavfltHVWlr0fc=
+Received: by 10.37.2.49 with SMTP id e49mr6175239nzi;
+        Mon, 27 Feb 2006 16:36:41 -0800 (PST)
+Received: by 10.36.147.10 with HTTP; Mon, 27 Feb 2006 16:36:41 -0800 (PST)
+Message-ID: <9aa7a97d0602271636y4e395510t7fb8f39d2aafd6ee@mail.gmail.com>
+Date: Mon, 27 Feb 2006 19:36:41 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 10
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_7942_1516308.1141087001411"
+
+------=_Part_7942_1516308.1141087001411
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+
+    _Samsara:_Honor_Among_Thieves_in_Peer_to_Peer_Storage_
+    Landon P Cox, Brian D Noble
+
+    An attempt to ensure fairness in peer to peer storage without falling
+back on trusted third parties, centralized infrastructure, constraints on
+data placement, monetary payment, or certified identities. It does this
+through a symmetric storage relationship. The motivation is that peer to
+peer storage systems rely on individual nodes consuming storage space in
+proportion to their contribution, in order to ensure sufficient storage
+space availability. Some solutions rely on trusted third parties to enforce
+quotas; this is clearly a sufficient, if unsatisfying, aolution. They
+suggest symmetric storage -- A stores on B <=3D=3D> B stores on A -- as a
+grassroots solution. The next insight is that if these relationships don't
+naturally occurr, they can be manufactured by inserting incompressible
+blocks of data, storage claims, into the network; by checking if the storag=
+e
+claim is still resident on the remote computer, then their data must still
+be retained on the local one. Also, storage claims may be treated as user
+objects and stored in the system if desired -- but if they cannot be
+produced, the node they were assigned to is the penalized node.
+    Though I am impressed by their construction of claims, I am not
+sufficiently impressed: it relies on two secrets, rather than one large one=
+;
+this seems inefficient. Moreover, it presumably relies on a separate P for
+each claim, which may or may not make blocks compressible if false; it seem=
+s
+that a better idea would be to take deterministic hashes (say, "this holds
+place for the 3rd block belonging to B") and to use a very large, secure,
+signing key; even with the encrypted data public, and the data, this only
+makes certain known-plaintext attacks easier, and does not significantly
+weaken the scheme, while reducing overhead required to test claims.
+Similarly, they make small news of occaisional data loss, claiming that it
+can be backed up from local copies: because all data in the system is
+incompressible, this means that overhead on the network is multiplied by th=
+e
+inverse of failure, even for legitimate users; moreover, the more one store=
+s
+for others, the less room one has for storage claims, which must be
+forwarded into the network -- putting one at the mercy of lazy users (who w=
+e
+have a claim on, as well). Thus there is this odd period wherin we wait for
+chains to become cycles during which we are vulnerable to the behavior of
+other nodes.
+
+    _SHARP:_An_Architecture_For_Secure_Resource_Peering_
+    Yun Fu, Jeffrey Chase, Brent Chun, Stephen Schwab, Amin Vahdat
+
+    Tackling something of a superset of the previous problem, dealing with
+total resource management, rather than simply storage space. It assumes
+responsibility for resouces management, control and sharing across sites &
+trust domains, reconciling policy-based resource management with resource
+availability when agents or other actors fail, become unreachable, or
+abandon their claims. It uses soft-state timed claims, which expire after
+some period, and agents may oversubscribe resources to improve efficiency
+and availability, being given probabilistic assurance that their claims wil=
+l
+be honored. Oversubscribed claims may be detected, and claims may be
+delegated accountably. These claims are both unforgable and non-repudiable,
+with keys being locally assigned. It allows actors to reserve resources,
+prevent theft of resources, support admission control, and balance global
+sharing with local autonomy, and must be secure, in that the actors may be
+mutually distrusting or vulnerable to external attack.
+    This is partially done by issuing the ability to issue requests -- a
+soft state claim to request resources, but not an actual lock on those
+resources. This allows farming out of ticket issuance, which is an
+advantage, and a host of other advantages such as the probabilistic options
+offered. There are few obvious flaws in this scheme, other than the overhea=
+d
+that vending tickets requires; in general, it passes every threat they
+suggest, and the list is reasonabily comprehensive.
+
+    _PPAY:_Micropayments_for_Peer-to-Peer_Systems_
+    Beverly Yang, Hector Garcia-Molina
+
+    Whether or not the peer to peer network is economically driven for
+fungible resources, there remains the need to provide an efficient, secure
+payment mechanism, even if only for unique resources. PPay explots the
+unique characteristics of peer to peer systems to maximize efficiency while
+maintaining security properties. It does this without the need for a
+trusted, centralized (monetary) broker to donate O(n) work for n
+transactions over the network. The broker is only invoked at the opening an=
+d
+closing of accounts, arbitration, and occaisionally to perform services for
+offline peers; under realistic application loads, it provides quite
+reasonable broker load values, while guaranteeing detectable and traceable
+fraud, though in a sense, relative to the value of the goods: they are
+micropayments, thus requiring light overhead, without guaranteeing fair
+exchange of goods and payment; conterfeit coins are detectable, but perhaps
+only after the fact. It purchases much of its efficiency by "moving the
+issuer into the cloud", having transactions involving a coin purhcased by U
+going through U; this does not go against the financial institution who
+issued U the coin in exchange for currency.
+    The ties back to real-world currency seem to mostly be symmetric; while
+required, this leaves a large security hole where the user with more
+resources (read: cash) can starve (literally, not "resources") another by
+misbehaving in conjunction with them. It is unprofitable, but completely
+legal, and cheaper than many other such eye-for-an-eye attacks, as the coin=
+s
+are micropayments, thus small. They claim to be immune to wrongful denial
+attacks; this isn't quite true. A reassignment may be wrongfully denied, in
+that the owner refuses to transfer holders; however, it may still be "cashe=
+d
+in", making the system mostly immune (not completely) to this attack. In
+many ways, this shifts load from the broker onto the brokee -- if I request
+a coin, I am thereafter responsible for all transactions involving that
+coin, until it "dies". This gives me a very large motivation to cash in my
+coins as soon as possible, so that I can cease holding their state. Coin
+renewal solves both this issue and also the related issue of what to do "if
+the token drops", if the location of a coin is unknown. Since all requests
+for transferal must go through the owner of the coin or the broker, this is
+less of an issue, but it is not a non-issue, as it could be the case that
+the coin is involved in some secondary scheme or mismanaged to the point
+where its holder is unclear. It is legitimate to say that this is the
+owner's fault- and- responsibility; it would still be nice to have some way
+to repair this. The other issue is that the coins do not carry a
+representation of their value, implying that we must go to the broker to
+determine the value of the coin, or use equally valued coins -- if we're
+willing to believe the holder's estimation, why not rely on them for
+everything, without recourse to a broker; if all coins are the same value,
+there is an element of lost functionality. This is easy to fix: let the
+issuer include the value, in addition to the serial number, in each raw
+coin.
+
+    _KARMA:_A_Secure_Economic_Framework_for_Peer_to_Peer_Resource_Sharing_
+    Vivek Vishnumurthy, Sangeeth Chandrakumar, Emin Gun Sirer
+
+    Karma is another solution to the same problem, where we seek to ensure
+equitable resource sharing among nodes in the system. It spreads the
+reswponsibility for "coins" across several banksets, which may be
+distributed through the overlay. Each node has its account tracked at each
+member of the bank set, and thus "cheating the system" relies on controllin=
+g
+the bank set. It may be increased by donating resources to the system, and
+therefore can be used in place of the micropayment system above.
+    It is less "secure" than the previous, however, because it does not
+ultimately rely on a resource signed with the key of the issuing authority;
+in the previous scheme, the bank could always ensure that the account numbe=
+r
+they were handed was issued by a real entity; under this system, my node is
+a member of the entity responsible for tracking the balance in my account,
+which can lead to a sort of conflict of interest.
+    It is, however, not intended for real cash, but as a way of tracking
+resource usage, and for that it is quite adequate, as in order to break the
+system, one must bring more resources to bear than participating in the
+system would require.
+
+------=_Part_7942_1516308.1141087001411
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+<br>
+&nbsp;&nbsp; &nbsp;<br>
+Andrew Cunningham<br>
+arc39<br>
+<br>
+&nbsp;&nbsp; &nbsp;_Samsara:_Honor_Among_Thieves_in_Peer_to_Peer_Storage_<b=
+r>
+&nbsp;&nbsp; &nbsp;Landon P Cox, Brian D Noble<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;An attempt to ensure fairness in peer to peer
+storage without falling back on trusted third parties, centralized
+infrastructure, constraints on data placement, monetary payment, or
+certified identities. It does this through a symmetric storage
+relationship. The motivation is that peer to peer storage systems rely
+on individual nodes consuming storage space in proportion to their
+contribution, in order to ensure sufficient storage space availability.
+Some solutions rely on trusted third parties to enforce quotas; this is
+clearly a sufficient, if unsatisfying, aolution. They suggest symmetric
+storage -- A stores on B &lt;=3D=3D&gt; B stores on A -- as a grassroots
+solution. The next insight is that if these relationships don't
+naturally occurr, they can be manufactured by inserting incompressible
+blocks of data, storage claims, into the network; by checking if the
+storage claim is still resident on the remote computer, then their data
+must still be retained on the local one. Also, storage claims may be
+treated as user objects and stored in the system if desired -- but if
+they cannot be produced, the node they were assigned to is the
+penalized node.<br>
+&nbsp;&nbsp; &nbsp;Though I am impressed by their construction of
+claims, I am not sufficiently impressed: it relies on two secrets,
+rather than one large one; this seems inefficient. Moreover, it
+presumably relies on a separate P for each claim, which may or may not
+make blocks compressible if false; it seems that a better idea would be
+to take deterministic hashes (say, &quot;this holds place for the 3rd block
+belonging to B&quot;) and to use a very large, secure, signing key; even
+with the encrypted data public, and the data, this only makes certain
+known-plaintext attacks easier, and does not significantly weaken the
+scheme, while reducing overhead required to test claims. Similarly,
+they make small news of occaisional data loss, claiming that it can be
+backed up from local copies: because all data in the system is
+incompressible, this means that overhead on the network is multiplied
+by the inverse of failure, even for legitimate users; moreover, the
+more one stores for others, the less room one has for storage claims,
+which must be forwarded into the network -- putting one at the mercy of
+lazy users (who we have a claim on, as well). Thus there is this odd
+period wherin we wait for chains to become cycles during which we are
+vulnerable to the behavior of other nodes.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_SHARP:_An_Architecture_For_Secure_Resource_Peering_<br>
+&nbsp;&nbsp; &nbsp;Yun Fu, Jeffrey Chase, Brent Chun, Stephen Schwab, Amin =
+Vahdat<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Tackling something of a superset of the previous
+problem, dealing with total resource management, rather than simply
+storage space. It assumes responsibility for resouces management,
+control and sharing across sites &amp; trust domains, reconciling
+policy-based resource management with resource availability when agents
+or other actors fail, become unreachable, or abandon their claims. It
+uses soft-state timed claims, which expire after some period, and
+agents may oversubscribe resources to improve efficiency and
+availability, being given probabilistic assurance that their claims
+will be honored. Oversubscribed claims may be detected, and claims may
+be delegated accountably. These claims are both unforgable and
+non-repudiable, with keys being locally assigned. It allows actors to
+reserve resources, prevent theft of resources, support admission
+control, and balance global sharing with local autonomy, and must be
+secure, in that the actors may be mutually distrusting or vulnerable to
+external attack.<br>
+&nbsp;&nbsp; &nbsp;This is partially done by issuing the ability to
+issue requests -- a soft state claim to request resources, but not an
+actual lock on those resources. This allows farming out of ticket
+issuance, which is an advantage, and a host of other advantages such as
+the probabilistic options offered. There are few obvious flaws in this
+scheme, other than the overhead that vending tickets requires; in
+general, it passes every threat they suggest, and the list is
+reasonabily comprehensive.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_PPAY:_Micropayments_for_Peer-to-Peer_Systems_<br>
+&nbsp;&nbsp; &nbsp;Beverly Yang, Hector Garcia-Molina<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Whether or not the peer to peer network is
+economically driven for fungible resources, there remains the need to
+provide an efficient, secure payment mechanism, even if only for unique
+resources. PPay explots the unique characteristics of peer to peer
+systems to maximize efficiency while maintaining security properties.
+It does this without the need for a trusted, centralized (monetary)
+broker to donate O(n) work for n transactions over the network. The
+broker is only invoked at the opening and closing of accounts,
+arbitration, and occaisionally to perform services for offline peers;
+under realistic application loads, it provides quite reasonable broker
+load values, while guaranteeing detectable and traceable fraud, though
+in a sense, relative to the value of the goods: they are micropayments,
+thus requiring light overhead, without guaranteeing fair exchange of
+goods and payment; conterfeit coins are detectable, but perhaps only
+after the fact. It purchases much of its efficiency by &quot;moving the
+issuer into the cloud&quot;, having transactions involving a coin purhcased
+by U going through U; this does not go against the financial
+institution who issued U the coin in exchange for currency. <br>
+&nbsp;&nbsp; &nbsp;The ties back to real-world currency seem to mostly
+be symmetric; while required, this leaves a large security hole where
+the user with more resources (read: cash) can starve (literally, not
+&quot;resources&quot;) another by misbehaving in conjunction with them. It =
+is
+unprofitable, but completely legal, and cheaper than many other such
+eye-for-an-eye attacks, as the coins are micropayments, thus small.
+They claim to be immune to wrongful denial attacks; this isn't quite
+true. A reassignment may be wrongfully denied, in that the owner
+refuses to transfer holders; however, it may still be &quot;cashed in&quot;=
+,
+making the system mostly immune (not completely) to this attack. In
+many ways, this shifts load from the broker onto the brokee -- if I
+request a coin, I am thereafter responsible for all transactions
+involving that coin, until it &quot;dies&quot;. This gives me a very large
+motivation to cash in my coins as soon as possible, so that I can cease
+holding their state. Coin renewal solves both this issue and also the
+related issue of what to do &quot;if the token drops&quot;, if the location=
+ of a
+coin is unknown. Since all requests for transferal must go through the
+owner of the coin or the broker, this is less of an issue, but it is
+not a non-issue, as it could be the case that the coin is involved in
+some secondary scheme or mismanaged to the point where its holder is
+unclear. It is legitimate to say that this is the owner's fault- and-
+responsibility; it would still be nice to have some way to repair this.
+The other issue is that the coins do not carry a representation of
+their value, implying that we must go to the broker to determine the
+value of the coin, or use equally valued coins -- if we're willing to
+believe the holder's estimation, why not rely on them for everything,
+without recourse to a broker; if all coins are the same value, there is
+an element of lost functionality. This is easy to fix: let the issuer
+include the value, in addition to the serial number, in each raw coin.<br>
+<br>
+&nbsp;&nbsp; &nbsp;_KARMA:_A_Secure_Economic_Framework_for_Peer_to_Peer_Res=
+ource_Sharing_<br>
+&nbsp;&nbsp; &nbsp;Vivek Vishnumurthy, Sangeeth Chandrakumar, Emin Gun Sire=
+r<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Karma is another solution to the same problem, where
+we seek to ensure equitable resource sharing among nodes in the system.
+It spreads the reswponsibility for &quot;coins&quot; across several bankset=
+s,
+which may be distributed through the overlay. Each node has its account
+tracked at each member of the bank set, and thus &quot;cheating the system&=
+quot;
+relies on controlling the bank set. It may be increased by donating
+resources to the system, and therefore can be used in place of the
+micropayment system above.<br>
+&nbsp;&nbsp; &nbsp;It is less &quot;secure&quot; than the previous, however=
+,
+because it does not ultimately rely on a resource signed with the key
+of the issuing authority; in the previous scheme, the bank could always
+ensure that the account number they were handed was issued by a real
+entity; under this system, my node is a member of the entity
+responsible for tracking the balance in my account, which can lead to a
+sort of conflict of interest.<br>
+&nbsp;&nbsp; &nbsp;It is, however, not intended for real cash, but as a
+way of tracking resource usage, and for that it is quite adequate, as
+in order to break the system, one must bring more resources to bear
+than participating in the system would require.
+
+------=_Part_7942_1516308.1141087001411--
+

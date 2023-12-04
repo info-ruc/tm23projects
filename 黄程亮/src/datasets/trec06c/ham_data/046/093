@@ -1,0 +1,41 @@
+Received: from homebox (tec3.psych.arizona.edu [128.196.98.11])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id SAA19497
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 11 Jun 1999 18:05:36 -0700
+Message-Id: <3.0.1.32.19990611180925.0068f17c@psy1.psych.arizona.edu>
+Date: Fri, 11 Jun 1999 18:09:25 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] command line DMDX
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+  A couple of people already use batch files to process DMTG data files and
+several others have been wanting to do similar sorts of things with DMDX.
+Unfortunately a batch file doesn't wait for DMDX to terminate, with the
+addition of the -subjid command line parameter (in 1.1.02) and a little
+win32 gem below it is now possible.  With a batch file constructed along
+the following lines you can store data files produced by subject ID:
+
+start /wait dmdx.exe -subjid %1 -run itemfile.rtf
+mkdir %1
+move itemfile*.wav %1
+move itemfile.azk %1
+
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+"To YOU I'm an atheist; to God, I'm the Loyal Opposition."
+
+                                                  -  Woody Allen
+
+
+

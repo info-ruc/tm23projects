@@ -1,0 +1,55 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id SAA05131
+	for <handyboard@media.mit.edu>; Tue, 21 Mar 2000 18:24:06 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id SAA13952; Tue, 21 Mar 2000 18:24:06 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7642
+From: "Barry Brouillette" <breeyet@aol.com>
+X-Real-Life-Name: Barry Brouillette
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: servo ports on Exp board...help?
+Posted-Date: Tue, 21 Mar 2000 23:23:07 GMT
+Date: Tue, 21 Mar 2000 23:23:07 GMT
+Organization: none
+Message-Id: <FrsoyJ.AHz@lugnet.com>
+References: <FrsM6B.KC9@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Hi again,
+I should have mentioned this in the first message.  In our case, the motor that
+was causing the problems was a fan motor (to blow out a candle) and it was
+completely electrically isolated from all of the other circuitry.  It had its'
+own battery and was controlled by a relay whose coil was powered by a motor
+output of the handyboard. It apparently induced enough of a signal on nearby
+wires that the servos took it as control signals.  The point is that moving the
+servos to a different power supply probably won't fix the problem but a small
+filter capacitor across the motor leads almost certainly will.  You want
+the capacitor to be as close as possible to the motor to avoid the motor
+leads from being an antenna for the noise signal.  Some motors, like the Lego
+ones (and servos) have the filter cap inside their case.  Small motors from a
+hobby shop or Radio Shack do not.
+
+Barry
+
+
+In lugnet.robotics.handyboard, Alex Stewart writes:
+>Hi
+>	the servo ports on my expboard seem to work fine, but when the servos
+>are'nt active ( init_expbd_servos(0); ) and a motor is turned on the ports go
+>crazy , servos will turn eratically, with hacked servos they just move in one
+>direction. Would a filter cap help and if so were would one put it , in the
+>motor ports or servo supply?
+>
+>Thanx -Alex
+>
+>PS- now that I think about it could seperating the servo supply to a diff.
+batt
+>work?.
+>
+>Thanx again.
+

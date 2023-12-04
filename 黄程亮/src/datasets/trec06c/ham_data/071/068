@@ -1,0 +1,64 @@
+Received: from math.psu.edu (leibniz.math.psu.edu [146.186.130.2])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id FAA09803
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 05:31:30 -0400 (EDT)
+Received: from weyl.math.psu.edu (weyl.math.psu.edu [146.186.130.226])
+	by math.psu.edu (8.9.3/8.9.3) with ESMTP id FAA17649
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 05:31:29 -0400 (EDT)
+Received: from localhost (viro@localhost)
+	by weyl.math.psu.edu (8.9.3/8.9.3) with ESMTP id FAA10934
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 05:31:28 -0400 (EDT)
+X-Authentication-Warning: weyl.math.psu.edu: viro owned process doing -bs
+Date: Sat, 2 Sep 2000 05:31:28 -0400 (EDT)
+From: Alexander Viro <viro@math.psu.edu>
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] rfork(), getss() etc etc
+In-Reply-To: <Pine.GSO.4.10.10009020407570.9425-100000@weyl.math.psu.edu>
+Message-ID: <Pine.GSO.4.10.10009020511350.9425-100000@weyl.math.psu.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+
+
+On Sat, 2 Sep 2000, I wrote:
+
+> On Sat, 2 Sep 2000 nigel@9fs.org wrote:
+> 
+> > Now, what is the problem with this? Firslty, the only way to tell whether
+> > you are parent or child after the split is to check the return result from
+> > the system call. The inevitable conclusion is that assembly code is
+> > required to establish a new stack. This is a retrograde step, and I am
+> 
+> 	Simply not true. Kernel is perfectly able to set the usermode ESP
+> before returning to userland. Code that does transition from the kernel
+> mode to user mode is in the kernel. Usually it's an assembler (check
+> forkret() in /sys/src/9/pc/l.s for exact parallel). Picking the right ESP
+> value happens in IRETL, same way on all systems in question. Nothing
+> special in userland.
+
+	Damn. Sorry, I've realized what you might mean right after sending
+the reply ;-/ Yes, there is some userland trickery. Unlike other system
+calls this beast does essentially
+
+	register (int *)fn(void*) = _fn;
+	register void *arg = _arg;
+	register unsigned flagd = _flags;
+	register int pid;
+
+	/* new_sp ignored unless flags has CLONE_VM set */
+	pid = _syscall2(__NR_CLONE, flags, new_sp);
+	if ((flags & CLONE_VM) && pid == 0)
+		exit((*fn)(arg));
+	return pid;
+
+with some gcc-isms to _force_ these variables to be in registers.
+
+Since the thing is in the library _and_ contains the assembler anyway (as
+any other system call wrapper, be it on Linux, Plan 9 or FreeBSD -
+INTR is hardly pure C ;-)... Yes, you have some point, but not too
+serious one. Ironic, since the unusual (compared to other system calls)
+part doesn't require any assembler...
+
+

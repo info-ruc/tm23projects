@@ -1,0 +1,72 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jA8IYK5L017818
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 8 Nov 2005 11:34:20 -0700
+Received: from localhost (legolas.email.arizona.edu [10.0.0.224])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 543DBB86F7A
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  8 Nov 2005 11:34:20 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 8D6A5B809C4
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  8 Nov 2005 11:34:19 -0700 (MST)
+Message-Id: <5.1.0.14.2.20051108111640.00ba4d80@psy1.psych.arizona.edu>
+Date: Tue, 08 Nov 2005 11:34:15 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] <Delay> correction
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   In my examples recently the <Delay> usage I have given is wrong, the 
+<Delay> needs to be in the item that is to be delayed, not the item 
+before.  So this is wrong:
+
++1001 "circle" * <call 1> <delay 1>;
++1002 "cross" * <call 2>;
++2001 "circle" * <call 1> <delay 2>;
++2002 "cross" * <call 2>;
+
+   It should be:
+
++1001 "circle" * <call 1>;
++1002 <delay 1> "cross" * <call 2>;
++2001 "circle" * <call 1>;
++2002 <delay 2> "cross" * <call 2>;
+
+
+   Note also that <Delay> must be pretty much the first thing in the item 
+if it's used in an item, it's one of those lovely old pieces of code that 
+harks from antiquity and using it any other way is fraught with 
+unpredictability.
+
+   For John's controlled feedback delay example the <Delay> keywords should 
+be in the items displaying the feedback like this:
+
+<ep> <nfb> <s 1> <delay 50> <eop>
+$
+0 "instructions" <bu 1000>;
+~1 <bi 4, lastXT .gt. 0>;
+~2 <bi 5, lastXT .eq. -4000>;
+3 <delay 3> "wrong" <return>;
+4 <delay 3> "correct" <return>;
+5 <delay 3> "too long" <return>;
+~1000;
+$
++1001 "circle" * <call 1>;
++2001 "circle" * <call 1>;
+
+   Not that I think a there's a machine in existence today that can't 
+prepare stock feedback in two ticks...
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   A stitch in time would have confused Einstein.
+                                                      - anonymous
+
+
+

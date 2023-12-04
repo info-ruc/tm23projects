@@ -1,0 +1,58 @@
+Received: from uni-paderborn.de (uni-paderborn.de [131.234.22.30])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id CAA22804
+	for <handyboard@media.mit.edu>; Mon, 15 Jun 1998 02:18:39 -0400 (EDT)
+From: torkin@uni-paderborn.de
+Received: from torgiano.uni-paderborn.de ([131.234.50.25]:33671 "EHLO torgiano.uni-paderborn.de" ident: "torkin") by mail.uni-paderborn.de with ESMTP id <21241-5673>; Mon, 15 Jun 1998 08:17:52 +0200
+Received: (from torkin@localhost) by torgiano.uni-paderborn.de (8.7.3/8.7.3) id IAA02393; Mon, 15 Jun 1998 08:17:47 +0200 (MET DST)
+Message-Id: <199806150617.IAA02393@torgiano.uni-paderborn.de>
+Subject: Re: HandyBoard Reset Vector
+In-Reply-To: <199806150031.RAA23050@mail2.sirius.com> from "aarone@sirius.com" at "Jun 14, 98 06:31:24 pm"
+To: aarone@sirius.com, handyboard@media.mit.edu
+Date: Mon, 15 Jun 1998 08:17:46 +0200 (MET DST)
+X-Mailer: ELM [version 2.4ME+ PL32 (25)]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+> Hello again,
+> 	      I hope someone can help me out here.  I want to run a standard
+> assembly program on my HandyBoard without using IC.  IC requires
+> CONFIG=0x0C, which allows the reset vector to be fetched from external
+> memory, instead of from $FFFE, $FFFF.  Where does it find its reset vector
+> then?  How can I set it to find my program?  It seems that  MAIN_START is
+> found at $8020, but I am assuming this particular to using IC.  
+> 
+> Thanks,
+> 	Aaron
+> 
+Hi!
+If you start the Handyboard (no bootstrap mode) it is in the 'special
+test' mode. So the start vector is located at $BFFE and $BFFF. In
+your assambly program use the following code:
+
+Start_vec	ORG $BFFE
+		FDB Program_Start
+
+where 'Program_Start'  is the label of the first line of your
+main program. Compile the code and download it with the normal 
+bootstrap-loader. Switch off and on and your program should start.
+
+Hope it help you.
+
+sincerely
+     tom
+
+
+
+
+
+-- 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+o   Thomas Lehmann           \    Fon.: (+49) (+) 5251-60 6492         o
+o   Paderborn University      \    Fax.: (+49) (+) 5251-60 6502        o
+o   Heinz Nixdorf Institut     \                                       o
+o   Fuerstenallee 11            \    Office: F1.319                    o
+o   D-33102 Paderborn            \    e-mail: torkin@uni-paderborn.de  o
+o   Germany                       \                                    o
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

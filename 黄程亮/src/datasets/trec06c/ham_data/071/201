@@ -1,0 +1,313 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id XAA11305
+	for <handyboard@media.mit.edu>; Mon, 11 Sep 2000 23:08:48 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id XAA25056; Mon, 11 Sep 2000 23:09:03 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://news.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:8055
+From: Jerry Normandin <jerrynormandin@ne.mediaone.net>
+X-Real-Life-Name: Jerry Normandin
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: Jerry Normandin <jerrynormandin@ne.mediaone.net>
+Subject: Here's the code I wrote so far,  any ideas why my Polaroid 6500 has only 15ft range?
+Posted-Date: Tue, 12 Sep 2000 03:17:11 GMT
+Date: Tue, 12 Sep 2000 03:17:11 GMT
+Organization: None
+Message-Id: <39BDA037.2289785F@ne.mediaone.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+Hi everyone,
+
+Here's some code that I have so far.  I have no clue why I only get 15'
+range out of my Polaroid 6500.
+I did not get the usual fastener that clasps the tranducer into place,
+could that do it?
+My tansducer is mounted on "sensor array" platform where I can plan and
+tilt with servos.
+I was a little disapointed when 16' was out of range, there must me
+something wrong.
+I added the .1uF cap at C7 as the directions suggest.
+
+Also.. as you can see from the sonarscan routing I "void" out a ping
+that's out of range..
+why do I still get a bad value , backup and turn left?
+
+Right now my pan & tily mechanism is on some ugly perf board that's
+mounted on my
+servos.  I'll be thinking up a better way to mount this eventualy.
+
+I'm really starting to like Interactive C.  running sensor scans as a
+process, gotta love that.
+anyway.. here's the code so far.  I use my Multi TV remote to run this.
+Next up is Infra Red
+Proximity, Man if I new I was limited to 15ft I'd go the Sharp GPD
+route.
+
+If anyone has any clue why I get limited range let me know please!
+For now, here' s what I've got done so far:
+
+
+int sonarpid ;
+int irccmd = 0;
+int oldirccmd ;
+int rotate = 0;
+int sonarhit;
+void main ()
+{
+init_expbd_servos (1);
+alloff ();
+sony_init(1);
+
+start_process(getircommand());
+while (irccmd != 23)
+  { if (irccmd == 3 && oldirccmd != irccmd)
+    {
+      path1();
+    }
+if (irccmd == 4 && oldirccmd != irccmd)
+    {
+      path2();
+    }
+
+if (irccmd == 5 && oldirccmd != irccmd)
+    {
+      path3();
+    }
+
+if (irccmd == 6 && oldirccmd != irccmd)
+    {
+      explore();
+    }
+
+
+
+{ if (irccmd == 26 && oldirccmd != irccmd) {
+  go_fwd();
+       }
+else if (irccmd == 24 && oldirccmd != irccmd) {
+ go_bwd();
+}
+
+else if (irccmd == 31 && oldirccmd != irccmd){
+go_right ();
+}
+
+else if  (irccmd == 30 && oldirccmd != irccmd) {
+go_left ();
+}
+else if (irccmd == 63) {
+stop ();
+}
+if (irccmd == 1 && oldirccmd != irccmd) {
+go_beep ();
+}
+}
+  }
+printf ("End Test \n");
+}
+
+
+void getircommand()
+{
+  int irc;
+  while(1)
+ {
+  irc = ir_data(0);
+  if(irc)
+  {
+   if(irc >= 128)
+    irc -= 127;
+       irccmd = irc;
+
+  }
+  else
+   defer();
+ }
+}
+
+
+
+void go_fwd()
+{
+  oldirccmd = irccmd;
+ encoder2_counts=0;
+
+motor (1,25);
+motor (2,25);
+}
+
+
+void go_bwd () {
+  oldirccmd = irccmd;
+  encoder2_counts=0;
+
+motor (1,-25);
+motor (2,-25);
+}
+
+void go_right () {
+  oldirccmd = irccmd;
+  encoder2_counts=0;
+
+        motor (1,25);
+  motor (2,-25);
+
+
+}
+
+void go_left () {
+  oldirccmd = irccmd;
+ encoder2_counts=0;
+
+        motor (2,25);
+        motor (1,-25);
+
+
+}
+
+void stop ()
+{
+  oldirccmd = 100000;
+  printf ("stop \n");
+  printf ("%d encoder ticks \n", encoder2_counts);
+        alloff();
+ sleep (1.5);
+}
+
+void  go_beep ()
+
+{
+  oldirccmd = irccmd;
+  printf ("beep \n");
+        beep();
+   return;
+}
+
+void path1()
+{
+  printf ("Follwing PATH1 \n");
+ while (irccmd != 63){
+   alloff();
+
+     go_fwd();
+  while (encoder2_counts < 40){
+}
+ go_bwd ();
+ alloff();
+sleep (0.5);
+beep ();
+go_right();
+while (encoder2_counts < 24){
+}
+ go_bwd ();
+  alloff();
+sleep (0.5);
+
+  }
+beep ();
+beep ();
+beep ();
+}
+
+
+void path2()
+{
+  printf ("Following PATH2 \n");
+ while (irccmd != 63){
+   alloff();
+     go_fwd();
+     while (encoder2_counts < 23){}
+     sleep (0.5);
+     go_right();
+     while (encoder2_counts < 13){}
+     go_bwd ();
+     alloff();
+      sleep (0.5);
+}
+ alloff();
+    beep();
+  beep ();
+  beep ();
+}
+
+
+void path3 ()
+{
+rotate = 0;
+  printf ("Following PATH3 \n");
+ while (irccmd != 63){
+   alloff ();
+   while (rotate != 20)
+     {
+  go_right();
+  beep ();
+rotate = rotate +1;
+while (encoder2_counts < 2){}
+ alloff ();
+ beep ();
+ sleep (2.0);
+   }
+
+rotate = 0;
+while (rotate != 20)
+     {
+  go_left();
+  beep ();
+ rotate = rotate +1;
+
+while (encoder2_counts < 2){}
+ alloff();
+ beep ();
+sleep (2.0);
+    }
+ }
+ alloff();
+ beep ();
+ beep ();
+ beep ();
+ }
+
+
+void explore ()
+
+{
+  printf ("Exploring! \n");
+  sonar_init ();
+sonarpid = start_process (sonarscan());
+ while (irccmd != 63){
+   alloff ();
+   while (sonarhit > 3500){ go_fwd();}
+   alloff();
+   beep();
+   encoder2_counts=0;
+   go_bwd();
+   while (encoder2_counts < 10){}
+   encoder2_counts=0;
+   alloff();
+   go_right ();
+   while (encoder2_counts < 12) {}
+   alloff();
+ }
+ alloff();
+ kill_process (sonarpid);
+beep ();
+ beep ();
+ beep ();
+ beep ();
+}
+
+   void  sonarscan ()
+     {
+       int ping;
+      while (1) {
+  ping = sonar_closeup();
+         if (ping != -1) {sonarhit = ping;}
+         else {sonarhit = 99999;}
+         msleep (1000L);
+       } }
+

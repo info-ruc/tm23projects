@@ -1,0 +1,110 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gACK0ZP13932
+	for <ggilfoyl@facstaff.richmond.edu>; Tue, 12 Nov 2002 15:00:35 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gACJsN430443;
+	Tue, 12 Nov 2002 14:54:24 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002111214542304073
+ ; Tue, 12 Nov 2002 14:54:23 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gACJsMw28417;
+	Tue, 12 Nov 2002 14:54:23 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gACJrN412327;
+	Tue, 12 Nov 2002 14:53:23 -0500
+Date: Tue, 12 Nov 2002 14:53:22 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: "Stefanovski, Sasko" <sstefano@richmond.edu>
+cc: "Gilfoyle, Gerard" <ggilfoyl@richmond.edu>
+Subject: RE: [Fwd: the Richmond saga continues]
+In-Reply-To: <C1F927C74082D311A25B00508B5BFF1702C97552@urmail-oz.richmond.edu>
+Message-ID: <Pine.LNX.4.21.0211121431390.429-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status:   
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004268
+
+Greetings,
+
+Node 8 looks like it may have lost it's boot order configuration, and is
+trying the HD before PXE. The Tyan BIOS frequently tries to boot the MBR
+blindly (leaving the serial screen scrape ISR in place) resulting in a
+hang.
+
+The BIOS can be reset through minicom (hit reset on node, then hit F2 on
+minicom. In the boot order menu, the UNDI should be above hard drvie.
+
+The other node's boot issue likely is a transient net condition. This sort
+of thing is fairly common in booting since all nodes demand the master at
+once and even w/ gig on the master, max out it's bandwidth 5 times over.
+
+I found the sec. master running. Just in case, I re-made it's swap space
+and rebooted it. It is up now.
+
+On the master, it sounds like the LED is actually the problem. The LEDs
+refer to the internal case fans. Those fans are also connected to a beeper
+that will emit a piercing alarm if any fan's RPM goes too low.
+
+Really, the LEDs on those cases are a sort of one size fits all thing. One
+might expect the T leds to refer to temperature, but really they just
+indicate that they have power in this case. 
+
+Just to be sure, I checked CPU temp and fan RPM on the nodes, and they
+show normal (in /proc/sys/dev/sensors/w83782d-i2c-0-2d )
+
+I will have a look at the remaining library issues.
+
+G'day,
+sjames
+
+
+On Tue, 12 Nov 2002, Stefanovski, Sasko wrote:
+
+> Hi,
+> 
+> I rebooted the pscm1 and all the nodes. I was bringing them up 10 at at
+> time.
+> The current status is:
+> 1. node 8 is down. It hangs during POST just after HDD is detected. The
+> null-modem cable is currently attached to that node.
+> 2. some of the nodes would not boot right away. They ususaly hang just after
+> bpslave is started during recv: /lib/libc-2.2.4.so
+>    Probably some transient network problems, since they boot up after couple
+> of retries.
+> 3. Secondary master (node 48) hangs during boot, at "Adding swap space"
+> 4. The FAN led is off on the Primary Master (does it mean that internal
+> processor's fan does not work, since the main power fan was blowing air?
+> 5. T1 led on node 45 is off. What this led is saying?
+> 
+> Sasko
+> 
+> -----Original Message-----
+> From: gilfoyle [mailto:ggilfoyl@richmond.edu]
+> Sent: Tuesday, November 12, 2002 9:11 AM
+> To: Sasko Stafanovski
+> Subject: [Fwd: the Richmond saga continues]
+> 
+> 
+> hi sasko,
+> 
+>    see the attached message from steven james. when you get a 
+> chance, please reboot the entire cluster and send him an email.
+> 
+> thanks-in-advance,
+> 
+> jerry
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

@@ -1,0 +1,54 @@
+Received: by cheltenham.cs.arizona.edu; Fri, 16 Dec 1994 13:45:52 MST
+Date: Fri, 16 Dec 94 14:44:13 CST
+From: johnp@utafll.uta.edu (John Paolillo)
+Message-Id: <9412162244.AA19530@utafll.uta.edu>
+To: icon-group@cs.arizona.edu
+Subject: Re: Backtracking
+Errors-To: icon-group-errors@cs.arizona.edu
+
+
+Dave Kuhlman writes:
+>Anyway, I'd be interested to know if others use backtracking
+>more heavily, or whether maybe this is just a "neat" but
+>not so useful feature of Icon.
+
+I have just finished teaching a course "The Computer and Natural Language"
+using Icon.  Through this course, Icon's backtracking became  one of my
+fondest friends, so to speak.  I do not have the page numbers, but in
+the section on pattern matching of Griswold and Griswold, there is
+a description of language recognizers and parsers that involves
+writing pattern matching functions.  Backtracking is an essential
+part of the functioning of such recognizers, and makes it possible 
+to teach linguistics students how to write parsers by applying a 
+simple translation process to get from a formalism they know:
+
+	NP -> (Det) N
+
+to something that can actually be used to parse sentences
+
+	procedure N()
+		suspend ["NP", N()] | ["NP", D(), N()]
+	end
+
+(note that this is out of context -- it is used inside a scanning 
+expression, and it is the backtracking that makes it work)
+I have recently tried to implement something similar in another
+language that I use (because it is visual), which even employs
+failure, but which does not have built-in backtracking.  The result
+was an indescribable mess.  I would rank backtracking among the 
+most important features of Icon for what I do.  There are many 
+many problems you can solve very elegantly with built-in backtracking,
+and once you finally understand it, it is hard to live without.
+
+BTW, one of my students wrote an Icon program to transcribe Tibetan
+in roman transcription into Tibetan orthography, using techniques
+exactly like those referred to above.  Tibetan graphemes have different
+shapes (i.e. different ascii codes for us) depending on the position
+within the syllable that they occur in.  Using a phonotactic parser
+that exploits Icon's backtracking allows an elegant solution to this
+otherwise difficult problem.
+
+John C. Paolillo
+Linguistics Program
+University of Texas at Arlington
+

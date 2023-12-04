@@ -1,0 +1,62 @@
+Received: from exchange.cs.cornell.edu (exchange.cs.cornell.edu [128.84.97.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4GOd629827
+	for <egs@popsrv.cs.cornell.edu>; Tue, 4 Dec 2001 11:24:39 -0500 (EST)
+Subject: cs615 PAPER 68
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Tue, 4 Dec 2001 11:24:38 -0500
+content-class: urn:content-classes:message
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
+Message-ID: <706871B20764CD449DB0E8E3D81C4D4301E7F29D@opus.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: cs615 PAPER 68
+Thread-Index: AcF84Cub4aeA/TBXTOCUDee6VxOwXA==
+From: "Venu Ramasubramanian" <ramasv@CS.Cornell.EDU>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id fB4GOd629827
+
+Tapestry: An Infrastructure for Fault tolerant Wide-area Location and
+Routing.
+
+	This paper presents tapestry, yet another object location (i.e.,
+routing) scheme designed for large scale peer-peer networks.  The
+tapestry routing algorithm closely resembles pastry, both being based on
+a radix sort like approach of plaxton et al.  Tapestry like pastry
+provides log(n) bound on the number of hops and also have similar
+optimizations to route to closest server in the actual internet topology
+based on a suitable metric such as latency. Tapestry also shares other
+design goals such as decentralization, scalability and fault tolerance
+with pastry, chord and others.
+
+	In tapestry, the objects are not distributed throughout the
+network. The objects are assumed to be in persistent storage of a set of
+servers responsible for the objects.  Only pointers to the location of
+the obejct (server id) is distributed in the network.  This makes the
+size of contents distributed in the network small and equal.  Therefore
+no special load balancing techniques are required and repeated copying
+of the contents does not consume excessive bandwidth.  Tapestry also
+differs from pastry in the way replicas of the contents (object, server
+mappings) are distributed.  Instead of choosing topologically adjacent
+nodes, it relicates the contents on root serrvers uniformly distributed
+in the topology.  The object id is rehashed after adding a salt (to
+represent replica number) in order to locate the root server.  This
+facilitates parallel routing queries lowering the retrieval latency by a
+little.
+
+	The contents distributed in the network are considered as soft
+state, to be deleted unless refreshed by periodic refresh messages. Thus
+the server responsible for an object is expected to periodically route
+refresh messages in order to preserve the (object, server) mapping in
+the tapestry nodes.  Thus log(n) messages are periodically generated for
+each object in the network.  Further each tapestry node is also expected
+to send periodic heart beat messages to all the neighbors, i.e., other
+nodes with this node in their routing tables. This generates b*log(n)
+(size of routing table) at every node during a period.  These periodic
+mesages consume a fair bit of available bandwidth and would pose great
+restrictions to scalability of this algorithm with number of objects and
+with number of faults.
+     
+

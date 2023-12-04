@@ -1,0 +1,46 @@
+Received: from imo29.mx.aol.com (imo29.mx.aol.com [198.81.17.73])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA01915
+	for <handyboard@media.mit.edu>; Fri, 18 Dec 1998 08:51:42 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo29.mx.aol.com (IMOv18.1) id SVZZa10802
+	 for <handyboard@media.mit.edu>; Fri, 18 Dec 1998 08:51:00 -0500 (EST)
+Message-Id: <65b5405d.367a5dc4@aol.com>
+Date: Fri, 18 Dec 1998 08:51:00 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Downloader and a/d
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Cesar, 
+
+>>Another doubt is with the 68HC11 a/d range: I simply couldn't find it. Is it
+>>possible to use 0/60 mV, 0/100mV or even 0/1V without external amplifiers?
+
+     According to my book, you can set the reference voltages to anything from
+Vss to Vss + 6.0 V (notice that this is higher than Vdd).  The A/D result is a
+ratioatic comparison for the sample voltage to the references.  Page 48 of the
+technical manual shows that Vrh (analog Voltage Reference High pin 52) is
+connected to +5 and that Vrl (analog Voltage Reference Low  pin 51) is
+connected to ground.  To change the voltage reference range:
+     First get a good pin placement map and be sure you know which side is up.
+It is wasy to get top view and bottom view confused and wind up tearing up the
+wrong pins.
+     Second scratch the trace(s) leading to pin 52 (Vrh).  (If  there are two
+traces, they will need to be reconnected with wire so that you are only
+isolating the pin.)
+     Third solder a wire to pin 52 and connect it to your 100 mV reference.
+(Use your favorite noise reduction technique {coax, twisted pair,...}.)
+
+     That should be all you need.  My book does not mention a minimum voltage
+(except that the references should stay between Vss and Vss+6).  It says that
+the A/D conversion is done with a "charge redistribution" system which should
+be independent of the actual voltages used.  But the truth to that depends on
+the quality of the capacitors and voltage comparator used.  Good luck!
+
+Hope this helps
+Pherd
+
+

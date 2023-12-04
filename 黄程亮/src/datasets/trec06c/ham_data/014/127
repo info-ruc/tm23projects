@@ -1,0 +1,124 @@
+Received: from emperor.arl.wustl.edu (root@arl.wustl.edu [128.252.153.10])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id SAA28235
+	for <handyboard@media.mit.edu>; Wed, 8 Apr 1998 18:30:27 -0400 (EDT)
+Received: from tarrant (lee27.wuh.wustl.edu [128.252.88.27])
+	by emperor.arl.wustl.edu (8.8.5/CTS-JEK1.2) with SMTP id RAA01821
+	for <handyboard@media.mit.edu>; Wed, 8 Apr 1998 17:30:02 -0500 (CDT)
+Message-Id: <199804082230.RAA01821@emperor.arl.wustl.edu>
+From: "Scott Mitchell Simon" <sms7@arl.wustl.edu>
+Organization: Washington University
+To: handyboard@media.mit.edu
+Date: Wed, 8 Apr 1998 17:29:07 -0500
+Mime-Version: 1.0
+Content-Type: text/enriched; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Subject: Re: LMD18200
+Reply-To: Scott Simon <sms7@arl.wustl.edu>
+Priority: normal
+In-Reply-To: <v03020901b151987171b0@[209.142.6.68]>
+X-Mailer: Pegasus Mail for Win32 (v3.00 beta 6)
+
+<FontFamily><param>Courier New</param>We've used the Wirz boards with great success here at Washington University. 
+ I can answer both of your questions at once, since they're the same thing.
+
+
+
+
+YES.  Take the drivers off the handyboard, because now the wirz boards will 
+connect to those sockets.  If you have the bridged 18200 board, then each 
+socket can control 2 boards.  If you have the non-bridged version (ie, the wirz 
+board will control 2 motors independently) then each socket connects to two 
+boards.
+
+
+
+
+Here's how the pinnouts go for the non-bridged version:
+
+
+
+
+Wirz Board Connector: 		L293D Pin:
+
+---------------------------------------------------------
+--------
+
+3 (M1 PWM)			1 (Chip Select 1)
+
+4 (M2 PWM)			9 (Chip Select 2)
+
+5 (M1 Brake)		No Equivalent (Use a digital 	
+					output to brake the motor, 
+					or tie it low)
+
+6 (M2 Brake)		same
+
+7 (M1 Direction)		2 (input 1, dont need in2)
+
+8 (M2 Direction)		10 (input 3, dont need in4)
+
+9 (M1 Thermal)		none (goes high when chip
+
+						overheats)
+
+10 (M2 Thermal)		same
+
+11 (M1 Current)		Analog signal of current draw
+
+12 (M2 Current)		same
+
+
+
+
+	If you have the bridged 18200 board, then for each 
+motor use a single board per motor.  In the bridged 
+version the M1,M2 pins are connected, so use whichever 
+ones you want.  Just connect the first board to the M1 
+L293 equivalents and the second to the M2 equivalent 
+pins.
+
+
+
+
+	Hope this helps!!!
+
+
+
+
+
+
+> I just bought the motor driver kit from wirz 
+electronics, and I have
+
+<color><param>7F00,0000,0000</param>> finished putting it all together. My question is, do I take the motor
+
+> drivers off of the HB and put them on the wirz board, or do I leave them
+
+> on the HB.
+
+</color>
+
+<color><param>7F00,0000,0000</param>> 
+
+> Question 2:  Assuming I have figured out #1(see above) where do I connect
+
+> the wirz board to?  Should I be using the servo routines, or does it plug
+
+> in where the motor drivers on the HB go?
+
+> 
+
+> Thanks everyone,
+
+> Mike
+
+> 
+
+> 
+
+</color>
+
+<FontFamily><param>Arial</param>
+
+<nofill>
+

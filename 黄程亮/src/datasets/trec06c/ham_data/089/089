@@ -1,0 +1,172 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.9/8.12.3) with ESMTP id h6H5pLUH233560;
+	Wed, 16 Jul 2003 22:51:22 -0700 (PDT)
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/1.27) with ESMTP id h6H5WxtJ031084;
+	Thu, 17 Jul 2003 01:43:00 -0400
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/Submit/1.1) with SMTP id h6H5Go50030123;
+	Thu, 17 Jul 2003 01:16:50 -0400
+Date: Thu, 17 Jul 2003 01:16:50 -0400
+Message-Id: <CA-2003-16.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2003-16 Buffer Overflow in Microsoft RPC
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000084
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-16 Buffer Overflow in Microsoft RPC
+
+   Original release date: July 17, 2003
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Systems Affected
+
+     * Microsoft Windows NT 4.0
+     * Microsoft Windows NT 4.0 Terminal Services Edition
+     * Microsoft Windows 2000
+     * Microsoft Windows XP
+     * Microsoft Windows Server 2003
+
+Overview
+
+   A buffer overflow vulnerability exists in Microsoft's Remote Procedure
+   Call  (RPC)  implementation.  A  remote  attacker  could  exploit this
+   vulnerability to execute arbitrary code or cause a denial of service.
+
+I. Description
+
+   There   is  a  buffer  overflow  in  Microsoft's  RPC  implementation.
+   According  to  Microsoft  Security  Bulletin  MS03-026,  "There  is  a
+   vulnerability in the part of RPC that deals with message exchange over
+   TCP/IP. The failure results because of incorrect handling of malformed
+   messages.   This   particular   vulnerability  affects  a  Distributed
+   Component  Object  Model  (DCOM)  interface with RPC, which listens on
+   TCP/IP  port  135.  This  interface  handles  DCOM  object  activation
+   requests  that  are  sent by client machines (such as Universal Naming
+   Convention (UNC) paths) to the server."
+
+   The CERT/CC is tracking this issue as VU#568148. This reference number
+   corresponds to CVE candidate CAN-2003-0352.
+
+II. Impact
+
+   A   remote  attacker  could  exploit  this  vulnerability  to  execute
+   arbitrary  code  with  Local System privileges or to cause a denial of
+   service.
+
+III. Solution
+
+Apply a patch
+
+   Apply  the  appropriate  patch  as  specified  by  Microsoft  Security
+   Bulletin MS03-026.
+
+Restrict access
+
+   You  may  wish to block access from outside your network perimeter,
+   specifically  by blocking access to port 135/TCP. This will limit your
+   exposure  to attacks. However, blocking at the network perimeter would
+   still  allow attackers within the perimeter of your network to exploit
+   the  vulnerability.  It  is  important  to  understand  your network's
+   configuration  and  service  requirements before deciding what changes
+   are appropriate.
+     _________________________________________________________________
+
+   This  vulnerability  was  discovered  by  The  Last  Stage of Delirium
+   Research  Group.  Microsoft  has published Microsoft Security Bulletin
+   MS03-026, upon which this document is largely based.
+     _________________________________________________________________
+
+   Author: Ian A. Finlay
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2003-16.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2003 Carnegie Mellon University.
+
+   Revision History
+July 17, 2003:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPxYuDmjtSoHZUTs5AQFv7wP/WetxU0XdObqmC02+lOSG/aR1lGsMpB0i
+9AAilcA21Dd/VO/cD8cAiAnb/pavd7NF+uXM8xDdlCTB7ypME5pKFOn6zk1sc9L9
+G+9iOSqFUQbnM496CQRdz+UpDYNN4dT9/bgt239Bpyh2gxGxGIxKKN/cUCQ2kGxr
+yjsZSjp9hME=
+=ao29
+-----END PGP SIGNATURE-----
+

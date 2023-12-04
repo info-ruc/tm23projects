@@ -1,0 +1,75 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB3IVMT18295
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 13:31:22 -0500 (EST)
+Received: from photon.ece.cornell.edu (photon.ece.cornell.edu [128.84.81.138])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fB3IS4M21012
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 13:28:04 -0500
+Date: Mon, 3 Dec 2001 13:28:05 -0500 (EST)
+From: Edward Hua <eyh5@ece.cornell.edu>
+X-X-Sender:  <eyh5@photon.ece.cornell.edu>
+To: <egs@CS.Cornell.EDU>
+Subject: 615 Paper # 69
+Message-ID: <Pine.LNX.4.33.0112011957240.12599-100000@photon.ece.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Bayeux: AN Architecture for Scalable and Fault-tolerant Wide-area Data 
+Dissemination
+
+Shelly Q. Zhuang, Ben, Y. Zhao, Anthony D. Joseph, Randy H. Katz, John D. 
+Kubiatowicz
+
+	This paper proposes Bayeux, which is essentially Tapestry with 
+multicast operations. Bayeux is used in distributing streaming multimedia 
+applications from a single source (publisher) to a large receiver group. 
+It has the capability to scale to thousands of nodes in the network, is 
+fault-tolerant to link and node failures, and combines randomness for load 
+balancing with locality for efficient use of network bandwidth. 
+
+	Bayeux uses the Tapestry mechanism as its location and routing 
+substrate, and on top of it is the application-specific multicast 
+operation. Because randomized node IDs naturally group themselves into 
+sets sharing common suffixes, a multicast packet does not have to be 
+duplicated when traversing the network until it encounters receiver nodes 
+whose identifiers become divergent in the next nodeID digit. Also, the 
+maximum number of overlay hops by Bayeux multicast delivery operation is 
+bounded by the total number of digits in the underlying Tapestry's node 
+IDs. 
+
+	The base architecture of Bayeux is straightforward. When a server 
+node has a session to advertise, it creates a <session, UID> tuple, hashes 
+it into a 160-bit identifier, and sends this identifier using the Tapestry 
+operations to a root node for advertisement. The root node now will have a 
+pointer to point where the session is located. When multiple clients 
+request the session from the root node, they first know the same <session, 
+UDI> tuple a priori, use the same hashing function to get the identifier, 
+and then request the session service from the root node using the Tapestry 
+operation. The root node then performs a multicast membership operation to 
+establish a receiver group for receiving the advertised session service.
+
+	In maintaining the multicast membership tree, four control 
+messages are exchanged between the root node and the client nodes. They 
+are JOIN, TREE, LEAVE, and PRUNE. A node joins the multicast session by 
+sending a JOIN message towards the root, which then replies with a TREE 
+message. Notice here the JOIN and TREE can take on different paths. When a 
+router receives the TREE message, it adds the new member node ID to the 
+list of receiver node IDs that it's responsible for and updates its 
+forwarding table. When a node decides to leave the multicast membership, 
+it sends a LEAVE message to the root, which then returns the PRUNE 
+message. Along the path, the routers delete leaving node's ID from their 
+receiver node lists.
+
+	Further enhancements to improve the scalability of Bayeux 
+multicast operations are made. One is the tree partitioning, in which 
+multiple root nodes, instead of a single root node, are used that may form 
+disjoint membership trees of their own. The advantages of this arrangement 
+are two-fold: 1) it eliminates the single point of failure problem 
+associated with a single root node, and 2) a member node may choose a root 
+node closest to itself to reach the desired session, thus saving both 
+delay and bandwidth consumption. Another improvement is called receiver 
+identifier clustering. This is the scheme for smartly naming node IDs so 
+that local member nodes to a root node may share the longest possible 
+suffix, thus reducing session packet replication.  
+
+
+

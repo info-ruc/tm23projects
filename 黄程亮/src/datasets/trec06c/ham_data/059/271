@@ -1,0 +1,56 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [208.235.160.21])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id JAA11888
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 20 Jan 2000 09:28:26 -0700
+Received: (qmail 16750 invoked from network); 20 Jan 2000 16:19:08 -0000
+Received: from uofa-dsl-17.dakotacom.arizona.edu (HELO homebox) (150.135.175.17)
+  by breaker.dakotacom.net with SMTP; 20 Jan 2000 16:19:08 -0000
+Message-Id: <3.0.1.32.20000120092827.00690180@psy1.psych.arizona.edu>
+Date: Thu, 20 Jan 2000 09:28:27 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Browse Button and RecordVocal & Display Problem
+In-Reply-To: <4.2.0.58.20000120004013.00970cc0@pop.wanadoo.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 12:47 AM 1/20/00 +0100, you wrote:
+>No this registry key didn't exist before hand.
+>
+>For the RecordVocal problem I tried with <id "Clavier"> <id "DigitalVOX"> 
+><id "RecordVocal">
+>  but then I have a lot of display problem
+>  (video flips and moved into video xx ticks later) only if the subject is 
+>responding fast (or if I'm in diagnostic mode). I thought that the 
+>requestscheduled instruction should prevent this. And I don't have this 
+>problem anymore if I suppress the RecordVocal answer.
+
+  It is presicely your usage of RequestScheduled that is causing the
+errors.  This keyword is desigined to make the ISI constant and is needed
+for such things as ERP recordings and so forth with continuous running.  If
+you do infact need a constant ISI you will have to make the Delay keyword
+parameter a bit bigger than the largest xx in the error messages you see,
+RequestScheduled is in fact nearly obsolete as use of the Delay keyword
+sets it anyway.  It only happens when you include RecordVocal because
+during the ISI DMDX must write out the recorded vocalization and this takes
+extra time.  By default (no RequestScheduled) DMDX will take as long as it
+needs and then add 48 ticks to that for an ISI, if you set RequestScheduled
+then everything DMDX does in between items must occur in under 48 ticks, if
+48 ticks is not enough time you are responsible for determining the correct
+amount of time that DMDX will need to complete it's houskeeping and using
+that in a Delay parameter (thus making RequestScheduled redundant).
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+Computers can figure out all kinds of problems, except the things in
+the world that just don't add up.
+
+
+

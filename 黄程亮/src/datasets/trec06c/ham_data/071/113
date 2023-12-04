@@ -1,0 +1,112 @@
+Received: from mail5.doit.wisc.edu (mail5.doit.wisc.edu [144.92.9.76])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id RAA31041
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 5 Sep 2000 17:52:54 -0700
+Received: from [144.92.195.212] by mail5.doit.wisc.edu
+          id TAA16174 (8.9.1/50); Tue, 5 Sep 2000 19:52:52 -0500
+From: "John J. Curtin" <jjcurtin@facstaff.wisc.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: Preparation delays
+Date: Tue, 5 Sep 2000 19:57:59 -0500
+Message-ID: <000e01c0179d$8032efa0$d4c35c90@jc.psych.wisc.edu>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4.3.2.7.2.20000906101351.00b161b0@myriad.its.unimelb.edu.au>
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Julian,
+
+I am fairly new to DMDX, but have used a 2 computer master/slave setup
+running VPM on both computers for many years.  The easiest solution (as you
+suggested) is to have the slave send a pulse back to the master computer
+when it is finished its "preparation" and has begun to present the actual
+display.  DMDX does provide for output triggers through an I/O card
+(Computerboards CIO/DIO24  is one that works).  You could take one output
+bit and it run back into your data acquisition card on the master computer
+running  VPM.  So.......
+
+1.    Master sends pulse to slave to say present stimulus
+2.    Master goes into wait loop for response from slave
+3.    Slave tells master that presentation of display has begun after it
+finishes its preparation (DMDX syntax is <output n> where n is  the integer
+value for the 8 bit output)
+4.   Master exits out of wait loop on pulse from slave.
+
+This obviously adds jitter into your ITI, but it in most instances it is not
+a problem as long as the two computers remain in synch.
+
+Hope that helps if no other suggestions are offered.
+
+John
+
+John J. Curtin, Ph.D.
+Department of Psychology
+University of Wisconsin - Madison
+1202 W. Johnson St
+Madison, WI 53706
+
+office phone: 608-262-0387
+lab phone:    608-262-5621
+email: jjcurtin@facstaff.wisc.edu
+
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu]On Behalf Of Julian Simmons
+Sent: Tuesday, September 05, 2000 7:14 PM
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Preparation delays
+
+
+Hi.
+
+I am using the following rtf to present backwardly masked bitmaps to
+participants on a slave computer.
+
+<id "rawjoystick"> <nfb> <dbc 0> <dwc 000255000> <vm 800,600,600,16,0>
+! This vm provides 4 memory buffers.
+0 ;
+0 g “4e” %2 / g “4a” %59 /;
+0 g “6a” %2 / g “6a” %59 /;
+! etc. Continues for 58 subsequent trials.
+0 "The End.  Thank you for your participation.";
+
+The slave receives a TTL signal through the games port from a master
+computer that is running VPM. VPM is being used to deliver acoustic startle
+probes, and record physiological signals (eg, EEG, facial EMG & HR).
+
+The problem I have encountered is that there is an inconsistent delay
+between the receiving of the request (TTL, or keyboard activated on slave)
+and the presentation of the bitmaps. The inconsistent delay makes it
+impossible to time acoustic probes from the master computer. Preparation A
+for bitmaps vary between .10 to 1500ms, whereas preparation B is steady
+between 40 and 50ms. I'm presuming that Prep A relates to the loading of the
+*.bmp files, and hence is processor intensive.
+
+If anyone is aware of how to make this delay relatively constant (i.e., Prep
+A), or how to reduce it to a minimum, I'd appreciate it if you would let me
+know. It may be necessary to establish a feedback signal from the slave to
+the master PC, but I am unsure of DMDX's ability in this area, and would
+like some advice.
+
+Best Regards,
+
+Julian Simmons.
+
+=====================================================
+Julian Simmons
+School of Behavioural Science
+Department of Psychology
+University of Melbourne
+Victoria 3010
+Australia.
+
+jgs@unimelb.edu.au                  j.simmons1@pgrad.unimelb.edu.au
+
+Ph: +61 3 8344-0326     Fax: +61 3 9347-6618    Mobile: 0411 161 769
+=====================================================
+
+

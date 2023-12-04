@@ -1,0 +1,140 @@
+Received: from cs.columbia.edu (root@cs.columbia.edu [128.59.10.13]) by opus.cs.columbia.edu (8.8.3/8.6.6) with ESMTP id TAA11819 for <hgs@opus.cs.columbia.edu>; Thu, 19 Dec 1996 19:08:00 -0500 (EST)
+Received: from ceres.fokus.gmd.de (ceres.fokus.gmd.de [192.35.149.15]) by cs.columbia.edu (8.8.3/8.6.6) with SMTP id TAA03293 for <schulzrinne@cs.columbia.edu>; Thu, 19 Dec 1996 19:07:59 -0500 (EST)
+Received: from zephyr.isi.edu by ceres.fokus.gmd.de with SMTP (PP-ICR1v5);
+          Fri, 20 Dec 1996 01:06:19 +0100
+Received: by zephyr.isi.edu (5.65c/5.61+local-23) id <AA14964>;
+          Thu, 19 Dec 1996 15:22:02 -0800
+Received: from venera.isi.edu by zephyr.isi.edu (5.65c/5.61+local-23) 
+          id <AA14958>; Thu, 19 Dec 1996 15:22:01 -0800
+Received: from murrow.prognet.com (prognet.com) 
+          by venera.isi.edu (5.65c/5.61+local-25) id <AA02727>;
+          Thu, 19 Dec 1996 15:22:00 -0800
+Received: from robla.dev.prognet.com (two221.dev.prognet.com) 
+          by murrow.prognet.com with SMTP id AA30918 (5.67b/IDA-1.5 
+          for <confctrl@isi.edu>); Thu, 19 Dec 1996 15:21:58 -0800
+Message-Id: <3.0.1.32.19961219152104.006f5ca4@mail.prognet.com>
+X-Sender: robla@mail.prognet.com
+X-Mailer: Windows Eudora Pro Version 3.0.1 beta 1 (32)
+Date: Thu, 19 Dec 1996 15:21:05 -0800
+To: confctrl@ISI.EDU
+From: Rob Lanphier <robla@prognet.com>
+Subject: Future Direction for RTSP
+Mime-Version: 1.0
+Sender: owner-confctrl@ISI.EDU
+Precedence: bulk
+Content-Type: text/plain; charset="us-ascii"
+X-Mozilla-Status: 0001
+Content-Length: 4369
+
+As per Ruth's request, we'd like to lay out the positions of Netscape and
+Progressive Networks on the future direction of RTSP as we had discussed
+last Wednesday in San Jose.  We'll start by summarizing the meeting as we
+saw it, and then conclude with how we would like to proceed.
+
+Outline:
+1.  RTSP vs. RTSP'
+2.  Role of the Metafile/Stream Description
+3.  One control stream for many data streams?
+4.  Roadmap
+
+==================
+1.  RTSP vs. RTSP'
+==================
+
+The main topic of discussion at the Wednesday RTSP meeting was to discuss
+the merits of RTSP and RTSP' and see which document would be the foundation
+for the next draft of RTSP.  
+
+Generally speaking, there was a feeling that
+RTSP' would serve as a better starting point, and that Netscape and PN
+would assume change control of this document, and submit the next draft of
+RTSP as soon as possible.  RTSP' addressed some of the issues brought up
+after the submission of RTSP.  These issues were:
+
+*  RTSP' was perceived
+to be a simpler protocol.  However, it was also understood that there is a
+lot of fleshing out to be done on this document.  Nonetheless, it was the
+consensus that the simplicity of RTSP' was a big advantage to it.
+
+*  RTSP'
+seems more easily extensible.  The design philosophy behind RTSP was to
+allow extensions via "OPTION" commands, but the level of extensibility
+found in a MIME-property text-based protocol may be found in binary
+protocols such as those based on ASN.1.
+
+*  RTSP' borrows heavily from
+HTTP, and therefore would be a better understood protocol for it, although
+there was a note of caution that it similarity to HTTP doesn't necessarily
+mean that issues such as authentication and options negotiation are solved
+automatically by basing RTSP' on HTTP.  The ability to potentially
+interlace HTTP and RTSP' were perceived as being good, and the ability to
+reuse HTTP code was also perceived as a good thing.  The similarity to HTTP
+was a feature that needs further clarifications as to the benefits and
+risks.
+
+*  The self-documenting nature of a text-based protocol was also
+seen as a good thing.  However, it was not unanimous, and no one felt
+comfortable in declaring text the unambiguously superior choice.  In the
+interest of moving forward, though, the next draft will be a text-based
+protocol.
+
+===========================================
+2.  Role of the Metafile/Stream Description
+===========================================
+
+The role of the metafile in the interaction was also discussed at great
+length.  After some animated deliberation, it was decided that the
+flexibility needs to exist to:
+
+*  Allow metafile embeddability in HTML
+pages, allowing a media plugin to do a priori stream selection, reducing
+the user-perceived round-trips  from the point at which the user presses
+"play".
+
+*  Less clear was the desire to allow hand-authorable
+metafile/session descriptions.  However, a rough consensus was reached that
+a line can be drawn between information necessary for stream selection and
+initialization parameters necessary for rendering streams.  It was further
+decided that there was a need for the former to be handled by the metafile,
+and the latter to optionally be contained as a PARAM_REPLY within RTSP
+(perhaps as a binary blob in the case of .wav files or QuickTime files).
+
+=============================================
+3.  One control stream for many data streams?
+=============================================
+
+Another point of discussion was allowing multi-stream control using single
+commands (i.e. one "stop" message stops all streams).  RTSP' provides an
+implicit mechanism for this by defining a hierarchy using relative URLs.
+For example, if a presentation consists of the following
+streams:
+twister/audio/14_4
+twister/video/80
+
+...then a command roughly in
+the form of:
+STOP twister/*
+
+...could be issued which would stop all
+streams. 
+
+The consensus was that the implentation implications need to be
+fully investigated.
+
+==========
+4. Roadmap
+==========
+*  Anup and Rob will work with Henning to
+produce a new version of the draft.
+
+*  Netscape and PN will do further
+investigation of the performance implications of proceeding with a
+text-based protocol vs. a binary-based protocol.  Barring any unforseen
+difficulties or large disparities in performance, we will aim toward a
+text-based protocol.
+
+Comments?
+
+Rob & Anup
+
+

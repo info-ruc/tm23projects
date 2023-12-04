@@ -1,0 +1,216 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Thu, 29 Dec 1994 10:04:04 MST
+Received: from gatekeeper.premenos.com by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA21891; Thu, 29 Dec 1994 10:03:57 MST
+Received: from localhost (smap@localhost) by gatekeeper.premenos.com (8.6.5/8.6.5) id JAA22460 for <icon-group@cs.arizona.edu>; Thu, 29 Dec 1994 09:03:51 -0800
+Received: from sirtur.premenos.com(150.105.100.47) by mail.premenos.com via smap (V1.3mjr)
+	id sma022458; Thu Dec 29 09:03:06 1994
+Received: by sirtur.sirtur.premenos.com (5.x/SMI-SVR4)
+	id AA05637; Thu, 29 Dec 1994 08:56:04 -0800
+Date: Thu, 29 Dec 1994 08:56:04 -0800
+From: kwalker@sirtur.premenos.com (Ken Walker)
+Message-Id: <9412291656.AA05637@sirtur.sirtur.premenos.com>
+To: icon-group@cs.arizona.edu
+Subject: Re: Truth Tables...
+X-Sun-Charset: US-ASCII
+
+I've been writing too much C and not enough Icon lately, so I decided it
+was time to have some fun. Below is a different variation on the theme
+of truth table generators.
+
+Ken Walker, kwalker@premenos.com
+Premenos Coporation, Concord, Ca. 94520
+
+-------------------------------- Cut Here -----------------------------
+#
+# This program takes as input on the command line a logical formula
+# containing variables and produces a truth table for the formula.
+# See below for the formula grammar.
+#
+# Ken Walker 12/29/94
+
+#
+# The following records are nodes in the syntax tree of a formula.
+#
+record True()
+record False()
+record Not(a)
+record And(a,b)
+record Or(a,b)
+record Xor(a,b)
+
+global vars, var_set
+
+procedure main(a)
+    local formula, parsed, symtab, max_var_len, formula_len
+
+    #
+    # parse the formula, putting the variables in the 'vars' list.
+    #
+    vars := []
+    var_set := set()
+    formula := a[1] | stop("please give a formula on the command line")
+    formula ? {
+	parsed := expr()
+        pos(0) | stop("invalid formula")
+	}
+
+    #
+    # compute some lengths for formating output
+    #
+    formula_len := 5
+    formula_len <:= *formula
+    max_var_len := 6
+    every max_var_len <:= *!vars
+
+    #
+    # output header line with variable names and formula
+    #
+    write()
+    every writes(center(!vars, max_var_len + 1))
+    writes(" | ")
+    write(center(formula, formula_len))
+    write(repl("-", *vars * (max_var_len + 1) + 3 + formula_len))
+
+    #
+    # compute and print each set of variable assignments and formula
+    # results
+    #
+    symtab := table()
+    every assign_bool(vars, symtab) do {
+	every writes(center(type(symtab[!vars]), max_var_len + 1))
+        writes(" | ")
+        write(center(type(eval(parsed, symtab)), formula_len))
+    }
+end
+
+#
+# For each variable in a list, assign boolean values in a symbol
+# table. Boolean values are represented by True and False records.
+# This is a recursive generator producing all combinations of
+# assignments.
+#
+procedure assign_bool(vars, symtab)
+    local var   
+
+    if *vars == 0 then
+        return  # all variables are assigned
+
+    var := vars[1]     # variable this call assigns to
+    vars := vars[2:0]  # rest of variables
+
+    symtab[var] := True()
+    suspend assign_bool(vars, symtab)
+    symtab[var] := False()
+    suspend assign_bool(vars, symtab)
+end
+
+#
+# Evaluate the parsed formual, using the boolean assignments to variables
+# in symtab. Return a True record or a False record.
+#
+procedure eval(parsed, symtab)
+    case type (parsed) of {
+        "string":
+            return symtab[parsed]
+        "True" | "False":
+            return parsed
+        "Not":
+             if type(eval(parsed.a, symtab)) == "True" then
+                 return False()
+             else
+                 return True()
+        "And":
+             if type(eval(parsed.a, symtab)) == "True" &
+                type(eval(parsed.b, symtab)) == "True" then
+                 return True()
+             else
+                 return False()
+        "Or":
+             if type(eval(parsed.a, symtab)) == "True" |
+                 type(eval(parsed.b, symtab)) == "True" then
+                 return True()
+             else
+                 return False()
+        "Xor":
+             if type(eval(parsed.a, symtab)) ~==
+                 type(eval(parsed.b, symtab)) then
+                 return True()
+             else
+                 return False()
+
+   }
+end
+
+#
+# primative parser for grammar:
+#
+#    <expr> ::=  <term> |
+#                <expr> and <term> |
+#                <expr> or <term> |
+#                <expr> xor <term> |
+#
+#    <term> ::= true |
+#               false |
+#               <ident> |
+#               <not> <term> |
+#               ( <expr> )
+#
+procedure expr()
+    local e
+
+    e := term()
+    repeat {
+        skip_whsp()
+	if ="and" then {
+           e := And(e, term())
+        }
+	else if ="or" then {
+           e := Or(e, term())
+        }
+	else if ="xor" then {
+           e := Xor(e, term())
+        }
+        else
+            return e
+    }
+end
+
+procedure term()
+    local t
+    static ident_chars
+
+    initial ident_chars := &letters ++ &digits ++ '_'
+
+    skip_whsp()
+    if ="(" then {
+	t := expr()
+        skip_whsp()
+	if not =")" then
+	   stop("missing ')'")
+	return t
+    }
+    else if ="not" then
+       return Not(term())
+    else if ="true" then
+       return True()
+    else if ="false" then
+       return False()
+    else if t := tab(many(ident_chars)) then {
+	if not member(var_set, t) then {
+	     insert(var_set, t)
+             put(vars, t)
+        }
+	return t
+    }
+    else
+	stop("invalid formula")
+end
+
+procedure skip_whsp()
+   static white_sp
+
+   initial white_sp := ' \t'
+
+   tab(many(white_sp))
+end
+

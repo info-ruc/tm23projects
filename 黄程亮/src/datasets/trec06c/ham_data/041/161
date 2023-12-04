@@ -1,0 +1,52 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id HAA01228
+	for <handyboard@media.mit.edu>; Sun, 11 Apr 1999 07:50:49 -0400 (EDT)
+Received: from cam.org (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id HAA22341; Sun, 11 Apr 1999 07:50:41 -0400 (EDT)
+Message-Id: <37108CCD.8ADD8D11@cam.org>
+Date: Sun, 11 Apr 1999 07:51:42 -0400
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.5 [en] (Win95; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Javaid Iqbal <javaid@student.unsw.edu.au>
+Cc: handyboard@media.mit.edu
+Subject: Re: multitasking
+References: <004201be83f9$31580520$aae5ab95@mech.unsw.edu.au>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Javaid Iqbal wrote:
+
+> I have a simple question regarding multitasking.
+> I am using two subroutine in a multitasking.
+>
+> start_process(ir());
+> start_process(detect());
+>
+> Both subroutine should run for 5 ms(default). Consider an example that the
+> subroutine detect() require more than 5 ms for complete execution. When the
+> main program runs ir() will be executed for  first 5 ms then detect() will
+> be executed for next 5ms. At the end of first 10 ms ir() will be executed
+> again for 5ms. Now after 15ms when detect() will be executed, will it be
+> executed from where it was left or execution will start from the  start of
+> subroutine?.
+> If it start the execution of subroutine from start every time, do I have to
+> increase the execution time of multitasking ( start_process(detect(),100);.
+> In this case how can I find the exact execution time of each subroutine?.
+> Any help would be appreciated.
+>
+> Sincerely
+> Javaid Iqbal
+
+The subroutines continue execution exactly where they left off, making the
+multitasking transparent to you.  You normally shouldn't have to give any
+thought to how many ms each one gets.  If timing is important to you for some
+reason and the time commands aren't sufficient then it's time to learn
+assembler.
+
+
+
+
+

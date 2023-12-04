@@ -1,0 +1,59 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h7L5Beil017698
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 20 Aug 2003 22:11:40 -0700
+Received: from anybodyi.u.arizona.edu (ppp243.broadband01.tus.dakotacom.net [69.9.24.243])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h7L5BsiJ010221
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 20 Aug 2003 22:11:54 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030820215535.00b12928@psy1.psych.arizona.edu>
+Date: Wed, 20 Aug 2003 22:11:32 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Could not find registry key
+In-Reply-To: <F943447B822FA34B9256FF8382FBDCE4C22C21@cantwe.giga.canterb
+ ury.ac.nz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 12:37 PM 8/21/2003 +1200, you wrote:
+
+>I m new to this list and new to DmDX and having a problem. I ve searched 
+>the mailing list archive and seen almost identical problems, but no fix. I 
+>can t cut and paste the error message of course because the first time I 
+>hit a key it goes away, but basically when I run DmDX and run Testmode.rtf 
+>or tachtest.rtf it says there s no registry key for 640x480x8bpp 0Hz. I 
+>did all the stuff in TimeDX and selected 640x480x16 75Hz and that s what s 
+>in the registry. I even ran TimeDX and selected the 0Hz. That s in the 
+>registry.
+...
+>If I run regedit and look at the registry keys I see that I have the 
+>entries that I selected in TimeDX. One thing I m not clear on is why DmDX 
+>is insisting on using a video mode that I did not select. Is this a 
+>problem with using multiple displays? Am I misreading the instructions?
+
+
+   The mode you select time TimeDX has no correlation with the mode DMDX 
+uses, it only affects the mode TimeDX will test.  DMDX either uses 
+640x480x8 at 0Hz or whatever the <VideoMode> keywords tells it to 
+use.  TimeDX must be used for each video mode that DMDX might use, you have 
+to select that video mode and you must time and save those values in the 
+registry.  Which brings us to 640x480x8 0Hz vs. 640x480x8 75Hz.  Under 
+older versions of windows video drivers only ever enumerated 0Hz video 
+modes meaning no control over refresh rate, you take whatever the default 
+is.  Under XP (and maybe 2000) you can now select the refresh rate you want 
+and these are all distinct from 0Hz mode which is what is used by DMDX by 
+default.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+"We demand rigidly defined areas of doubt and uncertainty!"
+
+                                                   -  Vroomfondel
+
+
+

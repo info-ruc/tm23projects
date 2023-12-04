@@ -1,0 +1,44 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1L4pCt03156
+	for <egs+summary@cs.cornell.edu>; Mon, 20 Feb 2006 23:51:12 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1L4pBBj025770
+	for <egs+summary@cs.cornell.edu>; Mon, 20 Feb 2006 23:51:12 -0500 (EST)
+Message-ID: <1084056918.1140497470330.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Mon, 20 Feb 2006 23:51:10 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1L4pCt03156
+
+* The three papers discuss security issues in peer-to-peer systems and present several defenses against the attacks.
+* The first paper presents Sybil attack: entities can counterfeit multiple identities to compromise the redundancy in peer-to-peer systems, and shows that this attack is always possible in the absence of trusted authority.
+* The second paper proposes a defense against Eclipse attack: attackers may control a large fraction of the neighbor of correct nodes even with only a small fraction of faulty nodes.
+* Secure routing in the third paper guarantees correct message delivery in the presence of malicious nodes by secure assignment of node identifier, secure routing table maintenance and secure message forwarding.
+
+[Comments] Other attacks include an attacker keeps inserting objects to bring down the system or an attacker inserts lots of different content of an object (the same name and key) to interfere with the correct one.
+
+
+<Sybil Attack>
+* Large-scale peer-to-peer systems rely on redundancy to resist hostile remote entities. That a small number of remote entities forge multiple identities to break this resistance is called Sybil attack.
+* This paper presents a general distributed computing model whose environment is friendly, that is, each entity is placed minimal resource restriction and public-key cryptography is allowed, and show that faulty entities can counterfeit multiple identities unless correct entities validate all the identities simultaneously.
+* In the absence of trust authority, an entity may discriminate the identities by resource challenges by assuming resources of attackers are limited. In their model, three resources: communication, storage and computation are discussed. Concurrency is a very important requirement when performing resource challenges in either case of direct identity validation or indirect (via a group of identities that the entity has accepted) identity validation.
+
+<Eclipse Attack>
+* This paper proposes a defense against Eclipse attack by bounding the indegree and outdegree of nodes in choosing neighbors in structure peer-to-peer overlays.
+* Eclipse attack is launched either by populating the neighbor sets of correct nodes with a lot of fake identities (via Sybil attack) or by exploiting the routing table maintenance algorithm.
+* Unstructured peer-to-peer overlays are extremely vulnerable to Eclipse attacks since its selection of routing paths can easily been biased by attackers. Structured overlays are more resilient to these attacks because they assign uniform identifier to nodes, thus imposing more strict constraints on the neighbor sets. This property, on the other hand, limits the possibility to implement locality optimization.
+* The defense proposed in this paper, by auditing to enforce degree bounds, can be applied to both unstructured and structured overlays. It also permits performance optimization like proximity neighbor selection. In their approach, indegree is measured by entries of the back pointer list while the outdegree is measured by the size of neighbor set. Nodes choose neighbors who indegree and outdegree are below a threshold. They rely on certified node identifier to authenticate the replies of auditing challenges. Finally, an anonymous channel that challenges are relayed through a set of intermediate nodes (anonymizer nodes) is adopted in their approach.
+* [Issues] They perform experiments on Pastry and enforce bounds per routing table row because fitting malicious neighbors in the top rows is more severe. The results show that their defense is effective but increases delays in the absence of attacks. Besides, the measurements of indegree and outdegree need to be improved in a system with constant churn.
+
+<Secure Routing>
+* This paper proposes a secure routing scheme, which consists of secure assignment of node identifier, secure routing table maintenance and secure message forwarding, to guarantee correct message delivery in structured peer-to-peer overlays in the presence of malicious nodes.
+* In their model, an adversary has control over the network-level communication between malicious nodes, and these nodes may collude to cause damage to the system. Their secure routing primitive ensures that a query message sent by a correct node reaches all correct replica roots with high probability.
+* For secure assignment of node identifier, trusted certification authorities are used to sign certificates that bind a random node identifier to a principal’s public key and its IP address. The inclusion of IP address is important since an attacker now can’t freely move certificates across the nodes. To prevent attackers from getting a large number of certificates, users are required to pay money or present real-world identity. A less effective approach to generate certificates in a distributed fashion is using crypto puzzles.
+* For secure routing table maintenance, they use two routing tables: one that exploits network proximity for efficient routing and one that constrains table entries. The first table (as in Pastry and Tapestry) is used in normal operations to achieve good performance. Since attackers can fake proximity to introduce bad entries to this table, the second table (as in Chord), where strong constraints are imposed on choosing nodes identifiers, is used when previous routing fails.
+* For secure message routing, they apply a failure test to determine if a routing works and perform redundant routing if the failure test returns positive. Attackers may collect certificates of nodes that have left and include correct nodes in a prospective root neighbor sets to affect the failure test. So the sender needs to contact the neighbors to determine if they are alive and have valid certificates. Another nodeId suppression attack which may increase the false positives and false negatives in the test remain inevitable in decreasing the accuracy of the test. The idea of redundant routing is to route copies of the message over multiple paths toward each of the replica roots. As the cost is high, several parameters can be tuned to tradeoff security for performance. Rather, self-certifying data can be stored on replica roots; their integrity is checked by the client and only when it fails does the client resort to secure routing, thus minimizing the use (and overhead) of the secure routing scheme.
+

@@ -1,0 +1,470 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g24MMUV18025;
+	Mon, 4 Mar 2002 14:22:30 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA23603;
+	Mon, 4 Mar 2002 14:44:18 -0500 (EST)
+Date: Mon, 4 Mar 2002 14:44:18 -0500 (EST)
+Received: by canaveral.red.cert.org; Mon, 4 Mar 2002 14:34:55 -0500
+Message-Id: <CA-2002-06.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-06 Vulnerabilities in Various Implementations of the
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 84
+Status: RO
+X-Status: $$$$
+X-UID: 0000000041
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-06 Vulnerabilities in Various Implementations of the 
+                         RADIUS Protocol
+
+   Original release date: March 4, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   Systems running any of the following RADIUS implementations:
+
+     * Ascend RADIUS versions 1.16 and prior
+     * Cistron RADIUS versions 1.6.5 and prior
+     * FreeRADIUS versions 0.3 and prior
+     * GnuRADIUS versions 0.95 and prior
+     * ICRADIUS versions 0.18.1 and prior
+     * Livingston RADIUS versions 2.1 and earlier
+     * RADIUS (previously known as Lucent RADIUS) versions 2.1 and prior
+     * RADIUSClient versions 0.3.1 and prior
+     * XTRADIUS 1.1-pre1 and prior
+     * YARD RADIUS 1.0.19 and prior
+
+Overview
+
+   Remote  Authentication  Dial In User Service (RADIUS) servers are used
+   for  authentication,  authorization  and accounting for terminals that
+   speak   the   RADIUS  protocol.  Multiple  vulnerabilities  have  been
+   discovered in several implementations of the RADIUS protocol.
+
+I. Description
+
+   Two  vulnerabilities  in various implementations of RADIUS clients and
+   servers  have  been  reported to several vendors and the CERT/CC. They
+   are  remotely  exploitable,  and on most systems result in a denial of
+   service. VU#589523 may allow the execution of code if the attacker has
+   knowledge of the shared secret.
+
+   VU#589523  - Multiple implementations of the RADIUS protocol contain a
+   digest calculation buffer overflow 
+
+     Multiple  implementations  of  the RADIUS protocol contain a buffer
+     overflow in the function that calculates message digests.
+
+     During  the  message  digest  calculation,  a string containing the
+     shared  secret  is  concatenated  with  a  packet  received without
+     checking  the  size of the target buffer. This makes it possible to
+     overflow  the  buffer  with  shared secret data. This can lead to a
+     denial of service against the server. If the shared secret is known
+     by the attacker, then it may be possible to use this information to
+     execute  arbitrary  code  with  the privileges of the victim RADIUS
+     server  or  client,  usually  root. It should be noted that gaining
+     knowledge of the shared secret is not a trivial task.
+
+     Systems Affected by VU#589523
+
+     * Ascend RADIUS versions 1.16 and prior
+     * Cistron RADIUS versions 1.6.4 and prior
+     * FreeRADIUS versions 0.3 and prior
+     * GnuRADIUS versions 0.95 and prior
+     * ICRADIUS versions 0.18.1 and prior
+     * Livingston RADIUS versions 2.1 and earlier
+     * RADIUS (commonly known as Lucent RADIUS) versions 2.1 and prior
+     * RADIUSClient versions 0.3.1 and prior
+     * YARD RADIUS 1.0.19 and prior
+     * XTRADIUS 1.1-pre1 and prior
+
+   VU#936683  -  Multiple  implementations  of the RADIUS protocol do not
+   adequately validate the vendor-length of vendor-specific attributes. 
+
+     Various   RADIUS   servers   and  clients  permit  the  passing  of
+     vendor-specific     and     user-specific    attributes.    Several
+     implementations  of  RADIUS  fail  to  check  the  vendor-length of
+     vendor-specific  attributes.  It  is  possible to cause a denial of
+     service  against  RADIUS  servers  with a malformed vendor-specific
+     attribute.
+
+     RADIUS  servers  and  clients  fail  to  validate the vendor-length
+     inside  vendor-specific  attributes. The vendor-length shouldn't be
+     less than 2. If vendor-length is less than 2, the RADIUS server (or
+     client)  calculates  the attribute length as a negative number. The
+     attribute  length is then used in various functions. In most RADIUS
+     servers  the  function that performs this calculation is rad_recv()
+     or  radrecv(). Some applications may use the same logic to validate
+     user-specific attributes and be vulnerable via the same method.
+
+     Systems Affected by VU#936683
+
+     * Cistron RADIUS versions 1.6.5 and prior
+     * FreeRADIUS versions 0.3 and prior
+     * ICRADIUS versions 0.18.1 and prior
+     * Livingston RADIUS versions 2.1 and earlier
+     * YARD RADIUS 1.0.19 and prior
+     * XTRADIUS 1.1-pre1 and prior
+
+II. Impact
+
+   Both  of  the  vulnerabilities allow an attacker can cause a denial of
+   service of the RADIUS server. On some systems, VU#589523 may allow the
+   execution of code if the attacker has knowledge of the shared secret.
+
+III. Solution
+
+   Apply a patch, or upgrade to the version specified by your vendor.
+   Block packets to the RADIUS server at the firewall
+
+   Limit  access  to  the  RADIUS  server  to  those  addresses which are
+   approved to authenticate to the RADIUS server. Note that this does not
+   protect your server from attacks originating from these addresses.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  When  vendors  report  new  information  to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+ Apple
+
+     Mac  OS X and Mac OS X Server -- Not vulnerable since RADIUS is not
+     shipped with those products.
+
+ Cisco
+
+     Cisco  Systems  has  reviewed the following products that implement
+     RADIUS  with regards to this vulnerability, and has determined that
+     the  following  are  NOT vulnerable to this issue; Cisco IOS, Cisco
+     Catalyst OS, Cisco Secure PIX firewall, Cisco Secure Access Control
+     System  for  Windows,  Cisco  Aironet,  Cisco Access Registrar, and
+     Cisco Resource Pooling Management Service. At this time, we are not
+     aware  of  any  Cisco  products  that  are vulnerable to the issues
+     discussed in this report.
+
+ Cistron 
+
+     You state 2 vulnerabilities:
+    1. Digest Calculation Buffer Overflow Vulnerability Cistron Radius up
+       to and including 1.6.4 is vulnerable
+    2. Invalid  attribute length calculation on malformed Vendor-Specific
+       attr. Cistron Radius up to and including 1.6.5 is vulnerable
+
+     Today  I  have  released  version  1.6.6, which also fixes (2). The
+     homepage  is  http://www.radius.cistron.nl/  on  which you can also
+     find   the   ChangeLog.   An  announcement  to  the  cistron-radius
+     mailinglist was also made today.
+
+     So everybody should upgrade to 1.6.6.
+
+ FreeBSD 
+
+     FreeBSD  versions  prior to 4.5-RELEASE (which is shipping today or
+     tomorrow  or  so)  do contain some of the RADIUS packages mentioned
+     below:  radiusd-cistron,  freeradius,  ascend-radius, icradius, and
+     radiusclient.  However, 4.5-RELEASE will not ship with any of these
+     RADIUS   packages,   except   radiusclient.  Also,  note  that  the
+     information  you [CERT/CC] have forwarded previously indicates that
+     neither   Merit   RADIUS   (radius-basic)   nor   radiusclient  are
+     vulnerable.
+
+ Fujitsu 
+
+     Fujitsu's  UXP/V  operating  system is not vulnerable because UXP/V
+     does not support the Radius functionality.
+
+ GnuRADIUS 
+
+     The bug was fixed in version 0.96.
+
+ Hewlett-Packard 
+
+     We have tested our Version of RADIUS, and we are NOT vulnerable.
+
+ IBM 
+
+     IBM's  AIX  operating system, all versions, is not vulnerable as we
+     do not ship the RADIUS project with AIX.
+
+ Juniper Networks 
+
+     Juniper  products  have  been  tested  and are not affected by this
+     vulnerability.
+
+ Lucent Technologies, Inc.
+
+     Lucent and Ascend "Free" RADIUS server Product Status
+     
+     Reiteration of product End of Life
+     February 14, 2002
+     
+     The  purpose  of  this  announcement is to make official the end of
+     life of products based on the Livingston Enterprises RADIUS server,
+     and to reiterate the terms of the original license.
+     
+     Prior to the Lucent Technologies acquisition of Ascend Communications
+     and Livingston Enterprises, both companies distributed RADIUS servers
+     at no cost to their customers. The initial Livingston server was   
+     RADIUS 1.16 followed in June 1999 by RADIUS 2.1. The Ascend server
+     was based on the Livingston 1.16 product with the most recent version
+     being released in June 1998.  Lucent Technologies no longer
+     distributes these products, does not provide any support services for
+     these products, and has not done so for some time.
+     
+     All of these products were distributed as-is without warranty,
+     under the BSD "Open Source" license with the following terms:
+     
+     This software is provided by the copyright holders and contributors
+     ``as is'' and any express or implied warranties, including, but not
+     limited to, the implied warranties of merchantability and fitness for
+     a particular purpose are disclaimed. In no event shall the copyright
+     holder or contributors be liable for any direct, indirect,
+     incidental, special, exemplary, or consequential damages (including,
+     but not limited to, procurement of substitute goods or services;
+     loss of use, data, or profits; or business interruption) however
+     caused and on any theory of liability, whether in contract, strict
+     liability, or tort (including negligence or otherwise) arising in any
+     way out of the use of this software, even if advised of the
+     possibility of such damage.
+     
+     Redistribution and use in source and binary forms, with or without
+     modification, are permitted provided that the following conditions
+     are met:
+     
+     *  Redistributions  of  source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+     
+     * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the  
+     documentation   and/or  other  materials  provided  with  the
+     distribution.
+     
+     *  All  advertising  materials  mentioning  features or use of this
+     software must display the following acknowledgement:
+     This product includes software developed by Lucent Technologies and
+     its contributors.
+     
+     *  Neither  the  name  of the copyright holder nor the names of its 
+     contributors  may  be  used  to endorse or promote products derived
+     from this software without specific prior written permission.
+
+     Under  this  license, other parties are free to develop and release
+     other products and versions. However, as noted in the license terns,
+     Lucent Technologies can not and does not assume any responsibility   
+     for any releases, present or future, based on these products.
+     
+     Replacement Product
+     
+     The  replacement product is NavisRadius 4.x. NavisRadius is a fully
+     supported  commercial  product  currently  available  from  Lucent
+     Technologies.  Please  visit  the  NavisRadius  product web site at
+     http://www.lucentradius.com  for  product  information  and  free  
+     evaluation copies.
+     
+     Richard Perlman
+     NavisRadius Product Management
+     Network Operations Software
+     perl@lucent.com
+     +1 510-747-5650
+     
+
+
+ Microsoft 
+
+     We've  completed  our  investigation  into  this issue based on the
+     information  provided  and  have  determined  that  no  version  of
+     Microsoft IAS is susceptible to either vulnerability.
+
+ NetBSD 
+
+     Some  of  the  affected  radius  daemons  are available from NetBSD
+     pkgsrc.  It  is  highly  advisable  that  you  update to the latest
+     versions     available     from     pkgsrc.    Also    note    that
+     pkgsrc/security/audit-packages  can  be used to notify you when new
+     pkgsrc related security issues are announced.
+
+ Process Software 
+
+     MultiNet and TCPware do not provide a RADIUS implementation.
+
+ RADIUS (previously known as Lucent RADIUS) 
+
+     I wish to advise that Lucent Radius 2.1 is vulnerable to VU#589523,
+     but is not vulnerable to VU#936683.
+
+     I  have  made  an  unofficial  patch  to  this code to resolve this
+     problem.  It will be released in ftp://ftp.vergenet.net/pub/radius/
+     where previous patches to Radius by myself are available.
+
+ RADIUSClient 
+
+     I've  just  uploaded  version  0.3.2 of the radiusclient library to
+     ftp://ftp.cityline.net/pub/radiusclient/radiusclient-0.3.2.tar.gz
+     which contains a fix for the reported buffer overflow.
+
+ Red Hat 
+
+     We  do  not  ship  any  radius  software as part of any of our main
+     operating   system.   However,  Cistron  RADIUS  was  part  of  our
+     PowerTools  add-on  software CD from versions 5.2 through 7.1. Thus
+     while  not installed by default, some users of Red Hat Linux may be
+     using  Cistron  RADIUSD.  Errata packages that fix this problem and
+     our  advisory  will be available shortly on our web site at the URL
+     below.  At  the same time users of the Red Hat Network will be able
+     to update their systems to patched versions using the up2date tool.
+
+     http://www.redhat.com/support/errata/RHSA-2002-030.html
+
+ SCO 
+
+     The  Caldera NON-Linux operating systems: OpenServer, UnixWare, and
+     Open UNIX, do not ship Radius servers or clients.
+
+ SGI 
+
+     SGI  does  not  ship  with a RADIUS server or client, so we are not
+     vulnerable to these issues.
+
+ Wind River Systems 
+
+     The  current RADIUS client product from Wind River Systems, WindNet
+     RADIUS  1.1,  is  not susceptible to VU#936683 and VU#589523 in our
+     internal testing.
+
+     VU#936683  -  WindNet  RADIUS  will  pass  the  packet  up  to  the
+     application.  The  application  may need to be aware of the invalid
+     attribute length.
+
+     VU#589523 - WindNet RADIUS will drop the packet overflow.
+
+     Please  contact Wind River support at support@windriver.com or call
+     (800)  458-7767  with  any  test  reports  related to VU#936683 and
+     VU#589523.
+
+ XTRADIUS 
+
+     We  are trying to relase a new and fixed version of xtradius by the
+     end  of the month (version 1.2.1).. Right now the new version is on
+     the CVS and we are testing it...
+
+ YARD RADIUS 
+
+     Current  version 1.0.19 of Yardradius (which is derived from Lucent
+     2.1)  seems  suffering  both the problems. I think I will release a
+     new  version  (1.0.20)  which  solves those buffer overflows before
+     your suggested date [3/4/2002].
+   _________________________________________________________________
+
+   Our thanks to 3APA3A <3APA3A@security.nnov.ru> and Joshua Hill and for
+   their cooperation, reporting and analysis of this vulnerability.
+   _________________________________________________________________
+
+   Feedback  about  this  Advisory  can  be  sent to the author, 
+   Jason A. Rafail.
+   _________________________________________________________________
+
+Appendix B. - References
+
+    1. http://www.kb.cert.org/vuls/id/589523
+    2. http://www.kb.cert.org/vuls/id/936683
+    3. http://www.security.nnov.ru/advisories/radius.asp
+    4. http://www.untruth.org/~josh/security/radius 
+    5. http://www.securityfocus.com/bid/3530
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-06.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+    Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+    Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+March 04, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPIPKVaCVPMXQI2HJAQFfUwQAq41ely7YkhdKYYM+YdjyGPpbMMqzi8Cb
+7mEOX8HByLfVQL4e5wnrJOrIhRvX2jCvDMC6KCfPBR8VQ9DZz6hmj1XqUX6TH1EN
+T+9SnRCSxuRs8NtkBEWAYrHletfQ02C3v6As85Lqxl7nbYmXt3QrF88T+WNpv3r7
+AD7ZeRPeYdI=
+=wtUX
+-----END PGP SIGNATURE-----
+

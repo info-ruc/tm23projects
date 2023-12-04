@@ -1,0 +1,69 @@
+Received: by psuvax1.cse.psu.edu id <34047>; Mon, 6 Feb 1995 12:08:07 -0500
+Received: from ucdavis.ucdavis.edu ([128.120.8.250]) by psuvax1.cse.psu.edu with SMTP id <34074>; Mon, 6 Feb 1995 12:07:30 -0500
+Received: from turing.ucdavis.edu by ucdavis.ucdavis.edu (8.6.9/UCD2.50)
+	id JAA23201; Mon, 6 Feb 1995 09:06:46 -0800
+Received: by turing.ucdavis.edu (8.6.9/UCD2.04)
+	id JAA26177; Mon, 6 Feb 1995 09:04:25 -0800
+From:	broadley@turing.ucdavis.edu (Bill Broadley)
+Message-Id: <199502061704.JAA26177@turing.ucdavis.edu>
+Subject: Re: lost blocks in TCP/IP streams
+To:	plan9-fans
+Date:	Mon, 6 Feb 1995 12:04:24 -0500
+In-Reply-To: <95Feb6.043822est.34052@psuvax1.cse.psu.edu> from "forsyth@plan9.cs.york.ac.uk" at Feb 3, 95 01:17:38 pm
+X-Mailer: ELM [version 2.4 PL20]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Length: 1974      
+Sender: owner-plan9-fans
+Precedence: bulk
+Reply-To: plan9-fans
+
+> 
+> I have recently tracked down some troublesome kernel
+> memory leaks, that turned out to be mainly in the TCP/IP subsystem.
+> While doing so, I found several off-by-one allocation errors that
+> might lead to kernel heap corruption and subsequent panics.
+> 
+> I'm not sure how worthwhile it is sending the changes out if a new release is
+> imminent, but the consequences of the various small errors are annoying enough
+
+The point of the code freeze is to fix bugs just like this, I encourage you
+to submit them to linux and/or whoever is in charge of the code.
+
+> that you might not like to wait even a month or so.  Specifically, if
+> you have a machine that receives or sends moderate to heavy TCP/IP traffic, chances
+> are that your kernel will gradually/rapidly run out of kernel memory, since it
+> fails to free stream Blocks at several key points.  A busy but small machine (one of my 16 Mbyte PCs),
+> has run out of memory in under two days.  Very tedious!
+
+Sounds like a bad problem, if you bother to fix em definitely give them
+to the rest of the community.
+
+> On the other hand, I run several other machines that haven't been
+> troubled anything like so much; it depends on the nature of the traffic.
+> 
+> Anyhow, if you are interested in receiving the changes, please let me know by
+> email.
+
+I personally am not, but I would think that linus wouldd.
+
+> If you have a >1.02 Gbyte SCSI disc, also let me know and I can supply
+> changes to the port SCSI code to use extended read/write requests when necessary.
+> 
+> Finally, here is an one line change to /sys/src/9/pc/main.c to stop reads of /dev/sysstat
+> from mangling memory and eventually crashing the system (386/486 only).  Insert the following
+> line as the first executable statement of confinit():
+> 	conf.nmach = 1;
+> Without it, conf.nmach is zero.
+> 
+> 
+> 
+
+
+-- 
+Bill Broadley		Broadley@math.ucdavis.edu	    UCD Math Sys-Admin
+Linux is great.		http://ucdmath.ucdavis.edu/~broadley            PGP-ok
+
+
+

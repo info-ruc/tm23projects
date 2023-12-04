@@ -1,0 +1,301 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.207] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k295N5t29926
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 00:23:05 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id l1so381010nzf
+        for <egs+summary@cs.cornell.edu>; Wed, 08 Mar 2006 21:23:05 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=hPLbg/OJqLBD0XGEI8kyTfKiq4qIs1kmnfvDGAQcKT5STunsnI7fTex2Muwwae5C7639hkGzDg7oFhFZBPGMP+EPTyas0zOO/KG5RVsHD1hfktL07R/V+pSlkirOFUDAmvoNJICKVpRUFMXDx+YTvWyTIIn9siYvt1tkk8uKOPM=
+Received: by 10.36.4.18 with SMTP id 18mr3001893nzd;
+        Wed, 08 Mar 2006 21:23:04 -0800 (PST)
+Received: by 10.36.147.10 with HTTP; Wed, 8 Mar 2006 21:23:04 -0800 (PST)
+Message-ID: <9aa7a97d0603082123y6a898d90pf20b08e81b13664d@mail.gmail.com>
+Date: Thu, 9 Mar 2006 00:23:04 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 13
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_474_11781779.1141881784926"
+
+------=_Part_474_11781779.1141881784926
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+I *knew* something looked familiar!
+Andrew Cunningham
+arc39
+    _Resilient_Overlay_Networks_
+    David Andersen, Hari Balakrishnan, Frans Kaashoek, and Robert Morris
+
+    RON lets distributed internet applications detect and recover from path
+outages and periods of degraded performance much faster than current
+performance tuning systems (scant seconds versus several minutes, minimum).
+Though it exists on top of the internet, it operates as a sort of
+application level switch, determining whether it would be better to route a
+given packet over the internet directly, or through the overlay, to reach
+its destination. This allows improvement over normal Internet routing, and
+moreover, they discovered that forwarding packets by at most one hop along
+this intermediate protocol (a->b->c versus a->c) was (sufficiently)
+beneficial in most cases. This improvement comes at a price, namely a more
+complex view of the network topology separating two points; rather than the
+current system of using summaries, RON requires a richer view of
+connectivity. The RON is explicitly designed to be limited in size, to
+facilitate aggressive path maintenance via probing, without excessive
+bandwidth overhead, thus lending this (as is properly noted) to a
+specifically targetted platform -- despite countless comparisons, this is
+not intended to replace BGP, but to work alongside it, since BGP is far mor=
+e
+scalable. Another interesting feature is that as this work is being done on
+a 'local' scale, the heuristics used to define "failures" and "faults" may
+be tuned to the application, which provides much better behavior than
+traditional BGP for certain domains.
+    The gains of RON are narrow and slight, though present. The basic
+conceit is reasonable, and so long as RON picks no incorrect route, there i=
+s
+no reason to suppose that introducing 'delay' in the form of user-level
+redirection would be expensive. However, the good qualities of RON rely on
+the correct functioning of BGP, and the paper (quietly) admits that the
+system is not scalable to replace the current status quo. Thus this must be
+used in concert with present systems as an additional layer; this too is
+reasonable, though significantly less impressive when the central idea is
+realized to be "route around trouble spots in a reactive fashion". There ar=
+e
+reasons to believe that the gains must be as slight as they are: for one
+thing, to get truly optimal paths would be more expensive than simply using
+a sub-optimal path; for another, since this must run over the internet (and
+not dedicated fiber), there is a natural limit to the amount of benefit tha=
+t
+controlled switching can gain. Security is addressed only to be dismissed,
+which is something of a shortfall: the internet already exists, and so
+anything intending to improve its reliability must address all of its
+shortcomings. This system is more easily spoofed than the internet, since
+less physical labor is involved -- people actually request that you forward
+packets for them!-- and while applications can (successfully) layer any
+defenses they'd like on to insecure delivery mechanisms, the system is in
+the unique position of providing secure primitives for not-much-more-work.
+
+    _One_Hop_Lookups_for_Peer-to-Peer-Overlays
+    Anjali Gupta, Barbara Liskov, Rodrigo Rdrigues
+
+    The take-away from this paper is that it is unnecessary to assume that
+routing information at each member node must be kept small to ensure that
+the information is fresh. Indeed, the bookkeeping required to keep this
+information current can be handled through dissemenation trees, scaling wel=
+l
+with even very large rates of joins/leaves. This then dictates that lookups
+have a lower latency, since we need not contact several nodes, but simply a=
+t
+most one other node. We've seen the algorithm used here before, and the sam=
+e
+comments hold: namely, they do this by implementing a three level hierarchy
+(slices and units of the address space, with each of k equal slices having =
+a
+slice leader which manages its k' units (each with leader); each unit leade=
+r
+informs the members of its unit of all information passed down from the
+slice leader) through a gossip-like protocol. This is lower overhead than
+broadcasting every message, and utilizes caching to combine several small
+messages into a single large message, but suffers in the end as it places
+enormous strain on the unit- and slice- leaders, who must collate a lot of
+information; similarly, if a slice- or unit- leader fails, then it must be
+replaced --  this is expensive as they must maintain a lot of state.
+    The paper's (legitimate) point is that you can reduce the slice leader'=
+s
+enormous output requirement by tuning the length of time it waits to
+accumulate messages in order to decrease the amount of messages it must
+send. While this helps, it is not sufficient: They choose 23 seconds for
+their accumulation time, which is very long on a computer-scale, which
+defeats the point in many applications of one hop. For an extreme example,
+in the previous paper we were impressed by a few seconds for routing around
+minutes-long IP blocks; this paper is firmly between the two. They also mak=
+e
+the point that in many environments, there is much less churn than in the
+general internet. This is a boon for the paper, because the system will onl=
+y
+suffer when there are multiple concurrent events; in that case, the slice-
+and unit- leaders are forced to question why they were willing to serve in
+that position, since they are suddenly making enormous increases to their
+workload. In the stable case, however, this is a beautiful, sedentary
+algorithm -- which forces one to question why anyone in a churn-heavy
+environment would volunteer for slice leader duty?
+
+
+ _Improving_the_Reliability_of_Internet_Paths_With_One_Hop_Source_Routing_
+    Krishna P. Gummadi, Harsha V. Madhyastha, Steven D. Gribble, Henry M.
+Levy, and David Wetherall
+
+    This paper proposes a simple, scalable approach to recover from Interne=
+t
+path failures. It reiterates the take-away of the previous paper, ie, that
+most path failures may be mitigated through the simple one-hop rerouting
+technique. It improves on RON's background monitoring storm, thus increasin=
+g
+the level of scalability. Both are bounded by the discovery that many
+failures are located that many failures are located so close to the
+destination that no alternative routing or overlay scheme can avoid them:
+16% of failures on paths to servers, and 60% of failures on paths to
+broadband hosts were last-hop or end-system failures, which neither scheme
+can address. However, 66% of all popular server failures and 39% of all
+broadband host path failures are potentially soluble with a simple hop. Mor=
+e
+attention is also given to the analysis of how to choose alternative routin=
+g
+ideas; eventually, evidence dictates that attempting one-hop routing throug=
+h
+(iteratively) each of 4 separate nodes is effective.
+    No attention is paid to security, which is somewhat of a problem since
+this paper is building upon the current internet standards; since this is
+built on top of the current internet stratum, it should make guarantees at
+least as strong as the internet for the integrity, not just speed, of
+transmitted data; this is not done. There is no workload sharing done -- I
+presume that repeated connections to a given node are disallowed via that
+node refusing to host further routes than some maximum. Since we only try 4
+random-4 samples, this is a total of 16 nodes out of however many
+participate in this system; this is unlikely to scale out of control but it
+is possible for this system to deny services it could have granted (due to =
+a
+poor choice of random intermediaries).
+
+------=_Part_474_11781779.1141881784926
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+I *knew* something looked familiar!<br>
+Andrew Cunningham<br>
+arc39<br>
+&nbsp;&nbsp; &nbsp;_Resilient_Overlay_Networks_<br>
+&nbsp;&nbsp; &nbsp;David Andersen, Hari Balakrishnan, Frans Kaashoek, and R=
+obert Morris<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;RON lets distributed internet applications detect
+and recover from path outages and periods of degraded performance much
+faster than current performance tuning systems (scant seconds versus
+several minutes, minimum). Though it exists on top of the internet, it
+operates as a sort of application level switch, determining whether it
+would be better to route a given packet over the internet directly, or
+through the overlay, to reach its destination. This allows improvement
+over normal Internet routing, and moreover, they discovered that
+forwarding packets by at most one hop along this intermediate protocol
+(a-&gt;b-&gt;c versus a-&gt;c) was (sufficiently) beneficial in most
+cases. This improvement comes at a price, namely a more complex view of
+the network topology separating two points; rather than the current
+system of using summaries, RON requires a richer view of connectivity.
+The RON is explicitly designed to be limited in size, to facilitate
+aggressive path maintenance via probing, without excessive bandwidth
+overhead, thus lending this (as is properly noted) to a specifically
+targetted platform -- despite countless comparisons, this is not
+intended to replace BGP, but to work alongside it, since BGP is far
+more scalable. Another interesting feature is that as this work is
+being done on a 'local' scale, the heuristics used to define &quot;failures=
+&quot;
+and &quot;faults&quot; may be tuned to the application, which provides much
+better behavior than traditional BGP for certain domains.<br>
+&nbsp;&nbsp; &nbsp;The gains of RON are narrow and slight, though
+present. The basic conceit is reasonable, and so long as RON picks no
+incorrect route, there is no reason to suppose that introducing 'delay'
+in the form of user-level redirection would be expensive. However, the
+good qualities of RON rely on the correct functioning of BGP, and the
+paper (quietly) admits that the system is not scalable to replace the
+current status quo. Thus this must be used in concert with present
+systems as an additional layer; this too is reasonable, though
+significantly less impressive when the central idea is realized to be
+&quot;route around trouble spots in a reactive fashion&quot;. There are rea=
+sons
+to believe that the gains must be as slight as they are: for one thing,
+to get truly optimal paths would be more expensive than simply using a
+sub-optimal path; for another, since this must run over the internet
+(and not dedicated fiber), there is a natural limit to the amount of
+benefit that controlled switching can gain. Security is addressed only
+to be dismissed, which is something of a shortfall: the internet
+already exists, and so anything intending to improve its reliability
+must address all of its shortcomings. This system is more easily
+spoofed than the internet, since less physical labor is involved --
+people actually request that you forward packets for them!-- and while
+applications can (successfully) layer any defenses they'd like on to
+insecure delivery mechanisms, the system is in the unique position of
+providing secure primitives for not-much-more-work.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_One_Hop_Lookups_for_Peer-to-Peer-Overlays<br>
+&nbsp;&nbsp; &nbsp;Anjali Gupta, Barbara Liskov, Rodrigo Rdrigues<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;The take-away from this paper is that it is
+unnecessary to assume that routing information at each member node must
+be kept small to ensure that the information is fresh. Indeed, the
+bookkeeping required to keep this information current can be handled
+through dissemenation trees, scaling well with even very large rates of
+joins/leaves. This then dictates that lookups have a lower latency,
+since we need not contact several nodes, but simply at most one other
+node. We've seen the algorithm used here before, and the same comments
+hold: namely, they do this by implementing a three level hierarchy
+(slices and units of the address space, with each of k equal slices
+having a slice leader which manages its k' units (each with leader);
+each unit leader informs the members of its unit of all information
+passed down from the slice leader) through a gossip-like protocol. This
+is lower overhead than broadcasting every message, and utilizes caching
+to combine several small messages into a single large message, but
+suffers in the end as it places enormous strain on the unit- and slice-
+leaders, who must collate a lot of information; similarly, if a slice-
+or unit- leader fails, then it must be replaced --&nbsp; this is
+expensive as they must maintain a lot of state.<br>
+&nbsp;&nbsp; &nbsp;The paper's (legitimate) point is that you can
+reduce the slice leader's enormous output requirement by tuning the
+length of time it waits to accumulate messages in order to decrease the
+amount of messages it must send. While this helps, it is not
+sufficient: They choose 23 seconds for their accumulation time, which
+is very long on a computer-scale, which defeats the point in many
+applications of one hop. For an extreme example, in the previous paper
+we were impressed by a few seconds for routing around minutes-long IP
+blocks; this paper is firmly between the two. They also make the point
+that in many environments, there is much less churn than in the general
+internet. This is a boon for the paper, because the system will only
+suffer when there are multiple concurrent events; in that case, the
+slice- and unit- leaders are forced to question why they were willing
+to serve in that position, since they are suddenly making enormous
+increases to their workload. In the stable case, however, this is a
+beautiful, sedentary algorithm -- which forces one to question why
+anyone in a churn-heavy environment would volunteer for slice leader
+duty?<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_Improving_the_Reliability_of_Internet_Paths_With_One_Ho=
+p_Source_Routing_<br>
+&nbsp;&nbsp; &nbsp;Krishna P. Gummadi, Harsha V. Madhyastha, Steven D. Grib=
+ble, Henry M. Levy, and David Wetherall<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;This paper proposes a simple, scalable approach to
+recover from Internet path failures. It reiterates the take-away of the
+previous paper, ie, that most path failures may be mitigated through
+the simple one-hop rerouting technique. It improves on RON's background
+monitoring storm, thus increasing the level of scalability. Both are
+bounded by the discovery that many failures are located that many
+failures are located so close to the destination that no alternative
+routing or overlay scheme can avoid them: 16% of failures on paths to
+servers, and 60% of failures on paths to broadband hosts were last-hop
+or end-system failures, which neither scheme can address. However, 66%
+of all popular server failures and 39% of all broadband host path
+failures are potentially soluble with a simple hop. More attention is
+also given to the analysis of how to choose alternative routing ideas;
+eventually, evidence dictates that attempting one-hop routing through
+(iteratively) each of 4 separate nodes is effective.<br>
+&nbsp;&nbsp; &nbsp;No attention is paid to security, which is somewhat
+of a problem since this paper is building upon the current internet
+standards; since this is built on top of the current internet stratum,
+it should make guarantees at least as strong as the internet for the
+integrity, not just speed, of transmitted data; this is not done. There
+is no workload sharing done -- I presume that repeated connections to a
+given node are disallowed via that node refusing to host further routes
+than some maximum. Since we only try 4 random-4 samples, this is a
+total of 16 nodes out of however many participate in this system; this
+is unlikely to scale out of control but it is possible for this system
+to deny services it could have granted (due to a poor choice of random
+intermediaries).
+
+------=_Part_474_11781779.1141881784926--
+

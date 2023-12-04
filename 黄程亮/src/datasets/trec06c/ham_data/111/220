@@ -1,0 +1,165 @@
+Received: from saffron.cc.columbia.edu (saffron.cc.columbia.edu [128.59.59.102])
+	by jalapeno.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0EN7cwE029812;
+	Sat, 14 Jan 2006 18:07:38 -0500 (EST)
+Received: from saffron.cc.columbia.edu (localhost [127.0.0.1])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0EMj036010721
+	for <cuflow-users-outgoing@columbia.edu>; Sat, 14 Jan 2006 17:45:00 -0500 (EST)
+Received: (from majordom@localhost)
+	by saffron.cc.columbia.edu (8.13.0/8.12.8/Submit) id k0EMj0mS010719
+	for cuflow-users-outgoing; Sat, 14 Jan 2006 17:45:00 -0500 (EST)
+Received: from marionberry.cc.columbia.edu (marionberry.cc.columbia.edu [128.59.28.167])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0EMitII010714
+	for <majordom+cuflow-users@saffron.cc.columbia.edu>; Sat, 14 Jan 2006 17:44:55 -0500 (EST)
+Received: from relay.tronicplanet.de (relay.tronicplanet.de [217.74.1.18])
+	by marionberry.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0EMipIe017093
+	for <cuflow-users@columbia.edu>; Sat, 14 Jan 2006 17:44:54 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by relay.tronicplanet.de (Postfix) with ESMTP id 5D105583A2E;
+	Sat, 14 Jan 2006 23:44:57 +0100 (CET)
+Received: from smtp.tronicplanet.de ([217.74.1.24])
+	by localhost (panchotng [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 02253-06; Sat, 14 Jan 2006 23:44:57 +0100 (CET)
+Received: from [192.168.110.83] (p5491B08C.dip0.t-ipconnect.de [84.145.176.140])
+	by smtp.tronicplanet.de (Postfix) with ESMTP id 7A2F91C0ED5;
+	Sat, 14 Jan 2006 23:44:56 +0100 (CET)
+Message-ID: <43C97ED2.5010505@tronicplanet.de>
+Date: Sat, 14 Jan 2006 23:44:34 +0100
+From: Thomas Stegbauer <thomas.stegbauer@tronicplanet.de>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To: cuflow-users@columbia.edu
+Subject: Re: cuflow on debian sarge running motorola powerstack (ppc-architecture)
+References: <43C6EAD6.4030005@tronicplanet.de> <43C7D44A.10902@dynamicnetworks.us> <43C7F3B2.7070109@tronicplanet.de> <43C806FB.2090201@dynamicnetworks.us>
+In-Reply-To: <43C806FB.2090201@dynamicnetworks.us>
+X-Enigmail-Version: 0.94.0.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigB36240F8FC3FAFD2D18D0F06"
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at relay.tronicplanet.de
+X-Spam-Score: 0.5 () CU_TAGGED_LINK
+X-Scanned-By: MIMEDefang 2.48 on 128.59.29.5
+X-Scanned-By: MIMEDefang 2.48 on 128.59.28.167
+Sender: owner-cuflow-users@columbia.edu
+Precedence: bulk
+X-No-Spam-Score: Local
+
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigB36240F8FC3FAFD2D18D0F06
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: quoted-printable
+
+hi robert,
+
+thanx for the information. the problem depends on debian-bug
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D327367
+the maintainer compiled libcflow-perl before flow-tools :(
+this bug is at least up to debian sarge 3.1r1, it got fixed in testing
+(for etch), but didnt want to upgrade, cause libc would also get exchange=
+d.
+
+so i downloaded flow-tools-0.68 and compiled (quick and dirty) Cflow.pm,
+but your checklist is not complete.
+
+untar the flow-tools tar.gz
+cd flow-tools-0.68
+configure                                   <--
+make                                          <--
+cd contrib
+tar -zxvf Cflow-1.051.tar.gz
+cd Cflow-1.051
+perl Makefile.PL
+make
+make install
+
+afterwards i delete /usr/lib/perl5/Cflow.pm and linked
+/usr/lib/perl5/Cflow.pm to /usr/local/lib/perl/5.8.4/Cflow.pm
+
+afterwards flow-scan and CUFlow worked fine.
+
+thanx robert
+
+cu
+thomas
+
+
+
+Robert S Galloway schrieb:
+> Cflow and cflowd are different. Cflow is required for FlowScan.
+>
+> Thanks, Robert
+>
+> Thomas Stegbauer wrote:
+>> Robert S Galloway schrieb:
+>> =20
+>>> Good morning Thomas.
+>>>
+>>> The error you are seeing is related to the Cflow.pm perl module. The
+>>> module must be configured and compiled for use with flow-tools files.=
+
+>>> I'm not sure how to correctly install it when using a debian package
+>>> of flow-tools. Using the flow-tools tarball, you would do the
+>>> following:
+>>>
+>>> untar the flow-tools tar.gz
+>>> cd flow-tools-0.66
+>>> cd contrib
+>>> tar -zxvf Cflow-1.051.tar.gz
+>>> cd Cflow-1.051
+>>> perl Makefile.PL
+>>> make
+>>> make install
+>>>
+>>> The Cflow Makefile will look for the flow-tools files itself. It
+>>> expects to find them in the same folder path, so it's important to
+>>> follow this exactly as described above.
+>>>
+>>> Let us know how it goes.
+>>>
+>>> Thanks, Robert
+>>>
+>>> P.S. You'll find the same notes here near the bottom of the page.
+>>> http://www.dynamicnetworks.us/netflow/2-getting-started.html
+>>>
+>>>    =20
+>> hi robert,
+>>
+>> thanx for the answer, but i dont want cflow, cause its old and dont ge=
+t
+>> developed, than i want the flow-tools?
+>>
+>> does i missunderstand something?
+>>
+>> thomas
+>>
+>>
+>>  =20
+>
+>
+
+
+--=20
+# Thomas Stegbauer
+# https://keyserver1.pgp.com/vkd/DownloadKey.event?keyid=3D0x65CEC0FC2759=
+31BF
+# Key fingerprint =3D 984E D4B1 E91E F349 5057  B6AC 65CE C0FC 2759 31BF
+
+
+
+
+
+--------------enigB36240F8FC3FAFD2D18D0F06
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFDyX7VZc7A/CdZMb8RAjMwAJ0aOSpUDUrk7Gke5S4Mg7Ge/D934wCg7vna
+eayE59Ogw8gB5k0gP0ncPwk=
+=L2cL
+-----END PGP SIGNATURE-----
+
+--------------enigB36240F8FC3FAFD2D18D0F06--
+

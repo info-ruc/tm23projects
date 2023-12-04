@@ -1,0 +1,86 @@
+Received: from imo20.mx.aol.com (imo20.mx.aol.com [198.81.17.10])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA23896
+	for <handyboard@media.mit.edu>; Fri, 1 Jan 1999 12:34:00 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo20.mx.aol.com (IMOv18.1) id TXFEa19751;
+	Fri, 1 Jan 1999 12:33:21 -0500 (EST)
+Message-Id: <7902a053.368d06e1@aol.com>
+Date: Fri, 1 Jan 1999 12:33:21 EST
+To: leahcim@pacific.net.sg
+Cc: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: sensors input
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+michael,
+
+   The parallel combination of resistors is the recprical of the sum of their
+recpricol values.  
+   Req = 1 / ( 1/R1 + 1/R2 + 1/R3 + ...)
+
+Your 16 LED resistors combine to make
+
+ Req = 1/( 16 x (1/82)) = 5.125 ohms.  So your LEDs are drawing just under 1
+Amp.  (Remember there is a small (about 0.5V) voltage drop across the LED
+itself.
+
+     The parallel combination of your 16 Sensor resistors is
+
+ Req = 1/( 16 x (1/120,000)) = 7500 ohms, a little easier to support.  The
+voltage drop across the sensors is expected to be much larger than 0.5 Volts.
+
+     I would suggest that you take another look at the problem you are trying
+to solve.  See if one LED can support several sensors, or if a single sensor
+set will work with a much larger LED resistor.  Otherwise I suggest that you
+find another supply for the LEDs.  Another idea to consider is to make the
+LEDs flicker (at something near 40 kHz, then design an AC amplifier for your
+sensor circuit.  You might find a much better performance.
+
+Good Luck,
+Pherd
+
+
+In a message dated 98-12-30 14:10:08 EST, you write:
+
+<< hi  everyone,
+ 
+ i have tried to configure a set of sensors used for sensoring the wall in
+ the maze.
+ 
+ the circuitry of each of the sensors is:
+                          +5V        +5V
+                         -----      -----
+                           |          |
+                           |          |
+                           \          \
+                           /          /
+                R1=82 ohm  \          \ R2=120Kohms
+                           /          /
+                           |          |
+                           |          |
+                        -------      |/
+          IR emitter      \./        |\ IR receiver
+                         -----        |
+                           |          |
+                           |          |
+                          ---        ---
+                          GND        GND
+ 
+ the IR sensor is sharing the same +5V source and the same ground. but when i
+ assembly 16 of them together, the habdyboard will immediately switch to
+ reset mode. so i tried to troubleshoot by only connecting the digital sensor
+ port and it works. but after about 2mins, the HB switch to reset mode again.
+ the same situation happen when i tried with the analog port only.
+ 
+ i like to know what is wrong and how to solve. could it be the wire is short
+ or the circuitry is faulty? or could it be the HB cannot supply enough
+ current to the sensors ? 
+ please help! i am really at my wits end.
+ 
+ michael   
+ 
+  >>
+

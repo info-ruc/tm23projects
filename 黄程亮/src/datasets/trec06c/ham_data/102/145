@@ -1,0 +1,149 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j4FJLj5L016770
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 15 May 2005 12:21:45 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id C9ECBAA3ADA
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 15 May 2005 12:21:45 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-9.dsl.arizona.edu [128.196.237.9])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 2AF5FAA185C
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 15 May 2005 12:21:45 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050515121433.00ba4600@psy1.psych.arizona.edu>
+Date: Sun, 15 May 2005 12:21:44 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Feedback to blindman.
+In-Reply-To: <316170474.13624@nenu.edu.cn>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   You can make your end item some unique item number, like 9999 and tell 
+DMDX to branch there if the subject makes a mistake with <biw 9999> in 
+every item:
+
+
++1 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+<ms%
+1000>
+"+"/<wav 0> "550"/!<ms% 750>/ * <wav 0> "5500" <biw 9999>;
++2 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+<ms%
+1000>
+"+"/<wav 0> "550"/!<ms% 750>/ * <wav 0> "5500" <biw 9999>;
++3 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+<ms%
+1000>
+"+"/<wav 1> "850"/!<ms% 750>/ *<wav 1>"8500" <biw 9999>;
++4 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+<ms%
+1000>
+"+"/<wav 1> "850"/!<ms% 750>/ *<wav 1>"8500" <biw 9999>;
+$
+9999 "End";
+$
+
+   If you want to make it stop till they hit a key then you make a routine 
+that maps the request to some other key and waits till they hit it.
+
+
+0 "Start" <bu 250>;
+
+~999 <mr +w>;
+0 "wrong";
+~1 <mr +space> <return>;
+
+250<ms% 1000>/;
+$
++1 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+<ms%
+1000>
+"+"/<wav 0> "550"/!<ms% 750>/ * <wav 0> "5500" <ciw 9999>;
++2 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+<ms%
+1000>
+"+"/<wav 0> "550"/!<ms% 750>/ * <wav 0> "5500" <ciw 9999>;
++3 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+<ms%
+1000>
+"+"/<wav 1> "850"/!<ms% 750>/ *<wav 1>"8500" <ciw 9999>;
++4 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+<ms%
+1000>
+"+"/<wav 1> "850"/!<ms% 750>/ *<wav 1>"8500" <ciw 9999>;
+
+
+At 11:21 PM 5/15/2005 +0800, you wrote:
+>Hello everyone,
+>
+>     I've made a program of auditory Inhibition of Return (IOR). Now, I 
+> want to put
+>it to the blindman. You know, blindman can't see the FEEDBACK on the 
+>screen, and
+>It's unsuitable to use auditory feedback. So, I think If blindman made a 
+>fault,
+>the program will stop there,when blind subjects find this, they will know that
+>they have made a fualt. How can I do this? Please tell me, thank you very 
+>much.
+>
+>
+>
+>
+>
+><id "Keyboard"> <mr "+Space"> <mpr "+b"> <mnr "+n"> <t 2000> <vm 
+>640,480,480,8,0>
+><d 50>
+>
+><dbc 0> <cr> <n 440> <s 440> <azk> <wfbo> <fbl 0> <fbd 60> <dfs 50>
+>$
+>0 "Start";
+>250<ms% 1000>/;
+>$
+>+1 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+><ms%
+>1000>
+>
+>"+"/<wav 0> "550"/!<ms% 750>/ * <wav 0> "5500";
+>+2 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+><ms%
+>1000>
+>
+>"+"/<wav 0> "550"/!<ms% 750>/ * <wav 0> "5500";
+>+3 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+><ms%
+>1000>
+>
+>"+"/<wav 1> "850"/!<ms% 750>/ *<wav 1>"8500";
+>+4 <umb> <mpr "+b"> <mnr "+n"><TooLongFeedback "No Response"><wfb "Wrong"> 
+><ms%
+>1000>
+>
+>"+"/<wav 1> "850"/!<ms% 750>/ *<wav 1>"8500";
+>
+>$
+>0 "End";
+>$
+>
+>
+>
+>
+>--------------------------------------------------
+>Greed is good or not?
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+To iterate is human, to recurse, divine.
+
+
+

@@ -1,0 +1,65 @@
+Received: from postoffice2.mail.cornell.edu (postoffice2.mail.cornell.edu [132.236.56.10])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8J46sh13884
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 00:06:54 -0400 (EDT)
+Received: from boweilaptop.cornell.edu (r102439.resnet.cornell.edu [128.253.163.42])
+	by postoffice2.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id AAA23000
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 00:06:54 -0400 (EDT)
+Message-Id: <5.1.0.14.2.20020919000535.00b93eb0@postoffice2.mail.cornell.edu>
+X-Sender: bd39@postoffice2.mail.cornell.edu (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Thu, 19 Sep 2002 00:05:57 -0400
+To: egs@CS.Cornell.EDU
+From: Bowei Du <bd39@cornell.edu>
+Subject: 615 PAPER 13
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+Paper 13 - PARO
+
+This paper identifies network activity, specifically transmissions,
+and transmission power as a key component in the longevity of MANET
+devices. The paper proposes that the focus of contemporary routing
+protocol do not take advantage of adjustments in transmission
+level. By using intermediary nodes to transmit at a lower power level
+to convey the message, MANET devices can extend their battery
+life. PARO describes a protocol in which intermediary nodes can detect
+and use potential transmissions that can be routed through them to
+save power.
+
+PARO is the first routing protocol to fully consider the implications
+of power consumption within the routing protocol itself. PARO seems to
+be a not a full routing protocol in of itself, i.e. such aspects as
+destination discovery and route maintenance as vague and
+unclear. (i.e. what if the destination is not within a transmission
+neighborhood?) PARO does seems to be a good method of fine tuning
+paths created by other routing protocols to become more power
+efficient.
+
+In general, failure conditions (node death, dropped packets) are not
+considered. The increased failure rate that occurs when path lengths
+are increased and transmission power decreased could be
+problematic. It would be nice if the paper included actual costs of
+transmission of a packet, which is not simply a function of
+transmission power. It is interesting to note that MAC level
+transmissions such as RTS/CTS are still sent at full power. What are
+the implications of this, given the high fixed energy cost of sending
+packets? Also, promiscuous listening on the ether means that adapters
+are not able to take advantage of fully powering down during other
+node transmissions.
+
+One big difference between this paper and the others we have read is
+the existence of simulation data and an actual
+implementation. Although the actual results aren't really anything
+astounding (or enlightening), a proof of concept is nice. The
+simulation graph is surprisingly sparse for data points. The
+comparison graph with MLSR only shows the difference between energy
+wasted by the initial startup costs. What about dynamic behavior of
+PARO, and say, another reactive protocol using the same metrics to
+obtain routes?
+
+One future direction would be incorporation of PARO as a feature of
+another protocol to fine-tune routes. An interesting topic would be
+adaptation of power level due to the density of surrounding
+neighborhood. This could cause other protocols to naturally adopt
+PARO-like routes.
+

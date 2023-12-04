@@ -1,0 +1,73 @@
+Received: from mailhost.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [192.153.213.178])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id HAA12808
+	for <dmdx@psy1.psych.arizona.edu>; Mon, 27 Mar 2000 07:29:39 -0700
+Received: from pc111 by mailhost.mrc-cbu.cam.ac.uk
+	  with Sendmail (8.9.3/V3080601); Mon, 27 Mar 2000 15:29:37 +0100 (BST)
+Message-Id: <3.0.5.32.20000327153100.0091bb60@pophost.mrc-cbu.cam.ac.uk>
+Date: Mon, 27 Mar 2000 15:31:00 +0100
+To: DMDX@psy1.psych.arizona.edu
+From: Matt Davis <matt.davis@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Re: 
+In-Reply-To: <LOBBKEOPNMPLKAKDNNGJCEPGCBAA.bjgrindl@complex.psych.adelai
+ de.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 23:21 27/03/00 +0930, you wrote:
+>Hi there!
+>
+>Just a question regarding the presentation of text. I am wondering whether
+>there is a switch or other way (not 'manually') of getting continues text,
+>such as a small paragraph, to 'fit on' the screen rather than having it
+>running across the screen. In other words, is there a way to set the
+>parameters so that when the text hits the end of the screen it automatically
+>goes to the next line. I am sure that there is a way of doing this and I
+>apologise for wasting your time if it is blatantly obvious.
+>
+
+I don't know of an automated way of doing this. You can use the <ln>
+command to display multiple lines within an item, such as:
+
+0 <ln 0> "Hello", <ln 2> "World";
+
+which will display "Hello" in the centre of the screen and "World" 2 lines
+underneath. Unfortunately, you then need to figure out how many words you
+can fit on each line and format the text into lines. You could probably do
+the formatting using text formulas like =LEN, =MID, etc in Excel if you
+wanted to avoid counting characters by hand.
+
+If what you want to do is display a single page of text (such as the
+instructions for the experiment) an easy way to present a page of text is
+to create a bitmap. If you set up a screen display of instructions in
+Microsoft Word (or whatever), press the "print screen" button on your
+keyboard, you can then paste the screen display in Paint or Photoshop and
+make a bitmap file that contains the text that you want displayed. Then as
+the first line of your file you can put in:
+
+0 <bmp> "instructions" ;
+
+(where "instructions.bmp" is the name of the file that contains the
+instructions for your experiment). That way you can have perfectly fomatted
+instructions as the first item of your file without too much hassle.
+
+Good luck,
+
+Matt
+
+PS Thanks to Mike Ford for this idea.
+
+
+****************************************************
+ Matt Davis
+ MRC Cognition and Brain Sciences Unit
+ 15 Chaucer Road, Cambridge, CB2 2EF
+
+ email: matt.davis@mrc-cbu.cam.ac.uk
+   tel: 01223 355 294 (#621)
+   Fax: 01223 359 062
+
+****************************************************
+

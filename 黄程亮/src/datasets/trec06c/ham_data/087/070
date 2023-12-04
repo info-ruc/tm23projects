@@ -1,0 +1,125 @@
+Received: from sirius.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [193.63.252.1])
+	by psy1.psych.arizona.edu (8.12.8/8.12.4) with ESMTP id h2CHOPIA007980
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 12 Mar 2003 10:24:26 -0700
+Received: from [193.63.253.213] (helo=PC181.mrc-cbu.cam.ac.uk)
+	by sirius.mrc-cbu.cam.ac.uk with esmtp (Exim 4.12)
+	id 18tA6S-0007JY-00
+	for DMDX@psy1.psych.arizona.edu; Wed, 12 Mar 2003 17:33:20 +0000
+Message-Id: <5.1.0.14.2.20030312170506.01d0f748@pophost.mrc-cbu.cam.ac.uk>
+Date: Wed, 12 Mar 2003 17:33:18 +0000
+To: DMDX@psy1.psych.arizona.edu
+From: Paula Tavares <paula.tavares@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Time issues when displaying bmp and avi
+In-Reply-To: <5.1.0.14.2.20030311214210.00b128e8@psy1.psych.arizona.edu>
+References: <F85R9ydqsyWVLEFN03a0000065e@hotmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Dear DMDxers,
+
+I would like to use DMDX to display films and pictures in an fMRI 
+experiment. Responses from the subject are not needed.
+Some details:
+1. The avi's and bmp's will be presented as separate items.
+2. Each bmp and each avi will be displayed for 14 seconds.
+3. I would like the scanner to trigger each item.
+4. The scanner trigger sends a pulse each 1550 ms.
+
+I would like each new film or bmp to begin 17050 ms after the beginning of 
+the previous one. So, the duration of the item + delay parameter has to be 
+less than 17050 ms (1550 ms * 11 scanner triggers) and greater than 15500 
+ms (1550 ms * 10 scanner triggers).
+So 15500 ms < (the delay parameter + film or bmp) < 17050 ms.
+
+I have tried the following rtf file:
+
+<d 180> <zil> <rcot> <id "Keyboard"> <id pio12> <vm 1024, 768, 768, 16, 0> 
+<nfb> <t 200> <dbc 0> <dwc 255255255>
+0 "Waiting for the scanner.";
++1 <dv -1, -1> *"SP_S2"/;
++2 <fd 1050> <bmp>*"F"/;
++3 <dv -1, -1> *"NS_R7"/;
++4 <dv -1, -1> *"C_S1"/;
++5 <dv -1, -1> *"SN_W2"/;
++6 <dv -1, -1> *"C_V4"/;
++7 <fd 1050> <bmp>*"F"/;
++8 <dv -1, -1> *"SP_U1"/;
+0 "The End. Thank you.";
+
+And the zil file that was produced:
+
+*********************************************************************
+Subject 1, 03/12/2003 14:05:33 on PC053, refresh 13.33ms       COT
+!  Played 341 frames of 350 in SP_S2.avi
+Item 1, COT 0.00, No Responses.
+Item 2, COT 16704.71
+  29.05,-Bit0
+!  Played 349 frames of 350 in NS_R7.avi
+Item 3, COT 31614.23, No Responses.
+!  Played 346 frames of 350 in C_S1.avi
+Item 4, COT 48455.42, No Responses.
+!  Played 347 frames of 350 in SN_W2.avi
+Item 5, COT 65289.53, No Responses.
+!  Played 349 frames of 350 in C_V4.avi
+Item 6, COT 82151.85, No Responses.
+Item 7, COT 98887.16
+  20.26,-Bit0
+!  Played 346 frames of 350 in SP_U1.avi
+Item 8, COT 113780.23, No Responses.
+
+The time duration of the various items (+ delay parameter) is:
+
+SP_S2              16704.71
+<bmp> F           14909.52
+NS_R7              16841.19
+C_S1                16834.11
+SN_W2             16862.32
+C_V4                16735.31
+<bmp> F           14893.07
+
+Additional information that might be useful:
+The DMDX version that I am using is an old version 2.6.04 (can this be a 
+problem here?).
+I think that the computer is good enough (Genuine Intel, X86, 512 MB RAM, 
+the video card is not perfect but it is a NVIDIA Geforce2 GTS/Geforce2 Pro 
+Dell M770).
+The avi were compressed with the codec Microsoft MPEG-4 Video Codec V3.
+
+My doubts are:
+
+1. For the films - Since the DMDX stops at the end of each item (d 180 + 
+film + extra tick = 16413.33 ms), the new clock-on should be activated at 
+17050 ms (11 trigger scans after the previous clock-on). Even if there was 
+an error of more or less 500 ms on the display of the film, the time 
+shouldn't change. And if the display error of the film is superior to 650 
+ms, the clock times should change for 17050 +/- 1550 ms, and not any other 
+values.
+
+2. Why are the bmp taking 14909 and 14893 ms? Why do they not take always 
+17050 ms?  ( d 180 + fd 1050 + extra tick = 16412.33 ms)
+Even if the delay of 180 is not "used" and the item takes exactly 14000 ms 
+to load and play, the time should be 17050 - 1550 = 15500 ms.
+
+3. Can I trust in the values that are being given by the clock when I am 
+displaying films? That the beginning is really the beginning?
+
+Any clues about what might be happening would be really appreciated.
+
+Many thanks
+
+Paula
+
+*****************************************
+Paula Tavares
+Cognition and Brain Sciences Unit
+15 Chaucer Road
+Cambridge
+CB2 2EF
+
+Telephone: 01223 355 294 EXT 196
+*****************************************
+
+

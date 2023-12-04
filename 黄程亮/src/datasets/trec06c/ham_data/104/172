@@ -1,0 +1,79 @@
+Received: from Princeton.EDU (root@postoffice02.Princeton.EDU [128.112.130.38])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j6RMO45L002659
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 27 Jul 2005 15:24:04 -0700
+Received: from smtpserver1.Princeton.EDU (smtpserver1.Princeton.EDU [128.112.129.65])
+	by Princeton.EDU (8.12.9/8.12.9) with ESMTP id j6RMO2aV017814
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 27 Jul 2005 18:24:02 -0400 (EDT)
+Received: from princeton.edu (stevea-extra.Princeton.EDU [128.112.233.69])
+	(authenticated bits=0)
+	by smtpserver1.Princeton.EDU (8.12.9/8.12.9) with ESMTP id j6RMO2ZP011317
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT);
+	Wed, 27 Jul 2005 18:24:02 -0400 (EDT)
+Message-ID: <42E80B4C.71DBB7E6@princeton.edu>
+Date: Wed, 27 Jul 2005 18:31:40 -0400
+From: Steve Albin <stevea@Princeton.EDU>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] how to extend duration of response confirmation
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+Hi.
+
+I'm new to DMDX, helping a researcher use it to set up an experiment.
+
+The experiment structure is simple:
+
+The subject hears a sentence (a 4-second .wav file) played twice with a 2-second
+delay in between, and presses Left-Shift to indicate "NOT PROPER GRAMMAR"
+or Right-Shift to indicate "PROPER GRAMMAR".  There is a 4-second timeout if
+no response is given.
+
+The researcher would like the subject to get feedback as to whether the response
+was accepted (without indicating "correct" or "wrong") and different feedback
+if a timeout occurred.
+
+I tried to set this up -- see the script (abbreviated) below.  The subject
+sees one of the two messages: "Response Recorded" or "NO  RESPONSE".
+
+There are two problems:
+
+1. The messages disappear too quickly from the monitor.
+
+   Is there a way for me to force a 2-second display before moving to the next item?
+
+2. The confirmation message "Response Recorded" actually becomes
+   "Response Recorded nnnn.nn" with the Response Time displayed.
+
+   Is there a way to suppress the inclusion of RT in the message?
+
+Thanks for any suggestions.
+
+Steve Albin
+
+ <n 4> <s 2> <azk> <cr> <fd 170> <t 14500> <id "keyboard"> <dbc 0> <dwc 000255000> <dfs 30>
+$
+0 "Press  SPACEBAR  to start";
+500 <ms% 500> /;
+$
+-3 <ms% 500> <cfb "Response Recorded"> <wfb "Response Recorded"> <tlfb "NO  RESPONSE"> / * /
+   <wav 2> "Sent3" / <ms% 2000>/  <wav 2> "Sent3" /! <ms% 2000> /!;
++4 <ms% 500> <cfb "Response Recorded"> <wfb "Response Recorded"> <tlfb "NO  RESPONSE"> / * /
+   <wav 2> "Sent4" / <ms% 2000>/  <wav 2> "Sent4" /! <ms% 2000> /!;
+$
+0 <Bell> <ln -2> "Have a Break", <ln 2> "Press  SPACEBAR  to restart";
+500 <ms% 500> /;
+$
++5 <ms% 500> <cfb "Response Recorded"> <wfb "Response Recorded"> <tlfb "NO  RESPONSE"> / * /
+   <wav 2> "Sent5" / <ms% 2000>/  <wav 2> "Sent5" /! <ms% 2000> /!;
+-6 <ms% 500> <cfb "Response Recorded"> <wfb "Response Recorded"> <tlfb "NO  RESPONSE"> / * /
+   <wav 2> "Sent6" / <ms% 2000>/  <wav 2> "Sent6" /! <ms% 2000> /!;
+ $
+ 0 "The End.  Thank You.";
+ $
+}
+

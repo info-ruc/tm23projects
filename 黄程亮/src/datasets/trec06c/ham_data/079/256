@@ -1,0 +1,449 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g2F0K0b02625;
+	Thu, 14 Mar 2002 16:20:00 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id NAA00981;
+	Thu, 14 Mar 2002 13:51:09 -0500 (EST)
+Date: Thu, 14 Mar 2002 13:51:09 -0500 (EST)
+Received: by canaveral.red.cert.org; Thu, 14 Mar 2002 13:45:32 -0500
+Message-Id: <CA-2002-08.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-08 Multiple vulnerabilities in Oracle Servers
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 115
+Status: RO
+X-Status: $$$$
+X-UID: 0000000043
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-08 Multiple vulnerabilities in Oracle Servers
+
+   Original release date: March 14, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Systems running Oracle8i Database
+     * Systems running Oracle9i Database
+     * Systems running Oracle9i Application Server
+
+Overview
+
+   Multiple  vulnerabilities  in  Oracle Application Server have recently
+   been  discovered.  These  vulnerabilities  include  buffer  overflows,
+   insecure  default  settings,  failures to enforce access controls, and
+   failure  to  validate  input.  The  impacts  of  these vulnerabilities
+   include  the  execution  of  arbitrary  commands  or  code,  denial of
+   service, and unauthorized access to sensitive information.
+
+I. Description
+
+   Oracle  Application  Server  includes a web server based on the Apache
+   HTTP  Server. Oracle extends the web server with a number of different
+   components   that   can   be   used  provide  interfaces  to  database
+   applications.  These  components  include,  but  are not limited to, a
+   Procedural  Language/Structured  Query  Language (PL/SQL) module, Java
+   Server  Pages, XSQL Servlets, and Simple Object Access Protocol (SOAP)
+   applications.
+
+   The  vulnerabilities  referenced  in  this  advisory  were reported in
+   several publications by David Litchfield of NGSSoftware:
+
+     * Hackproofing Oracle Application Server
+       http://www.nextgenss.com/papers/hpoas.pdf
+
+     * NGSSoftware Insight Security Research Advisory #NISR20122001
+       http://www.nextgenss.com/advisories/plsql.txt
+
+     * NGSSoftware Insight Security Research Advisory #NISR06022002A
+       http://www.nextgenss.com/advisories/oraplsextproc.txt
+
+     * NGSSOftware Insight Security Research Advisory #NISR06022002B
+       http://www.nextgenss.com/advisories/oraplsbos.txt
+
+     * NGSSoftware Insight Security Research Advisory #NISR06022002C
+       http://www.nextgenss.com/advisories/orajsa.txt
+       http://www.nextgenss.com/advisories/orajsp.txt
+
+   For  the  complete list of Oracle-related vulnerabilities published by
+   the  CERT/CC, please search the Vulnerability Notes Database using the
+   term  'Oracle'.  Details  about specific vulnerabilies can be found in
+   the appropriate vulnerability note.
+
+   Oracle   has   addressed   these   vulnerabilities  with  patches  and
+   recommended configuration changes. For more information please see the
+   vendor information for Oracle in Appendix A.
+
+  Buffer overflows
+
+   Several  buffer-overflow  vulnerabilities  exist in the way the PL/SQL
+   module  handles  HTTP  requests  and configuration parameters. Default
+   configuration  settings  in  a  range  of components are insecure, and
+   different  components  fail  to  apply  access restrictions uniformly.
+   These   vulnerabilities   expose   both  the  systems  running  Oracle
+   Application   Server  and  the  information  held  in  the  underlying
+   databases to undue risk.
+
+   Two  more buffer overflow vulnerabilities exist in code that processes
+   configuration  parameters.  These  parameters  processes configuration
+   parameters   that   can  be  specified  via  the  PL/SQL  gateway  web
+   administration interface. By default, access to the PL/SQL gateway web
+   administration interface is not restricted [VU#611776].
+
+   VU#500203   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via help page request
+
+   VU#313280   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via HTTP Location header
+
+   VU#750299   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via HTTP request
+
+   VU#878603   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via HTTP Authorization header
+
+   VU#659043   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via Database Access Descriptor password
+
+   VU#923395   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via cache directory name
+
+  Insecure default configurations
+
+   The  default  installation  of  Oracle  Application  Server includes a
+   number  of insecure configuration settings, such as well-known default
+   passwords  and  unrestricted  access  to  applications  and  sensitive
+   information.
+
+   VU#307835  -  Oracle9i  Application  Server OWA_UTIL procedures expose
+   sensitive information
+
+   VU#736923  -  Oracle  9iAS  SOAP  components  allow anonymous users to
+   deploy applications by default
+
+   VU#611776   -   Oracle9i   Application   Server   PL/SQL  Gateway  web
+   administration interface uses null authentication by default
+
+   VU#698467  -  Oracle  9iAS  default  configuration  allows  access  to
+   "globals.jsa" file
+
+   VU#476619  -  Oracle 9iAS default configuration allows arbitrary users
+   to view sensitive configuration files
+
+   VU#712723  - Oracle 9iAS default configuration uses well-known default
+   passwords
+
+   VU#168795  -  Oracle  9iAS  allows  anonymous  remote  users  to  view
+   sensitive Apache services by default
+
+   VU#278971  -  Oracle  9i Application Server does not adequately handle
+   requests  for nonexistent JSP files thereby disclosing web folder path
+   information
+
+  Failure to enforce access controls
+
+   Oracle   Application   Server   does   not  uniformly  enforce  access
+   restrictions.   Different   components   do   not   adequately   check
+   authorization before granting access to protected resources.
+
+   VU#180147  -  Oracle  9i  Database  Server PL/SQL module allows remote
+   command execution without authentication
+
+   VU#193523 - Oracle 9i Application Server allows unauthenticated access
+   to PL/SQL applications via alternate Database Access Descriptor
+
+   VU#977251 - Oracle 9iAS XSQL Servlet ignores file permissions allowing
+   arbitrary users to view sensitive configuration files
+
+   VU#547459  -  Oracle  9iAS creates temporary files when processing JSP
+   requests that are world-readable
+
+  Failure to validate input
+
+   In  one  case,  the PL/SQL module does not properly handle a malformed
+   HTTP request.
+
+   VU#805915  - Oracle9i Application Server Apache PL/SQL module does not
+   properly handle HTTP Authorization header
+
+II. Impact
+
+   The  impacts  of these vulnerabilities include the remote execution of
+   arbitrary   code,  remote  execution  of  commands  and  SQL  queries,
+   disclosure of sensitive information, and denial of service.
+
+  Remote execution of arbitrary commands and code
+
+   This section contains vulnerabilities that permit a remote intruder to
+   cause  a  denial  of  service  or execute arbitrary commands, code, or
+   queries on the system.
+
+   Some  of  these vulnerabilities allow execution with the privileges of
+   the Apache process. On UNIX systems, the Apache process typically runs
+   as the "oracle" user. On Windows systems, the Apache service typically
+   runs  as  the  SYSTEM user; therefore, an attacker could gain complete
+   control of the system by exploiting these vulnerabilities.
+
+   VU#500203   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via help page request
+
+   VU#313280   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via help page request Location: header
+
+   VU#750299   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via HTTP request
+
+   VU#878603   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable  to  buffer overflow via HTTP Authorization header password
+   parameter
+
+   VU#659043   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via Database Access Descriptor password
+
+   VU#923395   -   Oracle9i   Application  Server  Apache  PL/SQL  module
+   vulnerable to buffer overflow via cache directory name
+
+   VU#180147  -  Oracle  9i  Database  Server PL/SQL module allows remote
+   command execution without authentication
+
+   VU#736923  -  Oracle  9iAS  SOAP  components  allow anonymous users to
+   deploy applications by default
+
+   VU#712723  - Oracle 9iAS default configuration uses well-known default
+   passwords
+
+   VU#611776   -   Oracle9i   Application   Server   PL/SQL  Gateway  web
+   administration interface uses null authentication by default
+
+  Unauthorized access to sensitive information
+
+   A  number  of  vulnerabilities  disclose  configuration information or
+   expose   data   stored   in   underlying   databases.  Also,  insecure
+   applications  could  allow  an intruder to execute SQL queries. Oracle
+   system  programmers  may  wish  to  examine  these  vulnerabilities in
+   Oracle's  sample pages to prevent similar vulnerabilities in their own
+   Oracle applications.
+
+   VU#307835  -  Oracle9i  Application Server OWA_UTIL PL/SQL application
+   exposes procedures that are remotely accessible by arbitrary users
+
+   VU#193523 - Oracle 9i Application Server allows unauthenticated access
+   to PL/SQL applications via alternate Database Access Descriptor
+
+   VU#698467  -  Oracle  9iAS  default  configuration  allows  access  to
+   "globals.jsa" file
+
+   VU#476619  -  Oracle 9iAS default configuration allows arbitrary users
+   to view sensitive configuration files
+
+   VU#977251 - Oracle 9iAS XSQL Servlet ignores file permissions allowing
+   arbitrary users to view sensitive configuration files
+
+   VU#168795  -  Oracle  9iAS  allows  anonymous  remote  users  to  view
+   sensitive Apache services by default
+
+   VU#278971  -  Oracle  9i Application Server does not adequately handle
+   requests  for nonexistent JSP files thereby disclosing web folder path
+   information
+
+   VU#547459  -  Oracle  9iAS creates temporary files when processing JSP
+   requests that are world-readable
+
+  Denial of service
+
+   In  the  case where the PL/SQL module does not properly handle an HTTP
+   request,   a   denial-of-service   vulnerability   exists.   Also,  an
+   unsuccessful  attempt to exploit a buffer overflow vulnerability could
+   crash the Apache service.
+
+   VU#805915  - Oracle9i Application Server Apache PL/SQL module does not
+   properly handle HTTP Authorization header
+
+III. Solution
+
+   Oracle has provided patches and workarounds that address most of these
+   vulnerabilities.  Sites using Oracle Application Server are encouraged
+   to   install   the   appropriate  patches  and  make  the  recommended
+   configuration changes provided by Oracle.
+
+   Solutions and workarounds for specific vulnerabilities can be found in
+   individual  vulnerability  notes  and in the following Oracle security
+   alerts:
+
+     * Oracle Security Alert #29
+       http://otn.oracle.com/deploy/security/pdf/plsextproc_alert.pdf
+
+     * Oracle Security Alert #28
+       http://otn.oracle.com/deploy/security/pdf/ias_modplsql_alert.pdf
+
+     * Oracle Security Alert #25
+       http://otn.oracle.com/deploy/security/pdf/modplsql.pdf
+
+     * Oracle Security Alert #22
+       http://otn.oracle.com/deploy/security/pdf/ias_soap_alert.pdf
+
+   Security  and  patch  information for Oracle products are available at
+   the following locations:
+
+     * Oracle Security Alerts
+       http://otn.oracle.com/deploy/security/alerts.htm
+
+     * MetaLink (registration required)
+       http://metalink.oracle.com/
+
+   Sites using Oracle Application Server may also find David Litchfield's
+   Hackproofing  Oracle Application Server paper useful in describing the
+   impacts and various interactions of these vulnerabilities.
+
+  Apply a patch
+
+   Oracle   has   released   patches   that   address   some   of   these
+   vulnerabilities.  Patch  information  can  be found in Oracle Security
+   Alert  #28  and Oracle Security Alert #25 and on the MetaLink web site
+   (registration required).
+
+  Secure default configuration
+
+   Oracle  has  provided  documentation  on  changing  vulnerable default
+   configuration  settings. For details, consult individual Vulnerability
+   Notes and the Oracle Security Alerts referenced in Appendix A.
+  _________________________________________________________________
+
+   The  CERT  Coordination  Center thanks David Litchfield and Oracle for
+   information used in this document.
+  _________________________________________________________________
+
+   Authors: Art Manion, Jason Rafail, and Shawn Van Ittersum
+  _________________________________________________________________
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  statements  provided  by  vendors  for  this
+   advisory.  We  will  update  this  section  as  vendors provide new or
+   modified  statements,  and  we  will  note the changes in our revision
+   history.  If  a  particular  vendor  is  not listed below, we have not
+   received their comments.
+
+Appendix B. - References
+
+    1. http://www.kb.cert.org/vuls/id/500203
+    2. http://www.kb.cert.org/vuls/id/313280
+    3. http://www.kb.cert.org/vuls/id/750299
+    4. http://www.kb.cert.org/vuls/id/878603
+    5. http://www.kb.cert.org/vuls/id/659043
+    6. http://www.kb.cert.org/vuls/id/923395
+    7. http://www.kb.cert.org/vuls/id/307835
+    8. http://www.kb.cert.org/vuls/id/736923
+    9. http://www.kb.cert.org/vuls/id/611776
+   10. http://www.kb.cert.org/vuls/id/698467
+   11. http://www.kb.cert.org/vuls/id/476619
+   12. http://www.kb.cert.org/vuls/id/712723
+   13. http://www.kb.cert.org/vuls/id/168795
+   14. http://www.kb.cert.org/vuls/id/278971
+   15. http://www.kb.cert.org/vuls/id/180147
+   16. http://www.kb.cert.org/vuls/id/193523
+   17. http://www.kb.cert.org/vuls/id/977251
+   18. http://www.kb.cert.org/vuls/id/805915
+   19. http://www.kb.cert.org/vuls/id/547459
+   20. http://www.nextgenss.com/papers/hpoas.pdf
+   21. http://www.nextgenss.com/advisories/plsql.txt
+   22. http://www.nextgenss.com/advisories/oraplsextproc.txt
+   23. http://www.nextgenss.com/advisories/oraplsbos.txt
+   24. http://www.nextgenss.com/advisories/orajsa.txt
+   25. http://www.nextgenss.com/advisories/orajsp.txt
+   26. http://otn.oracle.com/deploy/security/pdf/plsextproc_alert.pdf
+   27. http://otn.oracle.com/deploy/security/pdf/ias_modplsql_alert.pdf
+   28. http://otn.oracle.com/deploy/security/pdf/modplsql.pdf
+   29. http://otn.oracle.com/deploy/security/pdf/ias_soap_alert.pdf
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-08.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+   March 14, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPJDsH6CVPMXQI2HJAQHgiwP+JCqCffr8d7JQejHAqJFiZGs8bnOsz4+k
+Fw22F6K3xaZLptM8yHo8a1KDZPEgZ9q4PkCs+VzjHxZp+xkt3eASgGctZ75xUrh0
+Tt5UhitcS0R6vuH3/jKJmMqaNyszxmdcndm49SxgzUNM4JnI+h4GfjO3pTGxKyqr
+Ly39M389sLE=
+=qEP3
+-----END PGP SIGNATURE-----
+

@@ -1,0 +1,75 @@
+Received: from localhost (tmca@localhost)
+	by ctiosz.ctio.noao.edu (8.11.6/8.11.6) with ESMTP id h0VKeFB22146;
+	Fri, 31 Jan 2003 17:40:15 -0300
+Date: Fri, 31 Jan 2003 17:40:14 -0300 (CLST)
+From: Tim Abbott <tmca@ctiosz.ctio.noao.edu>
+Reply-To: Tim Abbott <tabbott@ctio.noao.edu>
+To: <scistaff@ctiosz.ctio.noao.edu>, <ets@ctiosz.ctio.noao.edu>
+Subject: VNC with SSH
+Message-ID: <Pine.LNX.4.33.0301311634450.17674-100000@ctiosz.ctio.noao.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Hi All,
+
+I have figured out how to use VNC on my Windows XP laptop with SSH so
+that I can log into a linux computer from outside the firewall and do
+X-windows stuff.  Perhaps this is old news to some, but I had to
+figure it out from scratch so here is a howto for those that care.
+(In principle, I suppose you should be able to do this for windows
+machines on the inside too).
+
+1) Get the (free) VNC viewer for your laptop
+   (http://www.uk.research.att.com/vnc/)
+
+2) Get the (free) putty SSH client for your laptop 
+   (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
+
+3) Work with putty and VNC within the firewall to gain some
+   familiarity and make sure they're working
+
+4) From outside the firewall, putty to your linux workstation, start
+   the vncserver (use an 8 bit depth unless you've got lots of bandwidth
+   or want the pictures to be pretty) and log out.
+
+5) Restart putty and create a new session with:
+   - Session/host name: ctioXX.ctio.noao.edu
+   - Session/ssh: checked (this will make the port #22)
+   - Connection/SSH/Enable compression: checked (unless the computers 
+     concerned are very slow this makes a big difference to speed).
+   - Connection/SSH/SSH protocol 2: checked
+   - Connection/SSH/Tunnels/Enable X11 forwarding: checked
+   - Connection/SSH/Tunnels/X display location: localhost:1
+   - Connection/SSH/Tunnels/Port Forwarding: add a forwarded port with 
+     source port 5901, destination ctioXX.ctio.noao.edu:5901, and "Local" 
+     checked (please don't ask me why, I just know it works, and doesn't
+     if you don't).
+   Don't forget to save the putty session with a suitable name, or
+   you'll have to do the setup every time.
+
+6) Open this putty connection and log in to your workstation. You may be 
+   asked to approve the encryption key.  This will actually look like 
+   a normal putty connection and I think it can be used as such.  This
+   window can be iconified to get it out of the way but don't kill it while
+   you're running VNC.  (By the way, the VNC server must exist before this 
+   connection is made so you can't use it to launch the server which is a 
+   pity because it would mean one less step to the process.)
+
+7) Start the VNC viewer, point it at port localhost:1, log into
+   the VNC session and X to your heart's content.
+
+This works fine with my setup and is quite useable via Entel Will.  I
+imagine a modem might be somewhat less fun but workable in a pinch.
+It is really very easy once set up and as long as you don't try and
+wrap your brain around tunnelling.
+
+Cheers,
+
+	Tim
+
+-- 
+Tim Abbott, tabbott@noao.edu, www.ctio.noao.edu/~tmca
+CTIO, Casilla 603, La Serena, Chile, +56 51 205200
+or NOAO/CTIO, P.O. Box 26732, Tucson, AZ 85726-6732, USA, +1 520 318 8259
+

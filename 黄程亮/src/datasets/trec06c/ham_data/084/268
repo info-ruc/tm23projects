@@ -1,0 +1,89 @@
+Received: from postoffice2.mail.cornell.edu (postoffice2.mail.cornell.edu [132.236.56.10])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id gAC7O6Q03789
+	for <egs@cs.cornell.edu>; Tue, 12 Nov 2002 02:24:06 -0500 (EST)
+Received: from cornell.edu (r109493.resnet.cornell.edu [128.253.240.252])
+	by postoffice2.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id CAA13360
+	for <egs@cs.cornell.edu>; Tue, 12 Nov 2002 02:24:06 -0500 (EST)
+Date: Tue, 12 Nov 2002 02:24:05 -0500
+Mime-Version: 1.0 (Apple Message framework v546)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Subject: 615 Paper 63
+From: Warren Lapine <mp98@cornell.edu>
+To: egs@CS.Cornell.EDU
+Content-Transfer-Encoding: 7bit
+Message-Id: <B9C14C0C-F60F-11D6-9B76-003065EE5F0A@cornell.edu>
+X-Mailer: Apple Mail (2.546)
+
+Kleinberg's paper shows us that it is possible to route efficiently in 
+a decentralized system even without a strict structural underpinning.  
+Kleinberg's model shows that it is possible to route a message towards 
+a destination in a grid network with only order log n^2 hops if one has 
+the following information:
+
+* A set local contacts within some distance and a set of some long 
+range contacts chosen at random (with probability proportional to the 
+inverse square of their distance from the source)
+
+* A correspondance of message to a location within the network and the 
+location of all contacts.
+
+The importance of inverse square above is intuitive when one considers 
+that the number of possible contacts should grow squarely with 
+increasing distance.  Given this information, Kleinberg's paper shows 
+that the simple algorithm of forwarding the message to the contact 
+closest to the destination should achieve an expected routing time 
+proportional to the log of the number of nodes in the network.
+
+It is unlikely that a P2P system will have the same concept of locality 
+as Kleinberg's grid. What is important to take away from the paper is 
+that a small world property will only emerge in a system in which nodes 
+maintain in addition to their local knowledge, a small set of long 
+range links, and more importantly, that the frequency of these long 
+range contacts must correlate closely to some notion of their density 
+(i.e., in the grid model, the probability of adding a node at a certain 
+distance was proportional to the number of nodes within that distance.)
+
+Hence, if we have an unstructured P2P network (like Gnutella or 
+Freenet), we can only expect it to route effectively if it has the 
+above mixture of local and long range links. But if it does, we can 
+perhaps achieve route lengths logarithmic in the size of the network, 
+as good as Pastry or Chord! Note, however, that neither of the above 
+two systems should be expected to exhibit such a property, as even if 
+their link structure follows the small world relation, they lack a 
+correlation between the "location" of a query and the "location" of a 
+node. It is difficult to see how one would even define such concepts in 
+Gnutella.
+
+In Freenet, of course, keyspace specialization should eventually 
+approach this property.  The second paper for today, by Theodore Hong, 
+emphasizes this point. Short paths do exist in Freenet between randomly 
+selected pairs of nodes, and the Freenet graph is certainly connected 
+(or close enough that it doesn't matter in any interesting way).  Their 
+simulation of Freenet does exhibit very short path lengths (6 Freenet 
+hops) albeit under a lot of communication. If, however, we take away 
+the behavior that Freenet always routes towards nodes who are closest 
+to the destination in the keyspace, the median path length remains at 
+50 Freenet hops.  In effect, this removes Kleinberg's second 
+requirement above.
+
+The third paper for today tackles a very different subject: What is the 
+real behavior of nodes in File Sharing systems? Such information is 
+important as it tells us what kind of expectations we may place on a 
+P2P system design (i.e. how stable do we expect the network to be in 
+terms of node uptime):
+
+* Bandwidth measurements are fairly encouraging: More than half of file 
+sharing users seem to have bandwidth measurements greater than 64 kbps.
+
+* Uptime is harder to measure as quality of service seems to be 
+important to system life time measurements. Napster gave an arguably 
+better experience than Gnutella even though their end-user modes of 
+operation were much the same (time in a search, get a file). But 
+whereas the best 20% of Napster nodes have an uptime of 83% or more, 
+the best 20% of Gnutella have an uptime of only 45% or more.
+
+* Free riders are definitely a problem: As many as 25% of Gnutella 
+users are free riding. Like the American economy, Gnutella is skewed, 
+with 7% of its users offering more files than all of the other users 
+combined.
+

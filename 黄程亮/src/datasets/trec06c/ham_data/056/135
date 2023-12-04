@@ -1,0 +1,35 @@
+Received: from mercury.mv.net (root@mercury.mv.net [199.125.85.40])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id JAA15244
+	for <handyboard@media.mit.edu>; Sun, 14 Nov 1999 09:07:21 -0500 (EST)
+Received: from g266 (bnh-aa1-96.mv.com [199.125.109.96]) by mercury.mv.net (8.8.8/mem-971025) with SMTP id JAA23326 for <handyboard@media.mit.edu>; Sun, 14 Nov 1999 09:07:19 -0500 (EST)
+Message-Id: <4.1.19991114085149.00945200@pop.mv.net>
+X-Sender: anatek-ba@pop.mv.net
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Sun, 14 Nov 1999 08:58:35 -0500
+To: handyboard@media.mit.edu
+From: John Bachman <bachman@anatek.mv.com>
+Subject: mixing variable types in IC
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+Now that I got past my nested function problem I have discovered that IC does not like mixing variable types.  For instance, this results in an error:
+
+int x, y;
+float c;
+
+float
+divide ( int x, int y)
+{
+	c = (x/y);
+	return c;
+}
+
+IC will not let me calculate a float from two integers although it is a perfectly reasonable mathematical operation.  It complains about float/int incompatiblity.  The only solution this hapless programmer can find is to just give in and make everything float.  But that is a big waste of resources when x and y are truly integers.
+
+Must be a more elegant way to do this.  Damned if I know what it is.
+
+TIA
+
+John
+
+

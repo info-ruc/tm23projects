@@ -1,0 +1,59 @@
+Received: from solstice.comnet.unr.edu (solstice.comnet.unr.edu [134.197.40.101]) by cse.psu.edu (8.8.5/8.7.3) with ESMTP id OAA27121 for <9fans@cse.psu.edu>; Mon, 17 Feb 1997 14:46:20 -0500 (EST)
+Received: from aspen.cs.unr.edu by solstice.comnet.unr.edu (8.8.4/1.34)
+	id TAA15399; Mon, 17 Feb 1997 19:46:18 GMT
+Received: from batman.cs.unr.edu by aspen.cs.unr.edu (8.8.4/1.34-UNR-sd-ptp-1.00)
+	id TAA28202; Mon, 17 Feb 1997 19:45:02 GMT
+Received: (from eblood@localhost) by batman.cs.unr.edu (8.7.5/8.7.3) id LAA13888; Mon, 17 Feb 1997 11:45:58 -0800
+Date: Mon, 17 Feb 1997 11:45:58 -0800
+Message-Id: <199702171945.LAA13888@batman.cs.unr.edu>
+From: Eric Blood <eblood@cs.unr.edu>
+To: 9fans@cse.psu.edu
+Subject: Authentication-server installation problems
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+
+I'm trying to setup a new authentication-server for our Plan9 network
+where we already have a file-server with a full CD install and a
+terminal that is connected to the file-server.  But I'm consistently
+running into a problem with the authentication server installation.
+
+Following the current instructions off the Plan9 web page I've done
+the initial file-system setup on the new authentication-server and
+created the authid on the file-server.  Then, after selecting the
+fourth option from the menu (CPU/Authentication) and rebooting the
+authentication-server, it will prompt where to boot from (il), my IP,
+my mask, my gateway, the file server IP, and the authentication IP (my
+IP address).  It will pause for a few seconds and then print the
+following:
+
+boot: #c/hostowner: bad arg in system call
+panic: boot process died: unknown
+... <- several rows and columns of numbers
+exiting
+
+In the file /sys/src/9/boot/key.c in key() there is a sequence of
+code:
+
+        /* set host's key */
+        if(writefile("#c/key", safe.machkey, DESKEYLEN) < 0)
+                fatal("#c/key");
+
+        /* set host's owner (and uid of current process) */
+        if(writefile("#c/hostowner", safe.authid, strlen(safe.authid)) < 0)
+                fatal("#c/hostowner");
+
+        /* set host's domain */
+        if(writefile("#c/hostdomain", safe.authdom, strlen(safe.authdom)) < 0)
+                fatal("#c/hostdomain"); 
+
+I believe that when it goes to write hostowner, it's failing either on
+the open() or write().  I guess there isn't a problem with writing the
+key file, but I not sure how to verify this.
+
+Any ideas on how to proceed?
+
+Eric V. Blood
+eblood@cs.unr.edu, http://www.cs.unr.edu/~eblood
+

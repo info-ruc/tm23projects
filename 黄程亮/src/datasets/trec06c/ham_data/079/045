@@ -1,0 +1,53 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB3J4uT24493
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 14:04:56 -0500 (EST)
+Received: from dhcp-190.rover.cornell.edu (dhcp-190.rover.cornell.edu [128.84.24.190])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id OAA26226
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 14:04:55 -0500 (EST)
+Subject: 615 PAPER #69
+From: Walter Bell <wbell@CS.Cornell.EDU>
+To: egs@CS.Cornell.EDU
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.99.1+cvs.2001.11.07.16.47 (Preview Release)
+Date: 03 Dec 2001 14:04:34 -0500
+Message-Id: <1007406297.914.35.camel@brute>
+Mime-Version: 1.0
+
+69) Bayeux: An Architecture for Scalable and Fault-tolerant Wide-area
+    Data Dissemination
+
+Bayeux is a multicast architecture built on top of Tapestry which uses
+the connectivity information in Tapestry in order to do efficient
+multicast data dispersal. By using Tapestry's suffix based routing,
+they avoid unicasting packets to all subscribers from a single sender,
+and instead, duplicate packets only at every branch of the tapestry
+suffix tree. I found the protocol description to be incredibly terse,
+with little description of how it actually works. I do believe that
+such a facility could be built on top of Tapestry, but was unconvinced
+that this was a reasonable thing to do. No analysis of the overhead of
+such a mechanism was presented, but my intuition is that it is quite
+high, because although duplicating packets at suffix points makes
+sense when the nodes suffix has something to do with locality on the
+network, Tapestry makes no such guarantee, and while splitting on
+suffixes works well on the Tapestry space, this has no correlation to
+the amount of actual network hops. They state that it would be a
+useful optimization to allocate Tapestry suffixes to correspond to the
+actual network proximity, but that seems to defeat the purpose of the
+scalability of Tapestry, and makes me wonder why we've left the ip
+address space and gone to an overlay network.
+
+They present a decent number of ways to use alternate routing
+information in order to get better data dispersal, which I found
+useful, but there was little evaluation of the tradeoffs between
+bandwidth usage and overall gain. For all of these methods it seems to
+be critically important to understand the mapping between the Tapestry
+id space and the underlying ip address space, but this fact is
+completely ignored. This seems to be the fatal flaw of all this work--
+one can build primitives on top of these infrastructures, but if they
+don't provide significantly better guarantees than ip alone, the cost
+does not justify the use, and Tapestry does not motivate that it's
+gain is significant enough to justify it's deployment across the
+global Internet.
+
+

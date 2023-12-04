@@ -1,0 +1,91 @@
+Received: from ringding.cs.cornell.edu (ringding.cs.cornell.edu [128.84.96.109])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f8IEfEq11092
+	for <egs@cs.cornell.edu>; Tue, 18 Sep 2001 10:41:14 -0400 (EDT)
+From: Indranil Gupta <gupta@CS.Cornell.EDU>
+Received: (from gupta@localhost)
+	by ringding.cs.cornell.edu (8.11.3/8.11.3/C-3.2) id f8IEfEr04043
+	for egs@cs.cornell.edu; Tue, 18 Sep 2001 10:41:14 -0400 (EDT)
+Message-Id: <200109181441.f8IEfEr04043@ringding.cs.cornell.edu>
+Subject: 615 PAPER 10
+To: egs@CS.Cornell.EDU
+Date: Tue, 18 Sep 2001 10:41:14 -0400 (EDT)
+X-Mailer: ELM [version 2.5 PL3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+--------START------
+
+Associativity-based routing for ad-hoc mobile networks, C.-K. Toh.
+
+Reviewer: Indranil Gupta
+
+The most novel contribution of this paper is the introduction of
+"stability" of a link as a metric for deciding good routes.  The
+stability of a link is measured by the "associativity" between the end
+points. The algorithms in the paper use the neighbor beaconing from
+the MAC layer to define a high level of associativity between two
+nodes only if they have already exchanged more than a threshold number
+of beacons ("associativity ticks"). These algorithms also fit in well
+into an infrastructure with a few base stations, as a node will have
+better associativity with a nearby base station and will use it as a
+stable next hop.
+
+The routing algorithms presented in the paper are reactive, and give
+more preference to stability of a route than its "shortness" or
+delay. A node requiring a new route to a destination floods out a BQ
+(broadcast query) message that is propagated along by nodes after
+adding in associativity and other (delay) information about
+intermediate links - the destination decides the best route and sends
+back a reply to the sender. Node movements and link breakages in the
+upper half of the route are handled by sending a BQ to the destination
+from the node upstream of the failure - the destination replies back
+and a the route is repaired. A failure in the lower half of the route
+is handled by the node upstream of the failure sending a LQ (local
+query) to the destination with its old hop number (TTL) - the
+destination replies with a route only if there is an equal or shorter
+route than the old one. If the destination does not reply, the pivot
+node hands off the job to its immediate upstream node, which repeats
+the process (this could go all the way to the source). The algorithm
+also handles subnet bridging due to node movements, and concurrent
+node movements.
+
+Simulations performed in the paper reveal 1) increasing the degree of
+a node results in fewer localized queries (LQs) but also in a more
+sub-optimal route (in terms of length), and 2) routes remain fairly
+short.
+
+Comments:
+
+- The idea of using link associativity to obtain stable routes is the
+best contribution of this paper. The data presented in the paper (from
+the Active Badge System) is for associativity of users to a base
+station - this associativity is to be expected. The data provides no
+justification for using associativity ticks across *pairs* of nodes to
+decide the stability of a link between two nodes.
+
+- Associativity between two mobile nodes depends more on the
+interference in the area (percentage of beacons received), the
+relative speeds of the nodes, and the battery lives of the nodes. The
+paper, in its current form seems to be driven more by developing
+ad-hoc routing algorithms that will work well when there are base
+stations around. The performance of these algorithms can thus be
+improved significantly in an ad-hoc only network.
+
+- The policy decisions made in designing the route construction and
+repair algorithms in the paper are apparently arbitrary. For example,
+the authors do not seem to explain the significance of the half-way
+point along a route to change from a localized query to a broadcast
+query. Potentially, a large number of nodes might have moved and a
+large number of backtracks might be required to obtain a short route
+through a localized query - if the shortest route has indeed
+increased, it would be better to back off faster to the BQ or go with
+the (worse) route returned by the LQ - this decision could be made by
+feedback obtained about the localized queries. This is difficult in
+the current protocol as LQ messages are lost due to the TTL scheme;
+they could instead be made to reach the destination anyway, and the
+feedback used to tune the back off decision at the intermediary nodes.
+
+--------END------
+
+

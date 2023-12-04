@@ -1,0 +1,72 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4IHw619531
+	for <egs@CS.Cornell.EDU>; Tue, 4 Dec 2001 13:17:58 -0500 (EST)
+Received: from mars (syr-66-24-28-66.twcny.rr.com [66.24.28.66])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id NAA06428
+	for <egs@CS.Cornell.EDU>; Tue, 4 Dec 2001 13:17:56 -0500 (EST)
+From: "hao ming" <mh97@cornell.edu>
+To: "'Emin Gun Sirer'" <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 69
+Date: Tue, 4 Dec 2001 13:17:26 -0500
+Message-ID: <000501c17cef$ed6bfdb0$6801a8c0@mars>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.2627
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+
+Bayeux: An Architecture for Scalable and Fault-tolerant
+Wide-area Data Dissemination
+Shelley Q. Zhuang, Ben Y. Zhao, Anthony D. Joseph,
+Randy H. Katz, John D. Kubiatowicz
+
+This paper presents a application of Tapestry for multicast.
+The key of efficient multicasting is to reduce the data 
+Duplication. Because of the routing algorithms of Tapestry,
+the nodes with similar suffix can be group together and data
+duplication only happens when there is diverge of forwarding.
+Further, Bayuex gets the necessary properties like fault 
+Tolerance, load balancing and  scalability from the Tapestry.
+
+The algorithms adopted by Bayeux is follows:
+1. each session s IDed by a tuple which is broadcast to the
+   network. Each client send explicit Join message to root
+   to join the tree and forwarding tree is set up when root
+   sends Tree message back to the requesting client.
+
+2. for scalability and elimination of single root node 
+   failure, the multiple roots of Tapestry is used and clients
+   will join the tree rooted at the nearest root node. This
+   is very good.
+
+3. explicit clients clustering by assigning to the neighbors 
+   nodes with longest suffix.
+
+4. fault tolerance. Tapestry provides two good properties for 
+   tolerance. One is backup route for each entry in the routing
+   table. The second is the converging feature of naming system
+   of Tapestry. Based on these two properties, the paper 
+   proposes five fault resilient delivery protocols. Basically,
+   different ways choosing backup paths result in those different
+   protocols, including proactive duplication which duplicate
+   data  simply to its first backup path; application specific 
+   information duplication which I like most. For streaming 
+   materials, data can be divided into several channel to transfer
+   different quality data. Higher resolution data is losable; and
+   other protocols considering delay, link traffic metrics.
+     
+  
+comments:
+1. Tapestry provides really some nice features which is just what 
+   multicasting streaming multimedia application needs. They really
+   select a very good application for Tapestry.
+2. on the physical link stress, I do not think Bayeux is much
+better than the worst case IP unicast in F.4 because it looks
+most of links have same stress number like Bayeux.
+
+-ming
+

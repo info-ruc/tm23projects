@@ -1,0 +1,185 @@
+Received: from fed1rmmtao06.cox.net (fed1rmmtao06.cox.net [68.230.241.33])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k169aBg1025027
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 6 Feb 2006 02:36:12 -0700
+Received: from Sharon ([68.231.168.129]) by fed1rmmtao06.cox.net
+          (InterMail vM.6.01.05.02 201-2131-123-102-20050715) with SMTP
+          id <20060206093256.DILC20050.fed1rmmtao06.cox.net@Sharon>
+          for <DMDX@psy1.psych.arizona.edu>; Mon, 6 Feb 2006 04:32:56 -0500
+Message-ID: <000b01c62b00$c396eb80$0401a8c0@Sharon>
+From: "Shiaohui Chan" <shiaohui@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20060204162807.00bcde58@psy1.psych.arizona.edu> <000701c62a0b$72ff0400$0401a8c0@Sharon> <43E5F545.9060200@u.arizona.edu>
+Subject: [DMDX] Re: questions about COT
+Date: Mon, 6 Feb 2006 02:36:10 -0700
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=response
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Thanks, Scott!
+
+In the scan protocol I am using, I set 6 extra shots before data 
+acquisition.  Since my TR is 2000 ms, there is a 12-second period that the 
+scanner is running but not saving the data (I know you are an expert, but by 
+writing this out, I think you probably can detect if there is something 
+wrong with my understanding of the timing).  At first, I thought I have 
+accounted for the discarded 12 seconds by putting
+
+100 <Output 254> c;
+
++101 *<o 255> %1 / <o 254> %1/ "READY" <fd 724>/;
+
+where "READY" stays on the screen for 12 seconds (724 * 16.58 ms).  However, 
+I took Jonathan's advice and ran the file again at the presentation computer 
+and found something interesting.  Instead of getting 12037.08 ms (i.e., 724 
+* 16.58 + 2 x 16.58) for this item, I got 14341.99 ms.  By further trying 
+different frame durations, I was certain that before "READY" appeared, there 
+was a duration of 2338.07 ms.  Thus, I'm a bit confused:
+
+1. If Jonathan is right about where the scanner starts (<o 254>), can I say 
+that I only have one tic (%1) asynchrony between the scanner and DMDX?  I 
+noticed it today that the scanner did start before "READY" appeared, but I 
+couldn't tell how many ms earlier....
+
+2. Why is there a duration of 2338.07 ms before "READY"?  It means that two 
+%1's equals to 2338.07ma (i.e., %1 = 1169.035 ms), which doesn't seem to 
+make sense....
+
+3. If the scanner does start at < o 254> and %1 somehow does equal to 
+1169.035 ms, should I reduce my frame duration and make the whole duration 
+of item 101 as close to 12 seconds as possible?
+
+Any feedback would be GREATLY appreciated.  Thanks!!
+
+shiaohui
+
+----- Original Message ----- 
+From: "Scott Hayes" <smhayes@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Sent: Sunday, February 05, 2006 5:53 AM
+Subject: [DMDX] Re: questions about COT
+
+
+> Don't forget that the scanner "discards" reps(TRs) at the beginning of a 
+> functional scan.  The default is 2 reps, but the scanner drift issue is 
+> really present a bit longer, so I changed the default to discard the first 
+> 6 reps.  Others keep the default of discarded reps =2, but then delay the 
+> start of stimulus presentation until the scanner drift issue subsides (6 
+> reps) or fill this time with "dummy trials" since the imaging data will be 
+> useless (later you discard these trials at the fMRI data analysis stage). 
+> The bottom line is that even if you've triggered the scanner w/ DMDX, 
+> you're start time for your DMDX program and acquisition of your fMRI data 
+> probably aren't synchronized, unless you've designed your DMDX program to 
+> account for discarded reps (again, discarded reps varies by people's 
+> preferences, so you'll have to check the defaults of the imaging protocol 
+> you're using).  If you haven't written DMDX code to account for this, then 
+> you'll need to change your COTs to account for this discrepancy as well.
+> Shiaohui Chan wrote:
+>
+>> Thanks, Jonathan!
+>>
+>> I will run the file again and see what the time difference is.
+>>
+>> shiaohui
+>> ----- Original Message ----- From: "j.c.f." 
+>> <jforster@psy1.psych.arizona.edu>
+>> To: <DMDX@psy1.psych.arizona.edu>
+>> Sent: Saturday, February 04, 2006 4:34 PM
+>> Subject: [DMDX] Re: questions about COT
+>>
+>>
+>>> At 01:54 AM 2/4/2006 -0700, you wrote:
+>>>
+>>>> I knew it today that I should have included 101 as an item, and that 
+>>>> line should look like this:
+>>>>
+>>>>     +101 * <o 255> %1 / <o 254> %1/ "READY" <fd 724>/;"
+>>>>
+>>>> and the azk file should start with something like below:
+>>>>
+>>>>     Item 101, COT 0.000 (and some RT)
+>>>>     Item 1046, COT 13513.02 (and some RT)
+>>>>
+>>>>
+>>>> I will correct this in my future script, but I want to understand my 
+>>>> error better, so here are the questions:
+>>>>
+>>>> In my experiment, the fMRI scanner won't start collecting data until 12 
+>>>> seconds after the spacebar of the computer is hit (to start DMDX). 
+>>>> Since SOAs (relative to scanner data collection) instead of COTs are 
+>>>> needed in image processing, the usual way to translate a COT value to 
+>>>> an SOA value is to subtract 12 seconds from each COT value.
+>>>>
+>>>> 1) Where in the line does the scanner start?   <o 255> %1 / <o 254> %1/ 
+>>>> "READY" <fd 724>/;
+>>>
+>>>
+>>>   Probably the with the <O 254>.
+>>>
+>>>>
+>>>> 2) Except for the first item, is my azk file really different from the 
+>>>> "should-be" azk file?
+>>>
+>>>
+>>>   Dunno, I don't remember details of everything I've ever done.  People 
+>>> that use  the scanner regularly are going to have a better idea than I 
+>>> am.
+>>>
+>>>>
+>>>> The following two questions are related to Question 1:
+>>>>
+>>>> 3) The presentation computer I used has a refresh rate of 16.58 ms, so 
+>>>> I actually put a little bit more than 12 seconds on item 101.  I guess 
+>>>> the scanner had started collecting data before the "COT=0.00" time 
+>>>> point in my azk file.  Am I right?
+>>>
+>>>
+>>>   If what you say is so, yes.
+>>>
+>>>>
+>>>> 4) If I still want to use the data that I collected (I collected two 
+>>>> pilot subjects with this script), should I correct my COTs?  I.e., 
+>>>> should I add 5.92 ms, 4.92 ms, or 3.92 ms to each of the COT value, 
+>>>> depending on when the scanner is started?  (I got the value of 5.92 ms 
+>>>> by subtracting 12000 ms from 724x16.58 (= 12003.92) plus two %1's).
+>>>
+>>>
+>>>   I would run the file again with a clockon in the first item and see 
+>>> what it is by item 1046 and add that to clock on times in the first run.
+>>>
+>>>                                                /"\
+>>>  -jonathan (j.c.f.)                            \ /
+>>>                                                 X
+>>>     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+>>>
+>>> If frogs had wings, they wouldn't be bouncing around on their bums.
+>>>
+>>>
+>>> ====================================================================
+>>>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>>>  'unsubscribe' by itself with no quotes in the body of the email
+>>>  to be removed from the list.  The list archive is available here:
+>>>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>>> ====================================================================
+>>
+>>
+>> ====================================================================
+>>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>>  'unsubscribe' by itself with no quotes in the body of the email
+>>  to be removed from the list.  The list archive is available here:
+>>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>> ====================================================================
+>
+> ====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ==================================================================== 
+
+

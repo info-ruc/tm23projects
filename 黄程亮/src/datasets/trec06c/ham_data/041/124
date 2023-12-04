@@ -1,0 +1,80 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id NAA22386
+	for <Handyboard@media.mit.edu>; Fri, 9 Apr 1999 13:48:57 -0400 (EDT)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Fri, 09 Apr 1999 10:48:56 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id KAA03192;
+	Fri, 9 Apr 1999 10:48:55 -0700 (PDT)
+Date: Fri, 9 Apr 1999 10:48:54 -0700 (Pacific Daylight Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Keith Hearn <khearn@legato.com>
+Cc: Gary Livick <glivick@pacbell.net>, Handyboard@media.mit.edu
+Subject: Re: GCC 2.8.1 for HC11 
+In-Reply-To: <199904081946.MAA20298@mail.Legato.COM>
+Message-Id: <Pine.WNT.3.96.990409100936.73C-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Thu, 8 Apr 1999, Keith Hearn wrote:
+
+> Where can I find out what pins connect through which mux to which 
+>   I/O connector on the HB?
+
+You have to get good at reading schematics in this case, period. 
+Schematics are very hard to read at first, but it does get easier quickly. 
+If someone were to write up details on how to access various devices on
+the Handyboard though (including small code snipets for examples), I'm
+sure many people would benefit from it. 
+
+
+> And how on earth is anyone supposed to figure out how the LCD
+> communications work without reading other people's code? I've read
+> other people's code, I've read the pink book, I now understand how 
+> it works (yee gads! it's scary). But there's no way you'd ever figure
+> it out just from reading HC11-specific info. And you'd have to have
+> a degree in digital electronics to figure it out from the
+> schematics.
+> 
+> That sort of this is very specific to the handyboard design, not to
+>   the HC11.
+
+Agreed.  Even the data books state that the mode the Handyboard's
+processor is running in should not normally be used, and the method of
+accessing the LCD is not immediately obvious just by looking at the
+schematic. There are some specific things in the Handyboard design that
+were done to save a chip or two but make the programming more difficult,
+unless you already have something like Interactive C hiding all of these
+details from you.
+
+I must say I sympathize with your thoughts, as I've been down in the
+details of the hardware lately, and I agree that the LCD stuff is scary.
+The only reason it works at all is that the Handyboard is running in
+Special Test mode, which allows you to change processor states at will.  I
+lucked out in that Chuck McManis wrote some very nice code that I could
+borrow from.  As it was I had to hook a scopemeter up to it to see where
+my software had gone wrong.
+
+I think they assumed people would typically be using Interactive C,
+therefore the difficult parts of the hardware would be hidden.  I think
+they were right:  I've seen very few posts from people coding in anything
+except IC.  Handyboard & IC were designed as a learning platform and they
+appear to have been very successful at that. I'm trying to twist it into
+something entirely different, so I certainly can't blame the designers for
+not thinking of MY application.
+
+If you need any help in writing something up, I'd be glad to contribute. 
+Better make it quick though, my brain empties quickly so that I have spare
+room for the next project (at least that's my excuse).  I'll probably know
+a lot about the low-level stuff for a few weeks at best, then I'll rely on
+the GCC Handyboard libraries to hide the details from me and continue on. 
+
+I've also got my eye on a 68332 board, so I may switch streams altogether
+in the near future.
+
+Curt Mills, WE7U			hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

@@ -1,0 +1,105 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5AFXL5L028366
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Jun 2005 08:33:22 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id E1FAEAD4E40
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Jun 2005 08:33:21 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-9.dsl.arizona.edu [128.196.237.9])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 378E4ADA3BF
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Jun 2005 08:33:21 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050610081105.00ba4600@psy1.psych.arizona.edu>
+Date: Fri, 10 Jun 2005 08:32:16 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Problems with tiimg in Win2000 and XP
+In-Reply-To: <6.2.1.2.1.20050610152938.0326a4a8@pophost.mrc-cbu.cam.ac.u
+ k>
+References: <5.1.0.14.2.20050607080708.00ba46a0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606092253.00ba4cd0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606073440.00bc1ce8@psy1.psych.arizona.edu>
+ <6.2.1.2.1.20050606134728.031a4890@pophost.mrc-cbu.cam.ac.u k>
+ <5.1.0.14.2.20050606073440.00bc1ce8@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606092253.00ba4cd0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050607080708.00ba46a0@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:41 PM 6/10/2005 +0100, you wrote:
+
+>Jonathan,
+>
+>I've investigated this problem further by checking another machine.
+>
+>This is a 3.2 mHz 64 bit hyper threading machine with 2 gb of memory
+>and yet another video card. It run WinXP and has the latest version
+>of everything. This machine is serious overkill for running DMDX, but still
+>I get the same results: over 50% of timeouts and actual sleep times of
+>up to 16 ms, while 6 ms sleep is requested. I tried all different settings,
+>but nothing seems to make a difference.
+
+   None of which will particularly affect DMDX's ability to run I might 
+mention.  TimeDX poses a particularly intensive test of the hardware as not 
+only is it tracking the retrace but it's also almost constantly updating 
+the screen.  You might see some reduction in the long sleeps if you reduce 
+the number of lines to blit but unless you plan on displaying extremely 
+intensive tachistoscopic sequences I find that machines that have less than 
+stellar TimeDX performance as you are finding have no trouble with actual 
+DMDX work.
+
+   I suspect the large sleep times are caused by the video driver batching 
+up display commands and once TimeDX goes to sleep the video driver goes 
+into overdrive doing all the stuff it told TimeDX it had already done.  I 
+tend to have a whole range of video driver versions as sometimes the latest 
+drivers are the worst performers -- but that's still just TimeDX 
+performance.  DMDX tends to be fine.
+
+   Another thing to bear in mind is that the default 8 bit video modes are 
+almost useless with modern video cards so tests in TimeDX using them are 
+likely to be more crippled than the 16 and 32 bit video modes.
+
+>(Next to it is an old 1 gHz Win98 machine, and it manages 0% timeouts
+>with hardly any tweaking at all)
+>
+>So, this is the third 32 bit machine that I've tested that has the same 
+>problem.
+>All machines have different video cards, and two run Win XP while the
+>third one runs Win2000.
+>
+>We have even disabled the Keithley card on the last machine: it doesn't
+>make a difference.
+>
+>I really don't know what is happening here, but it looks like 32 bit Windows
+>and DMDX don't like each other very much.
+
+   I would point out that Windows 98 is still 32 bit windows, it's just not 
+NT based and requires WDM drivers.
+
+
+>I haven't been able to have a look at your other driver suggestions yet, 
+>as the
+>technical guy knowing about this wasn't available. But it seems very unlikely
+>that it is a specific driver problem when we have  three machines, with almost
+>nothing in common, all showing the same problem.
+
+
+   It almost has to be, I just checked this machine and it's fine.  I see 
+the odd machine around the department (one in recent memory that I can 
+think of but that was a year ago) that has similar sorts of TimeDX 
+performance but when it's running experiments you never see display 
+presentation errors.  My guess is that there's some feature of less than 
+the most recent video cards causing the problem as I used to swear by TNT2 
+video cards but in the machine I see the problem with the TNT2 didn't solve 
+the problem.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Nothing increases your golf score like witnesses.
+
+
+

@@ -1,0 +1,58 @@
+Received: from plan9.bell-labs.com (plan9.bell-labs.com [204.178.31.2]) by cse.psu.edu (8.8.8/8.7.3) with SMTP id JAA23049 for <9fans@cse.psu.edu>; Sun, 10 May 1998 09:51:32 -0400 (EDT)
+Message-Id: <199805101351.JAA23049@cse.psu.edu>
+Date: Sun, 10 May 1998 09:32:39 -0400
+To: 9fans@cse.psu.edu
+From: "jim mckie" <jmk@plan9.bell-labs.com>
+Subject: Re: [9fans] Installing plan9
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans
+
+that print will only come from the driver if debugging is on (is it?).
+since the request-sense is only used to clear any lingering state, it's probably
+ok to just delete the test completely, any real error will cause the error-stack
+to be called.
+if debugging isn't on then the print comes from the similar test on the capacity
+command which would be more serious as more bytes were returned than asked for.
+if debugging is on i'd expect a lot more diagnostic output.
+
+back to the original problem. have you ever had plan9 running on this machine?
+in mail you said the disk is 3GB. check the 'start' argument to ataxfer is a ulong.
+b.com has a similar problem.
+
+--jim
+
+------ forwarded message follows ------
+
+>From cse.psu.edu!owner-9fans Thu May  7 05:48:52 EDT 1998
+Received: from plan9.bell-labs.com ([135.104.8.6]) by plan9; Thu May  7 05:48:52 EDT 1998
+Received: from cse.psu.edu ([130.203.3.50]) by plan9; Thu May  7 05:48:51 EDT 1998
+Received: from localhost (majordom@localhost) by cse.psu.edu (8.8.8/8.7.3) with SMTP id FAA11305; Thu, 7 May 1998 05:48:34 -0400 (EDT)
+Received: by claven.cse.psu.edu (bulk_mailer v1.5); Thu, 7 May 1998 05:47:29 -0400
+Received: (from majordom@localhost) by cse.psu.edu (8.8.8/8.7.3) id FAA11269 for 9fans-outgoing; Thu, 7 May 1998 05:47:25 -0400 (EDT)
+X-Authentication-Warning: claven.cse.psu.edu: majordom set sender to owner-9fans using -f
+Received: from hamnavoe.demon.co.uk (hamnavoe.demon.co.uk [158.152.225.204]) by cse.psu.edu (8.8.8/8.7.3) with SMTP id FAA11265 for <9fans@cse.psu.edu>; Thu, 7 May 1998 05:47:19 -0400 (EDT)
+From: hamnavoe.demon.co.uk!miller
+Message-Id: <199805070947.FAA11265@cse.psu.edu>
+To: cse.psu.edu!9fans
+Date: Thu, 7 May 1998 10:43:04 BST
+Subject: Re: [9fans] Installing plan9
+Sender: cse.psu.edu!owner-9fans
+Reply-To: cse.psu.edu!9fans
+Precedence: bulk
+
+The message
+
+> cmd=00, lastcmd=A0 cdsize count 14, status 0x50, error 0x00
+
+probably means that an ATAPI cd-rom is returning 14 bytes of data
+instead of 18 to a Creqsense command.  That's what my Mitsumi FX400
+does.  You can make the message go away by changing
+	if(cp->count != 18){         /* ?Mitsumi? */
+to
+	if(cp->count != 18 && cp->count != 14){
+in devata.c (it doesn't seem to do any harm).
+
+-- Richard Miller
+
+

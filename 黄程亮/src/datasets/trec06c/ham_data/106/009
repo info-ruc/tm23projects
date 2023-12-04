@@ -1,0 +1,76 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j894Fx5L004842
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 8 Sep 2005 21:15:59 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id EF9E8B0AECB
+	for <DMDX@psy1.psych.arizona.edu>; Thu,  8 Sep 2005 21:15:58 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-7.dsl.arizona.edu [128.196.237.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id CA50BB03814
+	for <DMDX@psy1.psych.arizona.edu>; Thu,  8 Sep 2005 21:15:57 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050908210802.00ba4820@psy1.psych.arizona.edu>
+Date: Thu, 08 Sep 2005 21:15:51 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: missing item number error
+In-Reply-To: <125E143C87C9D744AD879C611475D035027B39C0@ITUPROD-EXCL1.Uni
+ Net.unisa.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 01:16 PM 9/9/2005 +0930, you wrote:
+>Hi,
+>
+>I have written a DMDX file which displays sentence anagrams.  I am 
+>scrambling the items in the file within 4 blocks of 13.  The blocks are 
+>fixed in position.  In other words, I don't want to scramble the 
+>blocks.  They will be in the same order on each trial.  So I have a 
+>scrambling parameter <s 13> in the parameter line and have backslahses (\) 
+>at appropriate points in the file.  I also have $ at appropriate points 
+>such as to fix instructions and practice items.  Everything seems 
+>fine.  However an error message: 'missing item number' is produced at the 
+>same point in the file each time i run it in DMDX. When I run a syntax 
+>check I get the error message: 'RTF control word <\+> used not supported'.
+>
+>I have another very similar file with counterbalanced test items which 
+>works fine. Therefore this file should also work easily.  Yet it 
+>doesn't.  I am completely stumped.  I can only think of one possible 
+>explanation.  Is it possible that Wordpad leaves some unwanted code in the 
+>background in the file which disrupts DMDX?  When i looked at the file in 
+>Notepad I noticed quite a lot of extra code which means nothing to 
+>me.  When I run the file I have 'ignore unknown RTF' enabled. Can anyone 
+>help me sort this one out?  I have pasted in relevant bits of the file below.
+
+   It's your backslash.  I'm impressed at the way it's breaking the parser 
+but for DMDX syntax it is a little malformed.  You need to have a new line 
+after your backslash:
+
+>0"READY - PRESS SPACEBAR";$
+>
+>\+11901<ln -3>"have",
+>
+><ln -2>"bike",
+
+It needs to be like this:
+
+>0"READY - PRESS SPACEBAR";$
+>
+>\
+>
+>+11901<ln -3>"have",
+>
+><ln -2>"bike",
+
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   We lie loudest when we lie to ourselves.
+
+
+

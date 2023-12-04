@@ -1,0 +1,85 @@
+Received: from web51008.mail.yahoo.com (web51008.mail.yahoo.com [206.190.38.139])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with SMTP id j2NLEZFJ005018
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 23 Mar 2005 14:14:35 -0700
+Received: (qmail 86482 invoked by uid 60001); 23 Mar 2005 21:14:29 -0000
+Message-ID: <20050323211429.86480.qmail@web51008.mail.yahoo.com>
+Received: from [165.230.95.90] by web51008.mail.yahoo.com via HTTP; Wed, 23 Mar 2005 13:14:28 PST
+Date: Wed, 23 Mar 2005 13:14:28 -0800 (PST)
+From: Jackie Holloway <jackaleenholl@yahoo.com>
+Subject: [DMDX] Timing with dv's
+To: DMDX@psy1.psych.arizona.edu
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi,
+We are trying to figure out some timing with videos. 
+We are trying to have short videos play (each between
+4-5 seconds), followed by a fixed 6 second ISI.  I
+tried running a simple code to make sure that the d
+and fd parameters are timed correctly...
+<zil> <d 100> <fd 300> <cr> <rcot> <nfb>
+0 "start";
++1 * "first"/ !;
++2 * "second"/ !;
++3 * "third"/ !;
+0 "stopped";
+
+...using the clock on times from the .zil output file
+to measure the msec's between items -works fine.  I
+then tried that with my dv file...
+
+ <zil> <cr> <vm 800, 600, 600, 32, 0> <id keyboard>
+<dwc 0> <mr +space> <mnr +left shift> <mpr +right
+shift> <rcot> <fm 1.5> <bc 187187187> <nfb> <fd 255>
+<d 360>
+
+0 <line -2> "This is a trial experiment.",
+<line -1>  "If the following video clip plays in real
+time",
+"press the RIGHT shift key",
+<line 1> "If the video clip does not play in real
+time",
+<line 2>  "press the LEFT shift key";
+
+^99 <fd 1810> * <bmp> "LO_High_still_pic.bmp"/;
++10 <dv> * "APour_LO_High_F2-02cut.avi" / !; 
+-11 <dv> * "APour_LO_High_F2-04cut.avi" / !;
+-12 <dv> *  "APour_LO_High_F2-06cut.avi" / !;
+-13 <dv> *  "APour_LO_High_F2-08cut.avi" / !;
++14 <dv> * "Pour_LO_High_F2-Origcut.avi" / !;
+-15 <dv> * "Pour_LO_High_F2-01cut.avi" / !;
+-16 <dv> * "Pour_LO_High_F2-02cut.avi" / !;
+-17 <dv> * "Pour_LO_High_F2-03cut.avi" / !;
+-18 <dv> * "Pour_LO_High_F2-04cut.avi" / !;
+
+0 <line -1>  "This is the end of the experiment.",
+"Thank you for your participation!";
+
+...But when I check the timing, the first clock on
+time  is 348 msec slow, then the next is 431 msec
+slow, and it keeps increasing like that.  Even if I
+eliminate the <fd> in my header line, it doesn't seem
+to make much of a difference in my .zil file output. 
+I also tried putting a <fd> switch before each dv item
+(since each video is a different length) and that
+didn't fix the timing either.  How might I set the
+frame durations for each video, being each a different
+length, while also having a 30 second still picture at
+the beginning?  Is the time discrepancy in my .zil
+file due to the video loading time?  I read about how
+to pre-load a bitmap (putting a 'g' in the item line),
+but I don't think you can pre-load movies.  I would
+greatly appreciate if you have any clarification for
+this.  
+Thank you much
+
+
+		
+__________________________________ 
+Do you Yahoo!? 
+Yahoo! Small Business - Try our new resources site!
+http://smallbusiness.yahoo.com/resources/ 
+

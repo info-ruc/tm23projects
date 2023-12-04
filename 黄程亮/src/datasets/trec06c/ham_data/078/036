@@ -1,0 +1,69 @@
+Received: from bureau6.utcc.utoronto.ca (bureau6.utcc.utoronto.ca [128.100.132.16])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9MKDCo29432
+	for <egs@cs.cornell.edu>; Mon, 22 Oct 2001 16:13:12 -0400 (EDT)
+Received: from webmail1.ns.utoronto.ca ([128.100.132.24] EHLO webmail1.ns.utoronto.ca ident: IDENT-NOT-QUERIED [port 32982]) by bureau6.utcc.utoronto.ca with ESMTP id <238696-20668>; Mon, 22 Oct 2001 16:12:28 -0400
+Received: by webmail1.ns.utoronto.ca id <126210-22889>; Mon, 22 Oct 2001 16:12:21 -0400
+To: COM S 615 <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 25
+Message-ID: <1003781539.3bd47da3bc8d0@webmail1.ns.utoronto.ca>
+Date: Mon, 22 Oct 2001 16:12:19 -0400 (EDT)
+From: c.tavoularis@utoronto.ca
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: IMP/PHP IMAP webmail program 2.2.3
+
+This is an excellent paper that unifies the simulation study of some of the 
+major ad hoc routing protocols. It compares the performance of four ad hoc 
+routing protocols: DSDV, TORA, DSR and AODV. Using a modified ns-2 network 
+simulator, the authors create a simulation environment that supports realistic 
+physical and MAC layers based on IEEE 802.11 standards (including DCF and ARP) 
+while modeling signal attenuation to determine delays between nodes and 
+received power levels. From the received power level, the physical layer 
+decides whether the signal is noise, erroneous, or a successful packet and the 
+MAC layer detects collisions.
+
+The authors implemented some general improvements to the protocols: jitter 
+between broadcasts to minimize collisions; priority of routing packets in the 
+transmit queue to reduce route discovery delays; and breakage feedback at MAC 
+layer to reduce packet dropping. Protocol specific improvements include: 
+implementing DSDV-SQ that triggers updates with each new sequence number as 
+opposed to new metric only; aggregating TORA and IMEP messages; using only bi-
+directional links in DSR to support lower layers; and implementing AODV-LL to 
+replace periodic HELLO messages. The protocols are tested for 210 different 
+scenario files with 50 nodes, and with two different max speeds, 1m/s and 
+20m/s, over which speed is uniformly distributed. The scenario files vary 
+motion from continuous motion to no motion. Having 70 fixed movement patterns 
+and using 10, 20 or 30 sources provides variation in traffic load. 3 metrics 
+are used: packet delivery ratio over the simulation, routing overhead counting 
+each hop, and path optimality as a difference of the chosen path from the 
+shortest possible path. An additional study is done to include significance of 
+header size in DSR. 
+
+DSDV-SQ, the only proactive protocol under examination, had very poor packet 
+delivery in high mobility, and exhibited constant overhead regardless of node 
+movement. DSDV-SQ very frequently chose the optimal path. TORA may have 
+delivered packets better than DSDV-SQ, but was still limited due to the 
+occurrence of short-lived routing loops dropping packets, while suffering from 
+very high overhead. TORA actually failed to converge in many high traffic cases 
+due to unmanageable congestion. Also, TORA chose longer than optimal paths as 
+mobility increased. DSR exhibited the best packet delivery ratio and the lowest 
+overhead. AODV-LL also had good packet delivery but with high overhead due to 
+flooding, particularly in high mobility. DSR and AODV-LL take advantage of 
+previous route knowledge to decreases overall overhead and significant 
+improvement can be seen when there are many (30) data sources. DSR effectively 
+exploits caching and eavesdropping as well. After considering the additional 
+header bytes in DSR, it was found that DSR incurs more overhead than AODV-LL in 
+all but very high mobility cases. Further study must be performed, since 
+control information added to existing packets is not as costly as control 
+information being sent out in individual numerous packets.
+
+DSR and AODV-LL perform the best and appear to support mobility well. But, I’m 
+curious about the delay incurred by each of the protocols, since a large delay 
+will invalidate other good performance characteristics. Results suggest that 
+DSR would have less delay since it most often chooses the shortest path while 
+AODV-LL does not. Aside from providing significant results, this paper 
+addresses compatibility issues of routing protocols with the physical and link 
+layer, and tests the true functionality of the protocols without making 
+simplifying assumptions.
+

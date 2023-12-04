@@ -1,0 +1,52 @@
+Received: from luke.srtc.com (luke.srtc.com [208.132.236.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id XAA18410
+	for <handyboard@media.mit.edu>; Mon, 26 Oct 1998 23:20:23 -0500 (EST)
+Received: from SRTC (ossifrage [208.132.236.33]) by luke.srtc.com (8.6.12/8.6.9) with ESMTP id XAA11347 for <handyboard@media.mit.edu>; Mon, 26 Oct 1998 23:17:04 -0500
+Received: by SRTC (940816.SGI.8.6.9/SRTC-Client)
+        id XAA14865; Mon, 26 Oct 1998 23:21:06 -0500
+Message-Id: <199810270421.XAA14865@SRTC>
+From: ctaylor@SRTC.COM (Clem Taylor)
+Date: Mon, 26 Oct 1998 23:21:05 -0500
+X-Mailer: Mail User's Shell (7.2.5 10/14/92)
+To: handyboard@media.mit.edu
+Subject: Picking a PIC
+
+I'm looking to offload the processing of IR proximity sensors and
+ultrasound to a PIC(s). I'm hoping to connect the PIC to a HandyBoard via
+the SPI.
+
+I'm trying to decide which is the right PIC for the job.
+
+The PIC16C7x (PIC16C76) series supports SPI, can source 25mA/pin, 2 PWM
+channels, and has 22 I/Os with 5 ADCs.  Cool part!  However, many people
+seem to use the PIC16F84 because it's based on flash, so you don't have to
+wait forever to erase them, but it doesn't have all the cool features of
+the PIC16C7x, specifically SPI.
+
+Emulating SPI in software seems like a silly waste of cycles.  I'd really
+like to overlap taking measurements with sending data, which looks like it
+could be difficult, if it's manually clocking bits out on the serial
+interface. 
+
+What would you guys recommend as a good general purpose PIC?  Digikey has
+the PIC16C76/JW for $16.55 and the PIC16F84-04/P is $6.25.  I'm planning
+to use the PICProto18 or PICProto3 from microEngineering Labs.  With PICs
+being fairly cheap, it might be easier to just use multiple PICs rather
+than handling the software complexity of doing everything in one chip.
+
+Has anyone connected multiple PICs to a SPI bus, with the HC11 in master
+mode and the PICs in slave mode?  The 68HC11 docs I have are a little
+sparse on how multiple slave mode works.  Would I have one slave select
+line to each PIC and then the HC11 code would have to poll the PICs by
+selecting each one in turn with some sort of simple packet protocol?  It's
+ashame that the 68HC11 doesn't support I2C, because it seems that they
+solve this problem with that interface...
+
+We've got a nice programmer at work, so I shouldn't have any trouble
+programming either chip.  Another complication is that I don't have a PC,
+so I was hoping to do all my development using one of the free assemblers
+on my Unix box.
+
+                   Thanks,
+                   Clem
+

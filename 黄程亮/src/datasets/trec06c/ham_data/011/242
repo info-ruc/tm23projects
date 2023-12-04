@@ -1,0 +1,82 @@
+Received: from watfast.uwaterloo.ca (slegon@watfast.uwaterloo.ca [129.97.172.120])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id SAA30821;
+	Thu, 26 Feb 1998 18:30:46 -0500 (EST)
+Received: (from slegon@localhost)
+	by watfast.uwaterloo.ca (8.8.5/8.8.5) id SAA05695;
+	Thu, 26 Feb 1998 18:29:42 -0500 (EST)
+From: Skye Legon <slegon@watfast.uwaterloo.ca>
+Message-Id: <199802262329.SAA05695@watfast.uwaterloo.ca>
+Subject: Re: Sonar questions (technical ones!)
+To: fredm@media.mit.edu (Fred G. Martin)
+Date: Thu, 26 Feb 1998 18:29:41 -0500 (EST)
+Cc: handyboard@media.mit.edu (MIT Handyboard List)
+In-Reply-To: <199802262155.QAA11683@ml.media.mit.edu> from "Fred G. Martin" at Feb 26, 98 04:55:30 pm
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Fred wrote:
+
+> The polaroid number/widely quoted number is 0.9 MILLISECONDS
+> PER FOOT -- or 1.11 ft/ms.  hence the conversion matches!
+> 
+> I think also I have this wrong on my HB sonar page!  This confused me
+> for a while too.
+
+Yes!  I have been working from your sonar page, but as a sanity check 
+I checked the Polaroid sheet again.  Whoops!  At least we were both 
+tripped up by it.  I'm used to seeing the "speed of sound" (ft/ms) 
+quoted, not the "slowness of sound" (ms/ft)!  
+
+aside: Using my trusty tape measure I calculated a speed of 1.09 ft/ms 
+(330 m/s) so it *is* pretty close.
+
+> > 4: I'm confused by the guts of the sonar routines.  The start_time is
+> >    read from the system TCNT register as a 16-bit integer (max 32768
+> >    counts).  If TCNT increments 2,000,000 counts/sec, does this mean 
+> >    TCNT rolls over every 16ms?  If so, it seems quite likely that the
+> >    counter will roll over while we're waiting for a pulse to return
+> >    depending on when we peek it for the start_time.  However, the 
+> >    routines work fine, so can someone please clear up my 
+> >    misunderstanding?
+> 
+> As a 16-bit number TCNT's range is 0 to 65535, or 32.768 ms of time.
+
+Aren't IC 16-bit integers only signed, and therefore -32k to +32k?
+Does it thus return times from -16ms to +16ms, 32ms total?  Or is this
+somehow an unsigned integer?  I know signed/unsigned integers differ
+only in the interpretation of the sign bit, but how does *IC* interpret
+this 16-bit time?
+
+> I don't think I quite understand your question here, but remember that
+> the actual time of TCNT when the ping returns is automatically
+> captured by the 6811 timer system and stored in timer 3's TIC3
+> register.
+> 
+> So while we're waiting for the return pulse, it doesn't matter how
+> long after it occurs that we make the calculation, b/c the value is
+> already captured.
+
+True, but we aren't *initializing* the timer to zero when we send the 
+pulse, are we?  It is my understanding that we only *sample* the timer 
+when the pulse leaves, and then have it automatically sampled again when
+it returns.  Thus subtraction yields the time-of-flight.  But (if this
+is true) what happens if we send the pulse (and sample the timer) just
+before it rolls over?  Then the return time is recorded *after* the
+rollover and our time-of-flight is boned.  Or does it not work this
+way at all?
+
+Thanks for the prompt reply!  Cheers, Skye.
+
++-----------------------------------------+----------------------------+
+| Skye Legon                              |   University of Waterloo   |
+| Systems Design Engineering              | __/   __/  __/         __/ |
+| Pattern Analysis & Machine Intelligence | __/   __/  __/   __/   __/ |
+| 143 Columbia St. West, Unit E-4         | __/   __/  __/  ____/  __/ |
+| Waterloo Ontario CANADA  N2L 3L2        | __/__/__/   __/__/\__/__/  |
+| +1(519)888-9249                         |  ______/     ___/  \___/   |
+| slegon@uwaterloo.ca                     |  DC 2620, 888-4567 x5192   |
++-----------------------------------------+----------------------------+
+
+

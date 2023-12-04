@@ -1,0 +1,44 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id AAA10861
+	for <handyboard@media.mit.edu>; Mon, 15 Jun 1998 00:31:23 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id AAA11862;
+	Mon, 15 Jun 1998 00:31:16 -0400 (EDT)
+Message-Id: <199806150431.AAA11862@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: "Mike Davis" <ipscone@halcyon.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: Tone Functions 
+In-Reply-To: Your message of "Sun, 14 Jun 1998 19:01:23 PDT."
+             <199806150202.TAA20176@smtp4.nwnexus.com> 
+Date: Mon, 15 Jun 1998 00:31:16 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+yep, 5 kHz is about the top end of the HB's 6811 capability.  going
+higher would require dedicating the 'hc11 to generating the tone and
+doing nothing else.
+
+why?  interrupt routine overhead.  takes a bunch of cycles to handle
+an interrupt.  the tone function uses the interrupt so it normally
+doesn't have to hog the CPU.  
+
+if you hog the CPU, you can go up to 100khz or so...
+
+fred
+
+In your message you said:
+> I have a problem with the tone functions.  I tried each of the following:
+> 
+> 1000 - 9000 Hz tones for 2 to 3 seconds.  All work fine up to 5000 but 6000 a
+nd 
+> above have broken up sound.  Can anyone explain why this happens?  What is 
+> the fix?
+> --
+> -----------------------------------------------------------------
+> ipscone@halcyon.com                                 Shoot-To-Win!
+> 
+> Protect the 2nd Amendment!               Your rights may be next!
+> -----------------------------------------------------------------
+> 
+

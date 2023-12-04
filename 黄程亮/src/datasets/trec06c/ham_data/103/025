@@ -1,0 +1,61 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5AHh95L029148
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Jun 2005 10:43:09 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 43589AB886D
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Jun 2005 10:43:09 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.Arizona.EDU [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id E721AADA2E2
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Jun 2005 10:43:08 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050610095750.00ba4cf0@psy1.psych.arizona.edu>
+Date: Fri, 10 Jun 2005 10:43:04 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Problems with tiimg in Win2000 and XP
+In-Reply-To: <5.1.0.14.2.20050610081105.00ba4600@psy1.psych.arizona.edu>
+References: <6.2.1.2.1.20050610152938.0326a4a8@pophost.mrc-cbu.cam.ac.u k>
+ <5.1.0.14.2.20050607080708.00ba46a0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606092253.00ba4cd0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606073440.00bc1ce8@psy1.psych.arizona.edu>
+ <6.2.1.2.1.20050606134728.031a4890@pophost.mrc-cbu.cam.ac.u k>
+ <5.1.0.14.2.20050606073440.00bc1ce8@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606092253.00ba4cd0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050607080708.00ba46a0@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 08:32 AM 6/10/2005 -0700, you wrote:
+
+>>This is a 3.2 mHz 64 bit hyper threading machine with 2 gb of memory
+>>and yet another video card. It run WinXP and has the latest version
+>>of everything. This machine is serious overkill for running DMDX, but still
+>>I get the same results: over 50% of timeouts and actual sleep times of
+>>up to 16 ms, while 6 ms sleep is requested. I tried all different settings,
+>>but nothing seems to make a difference.
+
+
+   Given that 16ms time I suspect what's happening is that the video 
+drivers are having to wait till a retrace goes off before they are able to 
+complete the requests they've told TimeDX are done already.  Probably got 
+something to do with TimeDX polling the vertical retrace status constantly 
+for several milliseconds per retrace and TimeDX wanting to blit a full 
+screen of data every other retrace or so.  Basically circumstances that 
+aren't likely to occur in DMDX, most people that do really demanding 
+tachistoscopic displays aren't doing it to the whole display nor are they 
+likely to be doing it when there's only one back buffer like TimeDX 
+uses.  Full screen video is the only thing I can think of but all bets are 
+off there anyway.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+"The sooner you fall behind, the more time you'll have to catch up!"
+
+
+

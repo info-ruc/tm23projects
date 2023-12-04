@@ -1,0 +1,72 @@
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id PAA19703
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 13 Sep 2000 15:34:18 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.33) by phobos.email.Arizona.EDU (5.1.046)
+        id 39B763970007AB24 for DMDX@psy1.psych.arizona.edu; Wed, 13 Sep 2000 15:34:17 -0700
+Message-Id: <5.0.0.25.2.20000913150729.009cf160@psy1.psych.arizona.edu>
+Date: Wed, 13 Sep 2000 15:34:15 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Critical Errors
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Well, in the completely unexpected find of the day bracket we have this 
+little gem.  As I'm under the weather at home with the machine that foils 
+the DMDX retrace sync code almost completely (I say almost as even though 
+it is missing 98% of the retraces, every 30 retraces it stops and syncs 
+back up again and because it knows the retrace interval it can safely 
+predict the 30 retraces, I could make it resync every 300 retraces as long 
+as the retrace interval is within a couple of microseconds, but I digress) 
+and am picking the synchronization code apart to see just how it could 
+possibly be failing I just happened to try a _really_ long timeout value, 
+much monger than is sensible and by gosh, the bugger started finding 
+retraces the majority of the time.  The retrace interval on this machine is 
+11.765ms, normally that would warrant a generous timeout of 12.5ms (could 
+be smaller) but I pumped in 16.5ms.  Lordy golligosh, it started finding 
+the retrace.  By the completely un-intuitive way of making the machine 
+waste time on trying to find the previous retrace and making it late (or at 
+least much later than it would normally be, but not later than the actual 
+retrace time) the video card appears to yield to my requests and actually 
+tell me when a retrace is occurring.  I can't figure it out, or at least, I 
+haven't yet.  If anyone else is getting worrying amounts of multiply missed 
+retraces and the concomitant critical errors they may want to try a timeout 
+40% larger than would seem sensible.
+
+   I have designed a new extension to the retrace determination code that 
+can be used on later video cards (or at least later drivers anyway) to 
+determine the retrace to within a microsecond with no uncertainty as to 
+validity of the results.  I haven't released it yet, after I've spent a bit 
+more time banging on this problem machine and am back at work I probably 
+will.  Basically the new test uses a feature of the latest DirectX, version 
+7, and the latest video drivers that were written with DirectX 7 in mind 
+that allows me to flip the video buffers regardless of the state of the 
+retrace.  Then I can fill one buffer with blue and the other with red and 
+if I swap the buffers at twice the retrace interval half the screen will be 
+blue and the other half red (with the exception of a few flickers as TimeDX 
+gets preempted by other processes) if the buffers are swapped at what is 
+indeed twice the retrace interval then the red and blue portions will 
+remain fixed on the screen, they won't travel up or down, if the buffers 
+are swapped at a slightly faster rate than the retrace interval the bands 
+of color will scroll up the screen, if at a slower a rate, down the 
+screen.  I've also redesigned the code that determines what the retrace 
+interval is and it is much better than it used to be, although only a 
+slight variation of the most recent scheme.  It's so good it makes the new 
+test redundant but I include for safety's sake anyway, some video driver 
+boffin can always change  things for the worse again...
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Everything put together, falls apart, sooner or later.
+
+
+

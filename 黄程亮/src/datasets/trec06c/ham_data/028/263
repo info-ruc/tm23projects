@@ -1,0 +1,56 @@
+Received: from plan9.bell-labs.com (plan9.bell-labs.com [204.178.31.2])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id SAA08460
+	for <9fans@cse.psu.edu>; Mon, 30 Nov 1998 18:18:54 -0500 (EST)
+Message-Id: <199811302318.SAA08460@cse.psu.edu>
+Date: Mon, 30 Nov 1998 18:02:43 -0500
+To: 9fans@cse.psu.edu
+From: "Russ Cox" <rsc@eecs.harvard.edu>
+Subject: re: [9fans] pop3 client
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+There's a pop3 client I wrote and used for a while a year ago
+at http://plan9.bell-labs.com/~rsc/pop3get.c
+
+It's somewhat rough, but if you're willing to spend a little
+time hacking at it it's probably fairly usable.
+
+The invocation was something like
+	pop3get -drN maxsize -s secretfile server 
+
+-d deletes the messages when done.  if you don't delete, you'll
+get the same messages next time.
+
+-r reads the mail box in reverse order; you won't need this flag.
+-N max sets a maximum message size to download. 
+-s secretfile reads a password from file.
+
+pop3get downloads the mail and then runs upas/sendmail to
+deliver it to the local user.
+
+There are references to MD5 routines from a non-existant
+<libcrypt.h> to do challenge-response authentication.
+If all you want is password, just comment out the MD5 calls and
+specify the -p flag to use plaintext passwords.
+If you want challenge-response, you can probably pull the
+appropriate MD5 code from /sys/src/cmd/md5sum.c
+
+Finally, you'll see that the sendmail call calls
+upas/mysendmail and not upas/sendmail.
+I think the difference was that mysendmail pulled
+the sender from the From: line if there was no
+Unix-style From line; that was some bit of ugliness
+I never got around.  I don't remember.
+
+Like I said, it's a little rough in places, but it's a start.
+I'ld be interested in any changes.
+
+An alternative place to look would be Eric Raymond's fetchmail,
+which does a functionally similar thing; I don't know how hard
+it would be to port to Plan 9.  It delivers the mail by connecting
+to port 25 of the local machine, so you'ld need to be running
+smtpd, and you'ld need David Butler's loopback device to get 127.0.0.1.
+
+Russ
+

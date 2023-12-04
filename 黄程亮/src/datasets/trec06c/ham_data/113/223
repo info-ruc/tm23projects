@@ -1,0 +1,83 @@
+Received: from fed1rmmtao07.cox.net (fed1rmmtao07.cox.net [68.230.241.32])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k16Iwmg1028116
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 6 Feb 2006 11:58:49 -0700
+Received: from Sharon ([68.231.168.129]) by fed1rmmtao07.cox.net
+          (InterMail vM.6.01.05.02 201-2131-123-102-20050715) with SMTP
+          id <20060206185740.XDQP3131.fed1rmmtao07.cox.net@Sharon>
+          for <DMDX@psy1.psych.arizona.edu>; Mon, 6 Feb 2006 13:57:40 -0500
+Message-ID: <002e01c62b4f$5bfc4cf0$0401a8c0@Sharon>
+From: "Shiaohui Chan" <shiaohui@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20060204162807.00bcde58@psy1.psych.arizona.edu> <000701c62a0b$72ff0400$0401a8c0@Sharon> <43E5F545.9060200@u.arizona.edu> <5.1.0.14.2.20060206082604.00ba4750@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: questions about COT
+Date: Mon, 6 Feb 2006 11:58:46 -0700
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=response
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Ah, I see!  I totally forgot that COT is between clock ons, not between the 
+onsets of items!!  Silly me!
+
+
+ To double check whether I am understanding this right, please bear with me 
+with my script again:
+
+100 <Output 254> c;
+
++101 *<o 255> %1 / <o 254> %1/ "READY" <fd 724>/;
+
++1001 "(instruction)"/ * <t 30000> "text" /!;
+
+
+
+From the above script, I should at least get 2*16.58ms + 724*16.58 ms+ 
+90*16.58 ms (the period of "(instruction)" in item 1001, whose frame 
+duration is defined in the parameter line as <fd 90>).  All these add up to 
+13529.28 ms.  Since I got 14341.99 ms from the data file, I probably had 
+812.71 ms that came from the delay between items 101 & 1001.  Is that 
+correct?
+
+
+
+shiaohui
+
+----- Original Message ----- 
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Sent: Monday, February 06, 2006 8:28 AM
+Subject: [DMDX] Re: questions about COT
+
+
+> At 02:36 AM 2/6/2006 -0700, you wrote:
+>
+>
+>>2. Why is there a duration of 2338.07 ms before "READY"?  It means that 
+>>two %1's equals to 2338.07ma (i.e., %1 = 1169.035 ms), which doesn't seem 
+>>to make sense....
+>
+>   It's not necessarily before READY, the COT is between successive clock 
+> ons.  So you have the delay between trials added in there and frames in 
+> the next item before it's clock on as well.
+>                                                /"\
+>  -jonathan (j.c.f.)                            \ /
+>                                                 X
+>     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+>
+> If frogs had wings, they wouldn't be bouncing around on their bums.
+>
+>
+> ====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+> 
+
+

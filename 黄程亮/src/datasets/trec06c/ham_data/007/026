@@ -1,0 +1,45 @@
+Received: from toybox.parlance-ncs.com (smtp.nameconnector.com [205.181.121.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id RAA22804
+	for <handyboard@media.mit.edu>; Wed, 14 Jan 1998 17:00:25 -0500 (EST)
+Received: from parlance-ncs.com ([205.181.121.144])
+          by toybox.parlance-ncs.com (Netscape Mail Server v2.02)
+          with ESMTP id AAA2050; Wed, 14 Jan 1998 17:00:57 -0500
+Message-Id: <34BD354A.648EF1BA@parlance-ncs.com>
+Date: Wed, 14 Jan 1998 16:59:38 -0500
+From: vandeweg@parlance-ncs.com (Mike Vande Weghe)
+Organization: Parlance Corporation
+X-Mailer: Mozilla 4.03 [en] (WinNT; I)
+Mime-Version: 1.0
+To: ValTres <ValTres@aol.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: 8 bits A/D bus
+References: <a08a835.34bd23a3@aol.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I am building a somewhat similar circuit (a high-current h-bridge for
+the handy board), although I only need to read the data lines.  However,
+the same approach will work for writing to the bus.  My circuit lives on
+a board which plugs in between the LCD and the main board.  That is, it
+has two male header strips on the bottom to plug into the CPU board, and
+it has one female header strip on top to accomodate the LCD board.  I
+have wired the pins on the leftmost header straight through so that the
+LCD can work as before.  For reading the data bus, I have also attached
+the D0-D7 lines to a 74HC374.  The Y4 line controls the clock to this
+chip, which lets me write a word to the chip by writing to address
+0x6000.  For writing to the HB bus, you can hang a 74HC244 on the data
+lines, and run the Y5 line to the /G pins (pin numbers 1 and 19).  That
+will allow you to read a word from that chip by reading from 0x6000. 
+For examples, look at the schematics for the Handy Board's motor driver
+and digital input circuits; they work the same way, using lines Y6 and
+Y7, respectively.
+
+Fred did a good job designing the Handy Board to be expandable; these
+changes are relatively simple, and give you a lot of flexibility.  I
+can't wait to finish by own circuit and try it out.
+
+Good luck,
+
+  Mike Vande Weghe
+  vandeweg@alum.mit.edu
+

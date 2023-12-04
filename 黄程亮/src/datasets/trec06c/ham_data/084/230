@@ -1,0 +1,110 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gA80NFP22513
+	for <ggilfoyl@facstaff.richmond.edu>; Thu, 7 Nov 2002 19:23:15 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gA80MY427919
+	for <ggilfoyl@richmond.edu>; Thu, 7 Nov 2002 19:22:34 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002110719223423027
+ for <ggilfoyl@richmond.edu>; Thu, 07 Nov 2002 19:22:34 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gA80MYw18900
+	for <ggilfoyl@richmond.edu>; Thu, 7 Nov 2002 19:22:34 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gA7CLTZ21808
+	for <ggilfoyl@richmond.edu>; Thu, 7 Nov 2002 07:21:29 -0500
+Date: Thu, 7 Nov 2002 07:21:28 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: gilfoyle <ggilfoyl@richmond.edu>
+Subject: Re: thanks and a long question
+In-Reply-To: <3DCB0043.92414B4E@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0211070718050.429-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status:   
+X-Mozilla-Status: 9013
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb2673000041f5
+
+Greetings,
+
+The error message itself may be found in /var/log/beowulf/node.<number>
+I'll need that for the failed nodes.
+
+As an alternative, I could log in and check things out, but it appears
+that hosts.deny must have outside access disallowed. Perhaps my
+workstation's IP (216.162.33.24) could be allowed ssh access?
+
+G'day,
+sjames
+
+
+
+
+On Thu, 7 Nov 2002, gilfoyle wrote:
+
+> hi steven,
+> 
+> the latest.
+> 
+> 1. i put the scripts you sent in /usr/lib/beoboot/bin and restarted 
+> beowulf.
+> 
+> 2. i powered down the slaves 0-2 (actually our admin person did this.
+> i'm 
+> at jefferson lab today and tomorrow.) and brought them back up.
+> 
+> 3. slaves 0,2 came up with an error and slave 1 did not come back at
+> all.
+> 
+> i don't know if this is related to the scripts or not. i will be back at
+> richmond tomorrow evening and try to bring things back myself.
+> 
+> you said you would modify the node_up script. is that the one you sent
+> me?
+> 
+> jerry
+> 
+> steven james wrote:
+> > 
+> > Greetings,
+> > 
+> > The reboot of the master is not actually necessary. Instead, you can just
+> > do:
+> > 
+> > /etc/init.d/beowulf restart
+> > on the master and reboot the slaves. Note that the restart command will
+> > crash any running jobs on the cluster (of course, so does rebooting the
+> > master :-)
+> > 
+> > For item 4, it may be the size of the library at issue, or it may be
+> > confused by the number of library paths. I have seen that before (in
+> > particular w/ the Intel compiler libraries). It may be that I will need to
+> > modify the node_up script to preload /usr/root/PRO/lib. I will be happy to
+> > take care of that.
+> > 
+> > Alternatively, placing the attached scripts into
+> > /usr/lib/beoboot/bin (make sure to chmod +x the scripts) should cause the
+> > nodes to preload the needed library and make sure they can find them.
+> > 
+> > The instructions for running X should not be necessary. I suppose since
+> > the X libs are linked against, they get loaded even when the command
+> > options say don't use X.
+> > 
+> > Hope the eveninng beer was good (he says over the half-pot sized cup of
+> > morning coffee).
+> > 
+> > G'day,
+> > sjames
+> > 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

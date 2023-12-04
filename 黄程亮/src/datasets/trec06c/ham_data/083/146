@@ -1,0 +1,44 @@
+Received: from travelers.mail.cornell.edu (travelers.mail.cornell.edu [132.236.56.13])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8J1Bmh12001
+	for <egs@cs.cornell.edu>; Wed, 18 Sep 2002 21:11:48 -0400 (EDT)
+Received: from travelers.mail.cornell.edu (travelers.mail.cornell.edu [132.236.56.13])
+	by travelers.mail.cornell.edu (8.9.3/8.9.3) with SMTP id VAA11143;
+	Wed, 18 Sep 2002 21:11:46 -0400 (EDT)
+Date: Wed, 18 Sep 2002 21:11:46 -0400 (EDT)
+From: mvp9@cornell.edu
+X-Sender: mvp9@travelers.mail.cornell.edu
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 13
+Message-ID: <Pine.SOL.3.91.1020918211035.29072H@travelers.mail.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+This paper presents a protocol for wireless ad-hoc mobile networks that 
+focuses on minimizing power consumption both in data transmission and 
+protocol messages.  The new idea driving the protocol is that the maximum 
+number of nodes should be used in a transmission to minimize overall used 
+power.  It is reactive, in that a "best" route is calculated only when 
+some data is to be sent from some node.  The algorithm for route 
+discovery is greedy, so that the resulting route is not optimal even in a 
+static network. 
+The protocol seems to assume that source and destination are within range 
+of each other.  Presumably, if this is the case, PARO can be integrated 
+with another network layer protocol, but the details of this are never 
+described.  More generally, power consumption is rarely the only concern, 
+which means PARO would have to combine the power-based cost function with 
+other costs, which can get arbitrarily complicated.  Clearly, there are 
+also circumstances where total power use for a route is increased by 
+relieving a highly stressed node - which is certainly desirable - but 
+this is not taken into account by PARO.  Also, in a dynamic network it 
+seems that nodes will often have to transmit at full power, destroying 
+any advantages the protocol was hoping to offer.
+Although the paper's motivation is compelling, power consumption is 
+rarely the sole factor in route determination.  Combination with other 
+metrics is probably the first extension to be pursued.  However, the 
+issues above would have to be addressed before further extensions can be 
+profitably pursued.  In a sensor network (or any other that is static) it 
+is probably more efficient to use a link-state algorithm, which really 
+does calculate optimal routes.  Their comparison to MLSR is not 
+convincing as in the long run, when no maintenance is necessary, the 
+link-state must clearly win out.  
+

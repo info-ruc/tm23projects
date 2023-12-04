@@ -1,0 +1,65 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j78MZU5L018094
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 8 Aug 2005 15:35:30 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id D06BDAF19AB
+	for <DMDX@psy1.psych.arizona.edu>; Mon,  8 Aug 2005 15:35:30 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 44064AF6EFF
+	for <DMDX@psy1.psych.arizona.edu>; Mon,  8 Aug 2005 15:35:30 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050808151107.00ba4b18@psy1.psych.arizona.edu>
+Date: Mon, 08 Aug 2005 15:35:26 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] delay issues
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   It looks like the issue John Curtin is running into is a race condition 
+that's been possible for quite some time.  In tearing the code apart there 
+are actually two quite distinct mechanisms for <ContinuousRunning> (or 
+<cr>) and <Continue> (or <c> or C) in the last frame of an item.  On most 
+machines it's a non-issue otherwise I'd have seen a lot more of it before 
+now but sometimes the time that an item's last frame occurs at for the 
+purposes of <Delay> can be one tick earlier than it's supposed to be when 
+you use the global <cr>.  If you use C in the last frame of every item 
+results appear to be much more stable but item times are 1 tick less than 
+when using <cr>.  I'll have to think about the correct way to fix this and 
+make conventional functionality not change so in the interim use something 
+like this:
+
+<ep> d60 f1 <ID "keyboard"> <!cr> <t 200> <nfb> <zil> <zor>  <vm
+800,600,600,16,60> <rcot> <eop>
+0   "Press SPACE to BEGIN";
++11   * <bmp> "blue" <% 20>  /c;
++11   * <bmp> "blue" <% 20>  /c;
++11   * <bmp> "blue" <% 20>  /c;
++11   * <bmp> "blue" <% 20>  /c;
++11   * <bmp> "blue" <% 20>  /c;
++11   * <bmp> "blue" <% 20>  /c;
++11   * <bmp> "blue" <% 20>  /c;
+100000  "the end";
+
+   Every item will be taking 80 ticks to execute instead of the 81 that 
+happen with <cr> because the next item is scheduled from the time that the 
+frame that contains the C is displayed, not the time that work for that 
+item is finished.
+
+   In fact <cr> has never been a rigorous mechanism as far as I can tell, 
+on a very busy machine it's always been possible for <cr> to be delayed.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   I don't want to achieve immortality through my work. I want to
+achive immortality by not dying.
+                                                    - Woody Allen
+
+
+

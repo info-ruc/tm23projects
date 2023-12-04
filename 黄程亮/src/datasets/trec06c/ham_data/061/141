@@ -1,0 +1,53 @@
+Received: from mailer3.bham.ac.uk (mailer3.bham.ac.uk [147.188.128.54])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id GAA08822
+	for <handyboard@media.mit.edu>; Wed, 16 Feb 2000 06:07:08 -0500 (EST)
+Received: from bham.ac.uk ([147.188.128.127])
+	by mailer3.bham.ac.uk with esmtp (Exim 3.02 #16)
+	id 12L2IR-0006nT-00
+	for handyboard@media.mit.edu; Wed, 16 Feb 2000 11:07:03 +0000
+Received: from bham-eee-fs4.bham.ac.uk ([147.188.147.167])
+	by bham.ac.uk with esmtp (Exim 3.10 #1)
+	id 12L2IR-0003PC-00
+	for handyboard@media.mit.edu; Wed, 16 Feb 2000 11:07:03 +0000
+Received: by bham-eee-fs4.bham.ac.uk with Internet Mail Service (5.5.2650.21)
+	id <10JTB40F>; Wed, 16 Feb 2000 11:07:03 -0000
+Message-Id: <9FDFD60B9F3AD311A1400008C79F4B54110FEE@bham-eee-fs4.bham.ac.uk>
+From: "E158 (M.FAZAL)" <M.FAZAL@bham-eee-fs4.bham.ac.uk>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: serial output
+Date: Wed, 16 Feb 2000 11:07:02 -0000
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain
+
+hi 
+i want to send a byte as a series of bit to a transamitter module i am
+using. the FAQ says i can use the digital 9, or SPI port or TOC3. i can
+output to these ports. 
+
+the first problem is getting the delay times between bits. if i use the
+msleep() function i can get up to 1000 baud right? but i want to use a
+standard bitrate 1200baud. since argument to msleep() is an integer how can
+i do this? 
+
+the other question is in the code i have to write separate lines that sets
+and clears the output with respect to the byte. for example i used the ode
+as below using the TOC3 output.
+
+.
+.
+bit_set(0x1000, 0x20);	/* mark*/
+msleep(9l);             for bit rate of 110baud
+bit_set(0x1000, 0x20);
+msleep(9l);
+bit_set(0x1000, 0x20);
+msleep(9l);
+.
+.
+
+
+is there an easier way of doing this?
+
+many thanks
+M Fazal
+

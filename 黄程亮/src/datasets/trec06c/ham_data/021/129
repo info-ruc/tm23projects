@@ -1,0 +1,72 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id KAA31274
+	for <handyboard@media.mit.edu>; Tue, 4 Aug 1998 10:24:02 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id KAA29778;
+	Tue, 4 Aug 1998 10:24:02 -0400 (EDT)
+Message-Id: <199808041424.KAA29778@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: "Ross, Michael" <michael.ross@lmco.com>
+Cc: handybd <handyboard@media.mit.edu>, anton_attanayake@rd.qms.com
+Subject: Re: speed of the board 
+In-Reply-To: Your message of "Tue, 04 Aug 1998 08:11:43 CDT."
+             <31889D453C9BD111A13600805FEA1B3EEA52B4@lm23mailb.hop.hou.lmsg.lmco.com> 
+Date: Tue, 04 Aug 1998 10:24:01 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+the other issue that should be mentioned re: changing clock speed is
+that it messes up the baud rate of the serial communications.  if you
+plan to use interactive C, would have re-assemble the pcode program
+with a different baud rate constant, to achieve the target rate of
+9600 baud.  (this is the rate that the PC hosted Interactive C program
+communicates at.) not all baud rates are available at all system clock
+rates; 9600 baud might not be available on the 6811 at other than the
+standard 8 MHz crystal/2 MHz system clock.
+
+Fred
+
+In your message you said:
+> You shouldn't lose place if the mouse is serviced by input counters and
+> interrupt routines, so whether 2 MHz is fast enough depends on how often you
+> need the positions calculated from the mouse counters.  You won't be able to
+> get that as fast as the mouse counter updates, but all you have to do is get
+> the latest and do your calculation.  It's the control aspects using that
+> information which will determine whether your application is fast enough.
+> 
+> Mike
+> 
+> Lockheed Martin, Houston TX
+> michael.ross@lmco.com 
+> Engineering Analysis and Simulation Dept
+> 281-333-7094; C33; 34KN
+> 
+> > ----------
+> > From:
+> > anton_attanayake@rd.qms.com[SMTP:anton_attanayake@rd.qms.com]
+> > Sent: 	Monday, August 03, 1998 2:23 PM
+> > To: 	handyboard@media.mit.edu
+> > Subject: 	speed of the board
+> > 
+> > 
+> >      Hi guys,
+> >      
+> >      I am worried about the 2MHz clock speed of the HB.  The robot that I 
+> >      am building has a mouse in the bottom of it and I am writing the 
+> >      program to read the number of digital pulses and calculate the 
+> >      position relative to the starting point.  There are many square roots
+> > 
+> >      and unit vector additions in the calculations.  
+> >      Do you think the above speed is good enough for the job?
+> >      
+> >      I know the E series 6811 runs at a faster clock speed.  So can I 
+> >      replace the 6811 chip and the oscillator and get a faster performing 
+> >      controller board?  If yes, please let me know where to get the parts 
+> >      and things to know when making the change.
+> >      
+> >      Thanks every body,
+> >      -anton
+> > 
+> > 
+> 
+

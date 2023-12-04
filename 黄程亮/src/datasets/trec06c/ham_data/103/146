@@ -1,0 +1,64 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5LJX35L005114
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 12:33:03 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 8B5EEADD0F5
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 12:33:03 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 22455ADCB70
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 12:33:03 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050621122717.00ba4d00@psy1.psych.arizona.edu>
+Date: Tue, 21 Jun 2005 12:32:59 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: RE: deadline procedure
+In-Reply-To: <001f01c57681$c3516f80$1d62c480@KIFXP>
+References: <42B7F1CB.4030901@bris.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 09:53 AM 6/21/2005 -0700, you wrote:
+>Markus,
+>
+>         I've always argued that there must be a way to meet any presentation
+>requirement with DMDX, but this one is certainly difficult.
+
+   Decisions while gathering data just aren't in DMDX capabilities.
+
+
+>         You might try something like the following.  Perhaps this is what
+>Jonathan had in mind.
+
+   It is.
+
+>  The text displays are just to indicate what happened.
+>If you wanted feedback to item 2, you'd have to include your own branching
+>code.
+>
+><cr> <nfb>
+>+1 <t 500> * "target" <bic 100>;
+>+2 <t 3500> <wav> "skid"/ * "target";
+>0 <bu 200>;
+>100 "response received prior to 500 ms";
+>200  "End of item";
+
+   Only other thing to try is to use the <AbortItemKeyName>.  You'll only 
+be able to have one response key and you'd have it set as both the positive 
+response and the <aikn>.  Your item would have to play a wave file at it's 
+commencement that has 500ms of silence followed by your tone.  If they 
+respond then hopefully the response code will see the response and the 
+abort item code will stop playing the wave file (hopefully because I've yet 
+to test responses being abort keys as well).
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+"The sooner you fall behind, the more time you'll have to catch up!"
+
+
+

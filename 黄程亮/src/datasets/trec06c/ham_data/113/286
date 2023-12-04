@@ -1,0 +1,1284 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k18L8Kt26645
+	for <egs@unix.cucs>; Wed, 8 Feb 2006 16:08:20 -0500 (EST)
+Received: from EXCHVS2.cs.cornell.edu ([128.84.97.24]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 8 Feb 2006 16:08:20 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C62CF3.C99C006E"
+Subject: PAPER 5
+Date: Wed, 8 Feb 2006 16:08:18 -0500
+Message-ID: <2EE48095D8C21643B0B70EC95F9BFBAF011008BF@EXCHVS1.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: PAPER 5
+Thread-Index: AcYs88jQIOtJX2aOSKuv2ZaFSmOKog==
+From: "Ian Kash" <kash>
+To: <egs+summary>
+X-OriginalArrivalTime: 08 Feb 2006 21:08:20.0264 (UTC) FILETIME=[C9E68280:01C62CF3]
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C62CF3.C99C006E
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+One Hop Lookups proposes that that it is practical for each node to
+
+know the identity of every other so that most lookups can be completed
+
+in a single hop (the small number that cannot are due to information
+
+not having yet been propagated).  Nodes are still arranged in a ring
+
+structure so that neighbors can determine who is alive.  To limit
+
+bandwidth usage, nodes are grouped into slices and information about
+
+liveness is exchanged between slices only by slice leaders.  To cut
+
+down on the bandwidth slice leaders use sending this information on to
+
+their slices each slice is divided into a few units each with a unit
+
+leader who passes these messages from the slice leader to each member
+
+of the slice.
+
+=20
+
+Liveness is only checked by neighbors, so if three nodes in a row
+
+along the righ fail, there may be a problem with getting the status of
+
+the one in the middle straightened out.  If nodes elsewhere are
+
+allowed to report deadness in this case, there may be significant
+
+confusion when network partitions occur.  Another problem is the load
+
+on slice leaders.  In a network of 10^6 nodes, they claim the load on
+
+a slice leader is 350 kbps.  They not that this requires a serious
+
+connection such as an institutional one.  At 350 kbps, that is 3.6 GB
+
+of bandwidth used per day.  It seems unreasonable to expect any
+
+institution or individual to donate that much bandwidth, so this
+
+system has significant incentive problems.  Even in a small system of
+
+10^5 nodes, 360 MB per day is a significant overhead for the home user
+
+with a cable modem they claim is suitable for a slice leader.
+
+=20
+
+Kelips proposes a similar concept, bust instead of requiring 1 hop
+
+they relax this to O(1) hops.  Along with accepting longer time for
+
+infomation to propagate, this allows them to eliminate the excessive
+
+requirements on the slice leaders that the one hop paper had.  Eacn
+
+node knows only its local affinity group of size sqrt(n) in its
+
+entirety and knows a few members of each other group.  Rather than
+
+having leaders to maintain this information, it is maintained by
+
+gossip.  While this does eliminate the heavy bandwidth consumption by =
+the
+
+leaders, the tradeoff is that, as the one hop paper points out, it can
+
+take an hour in large systems for everyone to know about a particular
+
+join or leave.  How much of a problem this presents in practice is =
+unclear.
+
+
+------_=_NextPart_001_01C62CF3.C99C006E
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<DEFANGED_META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<DEFANGED_meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+ <!-- <DEFANGED_STYLE>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+ --> </DEFANGED_STYLE>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>One Hop Lookups proposes that that it is practical =
+for each
+node to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>know the identity of every other so that most lookups =
+can be
+completed<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>in a single hop (the small number that cannot are due =
+to
+information<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>not having yet been propagated).&nbsp; Nodes are =
+still arranged
+in a ring<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>structure so that neighbors can determine who is =
+alive.&nbsp; To
+limit<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>bandwidth usage, nodes are grouped into slices and
+information about<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>liveness is exchanged between slices only by slice =
+leaders.&nbsp;
+To cut<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>down on the bandwidth slice leaders use sending this
+information on to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>their slices each slice is divided into a few units =
+each
+with a unit<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>leader who passes these messages from the slice =
+leader to
+each member<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>of the slice.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Liveness is only checked by neighbors, so if three =
+nodes in
+a row<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>along the righ fail, there may be a problem with =
+getting the
+status of<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>the one in the middle straightened out.&nbsp; If =
+nodes elsewhere
+are<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>allowed to report deadness in this case, there may be
+significant<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>confusion when network partitions occur.&nbsp; =
+Another problem is
+the load<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>on slice leaders.&nbsp; In a network of 10^6 nodes, =
+they claim
+the load on<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>a slice leader is 350 kbps.&nbsp; They not that this =
+requires a
+serious<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>connection such as an institutional one.&nbsp; At 350 =
+kbps, that
+is 3.6 GB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>of bandwidth used per day.&nbsp; It seems =
+unreasonable to expect
+any<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>institution or individual to donate that much =
+bandwidth, so
+this<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>system has significant incentive problems.&nbsp; Even =
+in a small
+system of<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>10^5 nodes, 360 MB per day is a significant overhead =
+for the
+home user<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>with a cable modem they claim is suitable for a slice
+leader.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Kelips proposes a similar concept, bust instead of =
+requiring
+1 hop<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>they relax this to O(1) hops.&nbsp; Along with =
+accepting longer
+time for<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>infomation to propagate, this allows them to =
+eliminate the
+excessive<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>requirements on the slice leaders that the one hop =
+paper
+had.&nbsp; Eacn<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>node knows only its local affinity group of size =
+sqrt(n) in
+its<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>entirety and knows a few members of each other =
+group.&nbsp;
+Rather than<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>having leaders to maintain this information, it is
+maintained by<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>gossip.&nbsp; While this does eliminate the heavy =
+bandwidth
+consumption by the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>leaders, the tradeoff is that, as the one hop paper =
+points
+out, it can<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>take an hour in large systems for everyone to know =
+about a
+particular<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>join or leave.&nbsp; How much of a problem this =
+presents in
+practice is unclear.<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C62CF3.C99C006E--
+
+From okennedy  Wed Feb  8 19:43:28 2006
+Return-Path: <okennedy>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.0 required=5.0 tests=none autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k190hSt29410
+	for <egs@unix.cucs>; Wed, 8 Feb 2006 19:43:28 -0500 (EST)
+Received: from exchfe1.cs.cornell.edu ([128.84.97.33]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 8 Feb 2006 19:43:28 -0500
+Received: from [128.84.98.36] ([128.84.98.36]) by exchfe1.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 8 Feb 2006 19:43:27 -0500
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <CBC2AA6A-868B-4218-B688-18A9CB638594>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary
+From: Oliver Kennedy <okennedy>
+Subject: PAPER 5
+Date: Wed, 8 Feb 2006 19:44:02 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-OriginalArrivalTime: 09 Feb 2006 00:43:27.0627 (UTC) FILETIME=[D749CDB0:01C62D11]
+
+One hop lookups takes Chord and redesigns it with the thought that  
+memory space is less valuable than lookup time.  In particular, if  
+we're efficient about the amount of information we're storing for  
+each host (say keep each entry to under 20 bytes; enough to store an  
+IP address and a 128 bit identifier), we can hold the entire lookup  
+table in a small (in the above example: 20 MB) portion of memory.   
+OHL notes that traditional ring networks are more concerned about  
+reducing state to reduce the bandwidth consumed by keepalive messages  
+than they are about memory usage.  To that end, their system uses a  
+three level tree structure to disseminate updates to the lookup  
+table.  By intelligently buffering updates, overall bandwidth is  
+minimized.  Since update periods are constant, OHL is able to set a  
+concrete cap on the amount of time that a node's failure will remain  
+unknown to another node.  Also, since the entire system state is  
+known to all nodes (within a reasonable period of time) recovery is
+
+OHL is a good idea in theory, though its scalability is limited in  
+some respects.  A constant three tier update distribution tree may be  
+suitable for the range of nodes in the system that they describe, but  
+as the number of nodes increases, stress on the slice leaders will  
+increase and they become a single (though rapidly replaceable) point  
+of fracture.  Moreover, the update delay experienced by nodes at the  
+edges of a unit will increase considerably as well  (Though this  
+might be alleviated by having the unit size step dynamically as the  
+network changes size; something which will increase stress on the  
+slice leaders).  Memory usage is also not as minor a feature as they  
+claim.  OHL is unsuitable for use on any sort of mobile device such  
+as a PDA or Cellphone where memory is at a premium.  Even on a  
+desktop, 20 MB is a significant hit for what most would not consider  
+a performance critical application.
+
+Kelips makes a similar observation, but notes that with a constant  
+(2) number of hops, a significant reduction in state may be  
+obtained.  Kelips breaks up the identifier space into a set of  
+affinity groups.  A node deterministically joins a specific affinity  
+group based on its identifier.  Data is owned collectively by the  
+entire affinity group.  One host in the affinity group is chosen at  
+random to host each object.  Each node in the affinity group is  
+required to keep track of all of the objects owned by that affinity  
+group.  Because of this, lookups can be performed by simply  
+contacting any member of the affinity group, and a node is only  
+required to store state about the other members of the affinity group  
+(O(sqrt(n)) assuming sqrt(n) affinity groups) and a constant amount  
+of information about each other affinity group.  The fact that an  
+object is owned by the entire group helps to reduce load on some  
+level (though hot objects still pose a problem).  A heavily loaded  
+node might redistribute a subset of its objects to other nodes in its  
+group.  It also makes reassigning file ownership in the case of a  
+failure easier.
+
+Two problems make themselves apparent.  Firstly, the fact that each  
+node in a group is supposed to store a reference to all objects held  
+by that group partially defeats the purpose of a DHT.  With a high  
+object/node ratio this becomes particularly inefficient.  Of more  
+concern is the fact that the O(1) lookup guarantee assumes an up-to- 
+date file list.  Depending on the network's churn rate, propagating  
+an accurate file list through gossip may not be feasible.  The most  
+discomforting aspect of Kelips is that unlike several of the other  
+DHTs we've studied, it makes no guarantee that a valid query will  
+ever succeed (only that it will succeed with high probability).   
+While this is still a better guarantee than that offered by grid  
+networks such as Gnutella, it seems a little strange.
+
+- Oliver Kennedy
+
+They laughed at Einstein.  They laughed at the Wright Brothers.  But  
+they
+also laughed at Bozo the Clown.
+                 -- Carl Sagan
+
+From asr32  Wed Feb  8 23:47:19 2006
+Return-Path: <asr32>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.6 required=5.0 tests=AWL,DATE_IN_PAST_06_12,
+	MAILTO_TO_SPAM_ADDR autolearn=no version=3.1.0
+X-Spam-Level: 
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k194lJt01088
+	for <egs+summary>; Wed, 8 Feb 2006 23:47:19 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k194lI7Z005596
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary>; Wed, 8 Feb 2006 23:47:19 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060208102046.032741a0@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Wed, 08 Feb 2006 17:27:02 -0500
+To: egs+summary
+From: Ari Rabkin <asr32>
+Subject: PAPER 5
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+
+
+One-hop routing:
+         Most peer-to-peer systems are careful only to store some sublinear 
+quantity of information about other nodes in the system; most ring based 
+system keep O(log N) state, Kelips keeps O(sqrt(N)), and Viceroy keeps 
+O(1).  In contrast, Gupta et al propose that every node keep a full list of 
+nodes in the system, which will allow one-hop routing.  This approach is 
+probably feasible for networks with fewer than 10^5 nodes, although the 
+slice leader nodes will need substantial bandwidth.  The authors show that 
+their scheme actually is close to the theoretically optimum bandwidth 
+consumption  It is unclear how to make the system work without enough 
+supernodes.
+         As might be expected from a system with O(N) state required, the 
+one-hop proposal does not scale.  The authors admit that for large 
+networks, a two-layer scheme might be applicable; this proposed scheme is 
+very reminiscent of Kelips, with nodes divided into sqrt(N) groups, and 
+nodes knowing all the nodes in their group, and a few nodes in each other 
+group.  There are other important weaknesses in this scheme.  Particularly 
+under churn, and especially in the presence of an attacker, there may not 
+always be consensus about which nodes are slice and unit leaders.  The 
+system will perform poorly if either slice or unit leaders have poor 
+connections, or drop packets.
+
+Kelips:
+         Kelips makes quite different design choices, and has quite 
+different performance characteristics, from ring-based DHT 
+systems.  Instead of a ring, Kelips groups nodes into sqrt(n) replication 
+groups.  Each node has fairly complete state for its group, and knows how 
+to find nodes in each other group.  Instead of a rigid topology to specify 
+where data will be and which nodes can route to where, Kelips uses a fairly 
+loose structure, coupled with gossip.
+         The authors of Kelips claim O(1) insertion, but do not mention 
+that there will be a lag between the insertion time, and when all members 
+of the affinity group are aware of the insertion.  This lag is longer than 
+O(1); it grows as O( sqrt(N) log^3 (N)).  This can be many minutes for 
+large systems (Gupta et al claim that it is over an hour for systems 
+approaching a million nodes).  This also means that if a node does an 
+insert, followed immediately by a lookup, the lookup will fail. No specific 
+numbers are given for bandwidth cost, as a function of stabilization time, 
+nor for query accuracy.
+
+
+
+Ari Rabkin  asr32      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+
+From ymir.vigfusson  Wed Feb  8 23:51:11 2006
+Return-Path: <ymir.vigfusson>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.0 required=5.0 tests=none autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from uproxy.gmail.com (uproxy.gmail.com [66.249.92.194] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k194pAt02106
+	for <egs+summary>; Wed, 8 Feb 2006 23:51:10 -0500 (EST)
+Received: by uproxy.gmail.com with SMTP id u2so51733uge
+        for <egs+summary>; Wed, 08 Feb 2006 20:51:09 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=FgxpJVKSTwit5HXEi6QuFmoB2QgMhqwZV3LLnOrG1afJFI4n8+T3B4DJ/iRmTPJZVDgf30se36UczJsFXM/W64zBENJfLiwaH3Ff1Wbku1BjCQt742eVkmIcUxlKXnM7Ck7dX3R0vZ5SP/B2Ftoza2KGYcVIcD7vOuW+XxVhz3U=
+Received: by 10.48.157.2 with SMTP id f2mr2213373nfe;
+        Wed, 08 Feb 2006 20:51:09 -0800 (PST)
+Received: by 10.49.43.1 with HTTP; Wed, 8 Feb 2006 20:51:09 -0800 (PST)
+Message-ID: <9302f1e20602082051o5515bdf8t61e8da90897d2c0f@mail.gmail.com>
+Date: Wed, 8 Feb 2006 23:51:09 -0500
+From: Ymir Vigfusson <ymir.vigfusson>
+To: egs+summary
+Subject: PAPER 5
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k194pAt02106
+
+Kelips is a system designed to reduce file lookup times to O(1) time
+by maintaining a list of O(sqrt(n)) nodes in memory (soft-state) and
+increasing background traffic.
+The motivation is to explore alternative tradeoffs to the O(lg n)
+nodes/hops for state/lookup established by the ring-based protocols
+(Chord, Pastry, etc.)
+The authors argue that high latency/low bandwidth nodes are common
+and will likely slow down lookups. Kelips improves on this by providing
+O(1) lookup costs. This is implemented by creating k virtual affinity
+groups of nodes (in the paper, k = sqrt(n)) where each node maintains
+a list of pointer to the nodes that handle files that fall in the
+hash range for the affinity group. This way, to look up a file, we
+calculate the hash, find our "contact" in the affinity group that
+handles this hash value and ask that node to provide us with a pointer
+to the homenode of that file. This takes clearly O(1) hops (if everything
+is okay).
+However, as the paper by Gupta et al. points out, for constant cost of
+lookups to be possible, the routing tables need to be accurate, yet
+the expected convergence time for membership changes in Kelips is
+O(sqrt(n) * log^3(n)) which is impractical for very large n.
+
+The second paper boldly proposes a network with one hop lookups by
+maintaining all routing information, in other words the network is
+a complete graph. The authors argue that attempting to keep routing
+information small, as is done in the networks we have discussed,
+(usually O(lg n)) serves a limited practical purpose because disk space
+and memory is cheap, but bandwidth/latency is not. The paper
+shows how this can be implemented robustly so that traffic overhead
+is small. The design is as follows: Imagine a ring like Chord with
+2^128 identifiers representing the identifier space where nodes keep
+track of successors and predecessors. We now cut the ring into equally
+sized pieces called slices and assign the middle node of every slice
+to be a slice so called slice leader. The interval is then in turn
+cut into more pieces called units, and the middle node from each unit
+is a unit leader. This three level hierarchy is shown to lead to
+reasonable bandwidth consumption. The idea is to make the leaders
+aggregate information about membership changes and propagate to their
+"underlings". If any of these leader nodes fail, their successor
+will take their place. The lost information will be recovered by
+communicating with the slice leader in the case of unit leader failure,
+and collectively by the unit leaders and other slice leaders in the
+case of a slice leader failure. The paper then talks about scalability,
+and determines the optimal packet delays for the aggregate information.
+It turns out that with 10^5 nodes a slice leader needs 35kbps upstream
+bandwidth, and 350kbps if there are 10^6 nodes, assuming rather realistic
+packet sizes.
+Of course, the major weakness here is the uneven load on the leader
+nodes. The paper states that such nodes should be well-provisioned,
+preferably cable modems or having even more bandwidth. Also, neither
+paper addresses any privacy or security issues.
+
+- Ymir
+
+From niranjan.sivakumar  Thu Feb  9 00:10:37 2006
+Return-Path: <niranjan.sivakumar>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.0 required=5.0 tests=none autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from xproxy.gmail.com (xproxy.gmail.com [66.249.82.206] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k195Abt06772
+	for <egs+summary>; Thu, 9 Feb 2006 00:10:37 -0500 (EST)
+Received: by xproxy.gmail.com with SMTP id h26so46522wxd
+        for <egs+summary>; Wed, 08 Feb 2006 21:10:36 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:reply-to:to:subject:date:user-agent:organization:mime-version:content-type:content-transfer-encoding:content-disposition:message-id:from;
+        b=SZrO2raqfrhiJZVkTJd3fZJzR03t6d+4S/pmlEynXLnmR2MyvRT8sz7unRAqJtg6UbL5EsDqiqX+EjT8q8Jxpnl+xUnSrrWKonN+G+KqCNeOdKbi8dWLz2DhZlI34TZpNri/al7btU/UVLX/9f8/7DUsU/C0+8PVhoPmn9dhmH8=
+Received: by 10.70.82.12 with SMTP id f12mr5662371wxb;
+        Wed, 08 Feb 2006 21:10:36 -0800 (PST)
+Received: from ?192.168.0.101? ( [69.207.63.116])
+        by mx.gmail.com with ESMTP id h7sm1971622wxd.2006.02.08.21.10.36;
+        Wed, 08 Feb 2006 21:10:36 -0800 (PST)
+Reply-To: ns253
+To: egs+summary
+Subject: PAPER 5
+Date: Thu, 9 Feb 2006 00:10:32 -0500
+User-Agent: KMail/1.9
+Organization: Cornell University
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200602090010.33467.ns253>
+From: Niranjan Sivakumar <niranjan.sivakumar>
+
+One Hop Lookups for Peer-to-Peer Overlays
+Kelips:  Building Efficient and Stable P2P DHT Through Increased Memory and 
+Background Overhead
+
+Both Kelips and the One Hop Lookup papers focus on increasing memory usage to 
+improve lookup performance.  Kelips is designed around a system of "affinity 
+groups."  These groups maintain a partial index (that all members of the 
+group are responsible for) by gossipping with each other.  Nodes also need to 
+maintain some fixed contact information about other affinity groups (any node 
+in the affinity group can be contacted, as each member has all the 
+information about its group.)
+
+A number of issues with Kelips are pointed out in the One Hop Lookups paper.  
+Among these are the inability of Kelips to scale to large systems.  Also, 
+there can be very long delays in propagation of events through the system.  
+This can result in stale routing tables and many queries that fail on the 
+first attempt.
+
+One Hop Lookups takes the concept one step further than Kelips and insists on 
+having every node essentially have an index of the whole system to allow for 
+direct connections to the target nodes.  The basic structure is a ring based 
+DHT, similar to Chord.  The system is broken down into three tiers.  Slices 
+are the first tier and slice leaders are selected to gather information and 
+pass it on to other slice leaders at fixed intervals (but not synchronized).  
+The second tier are units with a unit leader in charge. Unit boundaries are 
+used to keep redundant information from being passed around. Finally, the 
+third tier are nodes.  With the three tier system and periodic updates, 
+although there will be instances where queries fail on the first attempt, 
+updates should be received within some threshold time.
+
+One of the flaws seen in the One Hop Lookup system seems to be the amount of 
+bandwidth that is required by the leader nodes.  As noted in the paper, this 
+can be reasonably high when the system scales to a size of 10^6.  This seems 
+to unfairly put the bandwidth burden on some "supernodes."  This could be 
+particularly problematic if the economic model of charging for bandwidth 
+shifts to one where payment is related to the amount of bandwidth used.  
+Also, in the case of having "supernodes" these nodes may be targets of attack 
+or institutions such as Universities may be able to look for traffic patterns 
+and block nodes from joining.
+
+From lackhand  Thu Feb  9 00:56:11 2006
+Return-Path: <lackhand>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.6 required=5.0 tests=HTML_00_10,HTML_MESSAGE 
+	autolearn=no version=3.1.0
+X-Spam-Level: 
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.201])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k195uBt16588
+	for <egs+summary>; Thu, 9 Feb 2006 00:56:11 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id s18so89503nze
+        for <egs+summary>; Wed, 08 Feb 2006 21:56:10 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=byo9GLbO9v07YUZRdySJPBzWb3QDvrtXKmG03G6AIcZWZIAoycUCCCwOkyFlZFVLqET3f9mQw9dFjAg2YyIUu0R2OeANanwnHSMqq3lRV894Rvi0YAFMiNak2l40+v6Al5RCnnTMguHIoTEWzBha1Q79RphAKAo+QXOv8SqKg6o=
+Received: by 10.36.22.16 with SMTP id 16mr1634753nzv;
+        Wed, 08 Feb 2006 21:56:10 -0800 (PST)
+Received: by 10.36.148.4 with HTTP; Wed, 8 Feb 2006 21:56:10 -0800 (PST)
+Message-ID: <9aa7a97d0602082156r7c359becx98e7ecd1b30a88f9@mail.gmail.com>
+Date: Thu, 9 Feb 2006 00:56:10 -0500
+From: Andrew Cunningham <lackhand>
+To: egs+summary
+Subject: PAPER 5
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_11413_19060006.1139464570284"
+
+------=_Part_11413_19060006.1139464570284
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+    _One_Hop_Lookups_for_Peer-to-Peer_Overlays_
+    Anjali Gupta, Barbara Liskov, Rodrigo Rodrigues
+
+    In many ways, the central conceit of this paper is as obvious as it is
+frightening: each node maintains routing information about each other node
+in the system. This O(n) state leads to O(1) routing, which means that it
+performs much better than the systems we've studied so far, in terms of
+performance speed, but suffers in terms of theoretical state; it also
+requires O(n) operations on a join leave, but they use a clever subsystem t=
+o
+reduce this. The paper maintains that performance statistics for current
+systems that fill the same need indicate that certain assumptions about the
+actual values of n may be made, and that this system performs well given
+those numbers; it becomes unreasonable for only values of n many orders of
+magnitude greater (by which time what is reasonable may have changed
+definition).
+    The interesting-to-analyze portion of this paper is its join and remove
+operations, since its search is simply direct, or if this fails (which it
+will, with some analyzed probability), some other operations that are
+worst-case-but-unlikely, and any search that requires these is considered
+'failed'. The method of choosing update-tree leaders is very clever, though
+the scheme relies on a k being well known, which would seem to indicate it
+being pre-chosen, which means that, while each leader maintaining O(N) stat=
+e
+is the essence of this algorithm, it can't be dynamically tuned, which mean=
+s
+that if the address space does become unbalanced (which is unlikely) it is
+difficult to fix. It is not precisely certain whether the tree structure of
+dissemination is fixed, in which case in the general case either O(N) state
+is maintained with O(1) hops to distribute, or O(LogN) state is maintained
+with O(LogN) hops; it seems to indicate a three level O(1) hop
+implementation; this is part of the spirit of the paper, and so I cannot
+fault it; the O(1) dissementation is impressive.
+    They make a curious statement: since there are relatively fewer unit an=
+d
+section leaders, their failure does not have to be corrected -- "pursued" -=
+-
+as vigorously. This is a curious statement; the logic is that since there
+are fewer of them, they fail with lesser probability. This is true, and the
+algorithm for replacing them is easy enough to implement, but the comment
+catches me by surprise, as all update events rely on their presence and
+functioning correctly, neither of which is guaranteed by less aggressive
+updates. If they meant that the failure and replacement operation is easy,
+then this is more obvious, as the replacement operation is rather clever.
+    This is clearly one of the more robust networks that we've studied, but
+it pays in overhead; the conceit is that by the statistics, this is
+unimportant. A question is whether this is 'infinitely extensible'; to take
+a tangential note to the paper, many of the algorithms we've studied thus
+far -- especially Viceroy -- could serve as self-assembling motes with
+extraordinarily limited resources. This definitely relies on modern
+computing power, and thus is more suited to what the paper states it is,
+clearly a tautology. To borrow from the close of this paper and the
+beginning of the next one, they assume that joins and exits are rare, which
+is not true for all applications, and that memory is infinite, which is
+nearly true.
+
+
+_Kelips:_Building_an_Efficient_and_Stable_P2P_DHT_Through_Increased_Memory_=
+And_Background_Overhead_
+    Indranil Gupta, Ken Birman, Prakash Linga, Al Demers, Robbert van
+Renesse
+
+    Kelips makes a similar guarantee to the (unnamed?) previous system,
+though also backs it up with statistics taken from gnutella, to establish
+that O(sqrt(n)) space and O(1) time for lookups are acheivable. In some
+ways, it establishes this by using the network as a form of storage; more
+specifically, a high degree of overhead maintains accuracy.
+    The connections themselves are between k affinity groups, segments of
+the nodeID space; they consist of some subset of the affinity group of a
+given node and a constant number of contacts in other affinity groups. It
+uses a gossip-like system of heartbeats to keep information fresh, with goo=
+d
+time-performance, though of course this requires overhead proportional to
+O(sqrt(n)*log^3(n)), which is more than the overhead per node in the
+previous scheme. Also, the reduced overhead is coped with via indirect
+lookups; anything in an affinity group is assumed to be able to find the
+correct resource in O(1) hops, though more than in the fully connected case=
+,
+of course. The advantage is that joins and leaves are more quickly coped
+with, and that this leads to better performance for applications that must
+deal with churn.
+    In fact, the system performs better in the presence of churn than One
+Hop Overlays if only because, though there are similar concepts in that bot=
+h
+partition the nodeID spaces into specialized compartments, Kelips gives eac=
+h
+node less knowledge about the overall system, and thus gossip need not
+propagate as far for a consistent view of resources. It is slightly more
+fragile, but given the massive degree of state stored, it's slight fragilit=
+y
+is completely secondary to its performance. Also, given that one of the
+goals is to cope with relatively rapid joins & leaves, the fragility is ver=
+y
+quickly self repairing.
+
+------=_Part_11413_19060006.1139464570284
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+&nbsp;&nbsp;&nbsp; _One_Hop_Lookups_for_Peer-to-Peer_Overlays_<br>
+&nbsp;&nbsp;&nbsp; Anjali Gupta, Barbara Liskov, Rodrigo Rodrigues<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; In many ways, the central conceit of this paper is
+as obvious as it is frightening: each node maintains routing
+information about each other node in the system. This O(n) state leads
+to O(1) routing, which means that it performs much better than the
+systems we've studied so far, in terms of performance speed, but
+suffers in terms of theoretical state; it also requires O(n) operations
+on a join leave, but they use a clever subsystem to reduce this. The
+paper maintains that performance statistics for current systems that
+fill the same need indicate that certain assumptions about the actual
+values of n may be made, and that this system performs well given those
+numbers; it becomes unreasonable for only values of n many orders of
+magnitude greater (by which time what is reasonable may have changed
+definition).<br>
+&nbsp;&nbsp;&nbsp; The interesting-to-analyze portion of this paper is
+its join and remove operations, since its search is simply direct, or
+if this fails (which it will, with some analyzed probability), some
+other operations that are worst-case-but-unlikely, and any search that
+requires these is considered 'failed'. The method of choosing
+update-tree leaders is very clever, though the scheme relies on a k
+being well known, which would seem to indicate it being pre-chosen,
+which means that, while each leader maintaining O(N) state is the
+essence of this algorithm, it can't be dynamically tuned, which means
+that if the address space does become unbalanced (which is unlikely) it
+is difficult to fix. It is not precisely certain whether the tree
+structure of dissemination is fixed, in which case in the general case
+either O(N) state is maintained with O(1) hops to distribute, or
+O(LogN) state is maintained with O(LogN) hops; it seems to indicate a
+three level O(1) hop implementation; this is part of the spirit of the
+paper, and so I cannot fault it; the O(1) dissementation is impressive.<br>
+&nbsp;&nbsp;&nbsp; They make a curious statement: since there are
+relatively fewer unit and section leaders, their failure does not have
+to be corrected -- &quot;pursued&quot; -- as vigorously. This is a curious
+statement; the logic is that since there are fewer of them, they fail
+with lesser probability. This is true, and the algorithm for replacing
+them is easy enough to implement, but the comment catches me by
+surprise, as all update events rely on their presence and functioning
+correctly, neither of which is guaranteed by less aggressive updates.
+If they meant that the failure and replacement operation is easy, then
+this is more obvious, as the replacement operation is rather clever.<br>
+&nbsp;&nbsp;&nbsp; This is clearly one of the more robust networks that
+we've studied, but it pays in overhead; the conceit is that by the
+statistics, this is unimportant. A question is whether this is
+'infinitely extensible'; to take a tangential note to the paper, many
+of the algorithms we've studied thus far -- especially Viceroy -- could
+serve as self-assembling motes with extraordinarily limited resources.
+This definitely relies on modern computing power, and thus is more
+suited to what the paper states it is, clearly a tautology. To borrow
+from the close of this paper and the beginning of the next one, they
+assume that joins and exits are rare, which is not true for all
+applications, and that memory is infinite, which is nearly true.<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; _Kelips:_Building_an_Efficient_and_Stable_P2P_DHT_Throug=
+h_Increased_Memory_And_Background_Overhead_<br>
+&nbsp;&nbsp;&nbsp; Indranil Gupta, Ken Birman, Prakash Linga, Al Demers, Ro=
+bbert van Renesse<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; Kelips makes a similar guarantee to the (unnamed?)
+previous system, though also backs it up with statistics taken from
+gnutella, to establish that O(sqrt(n)) space and O(1) time for lookups
+are acheivable. In some ways, it establishes this by using the network
+as a form of storage; more specifically, a high degree of overhead
+maintains accuracy.<br>
+&nbsp;&nbsp;&nbsp; The connections themselves are between k affinity
+groups, segments of the nodeID space; they consist of some subset of
+the affinity group of a given node and a constant number of contacts in
+other affinity groups. It uses a gossip-like system of heartbeats to
+keep information fresh, with good time-performance, though of course
+this requires overhead proportional to O(sqrt(n)*log^3(n)), which is
+more than the overhead per node in the previous scheme. Also, the
+reduced overhead is coped with via indirect lookups; anything in an
+affinity group is assumed to be able to find the correct resource in
+O(1) hops, though more than in the fully connected case, of course. The
+advantage is that joins and leaves are more quickly coped with, and
+that this leads to better performance for applications that must deal
+with churn.<br>
+&nbsp;&nbsp;&nbsp; In fact, the system performs better in the presence
+of churn than One Hop Overlays if only because, though there are
+similar concepts in that both partition the nodeID spaces into
+specialized compartments, Kelips gives each node less knowledge about
+the overall system, and thus gossip need not propagate as far for a
+consistent view of resources. It is slightly more fragile, but given
+the massive degree of state stored, it's slight fragility is completely
+secondary to its performance. Also, given that one of the goals is to
+cope with relatively rapid joins &amp; leaves, the fragility is very
+quickly self repairing.<br>
+
+------=_Part_11413_19060006.1139464570284--
+
+From victoria  Thu Feb  9 01:15:02 2006
+Return-Path: <victoria>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.0 required=5.0 tests=none autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from turing.cs.hmc.edu (turing.cs.hmc.edu [134.173.42.99])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k196F2t23167
+	for <egs+summary>; Thu, 9 Feb 2006 01:15:02 -0500 (EST)
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id 97CA653247; Wed,  8 Feb 2006 22:14:56 -0800 (PST)
+Date: Wed, 8 Feb 2006 22:14:56 -0800
+From: Victoria Krafft <vmk>
+To: egs+summary
+Subject: PAPER 5
+Message-ID: <20060209061456.GA14005>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+
+Thursday's papers focus on p2p networks which offer O(1) lookup, 
+in exchange for O(N) data being stored at each node.  The first 
+proposal, by Gupta et al., stores complete membership 
+information at each node.  They manage this without using too 
+much bandwidth by partitioning the traditional DHT ring into 
+slices, and assigning a "slice leader" to each slice.  This 
+slice leader then receives information from the other slices 
+which it distributes to its slice, and packages up the 
+information about changes to its slice, then distributes these 
+changes to the other slices.  Slices are further divided into 
+units, with unit leaders.  
+
+The other system, Kelips, offers O(1) lookup while only storing 
+O(sqrt(N)) data at each node.  It does this by splitting the 
+network into some fixed number of affinity groups.  Each node is 
+assigned an affinity group, and it has connections to nodes in 
+its affinity group, as well as nodes in each other affinity 
+group.  Each node in an affinity group knows about all the files 
+stored in that affinity group, and information about the state 
+of the network is propagated using an epidemic protocol.
+
+Unfortunately, both of these schemes have problems.  Gupta's 
+scheme stores O(N) data at each node, which can eat up 
+significant amounts of memory, even for a modern machine.  It 
+also requires that there be supernodes, and that the owners of 
+those supernodes allow the increased traffic.  While this works 
+for some types of p2p networks, not all p2p networks can provide 
+supernodes.
+
+Kelips is definitely an interesting idea, with fast lookup 
+without maintaining as large a routing table.  However, the 
+epidemic protocol used to distribute information takes a while 
+to distribute information, so the network may provide 
+inconsistent information - nodes A and C can find a file in the 
+network, but node B cannot.  In the p2p systems with O(log n) 
+lookup, if node A can find the file, then node B will almost 
+always find it as well.
+
+-- Victoria Krafft
+
+From tc99  Thu Feb  9 02:20:11 2006
+Return-Path: <tc99>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.0 required=5.0 tests=none autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k197KBt11892
+	for <egs>; Thu, 9 Feb 2006 02:20:11 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k197KB1b022993
+	for <egs>; Thu, 9 Feb 2006 02:20:12 -0500 (EST)
+Received: from 24.59.114.243
+        by webmail.cornell.edu with HTTP;
+        Thu, 9 Feb 2006 02:20:12 -0500 (EST)
+Message-ID: <5843.24.59.114.243.1139469612.squirrel@webmail.cornell.edu>
+Date: Thu, 9 Feb 2006 02:20:12 -0500 (EST)
+Subject: paper 5
+From: "Theodore Ming Shiuan Chao" <tc99>
+To: egs
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+The main premise of these two papers is to keep a constant lookup time at
+the expense of a greater than O(log N) update and maintenence cost that is
+the property of previous ring-based topology network overlays such as
+Chord and Pastry.
+The network in the first paper is also a ring-based topology, but it is
+fully connected instead of just maintaining a few local pointers and/or
+remote pointers. To reduce the costs of updates, the ring is partitioned
+into several non-overlapping segments. Each segment has one "slice leader"
+who handles all intra-segment communication and several "unit leaders"
+that distribute messages to neighboring nodes in the segment. The rest of
+the nodes simply propagate messages in one direction until the end of the
+segment is hit.
+Kelips, on the other hand, has no set topology at all, and the lookup
+time, even with no node failures, is _not_ guaranteed to be constant.
+Every node that joins is placed in one of k bins. They do not explicitly
+maintain links to every other node, but each node "gossips" with a
+constant number of nodes in other bins and with certain nodes in its own
+bin. The "gossip" lets information propagate through the bins (affinity
+groups), and the information on the nodes in the group and what files they
+store are cached as the gossip travels through the group. This keeps the
+background bandwidth usage constant. According to the authors, all nodes
+will eventually receive the gossip with high probability, so the lookup
+will take 2 hops with high probability - one hop to the appropriate
+affinity group, and the one hop
+within the group to the appropriate node holding the file.
+
+These two methods both sacrificed state required and update cost in favor
+of reduced lookup times. For one-hop, it requires O(N) state while Kelips
+requires O(sqrt(N)) state. However, the constant factor of one-hop is
+extremely small because of the ring-based topology (and since hashed IDs
+can be used to route requests), and I believe that for most realistic
+values of N, one-hop will take less space than Kelips, which needs to
+cache more information per node.
+A problem in one-hop is that it does not consider physical locality at
+all. Splice leaders are not guaranteed to be close, nor are their unit
+leaders. Thus, even though the t_small and t_big may be relatively small,
+it can still take a long time for some nodes to hear of changes in the
+network because of latency between nodes.
+
+From ryanp  Thu Feb  9 04:50:10 2006
+Return-Path: <ryanp>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.0 required=5.0 tests=none autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k199o7t14852
+	for <egs@unix.cucs>; Thu, 9 Feb 2006 04:50:09 -0500 (EST)
+Received: from exchfe2.cs.cornell.edu ([128.84.97.28]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 9 Feb 2006 04:50:07 -0500
+Received: from [128.253.211.203] ([128.253.211.203]) by exchfe2.cs.cornell.edu over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 9 Feb 2006 04:50:06 -0500
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <09F59FEE-B5C8-470D-8869-03475AD2F54B>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary
+From: "Ryan S. Peterson" <ryanp>
+Subject: PAPER 5
+Date: Thu, 9 Feb 2006 04:50:06 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-OriginalArrivalTime: 09 Feb 2006 09:50:06.0982 (UTC) FILETIME=[353A3260:01C62D5E]
+
+Gupta #1, et al. introduce a peer-to-peer system that guarantees one- 
+hop lookups with high probability.  While lookup time is greatly  
+improved, each node pays a price by maintaining a routing table with  
+information about every other node in the network.  In order to  
+guarantee one-hop lookups, it must be the case that every node knows  
+about every other node.  However, as the authors point out, full  
+routing tables generally create problems because of the bandwidth  
+required to maintain routing table consistency, not because of the  
+physical sizes of the tables.  Even in a large system with hundreds  
+of thousands of nodes, the size of the routing table is manageable.   
+To overcome the bandwidth consistency problems, the authors employ a  
+trick for circulating routing table information much in the same was  
+as most DHT systems perform O(log n) lookups.  Thus, the multihop  
+data is the system metadata rather than the lookups as is the case in  
+similar systems.  In the authors' theoretical model, the network has  
+a three-tier hierarchy that functions as a three-level tree for  
+propagating routing information.  Nodes in a cluster, or slice,  
+communicate with a common leader node, which communicates to leaders  
+of other slices.  As long as a change in the network state is  
+guaranteed to be reflected among all the nodes within a certain  
+bounded amount of time dependent on the number of tiers and the  
+number of slices per tier, the authors prove that with bounded high  
+probability (99% in the paper's example), the node contacted for a  
+lookup will know the location of the requested object.
+
+The main problem with one hop lookups as presented is that the system  
+is deceptively unscalable.  Although the system can theoretically run  
+with 10^5 or 10^6 nodes, a larger or smaller system would be  
+inefficient unless many system-wide parameters were tweaked.   
+Therefore, such a system could not grow from a small number of nodes  
+to larger and larger sizes in an natural, dynamic way.  Instead, a  
+network administrator would have to assess the network and the  
+machines involved in the network, decide on the number of tiers and  
+slices, and then start all the nodes in the network.  If the network  
+ever grew significantly larger, the constant parameters would have to  
+be readjusted.  Another problem is that not all nodes are equal: each  
+slice has a leader that must be more robust and support more traffic  
+than other nodes in the slice.  Leader nodes therefore act as  
+critical points of failure.  The paper suggests creating supernodes  
+to serve this purpose for each slice, further complicating  
+implementation.
+
+Gupta #2, et al., introduce a compromise between one-hop lookups and  
+the O(log n) lookups with O(log n) routing tables as in Chord and  
+Pastry.  The system, called Kelips, clusters nodes into groups,  
+called affinity groups, much in the same way one-hop lookups group  
+nodes into slices.  Each node then keeps O(n^(1/2)) pointers to other  
+nodes, one in each other affinity group, as well as information about  
+objects in its own affinity group.  Thus, when a query comes in, a  
+node can forward it to the correct affinity group in one hop, and  
+that node can return the address of the node with the object,  
+resulting in O(1) lookup time.  Overall, the two papers present a  
+common technique for decreasing lookup time without incurring a huge  
+bandwidth cost.  In general, the technique is to periodically  
+disseminate routing information throughout the network and save more  
+routing information at each node.
+
+Ryan
+
+From pjk25  Thu Feb  9 05:04:11 2006
+Return-Path: <pjk25>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=0.0 required=5.0 tests=none autolearn=ham 
+	version=3.1.0
+X-Spam-Level: 
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k19A4Bt22905
+	for <egs+summary>; Thu, 9 Feb 2006 05:04:11 -0500 (EST)
+Received: from [10.0.1.2] (cpe-69-207-41-159.twcny.res.rr.com [69.207.41.159])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k19A4Aew017750
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary>; Thu, 9 Feb 2006 05:04:10 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+To: egs+summary
+Message-Id: <1607BAAC-47B1-4F82-9703-6F5D5F679084>
+Content-Type: multipart/signed; micalg=sha1; boundary=Apple-Mail-1-111132357; protocol="application/pkcs7-signature"
+From: Philip Kuryloski <pjk25>
+Subject: PAPER 5
+Date: Thu, 9 Feb 2006 05:06:45 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+
+--Apple-Mail-1-111132357
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=MACINTOSH;
+	delsp=yes;
+	format=flowed
+
+One Hop Lookups for Peer-to-Peer Overlays suggests a radical concept: =20=
+
+maintaining complete routing tables at each node allowing for one hop =20=
+
+routing between nodes.  This scheme shares a similarity with Chord in =20=
+
+that nodes are consistently hashed to a ring shaped identifier space, =20=
+
+and keys within the network are associated with their successor node.
+
+Because all nodes maintain a routing table with entries for all other =20=
+
+nodes, efficient notification of joins and leaves/failures are =20
+critical to avoid generating a tremendous amount of traffic.  A three =20=
+
+level hierarchy of nodes is employed, with messages flowing down the =20
+hierarchy and moving from predecessor to successor at the lowest =20
+level.  Messages are aggregated at the upper levels, and combined =20
+with keep-alive messages at the lower levels.
+
+Differing from other DHT schemes, this is not a pure p2p network, as =20
+more robust and well connected nodes are selected as members of the =20
+upper levels of node hierarchy.  If one of these nodes fails, =20
+standard procedure is to for that nodes successor to assume that role.
+
+The primary limitation of this system is despite the imposed node =20
+hierarchy, the amount of bandwidth needed to maintain node routing =20
+tables is quite high, nearly 40kbps for a low level node in a million =20=
+
+node network.  Coordinating nodes require more bandwidth, and =20
+therefore cannot be randomly selected from any member in the network.
+
+Kelips, like the MIT proposed system, provides O(1) lookup times.  =20
+The authors of Kelips, however, argue that maintaining complete state =20=
+
+information at each node requires excessive memory and bandwidth.  =20
+Therefore, Kelips steps down from O(n) state per node to O(=C3n).  =20
+Kelips divides the identifier space into k =3D =C3n segments, called =20
+affinity groups, and file/owner, called filetuple, relationships are =20
+replicated across all nodes in the affinity group.  Nodes also =20
+maintain a small number of pointers to nodes in other affinity =20
+groups, leading to O(1) lookup time.  A gossip style protocol is used =20=
+
+for keeping filetuple entries fresh.  Latency between nodes is =20
+factored into the gossip protocol, with gossip tending towards faster =20=
+
+links.  Gossip messages are also sent across affinity groups to =20
+maintain far reaching links.
+
+Kelips trades increased state information at each node for faster =20
+lookup times, however it does so with a less complex overlay =20
+structure than CAN, Chord, Tapestry, and other O(log(n)) lookup =20
+systems.  This may be it's chief advantage over such networks, if the =20=
+
+underlying network can sustain the increased background traffic =20
+associated with these O(1) lookup schemes.=
+
+--Apple-Mail-1-111132357
+Content-Transfer-Encoding: base64
+Content-Type: application/pkcs7-signature;
+	name=smime.p7s
+Content-Disposition: attachment;
+	filename=smime.p7s
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIIGFjCCAs8w
+ggI4oAMCAQICAw+L7TANBgkqhkiG9w0BAQQFADBiMQswCQYDVQQGEwJaQTElMCMGA1UEChMcVGhh
+d3RlIENvbnN1bHRpbmcgKFB0eSkgTHRkLjEsMCoGA1UEAxMjVGhhd3RlIFBlcnNvbmFsIEZyZWVt
+YWlsIElzc3VpbmcgQ0EwHhcNMDUwOTI2MTc1NzM0WhcNMDYwOTI2MTc1NzM0WjBDMR8wHQYDVQQD
+ExZUaGF3dGUgRnJlZW1haWwgTWVtYmVyMSAwHgYJKoZIhvcNAQkBFhFwamsyNUBjb3JuZWxsLmVk
+dTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALFkgyhHSufUWaYxKh+wvUSDmrM8cViE
+JjeRS7Ssdd5tf0ckH2iwktNuSkxSsavsmAY+8zahwJjwk/JWTVyOGW/QsjgA5zoTJeAz4ah/QcKZ
+hou20lN6NvlFZWA43b4/jwtpVVa2RMS1fitkEs7YA9N16akGyXCpJR2i6EVTk7tx8/zf7i7bqg4t
+tmbJaySQyMQ4QV1O+F00m+zms0WZN5XRDqPwU2/WZfUE5BK/pGLkkFheBGSJJssuOsct8ctup0AI
+fJLlLZZhBCEdNeM2x9KfQEm+Tk3Ty0zl0pOewe7oW9vgwBJ2LwTVurzQ7qXeq1VhkDmkQJOwjcxM
+ssGAPXMCAwEAAaMuMCwwHAYDVR0RBBUwE4ERcGprMjVAY29ybmVsbC5lZHUwDAYDVR0TAQH/BAIw
+ADANBgkqhkiG9w0BAQQFAAOBgQBanW/NR5+pfeGOS7lM21kLObfzzGKtHvTFZ/RS0cSgWSKaCZfx
+aLLhqC9EFFFxh0b4wn0zCTv4CQWhrpaPZZC7oroP70kqWypQdjFbQ2rlLrVVS8pE4gtjZnRPFMr0
+BEH+1K7kWB6kTHvg2eI1EotCI92yARGzlzKrXjPonHppijCCAz8wggKooAMCAQICAQ0wDQYJKoZI
+hvcNAQEFBQAwgdExCzAJBgNVBAYTAlpBMRUwEwYDVQQIEwxXZXN0ZXJuIENhcGUxEjAQBgNVBAcT
+CUNhcGUgVG93bjEaMBgGA1UEChMRVGhhd3RlIENvbnN1bHRpbmcxKDAmBgNVBAsTH0NlcnRpZmlj
+YXRpb24gU2VydmljZXMgRGl2aXNpb24xJDAiBgNVBAMTG1RoYXd0ZSBQZXJzb25hbCBGcmVlbWFp
+bCBDQTErMCkGCSqGSIb3DQEJARYccGVyc29uYWwtZnJlZW1haWxAdGhhd3RlLmNvbTAeFw0wMzA3
+MTcwMDAwMDBaFw0xMzA3MTYyMzU5NTlaMGIxCzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3dGUg
+Q29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1haWwg
+SXNzdWluZyBDQTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAxKY8VXNV+065yplaHmjAdQRw
+nd/p/6Me7L3N9VvyGna9fww6YfK/Uc4B1OVQCjDXAmNaLIkVcI7dyfArhVqqP3FWy688Cwfn8R+R
+NiQqE88r1fOCdz0Dviv+uxg+B79AgAJk16emu59l0cUqVIUPSAR/p7bRPGEEQB5kGXJgt/sCAwEA
+AaOBlDCBkTASBgNVHRMBAf8ECDAGAQH/AgEAMEMGA1UdHwQ8MDowOKA2oDSGMmh0dHA6Ly9jcmwu
+dGhhd3RlLmNvbS9UaGF3dGVQZXJzb25hbEZyZWVtYWlsQ0EuY3JsMAsGA1UdDwQEAwIBBjApBgNV
+HREEIjAgpB4wHDEaMBgGA1UEAxMRUHJpdmF0ZUxhYmVsMi0xMzgwDQYJKoZIhvcNAQEFBQADgYEA
+SIzRUIPqCy7MDaNmrGcPf6+svsIXoUOWlJ1/TCG4+DYfqi2fNi/A9BxQIJNwPP2t4WFiw9k6GX6E
+sZkbAMUaC4J0niVQlGLH2ydxVyWN3amcOY6MIE9lX5Xa9/eH1sYITq726jTlEBpbNU1341YheILc
+IRk13iSx0x1G/11fZU8xggLnMIIC4wIBATBpMGIxCzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3
+dGUgQ29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1h
+aWwgSXNzdWluZyBDQQIDD4vtMAkGBSsOAwIaBQCgggFTMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTA2MDIwOTEwMDY0NlowIwYJKoZIhvcNAQkEMRYEFJXG31uq1cuY
+uuj9Xy2IAaytWxlkMHgGCSsGAQQBgjcQBDFrMGkwYjELMAkGA1UEBhMCWkExJTAjBgNVBAoTHFRo
+YXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQZXJzb25hbCBGcmVl
+bWFpbCBJc3N1aW5nIENBAgMPi+0wegYLKoZIhvcNAQkQAgsxa6BpMGIxCzAJBgNVBAYTAlpBMSUw
+IwYDVQQKExxUaGF3dGUgQ29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVy
+c29uYWwgRnJlZW1haWwgSXNzdWluZyBDQQIDD4vtMA0GCSqGSIb3DQEBAQUABIIBAJgtUQ/vMAY7
+i1OFaZTEB8XmlC0MmJn0JgFLFMBA8a+9cw9Yje2WVWqR0LSE9gPlUFBA0zijjRfZwwck8MeRTt3I
+WFfaSOqa/eRIEZXeMIl4Fhc1+A21T64P+5Ha15m524eOqHoW0MA2tKQ1UHWXU1HJPT4HnAhCD1HB
+iitR1Y6aAZ2nOJsjaHKqornmYOJA27Titj3BKzYvmlhK5uvb+nH342dHZcZt3iga+/pWj4swIULe
+5VpIrDT3+g5f8AmqcMJoq19BaMv56T5AG0bHpJGwOstYNx1FgC/7f2bZ6ua0quIjmT3J9ZA8Am/L
+z+6yR8h+5eOmFw5K1o0IDzNB4OgAAAAAAAA=
+
+--Apple-Mail-1-111132357--
+

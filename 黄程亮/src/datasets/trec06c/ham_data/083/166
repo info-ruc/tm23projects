@@ -1,0 +1,57 @@
+Received: from zinger.cs.cornell.edu (zinger.cs.cornell.edu [128.84.96.55])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8JFSCh21238
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 11:28:12 -0400 (EDT)
+Received: from localhost (ashieh@localhost)
+	by zinger.cs.cornell.edu (8.11.3/8.11.3/C-3.2) with ESMTP id g8JFSC509064
+	for <egs@cs.cornell.edu>; Thu, 19 Sep 2002 11:28:12 -0400 (EDT)
+Date: Thu, 19 Sep 2002 11:28:11 -0400 (EDT)
+From: Alan Shieh <ashieh@CS.Cornell.EDU>
+To: <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 13
+Message-ID: <Pine.GSO.4.33.0209191127470.9021-100000@zinger.cs.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+PARO
+
+This paper introduces PARO, a link-layer technique for reducing power
+consumption. Since transmission power increases superlinearly with
+range in all propagation models, subdividing a long path may result in
+power savings. PARO operates transparently under a standard routing
+algorithm (lowest hop count, for instance). If node notices a
+conversation between two other nodes, and believes that a route
+through it would require less power than the direct transmission
+(using some loss model), then it advertises a route through itself.
+Self-timing is combined with a use-first-heard scheme to provide
+collision avoidance and improved optimality. PARO continues
+iteratively, typically improving power consumption as time progresses.
+
+The PARO technique increases latency (increased hop count, not
+necessarily visible to the routing algorithm, and also requiring more
+time before detecting a network partition). It also provides
+suboptimal routes (greediness causes suboptimal selection when two
+communicating nodes can hear each other. once a node is selected as an
+intermediate node, it always remains an intermediate node until motion
+detection algorithm eliminates it; lack of global knowledge induces
+suboptimal behavior when the communicating nodes cannot hear each
+other, and so the algorithm falls victim to the triangle inequality).
+
+The power equations used in the paper do not take into account fixed
+transmission overheads.
+
+** Future work
+- PARO always attempts to find a node as close to the bisector of two
+  communicating nodes as possible. Once selected, a node will always
+  (unless it moves away) redirect traffic between the endpoints. A
+  consequence is that additional hops are likely to be used, with
+  little improvement in power consumption. More hops are in fact
+  likely to increase global power consumption due to second order
+  terms ignored by PARO (e.g. receive power).
+
+  Since many more intermediate nodes are likely to have sent out
+  redirect advertisements than nodes that actually end up redirecting,
+  perhaps remembering the old advertisements would allow intermediate
+  nodes to build some idea of the local link state in the system, and
+  determine a more optimal route.
+
+

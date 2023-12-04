@@ -1,0 +1,46 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4Ite625771
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 13:55:40 -0500 (EST)
+Received: from aquinas.ee.cornell.edu (aquinas.ee.cornell.edu [128.84.236.57])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fB4IqHM19155
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 13:52:17 -0500
+Date: Tue, 4 Dec 2001 13:54:02 -0500 (EST)
+From: Prince Samar <samar@ece.cornell.edu>
+X-Sender: samar@aquinas.ee.cornell.edu
+To: egs@CS.Cornell.EDU
+Subject: 615 PAPER 69
+Message-ID: <Pine.GSO.4.21.0112041352320.14862-100000@aquinas.ee.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Bayeux: An Architecture for Scalable and Fault-tolerant Wide-area Data
+Dissemination.
+
+Bayeux is an application-level multicasting system built on top of the
+Tapestry location and routing scheme. The tree-based, source-specific,
+explicit-join multicast service is designed for dissemination of streaming
+multimedia on the internet. The design goals for Bayeux have been
+scalability, efficiency and fault-resilience.
+
+The Bayeux multicast session is identified by the tuple <session name,
+UID>. For session advertisement, a 160 bit hash of this tuple is formed and
+a trivial file with this name is formed and kept at the multicast
+session's root node. Tapestry's location service can then be used to
+advertize this document. JOIN, LEAVE, TREE and PRUNE messages are used to
+form the multicast tree. A JOIN message is sent by a node willing to join
+the tree, and it receives the TREE message as an acknowledgement. A LEAVE
+message from a member node is followed by a PRUNE message by the root to
+enable the leave operation.
+
+To increase the scalability, Bayeux uses tree-partitioning and receiver
+clustering. Tree partitioning is done to create multiple roots and thus
+reduce the load on the single node and eliminate a single point of
+failure. Receiver identifier clustering allows local nodes to share the
+longest possible suffix. This may reduce the length of the path, but at
+the same time decreases fault tolerance by increasing the dependence on
+the same local set of nodes. Bayeux utilizes Tapestry's redundant routing
+paths for fault-resilient packet delivery. Reliance on time-outs has the
+potential of increasing the delay, thus affecting the performance of
+delay-sensitive streaming multimedia.
+

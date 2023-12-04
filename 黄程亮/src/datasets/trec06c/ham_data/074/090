@@ -1,0 +1,72 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id MAA11421
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 7 Nov 2000 12:45:38 -0700
+Received: from jcf.u.arizona.edu (128.196.98.7) by deimos.email.Arizona.EDU (5.1.046)
+        id 39F9F778000CC697 for DMDX@psy1.psych.arizona.edu; Tue, 7 Nov 2000 12:45:38 -0700
+Message-Id: <5.0.0.25.2.20001107122457.009e2080@psy1.psych.arizona.edu>
+Date: Tue, 07 Nov 2000 12:45:37 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DelayPB
+In-Reply-To: <3A084CBB.4BF7C70C@forenap.asso.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 07:40 PM 11/7/00 +0100, you wrote:
+>Hello everybody,
+>
+>I am back to DMDX stuff and getting some
+>pb in adjusting trigger and making loop
+>
+>the refresh times is set to 15 ms (ticks)
+
+   'Set' as in you are specifically subtracting lines from a display mode?
+
+>0 d10  <bmp> "image1";
+>250 d33 <bmp> "image2";
+>250 d33  <bmp> "image1";
+>250 d33  <bmp> "image2";
+>250 d33  <bmp> "image1";
+>250 d33 <bmp> "image2";
+>250  d33 <bmp> "image2";
+>and so on 6 times
+>
+>first : this running must faster ( 2s instead of 3s which is the
+>interval
+>between 2 triggers)
+
+   Your frame interval must not be 15ms.  The following item file runs for 
+3s from second request to the time the "end" is displayed on my testbed 
+that has a refresh interval of 16.667ms:
+
+d100 <cr> f30 <id mouse> <mr +button 1> <vm 1024,768,768,16,0>
+0 "test the bmp timing stuff";
+0 d10 g "river";
+255 d30 g "marsglob";
+255 d30 g "river";
+255 d30 g "marsglob";
+255 d30 g "river";
+255 d30 g "marsglob";
+255 d30 g "river";
+0 d30 "end" l;
+
+>What is the code to  loop (or count) for 6 times.
+
+   Look in the help file under the <Set> keyword.  Basically looking at 
+anything to do with counters has a link to the explanations.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   When things are going well, something will go wrong.
+
+
+

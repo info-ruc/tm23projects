@@ -1,0 +1,114 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j260TLFJ005027
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 5 Mar 2005 17:29:21 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 01CB5A81F82
+	for <DMDX@psy1.psych.arizona.edu>; Sat,  5 Mar 2005 17:29:21 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-6.dsl.arizona.edu [128.196.237.6])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 606A2A7C57A
+	for <DMDX@psy1.psych.arizona.edu>; Sat,  5 Mar 2005 17:29:20 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050305171700.00ba4580@psy1.psych.arizona.edu>
+Date: Sat, 05 Mar 2005 17:29:19 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: timing problem
+In-Reply-To: <Pine.SGI.4.60.0503051344040.1180861@elf.ii.uj.edu.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 04:00 PM 3/5/2005 +0100, you wrote:
+
+>Hello,
+>
+>   After finding solution to my PIO card problems I managed to configure set
+>for measuring ERPs. But during analysis of the first data file, I've found
+>DMDX is doing very strange things with timing.
+>
+>I use <ms%> keyword for enforcing delay.
+
+   <ms%> is provided for people that don't care about accurate timing, DMDX 
+calculates how many retrace intervals are guaranteed to be longer than the 
+parameter to <ms%>.  Use whole retrace intervals with <fd> 
+instead.  Millisecond timing in DMDX is generally not possible (there are 
+exceptions, <RevertOutput> is one of them, <Timeout> is another), most 
+things are specified in retrace intervals.
+
+>  In the following code, I've put
+>into square brackets real timings measured as triggers by ERP gathering
+>program - the time since the previous trigger.
+>
+>
+>
+><azk> <cr>
+><vm 1024,768,16,0> <nfb>
+><dbc 160160160> <dwc 0>
+><d 0>
+
+   <d 0> is also not guaranteed, it's simply a command to move to the next 
+item as quickly as possible.  I recommend <d 2> for fast machines and <d 
+10> for older machines.  Note, it's in retrace intervals, not milliseconds.
+
+>  <t 5000>
+><RevertOutput 5,0> <InputDevice PIO12>
+>
+><InputDevice Keyboard> <MapRequest +Space> <MNR +Left Shift> <MPR +Right 
+>Shift>
+>
+><EndOfParameters>
+>
+>0 "Press space to begin.";
+>
+>
+>-197 <ms% 1000> / <ms% 500> <o 3> "+" / <ms% 400> <o 3>[450] /
+>   <ms% 300> <o 1>[360] "word1" / <ms% 200> <o 3>[270]  /
+>   <ms% 115> <o 1>[180]"word2" / <ms% 200> / <ms% 300> <o 2>[287] "word3" /
+>   <ms% 200> / <ms% 300> <o 3>[450] "word4" / * "???" / !;
+>
+>
+>so the timings are very strange.
+
+   Your value of the retrace interval of the video mode you are using may 
+not not accurate and there may be timing errors that are forcing to DMDX to 
+do it's best to get things right.  You need to read the advanced timing 
+documentation in TimeDX and see that you've got good values for the retrace 
+interval.  Often I find setting the Read Between Flips to Stop Cheating 
+Drivers in TimeDX's Refresh Rate test clears a lot of these problems up.
+
+   Beyond that you need to make sure there are no worms or viruses or 
+spyware on the machine as they bork things right up.
+
+>  this is a test procedure, in the real one I
+>have used the following sequence: . / <ms% 200> / <ms% 300> <o 2> "word1" 
+>/ <ms%200> / <ms% 300> <o 2> "word2" / ...
+>so the delay should be always around 500, and the triggers appeared
+>always in 450 ms delay, so it was not random.
+>
+>
+>It seems the words appear on the screen in the same time as the triggers
+>were gathered on another computer, so it can't be an I/O problem. I know it,
+>since ERPs for successive words look similiar, and are not phase shifted (as
+>it would be if the triggers were shifted in relation to words).
+
+   The triggers will be appearing with the words, the timing of the words 
+however is another matter.
+
+
+>I fear I'm making a very simple mistake, but I can't figure it out.
+
+   Would that DMDX was simple, but then you wouldn't be able to do a fifth 
+of the things that are possible with it.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Reality is just a convenient measure of complexity.
+
+                                                -  Alvy Ray Smith
+
+
+

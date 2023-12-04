@@ -1,0 +1,44 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h4L1wFoh012181
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 20 May 2003 18:58:15 -0700
+Received: from anybodyi.u.arizona.edu (uofa-dsl-130.dakotacom.arizona.edu [150.135.175.130])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h4L26MAc016441;
+	Tue, 20 May 2003 19:06:22 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030520184039.00b12898@psy1.psych.arizona.edu>
+Date: Tue, 20 May 2003 19:05:25 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] start /wait and version 3 of DMDX
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Looks like the old "start /wait" batch file command line trick for DMDX 
+is going to fail with version 3.  The problem lies with the MS installer we 
+now use in that the shortcuts made to run DMDX don't actually run DMDX, 
+they run some "smart" MS software that makes sure DMDX's components are in 
+place and then that runs DMDX.  So if you have a batch file the "start 
+/wait DMDX.EXE" wait for the installer to finish executing and then 
+proceeds but of course DMDX is still running and certainly hasn't finished 
+running the item file.  So you'd think that a shortcut like "c:\program 
+files\dmdx\dmdx.exe" would get around this but there's some insidious 
+smartness going on and that still executes the installer -- that or there's 
+another reason I can think of to explain why "start /wait" would all of a 
+sudden stop working for version 3.  The brute force way I fixed it was to 
+copy DMDX.EXE to another directory and start /wait the copy which works 
+just fine.  Until you install the next version of DMDX of course when 
+you'll have to copy the executable again but by that time you've forgotten 
+what's going on...
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Isn't it strange that the same people that laugh at gypsy fortune
+tellers take economists seriously?
+
+
+

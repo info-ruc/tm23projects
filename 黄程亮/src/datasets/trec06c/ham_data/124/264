@@ -1,0 +1,73 @@
+Received: from exchfe1.cs.cornell.edu (exchfe1.cs.cornell.edu [128.84.97.27])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k4D3vL207563
+	for <egs@unix.cucs>; Fri, 12 May 2006 23:57:21 -0400 (EDT)
+Received: from iago.cs.cornell.edu ([128.84.96.10]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 12 May 2006 23:55:24 -0400
+Received: from postoffice10.mail.cornell.edu ([132.236.56.14]) by iago.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 12 May 2006 23:55:20 -0400
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k4D3tJeZ024271;
+	Fri, 12 May 2006 23:55:19 -0400 (EDT)
+Received: from 128.84.98.245
+        by webmail.cornell.edu with HTTP;
+        Fri, 12 May 2006 23:55:19 -0400 (EDT)
+Message-ID: <1157.128.84.98.245.1147492519.squirrel@webmail.cornell.edu>
+In-Reply-To: <4952.128.84.98.245.1147484280.squirrel@webmail.cornell.edu>
+References: <2537.128.84.98.245.1147406914.squirrel@webmail.cornell.edu>   
+    <3469.128.84.98.245.1147411785.squirrel@webmail.cornell.edu>
+    <4952.128.84.98.245.1147484280.squirrel@webmail.cornell.edu>
+Date: Fri, 12 May 2006 23:55:19 -0400 (EDT)
+Subject: PAPER 19
+From: "Gopal Parameswaran" <gp72@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Cc: gp72@cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-OriginalArrivalTime: 13 May 2006 03:55:20.0799 (UTC) FILETIME=[0E172EF0:01C67641]
+
+Overcast:
+Overcast is a collection of nodes paced at strategic locations in a per to
+peer network to implement an abstraction over the existing network to
+provide a reliable and adaptable routing mechanism where the system’s
+functionality can be provided on an incremental basis. It attempts to
+reduce bandwidth requirements by replication. Overcast attempts to reduce
+the sending of same data over the same network multiple times to reduce
+the bandwidth requirements for multicast systems especially for
+broadcasting mediums for broadcasting large video files. Overcast builds
+distribution trees that to create high bandwidth channels from the source
+node to all nodes by building an adaptable distribution tree with a single
+root. When a user requests a particular video file that would be
+advertised at a common source such as a web page the requests gets
+redirected to a node that is at a close proximity and content is served
+from that node. However the system does not implement a breakup of the
+contents of the video file across servers but merely replicates the file.
+Thus if a particular node gets choked due to a sudden increase in requests
+from a region the system would be slow to react to the change and could
+fail. This implementation also assumes that the organization distributing
+networks would have its own set of nodes spread across the regions it
+provides service to. In other words it is more of a distributed load
+balancing protocol where each server handles the complete service for one
+particular request for a file. This paper really handles issues more with
+content distribution for service providers rather than for peer-to-peer
+systems since any node on a public network that is made into a
+distribution node just because it has a high bandwidth would resist the
+usage and would limit the applicability. This system does not utilize it
+resources properly because of the tree architecture and in the authors own
+words “If a child fails to contact its parents within a preset interval,
+the parent will assume the child and all of its descendants have died”. So
+if a set of immediate child nodes leaves he system the whole network would
+just disappear for that content being distributed. The authors claim that
+they chose the parents not to initiate contact with their children to
+enable it to cross firewalls easily. The author has not looked into other
+topologies such as a grid or a multi ring topology that are more stable to
+nodes being pulled out of the network. Finally the authors uses
+certificates for authenticity and availability of the child nodes but
+fails to consider the effect of a malignant node which might modify the
+contents of the file. Thus this application is limited to private networks
+whose nodes are spread across the Internet.
+
+

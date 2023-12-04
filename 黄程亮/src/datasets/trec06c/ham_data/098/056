@@ -1,0 +1,132 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iB7Gj8FJ014651
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 7 Dec 2004 09:45:08 -0700
+Received: from localhost (faramir.email.arizona.edu [10.0.0.218])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id AE00CA00434
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  7 Dec 2004 09:45:08 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id E5A40A251B6
+	for <DMDX@psy1.psych.arizona.edu>; Tue,  7 Dec 2004 09:45:07 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041207093331.00ba4ce0@psy1.psych.arizona.edu>
+Date: Tue, 07 Dec 2004 09:45:00 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: default feedback duration
+In-Reply-To: <5.2.1.1.2.20041207145515.01b5fa08@pophost.mrc-cbu.cam.ac.u
+ k>
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="=====================_346663593==_.ALT"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+--=====================_346663593==_.ALT
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+At 03:11 PM 12/7/2004 +0000, you wrote:
+>Hi.
+>
+>I was wondering what the default duration for feedback was. Is it in the 
+>documentation somewhere and have I just missed it?
+
+   Don't think it's ever been documented as it's in ticks and the duration 
+of a tick depends on display mode.
+
+#define FB_DELAY        2       /* delay of feedback signal */
+#define FB_DUR  35      /* duration of feedback message (default) */
+
+
+>Is it still the case that feedback durations may be a bit variable as 
+>mentioned in the help files
+
+   No, it'll always be 35 ticks unless you change it.  The delay before the 
+feedback is likely to be longer than 2 ticks if your machine can't assemble 
+the display that quickly though.
+
+
+>>While theoretically you could leave the feedback enabled as it should 
+>>have a constant display interval I don't think it's ever been put to the 
+>>acid test and who knows what you'd have to do with the delay value:
+>
+>Also, does the last bit of the sentence above mean that feedback display 
+>times can interact with delay times somehow?
+
+   Other than that they sum, no.  But I'm not going to guarantee that a 
+fixed ISI is possible with feedback till I tear the code apart.  Can't see 
+the point personally as feedback is usually contingent upon a response.
+
+   Basically if you care that much about feedback duration and it's delay 
+you need to be writing your own feedback routines as outlined in the 
+branching documentation.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Five is a sufficiently close approximation to infinity.
+
+                                                  -  Robert Firth
+
+
+--=====================_346663593==_.ALT
+Content-Type: text/html; charset="us-ascii"
+
+<html>
+At 03:11 PM 12/7/2004 +0000, you wrote:<br>
+<blockquote type=cite class=cite cite><font face="arial">Hi. <br><br>
+I was wondering what the default duration for feedback was. Is it in the
+documentation somewhere and have I just missed
+it?</font></blockquote><br>
+&nbsp; Don't think it's ever been documented as it's in ticks and the
+duration of a tick depends on display mode.<br><br>
+#define FB_DELAY
+<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>2<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>/*
+delay of feedback signal */<br>
+#define FB_DUR
+<x-tab>&nbsp;</x-tab>35<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>/*
+duration of feedback message (default) */<br><br>
+<br>
+<blockquote type=cite class=cite cite><font face="arial">Is it still the
+case that feedback durations may be a bit variable as mentioned in the
+help files</font></blockquote><br>
+&nbsp; No, it'll always be 35 ticks unless you change it.&nbsp; The delay
+before the feedback is likely to be longer than 2 ticks if your machine
+can't assemble the display that quickly though.<br><br>
+<br>
+<blockquote type=cite class=cite cite><blockquote type=cite class=cite cite><font face="arial">While
+theoretically you could leave the feedback enabled as it <i>should</i>
+have a constant display interval I don't think it's ever been put to the
+acid test and who knows what you'd have to do with the delay
+value:</font> </blockquote><br>
+Also, does the last bit of the sentence above mean that feedback display
+times can interact with delay times somehow?</blockquote><br>
+&nbsp; Other than that they sum, no.&nbsp; But I'm not going to guarantee
+that a fixed ISI is possible with feedback till I tear the code
+apart.&nbsp; Can't see the point personally as feedback is usually
+contingent upon a response.<br><br>
+&nbsp; Basically if you care that much about feedback duration and it's
+delay you need to be writing your own feedback routines as outlined in
+the branching documentation.<br>
+<br>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/&quot;\</div>
+<div>&nbsp;-jonathan
+(j.c.f.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+\ /</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+X </div>
+<div>&nbsp;&nbsp;&nbsp; ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL&nbsp; /
+\ </div>
+<br>
+<div>Five is a sufficiently close approximation to infinity.</div>
+<br>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-&nbsp; Robert Firth</div>
+<br>
+</html>
+
+--=====================_346663593==_.ALT--
+
+

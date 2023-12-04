@@ -1,0 +1,48 @@
+Received: from enforcer.mr.itd.umich.edu (enforcer.mr.itd.umich.edu [141.211.14.42])
+	by alien.imap.itd.umich.edu (3.6i) with ESMTP id gBCKIqG28230; Thu, 12 Dec 2002 15:18:52 -0500 (EST)
+Received: (from daemon@localhost)
+	by enforcer.mr.itd.umich.edu (3.6u) with LDAP id gBCKIq802134; Thu, 12 Dec 2002 15:18:52 -0500 (EST)
+Received: (from daemon@localhost)
+	by enforcer.mr.itd.umich.edu (3.6u) with X.500 id gBCKIp402121
+	for dir-members@umich.edu; Thu, 12 Dec 2002 15:18:51 -0500 (EST)
+Received: from harumscarum.mr.itd.umich.edu (harumscarum.mr.itd.umich.edu [141.211.125.17])
+	by enforcer.mr.itd.umich.edu (3.6u) with ESMTP id gBCKIpr02112
+	for <dir@umich.edu>; Thu, 12 Dec 2002 15:18:51 -0500 (EST)
+Received: from [10.0.1.28] (al3-2100.us.itd.umich.edu [141.213.236.70])
+	by harumscarum.mr.itd.umich.edu (8.9.3/3.3s) with ESMTP id PAA27237
+	for <dir@umich.edu>; Thu, 12 Dec 2002 15:18:50 -0500 (EST)
+Date: Thu, 12 Dec 2002 15:18:50 -0500
+From: Lance E Sloan <lsloan@umich.edu>
+To: dir@umich.edu
+Subject: Re: using ldapsearch w/ MOSX.2.2
+Message-ID: <20797478.1039706330@[10.0.1.28]>
+In-Reply-To: <20735480.1039705296@[10.0.1.28]>
+References:  <20735480.1039705296@[10.0.1.28]>
+X-Mailer: Mulberry/2.2.1 (Mac OS X)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Status: RO
+
+--On Thursday, December 12, 2002 15:01 -0500 Lance E Sloan 
+<lsloan@umich.edu> wrote:
+> Joe mentioned that I can probably put some of those options in my
+> /etc/openldap/ldap.conf file.  I'll give that a try.
+
+I ended up making a ~/.ldaprc that contains:
+
+  # LDAP Defaults
+  # See ldap.conf(5) for details
+  BASE dc=umich, dc=edu
+  URI ldap://ldap.itd.umich.edu
+
+And I can use ldapsearch like this:
+
+  ldapsearch -xLLLP2 uid=lsloan 0.0
+
+--
+Lance E Sloan
+Web Services, Univ. of Michigan: Full-service Web and database design,
+development, and hosting.  Specializing in Python & Perl CGIs.
+http://websvcs.itd.umich.edu/ - "Putting U on the Web"

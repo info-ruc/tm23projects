@@ -1,0 +1,41 @@
+Received: from terminus.idirect.com (terminus.idirect.com [207.136.80.70])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id RAA08253
+	for <handyboard@media.mit.edu>; Mon, 12 Apr 1999 17:56:42 -0400 (EDT)
+Received: from ts6-26t-9.idirect.com (ts6-26t-9.idirect.com [216.154.3.41])
+	by terminus.idirect.com (8.9.3/8.9.3) with SMTP id RAA27355
+	for <handyboard@media.mit.edu>; Mon, 12 Apr 1999 17:56:41 -0400 (EDT)
+X-Authentication-Warning: terminus.idirect.com: ts6-26t-9.idirect.com [216.154.3.41] didn't use HELO protocol
+Message-Id: <3.0.6.32.19990412175636.007bd760@idirect.com>
+X-Sender: orthner@idirect.com
+X-Mailer: QUALCOMM Windows Eudora Light Version 3.0.6 (32)
+Date: Mon, 12 Apr 1999 17:56:36 -0400
+To: handyboard@media.mit.edu
+From: Duncan Orthner <orthner@idirect.com>
+Subject: Re: Expansion Board Servo timing...
+In-Reply-To: <TFSMFXZK@optionshealthcare.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 03:31 PM 4/12/99 -0500, wengd@optionshealthcare.com wrote:
+
+>How sensitive are the exp bd servo routines to many processes running
+>concurrently.  My servo works fine in a stand alone test file but when I
+>include it in my main code it gets the "nervous shakes", as if the timing
+>pulse is fluctuating ( I don't have a scope to verify this).
+
+ I don't know about the servo routines on the HB, but servos *do* start to
+jitter when the pulses get much below about 20Hz. This is not due to the
+pulse width 'fluctuating', it's because the refresh rate is dropping. It
+certainly is possible that the refresh rate drops as the load on the 6811
+increases. Perhaps servo control could be offloaded onto a PIC ala. Scott
+Edwards SSC (serial servo controller) at:
+
+http://www.seetron.com
+
+If you have a PIC programmer (or a BASIC stamp) it's pretty trivial to
+program one to accept serial commands and output the pulses to a few
+servos. Scott's is nice because it can handle eight servos and there is
+*no* jitter.
+
+Hope this helps, Duncan
+

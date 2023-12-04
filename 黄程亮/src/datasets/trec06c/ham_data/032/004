@@ -1,0 +1,73 @@
+Received: from mtiwmhc02.worldnet.att.net (mtiwmhc02.worldnet.att.net [204.127.131.37])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA26380
+	for <handyboard@media.mit.edu>; Sat, 16 Jan 1999 16:27:20 -0500 (EST)
+Received: from pent233 ([12.77.248.49]) by mtiwmhc02.worldnet.att.net
+          (InterMail v03.02.07 118 124) with ESMTP
+          id <19990116212648.JEZF19922@pent233>
+          for <handyboard@media.mit.edu>; Sat, 16 Jan 1999 21:26:48 +0000
+From: "Ted Mylenbusch" <amylen@worldnet.att.net>
+To: <handyboard@media.mit.edu>
+Subject: Polaroid 6500 Ranging System
+Date: Sat, 16 Jan 1999 16:28:55 -0500
+Message-Id: <000001be4197$38d28360$31f84d0c@pent233>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+Importance: Normal
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+
+I recently purchased a 6500 ranging system and have connected it to the
+HandyBoard (HB) 1.2 Expansion Board.  I am using IC ver 3.1 from Newton
+Research Labs and loaded the sonar.c code module provided through the MIT
+website.  The HB passed all testing as described in the manual and I have
+successfully run servos from the expansion board plug-ins and used the IR
+detector to decode my Sony TV remote and hence control the movement of the
+HB rudimentary robot.   The servos have been hacked using the resistor
+divider method in place of the internal position feedback pot and serve as
+drive motors for the two wheel tail dragging configuration.
+
+My next goal was installation of this ranging system and then development of
+the code for object recognition and avoidance.  I have also purchased the 2X
+compass module and plan to install that after this process.
+
+My problem is that I can only get the ranging system to return a 540 to 548
+value from either the sonar_sample() or sonar_closeup() routines.  One out
+of five reading is say ~1200 or ~900 but the majority are right on 545 and
+can range as above.  I am aware of the 1.33 foot ranging limit but this is
+supposed to be compensated for when using the sonar_closeup by manipulating
+the BINH signal.  Even so, 540 is well below even the initial blanking
+interval as programmed into the 6500 module.  There are no obstructions and
+I have placed the module facing a wall at 2, 3, 4, and 5 feet with the same
+result.  I have repeatedly tested the digital input 7 pin and it tests
+normal using the testdigitals() function.  The board does not reset during
+the ping event and I can hear an audible clicking when the transducer fires.
+The software is waiting for the PD0 high ECHO event because when I
+disconnect the jumper from J12 the routines time out and return a -1.  It
+appears that the only way this can be happening is if the PD0 input is high
+all the time.  But, then it would return even lower numbers, right?
+
+I've checked all connections multiple times.  I've traced the circuits
+through the 9 pin ribbon cable for continuity.  Do I still need to install
+the .1 (F cap in position C7 on the 6500 board as mentioned in the earlier
+pre-expansion board documentation?  Do I need to install the pull-up
+resistor?  It looks like the HB has this installed.  After some research I
+found other users mentioning a 470 (F cap between two jumpers on the 6500
+board.  Based on their notes, this was to protect the 6.270 board from
+resetting due to the 2A surge current during the ping event.  I don't see
+the reset happening.  Everything works fine after each event, indeed after
+several repeated ping events as I am testing using the IC interactive mode.
+
+Anyway, that's the extent of my understanding and the end of my ability to
+diagnose and make this system work.  Any help would be greatly appreciated.
+
+Thanks
+
+Ted Mylenbusch
+Amylen@worldnet.att.net
+
+
+

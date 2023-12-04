@@ -1,0 +1,90 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i0QINhR4000696
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 26 Jan 2004 11:23:43 -0700
+Received: from 666-devel.u.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id CE76629142D
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 26 Jan 2004 11:23:42 -0700 (MST)
+Message-Id: <5.1.0.14.2.20040126104716.00b13520@psy1.psych.arizona.edu>
+Date: Mon, 26 Jan 2004 11:23:40 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Progressive Demasking
+In-Reply-To: <001c01c3e406$4a700d60$5d121850@xxxlum8fsvgyfg>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 01:16 PM 1/26/2004 +0100, you wrote:
+>Hi. I am trying to do progressive demasking with DMDX. I have read the 
+>previous posts about it, and it seems that this would be the correct code:
+>
+> >>~1000 <set 1,29> <set 2, 26> <set 3,1>;
+> >>~1001 <bicLT 1,4,1005>;
+> >>+1002 <%ctr 2> * "########" / <%ctr 3>  * " house " <dec 1> <inc 2> 
+> <dec3> <binr -1001> / "########";
+> >>~1003 <binr 1005>;
+> >>~1004 <bu 2000>;
+> >>+1005 %3  "########" / * %27 " house " / %2  "########" /  %28 " house 
+> " / %1  "########" /  %29 " house " / ;
+>
+>Unfortunately, I have read the DMDX documentation and this piece of code 
+>again and again and I still don´t understand it completely...
+>I would appreciate if somebody can explain me it a little.
+>My main questions are:
+>- why item 1005 is hard coded? (it is explained in the previous posts but 
+>i still don't get it).
+
+   Because the display is continuously active across items in the loop the 
+minimum time it can display a mask for is three ticks, one frame at the end 
+of 1002, one frame in the inter item interval (assuming the minimum delay 
+parameter D1) and at least one frame at the start of the next iteration of 
+1002.
+
+>- what does the unconditional branch do exactly? is 2000 the next item?
+
+   Yep.
+
+>- what extra information would I get if I "emit" the counters?
+
+   It would be an easier way to see how much de-masking had been 
+done.  Just emitting counter 3 would suffice would be my guess but that 
+example looks broken.  For a start there are two clockons in 1002 which 
+isn't right and decrementing counter 3 when it starts at 1 doesn't look 
+right either.  I would expect counter 2 to be decremented and 3 to 
+incremented.  And there's no space in the <dec3> keyword in 1002 either, it 
+should be <dec 3>.  I'd be going back the reference here, the example 
+posted looks badly busted.
+
+>- with a code like this, with multiple lines for each item and with such a 
+>branching system, can I use an automatic scramble with it? if the item 
+>lines change its positions for each subject, will the branching find its 
+>targets?
+
+   They'll find their targets but things will be hopelessly screwed up 
+unless you very carefully scramble things so as to keep items together that 
+are part of the same progressively de-masked stimulus.  There are an number 
+of different ways that can be achieved, either the traditional way using a 
+fixed grouping parameter G and having the same number of items in each 
+presentation or by using the variable grouping keyword <vg> and having each 
+presentation group's item numbers differ by modulo 100 or so, although the 
+example looks like <vg 1000> would be the right thing to use.
+
+>- finally, for the next item, should I create three different new counters 
+>with numbers 4, 5 and 6, or just can I reset the same counters?
+
+   You can reuse the same counters.
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   He who laughs last didn't get the joke.
+
+
+
+

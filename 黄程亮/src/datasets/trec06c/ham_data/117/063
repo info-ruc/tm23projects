@@ -1,0 +1,65 @@
+Received: from wproxy.gmail.com (wproxy.gmail.com [64.233.184.200] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29GgBt15831
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 11:42:11 -0500 (EST)
+Received: by wproxy.gmail.com with SMTP id 69so736431wri
+        for <egs+summary@cs.cornell.edu>; Thu, 09 Mar 2006 08:42:11 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=uPpyrDmz47+Qegq55JMNoWWGr3CSSVv7ReBzs+z3HRIx9cPggIEokAGBqSIuGxw3iGOXbOLCvf0wLOTwNelyjjUNmRwnyPhaWzqoX20vJ51Ty5zHrtWVMirXW9I8fnm8HVSRZAjtJZ/cPAcWuzM9b2DvQIJDbQq8G0W99Sh3Xl0=
+Received: by 10.54.105.3 with SMTP id d3mr2379519wrc;
+        Thu, 09 Mar 2006 08:42:10 -0800 (PST)
+Received: by 10.54.80.9 with HTTP; Thu, 9 Mar 2006 08:42:10 -0800 (PST)
+Message-ID: <6e1ca4560603090842g27c40a6wbb2dc8b2199902a6@mail.gmail.com>
+Date: Thu, 9 Mar 2006 11:42:10 -0500
+From: "Chiu Wah Kelvin So" <kelvinso@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: Paper 13
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k29GgBt15831
+
+	The first paper, "Resilient Overlay Networks," presents an
+architecture that detects and recovers from path failures using
+overlay routing. To detects and recovers from path failures quickly,
+each node in Resilient Overlay Networks (RONs) actively probes and
+monitors paths, which include the latency, loss rate, and throughput,
+to all other members. These aggressive probing may lead to excessive
+bandwidth overhead when the size of membership in RONs is large.
+Therefore, RONs decides to limit the number of nodes participated in
+RONs under 50 nodes. Similar to link-state routing protocol, nodes
+construct routing table by periodically exchanging routing information
+of the different performance metrics to the other nodes. When nodes
+detect failure of a path, it can use other nodes to route through the
+failure.
+        Not only RONs allow application to recover from path failure,
+it also allows application to route based on specific application.
+Since RONs keep track of various performance metrics of paths,
+application can route through different paths based on
+application-need. For example, some applications may find low latency
+is more important while others application may find loss rate more
+important. Also, when a packet enters the network, it is given a
+particular policy tag and it can only route through the path where the
+type of traffic is allowed. However, the drawback of the system is
+that it does not scale as more members join the RONs because of the
+aggressive probing. Also, it assumes all members in RONs are
+cooperative.
+        The second paper, "Improving the Reliability of Internet Paths
+with One-hop Source Routing," presents an architecture that improves
+path failure by routing one more hop. This paper first presents a
+measurement study on 67 nodes in PlanetLab probing 3000 other nodes.
+The main point of the study shows that 66% of path failure can be
+recover by one extra hope through one of the 67 nodes in PlanetLab.
+They also shows that broadband hosts tend to have more last-hop
+failure which is not recoverable by extra hops. From the study, they
+implement an architecture where if a node fails to send packets to
+other nodes, then it will randomly pick k of the 76 nodes to route the
+packet. Since about 66% of path failure can be recovered by one extra
+hope from the studies, it can reduce path failure by 60%. This simple
+technique can avoid most path failures. Because SOSR does not have any
+background traffic, it can scale a lot better than RONs. However, the
+intermediate nodes have to be server class node or else it is not
+reliable to use them to route packets.
+

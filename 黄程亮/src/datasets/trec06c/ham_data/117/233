@@ -1,0 +1,82 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2E7XLt18617
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 02:33:21 -0500 (EST)
+Received: from [128.84.92.3] (wislpjk25.ece.cornell.edu [128.84.92.3])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2E7XKhE013033
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 02:33:20 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <FBD1705B-216D-4FDC-956A-B21D77860BD6@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 13
+Date: Tue, 14 Mar 2006 02:33:19 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+PREDICTING INTERNET NETWORK DISTANCE WITH COORDINATES-BASED APPROACHES
+
+We would like to be able to predict network distances (RTTs) for the  
+internet without having to send probes each time.  One potential  
+solution is to have a set of servers which maintains a simplified  
+view of the network topology with RTTs.  A node can request data from  
+the server and predict a desired RTT.  This however, produces a  
+bottleneck at these servers, and additional latency is incurred  
+requesting the data from the server.
+
+A second solution is to use triangulated heuristic coordinates, or  
+hop counts to some base stations nodes in the network.  The accuracy  
+is often less than desired.
+
+The authors propose Global Network Positioning (GNP) where there is a  
+set of well known landmark nodes in the network, and the node in  
+question trilaterates its position in a 3-D euclidian space relative  
+to the landmark nodes.  The authors find that this scheme functions  
+relatively well, although the slides do not mention how, due to  
+inconsistencies in link latencies in the network, inconsistent  
+localization from more than 3 landmark nodes is handled.
+
+
+VIVALDI
+
+Vivaldi, like GNP, places nodes in a virtual 3D (more precisely a 2D  
+with directionless height, or 2.5D) space where euclidian distance  
+between nodes is indicative of RTT.  The primary difference between  
+the two is that Vivaldi does not use a set of landmark nodes like  
+GNP.  Vivaldi implements a decentralized version of the following  
+optimization:  Consider the network as a complete graph, with each  
+edge as a spring.  The resting length of the spring is the true RTT  
+between to vertices (nodes).  Nodes have been positioned optimally  
+for a given virtual space when the sum of the potential energies of  
+all springs is minimized (the springs will be stretched to satisfy  
+low number of dimensions in the virtual space).  This in fact will  
+naturally occur if the mass of nodes and springs is allowed to float  
+freely in space and stabilize under it's own forces.  As potential  
+energy is proportional to distortion squared for springs, this solves  
+a least squares fitting problem.  It is possible to simulate this  
+self-stabilization in both a centralized and decentralized manner,  
+Vivaldi uses the latter.  Optimizations of the distributed simulation  
+allow the system to react gracefully to the introduction of a large  
+number of nodes into the network.
+
+The authors find the system to be comparable in accuracy to GNP, a  
+centralized scheme.  It is further refined by the use of a 2D +  
+directionless height vector space, rather than a 3D space.
+
+
+MERIDIAN
+
+Meridian does not use a virtual coordinate system like GNP or  
+Vivaldi, despite serving the same goals.  Each node keeps O(log N)  
+state in the form of a set of peers organized by concentric rings of  
+increasing network distance radii.  Much in the spirit of prefix  
+routings ability to move exponentially closer to a target in an  
+identifier space, Meridian jumps exponentially shorter distances  
+towards a target.  Membership structure in these rings is loose,  
+allowing a gossip protocol to be used to refresh and fill rings.
+
+Simulation demonstrates that Meridian produces superior performance  
+to GNP and Vivaldi.
+

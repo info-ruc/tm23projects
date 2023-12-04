@@ -1,0 +1,68 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id IAA17802
+	for <handyboard@media.mit.edu>; Thu, 5 Feb 1998 08:44:05 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id IAA04588;
+	Thu, 5 Feb 1998 08:43:51 -0500 (EST)
+Message-Id: <199802051343.IAA04588@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: "Michael S. Reiling" <macman@inreach.com>, chermann@epix.net
+Cc: handyboard@media.mit.edu
+Subject: Re: 9600 Baud /  help with pa7
+In-Reply-To: Your message of "Wed, 04 Feb 98 01:28:31 PST."
+             <3.0.1.32.19980204012831.0068be4c@mail.inreach.com>
+Date: Thu, 05 Feb 98 08:43:51 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+> I'm sure that this has been posted tons of times, but I am trying to use
+> the 9600 serial library.  I can't seem to get anything to echo on Zterm.  I
+> used a phone cable and hooked it up to digital port 9, and then to the HB
+> serial/charger.
+
+Perhaps you have the RJ11 cable wired wrong.  Make sure you have the
+ground signal  and the data from pa7/digital 9 connected.
+
+see below...
+
+> I recently downloaded the pa7_9600 software that would allow me to use
+> pa7 as a ttl level serial port at 9600 baud. My question is, where is pa7
+> brought out? The schematics and parts layout drawings have only confused
+> me. The crude drawing below is where I think it might be, please
+> help me out, my robot is anxious to walk!
+
+
+Looking at the digital and analog sensor headers:
+
+live signal [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]    [ ] [ ] [ ] [ ] [ ] [ ]
+
++5v         [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]    [ ] [ ] [ ] [ ] [ ] [ ]
+ground      [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]    [ ] [ ] [ ] [ ] [ ] [ ]
+
+sensor#      15  14  13  12  11  10  9   8   7      6   5   4   3   2   1
+
+
+The whole row labeled "+5v" is a source of +5v power.  The whole row
+labeled "ground" is a source of ground.  The row labeled "live signal"
+is 15 different signal pins.
+
+To attach to the 9600 baud output, you must connect from the live
+signal line of sensor 9, and any ground.  You might as well use the
+ground beneath the sensor 9 signal.  It would connect to an RJ11 plug
+(to go into the HB serial interface) as follows:
+
+
+                                         RJ11 plug
+                                      (metal side up)
+                                  +-------------------+
+	        		  |                   |
+                                  |           ========|#
+                                  |           ========|#
+  ground -------------------------+-----------========|#
+  sensor signal 9 ----------------+-----------========|#
+				  |                   |
+                                  +-------------------+
+
+
+Fred
+

@@ -1,0 +1,65 @@
+Received: from mta4.snfc21.pbi.net (mta4.snfc21.pbi.net [206.13.28.142])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA30276
+	for <handyboard@media.mit.edu>; Fri, 29 Oct 1999 12:48:53 -0400 (EDT)
+Received: from pacbell.net ([206.170.238.215])
+ by mta4.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.09.16.21.57.p8)
+ with ESMTP id <0FKD00EQ2IMNHA@mta4.snfc21.pbi.net> for
+ handyboard@media.mit.edu; Fri, 29 Oct 1999 09:47:11 -0700 (PDT)
+Date: Fri, 29 Oct 1999 09:46:15 -0700
+From: Gary Livick <glivick@pacbell.net>
+Subject: Re: Running stepper loop at specified (varying) frequency?
+To: Greg Starr <starr@unm.edu>
+Cc: handyboard@media.mit.edu
+Message-Id: <3819CF56.21647FB7@pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854";
+ x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+References: <v03130302b43f5ee8ef90@[198.83.88.39]>
+
+Greg:
+
+You can run assembly from within Interactive C, so if IC isn't fast enough for
+you, you can build in something that is.  However, IC will execute pretty quickly
+in terms of how fast steppers run, so it could be that IC will work for you
+as-is?
+
+If it won't, and you don't need to change any faster than 1000 times per second,
+you can inbed your assembly routine in the system interrupt which runs at 1000
+Hz.  This is very easy to do, and there are examples of how to do it in the IC
+manual in the Handy Board Technical Reference under the "Docs" button on the
+Handy Board site.
+
+I'm sure people would like to know what you are doing, so please report back on
+how it goes.
+
+Good luck,
+
+Gary Livick
+
+
+
+
+Greg Starr wrote:
+
+> I am hoping to control some stepper motors with the Handy Board; I will be
+> wanting to control position vs time.  Therefore I will be wanting to send
+> out the step control waveforms at varying times (to modulate velocity).
+> Can this be done from Interactive C?  I am quite familiar with assembler
+> language on the 6811, and the various timers on board.
+>
+> This seems similar to software-generated PWM, for which we use Output Compare.
+>
+> Anyway, any suggestions?  Thanks.
+>
+>         --greg
+>
+> *****************************************************************
+> * Greg Starr, Professor                                         *
+> * Department of Mechanical Engineering        ph (505) 277-6298 *
+> * University of New Mexico, Albuquerque NM 87131   FAX 277-1571 *
+> * email- starr@unm.edu  WWW- http://www.me.unm.edu/~starr/      *
+> *****************************************************************
+
+

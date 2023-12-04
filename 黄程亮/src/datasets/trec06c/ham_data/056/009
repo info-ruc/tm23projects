@@ -1,0 +1,114 @@
+Received: from mars.advis.de (mars.advis.de [193.158.16.3])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id PAA06953
+	for <handyboard@media.mit.edu>; Mon, 8 Nov 1999 15:26:08 -0500 (EST)
+Received: from advis.de (root@port134.gw3.dresden.advis.de [193.158.16.134])
+	by mars.advis.de (8.8.8/8.8.8) with ESMTP id VAA20203;
+	Mon, 8 Nov 1999 21:07:04 +0100
+Sender: root@mars.advis.de
+Message-Id: <38274E70.DEF409F0@advis.de>
+Date: Mon, 08 Nov 1999 23:28:00 +0100
+From: Thomas Heidel <theidel@advis.de>
+Organization: advis.de
+X-Mailer: Mozilla 4.07 [en] (X11; I; Linux 2.0.36 i586)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Cc: IRELAND <ctirelan@colby.edu>
+Subject: Re: Uploading to a PC
+References: <Pine.HPX.4.10.9911071051320.28346-100000@host-06.colby.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+IRELAND wrote:
+> 
+> Hey there -
+> I'm trying to upload information from the Handy Board to my Linux machine.
+> I've reviewed the Handy Board FAQ and the Linux How-To, but I'm still
+> having some troubles....
+> I'm using the code at
+> http://www.ai.mit.edu/people/rsargent/ic/serialio.html
+> to transmit data from the board, but I can't seem to receive the data on
+> the Linux machine.
+> I'd really appreciate it if anyone has any code or can point me in the
+> right direction!
+> Thanks!
+> 
+> CHRIS IRELAND
+
+Hi Chris,
+
+I had the same problem some time ago.
+
+I solved it with the following program. It is far from
+perfect but served for my purposis. It is mainly an example
+with some minor modifications. The values for the usleep's
+are pure guessing and are likely have to be modified.
+
+Ah, you have to stop IC when running this program, since
+it is using the same serial port!
+
+
+Good luck,
+Thomas
+
+
+
+
+
+
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#include <time.h>
+#include <unistd.h>
+#include <termios.h>
+#include <unistd.h>
+#include <stdio.h>
+
+int serial1;
+
+int io_write(char *buf){
+      int len,i;
+      len=strlen(buf);
+      for(i=0;i<len;write(serial1,buf+i++,1),usleep(1000));
+     }
+
+
+main(argc,arg)
+  int argc;
+  char **arg;
+ {
+  struct termios tiop;
+  int n,i,len;
+  unsigned int test;
+  char string[128],com[8];
+  int from,to,step,number_sampels;
+
+
+  serial1=open("/dev/ttyS0",O_RDWR | O_NOCTTY);
+
+  tcgetattr( serial1, &tiop);
+  tiop.c_iflag =  IGNBRK | ICRNL;
+  tiop.c_oflag =  0;
+  tiop.c_cflag =  B9600 | CS8 | CREAD | CLOCAL ;
+  tiop.c_lflag =  0;
+
+  /* blocking read until 8 chars arrives */
+  tiop.c_cc[VMIN]=8;
+  tiop.c_cc[VTIME]=0;
+  /*  bzero(&tiop.c_cc, sizeof(tiop.c_cc));*/ /* clear control
+characters */
+  /* now clean the modem line and activate the settings for modem */
+
+  tcflush(serial1, TCIFLUSH);
+  tcsetattr(serial1,TCSANOW,&tiop);
+
+   while(1){
+     read(serial1,string,1);
+     usleep(10);
+     write(1,string,1);
+    }
+      
+   }
+

@@ -1,0 +1,61 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id SAA14680
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 8 Nov 2000 18:12:09 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by deimos.email.Arizona.EDU (5.1.046)
+        id 39F9F778000ED612 for DMDX@psy1.psych.arizona.edu; Wed, 8 Nov 2000 18:12:08 -0700
+Message-Id: <5.0.0.25.2.20001108174522.009d10b0@psy1.psych.arizona.edu>
+Date: Wed, 08 Nov 2000 18:12:08 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Fwd: QueryPerformanceCounter() time warp problem
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Hmm, just received this worrying post from the developers list:
+
+>FYI: Microsoft finally posted KB article Q274323 regarding
+>QueryPerformanceCounter() problems with buggy chipsets. Available here:
+>
+>http://support.microsoft.com/support/kb/articles/Q274/3/23.ASP
+>
+>  Multiple chipsets are affected (the article details which specific ones),
+>most notably the popular Intel 82371AB south bridge (PIIX4[E]). On
+>these systems, QPC() will appear to time warp by +4.7 seconds (approx
+>0xFFFF00) every once in a while.
+
+   Version 2 of DMDX uses QueryPerformanceCounter() exclusively for timing 
+and although there seems to be some debate as to whether win98 ever 
+experiences the problem it's a definite under win2k.  I suggest anyone who 
+suspects that they have one of these chipsets use the TimeDX Millisecond 
+Timer test and check that they don't get enormous deltas (in the order of 
+4.7 seconds as opposed to a few milliseconds) between callbacks.  I'm not 
+likely to add code to DMDX to offset this, it's distinctly possible that 
+DMDX's current error recovery schemes will deal with this in a completely 
+graceful and error free manner as it reschedules the display queue when 
+errors are detected by the amount of the error, if the error is in fact 
+spurious it will just move everything forward to where it should be given 
+the new QPC() time.  The only time a real display error would occur that 
+DMDX would not detect would be if it was presenting a frame for more than 
+the error amount, 4.7 seconds, then that frame would probably be presented 
+for 4.7 seconds less that it should be.  If people can't live with that I 
+suggest they buy a new motherboard for that machine, I don't really want to 
+add code that is going to represent yet another constant time drain on 
+DMDX's activity that is essentially making up for broken silicon, if you 
+want to do hard science get good hardware.  OTOH if we find dozens of 
+machines that exhibit this failure I might have to do something.
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Any simple theory will be worded in the most complicated way.
+
+
+

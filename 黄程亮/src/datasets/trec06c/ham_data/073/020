@@ -1,0 +1,89 @@
+Received: from darwin.psy.fsu.edu (root@darwin.psy.fsu.edu [128.186.66.5])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA04224
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Oct 2000 09:43:17 -0700
+Received: from neuroscan (dhcp6779.psy.fsu.edu [128.186.67.79])
+	by darwin.psy.fsu.edu (8.9.3/8.9.3) with SMTP id MAA18213;
+	Fri, 13 Oct 2000 12:43:14 -0400
+Message-Id: <3.0.32.20001013125603.010e084c@darwin.psy.fsu.edu>
+Date: Fri, 13 Oct 2000 12:56:06 -0400
+To: DMDX@psy1.psych.arizona.edu, DMDX@psy1.psych.arizona.edu
+From: "John P. Kline" <kline@darwin.psy.fsu.edu>
+Subject: [DMDX] Re: syncing audio with PIO 12 output
+Cc: larowe@darwin.psy.fsu.edu
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Ken,
+
+Thanks for the reply to Steve's query.  Our problem is that we are trying
+to time lock a trigger to a 50 msec wav file, and the trigger still appears
+to be going out after the sound file has completed.  
+
+Here is the parameter line of the file:
+
+<ep> <azk> f1 # <timeout 3000> <ID PIO12> <delay 0> <id "keyboard"> <mr +g>
+<mnr +f>  <!safemode 1> <vm 640,480,480,16,0> <id mouse> <mr +button 1><bgc
+000000000><dwc 255255255><eop>
+
+and here are some of the items:
+
+1 o0 <ms% 3950> g"blank"/ <ms% 50><ne>/  <wav> "white104" <svp start> %0 /
+<ms% 10000>  o104/;
+20 o0 <ms% 6000> g"dia_er" o10/;
+30 o0 <ms% 10000> g"blank"/;
+40 o0 <ms% 4450> g"tri" o10/ <ms% 50> <ne> o0/ <wav> "white104" <svp start>
+%0 / <ne><ms% 1500> o104/;
+
+Note that the program is set up to: 1.) present a graphics file, and 2.) at
+some point after the onset of the graphics file, simultaneous present a wav
+file.  We are also triggering to some of the graphics files as well.
+
+Any insight that you might have about possible errors in our code would be
+most appreciated.  We are all fairly new to DMDX.
+
+thanks,
+
+John Kline
+
+
+
+At 09:16 AM 10/13/00 -0700, Kenneth Forster wrote:
+>At 12:09 PM 10/13/00 -0400, you wrote:
+>>Dear sir:
+>>
+>>We tried this code you mailed us:
+>>
+>>0 <wav> "file" <svp start> o0 / o255;
+>>
+>>I believe the "o0" is supposed to read "%0". I assume the o255 is supposed
+>>to represent the trigger that goes out to the EEG machine.
+>         I don't think so.  I'll bet that "o0" is meant to be "o0".  It 
+>means that you output "0" first (to clear everything), so that the "255" on 
+>the next frame is recognized.
+>
+>         --KIF
+>
+>
+>====================================================================
+>  Send mail to  DMDX-request@psy1.psych.arizona.edu  with the word
+>  'unsubscribe' by itself  with no quotes in the body of the email
+>  and  Ken  will then  remove you  from the  list at his  earliest 
+>  convenience.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+>
+
+
+___________________________________________________________________________
+John P. Kline, Ph.D.			Office Phone:	   850-644-9363	
+Assistant Professor			Lab Phone:	   850-644-2049
+Department of Psychology		Fax:       	   850-644-7739 
+Florida State University		Mailto:kline@psy.fsu.edu
+Tallahassee, FL  32306-1051		http://klinelab.psy.fsu.edu
+___________________________________________________________________________
+
+
+

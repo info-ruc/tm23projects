@@ -1,0 +1,197 @@
+Received: from canaveral.indigo.cert.org ([192.88.209.130] verified)
+  by calmail-fe3.berkeley.edu (CommuniGate Pro SMTP 4.1.8)
+  with ESMTP-TLS id 7111476; Wed, 10 Nov 2004 13:51:55 -0800
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/1.31) with ESMTP id iAALREPM025379;
+	Wed, 10 Nov 2004 16:47:44 -0500
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/Submit/1.1) with SMTP id iAAKJ6gf021089;
+	Wed, 10 Nov 2004 15:19:06 -0500
+Date: Wed, 10 Nov 2004 15:19:06 -0500
+Message-Id: <TA04-315A.19160@us-cert.gov>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: US-CERT Technical Cyber Security Alert TA04-315A -- Buffer Overflow in Microsoft Internet Explorer 
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000112
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+                  Technical Cyber Security Alert TA04-315A
+  
+              Buffer Overflow in Microsoft Internet Explorer
+
+ 
+  Original release date: November 10, 2004
+  Last revised: --
+  Source: US-CERT
+
+
+Systems Affected
+
+   Microsoft Windows systems running
+
+     * Internet Explorer versions 6.0 and later; previous versions of
+       Internet Explorer may also be affected
+
+     * Other programs that host the WebBrowser ActiveX control
+
+
+Overview
+
+   Microsoft Internet Explorer (IE) contains a buffer overflow
+   vulnerability that could allow a remote attacker to execute
+   arbitrary code with the privileges of the user running IE.
+
+
+I. Description
+
+   A buffer overflow vulnerability exists in the way IE handles the
+   SRC and NAME attributes of various elements, including FRAME,
+   IFRAME, and EMBED. Because IE fails to properly check the size of
+   the NAME and SRC attributes, a specially crafted HTML document can
+   cause a buffer overflow in heap memory. Due to the dynamic nature
+   of the heap, it is usually difficult for attackers to execute
+   arbitrary code using this type of vulnerability.
+
+   However, if heap memory is prepared in a special manner, an
+   attacker could execute arbitrary code more easily. Publicly
+   observed exploits use scripting to prepare the heap, though this
+   may be accomplished without scripting. Without the ability to
+   prepare the heap, the impact is most likely limited to denial of
+   service.
+
+   This vulnerability is described in further detail in VU#842160.
+
+
+II. Impact
+
+   By convincing a user to view a specially crafted HTML document
+   (e.g., a web page or an HTML email message), an attacker could
+   execute arbitrary code with the privileges of the user. The
+   attacker could also cause IE (or any program that hosts the
+   WebBrowser ActiveX control) to crash.
+
+   Reports indicate that this vulnerability is being exploited by
+   malicious code propagated via email. When a user clicks on a URL in
+   a malicious email message, IE opens and displays an HTML document
+   that exploits the vulnerability. This malicious code may be
+   referred to as MyDoom.{AG,AH,AI} or Bofra.
+
+
+III. Solution
+
+Until a complete solution is available from Microsoft, consider the
+following workarounds:
+
+Install Windows XP SP2
+
+   Microsoft Windows XP SP2 does not appear to be affected by this
+   vulnerability. If you are using Windows XP, please update to SP2.
+
+Disable Active scripting
+
+   To help protect against attacks that use scripting to prepare the
+   heap, disable Active scripting in any zone used to render untrusted
+   HTML content (typically the Internet Zone and Restricted Sites
+   Zone).  Instructions for disabling Active scripting in the Internet
+   Zone can be found in the Malicious Web Scripts FAQ.
+
+Do not follow unsolicited links
+
+   Do not click on unsolicited URLs received in email, instant
+   messages, web forums, or Internet relay chat (IRC) channels. While
+   this is generally good security practice, following this behavior
+   will not prevent exploitation of this vulnerability in all
+   cases. For example, a trusted web site could be compromised and
+   modified to deliver exploit script to unsuspecting clients.
+
+Read and send email in plain text format
+
+   Outlook 2003, Outlook 2002 SP1, and Outlook 6 SP1 can be configured
+   to view email messages in text format. Consider the security of
+   fellow Internet users and send email in plain text format when
+   possible. Note that reading and sending email in plain text will
+   not necessarily prevent exploitation of this vulnerability.
+
+Maintain updated anti-virus software
+
+   Anti-virus software with updated virus definitions may identify and
+   prevent some exploit attempts. Variations of exploits or attack
+   vectors may not be detected. Do not rely solely on anti-virus software
+   to defend against this vulnerability. More information about viruses
+   and anti-virus vendors is available on the US-CERT Computer Virus
+   Resources page.
+
+
+Appendix A. References
+
+     * Vulnerability Note VU#842160 -
+       <http://www.kb.cert.org/vuls/id/842160>
+
+     * Windows XP SP2 -
+       <http://www.us-cert.gov/cas/alerts/SA04-243A.html>
+
+     * Malicious Web Scripts FAQ -
+       <http://www.cert.org/tech_tips/malicious_code_FAQ.html>
+
+     * US-CERT Computer Virus Resources Page -
+       <http://www.us-cert.gov/other_sources/viruses.html>
+
+     * About the Browser (Internet Explorer - WebBrowser) -
+       <http://msdn.microsoft.com/workshop/browser/overview/Overview.asp>
+
+
+     _________________________________________________________________
+
+
+   Feedback can be directed to the authors: Will Dormann and Art Manion.
+
+   Send mail to <cert@cert.org>.
+
+   Please include the Subject line "TA04-315A Feedback VU#842160".
+
+     _________________________________________________________________
+
+
+   Copyright 2004 Carnegie Mellon University.
+
+   Terms of use:  <http://www.us-cert.gov/legal.html>
+
+     _________________________________________________________________
+
+   The most recent version of this document can be found at:
+
+     <http://www.us-cert.gov/cas/techalerts/TA04-315A.html>
+
+     _________________________________________________________________
+
+
+   Revision History
+
+   November 10, 2004: Initial release
+
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iQEVAwUBQZJ1mBhoSezw4YfQAQI3iAf+LS3++j7u55GXcK2sKED6gi8ZHTXY/85t
+0Z2bsLVkvQYq7FmDMRZR1Id9gGadzbj+FvaCoilAqcfxjNG8MrDwuuZ/w2/F2zLn
+ybOsQK5qdIcU7InbVWiWwi4oNSmTkWqtbM4YtYISPRVpvfvgAFKjhGJFGtniu4qa
+rGdyqyxmMZnUY47MVyqy1umYPcMeMDExoeLEOCnKfxzxbTdYLz1pKA8Oru/tOGdP
+FaLj8S1i041dquKYtNb1dedUL6WlP2sy8hyk4Q+S5R0g0pfsETByNx4IsXJ+3fy3
+a6uOqIn0q+ptqZ0Mv2f2XTCAi+tKeCHml1IaowDEBNzEPFi/yP3vOw==
+=LS8m
+-----END PGP SIGNATURE-----
+

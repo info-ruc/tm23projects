@@ -1,0 +1,232 @@
+Received: from canaveral.indigo.cert.org ([192.88.209.130] verified)
+  by calmail-fe1.berkeley.edu (CommuniGate Pro SMTP 4.1.8)
+  with ESMTP-TLS id 28092646; Thu, 16 Sep 2004 14:36:06 -0700
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/1.31) with ESMTP id i8GLSkgh025528;
+	Thu, 16 Sep 2004 17:33:48 -0400
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/Submit/1.1) with SMTP id i8GK1QMm020076;
+	Thu, 16 Sep 2004 16:01:26 -0400
+Date: Thu, 16 Sep 2004 16:01:26 -0400
+Message-Id: <TA04-260A.20011@us-cert.gov>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: US-CERT Technical Cyber Security Alert TA04-260A -- Microsoft Windows JPEG component buffer overflow 
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000111
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+                    Technical Cyber Security Alert TA04-260A
+                Microsoft Windows JPEG component buffer overflow
+
+   Original release date: September 16, 2004
+   Last revised: --
+   Source: US-CERT
+
+Systems Affected
+
+   This vulnerability affects the following Microsoft Windows operating
+   systems by default:
+
+     * Microsoft Windows XP and Microsoft Windows XP Service Pack 1
+     * Microsoft Windows XP 64-Bit Edition Service Pack 1
+     * Microsoft Windows XP 64-Bit Edition Version 2003
+     * Microsoft Windows Server 2003
+     * Microsoft Windows Server 2003 64-Bit Edition
+
+   Other Microsoft Windows operating systems, including systems running
+   Microsoft Windows XP Service Pack 2, are not affected by default.
+   However, this vulnerability may affect all versions of the Microsoft
+   Windows operating systems if an application or update installs a
+   vulnerable version of the gdiplus.dll file onto the system.
+
+   Please note that this vulnerability affects any software that uses the
+   Microsoft Windows operating system or Microsoft's GDI+ library to
+   render JPEG graphics. Please see Systems Affected section of the
+   vulnerability note to determine if third-party software is affected. A
+   list of affected Microsoft products is available in Appendix B, or for
+   the complete list of affected and non-affected Microsoft products,
+   please see Microsoft Security Bulletin MS04-028.
+
+Overview
+
+   Microsoft's Graphic Device Interface Plus (GDI+) contains a
+   vulnerability in the processing of JPEG images. This vulnerability may
+   allow attackers to remotely execute arbitrary code on the affected
+   system. Exploitation may occur as the result of viewing a malicious
+   web site, reading an HTML-rendered email message, or opening a crafted
+   JPEG image in any vulnerable application. The privileges gained by a
+   remote attacker depend on the software component being attacked.
+
+I. Description
+
+   Microsoft Security Bulletin MS04-028 describes a remotely exploitable
+   buffer overflow vulnerability in Microsoft's Graphic Device Interface
+   Plus (GDI+) JPEG processing component. Attackers can exploit this
+   vulnerability by convincing a victim user to visit a malicious web
+   site, read an HTML-rendered email message, or otherwise view a crafted
+   JPEG image with a vulnerable application. No user intervention is
+   required beyond viewing an attacker-supplied JPEG image.
+
+   Any applications (Microsoft or third-party) that use the GDI+ library
+   to render JPEG images may present additional attack vectors for this
+   vulnerability. While some applications use the Windows operating
+   system version of the GDI+ library, other applications may install and
+   use another version, which may also be vulnerable. Microsoft has
+   created a GDI+ Detection Tool to help detect products that may contain
+   a vulnerable version of the JPEG parsing component. Microsoft
+   Knowledge Base Article 873374 provides instructions on how to download
+   and use this tool.
+
+   In addition to running Microsoft's detection utility, we recommend
+   searching your system for "gdiplus.dll" to help determine what
+   third-party applications may be affected by this vulnerability. Also
+   note that applications may re-install a vulnerable version of the GDI+
+   library if re-installed after a patch has been applied.
+
+   We are tracking this vulnerability in Vulnerability Note VU#297462.
+   This reference number corresponds to CVE candidate CAN-2004-0200.
+
+II. Impact
+
+   Remote attackers exploiting the vulnerability described above may
+   execute arbitrary code with the privileges of the user running the
+   software components being attacked.
+
+III. Solution
+
+  Apply patches from Microsoft
+
+   Apply the appropriate patches as specified in Microsoft Security
+   Bulletin MS04-028. Please note that this bulletin provides several
+   updates to the operating system and various applications that rely on
+   GDI+ to render JPEG images. Depending on your system's configuration,
+   you may need to install multiple patches.
+
+   In addition to releasing some patches on Windows Update, Microsoft has
+   released some patches on Office Update, and developer tool patches are
+   available from MS04-028.
+
+  Apply patches from third-party vendors
+
+   Third-party software that relies on GDI+ to render JPEG images may
+   also need to be updated. Apply the appropriate patches specified by
+   your vendor. Please see the your vendor's site and the Systems
+   Affected section of the vulnerability note for more information.
+   Depending on your system's configuration, you may need install
+   multiple patches.
+
+  Follow Microsoft recommendations for workarounds
+
+   Microsoft provides several workarounds for this vulnerability. Note
+   that these workarounds do not remove the vulnerability from the
+   system, and they will limit functionality. Please consult the
+   "Workarounds for JPEG Vulnerability - CAN-2004-0200" section of
+   Microsoft Security Bulletin MS04-028.
+
+Appendix A. References
+
+     * Microsoft Security Bulletin MS04-028 -
+       <http://microsoft.com/technet/security/bulletin/MS04-028.asp>
+     * Microsoft End User Security Bulletin for MS04-028 -
+       <http://www.microsoft.com/security/bulletins/200409_jpeg.mspx>
+     * US-CERT Vulnerability Note VU#297462 -
+       <http://www.kb.cert.org/vuls/id/297462>
+     * Microsoft KB Article 873374 -
+       <http://support.microsoft.com/?id=873374>
+     * CVE CAN-2004-0200 -
+       <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2004-0200>
+
+Appendix B. Affected Microsoft Products
+
+   The following Microsoft Products are affected:
+     * Microsoft Office XP Service Pack 3
+     * Microsoft Office XP Service Pack 2
+     * Microsoft Office XP Software:
+          + Outlook 2002
+          + Word 2002
+          + Excel 2002
+          + PowerPoint 2002
+          + FrontPage 2002
+          + Publisher 2002
+     * Microsoft Office 2003
+     * Microsoft Office 2003 Software:
+          + Outlook 2003
+          + Word 2003
+          + Excel 2003
+          + PowerPoint 2003
+          + FrontPage 2003
+          + Publisher 2003
+          + InfoPath 2003
+          + OneNote 2003
+     * Microsoft Project 2002 Service Pack 1 (all versions)
+     * Microsoft Project 2003 (all versions)
+     * Microsoft Visio 2002 Service Pack 2 (all versions)
+     * Microsoft Visio 2003 (all versions)
+     * Microsoft Visual Studio .NET 2002
+     * Microsoft Visual Studio .NET 2002 Software:
+          + Visual Basic .NET Standard 2002
+          + Visual C# .NET Standard 2002
+          + Visual C++ .NET Standard 2002
+     * Microsoft Visual Studio .NET 2003
+     * Microsoft Visual Studio .NET 2003 Software:
+          + Visual Basic .NET Standard 2003
+          + Visual C# .NET Standard 2003
+          + Visual C++ .NET Standard 2003
+          + Visual J# .NET Standard 2003
+     * The Microsoft .NET Framework version 1.0 SDK Service Pack 2
+     * Microsoft Picture It! 2002 (all versions)
+     * Microsoft Greetings 2002
+     * Microsoft Picture It! version 7.0 (all versions)
+     * Microsoft Digital Image Pro version 7.0
+     * Microsoft Picture It! version 9 (all versions, including Picture
+       It! Library)
+     * Microsoft Digital Image Pro version 9
+     * Microsoft Digital Image Suite version 9
+     * Microsoft Producer for Microsoft Office PowerPoint (all versions)
+     * Microsoft Platform SDK Redistributable: GDI+
+     * Internet Explorer 6 Service Pack 1
+     * The Microsoft .NET Framework version 1.0 Service Pack 2
+     * The Microsoft .NET Framework version 1.1
+  _________________________________________________________________
+
+   Feedback can be directed to the US-CERT Technical Staff.
+  _________________________________________________________________
+
+   This document is available from:
+   
+      <http://www.us-cert.gov/cas/techalerts/TA04-260A.html>
+
+  _________________________________________________________________
+     
+   Copyright 2004 Carnegie Mellon University.
+   
+   Terms of use: <http://www.us-cert.gov/legal.html>
+  _________________________________________________________________
+
+   Revision History
+
+   Sept 16, 2004: Initial release
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iQEVAwUBQUnrRhhoSezw4YfQAQJUHQf/RWwQLPaATa/RdE+j8PLEiJdLlh17XxaR
+b0/irS0+Sx83t7HAuWgQdZR4xu5qIkUuWYKCTEPNHNXfwSNJc6LE3/MfoEurFVzE
+SdChZa3/q3rc3631COon9B8yNVvUQqaQIe3BjwwJWlaj4F9Su9QrcO7N6JpVuJsW
+dc0FuiVy/fJB2Jji+31q3krekW2BHuTA0I7TUaahwy18RHnJDNPUgldQenf8+A6E
+Y8G98ofdruO/zR5jIceRKpd2lTWFamQmV5IgvH25LoXro1negtS72SkqWl4zqVyK
+12bfvjkFWqRhociMssA4ehz52SqUT71lZCyxFkqtrNiJuDJrkgek3w==
+=CCT/
+-----END PGP SIGNATURE-----
+

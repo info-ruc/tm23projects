@@ -1,0 +1,61 @@
+Received: from wilkes.csl.cornell.edu (wilkes.csl.cornell.edu [132.236.71.69])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9NE4jo27232
+	for <egs@cs.cornell.edu>; Tue, 23 Oct 2001 10:04:45 -0400 (EDT)
+Received: (from daehyun@localhost)
+	by wilkes.csl.cornell.edu (8.9.3/8.9.2) id KAA09417
+	for egs@cs.cornell.edu; Tue, 23 Oct 2001 10:04:39 -0400 (EDT)
+	(envelope-from daehyun)
+From: Daehyun Kim <daehyun@csl.cornell.edu>
+Message-Id: <200110231404.KAA09417@wilkes.csl.cornell.edu>
+Subject: 615 PAPER 26
+To: egs@CS.Cornell.EDU
+Date: Tue, 23 Oct 2001 10:04:39 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL54 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+This paper compares the performance of two on-demand routing protocols
+- DSR and AODV. It shows that two protocols have significant performance
+differentials, and proposes techniques to improve them.
+
+Two algorithms have the following common and different characteristics;
+
+Common Characteristics:
+1. The most important common characteristic of two protocols is that they
+   are both reactive. They initiate routing activities on an on demand
+   basis.
+2. The route recoveries are based on query and reply cycles.
+3. The routing information is stored in intermediate nodes.
+
+Different Characteristics;
+1. DSR uses a source routing, but AODV uses a table driven routing. As
+   a result, DSR can access more routing information than AODV.
+2. DSR replies to all route discovery requests, so the source can have
+   alternative routes, but AODV replies to only the first one and also
+   keeps only one entry in the routing table. 
+3. DSR does not use any timer, but AODV uses it. AODV have a mechanism
+   to expire old routing information, but DSR does not have such a 
+   mechanism.
+4. AODV is more conservative than DSR in route deletion. In AODV, a link
+   failure information is sent to all nodes, but in DSR, only the upsteam
+   nodes of a data packet are notified.
+
+They performed the simulations, for two experiment sets - Varying mobility 
+and number of sources and Varying offered load, with four metrics - Packet
+delivery fraction, Average end-to-end delay of data packets, Normalized
+routing load and Normalized MAC load.
+In short, DSR shows better performance in less stressful situations, but
+AODV gets better as the situations go stressful. DSR always has less protocol
+overhead than AODV. However there are variations with respect to simulation
+setting. 
+
+Based on the simulation results, they proposed techniques for two protocols.
+For DSR, they proposed a timer scheme to eliminate false routing information.
+For AODV, they proposed a source routing scheme to reduce the protocol overhead.
+
+This paper has done similar simulation study as the other paper I have reviewed.
+The simulation settings and metrics of this paper is also very well designed as
+that paper. One good thing of this paper is that it tries to suggest new schemes
+to improve the protocols based on the simulation result.
+

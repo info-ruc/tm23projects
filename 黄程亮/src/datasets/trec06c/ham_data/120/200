@@ -1,0 +1,48 @@
+Received: from penguin.cs.cornell.edu (penguin.cs.cornell.edu [128.84.96.11])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k360Lgt23379
+	for <egs+summary@cs.cornell.edu>; Wed, 5 Apr 2006 20:21:42 -0400 (EDT)
+Received: from turing.cs.hmc.edu ([134.173.42.99]) by penguin.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 5 Apr 2006 20:21:41 -0400
+Received: by turing.cs.hmc.edu (Postfix, from userid 34382)
+	id 064C053201; Wed,  5 Apr 2006 16:57:48 -0700 (PDT)
+Date: Wed, 5 Apr 2006 16:57:48 -0700
+From: Victoria Krafft <vmk@cs.hmc.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 19
+Message-ID: <20060405235748.GA9034@cs.hmc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+X-OriginalArrivalTime: 06 Apr 2006 00:21:41.0979 (UTC) FILETIME=[1431BAB0:01C65910]
+
+Overcast uses an overlay network to provide single-source multicast.
+In Overcast, nodes which wish to subscribe to some multicast channel
+self-organize into a content distribution tree, with node providing
+the data source at the root.  Because it has a more limited focus than
+Narada or yoid, Overcast can eliminate some of the overhead those
+protocols require.
+
+Overcast attempts to maximize the bandwidth between nodes.  Individual
+nodes join as children of the root, and then attempt to move as far
+down the tree as possible without sacrificing bandwidth.  Nodes
+periodically re-evaluate their place in the network, and move around
+as needed.  In Overcast, each node stores information about the status
+of all nodes underneath it.  When a node fails, its children simply
+re-join the tree as children of an ancestor.
+
+This approach still has some potential issues.  Because all nodes
+start out as direct children of the root node, a flash crowd could
+overwhelm the link between the root node and the rest of the world,
+reducing performance for everyone.  Because Overcast focuses on
+bandwidth when creating trees, a large network could produce deep
+trees, and a large latency between the root node and a leaf.  Using a
+different metric when building the trees could improve this.  The
+general structure of a tree-based system also puts more load on some
+nodes than others; high-bandwidth nodes will be broadcasting out more
+data than they are taking in, while leaf nodes use no outgoing
+bandwidth.
+
+
+-- Victoria Krafft
+

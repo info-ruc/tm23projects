@@ -1,0 +1,222 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f6K1FFL24943;
+	Thu, 19 Jul 2001 18:15:15 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id TAA00316;
+	Thu, 19 Jul 2001 19:19:03 -0400 (EDT)
+Date: Thu, 19 Jul 2001 19:19:03 -0400 (EDT)
+Received: by canaveral.red.cert.org; Thu, 19 Jul 2001 19:14:11 -0400
+Message-Id: <CA-2001-19.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-19
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 8cfff4d3147d1024de536d0a67a367d7
+Status: RO
+X-Status: $$$$
+X-UID: 0000000015
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-19 "Code Red" Worm Exploiting Buffer Overflow In IIS
+Indexing Service DLL
+
+   Original release date: July 19, 2001
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   Systems running Microsoft Windows NT 4.0 and Windows 2000 with IIS 4.0
+   or IIS 5.0 enabled
+
+Overview
+
+   The CERT/CC has received reports of new self-propagating malicious
+   code that exploits certain configurations of Microsoft Windows
+   susceptible to the vulnerability described in CERT advisory CA-2001-13
+   Buffer Overflow In IIS Indexing Service DLL. These reports indicate
+   that the "Code Red" worm may have already affected as many as 225,000
+   hosts, and continues to spread rapidly.
+
+Description
+
+   In examples we have seen, the "Code Red" worm attack proceeds as
+   follows:
+     * The victim host is scanned for TCP port 80 by the "Code Red" worm.
+     * The attacking host sends a crafted HTTP GET request to the victim,
+       attempting to exploit a buffer overflow in the Indexing Service
+       described in CERT advisory CA-2001-13
+     * If the exploit is successful, the worm begins executing on the
+       victim host. Initially, the existence of the c:\notworm file is
+       checked. Should this file be found, the worm ceases execution.
+     * If c:\notworm is not found, the worm begins spawning threads to
+       scan seemingly random IP addresses for hosts listening on TCP port
+       80, exploiting any vulnerable hosts it finds.
+     * If the victim host's default language is English, then after 100
+       scanning threads have started and a certain period of time has
+       elapsed following infection, all web pages served by the victim
+       host are defaced with the message
+
+         HELLO! Welcome to http://www.worm.com! Hacked By Chinese!
+
+     * If the victim host's default language is not English, the worm
+       will continue scanning but no defacement will occur.
+
+System Footprint
+
+   The "Code Red" worm can be identified on victim machines by the
+   presence of the following string in IIS log files:
+
+/default.ida?NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNN%u9090%u6858%ucbd3%u7801%u9090%u6858%ucbd3%
+u7801%u9090%u6858%ucbd3%u7801%u9090%u9090%u8190%u00c3%u0003%u8b00%u531
+b%u53ff%u0078%u0000%u00=a
+
+   Additionally, web pages on victim machines may be defaced with the
+   following message:
+
+     HELLO! Welcome to http://www.worm.com! Hacked By Chinese!
+
+   The text of this page is stored exclusively in memory and is not
+   written to disk. Therefore, searching for the text of this page in the
+   file system may not detect compromise.
+
+Network Footprint
+
+   A host running an active instance of the "Code Red" worm scans random
+   IP addresses on port 80/TCP looking for other hosts to infect.
+
+   Additional detailed analysis of this worm has been published by eEye
+   Digital Security at http://www.eeye.com.
+
+Impact
+
+   In addition to web site defacement, infected systems may experience
+   performance degradation as a result of the scanning activity of this
+   worm.
+
+   Non-compromised systems and networks that are being scanned by other
+   hosts infected by the "Code Red" worm may experience severe denial of
+   service. This occurs because each instance of the "Code Red" worm uses
+   the same random number generator seed to create the list of IP
+   addresses it scans. Therefore, all victim hosts scan the same IP
+   addresses.
+
+   Furthermore, it is important to note that while the "Code Red" worm
+   appears to merely deface web pages on affected systems and attack
+   other systems, the IIS indexing vulnerability it exploits can be used
+   to execute arbitrary code in the Local System security context. This
+   level of privilege effectively gives an attacker complete control of
+   the victim system.
+
+Solutions
+
+   The CERT/CC encourages all Internet sites to review CERT advisory
+   CA-2001-13 and ensure workarounds or patches have been applied on all
+   affected hosts on your network.
+
+   If you believe a host under your control has been compromised, you may
+   wish to refer to
+
+     http://www.cert.org/tech_tips/win-UNIX-system_compromise.html
+
+Reporting
+
+   The CERT/CC is interested in receiving reports of this activity. If
+   machines under your administrative control are compromised, please
+   send mail to cert@cert.org with the following text included in the
+   subject line: "[CERT#36881]".
+   ______________________________________________________________________
+
+   Author(s): Roman Danyliw and Allen Householder
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-19.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-17:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+Jul 19, 2001: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBO1dohAYcfu8gsZJZAQGazQP/YSiWvPHNreLfTIBPp0JwM0KpJJ3Lif5y
+BtF1G+EuE9tN+PQwF4HO4gC3h02VmJDb02IKMtiHTQxldN7fkzzodcjK7dNpc20x
+YlNC/ez0XKpy+TRKNB9Rw/l/d+vglMRL5nt8ZaKocaGO7z1AYz8spVmhLnjXg3sU
+kS2E8WJf38w=
+=Ox7X
+-----END PGP SIGNATURE-----
+

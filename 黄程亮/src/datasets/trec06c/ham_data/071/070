@@ -1,0 +1,54 @@
+Received: from anchor-post-30.mail.demon.net (anchor-post-30.mail.demon.net [194.217.242.88])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id FAA10246
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 05:49:32 -0400 (EDT)
+From: nigel@9fs.org
+Received: from cotswold.demon.co.uk ([194.222.75.186] helo=cpu.9fs.org)
+	by anchor-post-30.mail.demon.net with smtp (Exim 2.12 #1)
+	id 13V9vX-0005TL-0U
+	for 9fans@cse.psu.edu; Sat, 2 Sep 2000 10:49:31 +0100
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] rfork(), getss() etc etc
+Date: Sat, 2 Sep 2000 10:49:24 0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Message-Id: <E13V9vX-0005TL-0U@anchor-post-30.mail.demon.net>
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+>>	Check the examples of use. Really.
+
+Linuxthreads is a very good example.
+
+>>	Ferchrissake, you've explicitly asked for shared address space. It
+
+Well, yes, but stacks are a special case. Each process has to take care
+not to write outside of it's own data, fine. This is called good programming
+technique, and does not require any special coding.
+
+Ensuring that the stack is not overflowed requires either compiler
+assistance, or contortions in programming.
+
+If I thought that splitting the stack was an unreasonable thing to ask for,
+I wouldn't. The thing is, fork() does it so it can't be hard. Also, I have solid
+examples of operating systems which provide a choice.
+
+>>	(Thread_Data *) (ESP & -Alignment) + Alignement - sizeof(Thread_Data)
+
+Hadn't escaped my radar. We're getting into machine dependency here again,
+but it is a solution that I had tried.
+
+>>	consequences - you are welcome, just let's avoid imitating *.advocacy.
+
+One man's advocacy is another man's technical discussion. I simply do not
+buy the "clone() is perfect and cannot be changed" attitude, or for that
+matter the "FreeBSD rfork() is perfect and cannot be changed" attitude either.
+In both cases, the problem could be solved by adding a spot of functionality,
+and taking away none.
+
+So one could add this feature, break nothing, and aid a whole class of applications.
+Why not?
+
+
+

@@ -1,0 +1,88 @@
+Received: from nproxy.gmail.com (nproxy.gmail.com [64.233.182.199] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1GI7Et13493
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 13:07:14 -0500 (EST)
+Received: by nproxy.gmail.com with SMTP id a4so150732nfc
+        for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 10:07:14 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=Uke5qvVwLz9oXxEDUEJbZKhBU1D9w87DgLP1CDKVT/xE4scc9yIW4DQEyR/ekAtlaqgKle2OS0AsbNz0+wgSYC2EIzkWytt9RXSgLnomemNw+oEkmZXxOoHsRepWMDwmCYcySXd6mnu5RO+Fmi9Y5h+jpzxDxMX0Q1kQNJ1331c=
+Received: by 10.49.80.13 with SMTP id h13mr222274nfl;
+        Thu, 16 Feb 2006 10:07:13 -0800 (PST)
+Received: by 10.48.217.10 with HTTP; Thu, 16 Feb 2006 10:07:13 -0800 (PST)
+Message-ID: <9302f1e20602161007p304d02fdxc425f6c3228ca15f@mail.gmail.com>
+Date: Thu, 16 Feb 2006 13:07:13 -0500
+From: Ymir Vigfusson <ymir.vigfusson@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1GI7Et13493
+
+GeoPeer is a location-aware peer-to-peer architecture. Instead of
+using distributed hash tables to and equating a hashed identifier
+to position, it creates a geographical network and uses machinery
+to find long range contacts (LRCs) in order to keep the network
+diameter small. The process of self-organization used in GeoPeer
+network is done by maintaining a Delaunay triangulation of the
+geography of the physical network (meaning that the circumcircles
+of triangles do not contain any of the nodes in the network,
+essentially the dual of Voronoi cells). Furthermore, for each point
+in the space there is exactly one responsible node. What we get is
+a geometric partition of the network where nodes are assigned
+authority over physically nearby areas (the Voronoi cell), instead
+of the identifier ranges as in the DHT P2P networks. This means
+that maintenance of the network is done by exchanging messages with
+your geographic neighbours. The paper talks about the details of
+the coordination required for dynamic triangulation (node arrivals
+and departures and corresponding division of space), which is
+complicated by the fact that nodes could have different views of the
+network topology.
+So far, the use of Delaunay does not keep the network diameter small.
+GeoPeer tries to battle this by comparing four different ways of
+providing long range contacts. The ones that seemed to be experimentally
+worse were the Hit count balancing mechanism where you count how often
+LRC links are used, and override the ones that are not much used, and
+the Small-world mechanism where we divide the space into squares and
+randomly connect squares according to an r-harmonic probability
+distribution. The ones that turned out better were Hop level mechanism
+where you shortcuts are created on commonly used paths (so we can take
+bigger steps later), and an eCAN-like recursive division of the space into
+four spaces and randomly connecting nodes in one square to two of the
+other. Routing in GeoPeer then is done by a greedy algorithm.
+The paper lacks theoretical models and proofs, and only shows empirically
+that the diameter is kept at about log(n) to log^2(n). It seems to me
+that densily populated areas in the world would be less suspectible to
+large traffic than intermediate nodes between population clusters.
+
+The P-Tree paper talks about an index structure for peer-to-peer
+substrates that enables one to do range queries. At current, DHT based
+systems allow for locating of data using only equality lookups.
+The main idea in the paper is that B+-trees can be distributed
+in a semi-independent yet fault-tolerant fashion (called P-trees)
+among nodes so that range queries cost only O(m + log_d n) messages,
+where m is the number of peers in the range, d is the order of the
+P-trees and n is the number of nodes in the system. (Or as the authors
+describe it: "a non-trivial adaptation of Chord to skewed data
+distributions.")
+The size of P-trees stored on a node is O(d log_d n). Basically, a
+peer stores and maintains the leftmost root-to-leaf path of its
+corresponding B+ tree, and keeps track of pointers to other peers to
+complete the missing subtrees.
+It is important to notice that to get fault-tolerance we require some
+level of redundency, so subtrees have overlapping ranges and data
+values can be indexed by multiple subtrees. The paper describes the
+required properties and time/space/reliability guarantees in details
+for network maintenance and search, along with proofs. Two of the
+properties are coverage and separation, respectively ensuring that
+no values are missing in the index, and that subtrees are not too
+far apart. The properties are maintained by two processes, the
+Ping Process which detects inconsistencies in the network, and
+the Stabilization Process which repairs them bottom-up.
+The paper also includes experimental evaluation of the P-trees.
+As for a downside, most of the theorems talk about guarantees in a
+stable network, or eventual consistency. It is not clear how
+efficient the protocol is when the network has high churn.
+

@@ -1,0 +1,76 @@
+Received: from entoo.connect.com.au (entoo.connect.com.au [192.189.54.8])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id BAA03547
+	for <handyboard@media.mit.edu>; Fri, 8 May 1998 01:40:11 -0400 (EDT)
+Received: from spectacle (acc3-ppp54.syd.enternet.com.au [210.8.3.54]) by entoo.connect.com.au with SMTP id PAA02141
+  (8.8.6/IDA-1.7 for <handyboard@media.mit.edu>); Fri, 8 May 1998 15:39:29 +1000 (EST)
+Message-Id: <3.0.1.32.19980508154102.00911100@online-int.com.au>
+X-Sender: mb245039e@online-int.com.au (Unverified)
+X-Mailer: Windows Eudora Pro Version 3.0.1 (32)
+Date: Fri, 08 May 1998 15:41:02 +1000
+To: handyboard@media.mit.edu
+From: Brian Lavery <blavery@computer.org>
+Subject: "Undocumented I-C"
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+Well I finally worked out something that I knew was there, but did not know
+how to access: The PCODE.ASM file lists a pcode routine called "Pbench".
+The code is in there, and it measures the time available to the IC current
+task, excluding time stolen by interrupts executing (mainly the TOC4-1000Hz
+system tick).  Not finding how to call it from Interactive C, I wrote my
+own equivalent version some time ago as an ICB assembler routine, and I
+used it a lot myself.
+
+Now last night I downloaded the V2.8... IC unix sources from the handyboard
+site at MIT, and the use of PBENCH is revealed.
+
+But secret #1: To a knowledgeable WIN hacker, but a Unix ignoramus, how to
+fetch the UNIX archive stuff to a WIN machine? Netscape allowed me to
+download the files: names like this:  "......286...beta_tar.Z".  But
+Netscape renamed them while saving: like this: "....beta_tar.tar".
+WINZIP32 (recent version) thought it could extract from this, but it
+started, then gave up with a "0 records" error.  So I renamed them back to
+the original names: like this: "....beta_tar.Z".  Now Winzip tackled these
+files OK (but in a double-stage mode I had not seen before on the familiar
+ZIP files).  I got a whole directory full of C H PRO LEX and other files
+from the original unix source.  Hog Heaven!
+
+I gather that the TAR is the archiving of the whole directory structure up
+as a bundle, and the Z is the compression function.  And fortunately the
+newer WINZIP has enough smarts to undo both stages for me.
+
+Secret #2:  I found Pbench function tied to a token called BENCHMARK with a
+syntax in Interactive-C of:
+    _benchmark()
+So I fired up my H-B and I-C, typed in "_benchmark();" and IT WORKED:  it
+returned 1467 or something like that, varying a bit on each invocation.
+It means: the number of CPU clock cycles (out of 2000) devoted to PCODE/IC
+current task in one tick cycle (between successive tiks).  The missing
+(2000-1467 = 533) cycles are consumed by interrupt routine functions: tic,
+infrared RX, RTI if you are using it, etc.
+
+Secret #3: There are other internal keywords in there that I dont know the
+use of, like WHENEVER.  Maybe they are strictly internal, not for use by
+the user?
+
+Secret #4: I now actually use commercial IC3.2 windows IDE version - and I
+wouldn't go back to old 2.86 Dos-line one.  But my PCODE.ASM / PCODE_HB.S19
+are my own VERY heavily worked-over variant of PCODE.ASM V2.86.  Are they
+compatible, IC3.2 with pcode 2.86?  Initially, no.  IC3.2 objected to the
+pcode version number 2.86.  Obviously this is checked by IC as it starts
+up.  So I altered the "version number" near the end of PCODE.ASM to read
+3.10, and recompiled the PCODE.S19.  That works fine.  But was I sure that
+the PCODE token table (and the code routines behind each token) were
+unchanged from V2.86?   Still checking - but I think it may be untouched.
+Certainly I have had no strange behaviour from my "mixed" system that might
+suggest conflicting use of pcode interpreter functions.  And certainly the
+token table (I think it is at 0xC100 from memory?) is just the same length
+as before when I inspect the S19 files of 2.86 versus 3.1.  Anyone know for
+sure?
+
+"Scratch in mines - you might find gold."
+
+Brian Lavery
+<blavery@computer.org>
+ 
+

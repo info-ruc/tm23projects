@@ -1,0 +1,43 @@
+Received: from home.mcmanis.com (adsl-209-76-108-61.dsl.snfc21.pacbell.net [209.76.108.61])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id QAA21339
+	for <handyboard@media.mit.edu>; Sat, 24 Jul 1999 16:10:09 -0400 (EDT)
+Received: (qmail+freegate 21823 invoked by alias); 24 Jul 1999 20:10:07 -0000
+Received: from ws36-n0.hq.home.mcmanis.com (HELO hyannis) (192.168.110.36)
+  by hq.home.mcmanis.com with SMTP; 24 Jul 1999 20:10:07 -0000
+Message-Id: <4.1.19990724130045.00aaad90@mcmanis.com>
+X-Sender: cmcmanis@mcmanis.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Sat, 24 Jul 1999 13:10:29 -0700
+To: Martin Frischherz <frisch@kapsch.net>, handyboard@media.mit.edu
+From: Chuck McManis <cmcmanis@mcmanis.com>
+Subject: Re: HB Serial line speed change
+In-Reply-To: <4.1.19990723154113.00a51500@venus.kapsch.co.at>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 03:43 PM 7/23/99 +0200, Martin Frischherz wrote:
+>I'm asking this again, since I've got no definitive answer:
+
+>Is it possible to change the speed of the HB serial line to 19200?
+>I need to communicate with a device which has a fix 19200 setting!
+
+The definitive answer comes from the "pink" book, which everyone should
+have (especially now that you can get it on CD-rom for free by filling out
+the form on the Mot web site!) Which basically says "No you can't do that."
+But it says it in a somewhat confusing way.
+
+The baud rate of the SCI is controlled by 5 bits in the "BAUD" register
+(address $102B). Bits 4 and 5 set the prescaler, and then 0 thru 2 set the
+baud rate. With an 8Mhz clock you can set the prescaler to produce as a top
+baud rate either 125K, 41.67K, 31.25K, or 9600. Then with the lower three
+bits you can divide that top rate by 1 through 8 (so anything smaller in
+increments of 1/2 up to 8 times) [For you music fans the Handboard can be
+programmed for 31.5K with is the MIDI standard rate]
+
+To get 19.2 you need run the board at 10Mhz which you can't do with the
+handyboard.
+
+--Chuck
+
+
+

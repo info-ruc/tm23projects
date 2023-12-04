@@ -1,0 +1,60 @@
+Received: from mailout5-0.nyroc.rr.com (mailout5-1.nyroc.rr.com [24.92.226.169])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8J1nmh18301
+	for <egs@cs.cornell.edu>; Wed, 18 Sep 2002 21:49:48 -0400 (EDT)
+Received: from hubby.cornell.edu (syr-24-58-42-130.twcny.rr.com [24.58.42.130])
+	by mailout5-0.nyroc.rr.com (8.11.6/RoadRunner 1.20) with ESMTP id g8J1nfo00619
+	for <egs@cs.cornell.edu>; Wed, 18 Sep 2002 21:49:42 -0400 (EDT)
+Message-Id: <5.1.0.14.2.20020918214917.00b29798@postoffice2.mail.cornell.edu>
+X-Sender: hs247@postoffice2.mail.cornell.edu (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Wed, 18 Sep 2002 21:49:35 -0400
+To: egs@CS.Cornell.EDU
+From: Hubert Sun <hs247@cornell.edu>
+Subject: 615 Paper 13
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+PARO (Power-aware routing optimization) was introduced in this paper.  The 
+creators of PARO looked at ad-hoc networks in a different way then we have 
+in the previous papers.  In general, it considers the optimal path route 
+from node A to node B to be the route that requires the least amount of 
+transmission power.  This is good because in general, nodes in ad-hoc wants 
+to save battery power, and the less power spent sending packets means more 
+power for longer life or for other tasks.
+
+PARO has two main assumptions: the device used to transmit packets has an 
+interface to control the transmission power, and that nodes can listen to 
+packets (not intended for it) and gather information from those 
+packets.   The general idea is that if A has a route to B, it tries to send 
+a message to B.  If a node C in between A and B hears that message, it 
+calculates whether or not it can overall transmitting power if it is used 
+as a redirect node.  If so, it sends a message to A telling A to redirect 
+all packets to B through C.  The calculation of transmission power is based 
+on signal strength of a packet received.  In a mobile network, because 
+nodes can be moving, the signal strength may vary from packet to 
+packet.  Therefore the calculation of the minimal transmission power is 
+crucial.  If chosen too low, the packet may not reach any node.
+
+I find it sort of ironic that for the PARO to work efficiently and 
+accurately, it needs packets to be sent in the network so information about 
+transmission can be gathered.  I can see why this algorithm might work for 
+a static network, but i still need some convincing for ad-hoc 
+networks.  For the ad-hoc network, it just seems like the deltas and 
+approximations in the algorithms are just increased to account for network 
+movement and therefore maybe not even saving power.  I don't think the 
+example described in figure 4 of the paper, is entirely correct.  If B was 
+indeed a redirect node, A would only be using enough power to send packets 
+to B, and therefore C shouldn't be able to hear what A is sending.   Also 
+PARO is based on too many assumptions.
+
+More work has to be done with choosing the correct parameters and 
+simulations in the real world have to be done.  In general, can an 
+algorithm that relies on configuration parameters (which depend on network 
+environment) be successful in an ad-hoc network?  I ask this because the 
+general nature of ad-hoc networks is that the environment is unpredictable 
+and optimal parameters might have to be set on the fly dependent on network 
+characteristic.  Also, by just considering power, how much cost in 
+performance will it give up?  The importance of saving power and trade offs 
+has to be looked at more closely.
+
+

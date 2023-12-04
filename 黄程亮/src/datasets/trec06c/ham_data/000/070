@@ -1,0 +1,41 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <2538>; Sat, 3 Jul 1993 15:01:17 -0400
+Received: from skinner.cs.uoregon.edu ([128.223.4.13]) by psuvax1.cse.psu.edu with SMTP id <293040>; Sat, 3 Jul 1993 14:54:08 -0400
+Received: from cacofonix.cs.uoregon.edu by skinner.cs.uoregon.edu with SMTP id AA12863
+  (5.65/IDA-1.4.2 for plan9-fans@cse.psu.edu); Sat, 3 Jul 93 11:53:56 -0700
+Received: from localhost.cs.uoregon.edu by cacofonix.cs.uoregon.edu
+	(4.1/UofO CS 27-Mar-91) id AA05195; Sat, 3 Jul 93 11:53:55 PDT
+Message-Id: <9307031853.AA05195@cacofonix.cs.uoregon.edu>
+From:	Mike Haertel <mike@cs.uoregon.edu>
+To:	Magnus Homann <d0asta@dtek.chalmers.se>
+Cc:	plan9-fans@cse.psu.edu
+Subject: Re: Ported U*ix programs to Plan 9? 
+Date:	Sat, 3 Jul 1993 14:53:53 -0400
+Sender: mike@cacofonix.cs.uoregon.edu
+
+The ape library and the associated "pcc" compiler have worked very well
+for me for porting a variety of unix programs to plan 9.
+
+The most annoying aspect of the whole process is not porting C code,
+but porting makefiles and the associated shell scripts.
+
+To this end, I have ported the almquist /bin/sh from netbsd, and gnu
+make.  Using these tools I have been able to configure and build a
+variety* of gnu software right out of the box.  I've also ported the
+pbmplus suite of bitmap tools, although that required some small
+source changes.
+
+In the process I've found a few bugs in the ape library; most notably
+the wait() function does not return exit status correctly.  What I
+think happened is the kernel recently started putting the string
+"<program>:" into the exit status, and the ape library has not been
+updated to know this.
+
+I eventually (september or october) will make all this stuff
+available to others, but right now my time is limited.
+
+	Mike
+
+* sorry, no emacs. :-)  It can be done--in 1991, out of sheer masochism,
+and to annoy rob, I ported gnu emacs to plan 9.  Fortunately, it has
+been lost to the mists of time...
+

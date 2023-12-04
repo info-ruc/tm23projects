@@ -1,0 +1,72 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id RAA23504
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 19 Oct 2000 17:54:39 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.32) by deimos.email.Arizona.EDU (5.1.046)
+        id 39E4C0E1000AB6D6 for DMDX@psy1.psych.arizona.edu; Thu, 19 Oct 2000 17:54:38 -0700
+Message-Id: <5.0.0.25.2.20001019173646.009d7890@psy1.psych.arizona.edu>
+Date: Thu, 19 Oct 2000 17:54:38 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: record of items presented
+In-Reply-To: <Pine.HPX.4.21.0010191609000.5867-100000@pavo.U.Arizona.EDU
+ >
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 04:17 PM 10/19/00 -0700, you wrote:
+>I am using DMDX to present single letter stimuli to subjects at
+>250ms/letter.  Some of the letters are blue, the rest are black.  The
+>subject's task is to count the number of blue letters (this is the primary
+>task) while waiting for a stimulus ( a white ball) to come into view from
+>the periphery, at which time they are supposed to look toward the white
+>ball (the secondary task)and then report the number of blue letters they
+>counted.  I want to be able to stop the presentation of the letters when
+>they look away from the computer screen and somehow save a record of the
+>letters that have been presented (including the color of the letters) so
+>that I can go back later and check their accuracy as a measure of whether
+>they were really paying attention to the letters or not.  Is there some
+>way to do this?  I know that when I use the escape key my only choices are
+>abort or not abort.  Thanks for any help you can give,
+
+   Well, I hate to sound like a car salesman, but is this ever your lucky 
+day!  Fortunately for you I have been laboring mightily night and day for 
+the last week or two to implement features to do just what you need!  All 
+you need to is send money in an unmarked envelope to... just 
+kidding.  You'll need to make each letter presentation an item gathering an 
+RT, you'll need to turn feedback off, you'll need to set the timelimit to 
+however long you want between letters.  You could in fact do it with old 
+features in DMDX, just doing the above, all the RT's will be -timilimit 
+till you abort the job, from the item numbers you can keep a track of what 
+happened.  However using the new counters and a branch (not new) and the 
+new <emit> keyword the process can be neatened up considerably.  You'll 
+want to setup two counters, one getting incremented for blue letters, one 
+for black, maybe another for both, it's up to you.  The items will have a 
+branch  on correct response (you won't respond till you want DMDX to stop 
+and it will be with the correct response key, not the ESC key) to the end 
+of the item file.  Something like this (assuming you want scrambling):
+
+F30 <nfb> S1 T1000
+$ 0 "Black and Blue letter presentation" <set 1,0> <set 2,0>;$
++1 * "blackletter" / <inc 1> <bic 1000>;
++2 * "blueletter" / <inc 2> <bic 1000>;
+...many more items...
+$ 1000 "end" <emit 1> <emit 2>;$
+
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+"This is not movement of the wind,
+   nor is it movement of the flag,
+   It is movement of your mind"
+
+
+

@@ -1,0 +1,48 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i48Cw4In000561
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 8 May 2004 05:58:04 -0700
+Received: from anybodyi.u.arizona.edu (ppp146.broadband01.tus.dakotacom.net [69.9.24.146])
+	by breaker.dakotacom.net (8.12.2/8.12.2) with ESMTP id i48Cw4qD023862
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 8 May 2004 05:58:04 -0700 (MST)
+Message-Id: <5.1.0.14.2.20040508055303.00b14578@psy1.psych.arizona.edu>
+Date: Sat, 08 May 2004 05:57:58 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: zil 
+In-Reply-To: <Prayer.1.0.11.0405080856270.13565@maroon.csi.cam.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 08:56 AM 5/8/2004 +0100, you wrote:
+>Dear All,
+>  We are trying to get a simple experiment running where we present a 
+> number for 500 msecs (37 ticks), and then following subjects response, 
+> have a delay of 100 msecs (8 ticks) before the next stimulus occurs. We 
+> accomplished this specifying the fd for each stimulus on each line, and 
+> putting a <d 8> parameter in the header with a <t 1500>. However, as we 
+> are doing this with fMRI we wanted the zil output so we could also get a 
+> measure of when the scans were being acquired.
+>  The correct timing for the experiment would only work if the output was 
+> azk, but not zil. Any thoughts/suggestions?
+
+   The only real timing difference between .zil and .azk is that a .zil 
+item file will typically always use the timeout to terminate a response 
+whereas .azk typically terminates when the subject responds.  Perhaps you 
+should try the <zor> mode of .zil that only gathers a single response but 
+otherwise keeps with the .zil conventions.  If this works I'd be looking at 
+your handling of timeouts as it would indicate that a subject not 
+responding in an .azk file would also cause the timing to go out.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   It's always darkest before dawn. So if you're gonna steal the
+neighbor's newspaper, that's the time to do it.
+
+
+

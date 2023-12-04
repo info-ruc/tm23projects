@@ -1,0 +1,69 @@
+Received: from jcf.u.arizona.edu (jcf.Psych.Arizona.EDU [128.196.98.7])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id LAA16398;
+	Tue, 28 Mar 2000 11:52:54 -0700
+Message-Id: <4.3.1.0.20000328113017.00a79b90@psy1.psych.arizona.edu>
+Date: Tue, 28 Mar 2000 11:52:57 -0700
+To: "Dr.Steven Hecht" <shecht@fau.edu>
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Digital VOX
+Cc: DMDX@psy1.psych.arizona.edu
+In-Reply-To: <3.0.1.32.20000328113751.007177d8@pop.fau.edu>
+References: <4.3.1.0.20000328090053.00a7d8f0@psy1.psych.arizona.edu>
+ <3.0.1.32.20000328105613.006879a8@pop.fau.edu>
+ <4.3.0.20000324121637.00a73be0@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:37 AM 3/28/00 -0500, you wrote:
+>Here is a passpoint file when the program is run using the emulated driver
+>for your consideration.
+
+   How are you selecting the emulated driver?  Are you doing that in TimeDX?
+
+>   I was unable to run dmdx in safemode.
+>Consequently, I am sending you the passpoint file when using the emulated
+>sound driver just in case you are able to tell if the data are valid when
+>using this emulated driver.
+
+   No, that all looks fine.  What the emulated drivers do is take the 
+standard windows calls that have been around for quite some time and work 
+quite well and wrap them up as if they were DirectX calls.  The trouble is 
+that those calls can have huge latencies in them, for instance the 
+DirectSound emulated drivers typically add 200-300ms of latency.  If you 
+intend to keep on using them (and you may have no alternative) you will 
+want to bench them with some auto calibrating itemfile, connect the output 
+of the sound card to the line input (you probably will have to change the 
+record device in the mixer and the DMDX VOX sensitivity), build a wave file 
+with 1 second of silence followed by a beep and use items like this:
+
++1 "calibrate" / * <wav> "1secthenbeep" /;
+
+   Having just benched the testbed I find little or no difference between 
+the emulated and non emulated drivers (really suspicious in the light of 
+earlier testing but the testbed is pretty buff these days and has a nice 
+sound card in it so it's is possible), RTs in the above scenario are all 
+1002 or 1003ms regardless of what I choose in TimeDX.
+
+>   I'm wondering you it would be useful for you
+>to put in your website some sound drivers that you know are compatible with
+>dmdx's vox.  Anyway, thank-you.  Steve Hecht
+
+   Can't, drivers are hardware specific.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Nothing recedes like success.
+
+                                               -  Walter Winchell
+
+
+

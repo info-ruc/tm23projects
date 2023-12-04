@@ -1,0 +1,61 @@
+Received: from mail.cannock.ac.uk (root@mail.cannock.ac.uk [194.83.104.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id NAA27779
+	for <handyboard@media.mit.edu>; Thu, 25 Jun 1998 13:08:18 -0400 (EDT)
+Received: from pandora.cannock.ac.uk (pandora.cannock.ac.uk [194.83.104.11])
+	by mail.cannock.ac.uk (8.8.7/8.8.7) with ESMTP id SAA27425;
+	Thu, 25 Jun 1998 18:25:07 +0100
+Message-Id: <35928434.E4D24921@cannock.ac.uk>
+Date: Thu, 25 Jun 1998 18:09:08 +0100
+From: Peter Harrison <peter.harrison@cannock.ac.uk>
+X-Mailer: Mozilla 4.01 [en] (Win95; I)
+Mime-Version: 1.0
+To: brian-c@technologist.com
+Cc: handyboard@media.mit.edu
+Subject: Re: stepper motors
+X-Priority: 3 (Normal)
+References: <199806250503.BAA28304@web01.globecomm.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+brian-c@technologist.com wrote:
+> 
+> A while back a few people pointed me to an text about using stepper
+> motors with the handy board.
+> http://www.cctc.demon.co.uk/stepper.htm
+> 
+> To the people who have told me about this, or have used this method to
+> control steppers: please tell me how well you have gotten your motors
+> working. I have tried the sample code and my motors are a little
+> sketchy. When they first power up, they jerk left or right a little,
+> causing my robot to align incorrectly. Also on the turns they
+> sometimes jerk a little causing my turns to be thrown off.
+> 
+> ...all stepper people *HELP ME* !
+
+
+Its my code and you are quite right - it is not the best in the world.
+It was only intended to illustrate a point and I have done no more work
+on it since then - sorry.
+
+When first powered up the steppers will align themselves according to
+the pattern sent to them so there will almost certainly be a little
+shuffling around as they take up their detent positions. Half stepping
+the motors will probably reduce the effect. If initial alignment is a
+particular problem for you - as it might be in a competition say - then
+you might like to power up the motors, position the robot then power
+them down.
+
+As for turns, I don't really know the answer. Bear in mind though that
+the timing of motor pulses is important for reliable operation of the
+steppers, especially at high speeds. If you want to drive the steppers
+faster you will probably need to hook into the system interrupt (I don't
+know how) and ensure that the motor signals are sent at well defined
+intervals. I would expect system interrupts to interfere with the timing
+in the sample code.
+
+Pete
+-- 
+=====================================================
+peter.harrison@cannock.ac.uk
+Cannock Chase Technical College
+

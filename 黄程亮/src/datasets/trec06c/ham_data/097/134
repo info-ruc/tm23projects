@@ -1,0 +1,113 @@
+Received: from mscan6.ucar.edu (mscan6.ucar.edu [128.117.64.129])
+	by mother.comet.ucar.edu (8.12.10/8.12.10/hub) with ESMTP id iA9GTOit024432
+	for <roz@comet.ucar.edu>; Tue, 9 Nov 2004 09:29:24 -0700 (MST)
+Received: by mscan6.ucar.edu (Postfix)
+	id 80F392A000E; Tue,  9 Nov 2004 09:29:24 -0700 (MST)
+Delivered-To: rozumal@ucar.edu
+Received: from localhost (localhost [127.0.0.1])
+	by mscan6.ucar.edu (Postfix) with ESMTP id 75D812A0011
+	for <rozumal@ucar.edu>; Tue,  9 Nov 2004 09:29:24 -0700 (MST)
+Received: from mother.comet.ucar.edu (mother.comet.ucar.edu [128.117.110.1])
+	by mscan6.ucar.edu (Postfix) with ESMTP id 72E872A000E
+	for <rozumal@ucar.edu>; Tue,  9 Nov 2004 09:29:18 -0700 (MST)
+Received: from mother.comet.ucar.edu (localhost [127.0.0.1])
+	by mother.comet.ucar.edu (8.12.10/8.12.10/hub) with ESMTP id iA9GTEit024410
+	for <soowes-out@mother.comet.ucar.edu>; Tue, 9 Nov 2004 09:29:14 -0700 (MST)
+Received: (from majordu@localhost)
+	by mother.comet.ucar.edu (8.12.10/8.12.1/Submit) id iA9GTEvk024409
+	for soowes-out; Tue, 9 Nov 2004 09:29:14 -0700 (MST)
+X-Authentication-Warning: mother.comet.ucar.edu: majordu set sender to owner-soowes@comet.ucar.edu using -f
+Message-ID: <4190F0D0.9F8FC1E9@noaa.gov>
+Date: Tue, 09 Nov 2004 11:31:12 -0500
+From: "Joshua Watson" <Joshua.Watson@noaa.gov>
+Organization: DOC/NOAA/NWS - National Weather Service
+X-Sender: "Joshua Watson" <joshua.watson@werhmsg.werh.noaa.gov>
+X-Mailer: Mozilla 4.79 [en]C-CCK-MCD NOAA-NWS-ER1  (Windows NT 5.0; U)
+X-Accept-Language: en,ru
+MIME-Version: 1.0
+To: soowes@comet.ucar.edu
+Cc: Matthew Bunkers <Matthew.Bunkers@noaa.gov>
+Subject: Re: IFPS on WES?
+References: <418F8F8B.3080908@noaa.gov>
+Content-Type: multipart/mixed;
+ boundary="------------9E728B1252B51B595D5DFFC8"
+Sender: owner-soowes@comet.ucar.edu
+Precedence: bulk
+X-Spam-Checker-Version: SpamAssassin 3.0.1 (2004-10-22) on mscan6.ucar.edu
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.9 required=5.0 tests=ALL_TRUSTED,BAYES_00 
+	autolearn=ham version=3.0.1
+X-UIDL: 89828f1431b035a04164f10192e22d4c
+
+This is a multi-part message in MIME format.
+--------------9E728B1252B51B595D5DFFC8
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi all,
+
+I've had extensive experience running IFPS on WES.  One "gotcha" on WES,
+right before you run 'installGFE', is to 'unsetenv PYTHONHOME'.  If you
+don't do this, you'll get an 'undefined symbol' error and a reference to
+cPickle.so
+
+Its not too hard to get GFE to work in DRT mode along with D2D. East and
+Gulf Coast WFOs have used the DRT capability on WES to practice ingesting
+and editing TPC wind guidance into GFE.  DRT mode is not necessary to
+convert from 15 to 16, but it may help to determine of all your changes are
+OK.  If you try to run GFE using old data without using DRT, GFE will purge
+your grids rather quickly :)
+
+I've put together some instructions, for those who might like to get IFPS
+onto WES:
+
+ftp://ftp.werh.noaa.gov/share/awips/ifps/16/gfe16_on_wes.pdf
+
+You can install multiple IFPS versions on WES, just be sure to have only one
+server running at a time :)  All you need to do is create a new directory to
+install the other IFPS version into, like /data/GFESuite15 and specify that
+on the installGFE line.
+
+Just be sure not to install GFE on the /awips directory tree.  This
+directory tree can get wiped out in an upgrade.
+
+Josh
+
+
+Matthew Bunkers wrote:
+
+> Hello,
+>
+> I would like to load IFPS15 and IFPS16 on our WES so configuration can
+> be done before the new IFPS16 upgrade occurs later this year.  But
+> before I do this, I was wondering if anyone else has successfully loaded
+> IFPS on the WES?
+>
+> Thanks,
+>
+> Matt, SOO @ NWS RAP
+
+--------------9E728B1252B51B595D5DFFC8
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="joshua.watson.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Joshua Watson
+Content-Disposition: attachment;
+ filename="joshua.watson.vcf"
+
+begin:vcard 
+n:Watson;Joshua
+tel;fax:(631) 244-0167
+tel;work:(631) 244-0130
+x-mozilla-html:TRUE
+org:NOAA/National Weather Service;Eastern Region Headquarters Scientific Services Division (631) 244-0130
+adr:;;630 Johnson Ave;Bohemia;New York;11716;USA
+version:2.1
+email;internet:Joshua.Watson@noaa.gov
+title:Techniques Development Meteorologist
+fn:Josh Watson
+end:vcard
+
+--------------9E728B1252B51B595D5DFFC8--
+
+

@@ -1,0 +1,342 @@
+Received: from siberia.it.earthlink.net (siberia.it.earthlink.net [207.217.88.20])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id TAA30312
+	for <handyboard@media.mit.edu>; Tue, 8 Dec 1998 19:32:00 -0500 (EST)
+Received: from earthlink.net (localhost [127.0.0.1])
+	by siberia.it.earthlink.net (8.8.5/8.8.5) with ESMTP id QAA00806
+	for <handyboard@media.mit.edu>; Tue, 8 Dec 1998 16:29:31 -0800 (PST)
+Message-Id: <199812090029.QAA00806@siberia.it.earthlink.net>
+X-Mailer: exmh version 2.0zeta 7/24/97
+To: handyboard@media.mit.edu
+Subject: Newbie Questions, Problems & Contributions...
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Tue, 08 Dec 1998 16:29:31 -0800
+From: Andre Philippi <philippi@earthlink.net>
+
+Hi,
+
+I have few newbie questions, and a contribution to make...
+
+Background info: 
+----------------
+I have been playing with my HB for a week now,
+using the free IC 2.850 under NTServer4.0... So far, Ive been 
+sucessfully able to control DC motors, send beep()s, load and
+run my own .c files... Was NOT able to make analog() or knob()
+to work... 
+
+Today I brought the HB to work and installed on my Solaris 2.4 box,
+where I'm running free IC 2.850 for sparc/solaris... So far I've been 
+able to acomplish the SAME as I did on NT...
+
+Questions & Problems:
+---------------------
+
+1) According to the docs, I should run "dl pcode_hb.s19"...
+
+This is what I got under NT & Solaris:
+
+Cannot find file pcode_hb.s19 or file /home/philippi/packages/ic-sparc-solaris-
+2853/lib/pcode_hb.s19
+
+See "dl" output bellow...
+
+Why is this happening? My lib path is properly set...
+
+
+2) Because of the above, I've been doing "dl pcoder22.s19", which works fine...
+
+Is it "Ok" to do "dl pcoder22.s19" instead "dl pcode_hb.s19" ?
+
+What is the difference?
+
+
+3) Knob() is not available...
+
+	C> knob();
+	Error in user interaction around line 1:
+	        Function knob undefined
+
+	...frob_knob() is available instead, but always returns 255...
+
+	See "list functions" output bellow...
+	
+How can I make knob() work please?
+
+
+4) analog() returns 255 all the time...
+
+I have a photocell sensor (built according to docs) on analog port 1,
+and no matter what I do with the light over the sensor, I always get 255...
+
+Why? How can I fix that please?
+
+
+5) After I load a function named main() and reset the HB, 
+the board auto starts main()... So far, so good...:)
+
+The problem is that according to the docs, I should be able to override main()
+during startup, by pressing the "start" button while turning on the HB...
+
+But that's not happening... main() is outo execing no matter what...
+
+So far my solution has been putting the HB on bootstrap mode,
+and doing a "dl" all over again...
+
+Why is this happening ? How can I fix that, please?
+
+
+6) The other day O posted a question on how to hack a servo so it turns 
+infinitely,
+instead of 180 degrees only...
+
+Then I was thinking...
+
+If I do that, then I wouldn't be able to know how many turns my shaft 
+has done, right? 
+
+I would have to use a shaft encoder, right?
+
+Could I use a stepper motor instead?
+
+Would a stepper motor let me perform infinite turns, and at the same time
+give me some feedback on how many turns have been done?
+
+Does the HB provide any kind of stepper motor support ?
+
+
+7) Is anyone archiving this mailing list ?
+
+If not, then I'm volunteering to start archiving it, convert it to HTML,
+and make it available throuw a web server... 
+
+...Basically, a web intercafe to the archive...
+
+I've read that Fred prefers the mainling list format, but instead of 
+replacing the mainling list (with a newsgroup, as suggested before);
+I'd like to create a web interface to the mailing list archive only...
+
+Let me know what you think...
+
+
+8) I'm half way through building an expectk daemon, that listens to 
+TCP/IP requests on port 2020 (temporarely), and forwards them to IC...
+
+This way I (we) could use the daemon to build web, email, 
+and even 2 way pager interfaces to the HB...
+
+Anyone heard anybody making such developments?
+
+Any ideas? Comments? 
+
+Now it's the time for it... :)
+
+9) That's it :)
+
+IC outputs listed below...
+
+Thank you very much in advance for any help...
+
+Best regards,
+
+Andre Philippi.
+
+
+##########################################################################
+# DL procedure (pcode_hb.s19)...
+##########################################################################
+
+siberia:/home/philippi/packages/ic-sparc-solaris-2853/bin> dl pcode_hb.s19
+6811 .s19 file downloader.  Version 7.3  Jul 30 1994
+        Copyright Randy Sargent 1994
+Using port /dev/ttya
+ 
+Please place board in download mode and press RETURN
+To quit, press Q
+For help, press H
+Downloading 256 byte bootstrap (229 data)
+................................................................
+................................................................
+................................................................
+.....................................___________________________
+Download successful
+Config is 0x0C
+Cannot find file pcode_hb.s19 or file /home/philippi/packages/ic-sparc-solaris-
+2853/lib/pcode_hb.s19
+Arguments to dl are:
+filename.s19                         Download this filename
+-port /dev/???                       Set which serial port to use
+-libdir directory                    Set which directory has the .s19 files
+ 
+Possibly useful for boards other than the 6.270 board or rug warrior:
+-bootstrap filename.s19     Use filename.s19 as the bootstrap
+-config_reg value           Set config register to value (in hex).
+-bs_ignore                  Ignore serial responses in bootstrap sequence
+-loopback                   Expect hardware serial echoes from board
+-eeprom                     Program EEPROM, not RAM
+-1.5                        Set -bs_ignore, -loopback, -eeprom, config_reg 0xff
+-ignore_input               Completely ignore returning serial
+ 
+Example: dl pcoder22.s19 -port /dev/ttya -libdir /ic/libs
+Press any key to continue...
+Bye!
+siberia:/home/philippi/packages/ic-sparc-solaris-2853/bin> 
+
+
+##########################################################################
+# DL procedure (pcoder22.s19)...
+##########################################################################
+
+siberia:/home/philippi/packages/ic-sparc-solaris-2853/bin> dl pcoder22.s19
+6811 .s19 file downloader.  Version 7.3  Jul 30 1994
+        Copyright Randy Sargent 1994
+Using port /dev/ttya
+ 
+Please place board in download mode and press RETURN
+To quit, press Q
+For help, press H
+Downloading 256 byte bootstrap (229 data)
+................................................................
+................................................................
+................................................................
+.....................................___________________________
+Download successful
+Config is 0x0C
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/pcoder22.s19
+ 
+Sending pcoder22.s19
+...............................................................................
+...............................................................................
+...............................................................................
+...Done.
+Press the board's RESET button to start pcoder22.s19
+Bye!
+siberia:/home/philippi/packages/ic-sparc-solaris-2853/bin> 
+
+
+############################################################# 
+# IC Procedure...
+#############################################################
+
+siberia:/home/philippi/packages/ic-sparc-solaris-2853/bin> ic
+       Interactive C for 6811.  Version 2.850  (Jul 30 1994)
+ 
+IC written Randy Sargent and Anne Wright.  Copyright 1994.
+    (uses board pcode by R. Sargent, F. Martin, and A. Wright)
+ 
+This program is freeware and unsupported.  It is provided as a service to
+hobbyists and educators.  Type 'about' for information about support
+and obtaining newer versions of IC.
+ 
+Attempting to link to board on port /dev/ttya
+Synchronizing with board
+Pcode version 2.81 present on board
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/lib_r22.lis.
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/analog.icb.
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/servo.icb.
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/servo.c.
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/r22expbd.icb.
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/lib_r22.c.
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/r22_ir.lis.
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/r22_ir.icb.
+Loading /home/philippi/packages/ic-sparc-solaris-2853/lib/r22_ir.c.
+Initializing interrupts
+Downloading 2910 bytes (addresses 8000-8B5D):  2910 loaded
+Globals initialized.
+Type 'help' for help
+C> 
+
+
+###############
+# List Files...
+###############
+
+C> list files
+servo.c
+lib_r22.c
+r22_ir.c
+analog.icb
+servo.icb
+r22expbd.icb
+r22_ir.icb
+C> 
+
+###################
+# List Functions...
+###################
+
+C> list functions
+_init_globals
+servo_on
+servo_off
+servo
+servo_rad
+servo_deg
+radian_to_pulse
+degree_to_pulse
+reset_system_time
+seconds
+sleep
+msleep
+beep
+tone
+beeper_on
+beeper_off
+set_beeper_pitch
+fd
+bk
+off
+alloff
+ao
+motor
+_set_motor
+_set_motor_speeds
+led_out1
+led_out0
+motor4_left
+motor4_right
+motor5_left
+motor5_right
+choose_button
+escape_button
+right_button
+left_button
+dip_switches
+dip_switch
+analog
+digital
+motor_force
+frob_knob
+hog_processor
+system_pwm_on
+system_pwm_off
+system_print_on
+system_print_off
+ir_transmit_on
+ir_transmit_off
+set_ir_transmit_period
+set_ir_transmit_frequency
+set_ir_receive_period
+set_ir_receive_frequency
+ir_counts
+ir_receive_off
+ir_receive_on
+analog_header_port
+read_analog
+asm_servo_off
+asm_servo_on
+__initialize_module_0
+__initialize_module_1
+__initialize_module_2
+C> 
+
+
+=================================================================
+ Andre Philippi - Applications Developer   | Phone: 626-296-5016
+ philippi@corp.earthlink.net               | Fax:   626-296-5113
+ Earthlink Network, Inc.                   | 3100 New York Drive
+ http://www.earthlink.net                  | Pasadena, CA  91107
+=================================================================
+
+
+

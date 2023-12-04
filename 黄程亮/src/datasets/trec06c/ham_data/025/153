@@ -1,0 +1,74 @@
+Received: from mail-out2.apple.com (mail-out2.apple.com [17.254.0.51])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA17065
+	for <handyboard@media.mit.edu>; Fri, 30 Oct 1998 15:48:39 -0500 (EST)
+Received: from mailgate.apple.com (A17-128-100-225.apple.com [17.128.100.225])
+	by mail-out2.apple.com (8.8.5/8.8.5) with ESMTP id MAA39466
+	for <handyboard@media.mit.edu>; Fri, 30 Oct 1998 12:09:14 -0800
+Received: from scv4.apple.com (scv4.apple.com) by mailgate.apple.com
+ (mailgate.apple.com - SMTPRS 2.0.15) with ESMTP id <B0003360691@mailgate.apple.com>;
+ Fri, 30 Oct 1998 12:09:05 -0800
+Received: from cervione (cervione.apple.com [17.205.40.224])
+	by scv4.apple.com (8.8.5/8.8.5) with SMTP id MAA34554;
+	Fri, 30 Oct 1998 12:09:04 -0800
+Message-Id: <4.1.19981030115623.00a54c10@nowhere.xxx.yyy>
+X-Sender: noyau@mail.apple.com (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Fri, 30 Oct 1998 12:04:33 -0800
+To: willbain@cs.umt.edu
+From: Eric Noyau <noyau@apple.com>
+Subject: Re: Sonar Sensor Problems
+Cc: Handyboard Mailing List <handyboard@media.mit.edu>
+In-Reply-To: <363A11F2.18232129@cs.umt.edu>
+References: <Pine.A41.3.96.981027215817.10936I-100000@ben09.unm.edu>
+ <4.1.19981028104950.00a7fb90@nowhere.xxx.yyy>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+
+Thanks for doing all this testing and reporting it to us. I do really appreciate it.
+
+And I'll vote for the low tech version: use two diodes...
+
+-- Eric
+
+At 11:22 AM 10/30/98 , Will wrote:
+>Eric Noyau wrote:
+>> Please more details!
+>> 
+>> What is your "custom dual sonar interface board"? From our previous email 
+>exchange on the list I was under the impression you were just thinking about 
+>it. And now you have the whole thing up and running!
+>> 
+>> So any caveat? Just sharing all the lines but the INIT one is working? Are 
+>you using D2 or D3 for the second sonar?
+>
+>The dual sonar interface board is simply a small (1.5" sq. or so)
+>experimenter's PC board from Ripoff Shack with the six power diodes, the
+>one resistor, and three header plugs soldered onto it.  One plug goes to
+>the HB and the other two go to the sonar modules.  There's also a jumper
+>to disconnect ECHO from the second module.  Because the wires were
+>wimpy, I doubled up on the power and ground wires.
+>
+>I've had the one sonar working for a while now, but just recently I
+>finished getting both sonars plugged in.  The part that works great is
+>the header plug and ribbon cable part.  The part that doesn't work so
+>great is the shared ECHO.  Either one works fine alone, but there is
+>definite signal contention on the ECHO.
+>
+>I'm using PD2 for the second INIT, and the BINH is shared by both--no
+>problem.  BTW, in order to use PD2 as a digital out, you need to do a
+>bit_set( 0x1009, 0x3C ) in the initialization routine instead of the
+>bit_set( 0x1009, 0x30 ) that's in Fred Martin's sonar.c.  I'm not sure
+>why, but the FAQ said to use 0x3C, and it works.
+>
+>I think I might try using a couple of blocking diodes, like you
+>suggested, to see if that clears up the ECHO signal contention problem,
+>unless someone out there has a better idea.  I thought about using a
+>chip with a single OR gate (if there is such a thing) or using PD3 to
+>control a multiplexor, but those seem like overkill.  Any suggestions?
+>
+>I promise to post all the details on my web page when I get it all
+>figured out.
+>
+
+

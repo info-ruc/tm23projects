@@ -1,0 +1,70 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9PGhBo12098;
+	Thu, 25 Oct 2001 12:43:11 -0400 (EDT)
+Received: from khaffy (d7a046.dialup.cornell.edu [128.253.49.46])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id MAA25655;
+	Thu, 25 Oct 2001 12:43:08 -0400 (EDT)
+Received: from andre by khaffy with local (Exim 3.31 #1 (Debian))
+	id 15wi0T-0000ZU-00; Thu, 25 Oct 2001 12:45:01 +0200
+Date: Thu, 25 Oct 2001 12:45:01 +0200
+From: =?iso-8859-1?Q?Andr=E9?= Allavena <andre@CS.Cornell.EDU>
+To: egs@CS.Cornell.EDU
+Cc: andre@CS.Cornell.EDU
+Subject: 615 PAPER 46
+Message-ID: <20011025124501.A2144@khaffy>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.3.20i
+Sender: =?iso-8859-1?Q?Andr=E9_Allavena?= <andre@CS.Cornell.EDU>
+
+Capacity of Ad Hoc Networks
+
+A very good paper, describing and poving in which cases an ad hoc
+network can work (scale) or not.
+
+The idea is to look at the capacity of a node (the amount of data a node
+an send) and compare it with the average length of a path.
+End to End througput is in O(1/sqrt(n)).
+
+They fisrt look at 802.11 which does not manage to achieve the
+theoretical maximum throughput in chain situations (the first node sends
+too much, the other ones wait for too much to gain access to the
+communication chanel). But overall the result is not too bad (1/7
+instead of 1/4), closer to optimal in other situations.
+
+Scaling: 
+Let C be the one hop capacity (how much a node sends to its neightboor,
+whether or not it was within a multihop path or not).
+C=kA=kn/d with A the surface, n the number of nodes and d the density
+C > nµL/r where L/r is the number of hops on the path
+		(physical distance / radius of transmission)
+		µ the packet rate
+then 
+µ < (C/n) / (L/r) = (k/d)/ P
+		P begin the avergae length of a path.
+
+_
+P ~ sqrt(A) ~ sqrt(n) hence µ = O(1/sqrt(n))
+
+
+Instead if you choose a power law for the neighbours instead of a random
+distribution, matching on the power exposant
+| x < -2 -> per node capacity constant (great!)
+| x = 2  -> per node capacity of O(1/log n)
+| -2 < x < -1 -> per node capacity of O(log(n)/sqrt(n))
+| -2 < x -> per node capacity of O(1/sqrt(n))
+
+Conclusion, stay with x<-2 if you want to scale (collection of
+superposed networks not using the links between them).
+
+
+
+
+-- 
+André Allavena                     (local) 154 A Valentine Place   
+École Centrale Paris (France)      Ithaca NY 14850 USA
+Cornell University (NY)            (permanent) 879 Route de Beausoleil 
+PhD in Computer Science            06320 La Turbie FRANCE
+

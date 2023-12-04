@@ -1,0 +1,47 @@
+Received: from imo-d10.mx (imo-d10.mx.aol.com [205.188.157.42])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA13084
+	for <handyboard@media.mit.edu>; Sat, 23 Oct 1999 14:41:37 -0400 (EDT)
+From: TH0RMAN23@aol.com
+Received: from TH0RMAN23@aol.com
+	by imo-d10.mx.aol.com (mail_out_v23.6.) id cPPUA1pB2_ (4182);
+	Sat, 23 Oct 1999 14:37:14 -0400 (EDT)
+Message-Id: <0.173949b9.25435a59@aol.com>
+Date: Sat, 23 Oct 1999 14:37:13 EDT
+Subject: Re: Analog port shaft encoder
+To: anhalt+@andrew.cmu.edu
+Cc: handyboard@media.mit.edu
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 4.0 for Windows 95 sub 26
+
+Tried what you said Joshua, I went through all the analog ports and manually 
+fed them with a TTL signal from a function generator at a relatively low 
+frequency of 5Hz and wrote this little test code to test it. In this example, 
+the sencdr3.icb has been loaded with a global variable named encoder3_counts. 
+This variable kept the running count of the encoder's ticks so I really dont 
+have to do anything else but to read it. 
+
+void encoder_test()
+    {
+        while(1)
+                {
+                        printf("Count: %d\n", encoder3_counts);
+                }
+    }
+
+void main()
+{
+start_process(encoder_test());
+}
+
+The optical encoder is connected to analog port 3 with a 330 ohms current 
+limiting resistor for the Emmiter and the sensor si pull up by the Handy 
+Board's internal 47K. An oscilloscope is connected to the sensor side of the 
+encoder (QRB1114) . I ran the code and got the pulse but I have no result on 
+the LCD beside a 1 which seems to "stuck" there and wont change. Does anybody 
+else have this problem with using this driver? Thanks.
+
+Best regard,
+Rob     
+

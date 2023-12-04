@@ -1,0 +1,68 @@
+Received: from paw.montana.com (paw.montana.com [199.2.139.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA17850
+	for <handyboard@media.mit.edu>; Sat, 14 Mar 1998 15:36:30 -0500 (EST)
+Received: from Nepenthe (mso2-64.montana.com [208.4.224.64])
+	by paw.montana.com (8.8.5/8.8.5) with SMTP id OAA08442
+	for <handyboard@media.mit.edu>; Sat, 14 Mar 1998 14:27:03 -0700 (MST)
+Date: Sat, 14 Mar 1998 14:27:03 -0700 (MST)
+Message-Id: <199803142127.OAA08442@paw.montana.com>
+X-Sender: willbain@cs.umt.edu
+X-Mailer: Windows Eudora Light Version 1.5.2
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+To: handyboard@media.mit.edu
+From: Will Bain <willbain@cs.umt.edu>
+Subject: Re: I can't beep my handy (again)
+
+German Gentile--
+
+I know nothing about Imagecraft C, but here's how the beep function is
+defined in lib_hb.c (the Interactive C library of functions written for the
+Handy Board):
+
+void beep()
+{
+    tone(500., .1);
+}
+
+/*  1/2 cycle delay in .5us goes in 0x26 and 0x27  */ 
+void tone(float frequency, float length)
+{
+    set_beeper_pitch(frequency);
+    beeper_on();
+    sleep(length);
+    beeper_off();
+}
+
+void beeper_on()
+{
+    bit_set(0x1020, 0b00000001);
+    bit_set(0x1022, 0b00001000);
+}
+
+void beeper_off()
+{
+    bit_clear(0x1022, 0b00001000);
+    bit_clear(0x1020, 0b00000001);
+    bit_clear(0x1000, 0b00001000);	/* turn power to spkr off */
+}
+
+void set_beeper_pitch(float frequency)
+{
+    pokeword(0x26, (int)(1E6 / frequency));
+}    
+
+If Imagecraft C has poke and bit manipulation functions, then you ought to
+be able to translate this directly.  Good luck.
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,               Conscience:  the inner voice which warns us
+Will Bain,                                 that someone may be looking.
+& Tatoosh                                               --H. L. Mencken
+
+

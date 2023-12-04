@@ -1,0 +1,46 @@
+Received: from hq.freegate.com ([208.226.86.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id UAA22259
+	for <handyboard@media.mit.edu>; Fri, 19 Feb 1999 20:40:24 -0500 (EST)
+Received: (qmail+freegate 23624 invoked by alias); 20 Feb 1999 01:40:16 -0000
+Received: from ws52-n0.hq.freegate.com (HELO drpepper) (208.226.86.180)
+  by hq.freegate.com with SMTP; 20 Feb 1999 01:40:16 -0000
+Message-Id: <4.1.19990219174215.00a08c30@mailhost.hq.freegate.com>
+X-Sender: cmcmanis@mcmanis.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.1 
+Date: Fri, 19 Feb 1999 17:44:23 -0800
+To: Ranjit Diol <rsdiol@mich.com>, HandyBoard MIT <handyboard@media.mit.edu>
+From: Chuck McManis <cmcmanis@mcmanis.com>
+Subject: Re: msleep function in ICC11?
+In-Reply-To: <36CE0B02.D7E75B71@mich.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+You can't use the one in the library I wrote? (its available on the iccll
+web site)
+Basically msleep spin locks on the timer waiting for systicks to increment
+the appropriate number of milliseconds. If you aren't using my code you can
+do the same thing by appropriating one of the timers (OC5 is useful for
+this) set its interrupt service routine to bump a count then write msleep
+to watch the count.
+
+--Chuck
+
+At 08:08 PM 2/19/99 -0500, Ranjit Diol wrote:
+>I have a HB w/exp brd and a PortMaster (a stock board with a 68HC11E1,
+>68HC24 port expansion and 32k ram). I'm programming the HB with IC3.2
+>and the PortMaster with ICC11v5. I am hung up trying write a funtion
+>similar to the HandyBoard  'msleep'   using ICC11.
+>
+>Any help will be appreciated.
+>
+>
+>
+>--
+>Ranjit Diol - COMPSys
+>Dowagiac,Michigan
+>e-mail: rsdiol@mich.com
+>website: http://www.compsys1.com
+>
+>
+
+

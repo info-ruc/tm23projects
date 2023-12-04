@@ -1,0 +1,210 @@
+Received: from LAURENT.MIT.EDU (laurent [18.87.0.24])
+	by jacobi.mit.edu (Postfix) with ESMTP
+	id B35415A35F; Sun, 19 Feb 2006 12:02:02 -0500 (EST)
+Received: by LAURENT.MIT.EDU (Postfix, from userid 17404)
+	id 9B7AB4141; Sun, 19 Feb 2006 12:02:02 -0500 (EST)
+Date: Sun, 19 Feb 2006 12:02:02 -0500
+From: Ross Lippert <lippert@math.mit.edu>
+To: andreev@MIT.EDU, yahlib@MIT.EDU, sheldons@MIT.EDU,
+	jacohen@MIT.EDU, ddiab@MIT.EDU, jacobkg@MIT.EDU, mherman@MIT.EDU,
+	jhessan@MIT.EDU, amirh@MIT.EDU, lisa_hsu@MIT.EDU, tomk@MIT.EDU,
+	rlafoy@MIT.EDU, andy_lee@MIT.EDU, jsslee@MIT.EDU, jlii@MIT.EDU,
+	tongyan@MIT.EDU, qify@MIT.EDU, wrm@MIT.EDU, smirz@MIT.EDU,
+	albertni@MIT.EDU, remscrim@MIT.EDU, zackreyn@MIT.EDU,
+	mrivas03@MIT.EDU, scott84@MIT.EDU, peter_s@MIT.EDU, tonys@MIT.EDU,
+	bschmeck@MIT.EDU, tgs@MIT.EDU, spann@MIT.EDU, xsdg@MIT.EDU,
+	ctuakta@MIT.EDU, jsv@MIT.EDU, awas@MIT.EDU, m_wexler@MIT.EDU,
+	bwilt@MIT.EDU, rosewong@MIT.EDU
+Cc: Ross Lippert <lippert@math.mit.edu>
+Subject: [lippert@math.mit.edu: Re: Problem Set Question]
+Message-ID: <20060219170202.GC24521@math.mit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Status: RO
+Content-Length: 3225
+Lines: 66
+
+A student asked me a question and I think it is important to share the
+answer with everyone.
+>   I was solving problem number 2 and while I was doing it I came across the
+> Solve(f) function in Matlab that solves for f(x) =0.  I'm assuming we're not
+> allowed to use this, and we're supposed to implement our own solver.  This made
+> me wonder though, as Matlab has quite a wide array of tools, are there any
+> guidelines for what we are and are not allowed to use to solve the problems. 
+> Should we be implementing almost everything from scratch, or can we use the
+> built in features.  Let me know.
+
+The issue of 'Solve' is a delicate one.  On the one hand, it is a
+fairly useful thing to have when you have a white-box function.
+On the other hand it is quite slow, taking several seconds to solve the 
+the n>15 cases (assuming you know what to solve there) and over a minute
+to do the n=20 case.  It altogether hangs when I do the n=25 case
+  ??? Error using ==> solve
+  Unable to find closed form solution.
+and next year, if I teach this course, I will ask for a table up
+to n=30.
+
+Why is this?  Well, the nature of matlab's solve is that it is a
+symbolic solver.  These are some of the nicer things to show up in the
+world of mathematical software in the past decade.  I don't have anything
+against them, but they are limited in many ways and poop out on fairly
+complicated problems.
+
+Anyone who does problem 2 right can trivially do it up to n=30.
+
+The existence of good quality symbolic tools complicates this class
+somewhat, because any time I give you a problem on a problem set which
+is too toy-like, the symbolic solver will be able to do it for you,
+giving you the impression that you are ready to handle non-toy-like
+problems.  On the other hand, giving you non-toy-like problems on the
+problem set would be extremely irritating for you and me, because of
+all the effort we'd need to waste just to properly describe and code
+F(x), when the problem is about F(x)=0.
+
+Symbolic solvers are great at doing problem set problems.  But this
+is not representative of their usefulness in real problems that you will
+face later.  Don't use symbollic solvers in this course and we'll be
+just fine.  Recall that the problem set isn't really about solving the
+present problems.  It is about convincing me that you will be able to
+solve the future problems.  Institute guidelines compel me to base your
+grade on my assessment of your competence.  Even if Solve didn't poop
+out, your use of it would not help me to assess your competence. 
+
+That said, I can't sit over your shoulder and make sure you don't use
+Solve or other tools as a crutch and then lie to me (at least one
+student admitted to this last year).  I try to make the problems
+non-toy-like enough to confound off-the-shelf tools, but new tools
+appear every day and I am bound to lose in this arms race.  Be honest
+with me, or hope that you can be convincing (doing it up to n=30 would
+be pretty convincing).
+
+
+
+
+
+-r
+
+-- 
+Ross A. Lippert
+M.I.T., Department of Mathematics
+Building 2, Room 335                    Voice (617) 253-7905
+77 Massachusetts Avenue                 FAX (617) 253-4358
+Cambridge, MA 02139-4307                e-mail:  lippert@math.mit.edu
+
+Return-Path: <lippert@math.mit.edu>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on jacobi.mit.edu
+X-Spam-Level: 
+X-Spam-Status: No, score=-101.4 required=6.0 tests=ALL_TRUSTED,
+	USER_IN_WHITELIST autolearn=ham version=3.1.0
+X-Original-To: lippert@math.mit.edu
+Delivered-To: lippert@math.mit.edu
+Received: from LAURENT.MIT.EDU (laurent [18.87.0.24])
+	by jacobi.mit.edu (Postfix) with ESMTP
+	id D61615A35C; Sun, 19 Feb 2006 14:26:46 -0500 (EST)
+Received: by LAURENT.MIT.EDU (Postfix, from userid 17404)
+	id CAE59414C; Sun, 19 Feb 2006 14:26:46 -0500 (EST)
+Date: Sun, 19 Feb 2006 14:26:46 -0500
+From: Ross Lippert <lippert@math.mit.edu>
+Cc: Ross Lippert <lippert@math.mit.edu>
+Subject: Re: [lippert@math.mit.edu: Re: Problem Set Question]
+Message-ID: <20060219192646.GD24521@math.mit.edu>
+References: <20060219170202.GC24521@math.mit.edu> <43F8AC13.4030400@mit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <43F8AC13.4030400@mit.edu>
+User-Agent: Mutt/1.4.1i
+Status: RO
+Content-Length: 5402
+Lines: 127
+
+> A brief followup question then.. Symbolic solutions are clearly against 
+> the idea, but numerical ones? They do use the same methods that we 
+> discussed in the class. For instance, I solved problem 2 in 4 lines of 
+> matlab code with the following (I haven't done a good error analysis yet 
+> to see if there are potential issues with rounding etc.):
+>
+>   <deleted material which invokes 'fzero' and some other poly functions>
+> 
+> Should I implement my own fzero or is it okay to use the "familiar" 
+> numerical techniques as implemented by matlab?
+
+I think that if you read my response about canned tools, you will
+see that the use of a non-symbollic fzero will not demonstrate
+to me your abilities.
+
+What happens when you get hired by Apple to add a feature to the
+iPod which involves solving some f(x)=0 equation? If all you have
+demonstrated is that you can solve this equation if the iPod loads
+MATLAB's fzero, then I'm not assured that you are competent
+for this task.
+
+To be clear, its not like you shouldn't use polyval and polyder if
+you want (though I think they are getting in your way here).  These
+are fairly simple things which are not relevant to the material
+we're currently covering.  I hope you can see my point.
+
+Finally, let me give you an leg up and tell you that
+this approach will not produce accurate results for the largish
+N.  E.g. even after you fix the bug that's in there right now,
+which you really need to find, for N=15 you will obtain fewer
+than 6 accurate digits.  I'll give you some of the correct digits
+to help you debug your problems.
+ N=15:  C=X.240XXXX75XXXXXXe-XX
+
+
+-r
+>From lippert@math.mit.edu  Mon Feb 20 07:22:46 2006
+Return-Path: <lippert@math.mit.edu>
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on jacobi.mit.edu
+X-Spam-Level: 
+X-Spam-Status: No, score=-101.4 required=6.0 tests=ALL_TRUSTED,
+	USER_IN_WHITELIST autolearn=ham version=3.1.0
+X-Original-To: lippert@math.mit.edu
+Delivered-To: lippert@math.mit.edu
+Received: from LAURENT.MIT.EDU (laurent [18.87.0.24])
+	by jacobi.mit.edu (Postfix) with ESMTP
+	id 7CB595A34F; Mon, 20 Feb 2006 07:22:46 -0500 (EST)
+Received: by LAURENT.MIT.EDU (Postfix, from userid 17404)
+	id 6A3924144; Mon, 20 Feb 2006 07:22:46 -0500 (EST)
+Date: Mon, 20 Feb 2006 07:22:46 -0500
+From: Ross Lippert <lippert@math.mit.edu>
+Cc: Ross Lippert <lippert@math.mit.edu>
+Subject: Re: another question
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Status: RO
+Content-Length: 1157
+Lines: 26
+
+> Is it acceptable to compare final results of a calculation to see if the answer
+> makes sense/is consistent with other approaches? I suppose one skill is to be
+> able to check a calculation and decide it's valid in isolation, but it seems
+> that if others are working on the same problem, then without any knowledge of
+> their approach (or no more than what you have outlined as acceptable), the
+> final result could be stated. For example, the trend and order of magnitude of
+> C's in problem 2. However, this may not be allowed, which is why I am checking.
+
+That can be slippery.  If you show someone your numbers and
+they copy you, it would look bad for both of you.  So I'd better
+tell you.  The over all trend should be towards 0 with the each
+successive C being about 3/10 of the preceeding C.
+
+I also gave some digits for the n=15 case in that dialog about
+solvers linked from the course webpage.
+
+
+-r
+
+-- 
+Ross A. Lippert
+M.I.T., Department of Mathematics
+Building 2, Room 335                    Voice (617) 253-7905
+77 Massachusetts Avenue                 FAX (617) 253-4358
+Cambridge, MA 02139-4307                e-mail:  lippert@math.mit.edu
+
+

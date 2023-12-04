@@ -1,0 +1,69 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j99JBp5L027757
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 9 Oct 2005 12:11:51 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id BEEE6B4A8A5
+	for <DMDX@psy1.psych.arizona.edu>; Sun,  9 Oct 2005 12:11:51 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-7.dsl.arizona.edu [128.196.237.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 93FC6B474A8
+	for <DMDX@psy1.psych.arizona.edu>; Sun,  9 Oct 2005 12:11:50 -0700 (MST)
+Message-Id: <5.1.0.14.2.20051009114527.00ba4870@psy1.psych.arizona.edu>
+Date: Sun, 09 Oct 2005 12:11:45 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DMDX question
+In-Reply-To: <4349408D.3070700@u.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 12:08 PM 10/9/2005 -0400, you wrote:
+>Hi all,
+>
+>I have a DMDX script of a gambling task in which I'd like to keep track of 
+>how much money the subject is winning and losing on a trial by trial 
+>basis.  The money will be going up and down by only a few cents at a time, 
+>so I need an idea that can handle decimals (which seems to leave out the 
+>Counter var, as far as I can tell).
+
+   There isn't anything else you'll be using so the counters are 
+it.  Either use a counter that keeps track of cents and has some cunning 
+display or use whole dollars.
+
+>Some other possible relevent information is that the trials are hardwired 
+>to be wins or losses, so I know upfront on each trial whether the earnings 
+>will be incremented or decremented.  However, I intend to periodically 
+>show each subject how much they have earned so far, which may be different 
+>for each subject because I will be scrambling the file.
+>If anyone has done something like this in the past, or can point me to an 
+>appropriate keyword/variable to use, I'd greatly appreciate your help and 
+>advice!
+
+   I've built the gambling task at least once for someone in the Psychology 
+department, can't remember who though.  It was with whole dollars.  The 
+trick with displaying counters is that they are just appended to the 
+frame's current text, displaying two values is going to need 
+<ProgressiveX>.  Say C1 is the money in cents displaying it might be done 
+with something like:
+
+0 <set c2 = c1 / 100> <set c3 = c1 % 100> <px .4>
+                         "Total $" <apc 2>, "." <apc 3>;
+
+   Of course that's not the whole deal either, the cents is going to need a 
+leading zero if it's less than 10 so you'll need a branch:
+
+~1 <set c2 = c1 / 100> <set c3 = c1 % 100> <bi 3, c3 .lt. 10>;
+2 <px .4> "Total $" <apc 2>, "." <apc 3> <bu 4>;
+3 <px .4> "Total $" <apc 2>, ".0" <apc 3>;
+~4;
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   The bug stops here.
+
+
+

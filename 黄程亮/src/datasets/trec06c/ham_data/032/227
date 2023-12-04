@@ -1,0 +1,68 @@
+Received: from ml.media.mit.edu (root@ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA32197
+	for <handyboard@mailhub.media.mit.edu>; Sun, 24 Jan 1999 08:53:51 -0500 (EST)
+Received: from localhost (fredm@localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id IAA12401
+	for handyboard; Sun, 24 Jan 1999 08:53:50 -0500 (EST)
+Message-Id: <199901241353.IAA12401@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: fredm@localhost [127.0.0.1] didn't use HELO protocol
+To: handyboard@media.mit.edu
+Subject: Re: Stack Overflow
+Date: Sun, 24 Jan 1999 08:53:49 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+IC is implemented using lex and yacc (tools originally on unix systems
+for building parsers and compilers, which generate C code that be
+compiled into apps on many platforms).
+
+as someone pointed out, if yacc barfs, it's because you've got an
+expression that is too heavily nested and thus requires too much stack
+to parse.  so yes, it's a compile-time stack issue, having nothing to
+do with IC process stack space.
+
+i don't know if the commercial IC will do any better.  it depends if
+more stack is allocated to yacc.  randy could answer this.
+
+i think you already know your answer---break up your program into
+smaller chunks.
+
+fred
+
+
+William Sitch wrote:
+
+> Hi everyone:
+>
+>     I'm trying to download a rather large chunk of code to the HandyBoard,
+> and I'm having a problem when I exceed a certain number of instructions in a
+> procedure I'm running.  When I try to download the code, I get the error
+> "yacc stack overflow" pointing to a line in a procedure that I spawn to be
+> multitasked.
+>
+> I tried to increase the stack size of the process I spawn, but the error
+> still exists.  I think I might be getting a compile-time stack overflow - or
+> something like that.  The procedure it crashes for is a leg controller, and
+> consists of many "if .. else if" statements.
+>
+> It would be bad design to move some of the code to another procedure, and I
+> would like to avoid doing that.  Does anyone know exactly why I'm having
+> this problem, or what I could do to remedy the situation?
+>
+> Thanks in advance.
+>
+> --
+> William Sitch
+> 4th Year Electrical Engineering   http://www.engsoc.carleton.ca/~wsitch
+
+I'm pretty good at software and may be able to help you.  But I need to see you
+r
+code: please send it to me privately and I'll see what I can do.
+
+PS:  What kind of hardware/software platform are you on?  "Yacc" is typically a
+Unix program that I thought had nothing to do with IC.  (And yes, the real Unix
+"yacc" can stack overflow with excessively nested if/then/else quite easily...
+I just fixed a problem like that for my employer).
+
+/Max
+

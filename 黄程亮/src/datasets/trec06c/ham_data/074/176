@@ -1,0 +1,97 @@
+Received: from popeye.latrobe.edu.au (popeye.latrobe.edu.au [131.172.4.60])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id WAA04496
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 15 Nov 2000 22:26:43 -0700
+Received: from psy6029 (psy6029.psy.latrobe.edu.au [131.172.146.29])
+	by popeye.latrobe.edu.au (8.9.3/8.9.3) with ESMTP id QAA06782
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 16 Nov 2000 16:26:40 +1100 (EST)
+Message-Id: <4.2.0.58.20001116155658.00ba2c40@pop.latrobe.edu.au>
+Date: Thu, 16 Nov 2000 16:26:39 +1100
+To: DMDX@psy1.psych.arizona.edu
+From: Michael Johnston <m.johnston@latrobe.edu.au>
+Subject: [DMDX] Re: Scan lines again
+In-Reply-To: <5.0.0.25.2.20001115211850.009e5680@psy1.psych.arizona.edu>
+References: <4.2.0.58.20001116100737.00a16410@pop.latrobe.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+I am trying to get my machine to run at the fastest refresh rate that I can 
+by altering the number of scan lines. I am running in 640x480, 8 bit colour 
+mode. When I use <VideoMode 640,400,480,8,0> it seems to work fine. 
+However, if I change the second value to anything but 400, I get the message:
+
+SetDisplayMode failed DDERR_INVALID MODE (88760078)
+Direct Draw does not support the requested mode.
+
+This seems odd, because Timedx will happily let me tune vertical retraces 
+for any number of lines I like (and shows very satisfying reductions in 
+refresh times).
+Can anyone suggest anything?
+
+
+ >If you have stored values in the registry for all possible modes you wish 
+to exploit you must be transposing the unaltered number of scan lines in 
+the video mode specification with the modified number of scan lines.
+
+
+I don't think that this is correct. The code I used first was:
+
+n1 f60 <DefaultWritingColor 255255255> s6 <id "pio12"> <BackgroundColor 
+000000000> <VideoMode 640,380,480,8,0>
+$
+0 "Press the footswitch";
+$
++1 *"Test"/;
+$
+0 "End";
+$
+
+This gives the following error message:
+
+SetDisplayMode failed DDERR_INVALID MODE (88760078)
+Direct Draw does not support the requested mode.
+
+
+Then I used this code:
+
+n1 f60 <DefaultWritingColor 255255255> s6 <id "pio12"> <BackgroundColor 
+000000000> <VideoMode 640,480,380,8,0>
+$
+0 "Press the footswitch";
+$
++1 *"Test"/;
+$
+0 "End";
+$
+
+This resulted in DMDX complaining that I had not tuned the relevant 
+vertical retrace values in Timedx, when in fact I had (I had selected 
+640x480, 8 bit, and entered 380 in the scan lines box).
+
+Note that the only difference between these two bits of code is the 
+VideoMode command, the first being <VideoMode 640,380,480,8,0>, and the 
+second being <VideoMode 640,480,380,8,0>. I think this addresses your point 
+regarding the transposition of unaltered and modified number of scan lines. 
+It seems that the first format is actually the correct one, because as I 
+pointed out in my first message, <VideoMode 640,400,480,8,0> does actually 
+work. However, if I use any value other than 400 in the second position, it 
+does not work, and produces the "SetDisplayMode failed" message.
+
+I have also tried to run these bits of code on 4 different machines, with 
+identical results on all of them.
+
+Michael
+
+
+===============================================
+Dr Michael Johnston
+Research Fellow
+School of Psychological Science
+La Trobe University
+ph:    9479-1736
+fax:   9479-1956
+email: m.johnston@latrobe.edu.au
+School homepage: http://www.psy.latrobe.edu.au/
+

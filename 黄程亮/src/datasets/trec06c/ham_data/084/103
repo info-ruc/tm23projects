@@ -1,0 +1,157 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id g9LId8P15765
+	for <ggilfoyl@facstaff.richmond.edu>; Mon, 21 Oct 2002 14:39:08 -0400
+Received: from urmail-ag.richmond.edu (urmail-ag.richmond.edu [141.166.183.2])
+	by argyle.richmond.edu (8.11.6/8.11.6) with ESMTP id g9LIbO330178
+	for <ggilfoyl@richmond.edu>; Mon, 21 Oct 2002 14:37:24 -0400
+Received: by urmail-ag.richmond.edu with Internet Mail Service (5.5.2653.19)
+	id <VBF9ZMC8>; Mon, 21 Oct 2002 14:37:23 -0400
+Message-ID: <C1F927C74082D311A25B00508B5BFF1702C9751C@urmail-oz.richmond.edu>
+From: "Stefanovski, Sasko" <sstefano@richmond.edu>
+To: "Gilfoyle, Gerard" <ggilfoyl@richmond.edu>
+Subject: RE: [Fwd: fixing the Richmond cluster]
+Date: Mon, 21 Oct 2002 14:37:22 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Status:   
+X-Mozilla-Status: 8013
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300003fdd
+
+Jerry,
+
+Thursday morning looks fine. Is it 9am ok?
+
+I'll start looking at what we have on pscm1 tomorrow. Before doing any
+compilation I would copy the source tree and play with the copy, so we can
+have a copy of the source directory with all configuration files intact as
+they were the last time the kernel was compiled. We can then play with our
+copy. 
+
+I agree that we should recompile the kernel at first to see if the process
+would be right. After that we'll change the number of processes in the
+tasks.h file and recompile again. 
+
+Sasko
+
+-----Original Message-----
+From: gilfoyle [mailto:ggilfoyl@richmond.edu]
+Sent: Monday, October 21, 2002 2:03 PM
+To: Sashak Stafanovski
+Subject: [Fwd: fixing the Richmond cluster]
+
+
+hi sasko,
+
+   i am forwarding the message i received from linuxlabs with
+some guidance for recompiling the kernel on the cluster. it
+lists where the configuration files are located which is 
+important for us if we want to do this successfully. i've 
+already done a couple of small things.
+
+1. created backups on the disk of the different, existing 
+versions of the kernel in the /boot/ area. look for files with
+'-gpg' on the end.
+
+2. modified /etc/lilo.conf to add a boot option 'URlinux' that
+points to one of the backups i made above. the full file is
+below.
+
+i am glad to have you work on this, but i would like to be
+around when you do it so i can learn more about it. would
+Thursday morning be a good time?
+
+i had the following thoughts on the plan for recompiling the
+kernel. 
+
+1. we should make a boot floppy in case disaster strikes.
+
+2. we should recompile and test the kernel with NO changes
+just to make sure the configuration files and such are accurate.
+
+3. we should increase the parameter NR_TASKS to something like
+3000 and MAX_TASKS_PER_USER to 1000 in
+/usr/src/linux/include/tasks.h according to the reference below.
+
+http://www.ltsp.org/documentation/lts_ig_v2.4/lts_ig_v2.4-14.html
+
+http://www.geocrawler.com/archives/3/61/1998/10/0/2207294/
+
+opps! i found tasks.h in /usr/src/linux/include/linux instead of
+area described in the documentation. the file tasks.h is shown
+below.
+
+let me know what you think.
+
+jerry
+
+
+tasks.h ----------------------------------------
+
+#ifndef _LINUX_TASKS_H
+#define _LINUX_TASKS_H
+
+/*
+ * This is the maximum nr of tasks - change it if you need to
+ */
+ 
+#ifdef __SMP__
+#define NR_CPUS 32              /* Max processors that can be running in
+SMP */
+#else
+#define NR_CPUS 1
+#endif
+
+#define NR_TASKS        512     /* On x86 Max about 4000 */  <-- change
+to 3000.
+
+#define MAX_TASKS_PER_USER (NR_TASKS/2) <---- change to 1000.
+#define MIN_TASKS_LEFT_FOR_ROOT 4
+
+
+/*
+ * This controls the maximum pid allocated to a process
+ */
+#define PID_MAX 0x8000
+
+#endif
+
+
+lilo.conf ----------------------------------------
+
+boot=/dev/hda
+map=/boot/map
+install=/boot/boot.b
+prompt
+timeout=50
+linear
+default=linux
+
+image=/boot/bzImage-2.2.20p7-pyro1-scyld-dolphin
+        label=linux
+        read-only
+        root=/dev/hda1
+        append="hdd=ide-scsi"
+
+image=/boot/bzImage-2.2.17-lila.beosmp
+        label=2-2-17
+        append="mem=1024M"
+        read-only
+        root=/dev/hda1
+
+image=/boot/bzImage-2.2.20p7-pyro1-scyld-dolphin-02-oct-21-gpg  /*
+modified from here
+        label=URlinux
+        read-only
+        root=/dev/hda1
+        append="hdd=ide-scsi"
+
+
+-- 
+Dr. Gerard P. Gilfoyle
+Physics Department                e-mail: ggilfoyl@richmond.edu
+University of Richmond, VA 23173  phone:  804-289-8255
+USA                               fax:    804-289-8482
+

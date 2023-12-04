@@ -1,0 +1,75 @@
+Received: from cornell.edu (cornell.edu [132.236.56.6])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8JFIDh18886
+	for <egs@CS.Cornell.EDU>; Thu, 19 Sep 2002 11:18:13 -0400 (EDT)
+Received: from cornell.edu ([128.84.84.84])
+	by cornell.edu (8.9.3/8.9.3) with ESMTP id LAA17566
+	for <egs@CS.Cornell.EDU>; Thu, 19 Sep 2002 11:18:13 -0400 (EDT)
+Message-ID: <3D89ECBF.5030104@cornell.edu>
+Date: Thu, 19 Sep 2002 11:26:55 -0400
+From: Sean Welch <smw17@cornell.edu>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.4) Gecko/20011128 Netscape6/6.2.1
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 13
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+PARO
+
+PARO (Power Aware Routing Optimization) is an algorithm designed to reduce
+the overll system power consumed in the process of routing.  On the simplest
+level, PARO acts to insert an additional routing hop between two existing
+hops whenever the central node detects that there is a net power savings in
+doing so.  The basic protocol operation is as follows.  Each packets, in its
+transmission, includes the transmit power necessary for that node to reach
+the destination.  Whenever a node overhears a packet, it checks the node's
+transmit power relative to the total power incurred by inserting the 
+snooping
+node into the routing path.  If the snooping node can provide a sufficient
+power savings in the route, and no other nearby node transmits a better
+route first, the overhearing node will transmit a redirect packet,
+instructing the sending node to route future traffic through the 
+intermediate
+node.  Only one node may be added into a route on any one iteration of the
+protocol.  Extending PARO to mobile network is explained through the 
+addition
+of a linear "silence interval" term to the transmission power, as well as a
+mechanism for upstream nodes to detect when a previous node is no longer the
+power-optimal route.
+
+PARO has some nice features.  One of the most significant is that most 
+of the
+power savings observed come from adding the first one to two nodes into the
+path.  This suggests that moderate increases in delay can significantly 
+reduce
+overall power consumption, and that while convergence may be a slow process,
+there is sufficient power savings from partial convergence to justify the
+effort.  In fact, the decreasing rate of return for additional nodes 
+suggests
+that there is a reasonable trade-off to be found between latency and power
+consumption.
+
+The paper also had a number of weaknesses.  One of the more significant 
+issues
+to me is the simulation results, and their method of presentation.  
+Presenting
+in graph form (instead of, say, a bar graph) really requires more than three
+data points to give a useful picture of the tradeoffs involved.  The
+adaptation of PARO to mobile systems is also fairly scant, and seems highly
+likely to suffer from a number of problems with respect to genuine node and
+link failures.  The authors describe a node hand-off mechanism for removing
+a hop that is no longer power efficient, but give no consideration to the
+effects of the loss of a reflector node (or reflector link), and how such
+losses will interact with routing protocols used in conjunction with PARO.
+Finally, implementation of this protocol requires nodes to listen in on all
+communications traffic, which implies running the network interface in
+promiscious mode, increasing NIC power consumption.
+
+One recommendation I would make is to more closely examine the effects of
+quantized transmission power on performance.  Both the research on how to
+maximize power efficiency given a set of power levels, and the research on
+how to select the optimal transmission power levels for power aware routing
+would be useful information, and could have a real impact on protocol design
+and performance.
+

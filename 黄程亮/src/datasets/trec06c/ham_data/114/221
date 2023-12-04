@@ -1,0 +1,43 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1G75Ft00815
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 02:05:15 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1G75FLY023153
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 02:05:16 -0500 (EST)
+Message-ID: <257471798.1140073514584.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 16 Feb 2006 02:05:14 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 7
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1G75Ft00815
+
+The three papers present routing protocols for range queries in peer-to-peer systems.
+* Previous works such as Pastry/Chord/Tapestry support equality queries. The hash function to distribute data uniformly in these systems destroys the order in the key value space, making them impractical for processing range queries. Elimination of the hash function makes load balance in the works of range queries particular a concern.
+* Range query is common in relational database. These papers adapt several concepts and solutions in database systems.
+* GeoPeer is particularly well-suited to support location-aware applications. P-tree supports range queries in addition to equality queries, and Mercury furthermore supports multi-attribute range queries. The search cost is between O(log(N)) and O(log^2(N)) in GeoPeer, O(log(N))/O(m+log(N)) in P-tree and O(log^2(N)/k) in Mercury. Each of them is summarized below.
+
+<GeoPeer>
+* GeoPeer is a peer-to-peer system that is particularly well-suited to support location-aware applications such as geographically-scoped multicasts/queries. In GeoPeer nodes self-organize into a Delaunay triangulation augmented with carefully selected long range contacts to reduce network diameter. Each GeoPeer node is responsible for (communicate on behalf of) a region of points.
+* To create and maintain Delaunay triangulations in the face of nodes joining and leaving the system, nodes exchange specific messages with their geographically neighbors in different steps accordingly. The space division mechanism (nodes determine the circumcircle and perpendicular bisectors for each of its Delaunay triangles) ensures that any key is held by exactly one existing node.
+* GeoPeer uses the greedy algorithm, rather than compass, randomized compass or Voronoi, to route messages because of its simplicity. Its problem is large network diameter (latency). The use of long range contacts (LRC) can help reduce the latency: all Delaunay neighbors and LRCs are eligible to be the next hop, and the closest one to the destination is chosen for routing.
+* The LRCs proposed in GeoPeer include Hop Level, Hit Count Balancing, Small-World mechanisms and an eCAN-like mechanism for comparison. In the hop level mechanism, nodes maintain levels of LRCs; no more than b-1 hops are allowed in each level without creating a LRC in the next upper level. The hit count balancing mechanism takes into account the popularity of the LRCs; LRCs with very high references are split while LRCs with very low references are discarded. In the small-world mechanism, the space is divided into n squares, and a random process is run to outcome centers of the squares as LRCs. The eCAN-like mechanism repeatedly divides the space into four squares and keeps LRCs to two of them.
+* The experimental results show that all the LRC schemes achieve between log(N) and log^2(N) query hops even in the presence of unbalanced node distribution. Among the LRC schemes, hop level mechanism presents the best performance with a small number of LRCs as the network size increases. As it precludes the need of a priori configuration, hop level mechanism is a preferable choice when the environment is unknown.
+
+<P-tree>
+* P-tree is a peer-to-peer index structure that supports range queries in addition to equality queries. In consistent states, a P-tree provides O(logN) and O(m+logN) search cost for equality queries and range queries, where m is the number of peers in the selected range and d, the order of P-tree, serves as the base of the log. P-tree requires O(d*logN) space at each peer.
+* In P-tree, the search key values (attributes of data items) are regarded as a ring. The underlying ring structure is maintained by a successor-maintenance algorithm (Chord in the implementation of this paper).
+* The key idea behind P-tree is to maintain parts of semi-independent B+-trees at each peer; that is, each peer maintains the left-most root-to-leaf path of its B+-tree and relies on a subset of other peers to complete its tree. The sub-trees have overlapping ranges; the same data values are indexed by multiple sub-trees. In this way peers don’t need global coordination and be notified for every insertion/deletion.
+* Search in P-tree takes as input the lower-bound (lb) and upper-bound (ub) of the range query as well as the source peer originating the query. Each peer, when routing the query, forwards the message to the farthest pointer that doesn’t overshoot lb. Once reaching the lowest level of the P-tree, it traverses the successor list until the value of a peer exceeds ub. Any node along the route storing a value which falls in the desired range returns its value to the source peer. In a consistent state, the search procedure goes down one level of the P-tree every time the message is forwarded, so O(logN) query steps are guaranteed.
+* The consistency of the P-tree nodes is maintained by two co-operating processes Ping and Stabilization: Ping Process detects the inconsistencies of peer deletions/failures as well as the entries with respect to the coverage and separation properties, and Stabilization Process repairs them (in a bottom-to-top and left-to-right manner). Peer insertions are also handled based on the two processes. There is a tradeoff in deciding the frequency of Ping/Stabilization Processes (search cost vs. maintenance overhead for peer insertions/deletions). From the experimental results it claims that it’s impractical for P-tree to have high orders.
+
+<Mercury>
+* Mercury is a protocol that supports scalable multi-attribute range queries and explicit load balancing. It achieves logarithmic-hop routing and near-uniform load balancing.
+* In Mercury, each query is a conjunction of range in one or more typed attributes. Mercury handles multi-attribute queries by creating a routing/attribute hub for each attribute. It organizes each hub into a circular overlay of nodes with each node responsible for a continuous range of attribute values. A data record is sent to all hubs corresponding to the attributes of the data record. Queries are passed (using query selectivity) to exactly one routing hub corresponding to the attributes that are queried, and new data items are sent to all hubs for which it has an associate attribute.
+* Each Mercury node maintains a small number of predecessor and successor links within a hub and links to each of the other hubs. Besides, k long-distant links are selected according to a histogram maintenance scheme based on the sampling of nodes distribution (random walks over the system to determine the ranges the nodes are responsible for). It then routes more efficiently by choosing the link which takes the message closest to the destination.
+* From the experimental results it claims that caching (LRU replacement or direct-mapped) is an important optimization that Mercury can easily incorporate into its basic protocol. In addition, Mercury achieves load balance by moving around nodes and changing their responsibilities according to the loads.
+* This paper also presents a distributed object management framework based on Mercury. By providing a range-based query language, Mercury allows applications to express their publications and subscriptions to objects lookups/updates flexibly. The framework can be used as a building block for distributed applications, in which instances are interested in a subset of the entire application state.
+

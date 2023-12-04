@@ -1,0 +1,85 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jA7Eo05L009420
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 7 Nov 2005 07:50:00 -0700
+Received: from localhost (boromir.email.arizona.edu [10.0.0.217])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 01AF4BB646C
+	for <DMDX@psy1.psych.arizona.edu>; Mon,  7 Nov 2005 07:50:00 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-5.dsl.arizona.edu [128.196.237.5])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 5ABB2B9957F
+	for <DMDX@psy1.psych.arizona.edu>; Mon,  7 Nov 2005 07:49:57 -0700 (MST)
+Message-Id: <5.1.0.14.2.20051107073716.00ba4838@psy1.psych.arizona.edu>
+Date: Mon, 07 Nov 2005 07:49:50 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: RE:  Problems of two sequential stimuli, and RT
+In-Reply-To: <1131367850.436f4daa04ca4@webmail.cuhk.edu.hk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 08:50 PM 11/7/2005 +0800, you wrote:
+
+>But we have two problems:
+>
+>One is when we try running  the above lines. An error "Return without Call".
+>What does this mean?
+
+   It means you didn't include the <bu 1000> that my example had in it that 
+branched over the subroutines.  The subroutines (items 1 to 5) can't be 
+executed in the normal flow of an item.
+
+
+>Another is about the record and feedback of responses. In our experiment, two
+>stimuli will be presented sequentially. But in some trials, the ISI will be as
+>short as 10ms only.
+
+   You're running at 100Hz refresh rate?  My experience has been that very 
+few machines that use <vm 1024 768 16 0> are ever doing anything more than 
+60Hz.  You might want to try <vm 1024 768 16 100> instead.
+
+
+>  So if the two stimuli are separatesd in two lines, we are
+>afraid that the participants do not have enough time to respond after the 
+>first
+>stimulus is presented. How can we solve this problem?
+
+   You could try a <delay 1>, some machines are fast enough these days for 
+it.  You'll probably want to put a <delay 50> or some such thing in the 
+parameter line and in each item where you want a delay of a different 
+length include an appropriate <delay>. For instance:
+
+<ep> <nfb> <s 1> <g 2> <id "keyboard"><dbc 0> <dwc 000255000>
+<vm 1024 768 768 16 100> <delay 50> <eop>
+$
+0 "instuctions"<umr><mr "+Space"><umpr> <umnr> <mpr "+A"> <bu 1000>;
+~1 <set c1=lastXT> <return>;
+~2 <bi 5, c1 .lt. 0>;
+~3 <bi 5, lastXT .lt. 0>;
+4 "correct" <return>;
+5 "wrong" <return>;
+~1000;
+$
++1001 "circle" * <call 1> <delay 1>;
++1002 "cross" * <call 2>;
++2001 "circle" * <call 1> <delay 2>;
++2002 "cross" * <call 2>;
+$
+0 ¡§The End. Thank You.¡¨;
+$
+
+   Of course if you are going to be using bitmaps there's little chance 
+that a bitmap will be read and displayed in a tick so you'll need to 
+looking into the <MediaLife> keyword and making DMDX buffer all your bitmaps.
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Can't sleep? Try counting your blessings.
+
+
+
+

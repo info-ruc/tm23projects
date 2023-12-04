@@ -1,0 +1,47 @@
+Received: from watfast.uwaterloo.ca (slegon@watfast.uwaterloo.ca [129.97.172.120])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id KAA15341
+	for <handyboard@media.mit.edu>; Wed, 13 May 1998 10:17:42 -0400 (EDT)
+Received: (from slegon@localhost)
+	by watfast.uwaterloo.ca (8.8.8/8.8.8) id KAA20323;
+	Wed, 13 May 1998 10:16:15 -0400 (EDT)
+From: Skye Legon <slegon@watfast.uwaterloo.ca>
+Message-Id: <199805131416.KAA20323@watfast.uwaterloo.ca>
+Subject: Re: HandyBoard 10-16 Servo support
+To: mdavies@cam.org (Max Davies)
+Date: Wed, 13 May 1998 10:16:15 -0400 (EDT)
+Cc: handyboard@media.mit.edu (MIT Handyboard List)
+In-Reply-To: <354FA313.46906F99@cam.org> from "Max Davies" at May 5, 98 07:38:59 pm
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+> Being a hardware novice, my question/problem is this:  the 73HC154 demultiplexor
+> provides "active-low" outputs in that all non-selected output lines are high
+> rather than low as the servo's require.  To use this chip then I will have to
+> add 16 inverters which seems a waste.
+> 
+> Is there a different demultiplexor that I can use to get "active-high" outputs
+> to avoid the requirement of all the inverters?
+> 
+
+I had exactly the same problem.  There is a CMOS chip by Motorola called
+the MC14028B that is a BCD-to-decimal or Binary-to-octal decoder.  All
+that really matters though is that it will take a 4-bit input and
+decode up to *10* outputs that are *active high*.  I know it is not
+16 as desired, but if you can live with just ten, it should suit you
+fine.
+
+Good luck, Skye.
+
++-----------------------------------------+----------------------------+
+| Skye Legon                              |   University of Waterloo   |
+| Systems Design Engineering              | __/   __/  __/         __/ |
+| Pattern Analysis & Machine Intelligence | __/   __/  __/   __/   __/ |
+| 143 Columbia St. West, Unit E-4         | __/   __/  __/  ____/  __/ |
+| Waterloo Ontario CANADA  N2L 3L2        | __/__/__/   __/__/\__/__/  |
+| +1(519)888-9249                         |  ______/     ___/  \___/   |
+| slegon@uwaterloo.ca                     |  DC 2620, 888-4567 x5192   |
++-----------------------------------------+----------------------------+
+
+

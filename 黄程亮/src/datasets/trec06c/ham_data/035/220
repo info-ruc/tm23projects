@@ -1,0 +1,181 @@
+Received: from teta.cpovo.net ([200.248.147.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id RAA12471
+	for <handyboard@media.mit.edu>; Sun, 14 Feb 1999 17:41:31 -0500 (EST)
+X-Internal-Id: 36BECA62000117A3
+Received: from casa (200.248.147.179) by teta.cpovo.net (NPlex 2.0.108); 14 Feb 1999 19:40:14 -0300
+Message-Id: <36BECA62000117A3@teta.cpovo.net> (added by teta.cpovo.net)
+From: "Cesar Mello" <cmello@cpovo.net>
+To: "Simon Schulz" <Simon.Schulz@hagener-tgz.de>, <handyboard@media.mit.edu>
+Subject: Re: Stepper Motor
+Date: Sun, 14 Feb 1999 20:43:03 -0000
+X-Msmail-Priority: Normal
+X-Priority: 3
+X-Mailer: Microsoft Internet Mail 4.70.1155
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+Hi Simon,
+
+> Thank you very much for your response!
+> I'll check for DiskDrives around me  ....
+
+Nice idea, don't let people put those drives in the trash!
+
+> are you using the motor outputs for the stepper motors (1 motor @ 2
+outs)?
+
+Yes, but the way I did was to use the less components possible. I've used a
+big stepper motor from an old printer, but the sequence is the same as for
+the drive one. That's because I have some difficulties to get components
+here in Brazil. My Handy Board is modified, I couldn't get the motor
+drivers, so I use all the 8 outputs as 5 volts logic outputs.
+
+I've connected 4 of these outputs to a circuit with 4 TIP122 transistors.
+Each of these transistors energized a coil from the stepper motor. For the
+stepper motor to work, you have to turn on each coil at a time in the
+appropriate sequence.
+
+For example, let's say you have O1, O2, O3, O4 as your outputs:
+
+O1 - on
+O2 - off
+O3 - off
+O4 - off
+
+The first time you make this, you won't know what's your stepper motor
+position. So you'll use a global variable to keep track of his position,
+and other to keep track of the coil energized. For your motor to turn 1.8
+degrees left, you'll make:
+
+O1 - off
+O2 - on
+O3 - off
+O4 - off
+
+With this operation it will move a 1.8 degree step and hold position
+firmly. For it to keep spinning, you'll keep doing the sequence:
+
+O1 - off
+O2 - off
+O3 - on
+O4 - off
+
+O1 - off
+O2 - off
+O3 - off
+O4 - on
+
+O1 - on
+O2 - off
+O3 - off
+O4 - off
+
+Keeping  with this sequence and counting the steps you can spin it any
+angle, and if you keep making this sequence it will keep spinning forever.
+The speed as you make this sequence defines the motor speed. For the motor
+to turn right, you will make the opposite sequence, but continuing from the
+last state. For example, considering the last state was the one before, for
+the motor to start spinning to the right you would:
+
+O1 - off
+O2 - off
+O3 - off
+O4 - on
+
+O1 - off
+O2 - off
+O3 - on
+O4 - off
+
+And keep doing this. If you have some experience with C programming, it
+will be very easy to do that. I don't have the code here at home, but it
+was something like this:
+
+int glbPosition; 
+int glbCoil;          // Global variables
+
+void StartMeUp()             // Start variables. You can spin the motor
+until it reaches a sensor to
+{                                    // define its initial position
+  glbPosition = 0;
+  glbCoil = 0;
+  position();
+}
+
+void position()                    // Turns on the motor output represented
+by glbCoil
+{
+  bk(0); bk(1); bk(2); bk(3);
+  fd(glbCoil);
+}
+
+void left(int steps)
+{
+  int counter;
+  for(counter=1;counter<=steps;counter++)
+  {
+    glbCoil--;
+    if(glbCoil<0) glbCoil=3;
+    position();
+  }
+}
+
+void right(int steps)
+{
+  int counter;
+  for(counter=1;counter<=steps;counter++)
+  {
+    glbCoil++;
+    if(glbCoil>3) glbCoil=0;
+    position();
+  }
+}
+
+Then if you want your floppy motor do turn 90 degrees left you will write:
+
+left(50);
+
+If you type this after:
+
+right(50);
+
+The motor will return *exactly* to the initial position.
+
+Oops, I forgot, you have to place a delay between each position(). Change
+it to this:
+
+void position()                    // Turns on the motor output represented
+by glbCoil
+{
+  int delay;
+  bk(0); bk(1); bk(2); bk(3);
+  fd(glbCoil);
+  for(delay=0;delay<=200;delay++);
+
+}
+
+The value 200 will define the motor speed, making this number smaller it
+runs faster. Note: this is just a little code to help you understand the
+process, it's ugly. I've changed this code to an optimized version, if you
+want I
+can send you when I go to job (Wednesday).
+
+One more thing: you can easily change this to work with only 2 outputs, if
+you use a 74hc138 to decode 2 outputs to 4. Or maybe you can find a stepper
+motor controller, this thing should have a "step left" and "step right"
+pin, but I have no info on any...
+
+> have you written a code for driving them ?
+
+Yes, but it's at job. I'm working at home Monday and Tuesday, there is a
+Siemens S7 plc right in front of  me! I don't have time to play with the
+Handy Board now, unfortunately... But I'd love to make an intelligent
+mobile vehicle some day.
+
+Hope I could help you.
+
+See you,
+Cesar
+
+

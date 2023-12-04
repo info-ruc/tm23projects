@@ -1,0 +1,57 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2E3Cgt13087
+	for <egs@cs.cornell.edu>; Mon, 13 Mar 2006 22:12:42 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2E3Cfpu005117
+	for <egs@cs.cornell.edu>; Mon, 13 Mar 2006 22:12:41 -0500 (EST)
+Received: from 24.59.114.243
+        by webmail.cornell.edu with HTTP;
+        Mon, 13 Mar 2006 22:12:41 -0500 (EST)
+Message-ID: <3084.24.59.114.243.1142305961.squirrel@webmail.cornell.edu>
+Date: Mon, 13 Mar 2006 22:12:41 -0500 (EST)
+Subject: paper 14
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+GNP and Vivaldi both embed the network nodes into a finite virtual
+coordinate space so that distance calculations can be calculated without
+additional explicit measurements. They use previously done measurements to
+other nodes - specific landmark nodes for GNP and a random subset of nodes
+for Vivaldi - to place the nodes relative to each other.
+
+An issue with virtual coordinate-based location schemes is their ability
+to deal with constantly changing networks. Can GNP and Vivaldi deal with
+networks with high churn or a propensity for flash loads at nodes? The GNP
+paper (or slides) do not address that at all, and the Vivaldi paper only
+offers one experiment on a flash load at a single node. They found that
+the network stabilized after 20 seconds, but they didn't investigate the
+effects of churn (where a node entering has no information and a node
+leaving takes away information from network locality), nor the effects of
+short-lived flash loads that last less than that 20 seconds.
+
+There is also a huge reliance on cooperation and the accuracy of other
+nodes. In Vivaldi, a node relies on it neighbors correctly reporting their
+position and also correctly estimating and reporting their accuracy as
+well. The effects of a single misconfigured or malicious node might
+significantly undermine the accuracy of the scheme.
+
+Meridian offers a different approach that is somewhat similar to how
+Pastry handles locality-informed routing. Each node maintains information
+about k nodes in each ring representing a range of measured distances
+away. When locating a node nearest to a given target, it looks for a node
+in appropriate ring closest to the target and forwards the request to it.
+Assuming a good distribution within each ring, the request should get
+exponentially closer to the target with each hop. However, since locating
+nodes requires sending requests out, the uses of this seem more limited
+than virtual coordinates, where node locating can be done without use of
+bandwidth for measurements after the geography is set up. It seems that
+Meridian sacrifices generality (where a node can easily determine the
+distance between it and any other node in the network) for scalability and
+accuracy.
+

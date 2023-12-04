@@ -1,0 +1,189 @@
+Received: from marmot.shef.ac.uk (marmot.shef.ac.uk [143.167.1.4])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id jAHHMD5L014798
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 17 Nov 2005 10:22:13 -0700
+Received: from drake.shef.ac.uk ([143.167.2.64])
+	by marmot.shef.ac.uk with esmtp (Exim 4.52)
+	id 1EcnSe-0003Og-NU
+	for DMDX@psy1.psych.arizona.edu; Thu, 17 Nov 2005 17:22:12 +0000
+Received: from http by drake.shef.ac.uk with local (Exim 4.42)
+	id 1EcnSe-0004FH-Dy
+	for DMDX@psy1.psych.arizona.edu; Thu, 17 Nov 2005 17:22:12 +0000
+Received: from drake.shef.ac.uk (drake.shef.ac.uk [143.167.2.64]) 
+	by 143.167.2.64 (IMP) with HTTP 
+	for <cop05vn@localhost>; Thu, 17 Nov 2005 17:22:12 +0000
+Message-ID: <1132248132.437cbc445e641@webmail.shef.ac.uk>
+Date: Thu, 17 Nov 2005 17:22:12 +0000
+From: V Nguyen <V.Nguyen@sheffield.ac.uk>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: Move to next item
+References: <5.1.0.14.2.20051013082253.00bc7a20@psy1.psych.arizona.edu> <5.1.0.14.2.20051012084830.00ba4888@psy1.psych.arizona.edu> <5.1.0.14.2.20051012084830.00ba4888@psy1.psych.arizona.edu> <5.1.0.14.2.20051013082253.00bc7a20@psy1.psych.arizona.edu> <5.1.0.14.2.20051117082226.00ba4800@psy1.psych.arizona.edu>
+In-Reply-To: <5.1.0.14.2.20051117082226.00ba4800@psy1.psych.arizona.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Dear Sir,
+
+Could you plaese check it one more time. The parameter line likes this:
+
+<cr> <fd 50> <d 0> <t 10000> <vm 1024, 768, 768, 16, 0> <id keyboard> <nfb> <dbc
+255255255> <dwc 0> <zil> <zor> <vzk +1> <vzk +1> <vzk +3> <vzk +N>
+
+but no thing better.
+
+
+Kind regards,
+
+Binh Nguyen-Van
+
+Quoting "j.c.f." <jforster@psy1.psych.arizona.edu>:
+
+> 
+> You will want <ContinuousRunning> in the parameter line.
+> 
+> At 11:11 AM 11/17/2005 +0000, you wrote:
+> >Dear Sir,
+> >
+> >The response time in my experiments is 10 second to choose a picture. So,
+> for
+> >example, if after the first chosen one, we want to move to next item and I
+> >write the file like below but it doesn't run as expected. (I've added some
+> >parts from your suggestion a month ago)
+> >
+> >
+> ><zil> <zor> <xyjustification 1>
+> >
+> >0 "start" <bu 100>;
+> >
+> >1 <umb +1> ! <bmp> "black" <xy .25,.25> <return>;
+> >2 <umb +2> ! <bmp> "black" <xy .75,.25> <return>;
+> >3 <umb +3> ! <bmp> "black" <xy .5,.75> <return>;
+> >
+> >+100 <mpr +1> <mpr +2> <mpr +3>
+> >          <bmp> "picture1" <xy .25,.25>, <bmp> "picture2" <xy .75,.25>,
+> >           <bmp> "picture3" <xy .5,.75> * <mwc +1,1 +2,2, +3,3, +N,1001>;
+> >+101 ! * <mwc +1,1 +2,2, +3,3, +N,1001>;
+> >+102 ! * <mwc +1,1 +2,2, +3,3, +N,1001>;
+> >1001 <umb +N>;
+> >
+> >+200 <mpr +1> <mpr +2> <mpr +3>
+> >          <bmp> "picture1" <xy .25,.25>, <bmp> "picture2" <xy .75,.25>,
+> >           <bmp> "picture3" <xy .5,.75> * <mwc +1,1 +2,2, +3,3, +N,1002>;
+> >+201 ! * <mwc +1,1 +2,2, +3,3, +N,1002>;
+> >+202 ! * <mwc +1,1 +2,2, +3,3, +N,1002>;
+> >1002 <umb +N>;
+> >
+> >+300 <mpr +1> <mpr +2> <mpr +3>
+> >          <bmp> "picture1" <xy .25,.25>, <bmp> "picture2" <xy .75,.25>,
+> >           <bmp> "picture3" <xy .5,.75> * <mwc +1,1 +2,2, +3,3, +N,1003>;
+> >+301 ! * <mwc +1,1 +2,2, +3,3, +N,1003>;
+> >+302 ! * <mwc +1,1 +2,2, +3,3, +N,1003>;
+> >1003 <umb +N>;
+> >
+> >..
+> >
+> >Could you please tell me how to solve this problem.
+> >
+> >Thank you,
+> >
+> >Binh Nguyen-Van
+> >
+> >
+> >
+> >Quoting "j.c.f." <jforster@psy1.psych.arizona.edu>:
+> >
+> > > At 11:31 AM 10/13/2005 +0100, you wrote:
+> > > > > <zil> <zor> <xyjustification 1>
+> > > > >
+> > > > > 0 "start" <bu 100>;
+> > > > >
+> > > > > 1 ! <bmp> "black" <xy .25,.25> <return>;
+> > > > > 2 ! <bmp> "black" <xy .75,.25> <return>;
+> > > > > 3 ! <bmp> "black" <xy .5,.75> <return>;
+> > > > >
+> > > > > +100 <bmp> "picture1" <xy .25,.25>, <bmp> "picture2" <xy .75,.25>,
+> > > > >          <bmp> "picture3" <xy .5,.75> * <mwc +1,1 +2,2, +3,3>;
+> > > > > +101 ! * <mwc +1,1 +2,2, +3,3>;
+> > > > > +102 ! * <mwc +1,1 +2,2, +3,3>;
+> > > > >
+> > > > >    Of course this solution allows you to respond with any key at any
+> > > time
+> > > > > and doesn't guarantee that they won't press one response more than 
+> > once
+> > > > and
+> > > > > thus not have erased the whole screen afterwards.
+> > >
+> > >    And then sometime last night (probably sitting in meditation) I 
+> > realized
+> > > that you could selectively bind and then unbind response keys so they
+> > > couldn't make the same response twice like this:
+> > >
+> > > <zil> <zor> <xyjustification 1>
+> > >
+> > > 0 "start" <bu 100>;
+> > >
+> > > 1 <umb +1> ! <bmp> "black" <xy .25,.25> <return>;
+> > > 2 <umb +2> ! <bmp> "black" <xy .75,.25> <return>;
+> > > 3 <umb +3> ! <bmp> "black" <xy .5,.75> <return>;
+> > >
+> > > +100 <mpr +1> <mpr +2> <mpr +3>
+> > >          <bmp> "picture1" <xy .25,.25>, <bmp> "picture2" <xy .75,.25>,
+> > >           <bmp> "picture3" <xy .5,.75> * <mwc +1,1 +2,2, +3,3>;
+> > > +101 ! * <mwc +1,1 +2,2, +3,3>;
+> > > +102 ! * <mwc +1,1 +2,2, +3,3>;
+> > >
+> > >
+> > > +200 <mpr +1> <mpr +2> <mpr +3>
+> > >          <bmp> "picture1" <xy .25,.25>, <bmp> "picture2" <xy .75,.25>,
+> > >           <bmp> "picture3" <xy .5,.75> * <mwc +1,1 +2,2, +3,3>;
+> > > +201 ! * <mwc +1,1 +2,2, +3,3>;
+> > > +202 ! * <mwc +1,1 +2,2, +3,3>;
+> > >
+> > >     Of course this solution allows
+> > >
+> > >                                                 /"\
+> > >   -jonathan (j.c.f.)                            \ /
+> > >                                                  X
+> > >      ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+> > >
+> > >    The bug stops here.
+> > >
+> > >
+> > > ====================================================================
+> > >    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+> > >   'unsubscribe' by itself with no quotes in the body of the email
+> > >   to be removed from the list.  The list archive is available here:
+> > >           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> > > ====================================================================
+> > >
+> >
+> >
+> >====================================================================
+> >    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+> >   'unsubscribe' by itself with no quotes in the body of the email
+> >   to be removed from the list.  The list archive is available here:
+> >           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> >====================================================================
+> 
+>                                                 /"\
+>   -jonathan (j.c.f.)                            \ /
+>                                                  X
+>      ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+> 
+>    The Scots invented golf, which might explain why they invented
+> Scotch.
+> 
+> 
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+> 
+
+
+

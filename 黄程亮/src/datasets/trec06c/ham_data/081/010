@@ -1,0 +1,211 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g41JWBt21765;
+	Wed, 1 May 2002 12:32:12 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA26395;
+	Wed, 1 May 2002 14:22:54 -0400 (EDT)
+Date: Wed, 1 May 2002 14:22:54 -0400 (EDT)
+Received: by canaveral.red.cert.org; Wed, 1 May 2002 14:17:22 -0400
+Message-Id: <CA-2002-10.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-10 Format String Vulnerability in rpc.rwalld
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 223
+Status: RO
+X-Status: $$$$
+X-UID: 0000000045
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+   CERT Advisory CA-2002-10 Format String Vulnerability in rpc.rwalld
+
+Original release date: May 1, 2002
+Last revised: --
+Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Sun Solaris 2.5.1, 2.6, 7, and 8
+
+Overview
+
+   The  rwall daemon (rpc.rwalld) is a utility that is used to listen for
+   wall  requests  on  the  network. When a request is received, it calls
+   wall,  which  sends  the  message  to  all terminals of a time-sharing
+   system.  A  format  string  vulnerability  may  permit  an intruder to
+   execute  code  with  the  privileges  of  the rwall daemon. A proof of
+   concept  exploit  is  publicly  available, but we have not seen active
+   scanning or exploitation of this vulnerability.
+
+I. Description
+
+   rpc.rwalld is a utility that listens for remote wall requests. Wall is
+   used  to  send a message to all terminals of a time-sharing system. If
+   the  wall command cannot be executed, the rwall daemon will display an
+   error message.
+
+   An  intruder can consume system resources and potentially prevent wall
+   from  executing, which would trigger the rwall daemon's error message.
+   A  format  string  vulnerability  exists in the code that displays the
+   error  message.  This vulnerability may permit the intruder to execute
+   code with the privileges of the rwall daemon.
+
+   This  vulnerability  may  be  exploited  both  locally  and  remotely,
+   although remote exploitation is significantly more difficult.
+
+II. Impact
+
+   An  intruder can execute code with the privileges of the rwall daemon,
+   typically root.
+
+III. Solution
+
+   Apply a patch
+
+   Appendix A contains information provided by vendors for this advisory.
+
+   If  a patch is not available, disable the rwall daemon (rpc.rwalld) in
+   inetd.conf until a patch can be applied.
+
+   If  disabling  the rwall daemon is not an option, implement a firewall
+   to  limit  access  to rpc.rwalld (typically port 32777/UDP). Note that
+   this will not mitigate all vectors of attack.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor is not listed below, please check the Vulnerability
+   Note (VU#638099) or contact your vendor directly.
+
+   Hewlett-Packard
+
+     HP is not vulnerable.
+
+   IBM
+
+     IBM's  AIX  operating  system,  versions  4.3.x  and  5.1L,  is not
+     susceptible to the vulnerability described.
+
+   NetBSD
+
+     NetBSD has never been vulnerable to this problem.
+
+   Sun Microsystems
+
+     Sun  confirms  that  there  is  a  format  string  vulnerability in
+     rpc.rwalld(1M)  which affects Solaris 2.5.1, 2.6, 7 and 8. However,
+     this  issue  relies  on  a  combination  of  events,  including the
+     exhaustion of system resources, which are difficult to control by a
+     remote  user  in order to be exploited. Disabling rpc.rwalld(1M) in
+     inetd.conf(4)  is  the  recommended  workaround  until  patches are
+     available.
+
+     Sun  is  currently  generating  patches  for this issue and will be
+     releasing  a  Sun Security Bulletin once the patches are available.
+     The bulletin will be available from:
+
+     http://sunsolve.sun.com/security
+
+     Sun patches are available from:
+
+     http://sunsolve.sun.com/securitypatch
+   _________________________________________________________________
+
+   The  CERT Coordination Center acknowledges "GOBBLES" as the discoverer
+   of  this vulnerability and thanks Sun Microsystems for their technical
+   information.
+   _________________________________________________________________
+
+   Feedback can be directed to the author: Jason A. Rafail
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-10.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+      May 1, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPNAuCKCVPMXQI2HJAQFPggP8CfV9uws6+YunrdNbxwEbKKopLCFRsL1Y
+Lk243wORHm3ocuWRWsqqWueaP/OuvG7lDS+0vOIsZlxUeKVZWWREUH8Lm2FMi3BB
+FRPTUWmjYqi3UcywqFnnZspXM+s9jL/fpRFBH1aqhIrpodB3+7HxqWEitll5vAJ4
+c0WFy5v6S9k=
+=RnyP
+-----END PGP SIGNATURE-----
+

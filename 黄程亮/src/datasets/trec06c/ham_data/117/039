@@ -1,0 +1,35 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2956Ut25542
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 00:06:30 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2956Uvh027927
+	for <egs+summary@cs.cornell.edu>; Thu, 9 Mar 2006 00:06:30 -0500 (EST)
+Message-ID: <1029350632.1141880788098.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Thu, 9 Mar 2006 00:06:29 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 13
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+* Both of the papers to be discussed today are overlay routing systems that aim to improve Internet reliability, to detect and recover from path outage and degraded performance.
+* RON works by 'deploying' nodes in different domains that monitor the quality of underlying Internet and route packets for each other. SOSR, instead, routes messages through a small set of 'randomly chosen' intermediaries when failure occurs.
+
+<Issues of RON and SOSR>
+* The background path monitoring overhead in RON is high. It is thus suitable only if the overlay is small-scaled. (As indicated in the paper, it scales to about 50 nodes only.)
+* SOSR is less successful at routing around last-hop network failures. Its alternative routing scheme is thus suitable for some cases only (servers rather than broadband hosts, for instance).
+
+<Summary of RON>
+* RON (Resilient Overlay Network) is an application-level overlay that is designed (1) to quickly (within 20 seconds) detect and recover from path outage and (2) to improve the performance of loss rate, latency and throughput.
+* Nodes residing in different routing domains comprise a RON. They (1) aggressively probe and monitor the path connecting them, (2) exchange information about the quality of paths among themselves, (3) build forwarding tables on the basis of several path metrics, such as latency, loss rate and throughput, and (4) forward data on behalf of any communicating nodes in the RON.
+* RON tightly integrates the routing and path selection with applications. Applications can prioritize some metrics over others in their path selection. This demonstrates the benefits of moving some of the control over routing to end-systems.
+* The experimental results show that forwarding packets via at most one RON node is sufficient to overcome faults and improve performance in most cases. Therefore part of their design focus on the finding better paths via a single intermediate RON node.
+
+<Summary of SOSR>
+* This paper first conducts a measurement study of Internet path failures and found that most Internet paths worked well (availabilities range from 99.6% for servers and 94.4% for broadband hosts).
+* As no failure is the common case, they propose an approach that avoids the overhead to monitor paths and scales well: SOSR (Scalable One-hop Source Routing). SOSR attempts to recover from path failures by routing indirectly through a small set of random chosen intermediaries. Because the intermediaries are randomly chosen, no a priori knowledge of Internet states are needed.
+* They show that a stateless policy called 'random-4' quickly finds alternative paths for failures. It works as follows: when a node detects a path failure, it selects 4 intermediaries and attempts to reroute messages through them, until (1) one of the intermediaries succeeds, (2) the path self-repairs or (3) four attempts have failed.
+* According to their survey, broadband hosts experienced significantly more last-hop failures than servers. SOSR is less suitable for broadband hosts since it can't route around such last-hop failures.
+

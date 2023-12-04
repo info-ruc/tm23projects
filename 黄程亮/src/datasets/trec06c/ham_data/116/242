@@ -1,0 +1,142 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k270Ygt03985
+	for <egs+summary@cs.cornell.edu>; Mon, 6 Mar 2006 19:34:42 -0500 (EST)
+Received: from [128.84.92.5] (sbw11-net2-128-84-92-5.ece.cornell.edu [128.84.92.5])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k270YfhO027296
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Mon, 6 Mar 2006 19:34:42 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <DFFBEEDC-1F49-4356-B115-5EDF61399FFF@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 12
+Date: Mon, 6 Mar 2006 19:37:39 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+SAMSARA
+
+
+A challenge of p2p network design is to ensure that users in the  
+system contribute to its welfare appropriately based on the benefit  
+they receive; freeriding is curbed.  Experience in the Gnutella &  
+Napster networks has shown users will often freeride given the  
+opportunity.  The basic principle behind Samsara is the use of  
+incompressible storage claims, essentially manufactured bits of data  
+for use in an "I'll store your data if you'll store mine" scheme.   
+Enhancements of the scheme allow forwarding of claims to balance  
+storage requirements across the network.  However, a node remains  
+responsible for claims it forwards, so forwarding is used as a last  
+resort.
+
+The authors implement the system on top of a Pastry network for  
+testing purposes.  Claims are generated using the sha1 hash of a  
+passphrase known only by the host node concatenated with an on disc  
+location.  Nodes periodically query nodes for whom they are storing  
+data for claims, if a response is invalid, that node is free to drop  
+the stored data.  A probabilistic punishment scheme is used to  
+forgive nodes for their transient failures.
+
+A 5000 node network is simulated, showing good performance from the  
+system.  However, there are some limitations.  The first is that  
+without claim forwarding, the global storage requirement for the  
+system is doubled.  Also, the scheme is only really appropriate for a  
+distributed file storage/replication scheme; pushing data.  An  
+adaptation for pull scenarios may be possible, but is not immediately  
+evident.
+
+
+PAST
+
+PAST is a p2p distributed filesystem using Pastry routing for the  
+underlying overlay network.  As a result, files are immutable, and  
+are retrieved via a fileId which is generated upon insertion into the  
+network.  PAST provides the insert, lookup, and reclaim primitives  
+leveraging the underlying Pastry network.  When a file is inserted  
+into the network, the desired number of replicas is specified, and  
+the file is replicated at the nodes with nodeId closest to the fileId  
+in the Pastry identifier space.  This is a lower limit on the number  
+of replicas of that file maintained by the system.  Additional cached  
+copies may be automatically created and destroyed by the load  
+balancing mechanism.
+
+When objects are inserted into PAST, a file certificate containing  
+file metadata is created and signed with the client's private key.   
+Nodes who store the file also generate signed receipts which they  
+return to the inserting client.  Storage quotas are enforced using  
+smartcards with associated private/public key pairs, which are signed  
+by the smartcard issuer.
+
+Load balancing is address in PAST by bending the rules of file and  
+replica placement.  Replicas are moved to other members of a Pastry  
+leaf set or forwarded to other nodes using pointers, and fires are  
+moved to other nodes by changing the salt used in creating fileId's.   
+Nodes accept forwarded objects if the object does not occupy a  
+significantly large portion of the nodes remaining free space.  Reed- 
+Solomon encoding encoding of data is suggested to decrease storage  
+requirements.  Nodes in PAST use their unused disk space for file  
+caching.  GreedyDual-Size policy is used for determining which  
+objects should remain cached.
+
+Simulation shows the system to be effective in high storage  
+utilization situations of 95% and above.  The system benefits from  
+large node leaf set degree, as there is more opportunity for local  
+load balancing.
+
+PAST has a number of limitations, one of which is the requirement of  
+smartcards issued to each node, to some extent introducing a central  
+authority into the PAST scheme.  Another is that if the quantity of  
+available network storage decreases, the system will fail to maintain  
+the requested number of copies per file.  This is of course  
+unavoidable, however there is no mechanism given to achieve this  
+gracefully (e.g. if total storage decreases by 20%, each file will be  
+replicated 20% less).  It also un-structures the underlying Pastry  
+network in the name of load balancing, making the network more  
+susceptible to Sybil and Eclipse attacks.  There is also no mechanism  
+to ensure that nodes actually maintain the file replicas they claim  
+to store.
+
+
+CFS
+
+The Cooperative File System (CFS) is similar to PAST in the service  
+it provides;  a p2p distributed filesystem for immutable files.  It  
+differs from PAST primarily in that CFS distributes blocks across  
+nodes in the network, as where PAST distributes whole files.  The  
+creators of CFS also assume that storage space is abundant, and that  
+it is not expected to utilize nearly 100% of the global storage space.
+
+CFS makes use of DHash and Chord as underlying components.  The root  
+block of a file is identified by a public key and signed by the  
+corresponding private key.  Other blocks are identified by hashes of  
+their contents.  This allows a client to verify the integrity of a  
+retrieved file.  All files in the system have a finite lifetime after  
+which they are automatically discarded.  The publisher of a file can,  
+however, as for lifetime extensions for files.  CFS, like PAST uses  
+disk quotas to prevent nodes from using an unfair amount of resources.
+
+As in PAST, replicas are stored on the k-successors of a chord node,  
+and caching of blocks occurs on the paths of incoming file requests.   
+Virtual servers are used on machines with very large resources to  
+improve load balancing.
+
+Simulation of the system showed that when multiple blocks are  
+requested in parallel, and proximital server selection is used, file  
+transfer speeds are on par with ftp transfers between nodes who are  
+part of the CFS network.
+
+Unfortunately the authors of CFS provide little information with  
+regard to the appropriate block size for a deployed system.  8Kb is  
+used for their simulations, however the number of nodes in their  
+testbed was small, so it is unconvincing whether or not this block  
+size is generally applicable.
+
+CFS's block level storage results in much more natural load balancing  
+that PAST.  However, given the resulting increase in overhead in  
+retrieving a file, it is difficult to compare this overhead with that  
+generated by the additional load balancing measures implemented in  
+PAST.  The block level granularity does however make it more  
+difficult for an attacker to destroy a whole file.
+

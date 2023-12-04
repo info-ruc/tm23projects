@@ -1,0 +1,363 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id fAU2bPZ20306;
+	Thu, 29 Nov 2001 18:37:25 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id SAA29407;
+	Thu, 29 Nov 2001 18:49:24 -0500 (EST)
+Date: Thu, 29 Nov 2001 18:49:24 -0500 (EST)
+Received: by canaveral.red.cert.org; Thu, 29 Nov 2001 18:44:06 -0500
+Message-Id: <CA-2001-33.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-33 Multiple Vulnerabilities in WU-FTPD
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 502ba7b9758d854be5c23ba7bcb76ca1
+Status: RO
+X-Status: $$$$
+X-UID: 0000000030
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-33 Multiple Vulnerabilities in WU-FTPD
+
+   Original release date: November 29, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Systems running WU-FTPD and its derivatives
+
+Overview
+
+   WU-FTPD  is  a  widely  deployed software package used to provide File
+   Transport Protocol (FTP) services on UNIX and Linux systems. There are
+   two  vulnerabilities  in  WU-FTPD  that  expose  a system to potential
+   remote root compromise by anyone with access to the FTP service. These
+   vulnerabilities have recently received increased scrutiny.
+
+I. Description
+
+   There  are two remote code execution vulnerabilities in the Washington
+   University  FTP  daemon  (WU-FTPD). Both of these vulnerabilities have
+   been discussed in public forums and have received widespread exposure.
+
+   VU#886083: WU-FTPD does not properly handle glob command
+
+   WU-FTPD  features  globbing  capabilities that allow a user to specify
+   multiple  file  names  and locations using typical shell notation. See
+   CERT Advisory CA-2001-07 for a more complete explanation of globbing.
+
+   WU-FTPD implements its own globbing code instead of using libraries in
+   the  underlying operating system. When the globbing code is called, it
+   allocates  memory on the heap to store a list of file names that match
+   the  expanded  glob  expression.  The  globbing  code  is  designed to
+   recognize  invalid syntax and return an error condition to the calling
+   function.  However, when it encounters a specific string, the globbing
+   code  fails  to  properly  return  the error condition. Therefore, the
+   calling function proceeds as if the glob syntax were correct and later
+   frees unallocated memory that can contain user-supplied data.
+   If  intruders can place addresses and shellcode in the right locations
+   on  the  heap using FTP commands, they may be able to cause WU-FTPD to
+   execute  arbitrary  code by later issuing a command that is mishandled
+   by the globbing code.
+
+   This  vulnerability is potentially exploitable by any user who is able
+   to  log  in  to  a  vulnerable  server, including users with anonymous
+   access.  If  the  exploit  is  successful,  an attacker may be able to
+   execute arbitrary code with the privileges of WU-FTPD, typically root.
+   If  the exploit is unsuccessful, the thread servicing the request will
+   fail, but the WU-FTPD process will continue to run.
+
+   This  vulnerability  has been assigned the identifier CAN-2001-0550 by
+   the Common Vulnerabilities and Exposures (CVE) group:
+
+          http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2001-0550
+
+   CORE  Security  Technologies  has  published a Vulnerability Report on
+   this issue:
+
+          http://www.corest.com/pressroom/advisories_desplegado.php?
+          dxsection=10&idx=17
+
+   VU#639760: WU-FTPD configured to use RFC 931 authentication running in
+   debug mode contains format string vulnerability
+
+   WU-FTPD  can  perform  RFC  931  authentication when accepting inbound
+   connections  from  clients.  RFC 931 defines the Authentication Server
+   Protocol,  and  is  obsoleted  by  RFC 1413 which defines the Identity
+   Protocol. RFC 931 is commonly known as "auth" or "authd", and RFC 1413
+   is commonly known "ident" or "identd". Both are named after the daemon
+   that commonly provides the service.
+
+   When   using  RFC  931  authentication,  WU-FTPD  will  request  ident
+   information before authorizing a connection request from a client. The
+   auth  or  ident  service  running  on the client returns user-specific
+   information,  allowing  WU-FTPD to make authentication decisions based
+   on data in the ident response.
+
+   WU-FTPD  can  also  be  run in debugging mode, which provides detailed
+   information about its operation.
+
+   When  WU-FTPD  is  configured to perform RFC 931 authentication and is
+   run  in  debug  mode,  it  logs connection information using syslog(3)
+   function  calls.  The  logging  code  does  not  include format string
+   specifiers in some syslog(3) calls, nor does the code perform adequate
+   input  validation on the contents of the identd response received from
+   a   client.   As  a  result,  a  crafted  identd  response  containing
+   user-supplied  format  string  specifiers is interpreted by syslog(3),
+   possibly  overwriting  arbitrary  locations  in  memory.  By carefully
+   designing  such a request, an attacker may execute arbitrary code with
+   the privileges of WU-FTPD.
+
+   This  vulnerability is potentially exploitable by any user who is able
+   to  log  in  to  a  vulnerable  server, including users with anonymous
+   access.  The  intruder  must also be able to control their response to
+   the  ident  request. If successful, an attacker may be able to execute
+   arbitrary code with the privileges of WU-FTPD, typically root.
+
+   Note  that  this  vulnerability  does  not  manifest unless WU-FTPD is
+   configured to use RFC 931 authentication and is run in debug mode.
+
+   This  vulnerability  has been assigned the identifier CAN-2001-0187 by
+   the Common Vulnerabilities and Exposures (CVE) group:
+
+          http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2001-0187
+
+II. Impact
+
+   Both  of  these  vulnerabilities can be exploited remotely by any user
+   with  access  to  the  FTP  service,  including anonymous access. Both
+   vulnerabilities  allow  an intruder to execute arbitrary code with the
+   privileges  of  WU-FTPD,  typically root. An exploit attempt that does
+   not  succeed in executing code may crash WU-FTPD or end the connection
+   used by the intruder.
+
+   For  additional  information  about  the  impacts  of  each  of  these
+   vulnerabilities,  please consult the CERT Vulnerability Notes Database
+   (http://www.kb.cert.org/vuls).
+
+III. Solution
+
+Apply patches from your vendor
+
+   Appendix A contains information for this advisory provided by vendors.
+   As  they  report  new  information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not  listed  below,  we  have not received their comments.
+   Please contact your vendor directly.
+
+Restrict access to WU-FTPD
+
+   As  a  general practice, the CERT/CC recommends disabling services and
+   access  that  are  not  explicitly  required.  You may wish to disable
+   WU-FTPD until you are able to apply a patch.
+
+   If  you  cannot  disable  the  service, you can limit your exposure to
+   these vulnerabilities by blocking or restricting access to the control
+   channel  (by default, port 21/tcp) used by WU-FTPD. In the case of the
+   format   string   vulnerability   (VU#639760),  an  exploit  would  be
+   transmitted  from  port  113/tcp  on the attacking host to the WU-FTPD
+   server  that  made  the identd request. Note that blocking access from
+   untrusted  networks such as the Internet does not protect your systems
+   against attacks from within your network.
+
+Disable anonymous FTP access
+
+   Although  disabling anonymous FTP access does not prevent attacks from
+   occurring,  it  does  prevent unauthenticated users from attempting to
+   exploit the globbing vulnerability (VU#886083).
+
+Appendix A. Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.   Note   that   this   advisory   discusses   two   distinct
+   vulnerabilities, and vendor statements may address one or both.
+
+Caldera
+
+   Caldera has released Security Advisory CSSA-2001-041.0:
+
+          http://www.caldera.com/support/security/advisories/CSSA-2001-04
+          1.0.txt
+
+Cray
+
+   Cray,  Inc.  is  not vulnerable since the ftp supplied with UNICOS and
+   UNICOS/mk  is not based on the Washington University version. Cray did
+   check their ftp code and does not see this exploit.
+
+Debian
+
+   Debian  addressed  VU#639760  with Debian Security Advisory DSA-016 in
+   January 2001:
+
+          http://www.debian.org/security/2001/dsa-016
+
+Hewlett-Packard Company
+
+   HP's  HP-UX  is immune to this issue. It was fixed in conjunction with
+   the  last  "globbing"  issue  announced  in  CERT Advisory CA-2001-07,
+   released  April  10,  2001.  The  lab did a complete check/scan of the
+   globbing software, and fixed this issue then as well. Customers should
+   apply  the  patches  listed in HP Security Bulletin #162 released July
+   19,2001:
+
+          HPSBUX0107-162 Security Vulnerability in ftpd and ftp
+
+   Hewlett-Packard  Security  Bulletins  are available at the IT Resource
+   Center web site (registration required):
+
+          http://www.itresourcecenter.hp.com/
+
+IBM Corporation
+
+   IBM's  AIX  operating  system  does  not  use  WU-FTPD,  hence  is not
+   vulnerable to the exploit described by CORE ST.
+
+Immunix
+
+   Immunix has released Security Advisory IMNX-2001-70-036-01:
+
+          http://download.immunix.org/ImmunixOS/7.0/updates/IMNX-2001-70-
+          036-01
+
+OpenBSD
+
+   OpenBSD does not use WU-FTPD.
+
+RedHat Inc.
+
+   RedHat has released Errata Advisory RHSA-2001-147:
+
+          http://www.redhat.com/support/errata/RHSA-2001-147.html
+
+SGI
+
+   SGI  does  not  ship  IRIX  with wu-ftpd, so IRIX is not vulnerable to
+   these issues.
+
+SuSE
+
+   SuSE has released SuSE Security Announcement SuSE-SA:2001:043.
+
+WU-FTPD
+
+   The  WU-FTPD  Development  Group has provided source code patches that
+   address both of these issues.
+     * VU#886083:
+       ftp://ftp.wu-ftpd.org/pub/wu-ftpd/patches/apply_to_current/ftpglob
+       .patch
+     * VU#639760:
+       ftp://ftp.wu-ftpd.org/pub/wu-ftpd/patches/apply_to_current/missing
+       _format_strings.patch
+     _________________________________________________________________
+
+   The CERT Coordination Center thanks CORE Security Technologies and the
+   WU-FTPD Development Group for their help
+     _________________________________________________________________
+
+   Author: Art Manion
+     _________________________________________________________________
+
+   References
+     * http://www.kb.cert.org/vuls/id/886083
+     * http://www.kb.cert.org/vuls/id/639760
+     * http://www.kb.cert.org/vuls
+     * http://www.ietf.org/rfc/rfc931.txt
+     * http://www.ietf.org/rfc/rfc1413.txt
+     * http://www.ietf.org/rfc/rfc959.txt
+     * http://www.corest.com/pressroom/advisories_desplegado.php?idxsecti
+       on=10&idx=172
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-33.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+November 29, 2001:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPAbHnaCVPMXQI2HJAQHA3wQAxL4GR+SowiE0IMczh+V7ENB5n2fo/1Yc
+zmI69F4rkOqQQXflsUrVcpPgDkKH2UIrlxREShj/gDqG+gcpyKig2OiqvzlOyb3e
+qdDScjFer80EhGlzgTKOoQE0L0RNU5tTD86jfxr8oATY+wjcLYm4Sos+HrnW78CZ
+UeM2P0vy/Oo=
+=oAMd
+-----END PGP SIGNATURE-----
+

@@ -1,0 +1,213 @@
+Received: from nenu.edu.cn (mail.nenu.edu.cn [202.198.129.55])
+	by psy1.psych.arizona.edu (8.12.4/8.12.4) with ESMTP id h1968QMS004846
+	for <DMDX@psy1.psych.arizona.edu>; Sat, 8 Feb 2003 23:08:28 -0700
+Message-Id: <200302090608.h1968QMS004846@psy1.psych.arizona.edu>
+Received: (eyou send program); Sun, 09 Feb 2003 13:57:28 +0800
+Received: from 218.21.210.44 by mail.nenu.edu.cn with HTTP; Sun, 09 Feb 2003 13:57:28 +0800
+From: "wanggm" <wanggm107@nenu.edu.cn>
+To: DMDX@psy1.psych.arizona.edu
+Date: Sun, 09 Feb 2003 13:57:28 +0800
+Subject: [DMDX] Why time is longer so much?
+Content-Type: text/plain
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hello Mr Jforster,
+
+    I have read through your letter and the "the errors you might encounter" in
+DMDX help file, I find that the preparation time is really a problem to be
+noticed. After a lot of thinking, I set <d 6> (100 milliseconds in my computer,
+which is enough time of preparation). The following is my first modified item
+file:
+
+<id "¼üÅÌ"> <mr "+Space"> <mpr "+J"> <mnr "+K"> <!safemode 1> <clfb> <vm
+800,600,600,16,0> <azk> <rcot> <cr> <dwc 255255255> <dbc 0> <n 100> <s 100> <d 6>
+<dfs 60> <vg 10> 
+
+$
+0 "Press SpaceBar to Start";
+250<dfs 100><ms% 1000>/;
+$
+
+^10 <t 700> <ms% 2000> "+"/ * <ms% 300> "9"/<ms% 400>/;
+^11 * <ms% 300> "3"/<ms% 400>/;
+^12 * <ms% 300> "7"/<ms% 400>/;
+-13 * <ms% 300> "5"/<ms% 400>/;
++14 * <ms% 300> "3"/<ms% 400>/;
++15 * <ms% 300> "7"/<ms% 400>/;
+-16 * <ms% 300> "8"/<ms% 400>/;
+
+^30 <t 1100> <ms% 2000> "+"/ * <ms% 300> "»Æ"/<ms% 800>/;
+^31 * <ms% 300> "É¼"/<ms% 800>/;
+^32 * <ms% 300> "Ñî"/<ms% 800>/;
++33 * <ms% 300> "ÂÌ"/<ms% 800>/;
+-34 * <ms% 300> "É¼"/<ms% 800>/;
++35 * <ms% 300> "Çà"/<ms% 800>/;
+-36 * <ms% 300> "Ñ¼"/<ms% 800>/;
+-37 * <ms% 300> "É¼"/<ms% 800>/;
+-38 * <ms% 300> "Çà"/<ms% 800>/;
+$
+0 <dfs 60>"The End! Thank You!";
+$
+
+
+  A typical result maybe like this:
+
+**********************************************************************
+Subject 1, 02/09/2003 13:03:47 on PSY-ZM, refresh 16.41ms
+  Item       RT       COT
+    10    700.00      0.00
+    11    700.00   1444.06
+    12    700.00   2888.13
+    13    331.69   4332.20
+    14    338.48   5759.85
+    15    523.65   7187.50
+    16    437.17   8631.57
+    30   1100.00  12077.63
+    31   1100.00  13915.53
+    32   1100.00  15753.43
+    33    545.04  17591.33
+    34    662.94  19429.24
+    35    771.71  21250.72
+    36    829.27  23072.22
+    37    578.59  24910.11
+    38   -707.82  26731.61
+
+     It is very strange that the time between two clockon  is much longer than the
+time that I want(300+400+6*16.41=800). Why???Why it's so long???  After a lot of
+thinking, I think the problem is the <t N> keyword. So I modify my item file once
+again like follow, just remove the <ms% 400> and <ms% 800>.
+
+<id "¼üÅÌ"> <mr "+Space"> <mpr "+J"> <mnr "+K"> <!safemode 1> <clfb> <vm
+800,600,600,16,0> <azk> <rcot> <cr> <dwc 255255255> <dbc 0> <n 100> <s 100> <d 6>
+<dfs 60> <vg 10> 
+
+$
+0 "Press SpaceBar to Start";
+250<dfs 100><ms% 1000>/;
+$
+
+
+^10 <t 700> <ms% 2000> "+"/ * <ms% 300> "9"/;
+^11 * <ms% 300> "3"/;
+^12 * <ms% 300> "7"/;
+-13 * <ms% 300> "5"/;
++14 * <ms% 300> "3"/;
++15 * <ms% 300> "7"/;
+-16 * <ms% 300> "8"/;
+
+^30 <t 1100> <ms% 2000> "+"/ * <ms% 300> "»Æ"/;
+^31 * <ms% 300> "É¼"/;
+^32 * <ms% 300> "Ñî"/;
+-33 * <ms% 300> "ÂÌ"/;
++34 * <ms% 300> "É¼"/;
+-35 * <ms% 300> "Çà"/;
+-36 * <ms% 300> "Ñ¼"/;
++37 * <ms% 300> "É¼"/;
++38 * <ms% 300> "Çà"/;
+
+
+$
+0 <dfs 60>"The End! Thank You!";
+$
+
+
+And I get the following result:
+
+**********************************************************************
+Subject 1, 02/09/2003 13:11:27 on PSY-ZM, refresh 16.41ms
+  Item       RT       COT
+    10    700.00      0.00
+    11    700.00   1411.25
+    12    700.00   2822.49
+    13    508.32   4233.74
+    14    656.47   5448.09
+    15   -700.00   6810.08
+    16    518.41   8237.73
+    30   1100.00  11470.47
+    31   1100.00  13291.96
+    32   1100.00  15113.45
+    33    494.57  16934.94
+    34    580.71  18149.27
+    35    918.68  19429.23
+    36    859.80  21070.22
+    37    785.67  22629.15
+    38   -745.41  24138.85
+
+   It's so strange that the time between two clockon is about 1400 milliseconds
+too. Why?
+   And if we look at the results carefully, we can find that the time between two
+clockon is varying when the participant presses the positive or negative key. But
+this kind of thing DIDN'T happen in last item file. Why??? I think the only
+different thing between the two item file is the second item file has no <ms% 400>
+after each digital or Chinese character display. That is <t 700> or <t 1100> is
+longer than the time that the whole item will be displayed. 
+
+  So I try to set the <t 300>, the item file is as follow:
+     
+
+<id "¼üÅÌ"> <mr "+Space"> <mpr "+J"> <mnr "+K"> <!safemode 1> <clfb> <vm
+800,600,600,16,0> <azk> <rcot> <cr> <dwc 255255255>  <dbc 0> <n 100> <s 100> <d 6>
+<dfs 60> <vg 10> 
+$
+0 "Press SpaceBar to Start";
+250<dfs 100><ms% 1000>/;
+$
+
+
+^10 <t 300> <ms% 2000> "+"/ * <ms% 300> "9"/;
+^11 * <ms% 300> "3"/;
+^12 * <ms% 300> "7"/;
+-13 * <ms% 300> "5"/;
++14 * <ms% 300> "3"/;
++15 * <ms% 300> "7"/;
+-16 * <ms% 300> "8"/;
+
+^30 <t 300> <ms% 2000> "+"/ * <ms% 300> "»Æ"/;
+^31 * <ms% 300> "É¼"/;
+^32 * <ms% 300> "Ñî"/;
++33 * <ms% 300> "ÂÌ"/;
+-34 * <ms% 300> "É¼"/;
++35 * <ms% 300> "Çà"/;
+-36 * <ms% 300> "Ñ¼"/;
+-37 * <ms% 300> "É¼"/;
+-38 * <ms% 300> "Çà"/;
+$
+0 <dfs 60>"The End! Thank You!";
+$
+
+
+But I get the following results:
+
+**********************************************************************
+Subject 5, 02/09/2003 13:34:29 on PSY-ZM, refresh 16.41ms
+  Item       RT       COT
+    30    300.00      0.00
+    31    300.00   1033.82
+    32    300.00   2051.23
+    33   -300.00   3068.64
+    34   -300.00   4086.05
+    35   -300.00   5119.87
+    36   -300.00   6153.69
+    37   -300.00   7171.10
+    38   -300.00   8204.91
+    10    300.00  11240.73
+    11    300.00  12258.14
+    12    300.00  13291.96
+    13   -300.00  14309.37
+    14   -300.00  15326.78
+    15   -300.00  16344.19
+    16   -300.00  17378.01
+
+   Why the time between two clockon is almost 1000 milliseconds??? Didn't it
+should be 300+6*16.41=400ms??? 
+In addition, paticipants CAN'T response correctl in only 300 milliseconds, I want
+participants have more 400 or 800 milliseconds to response. How can I do this???
+I'm so confused, so I write this long letter to you, please help me. Thank You!
+
+Wang, G.M.
+
+
+
+

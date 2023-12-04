@@ -1,0 +1,68 @@
+Received: from mta3.snfc21.pbi.net (mta3.snfc21.pbi.net [206.13.28.141])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA15274
+	for <handyboard@media.mit.edu>; Mon, 25 Oct 1999 12:30:17 -0400 (EDT)
+Received: from pacbell.net ([206.170.238.215])
+ by mta3.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.09.16.21.57.p8)
+ with ESMTP id <0FK600HEU2YZSS@mta3.snfc21.pbi.net> for
+ handyboard@media.mit.edu; Mon, 25 Oct 1999 09:25:54 -0700 (PDT)
+Date: Mon, 25 Oct 1999 09:24:48 -0700
+From: Gary Livick <glivick@pacbell.net>
+Subject: Re: Analog port shaft encoder
+To: TH0RMAN23@aol.com
+Cc: anhalt+@andrew.cmu.edu, handyboard@media.mit.edu
+Message-Id: <3814844F.13C267A4@pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854";
+ x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+References: <0.173949b9.25435a59@aol.com>
+
+Rob,
+
+I use these same encoders just as you do, and they work fine.  However, the
+spacing of the encoders from thier targets is important for proper function.
+1.5 to 2 mm works well for me.
+
+In addition, I have had to play with the encoder high threshold to make things
+work.  I set mine at 125, and never miss a count.
+
+Good Luck,
+
+Gary Livick
+
+
+
+TH0RMAN23@aol.com wrote:
+
+> Tried what you said Joshua, I went through all the analog ports and manually
+> fed them with a TTL signal from a function generator at a relatively low
+> frequency of 5Hz and wrote this little test code to test it. In this example,
+> the sencdr3.icb has been loaded with a global variable named encoder3_counts.
+> This variable kept the running count of the encoder's ticks so I really dont
+> have to do anything else but to read it.
+>
+> void encoder_test()
+>     {
+>         while(1)
+>                 {
+>                         printf("Count: %d\n", encoder3_counts);
+>                 }
+>     }
+>
+> void main()
+> {
+> start_process(encoder_test());
+> }
+>
+> The optical encoder is connected to analog port 3 with a 330 ohms current
+> limiting resistor for the Emmiter and the sensor si pull up by the Handy
+> Board's internal 47K. An oscilloscope is connected to the sensor side of the
+> encoder (QRB1114) . I ran the code and got the pulse but I have no result on
+> the LCD beside a 1 which seems to "stuck" there and wont change. Does anybody
+> else have this problem with using this driver? Thanks.
+>
+> Best regard,
+> Rob
+
+

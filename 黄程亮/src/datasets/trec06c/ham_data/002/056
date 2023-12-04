@@ -1,0 +1,34 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <3034>; Tue, 31 May 1994 16:52:54 -0400
+Received: from cannon.ecf.toronto.edu ([128.100.8.5]) by psuvax1.cse.psu.edu with SMTP id <294486>; Tue, 31 May 1994 16:35:24 -0400
+Received: by cannon.ecf.toronto.edu id <13248>; Tue, 31 May 1994 16:34:55 -0400
+From:	Steve Kotsopoulos <steve@ecf.toronto.edu>
+To:	9fans@cse.psu.edu
+Subject: setting up a cpu server
+Message-Id: <94May31.163455edt.13248@cannon.ecf.toronto.edu>
+Date:	Tue, 31 May 1994 16:34:45 -0400
+
+I have 2 Magnums, one is a terminal, the other is a cpu server.
+Both use u9fs as their file server.
+
+When I try to telnet into the cpu server, the connection closes right away.
+I get the following message in /sys/log/listen:
+
+plan9: May 31 12:28:20: bootes: aux/listen: tcp call for tcp23 on chan /net/tcp/3
+
+Other tcp services don't work either (similar messages in logfile).
+
+When I try to use the 'cpu' command on the terminal, it prints:
+
+cpu: can't read server challenge: plan9: file does not exist
+
+And I see the following message in /sys/log/listen:
+
+plan9: May 31 12:28:47: bootes: aux/listen: il call for il17005 on chan /net/il/2
+
+UDP services such as bootp and tftp seem to work fine, as I can boot the
+terminal from the cpu server.
+
+How can I get cpu & TCP services to work?
+
+        Steve
+

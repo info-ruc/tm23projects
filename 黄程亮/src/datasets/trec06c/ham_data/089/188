@@ -1,0 +1,48 @@
+Received: from saturn.Berkeley.EDU (saturn [128.32.92.117])
+	by astron.Berkeley.EDU (8.11.4/8.11.4) with ESMTP id h7C1oGo05443;
+	Mon, 11 Aug 2003 18:50:16 -0700 (PDT)
+Received: (from leonard@localhost)
+	by saturn.Berkeley.EDU (8.11.4/8.11.4) id h7C1oGZ01908;
+	Mon, 11 Aug 2003 18:50:16 -0700 (PDT)
+Date: Mon, 11 Aug 2003 18:50:16 -0700 (PDT)
+Message-Id: <200308120150.h7C1oGZ01908@saturn.Berkeley.EDU>
+To: hroe@astron.Berkeley.EDU
+In-reply-to: <200308120000.h7C00Ql00567@doty.Berkeley.EDU> (message from Henry
+	Roe on Mon, 11 Aug 2003 17:00:26 -0700 (PDT))
+Subject: Re: linux backup solutions?
+From: leonard@astro.berkeley.edu
+cc: linuxusers@astron.Berkeley.EDU
+References:  <200308120000.h7C00Ql00567@doty.Berkeley.EDU>
+Content-Length: 1138
+Status: RO
+X-Status: $$$$
+X-UID: 0000000080
+
+
+Hi Henry --
+
+   The solution I've been using for the last 3 years is admittedly old
+   fashioned, but it has gotten the job done for me so far.  I just use the old
+   "tar" command, which allows you to make incremental backups based on the
+   modification times of files.  That is, I first create a complete gzipped
+   tarball backup of my entire directory structure as root:
+
+tar --atime-preserve -pzcvf - * | cat > backup.tar.gz
+
+   You can of course have the 'backup.tar.gz' file written to any directory (or
+   media). 
+   Then, whenever I want to make an incremental backup:
+
+tar --newer-mtime 20030619 --atime-preserve -pzcvf - * | cat > backup.20030620.tar.gz
+
+  --> This command creates a gzipped compressed tar file that contains the
+  --> entire directory structure of the parent directory, but only the *files*
+  --> that have been modified since (and including) the date indicated after
+  --> the "--newer-mtime" in the tar command.
+
+   Although I'm of course interested in any slicker ideas that are out there,
+   this backup method did successfully allow me to recover from one painful
+   hard disk crash last year.
+
+-Doug
+

@@ -1,0 +1,140 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gA6J3dP29480
+	for <ggilfoyl@facstaff.richmond.edu>; Wed, 6 Nov 2002 14:03:39 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gA6J2Q431427
+	for <ggilfoyl@richmond.edu>; Wed, 6 Nov 2002 14:02:26 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002110614022604263
+ for <ggilfoyl@richmond.edu>; Wed, 06 Nov 2002 14:02:26 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gA6J2Qw04735
+	for <ggilfoyl@richmond.edu>; Wed, 6 Nov 2002 14:02:26 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gA671K802981;
+	Wed, 6 Nov 2002 02:01:20 -0500
+Date: Wed, 6 Nov 2002 02:01:20 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: "Gerard P. Gilfoyle" <ggilfoyl@richmond.edu>
+cc: Markus Geiger <markus@linuxlabs.com>
+Subject: Re: thanks and a long question
+In-Reply-To: <3DC95DC4.1D71F0CA@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0211060146480.429-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+X-Mozilla-Status: 9011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb2673000041b7
+
+Greetings,
+
+I am happy I could help.
+
+A long question deserves a long answer, so here goes :-)
+
+You were on the right track by putting the Xlib in with the regular libs.
+
+The issue is that slave nodes recieve their files from the master's /lib
+and /usr/lib directory.
+
+This is a configuration option in /etc/beowulf/config.
+
+Addint /usr/X11R6/lib there, then restarting the cluster should make it
+find the library.
+
+It is normally not included since it's unusual for a cluster app to want
+to use X (other than the root process of a parallel visualization
+app, that is). 
+
+This is not necessarily a problem, just an unusual situation that needs
+configuring. Depending on exactly how it does it's thing, you may also
+need to set the DISPLAY environment variable explicitly to 192.168.1.1:0
+
+It may also be necessary to use xhost to permit the node to use the
+Xservices on the master. For your example of node 3, you would want 
+xhost +n3 
+
+before running root. (A useful note, the nss libs are patched so that
+n<node_number> will correctly resolve to the node's IP address.
+
+If you are wanting to have the X connection re-directed to a workstation
+somewhere, we'll need to set the master up to forward outgoing connections
+from compute nodes so the X connection can get through.
+
+G'day,
+sjames
+ 
+
+
+On Wed, 6 Nov 2002, Gerard P. Gilfoyle wrote:
+
+> Hi Steven,
+> 
+>    Thanks for all your help on Monday with the upgrade of the Richmond 
+> cluster. I have spent yesterday and today getting all our software 
+> tools up and running and I have run into a problem. We use a code 
+> called root to analyze our physics data both interactively and in 
+> batch. It was written at CERN (a large, international particle physics 
+> lab in Europe). I can run root on the master (pscm1) in interactive 
+> mode and in batch with no problems. However, when I try to run it in 
+> batch on a cluster node it can't find a library. The commands and 
+> error message are below.
+> 
+> running root in batch on master: 
+> 
+>        root -b -q run_eod3.C  <-- this works
+> 
+> The '-b' means batch and '-q' means the next thing is a file
+> containing commands for the data analysis.
+> 
+> running root in batch on a slave 3: 
+> 
+>        bpsh 3 root -b -q /scratch/gilfoyle/e5/24028/run_eod3.C
+> 
+> error message from the previous command:
+> 
+> root: error while loading shared libraries: libXpm.so.4: cannot open 
+> shared object file: No such file or directory
+> 
+> The library libXpm.so.4 is located in /usr/X11R6/lib/ on pscm1 so 
+> presumably this is an environment variable problem. I have tried 
+> various fixes, but all have failed. Some of the things I tried are 
+> listed below.
+> 
+> 1. root uses a library whose location is defined by the environment 
+> variable LD_LIBRARY_PATH which will point to an area like 
+> /usr/root/lib/. I have tried adding /usr/X11R6/lib/ to this path and 
+> even putting libXpm.so.4 in with the normal root libraries, but I get 
+> the same failure.
+> 
+> 2. After the upgrade on Monday, we created user directories and 
+> account in the /home area, but I realized later the disk partition 
+> containing /home was too small. I moved the home directories to 
+> /usr/home. I speculated that the slave was not finding the correct 
+> .cshrc file so I created a temporary /home/gilfoyle
+> area, put all the files in there (including the .cshrc file), and 
+> tried running root on the slave from that new directory. I get the 
+> same error message. 
+> 
+> Do you have any thoughts on what a solution could be???
+> 
+> I will also contact the root developers to see if they have run into 
+> this problem.
+> 
+> thanks-in-advance,
+> 
+> jerry
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+
+

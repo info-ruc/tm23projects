@@ -1,0 +1,31 @@
+Received: from imo21.mx.aol.com (imo21.mx.aol.com [198.81.17.65])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id OAA30040
+	for <handyboard@media.mit.edu>; Thu, 18 Jun 1998 14:32:07 -0400 (EDT)
+From: GJZ@aol.com
+Received: from GJZ@aol.com
+	by imo21.mx.aol.com (IMOv14_b1.1) id BZYTa12329;
+	Thu, 18 Jun 1998 14:30:39 -0400 (EDT)
+Message-Id: <bd982cba.35895cd0@aol.com>
+Date: Thu, 18 Jun 1998 14:30:39 EDT
+To: goldt@et.byu.edu, handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: System interupt problems?
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 60
+
+you are correct, you are just attaching yourself to the beginning of the
+interrupt service routine, and the job of formatting system flags is taken
+care of by the ISR.
+however, i do see something that may be causing numerical errors.  in the
+code, you only concern yourself with the lower byte of the D accumulator, so
+you take the contents of the B accumulator, and copy it to the A accumulator
+also, which is fine, but then you go ahead to store the whole D accumulator
+into "TCOUNT", which is storing the value of the A accumulator along with
+value of the B accumulator.  i am not sure if this is causing problems, but i
+know that small things like this can cause huge problems.  instead of "STD
+variable_TCOUNT", try "STAB variable_TCOUNT".  this may help.  
+
+Justin D. Gullotta.. , Engineer,
+Rensselaer Polytechnic Institute.
+

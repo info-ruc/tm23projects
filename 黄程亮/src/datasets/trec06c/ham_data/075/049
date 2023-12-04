@@ -1,0 +1,230 @@
+Received: from phobos.email.Arizona.EDU (128.196.133.165) by deimos.email.Arizona.EDU (5.1.046)
+        id 3A35296D0004B369; Thu, 14 Dec 2000 16:04:02 -0700
+Received: from psy1.psych.arizona.edu (128.196.98.40) by phobos.email.Arizona.EDU (5.1.046)
+        id 3A1F0EE60017FFCB; Thu, 14 Dec 2000 16:04:02 -0700
+Received: (from petidomo@localhost)
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) id QAA20532;
+	Thu, 14 Dec 2000 16:03:36 -0700
+X-Authentication-Warning: psy1.psych.arizona.edu: petidomo set sender to DMDX-owner@psy1.psych.arizona.edu using -f
+Received: from phobos.email.Arizona.EDU (root@phobos-adm.email.Arizona.EDU [128.196.133.165])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id QAA20528
+	for &lt;DMDX@psy1.psych.arizona.edu&gt;; Thu, 14 Dec 2000 16:03:34 -0700
+Received: from jcf.u.arizona.edu (128.196.98.7) by phobos.email.Arizona.EDU (5.1.046)
+        id 3A1F0EE60017FF9F for DMDX@psy1.psych.arizona.edu; Thu, 14 Dec 2000 16:03:32 -0700
+Message-Id: &lt;5.0.2.1.2.20001214154601.009ef6d0@psy1.psych.arizona.edu&gt;
+Date: Thu, 14 Dec 2000 16:03:33 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" &lt;jforster@psy1.psych.arizona.edu&gt;
+Subject: [DMDX] Re: branching with 2 counters
+In-Reply-To: &lt;3A35296E00002C91@deimos.email.Arizona.EDU&gt;
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Should be possible, I think it's an error in the syntax check code, it 
+doesn't clear those pending operations unless they actually execute (and in 
+a syntax check they don't), 2.3.04 will have that fixed.  BTW, you're 
+missing a semi colon in item 1004.   Also f.5 in the parameter line is 
+invalid (it'll be interpreted as F0), you can't use seconds to F, only 
+counts of frames.  And much to my surprise I find you can't have + 2002 
+(space between the CR indicator and the item number), it's got to be +2002, 
+might fix that in 2.3.04 too.
+
+At 03:38 PM 12/14/00 -0700, you wrote:
+&gt;I am trying to track separate accuracies to 2 different questions (emotional
+&gt;valence induced by stimulus and content of stimulus)per item.
+&gt;I didn't find a way to track 2 separate accuracies per item
+&gt;and across items with the &lt;bierGT N1,N2&gt; command, so I tried to use the
+&gt;&lt;set N1,N2&gt; set counter and &lt;deciw N1&gt; command and set up a different counter
+&gt;for each type of accuracy I'm tracking. However, these counter commands
+&gt;seem to work only for looping on the same item and not for decrementing
+&gt;the count across a series of items, because I get the error:  "multiple
+&gt;pending operations per counter not allowed". I want to branch if accuracy
+&gt;to the first question about valence is below 75% and I want to emit the
+&gt;accuracy to the second question about stimulus content at the end of the
+&gt;block before branching. Is there a way to do this? Thanks.
+&gt;
+&gt;A piece of the item file:
+&gt;
+&gt;&lt;ep&gt; t2500 f.5 d180 &lt;zil&gt; &lt;nfb&gt; &lt;df Arial&gt; &lt;dfs 26&gt; &lt;cr&gt; &lt;RecordClockOnTime&gt;
+&gt;&lt;mip 27&gt; &lt;vm 640,480,480,16,0&gt; &lt;wc 000255000&gt; &lt;ID Keyboard&gt; &lt;ID PIO12&gt;
+&gt;&lt;bgc 000000000&gt; &lt;eop&gt;
+&gt;
+&gt;
+&gt;8881  &lt;fd 60&gt; "Ready?";
+&gt;8882 &lt;set 1, 4&gt; &lt;set 2, 4&gt; d60/;
+&gt;
+&gt;-1001  %20 g" E:\Data\crosshair.bmp"/%7 *"Set 1 Pleasant"/%60 "Pleasant
+&gt;      Unpleasant      Neutral?"/ &lt;deciw 1&gt;;
+&gt;
+&gt;-2001 %60 *"Face    No Face?"/ &lt;deciw 2&gt;;
+&gt;
+&gt;+1002  &lt;mpr +Bit4&gt; %20 g"E:\Data\crosshair.bmp"/%7 *"Set 1 Neutral" /%60
+&gt;"Pleasant      Unpleasant      Neutral?"/ &lt;deciw 1&gt;;
+&gt;
+&gt;+ 2002 %60 *"Face   No Face?"/ &lt;deciw 2&gt;;
+&gt;
+&gt;-1003  %20 g"E:\Data\crosshair.bmp"/%7 *"Set 1 Pleasant"/%60 "Pleasant
+&gt;     Unpleasant      Neutral?"/ &lt;deciw 1&gt;;
+&gt;
+&gt;+ 2003 %60 *"Face   No Face?"/ &lt;deciw 2&gt;;
+&gt;
+&gt;+1004  %20 g"E:\Data\crosshair.bmp"/%7 *"Set1 Negative" /%60 "Pleasant
+&gt;     Unpleasant      Neutral?"/ &lt;deciw 1&gt;
+&gt;
+&gt;+ 2002 %60 *"Face   No Face?"/ &lt;deciw 2&gt; &lt;emit 2&gt; &lt; cicLE 1, 2, -8881&gt;;
+&gt;
+&gt;8883  &lt;fd 60&gt; "Ready?";
+&gt;8884 &lt;set 1, 4&gt; d60/;
+&gt;
+&gt;. . .
+&gt;
+&gt;
+&gt;
+&gt;
+&gt;
+&gt;
+&gt;Keolani Taitano, Ph.D.
+&gt;Postdoctoral Research Fellow
+&gt;Department of Psychiatry
+&gt;University of Arizona Health Sciences Center
+&gt;P.O. Box 245002
+&gt;Tucson, AZ 85724-5002
+&gt;
+&gt;voice: 520-235-9588
+&gt;fax: 253-369-3571
+&gt;
+&gt;
+&gt;====================================================================
+&gt;    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+&gt;   'unsubscribe' by itself with no quotes in the body of the email
+&gt;   to be removed from the list.  The list archive is available here:
+&gt;           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+&gt;====================================================================
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+Main's Law:
+	For every action there is an equal and opposite government
+program.
+
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+
+
+--=========3A35296E000046F1/deimos.email.Arizona.EDU
+Content-Type: Text/Plain
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="FBehav7test.zil"
+
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKg0KIlN1YmplY3QgMiwgMTIvMTgvMjAwMCAxNzoxMzozOSBvbiBHUkFEMSwg
+cmVmcmVzaCAxNi42N21zICAgICAgIENPVCINCiJJdGVtIDg4ODEsIENPVCAwLjAwLCBObyBSZXNw
+b25zZXMuIg0KIkl0ZW0gODg4MiwgQ09UIDAuMDAsIE5vIFJlc3BvbnNlcy4iDQoiSXRlbSAxMDAx
+LCBDT1QgMC4wMCINCiIgMTAyMC44MCwrQml0MSAxNDYyLjcyLC1CaXQxIg0KIkl0ZW0gMjAwMSwg
+Q09UIDQwMTYuODQiDQoiIDE1ODUuMTAsK0JpdDQgMTc0OC4wOSwtQml0NCINCiJJdGVtIDEwMDIs
+IENPVCA4NDgzLjcwIg0KIiAxNjQyLjg5LCtCaXQyIDE4NzYuNTMsLUJpdDIiDQoiSXRlbSAyMDAy
+LCBDT1QgMTI1MDAuNTQiDQoiIDExMDQuMjIsK0JpdDEgMTMxOC43OCwtQml0MSINCiJJdGVtIDEw
+MDMsIENPVCAxNjk1MC43MyINCiIgOTEyLjQ4LCtCaXQxIDEwOTEuNDMsLUJpdDEiDQoiSXRlbSAy
+MDAzLCBDT1QgMjA5NjcuNjMiDQoiIDg2OC4yMCwrQml0MSAxMDQ2LjY1LC1CaXQxIg0KIkl0ZW0g
+MTAwNCwgQ09UIDI1NDAxLjEzIg0KIiAxNzEwLjE1LCtCaXQyIDE5MTguNjksLUJpdDIiDQoiSXRl
+bSAyMDA0LCBDT1QgMjk0MTcuOTMiDQoiIDg5My41OSwrQml0MSAxMTA0LjIwLC1CaXQxIg0KISAg
+Q291bnRlciAxIGhhcyB2YWx1ZSA0DQohICBDb3VudGVyIDIgaGFzIHZhbHVlIDANCiJJdGVtIDg4
+ODMsIENPVCAyOTQxNy45MywgTm8gUmVzcG9uc2VzLiINCiJJdGVtIDg4ODQsIENPVCAyOTQxNy45
+MywgTm8gUmVzcG9uc2VzLiINCiIhICBEaXNwbGF5IGVycm9yIGF0IG1zZWMgNDA1NTUuOTMsIHRp
+Y2sgMjM5MyBpbiBpdGVtIDg4ODUsIGZyYW1lICIiIiIiDQohICAgIDMuOTZtcyBvZiByZWZ1c2Vk
+IHZpZGVvIGZsaXBzIG9jY3VyZWQNCiEgICAgIChwcmV2aW91cyBmcmFtZSdzIGR1cmF0aW9uIHdp
+bGwgaGF2ZSBiZWVuIGxvbmdlcikNCiEgICAgLS0gcG9zc2libHkgY2F1c2VkIGJ5IGFub3RoZXIg
+cHJvY2VzcyB0YWtpbmcgMSB0aWNrDQoiSXRlbSA4ODg1LCBDT1QgMjk0MTcuOTMsIE5vIFJlc3Bv
+bnNlcy4iDQoiSXRlbSAxMDA1LCBDT1QgMzc5MTguMzAiDQoiIDc2NS44NywrQml0MSA5NDMuNjEs
+LUJpdDEiDQoiSXRlbSAyMDA1LCBDT1QgNDE5NTIuMTMiDQoiIDk2Ny40MCwrQml0MSAxMTEwLjE5
+LC1CaXQxIg0KIkl0ZW0gMTAwNiwgQ09UIDQ2NDAxLjk5Ig0KIiAxNDIyLjUzLCtCaXQxIDE2MzAu
+NjksLUJpdDEiDQoiSXRlbSAyMDA2LCBDT1QgNTA0MTguODMiDQoiIDEwMTQuMDcsK0JpdDQgMTE2
+NS45NywtQml0NCINCiJJdGVtIDEwMDcsIENPVCA1NDg2OS4wMiINCiIgMTMzOS44OSwrQml0MSAx
+NDg1LjMyLC1CaXQxIg0KIkl0ZW0gMjAwNywgQ09UIDU4ODg2LjEzIg0KIiAxNjMzLjUwLCtCaXQ0
+IDE3ODQuNjAsLUJpdDQiDQoiSXRlbSAxMDA4LCBDT1QgNjMzMzYuMDYiDQoiIDEyNzguMjEsK0Jp
+dDIgMTQ3Mi4xMiwtQml0MiINCiJJdGVtIDIwMDgsIENPVCA2NzM1Mi45MCINCiIgMTE5Mi43OSwr
+Qml0MSAxNDA4LjUzLC1CaXQxIg0KISAgQ291bnRlciAxIGhhcyB2YWx1ZSAzDQohICBDb3VudGVy
+IDIgaGFzIHZhbHVlIDMNCiJJdGVtIDg4ODYsIENPVCA2NzM1Mi45MCwgTm8gUmVzcG9uc2VzLiIN
+CiJJdGVtIDg4ODcsIENPVCA2NzM1Mi45MCwgTm8gUmVzcG9uc2VzLiINCiJJdGVtIDg4ODgsIENP
+VCA2NzM1Mi45MCwgTm8gUmVzcG9uc2VzLiINCiJJdGVtIDEwMDksIENPVCA3NTg2OS45OSINCiIg
+NzExLjEzLCtCaXQxIDg1Mi4wMiwtQml0MSINCiJJdGVtIDIwMDksIENPVCA3OTkwMy41NiINCiIg
+ODA2LjQyLCtCaXQ0IDkwMy41MCwtQml0NCINCiJJdGVtIDEwMTAsIENPVCA4NDQyMC43NSINCiIg
+MjIwMi4zMSwrQml0MSAyMzUzLjQ1LC1CaXQxIg0KIkl0ZW0gMjAxMCwgQ09UIDg4NDM3LjEzIg0K
+IiA4MjYuMTAsK0JpdDQgOTQ3LjE1LC1CaXQ0Ig0KIkl0ZW0gMTAxMSwgQ09UIDkyODg3LjM5Ig0K
+IiA4NzYuODYsK0JpdDEgMTAyMi4yNSwtQml0MSINCiJJdGVtIDIwMTEsIENPVCA5NjkwNC4xNyIN
+CiIgNzU4LjkwLCtCaXQ0IDg4OC44MSwtQml0NCINCiJJdGVtIDEwMTIsIENPVCAxMDEzNTQuNTEi
+DQoiIDE4NDguNjksK0JpdDIgMjA2NC41MSwtQml0MiINCiJJdGVtIDIwMTIsIENPVCAxMDUzNzEu
+MjAiDQoiIDczNC45NCwrQml0NCA4MDEuOTQsLUJpdDQiDQohICBDb3VudGVyIDEgaGFzIHZhbHVl
+IDMNCiEgIENvdW50ZXIgMiBoYXMgdmFsdWUgMw0KIkl0ZW0gODg4OSwgQ09UIDEwNTM3MS4yMCwg
+Tm8gUmVzcG9uc2VzLiINCiJJdGVtIDEyMDEsIENPVCAxMDUzNzEuMjAsIE5vIFJlc3BvbnNlcy4i
+DQoiSXRlbSA5OTk5LCBDT1QgMTA1MzcxLjIwLCBObyBSZXNwb25zZXMuIg0KDQoqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqDQoiU3ViamVjdCAzLCAxMi8xOC8yMDAwIDE3OjIyOjExIG9uIEdSQUQxLCByZWZyZXNoIDE2
+LjY3bXMgICAgICAgQ09UIg0KIkl0ZW0gODg4MSwgQ09UIDAuMDAsIE5vIFJlc3BvbnNlcy4iDQoi
+SXRlbSA4ODgyLCBDT1QgMC4wMCwgTm8gUmVzcG9uc2VzLiINCiJJdGVtIDEwMDEsIENPVCAwLjAw
+Ig0KIiAxMjQwLjU0LCtCaXQxIDEzODYuNDAsLUJpdDEiDQoiSXRlbSAyMDAxLCBDT1QgNDAxNi42
+OSINCiIgMTU2Ny4wNSwrQml0MSAxNzI1LjE0LC1CaXQxIg0KIkl0ZW0gMTAwMiwgQ09UIDg1MDAu
+MjIiDQoiIDE0MTkuMzksK0JpdDQgMTYxMS45NywtQml0NCINCiJJdGVtIDIwMDIsIENPVCAxMjUx
+Ny4wNiINCiIgMjE4NC41MSwrQml0NCAyMzI5LjQ2LC1CaXQ0Ig0KIkl0ZW0gMTAwMywgQ09UIDE2
+OTY3LjI1Ig0KIiAxMTA3LjkzLCtCaXQxIDExOTguODMsLUJpdDEiDQoiSXRlbSAyMDAzLCBDT1Qg
+MjA5ODQuMDkiDQoiIDQ3MS41OSwrQml0NCA1OTQuMzIsLUJpdDQiDQoiSXRlbSAxMDA0LCBDT1Qg
+MjU0NjcuNjEiDQoiIDEwMjIuMzIsK0JpdDIgMTIxNC4wNCwtQml0MiINCiJJdGVtIDIwMDQsIENP
+VCAyOTQ4NC45NyINCiIgMzE2LjI3LCtCaXQ0IDQyNS4yNiwtQml0NCINCiEgIENvdW50
+ZXIgMSBoYXMgdmFsdWUgNA0KISAgQ291bnRlciAyIGhhcyB2YWx1ZSA0DQoiSXRlbSA4ODgzLCBD
+T1QgMjk0ODQuOTcsIE5vIFJlc3BvbnNlcy4iDQoiSXRlbSA4ODg0LCBDT1QgMjk0ODQuOTcsIE5v
+IFJlc3BvbnNlcy4iDQoiISAgRGlzcGxheSBlcnJvciBhdCBtc2VjIDQwNDY1LjUwLCB0aWNrIDIz
+OTcgaW4gaXRlbSA4ODg1LCBmcmFtZSAiIiIiIg0KISAgICA0LjM2bXMgb2YgcmVmdXNlZCB2aWRl
+byBmbGlwcyBvY2N1cmVkDQohICAgICAocHJldmlvdXMgZnJhbWUncyBkdXJhdGlvbiB3aWxsIGhh
+dmUgYmVlbiBsb25nZXIpDQohICAgIC0tIHBvc3NpYmx5IGNhdXNlZCBieSBhbm90aGVyIHByb2Nl
+c3MgdGFraW5nIDEgdGljaw0KIkl0ZW0gODg4NSwgQ09UIDI5NDg0Ljk3LCBObyBSZXNwb25zZXMu
+Ig0KIkl0ZW0gMTAwNSwgQ09UIDM3OTY4LjE1Ig0KIiA4MzkuNjksK0JpdDEgMTAzNy45NCwtQml0
+MSINCiJJdGVtIDIwMDUsIENPVCA0MjAwMS42NiINCiIgMTI3NC44OSwrQml0NCAxNDU1LjUxLC1C
+aXQ0Ig0KIkl0ZW0gMTAwNiwgQ09UIDQ2NDUxLjg0Ig0KIiAyMDc4LjY2LCtCaXQ0IDIyMDYuNTMs
+LUJpdDQiDQoiSXRlbSAyMDA2LCBDT1QgNTA0NjguNjgiDQoiIDEyMTUuMjMsK0JpdDQgMTMyMS4z
+MSwtQml0NCINCiJJdGVtIDEwMDcsIENPVCA1NDkxOC44NyINCiIgOTQ5LjI2LCtCaXQxIDExMTMu
+MjAsLUJpdDEiDQoiSXRlbSAyMDA3LCBDT1QgNTg5MzUuNzIiDQoiIDc5Ny44MCwrQml0NCA5MDAu
+ODYsLUJpdDQiDQoiSXRlbSAxMDA4LCBDT1QgNjMzODUuOTAiDQoiIDE0MzMuMzcsK0JpdDQgMTU4
+Ny4wNywtQml0NCINCiJJdGVtIDIwMDgsIENPVCA2NzQwMy4zMSINCiIgNTM1LjEyLCtCaXQ0IDYy
+OC4zOCwtQml0NCINCiEgIENvdW50ZXIgMSBoYXMgdmFsdWUgNA0KISAgQ291bnRlciAyIGhhcyB2
+YWx1ZSAzDQoiSXRlbSA4ODg2LCBDT1QgNjc0MDMuMzEsIE5vIFJlc3BvbnNlcy4iDQoiSXRlbSA4
+ODg3LCBDT1QgNjc0MDMuMzEsIE5vIFJlc3BvbnNlcy4iDQoiISAgRGlzcGxheSBlcnJvciBhdCBt
+c2VjIDc4MzgzLjc5LCB0aWNrIDQ2NDYgaW4gaXRlbSA4ODg4LCBmcmFtZSAiIiIiIg0KISAgICA0
+LjMzbXMgb2YgcmVmdXNlZCB2aWRlbyBmbGlwcyBvY2N1cmVkDQohICAgICAocHJldmlvdXMgZnJh
+bWUncyBkdXJhdGlvbiB3aWxsIGhhdmUgYmVlbiBsb25nZXIpDQohICAgIC0tIHBvc3NpYmx5IGNh
+dXNlZCBieSBhbm90aGVyIHByb2Nlc3MgdGFraW5nIDEgdGljaw0KIkl0ZW0gODg4OCwgQ09UIDY3
+NDAzLjMxLCBObyBSZXNwb25zZXMuIg0KIkl0ZW0gMTAwOSwgQ09UIDc1ODg2LjQ0Ig0KIiAxMDQy
+LjYwLCtCaXQxIDExNzMuNTgsLUJpdDEiDQoiSXRlbSAyMDA5LCBDT1QgNzk5MTkuOTUiDQoiIDIy
+Ny4wNCwrQml0MSAzNjQuNzAsLUJpdDEiDQoiSXRlbSAxMDEwLCBDT1QgODQzNzAuMTQiDQoiIDEw
+OTAuMDYsK0JpdDQgMTIzNS45NCwtQml0NCINCiJJdGVtIDIwMTAsIENPVCA4ODM4Ni45OCINCiIg
+MjYwLjYxLCtCaXQ0IDQyOC4zMiwtQml0NCINCiJJdGVtIDEwMTEsIENPVCA5MjgzNy4xNyINCiIg
+MTI0NC42MywrQml0MSAxMzkyLjIyLC1CaXQxIg0KIkl0ZW0gMjAxMSwgQ09UIDk2ODU0LjA1Ig0K
+IiAzMDkuMDEsK0JpdDQgNDE1LjkwLC1CaXQ0Ig0KIkl0ZW0gMTAxMiwgQ09UIDEwMTMwNC4yMCIN
+CiIgNzUxLjE5LCtCaXQxIDkxNC4yMCwtQml0MSINCiJJdGVtIDIwMTIsIENPVCAxMDUzMjEuMDMi
+DQoiIDM3MC42MiwrQml0NCA0ODkuOTUsLUJpdDQiDQohICBDb3VudGVyIDEgaGFzIHZhbHVlIDMN
+CiEgIENvdW50ZXIgMiBoYXMgdmFsdWUgNA0KIkl0ZW0gODg4OSwgQ09UIDEwNTMyMS4wMywgTm8g
+UmVzcG9uc2VzLiINCiJJdGVtIDEyMDEsIENPVCAxMDUzMjEuMDMsIE5vIFJlc3BvbnNlcy4iDQoi
+SXRlbSA5OTk5LCBDT1QgMTA1MzIxLjAzLCBObyBSZXNwb25zZXMuIg0K
+
+--=========3A35296E000046F1/deimos.email.Arizona.EDU--
+
+</PRE><A HREF="mailto:DMDX@psy1.psych.arizona.edu
+?Subject=Re: [DMDX] FW: Re: branching with 2 counters
+"><IMG SRC="/icons/text.gif" ALT="[REPLY]"></A>
+<br><A HREF="http://psy1.psych.arizona.edu/cgi-bin/DMDX/1999-2000/thread"><IMG SRC="/icons/back.gif" ALT="[BACK]"></A>
+</BODY></HTML>

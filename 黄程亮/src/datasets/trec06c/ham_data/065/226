@@ -1,0 +1,52 @@
+Received: from pixar.pixar.com (pixar.pixar.com [138.72.10.20])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id NAA03323
+	for <9fans@cse.psu.edu>; Mon, 10 Apr 2000 13:18:41 -0400 (EDT)
+Received: from marvin.pixar.com (marvin.pixar.com [138.72.30.83])
+	by pixar.pixar.com (8.9.3/8.9.3) with ESMTP id KAA22947
+	for <9fans@cse.psu.edu>; Mon, 10 Apr 2000 10:18:05 -0700 (PDT)
+Received: (from td@localhost)
+	by marvin.pixar.com (8.9.3/8.9.3) id KAA257529
+	for 9fans@cse.psu.edu; Mon, 10 Apr 2000 10:18:05 -0700 (PDT)
+From: "Tom Duff" <td@pixar.com>
+Message-Id: <10004101018.ZM257989@marvin>
+Date: Mon, 10 Apr 2000 10:18:05 -0700
+In-Reply-To: Alexander Viro <viro@math.psu.edu>
+        "Re: Re: [9fans] truncate syscall" (Apr 10,  1:00pm)
+References: <Pine.GSO.4.10.10004101248530.251-100000@weyl.math.psu.edu>
+Reply-To: td@pixar.com
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] truncate syscall
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+> mmap(). truncate() is a bad name - it's setsize(). IOW, it can extend
+> files. Add the mmap() semantics in that respect and there you go -
+> open()/ftruncate() to set the size/mmap() the region/start working; is
+> quite common. Yes, you can kludge around it with lseek();write(); but
+> that's a kludge, unless we accept that zero-length write() changes the
+> file size. Which is not true under a lot of Unices (I seriously suspect
+> that it's explicitly prohibited by POSIX or something like that).
+
+	int f=create("file", OREAD, 0666);
+	if(n){
+		seek(f, n-1, 0);
+		write(f, "", 1);
+	}
+
+What exactly is kludgy about this?
+
+I've been using UNIX & Plan 9 for 26 years,
+and not once have I wanted to chop the tail
+off a file.  I find it really hard to believe
+that you need this so badly that you want to
+change 9p.  Why can't you afford to rewrite
+the file?
+
+
+-- 
+Tom Duff.  This work was funded by The Corporation for Public Vaporware.
+

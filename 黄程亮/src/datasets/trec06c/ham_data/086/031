@@ -1,0 +1,221 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id h0PLldX3499851;
+	Sat, 25 Jan 2003 13:47:39 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id h0PH3AE28612;
+	Sat, 25 Jan 2003 12:03:10 -0500
+Date: Sat, 25 Jan 2003 12:03:10 -0500
+Message-Id: <CA-2003-04.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2003-04 MS-SQL Server Worm
+Precedence: bulk
+Status: RO
+X-Status: $$$$
+X-UID: 0000000075
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-04 MS-SQL Server Worm
+
+   Original release date: January 25, 2003
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Microsoft SQL Server 2000
+
+Overview
+
+   The  CERT/CC  has  received reports of self-propagating malicious code
+   that  exploits  multiple  vulnerabilities in the Resolution Service of
+   Microsoft  SQL  Server  2000.  The propagation of this worm has caused
+   varied  levels of network degradation across the Internet, in addition
+   to the compromise of vulnerable machines
+
+I. Description
+
+   The  worm targeting SQL Server computers is self-propagating malicious
+   code  that  most likely exploits two vulnerabilities in the Resolution
+   Service   of   Microsoft   SQL   Server   2000   vulnerabilities.  The
+   vulnerability   documented   in   VU#370308   allows   the  keep-alive
+   functionality  employed by the SQL Server Resolution Service to launch
+   a  denial  of  service  against  other hosts. Either the vulnerability
+   VU#399260  or  VU#484891  allow for the execution of arbitrary code on
+   the SQL Server computer due to a buffer overflow.
+
+       VU#370308 - http://www.kb.cert.org/vuls/id/370308
+       VU#399260 - http://www.kb.cert.org/vuls/id/399260
+       VU#484891 - http://www.kb.cert.org/vuls/id/484891
+
+   Reports  to  the  CERT/CC  indicate  that  the high volume of 1434/udp
+   traffic  generated  between hosts infected with the worm targeting SQL
+   Server  computers  may  itself  lead  to performance issues (including
+   possible  denial-of-service  conditions)  on  networks  with  infected
+   hosts.
+
+   Activity  of  this  worm  is  readily identifiable on a network by the
+   presence  of  small  UDP  packets (we have received reports of 376-410
+   byte  packets)  from  seemingly  random  IP  addresses from across the
+   Internet to port 1434/udp.
+
+II. Impact
+
+   Compromise  by  the  worm indicates that a remote attacker can execute
+   arbitrary  code  as the local SYSTEM user on the victim system. It may
+   be possible for an attacker to subsequently leverage a local privilege
+   escalation exploit in order to gain Administrator access to the victim
+   system.
+
+   The  high  volume of 1434/udp traffic generated between hosts infected
+   with  the  worm may itself lead to performance issues on networks with
+   both infected and targeted, but non-vulnerable hosts.
+
+III. Solution
+
+   Apply a patch
+
+   Administrators  of  all  systems running Microsoft SQL Server 2000 are
+   encouraged  to  review  CA-2002-22  and  VU#370308 for detailed vendor
+   recommendations regarding installing the patch:
+
+   http://www.microsoft.com/technet/treeview/default.asp?url=/technet/security/bulletin/MS02-039.asp 
+
+       CA-2002-22 - http://www.cert.org/advisories/CA-2002-22.html
+       VU#370308 - http://www.kb.cert.org/vuls/id/370308
+
+
+   Ingress/Egress filtering
+
+   The following steps are only effective in limiting the damage that can
+   be  done  by  systems  already infected with the worm. They provide no
+   protection  whatsoever  against the initial infection of systems. As a
+   result,   these   steps  are  only  recommended  in  addition  to  the
+   preventative steps outlined above, not in lieu thereof.
+
+   Ingress  filtering  manages the flow of traffic as it enters a network
+   under  your  administrative  control.  Servers  are typically the only
+   machines that need to accept inbound traffic from the public Internet.
+   In  the  network  usage  policy of many sites, external hosts are only
+   permitted  to initiate inbound traffic to machines that provide public
+   services   on  specific  ports.  Thus,  ingress  filtering  should  be
+   performed  at  the  border  to  prohibit  externally initiated inbound
+   traffic to non-authorized services.
+
+   Egress  filtering  manages  the flow of traffic as it leaves a network
+   under your administrative control. There is typically limited need for
+   machines providing public services to initiate outbound connections to
+   the Internet.
+
+   In  the  case of this worm, employing ingress and egress filtering can
+   help  prevent  compromised  systems  on  your  network  from attacking
+   systems  elsewhere.  Blocking  UDP  datagrams  with  both  source  and
+   destination  ports  1434 from entering or leaving your network reduces
+   the  risk  of  external  infected  systems communicating with infected
+   hosts inside your network.
+
+
+   Recovering from a system compromise
+
+   If  you  believe  a  system under your administrative control has been
+   compromised, please follow the steps outlined in:
+
+       Steps for Recovering from a UNIX or NT System Compromise
+       http://www.cert.org/tech_tips/win-UNIX-system_compromise.html
+
+
+   Reporting
+
+   The  CERT/CC  is  interested in receiving reports of this activity. If
+   machines  under  your  administrative  control are compromised, please
+   send  mail  to  cert@cert.org  with the following text included in the
+   subject line: "[CERT#35663]".
+     _________________________________________________________________
+
+   Feedback can be directed to the author: Roman Danyliw
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2003-04.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2003 Carnegie Mellon University.
+
+   Revision History
+   January 25, 2003:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPjKkJmjtSoHZUTs5AQG4KgP+MGcnpMxQrAVMBu+jhPhIobYp2eaPRSfx
+Nj5TQs9A3749p11Of1h5KxyqrjBhL/Ff8jyac4Vj0XWa4KtYeiPbC0feN49LKEnn
+6JLf24Pyov3wEPn9tcBJ511lAhD506sUVsTTrexrFUgaSCFnG4nucP1wC93JUbdx
+QxMA0Aixt1U=
+=VhD+
+-----END PGP SIGNATURE-----
+

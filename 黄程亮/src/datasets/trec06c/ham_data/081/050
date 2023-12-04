@@ -1,0 +1,228 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id g4AN1lk16488;
+	Fri, 10 May 2002 16:01:48 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id QAA03628;
+	Fri, 10 May 2002 16:38:05 -0400 (EDT)
+Date: Fri, 10 May 2002 16:38:05 -0400 (EDT)
+Received: by canaveral.red.cert.org; Fri, 10 May 2002 16:31:39 -0400
+Message-Id: <CA-2002-13.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-13 Buffer Overflow in Microsoft's MSN Chat ActiveX
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 252
+Status: RO
+X-Status: $$$$
+X-UID: 0000000048
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-13 Buffer Overflow in Microsoft's MSN Chat ActiveX 
+                         Control
+
+   Original release date: May 10, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   Microsoft Windows systems with one or more of the following:
+     * Microsoft MSN Chat control
+     * Microsoft MSN Messenger 4.6 and prior
+     * Microsoft Exchange Instant Messenger 4.6 and prior
+
+Overview
+
+   Microsoft's MSN Chat is an ActiveX control for Microsoft Messenger, an
+   instant  messenging  client.  A  buffer overflow exists in the ActiveX
+   control that may permit a remote attacker to execute arbitrary code on
+   the system with the privileges of the current user.
+
+I. Description
+
+   A  buffer  overflow  exists  in the "ResDLL" parameter of the MSN Chat
+   ActiveX control that may permit a remote attacker to execute arbitrary
+   code  on  the  system  with  the  privileges of the current user. This
+   vulnerability  affects  MSN  Messenger  and Exchange Instant Messenger
+   users.  Since the control is signed by Microsoft, users of Microsoft's
+   Internet Explorer (IE) who accept and install Microsoft-signed ActiveX
+   controls  are  also  affected.  The Microsoft MSN Chat control is also
+   available for direct download from the web.
+
+   The  <object>  tag could be used to embed the ActiveX control in a web
+   page. If an attacker can trick the user into visiting a malicious site
+   or the attacker sends the victim a web page as an HTML-formatted email
+   or  newsgroup posting then this vulnerability could be exploited. This
+   acceptance  and  installation  of  the control can occur automatically
+   within  IE for users who trust Microsoft-signed ActiveX controls. When
+   the  web  page  is rendered, either by opening the page or viewing the
+   page  through  a  preview  pane, the ActiveX control could be invoked.
+   Likewise,  if  the  ActiveX  control is embedded in a Microsoft Office
+   (Word,  Excel, etc.) document, it may be executed when the document is
+   opened.
+
+   According to the Microsoft Advisory (MS02-022):
+
+     It's  important to note that this control is used for chat rooms on
+     several  MSN  sites  in  addition to the main MSN Chat site. If you
+     have  successfully  used  chat on any MSN-site, you have downloaded
+     and installed the chat control.
+
+   The  CERT/CC  has  published  information on ActiveX in Results of the
+   Security in ActiveX Workshop (pdf) and CA-2000-07.
+
+   This issue is also being referenced as CAN-2002-0155:
+
+     http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2002-0155
+
+II. Impact
+
+   A  remote  attacker  may  be  able  to execute arbitrary code with the
+   privileges of the current user.
+
+III. Solution
+
+   Apply a patch from your vendor
+
+   Microsoft has released a patch, a fixed MSN Chat control, and upgrades
+   to  address this issue. It is important that all users apply the patch
+   since  it  will  prevent the installation of the vulnerable control on
+   systems that have not already installed it.
+
+     Download location for the patch:
+
+     http://www.microsoft.com/Downloads/Release.asp?ReleaseID=38790
+
+     Download  location  for  updated  version of MSN Messenger with the
+     corrected control:
+
+     http://messenger.msn.com/download/download.asp?client=1&update=1
+
+     Download location for updated version of Exchange Instant Messenger
+     with the corrected control:
+
+     http://www.microsoft.com/Exchange/downloads/2000/IMclient.asp
+
+   Microsoft  also  suggests  that the following Microsoft mail products:
+   Outlook  98  and  Outlook 2000 with the Outlook Email Security Update,
+   Outlook  2002, and Outlook Express will block the exploitation of this
+   vulnerability via email because these products will open HTML email in
+   the Restricted Sites zone.
+
+   Other  mitigation  strategies  include  opening  web  pages  and email
+   messages  in  the  Restricted  Sites zone and using email clients that
+   permit users to view messages in plain-text. Likewise, it is important
+   for  users  to  realize  that  a signed control only authenticates the
+   origin  of  the control and does not imply any information with regard
+   to  the security of the control. Therefore, downloading and installing
+   signed controls through an automated process is not a secure choice.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor is not listed below, please check the Vulnerability
+   Note (VU#713779) or contact your vendor directly.
+
+Microsoft
+
+     See 
+http://www.microsoft.com/technet/treeview/default.asp?url=/technet/security/bulletin/MS02-022.asp
+
+   _________________________________________________________________
+
+   The  CERT/CC  acknowledges the eEye Team for discovering and reporting
+   on  this  vulnerability  and  thanks  Microsoft  for  their  technical
+   assistance.
+   _________________________________________________________________
+
+   Feedback can be directed to the author: Jason A. Rafail
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-13.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+May 10, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPNws56CVPMXQI2HJAQGUUQP/ZsyoPxzyttkDCaqvD8V7fu/dWWyUFPrk
+qYTu2CUfZtuGdmpZ91sR8jWn3BAgEiIiF5sIXMckqjApNDORkLdt1sIo5ddkX4qR
+k1JO0sAiNITtUAXwx3vsv36EYCtL+JaX5jmMrZffZvxjM1PzbmxGD7NVOvtGQtGB
+MUEDOZLJe44=
+=TqFl
+-----END PGP SIGNATURE-----
+

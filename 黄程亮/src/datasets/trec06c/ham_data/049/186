@@ -1,0 +1,57 @@
+Received: from easy.stallion.com (easy.stallion.com [204.31.184.2])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id RAA08369
+	for <handyboard@media.mit.edu>; Tue, 10 Aug 1999 17:23:13 -0400 (EDT)
+Received: from stallion.stallion.oz.au by easy.stallion.com id aa23263;
+          10 Aug 99 14:23 PDT
+Received: from gweepery.stallion.oz.au by stallion.stallion.oz.au id aa23420;
+          11 Aug 99 7:22 AEST
+Received: by stallion.oz.au
+	via sendmail from stdin
+	id <m11EJMG-00081YC@gweepery.stallion.oz.au> (Debian Smail3.2.0.102)
+	for handyboard@media.mit.edu; Wed, 11 Aug 1999 07:22:56 +1000 (EST) 
+Sender: chris@gweepery.stallion.oz.au
+To: "Russell, Casey" <crussell@osec.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: Question about the Serial interface board
+References: <D1C6ABF12D15D1119A2D006097BCFD46209ABB@osec102.erols.com>
+From: Christopher Biggs <chris@stallion.oz.au>
+Date: 11 Aug 1999 07:22:56 +1000
+In-Reply-To: "Russell, Casey"'s message of "Tue, 10 Aug 1999 13:39:58 -0400"
+Message-Id: <saemhbxrdb.fsf@gweepery.stallion.oz.au>
+Lines: 31
+User-Agent: Gnus/5.070083 (Pterodactyl Gnus v0.83) Emacs/20.3
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+
+"Russell, Casey" <crussell@osec.com> moved upon the face of the 'Net and spake thusly:
+
+> Is it possible to replace the serial interface board with a straight
+> RJ11 to  DB 9 connector if i don't care about charging the battery.  
+
+No.  The serial board also includes the Maxim MAX232 chip which
+converts the 0-5V levels on the 68hc11 SCI port to the +/- 12V levels
+required by the RS-232 serial standard.
+
+You can (sometimes) build a quick and dirty TTL to RS-232 converter
+with pullup resistors/diodes, but you're better off with a proper
+level converter.
+
+The MAX232 chip uses those capacitors on the serial board to help
+generate +/- 12V from the 5v power supply.  If you're using a PC power
+supply with +/- 12V provided, you can use level-shifting chips that
+are much cheaper and do not require capacitors---the Motorola
+1488/1489 pair, or the Motorola 145406.
+
+A 145406 can be wired to 5v,gnd,TX,RX,+12,-12 and acts as a level
+converter with no other components---I have one wire-wrapped onto a
+header on a test rig right here.
+
+Data for all the above are available from Maxim's and Motorola's
+respective WWW sites.
+
+cjb.
+
+-- 
+It's boring being a program when your only job is inserting a random .sig.
+Muggins thinks I've put his .sig here, won't he be surprised...
+

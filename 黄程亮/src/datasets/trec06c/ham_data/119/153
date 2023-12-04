@@ -1,0 +1,116 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2SFr4Y08636
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 10:53:04 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2SFr2oA013448
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 10:53:02 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Tue, 28 Mar 2006 10:53:03 -0500 (EST)
+Message-ID: <2375.128.84.98.90.1143561183.squirrel@webmail.cornell.edu>
+Date: Tue, 28 Mar 2006 10:53:03 -0500 (EST)
+Subject: paper 16 -- REPUTATION SYSTEMS
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Eigen Trust
+
+very similar to the Karma paper
+
+the paper proposes a reputation system that assigns each peer a unique
+global trust value based on the peer's history of uploads.
+
+the five issues that a reputation system must address are self-policing,
+anonymity, non-assignment of profit to newcomers, minimal overhead and
+robustness to malicious set of peers.
+
+the authors define a normalized trust value and argue that substantially
+good results are obtained despite drawbacks in the normalization scheme.
+each peer stores a trust value associated with every other peer in the
+system. This trust is updated on communicating with its neighbors. A large
+number of such communications/iterations result in a global convergence of
+this trust vector across all nodes.
+
+score managers( peers in the network) are used to manage the trust value
+of a peer. Secure entry algorithm ensures that a node cannot choose its
+score managers and also prevents Sybil attacks.
+
+
+PRACTICAL ISSUES:
+a set of pre-trusted peers are used to tackle various threats.
+in case of inactive peers, pre-trusted peers will be trusted.
+
+POSSIBLE FLAWS
+nothing prevents a set of malicious nodes from increasing each other's
+trust values since authentic
+
+downloads are not penalized ( a node A can increase node B's trust value
+indefinitely)
+
+the paper makes an assumption that a authentic provider of a file will
+also be honest when it comes to reporting other facts. Thus, an attacker
+can share authentic files but deliberately misreport information to
+decrease the percentage of authentic downloads. the authors discuss this
+setup under 'threat model C" but they compare their model with non-trust
+based schemes.
+
+load balancing also seems difficult as users would like to download with
+nodes having higher trust values(no incentive to download from lower trust
+valued peer). new peers may thus suffer as they may not be trusted by
+other nodes and thus their trust values cannot increase.
+
+
+
+
+ROBUST REPUTATION SYSTEM
+
+each peer maintains a reputation rating about every other peer in the
+network.each peer also maintains a trust rating about every other peer in
+the network which describes how honest the peer is (in the eyes of the
+local peer).
+a summary record for each peer is also maintained locally.
+
+
+reputation rating and first hand information is updated by
+self-observations based on transactions in which the local node is
+involved. nodes periodically publish their first hand information to a
+subset of
+their peers. when a peer B receives this published first hand information
+from a peer A, based on the "trustworthiness" of A , B updates reputation
+vector. Trust vectors are always updated.
+
+
+Bayesian approach is used for modifying first-hand information. Reputation
+fading is enabled by giving less weight to past experiences. In periods of
+inactivity, the Bayesian parameters are reduced by a certain factor.
+
+
+a deviation test is used to check whether first hand information from a
+peer should be used or not.
+peers are classified as normal/misbehaving and trustworthy/untrustworthy
+based on the defined thresholds (setting these thresholds involves a
+tradeoff)
+
+
+Sybil attacks discussed and prevented using a secure entry technique.
+
+misreporting nodes do not benefit much as they have to lie carefully (such
+that they do not cross the threshold)
+reputation fading mitigates "intoxication" ( nodes telling the truth over
+a sustained period and then start lying)
+
+load balancing also seems difficult as users would like to download with
+nodes having higher trust values(no incentive to download from lower trust
+valued peer)
+
+
+
+
+
+

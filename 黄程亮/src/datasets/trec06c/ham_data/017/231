@@ -1,0 +1,92 @@
+Received: from hil-img-2.compuserve.com (hil-img-2.compuserve.com [149.174.177.132])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id WAA28176
+	for <handyboard@media.mit.edu>; Tue, 2 Jun 1998 22:43:42 -0400 (EDT)
+Received: (from root@localhost)
+	by hil-img-2.compuserve.com (8.8.6/8.8.6/2.11) id WAA15596
+	for handyboard@media.mit.edu; Tue, 2 Jun 1998 22:43:11 -0400 (EDT)
+Date: Tue, 2 Jun 1998 22:42:18 -0400
+From: HECTOR NORIEGA <110060.2126@compuserve.com>
+Subject: Analog to Digital C.
+Sender: HECTOR NORIEGA <110060.2126@compuserve.com>
+To: Handyboard <handyboard@media.mit.edu>
+Message-Id: <199806022243_MC2-3EFE-C13@compuserve.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="2bc8de9a-fa89-11d1-aaee-00805fea3ca9"
+
+This is a MIME-encapsulated message
+
+--2bc8de9a-fa89-11d1-aaee-00805fea3ca9
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+
+
+--2bc8de9a-fa89-11d1-aaee-00805fea3ca9
+Content-Type: text/plain; charset=ISO-8859-1; name="A2D.TXT"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment; filename="A2D.TXT"
+
+From: Hector Noriega,   2JUNE98=0D
+"Hi" everyone, I am a student from Long Beach State University=0D
+working on a digital control of a magnetic  levitation=0D
+project which requires fast feedback.=0D
+Presently my Handyboard Analog to Digital Converter can only=0D
+sample at 1KHZ in which the nyquest is at 500HZ, and after data=0D
+manipulation the final usable rate is about 100 HZ.=0D
+I wrote a subroutine in assembly code and using as11_ic converted =0D
+it to an "icb" file and then called the subroutine from the "IC" program.=
+=0D
+Unfortunately, the A/D sampling rate did not inprove over the regular=0D
+"IC" function (analog()).=0D
+Could someone give a hint to speed up the A/D sampling rate? =0D
+Here is my assembly code:=0D
+=0D
+ * A2D.ASM Program by Hector Noriega, 30MAY98=0D
+* this program is to read the analog to digital converter.=0D
+#include "6811regs.asm"=0D
+            ORG  MAIN_START=0D
+subroutine_atodconv:=0D
+           SEI		; turn off system interrupts so that=0D
+           LDX   #BASE=0D
+           LDD   #$80       ; set A/D conv. pump=0D
+           LDD   OPTION     ; initialize A/D       =0D
+           LDD   #%00110000 ;set A/D status reg for continous=0D
+           STD   ADCTL      ; continous and one channel=0D
+           BRCLR	ADCTL,X $80 *; loop till analogs ready=0D
+           LDD   ADR1       ; read voltage sensor #1=0D
+           CLI              ; turn on interrupts=0D
+           RTS=0D
+*********************end of Assembly Code ***************=0D
+****************Start of "IC" code************************=0D
+/* To test Feedback Controller */=0D
+   int  volt_out=3D128;          /*motor output of "0" */=0D
+   int v_opt,disp; =0D
+   float ts,volts;=0D
+void main()=0D
+  {  =0D
+   while(1)=0D
+    {      =0D
+      v_opt =3D (int)atodconv(0);  /*start a2d subroutine;*/=0D
+      v_opt =3D (v_opt <<8);      /* shift to get rid of one accumulator*=
+/=0D
+      v_opt =3D (v_opt >>8);      /* shift right to read byte */=0D
+    }=0D
+      volts =3D (float)v_opt;=0D
+      volts =3D volts/2.0;=0D
+     /* the output stage doubles the voltage. (gain of 2)*/=0D
+     if (volts > 4.5) volts =3D 4.5; /* to limit voltage into the motor*/=
+=0D
+     if (volts < 0.0) volts =3D -4.5;=0D
+     volt_out=3D(int)(volts/0.039 +128.0); /*scale volts to digital units=
+=2E*/=0D
+     poke(0x6fff,volt_out);     /* A/D correction to drive motor*/=0D
+    }  /* end of while */=0D
+    }  /* end of main program*/=0D
+********************************end of "IC" code.=0D
+Thank you for your support in advance.=0D
+Hector Noriega; 110060.2126@compuserve.com=0D
+=1A=
+
+--2bc8de9a-fa89-11d1-aaee-00805fea3ca9--
+

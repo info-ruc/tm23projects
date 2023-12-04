@@ -1,0 +1,56 @@
+Received: from theory.phys.vt.edu (theory.phys.vt.edu [128.173.176.33])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id RAA19984
+	for <handyboard@media.mit.edu>; Mon, 27 Jul 1998 17:22:26 -0400 (EDT)
+Received: from localhost (wallace@localhost)
+	by theory.phys.vt.edu (8.8.5/8.8.5) with SMTP id RAA00312
+	for <handyboard@media.mit.edu>; Mon, 27 Jul 1998 17:22:24 -0400 (EDT)
+Date: Mon, 27 Jul 1998 17:22:24 -0400 (EDT)
+From: Mark Wallace <wallace@theory.phys.vt.edu>
+To: handyboard@media.mit.edu
+Subject: sonar.c for the handyboard
+Message-Id: <Pine.SOL.3.92.980727164935.159A-100000@theory.phys.vt.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hello,
+	I have a handyboard and 6500 series poloroid ultrasonic ranging
+system.  I have downloaded the sonar.c programs used to drive the
+transducer for distance measurements.  There appears to be a problem, or
+atleast I think there is, with it.  The sonar device is supposed to give
+distances of up to 35ft but the TCNC time register is 16 bit and in the
+program it says "if ((peekwork(0x100e)-start_time) < 0)" too much time has
+elapsed and it returns -1.  Therefore as soon as about 32700 counts goes
+by, that value will go negative. I believe hex goes from 0 to 32768 then
+-32768 to -1. In this case the difference will be < 0 if the object
+is greater then about 9 ft.  I have taken this out of the program and can
+get accurate measurements up to atleast 30 ft but I have to look at the
+value given and add multiples of 2^16 to it to figure out where it is.
+Taking this out of the program also can get you stuck if you really are
+out of range.
+	I have looked on the motorola web pages to see about this clock
+and it says that the clock goes till it reachs $ffff and then flags
+somewhere that there is an overflow and then starts over.  I don't know
+how to find out were in the chip this information might be stored.  I know
+the TCNT time register is at 0x100e from the notes on Simplified Sonar for
+the Handy Board but I don't know where that overflow flag is stored.  I
+thought that maybe by setting this flag and using it in the loop you might
+be about to get a greater distance out of you measurement.
+	Another question I have is about IC.  I would like to display
+numbers greater then 32000 and right now there are several int type
+variables and normal C comands don't seem to work to make a "long" or any
+other type that are larger then 32000.  How does IC handle larger numbers?
+	I am only a student and don't have much experience with this stuff
+so I would appreciate any feedback I can get on either of these problems.
+Thanks.
+
+Mark Wallace
+
+ e-mail  mawalla3@vt.edu
+         wallace@astro.phys.vt.edu
+Web page http://sps1.phys.vt.edu/~mwallace/index.html
+
+"What a waste it would be after 4 billion tortuous years of evolution if
+the dominant organism contrived its own self-destruction"
+                                        Carl Sagan
+
+

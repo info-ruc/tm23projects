@@ -1,0 +1,115 @@
+Received: from tirith.ics.muni.cz (root@147.251.4.36)
+  by odysseus.fi.muni.cz with SMTP; 8 Mar 2006 13:25:34 -0000
+Received: from mxs2.siemens.at (mxs2.siemens.at [194.138.12.133])
+	by tirith.ics.muni.cz (8.13.4/8.13.4/Debian-3) with ESMTP id k28DPbFD032402
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <docbook@linux.cz>; Wed, 8 Mar 2006 14:25:38 +0100
+Received: from vies1k7x.sie.siemens.at ([158.226.129.83])
+	by mxs2.siemens.at  with ESMTP id k28DPbgn024915
+	for <docbook@linux.cz>; Wed, 8 Mar 2006 14:25:37 +0100
+Received: from smtp.prgpu.anfdata.cz ([158.226.129.98])
+	by vies1k7x.sie.siemens.at (8.12.11/8.12.1) with ESMTP id k28DPb10025653
+	for <docbook@linux.cz>; Wed, 8 Mar 2006 14:25:37 +0100
+Received: from [163.242.116.113] (unknown [163.242.116.113])
+	by smtp.prgpu.anfdata.cz (Postfix) with ESMTP id 955E02689A
+	for <docbook@linux.cz>; Wed,  8 Mar 2006 14:25:36 +0100 (CET)
+Message-ID: <440EDB50.40108@siemens.com>
+Date: Wed, 08 Mar 2006 14:25:36 +0100
+From: Petr Hracek <petr.hracek@siemens.com>
+User-Agent: Thunderbird 1.5 (X11/20060119)
+MIME-Version: 1.0
+To: docbook@linux.cz
+Subject: Cestina ve fop 0.91
+Content-Type: multipart/mixed;
+ boundary="------------060704020001000408060204"
+X-Muni-Spam-TestIP: 194.138.12.133
+X-Muni-Envelope-From: petr.hracek@siemens.com
+X-Muni-Virus-Test: Clean
+
+--------------060704020001000408060204
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Ahoj vsichni,
+
+zkousel jsem nainstalovat fonty z www.kosek.cz,
+ale stalo se mi to, ze napriklad š,ř je dobre ale jina pismenka dobre 
+nejsou.
+Muzete mi poradit v cem mam chybu?
+
+xslt a fop radky vypadaji takto:
+xsltproc -o DenikZaslOtce.fo DenikZaslOtce.xsl DenikZaslOtce.xml
+/home/cz2b10q6/Documents/fop-0.91beta/fop -fo DenikZaslOtce.fo -pdf 
+DenikZaslOtce.pdf
+
+xslt projde bez problemu, ale vystup z fop je vystup asi tento:
+Line 1 of a paragraph overflows the available area. (fo:block, location: 
+2/36643)
+Line 1 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+Line 2 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+Line 3 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+Line 4 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+Line 5 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+Line 6 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+Line 7 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+Line 8 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+Line 9 of a paragraph overflows the available area. (fo:block, location: 
+2/33568)
+The contents of row 1 are taller than they should be (there is a 
+block-progression-dimension or height constraint on the indicated row). 
+Due to its contents the row grows to 108000 millipoints, but the row 
+shouldn't get any taller than MinOptMax[min=opt=max=14000] millipoints. 
+(fo:table-row, location: 2/33334)
+static-content overflows the available area.
+Line 1 of a paragraph overflows the available area. (fo:block, location: 
+2/37577)
+
+Muzete mi poradit co mam spatne?
+
+xsl soubor je v priloze
+
+-- 
+Petr Hracek, ANFDATA ECT AES
+ANFDATA spol. s r.o
+a SIEMENS company
+Mediahall, Bidlaky 20, 639 00 Brno, Czech Republic
+tel.: +420 533 337 267
+mailto: petr.hracek@siemens.com
+
+
+--------------060704020001000408060204
+Content-Type: text/x-xslt;
+ name="DenikZaslOtce.xsl"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="DenikZaslOtce.xsl"
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+version="1.0">
+
+<xsl:import
+href="/usr/share/sgml/docbook/xsl-stylesheets/fo/docbook.xsl"/>
+
+<xsl:param name="paper.type" select="'A4'"/>
+
+<xsl:param name="use.extensions" select="1"/>
+
+<xsl:param name="draft.watermark.image" select="''"/>
+
+<xsl:param name="fop.extensions" select="0"/>
+
+<xsl:param name="fop1.extensions" select="1"/>
+
+</xsl:stylesheet>
+
+
+--------------060704020001000408060204--

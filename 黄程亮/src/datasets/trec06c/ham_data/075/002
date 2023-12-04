@@ -1,0 +1,78 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA27742
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 5 Dec 2000 09:55:21 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.20) by deimos.email.Arizona.EDU (5.1.046)
+        id 3A26D27200050AD6 for DMDX@psy1.psych.arizona.edu; Tue, 5 Dec 2000 09:55:19 -0700
+Message-Id: <5.0.0.25.2.20001205092549.009d3d90@psy1.psych.arizona.edu>
+Date: Tue, 05 Dec 2000 09:55:19 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: PIO / Sound latency slop
+In-Reply-To: <5.0.1.4.0.20001205110826.02220960@psy.fsu.edu>
+References: <5.0.1.4.0.20001116125134.02319180@psy.fsu.edu>
+ <5.0.0.25.2.20001107091102.009dbe10@psy1.psych.arizona.edu>
+ <3.0.32.20001106215854.0106ddd8@darwin.psy.fsu.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 11:18 AM 12/5/00 -0500, you wrote:
+>Turning off the audio acceleration in order to get rid of the popping on 
+>the Montego A3D resulted in a huge increase in latency and latency 
+>variability.  Thankfully, since installing DirectX 8.0, I am able to 
+>re-enable the acceleration without hearing the pop.  I have no idea why 
+>this is, but it seems to have worked.
+
+   Some sort of incompatibility in your hardware.
+
+>On another note, we've run into major problems with DMDX freezing the 
+>entire computer during presentation of 640 X 480 X 16 bit images, sound 
+>files, and bytes to the output port of the CIO/DIO 24 (computerboards PIO 
+>12 clone).  This required a hard re-boot in order to recover.  Freezing 
+>happened when the thread priorities in TimeDX were all set to normal as 
+>well.  I finally stripped out all unnecessary cards, disabled the 2nd 
+>channel IDE controller, removed CD Rom, disabled floppy drive, and began 
+>with a minimal parameter line with no input polling (since we are merely 
+>presenting stimuli, not recording responses).  Finally, I configured the 
+>computer to ignore the network card so that it won't be polled while DMDX 
+>is running.  I've now managed to get the very long item file to run once, 
+>but since it takes over 40 minutes to complete, I do not know if I will be 
+>able to get this performance to replicate.
+
+   Like I said, some sort of incompatibility in your hardware, you've 
+clearly got some serious issues if DMDX is crashing, AFAIK it doesn't crash 
+on other peoples machines.  Even with all those elements present that's 
+still a fairly standard mix for me to test on the testbed, while I don't 
+regularly test for 45 minutes I admit I certainly have left it running over 
+night doing things before to test for resource leaks.  If you want you can 
+zip up all your stimuli and your item file, send them to me and I can run 
+them repeatedly.  Perhaps you have the interrupt on the PIO card enabled 
+and it's screwing things up, I usually leave the interrupt jumper on 
+X.  Perhaps your version of windows has managed to recognize the PIO as 
+some other device, mine usually recognize it as some kind of broken serial 
+device (which AFAIK is ok).  Have a look in the device manager for 
+something using the PIO's port number (by default 300-303, we usually set 
+them for 310-313), Properties of My Computer / Device Manager / Properties 
+of Computer / then check "Input/output (I/O)".  Is the machine in fact 
+stable running some other benchmarks?  Perhaps you've got failing hardware 
+and the thing crashes doing anything but because this is your stimulus 
+machine DMDX is all you use it for and therefore it looks like DMDX is 
+crashing?
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+"What George Washington did for us was to throw out the British, so
+that we wouldn't have a fat, insensitive government running our
+country. Nice try anyway, George."
+
+                                              -  D.J. on KSFO/KYA
+
+
+

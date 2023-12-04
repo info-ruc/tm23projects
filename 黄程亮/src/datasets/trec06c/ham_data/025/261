@@ -1,0 +1,66 @@
+Received: from imo14.mx.aol.com (imo14.mx.aol.com [198.81.17.4])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id IAA29555
+	for <handyboard@media.mit.edu>; Tue, 3 Nov 1998 08:52:49 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo14.mx.aol.com (IMOv16.10) id SYGIa18748
+	 for <handyboard@media.mit.edu>; Tue, 3 Nov 1998 08:51:30 -0500 (EST)
+Message-Id: <282df670.363f0a62@aol.com>
+Date: Tue, 3 Nov 1998 08:51:30 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Cool robot platform and a question...
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Clem,
+
+In a message dated 98-11-03 01:04:33 EST, you write:
+
+<< I started probing around for continuity to try and figure out
+ what's what and I didn't get very far. >>
+
+     This is the right place to start.  If you can see the circuit traces,
+copy them to a piece of paper.  The part your really trying to find is which
+lines connect to the controlling chip.  I figure that you have two choices
+here, one is a simple H bridge type ciruit with one or two outputs from the
+chip to the Amp per motor; the other choice is a linear amplifier driven from
+the control chip with feedback from the power amplifier.  A clue to the latter
+would be finding a pair of resistors (called a voltage divider) connected near
+the output.  (This would have two resistors connected together in series, one
+end connected to the output, the other end connected to ground and the middle
+connected to the controller chip).
+     Once you have the outputs from the chip, it's time to find out what they
+normally do.  Attach minus of your volt meter to the minus terminal of the
+battery.  With the power on and the car off the ground, touch the plus lead of
+your meter to these points on the controlling chip.  See what happens when the
+car is commanded to go forward, reverse, turning,...  Do each test with DC,
+AC, and Pulse detection on your meter.  (I assume that you don't have an
+O'scope.  If you can get to one, use it to make these measurements.)  Once you
+know what the control chip does to drive this amplifier, you remove the chip
+and you tap into its place and mimic what it did.
+
+<< When I tried to check voltages
+ with the power applied, when I touched the circuit (or even got the probe
+ near the circuit) the car would start twitching wildly, which makes
+ debugging difficult.>>
+     Radio circuits are sensitive and low level RF noise can make them do
+stuff.  try twisting the meter leads together as much as you can, connect the
+minus meter lead to battery minus and then test.  You also might consider
+touching the tip of the  plus lead to the tip of the minus to discharge it,
+although the meter resistance should have done this (sometimes the meter
+impedance is high enough to make this worthwhile).  If your hitting the gates
+of FETs, you could be charging/discharging them enough to turn them on,
+although I would be most surprised to find that you have a gate driven by a
+high impedance circuit.
+     Be very careful not to touch two points with the probe tip at the same
+time,  Sensitive circuits toast easily.
+ 
+<<Would it be easier to just start from scratch?>>> 
+     I don't think so, though it might be easier to buy an H bridge circuit
+and replace the existing one.
+
+Hope this helps
+Pherd
+

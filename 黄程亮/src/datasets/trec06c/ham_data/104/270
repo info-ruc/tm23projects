@@ -1,0 +1,229 @@
+Received: from smtp7.wiscmail.wisc.edu (hagen.doit.wisc.edu [144.92.197.163])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j75NOr5L030649
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 5 Aug 2005 16:24:54 -0700
+Received: from avs-daemon.smtp7.wiscmail.wisc.edu by smtp7.wiscmail.wisc.edu
+ (iPlanet Messaging Server 5.2 HotFix 2.04 (built Feb  8 2005))
+ id <0IKR00604VPBXP@smtp7.wiscmail.wisc.edu> for DMDX@psy1.psych.arizona.edu;
+ Fri, 05 Aug 2005 18:24:47 -0500 (CDT)
+Received: from wiscmail.wisc.edu (sneezy [144.92.197.154])
+ by smtp7.wiscmail.wisc.edu
+ (iPlanet Messaging Server 5.2 HotFix 2.04 (built Feb  8 2005))
+ with ESMTP id <0IKR000JKVPAL6@smtp7.wiscmail.wisc.edu> for
+ DMDX@psy1.psych.arizona.edu; Fri, 05 Aug 2005 18:24:46 -0500 (CDT)
+Received: from [144.92.8.83] (Forwarded-For: 68.185.163.24, [127.0.0.1])
+ by mailst3.doit.wisc.edu (mshttpd); Fri, 05 Aug 2005 18:24:46 -0500
+Date: Fri, 05 Aug 2005 18:24:46 -0500
+From: JOHN J CURTIN <jjcurtin@facstaff.wisc.edu>
+Subject: [DMDX] question about timing in a fMRI experiment
+To: DMDX@psy1.psych.arizona.edu
+Message-id: <10aff1d10a911e.10a911e10aff1d@wiscmail.wisc.edu>
+MIME-version: 1.0
+Content-type: text/html; charset=us-ascii
+Content-transfer-encoding: QUOTED-PRINTABLE
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+<BODY>We have a question about timing in a script that will be used f=
+or a<BR>&nbsp;fMRI project. &nbsp;In essence, using RCOT to verify th=
+e timing of trials,<BR>&nbsp;we see variation (by a tick or so) acros=
+s different runs of the same<BR>&nbsp;script. &nbsp;Given the intende=
+d use with fMRI, we want to get the timing<BR>&nbsp;exact (and more i=
+mportantly, constant).<BR><BR>&nbsp;HERE IS THE SCRIPT WE ARE USING A=
+ND THE ZIL FILE OUTPUT FROM THIS<BR>&nbsp;SCRIPT SHOWING THE TIMING F=
+ROM 3 SEPARATE RUNS OF THE SCRIPT.<BR><BR>&nbsp;&lt;ep&gt; d1 f1 &lt;=
+ID "keyboard"&gt; &lt;cr&gt; &lt;t 15000&gt; &lt;nfb&gt; &lt;zil&gt; =
+&lt;zor&gt; &lt;vzk +0&gt;<BR>&nbsp;&lt;vzk +1&gt; &lt;mpr +0&gt; &lt=
+;mnr +1&gt; &lt;vm 800,600,600,16,60&gt; &lt;bgc 000000000&gt; &lt;dw=
+c<BR>&nbsp;255255255&gt; &lt;dfs 48&gt; &lt;rcot&gt; &lt;eop&gt;<BR>&=
+nbsp;~0 &lt;Branch 1&gt;;<BR><BR>&nbsp;!*****************************=
+<WBR>*************;<BR>&nbsp;! COUNTER DEFINITIONS;<BR>&nbsp;!*******=
+**********************<WBR>******
+*******;<BR>&nbsp;! Task counters;<BR>&nbsp;! c1=3D target duration i=
+n ms;<BR>&nbsp;! c2=3D target duration in &nbsp;ticks;<BR>&nbsp;! c3=
+=3D target LastRT;<BR>&nbsp;! c4 pre-target fixation duration in ms;<=
+BR>&nbsp;! c5 pre-target fixation duration in ticks;<BR>
+<SCRIPT><!--
+D(["mb","&gt; ! c6 counter to hold outcome of trial &nbsp;(correct if=
+ 1, else incorrect);<br />&gt; ! c10 =3D total trials;<br />&gt; ! c1=
+1 =3D total correct trials;<br />&gt;<br />&gt;<br />&gt; !**********=
+*******************<wbr>*************;<br />&gt; ! Pre-loading images=
+;<br />&gt; !*****************************<wbr>*************;<br />&g=
+t; ! Pre-load bitmaps;<br />&gt; ~1 &nbsp;&lt;ml 1000&gt; &lt;bmp&gt;=
+&quot;blue&quot;;<br />&gt;<br />&gt; !*****************************<=
+wbr>*************;<br />&gt; ! Start Experiment;<br />&gt; !*********=
+********************<wbr>*************;<br />&gt;<br />&gt; 0 &nbsp;d=
+60 &lt;set c10 =3D 0&gt;&lt;set c11 =3D 0&gt;&lt;set c1=3D 320&gt; &l=
+t;set c2 =3D ((c1 * 60) /<br />&gt; 1000)&gt; &lt;set c1001 =3D -1000=
+01&gt; &quot;Press SPACE to BEGIN&quot;;<br />&gt;<br />&gt; ! No Con=
+trol/Fix;<br />&gt; +10 d29 &lt;set c4 =3D 17&gt; &lt;set c5 =3D ((c4=
+ * 60) / 1000)&gt; &quot;S&quot; &lt;% 180&gt; / *<br />&gt; &quot;+&=
+quot; &lt;ctr% 5&gt; &lt;t c4&gt;/ ! ;<br />&gt; +1
+1 d58 &nbsp;* &lt;bmp&gt; &quot;blue&quot; &lt;ctr% 2&gt; &lt;t c1&gt=
+; /;<br />&gt; 13 d27 &quot;+&quot; &lt;% 180&gt; / &quot;+&quot; &lt=
+;% 41&gt;/ ! ;<br />&gt; 16 d88 &lt;% 1&gt; &quot;+&quot; / ! ;<br />=
+&gt;<br />&gt; ! No Control/Fix;<br />&gt; +10 d29 &lt;set c4 =3D 17&=
+gt; &lt;set c5 =3D ((c4 * 60) / 1000)&gt; &quot;S&quot; &lt;% 180&gt;=
+ / *<br />&gt; &quot;+&quot; &lt;ctr% 5&gt; &lt;t c4&gt;/ ! ;<br />&g=
+t; +11 d58 &nbsp;* &lt;bmp&gt; &quot;blue&quot; &lt;ctr% 2&gt; &lt;t =
+c1&gt; /;<br />&gt; 13 d27 &quot;+&quot; &lt;% 180&gt; / &quot;+&quot=
+; &lt;% 41&gt;/ ! ;<br />&gt; 16 d88 &lt;% 1&gt; &quot;+&quot; / ! ;<=
+br />&gt;<br />&gt; ! No Control/Fix;<br />&gt; +10 d29 &lt;set c4 =
+=3D 17&gt; &lt;set c5 =3D ((c4 * 60) / 1000)&gt; &quot;S&quot; &lt;% =
+180&gt; / *<br />&gt; &quot;+&quot; &lt;ctr% 5&gt; &lt;t c4&gt;/ ! ;<=
+br />&gt; +11 d58 &nbsp;* &lt;bmp&gt; &quot;blue&quot; &lt;ctr% 2&gt;=
+ &lt;t c1&gt; /;<br />&gt; 13 d27 &quot;+&quot; &lt;% 180&gt; / &quot=
+;+&quot; &lt;% 41&gt;/ ! ;<br />&gt; 16 d88
+ &lt;% 1&gt; &quot;+&quot; / ! ;<br />&gt;<br />&gt; ! No Control/Fix=
+;<br />",1]
+);
+
+//--></SCRIPT>
+&nbsp;! c6 counter to hold outcome of trial &nbsp;(correct if 1, else=
+ incorrect);<BR>&nbsp;! c10 =3D total trials;<BR>&nbsp;! c11 =3D tota=
+l correct trials;<BR><BR><BR>&nbsp;!*****************************<WBR=
+>*************;<BR>&nbsp;! Pre-loading images;<BR>&nbsp;!************=
+*****************<WBR>*************;<BR>&nbsp;! Pre-load bitmaps;<BR>=
+&nbsp;~1 &nbsp;&lt;ml 1000&gt; &lt;bmp&gt;"blue";<BR><BR>&nbsp;!*****=
+************************<WBR>*************;<BR>&nbsp;! Start Experime=
+nt;<BR>&nbsp;!*****************************<WBR>*************;<BR><BR=
+>&nbsp;0 &nbsp;d60 &lt;set c10 =3D 0&gt;&lt;set c11 =3D 0&gt;&lt;set =
+c1=3D 320&gt; &lt;set c2 =3D ((c1 * 60) /<BR>&nbsp;1000)&gt; &lt;set =
+c1001 =3D -100001&gt; "Press SPACE to BEGIN";<BR><BR>&nbsp;! No Contr=
+ol/Fix;<BR>&nbsp;+10 d29 &lt;set c4 =3D 17&gt; &lt;set c5 =3D ((c4 * =
+60) / 1000)&gt; "S" &lt;% 180&gt; / *<BR>&nbsp;"+" &lt;ctr% 5&gt; &lt=
+;t c4&gt;/ ! ;<BR>&nbsp;+11 d58 &nbsp;* &lt;bmp&gt; "blue" &lt;ctr% 2=
+&gt; &lt;t c1&gt; /;<BR>&nbsp;13 d27 "+" &lt;% 180&
+gt; / "+" &lt;% 41&gt;/ ! ;<BR>&nbsp;16 d88 &lt;% 1&gt; "+" / ! ;<BR>=
+<BR>&nbsp;! No Control/Fix;<BR>&nbsp;+10 d29 &lt;set c4 =3D 17&gt; &l=
+t;set c5 =3D ((c4 * 60) / 1000)&gt; "S" &lt;% 180&gt; / *<BR>&nbsp;"+=
+" &lt;ctr% 5&gt; &lt;t c4&gt;/ ! ;<BR>&nbsp;+11 d58 &nbsp;* &lt;bmp&g=
+t; "blue" &lt;ctr% 2&gt; &lt;t c1&gt; /;<BR>&nbsp;13 d27 "+" &lt;% 18=
+0&gt; / "+" &lt;% 41&gt;/ ! ;<BR>&nbsp;16 d88 &lt;% 1&gt; "+" / ! ;<B=
+R><BR>&nbsp;! No Control/Fix;<BR>&nbsp;+10 d29 &lt;set c4 =3D 17&gt; =
+&lt;set c5 =3D ((c4 * 60) / 1000)&gt; "S" &lt;% 180&gt; / *<BR>&nbsp;=
+"+" &lt;ctr% 5&gt; &lt;t c4&gt;/ ! ;<BR>&nbsp;+11 d58 &nbsp;* &lt;bmp=
+&gt; "blue" &lt;ctr% 2&gt; &lt;t c1&gt; /;<BR>&nbsp;13 d27 "+" &lt;% =
+180&gt; / "+" &lt;% 41&gt;/ ! ;<BR>&nbsp;16 d88 &lt;% 1&gt; "+" / ! ;=
+<BR><BR>&nbsp;! No Control/Fix;<BR>
+<SCRIPT><!--
+D(["mb","&gt; +10 d29 &lt;set c4 =3D 17&gt; &lt;set c5 =3D ((c4 * 60)=
+ / 1000)&gt; &quot;S&quot; &lt;% 180&gt; / *<br />&gt; &quot;+&quot; =
+&lt;ctr% 5&gt; &lt;t c4&gt;/ ! ;<br />&gt; +11 d58 &nbsp;* &lt;bmp&gt=
+; &quot;blue&quot; &lt;ctr% 2&gt; &lt;t c1&gt; /;<br />&gt; 13 d27 &q=
+uot;+&quot; &lt;% 180&gt; / &quot;+&quot; &lt;% 41&gt;/ ! ;<br />&gt;=
+ 16 d88 &lt;% 1&gt; &quot;+&quot; / ! ;<br />&gt;<br />&gt;<br />&gt;=
+ 100000 d10 &quot;the end&quot;;<br />&gt;<br />&gt;<br />&gt;<br />&=
+gt; ZIL OUTPUT HERE<br />&gt;<br />&gt; Subjects incorporated to date=
+: 003<br />&gt; Data file started on machine BEAMISH<br />&gt;<br />&=
+gt; ******************************<wbr>******************************=
+<wbr>**********<br />&gt; Subject 1, 08/05/2005 15:56:31 on BEAMISH, =
+refresh 16.57ms, ID 1 &nbsp; &nbsp; &nbsp; COT<br />&gt; Item 10, COT=
+ 0.00, No Responses.<br />&gt; Item 11, COT 995.05, No Responses.<br =
+/>&gt; Item 10, COT 10381.63, No Responses.<br />&gt; Item 11, COT 11=
+376.67, No Responses.<br />&gt; Item=20
+10, COT 20763.25, No Responses.<br />&gt; Item 11, COT 21758.29, No R=
+esponses.<br />&gt; Item 10, COT 31144.87, No Responses.<br />&gt; It=
+em 11, COT 32139.92, No Responses.<br />&gt;<br />&gt; **************=
+****************<wbr>******************************<wbr>**********<br=
+ />&gt; Subject 2, 08/05/2005 15:57:25 on BEAMISH, refresh 16.57ms, I=
+D 2 &nbsp; &nbsp; &nbsp; COT<br />&gt; Item 10, COT 0.00, No Response=
+s.<br />&gt; Item 11, COT 995.05, No Responses.<br />&gt; Item 10, CO=
+T 10381.63, No Responses.<br />&gt; Item 11, COT 11376.67, No Respons=
+es.<br />&gt; Item 10, COT 20763.25, No Responses.<br />&gt; Item 11,=
+ COT 21758.29, No Responses.<br />&gt; Item 10, COT 31161.46, No Resp=
+onses.<br />&gt; Item 11, COT 32156.52, No Responses.<br />&gt;<br />=
+&gt; ******************************<wbr>*****************************=
+*<wbr>**********<br />&gt; Subject 3, 08/05/2005 15:58:19 on BEAMISH,=
+ refresh 16.57ms, ID 3 &nbsp; &nbsp; &nbsp; COT<br />&gt; Item 10, CO=
+T 0.00, No Responses.<br />&gt; I
+tem 11, COT 995.04, No Responses.<br />&gt; Item 10, COT 10381.62, No=
+ Responses.<br />",1]
+);
+
+//--></SCRIPT>
+&nbsp;+10 d29 &lt;set c4 =3D 17&gt; &lt;set c5 =3D ((c4 * 60) / 1000)=
+&gt; "S" &lt;% 180&gt; / *<BR>&nbsp;"+" &lt;ctr% 5&gt; &lt;t c4&gt;/ =
+! ;<BR>&nbsp;+11 d58 &nbsp;* &lt;bmp&gt; "blue" &lt;ctr% 2&gt; &lt;t =
+c1&gt; /;<BR>&nbsp;13 d27 "+" &lt;% 180&gt; / "+" &lt;% 41&gt;/ ! ;<B=
+R>&nbsp;16 d88 &lt;% 1&gt; "+" / ! ;<BR><BR><BR>&nbsp;100000 d10 "the=
+ end";<BR><BR><BR><BR>&nbsp;ZIL OUTPUT HERE<BR><BR>&nbsp;Subjects inc=
+orporated to date: 003<BR>&nbsp;Data file started on machine BEAMISH<=
+BR><BR>&nbsp;******************************<WBR>*********************=
+*********<WBR>**********<BR>&nbsp;Subject 1, 08/05/2005 15:56:31 on B=
+EAMISH, refresh 16.57ms, ID 1 &nbsp; &nbsp; &nbsp; COT<BR>&nbsp;Item =
+10, COT 0.00, No Responses.<BR>&nbsp;Item 11, COT 995.05, No Response=
+s.<BR>&nbsp;Item 10, COT 10381.63, No Responses.<BR>&nbsp;Item 11, CO=
+T 11376.67, No Responses.<BR>&nbsp;Item 10, COT 20763.25, No Response=
+s.<BR>&nbsp;Item 11, COT 21758.29, No Responses.<BR>&nbsp;Item 10, CO=
+T 31144.87, No Responses.<BR>&nbsp;It
+em 11, COT 32139.92, No Responses.<BR><BR>&nbsp;*********************=
+*********<WBR>******************************<WBR>**********<BR>&nbsp;=
+Subject 2, 08/05/2005 15:57:25 on BEAMISH, refresh 16.57ms, ID 2 &nbs=
+p; &nbsp; &nbsp; COT<BR>&nbsp;Item 10, COT 0.00, No Responses.<BR>&nb=
+sp;Item 11, COT 995.05, No Responses.<BR>&nbsp;Item 10, COT 10381.63,=
+ No Responses.<BR>&nbsp;Item 11, COT 11376.67, No Responses.<BR>&nbsp=
+;Item 10, COT 20763.25, No Responses.<BR>&nbsp;Item 11, COT 21758.29,=
+ No Responses.<BR>&nbsp;Item 10, COT 31161.46, No Responses.<BR>&nbsp=
+;Item 11, COT 32156.52, No Responses.<BR><BR>&nbsp;******************=
+************<WBR>******************************<WBR>**********<BR>&nb=
+sp;Subject 3, 08/05/2005 15:58:19 on BEAMISH, refresh 16.57ms, ID 3 &=
+nbsp; &nbsp; &nbsp; COT<BR>&nbsp;Item 10, COT 0.00, No Responses.<BR>=
+&nbsp;Item 11, COT 995.04, No Responses.<BR>&nbsp;Item 10, COT 10381.=
+62, No Responses.<BR>
+<SCRIPT><!--
+D(["mb","&gt; Item 11, COT 11376.67, No Responses.<br />&gt; Item 10,=
+ COT 20763.25, No Responses.<br />&gt; Item 11, COT 21758.29, No Resp=
+onses.<br />&gt; Item 10, COT 31161.46, No Responses.<br />&gt; Item =
+11, COT 32156.50, No Responses.<br />&gt;<br />&gt;<br />&gt; Basical=
+ly, we are executing 4 blocks of the same trials and looking at<br />=
+&gt; the time for item 10 and 11 in each block. &nbsp;As you can see =
+by looking<br />&gt; at the relative time of the last item 11, it var=
+ies across different<br />&gt; runs/subjects. &nbsp;However, DMDX is =
+not producing any error to suggest<br />&gt; that frames have been de=
+layed, etc. &nbsp;The location and magnitude (e.g.,<br />&gt; 1 tick,=
+ 2 ticks, etc) of this timing problem varies over extensive<br />&gt;=
+ testing. &nbsp;Obviously, some command we are using must not execute=
+ in a<br />&gt; time consistent manner, but we are at a loss to figur=
+e out which one.<br />&gt; Any suggestions would be much appreciated.=
+<br />&gt;<br />&gt; Thanks John<
+br />&gt;<br />&gt; --<br />&gt; John J. Curtin, Ph.D.<br />&gt; Assi=
+stant Professor of Psychology<br />&gt; University of Wisconsin<br />=
+&gt; 1202 West Johnson St.<br />&gt; Madison, WI 53706<br />&gt;<br /=
+>&gt; Email: <a onclick=3D\"return top.js.OpenExtLink(window,event,th=
+is)\" href=3D\"mailto:jjcurtin@wisc.edu\">jjcurtin@wisc.edu</a><br />=
+&gt; Website: <a onclick=3D\"return top.js.OpenExtLink(window,event,t=
+his)\" href=3D\"http://dionysus.psych.wisc.edu\" target=3D_blank>http=
+://dionysus.psych.wisc.edu</a><br />&gt; Office: 608-262-0387<br />&g=
+t; Lab: 608-262-5621<br />&gt; Cell: 608-217-6221<br />&gt; Fax: 608-=
+262-4029<br /><br />",0]
+);
+
+//--></SCRIPT>
+&nbsp;Item 11, COT 11376.67, No Responses.<BR>&nbsp;Item 10, COT 2076=
+3.25, No Responses.<BR>&nbsp;Item 11, COT 21758.29, No Responses.<BR>=
+&nbsp;Item 10, COT 31161.46, No Responses.<BR>&nbsp;Item 11, COT 3215=
+6.50, No Responses.<BR><BR><BR>&nbsp;Basically, we are executing 4 bl=
+ocks of the same trials and looking at<BR>&nbsp;the time for item 10 =
+and 11 in each block. &nbsp;As you can see by looking<BR>&nbsp;at the=
+ relative time of the last item 11, it varies across different<BR>&nb=
+sp;runs/subjects. &nbsp;However, DMDX is not producing any error to s=
+uggest<BR>&nbsp;that frames have been delayed, etc. &nbsp;The locatio=
+n and magnitude (e.g.,<BR>&nbsp;1 tick, 2 ticks, etc) of this timing =
+problem varies over extensive<BR>&nbsp;testing. &nbsp;Obviously, some=
+ command we are using must not execute in a<BR>&nbsp;time consistent =
+manner, but we are at a loss to figure out which one.<BR>&nbsp;Any su=
+ggestions would be much appreciated.<BR><BR>&nbsp;Thanks John<BR><BR>=
+&nbsp;--<BR>&nbsp;John J. Curtin,
+ Ph.D.<BR>&nbsp;Assistant Professor of Psychology<BR>&nbsp;University=
+ of Wisconsin<BR>&nbsp;1202 West Johnson St.<BR>&nbsp;Madison, WI 537=
+06<BR><BR>&nbsp;Email: <A onclick=3D"return top.js.OpenExtLink(window=
+,event,this)" href=3D"mailto:jjcurtin@wisc.edu">jjcurtin@wisc.edu</A>=
+<BR>&nbsp;Website: <A onclick=3D"return top.js.OpenExtLink(window,eve=
+nt,this)" href=3D"http://dionysus.psych.wisc.edu/" target=3D_blank>ht=
+tp://dionysus.psych.wisc.edu</A><BR>&nbsp;Office: 608-262-0387<BR>&nb=
+sp;Lab: 608-262-5621<BR>&nbsp;Cell: 608-217-6221<BR>&nbsp;Fax: 608-26=
+2-4029<BR></BODY>
+
+

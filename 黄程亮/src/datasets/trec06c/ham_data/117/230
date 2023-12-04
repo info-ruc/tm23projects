@@ -1,0 +1,221 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.197] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2E67ct26974
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 01:07:38 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id 4so352618nzn
+        for <egs+summary@cs.cornell.edu>; Mon, 13 Mar 2006 22:07:37 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=sNwQNtIQC+EnxtW3PneeUomtvjwLVnAC4TpThEcaERQxKZUhONkD61DU0bhieVLFXm+UNbwgy+JYjHgiks3lorNMRXzlyEzz9z+mt7VJKXDphmD91IfjdSn9A/5uU9EmXs/Nxgy/31ZUMAMONuDkHYQzI+cSmeKeNEopp8MC8OQ=
+Received: by 10.35.18.4 with SMTP id v4mr225594pyi;
+        Mon, 13 Mar 2006 22:07:37 -0800 (PST)
+Received: by 10.35.61.2 with HTTP; Mon, 13 Mar 2006 22:07:37 -0800 (PST)
+Message-ID: <9aa7a97d0603132207m3aa129ffv4f261d49dd1fb161@mail.gmail.com>
+Date: Tue, 14 Mar 2006 01:07:37 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 14
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_2306_5941036.1142316457469"
+
+------=_Part_2306_5941036.1142316457469
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+
+    _Predicting_Internet_Network_Distance_with_Coordinates-Based_Approaches=
+_
+    T.S. Eugene Ng and Hui Zhang
+
+    It's hard to respond to this paper -- I'm operating under the assumptio=
+n
+that you didn't want us to, since it was difficult to ocomprehend the
+telegraphic speech present in the powerpoint slides. Nevertheless, the
+central concept of the slides is interesting and fairly easy. It is
+relatively expensive to do a ping exchange with each other node we wish to
+establish a distance to; if we model the internet as a euclidian space, we
+can measure distances to central points, and use those as coordinates in th=
+e
+internet-space so generated; this lets us simply measure distance (in terms
+of hop count, or ping time, etc) to obtain an upper bound on actual
+ping-time distance. The scheme is fairly good, though somewhat expensive fo=
+r
+the central servers, albeit at a cost proportional to the carrying capacity
+of the network, not the number of distance-related transactions on the
+network. Also, outages in the well-known central entities cannot easily be
+repaired -- the entire system must remeasure against any new landmark that
+is put into the system, which is an individually small cost, but means that
+there are definite points of this system which do not scale and cannot be
+easily repaired/replaced.
+
+    _Vivaldi:_A_Decentralized_Network_Coordinate_System_
+    Frank Dabek, Russ Cox, Frans Kaashoek, Robert Morris
+
+    Vivaldi attempts to measure internet distances via a spring-lattice
+structure, allowing disparate peer nodes to communicate information about
+physical location -- as measured in milliseconds -- to each other, for rout=
+e
+selection, etc. Alternate measures are proposed, the most feasible being to
+consider the system as not just a two dimensional grid but the surface of a
+sphere, and thus the effects of wrap around be internalized to the model.
+This is rejected because the internet does not, in fact, tend to wrap
+around; America is at the "center" of the world-wide-web, at least for now.
+They model the interrnet as a lattice of springs, in that between each pair
+of hosts there is some spring with rest length equal to the RTT between the
+two nodes. They then minimize the squared error function, which is
+equivalent to spring energy, in other words, allowing the springs to acheiv=
+e
+a natural equilibrium. They divide time into a series of steps, and permit
+the springs to act upon those nodes that are out of alignment, thus
+converging in a strictly local sense to the correct answer, using only
+localized information. In addition, the system models the fact that many
+nodes must be routed through a third party as a height vector, derived from
+the energy stored in the springs, which means that euclidean distance is
+better approximated.
+    This is a very tight algorithm, though as pointed out, it is prone to
+find locally minimal (energy) coordinate-states rather than globally minima=
+l
+ones, which means that it is nonoptimal; moreover, it is night impossible t=
+o
+do simulated annealing or other such random-restart processes, making it
+difficult to recover from these states, without introducing wild shifts.
+Unrelatedly, the system seems logically incomplete: though they model
+distance from the internet core as distance above the euclidean plane, ther=
+e
+are two cases which are not easily distinguished in this model and not well
+handled: sites that are near each other, yet distant from the internet core=
+,
+and sites that are equidistant from the internet core and removed from each
+other. In the first case, the system behaves perfectly, taking the distance
+between two euclidean "tall" points essentially ignoring the height (if
+equal). In the latter, however, they will be at the same "height" (if
+equidistant from the core) and thus this extra travel time will not be
+factored in correctly, and thus must be modeled entirely in euclidean
+distance in the plane. This is a degenerate case of their algorithm (with
+all heights equal to 0) and thus throws suspicion on the height.
+
+
+ _Meridian:_A_Lightweight_Network_Location_Service_without_Virtual_Coordina=
+tes_
+    Bernard Wong, Aleksandrs Slivkins, Emin Gun Sirer
+
+    This version may be described as a set of series of concentric rings;
+each node maintains some neighbor set organized as rings. These rings vary
+over exponential radii, and are maximized based on local measurements (in a
+local n-space, the paper maximizes the volume of the object formed between
+the various neighbors). This is also prone to local optima which are not
+globally maximum, or even necessarily very good, but the system may take
+wider swings and thus is not as prone to stultifying as other systems. It i=
+s
+a decentralized system with excellent (logarithmic) performance measures.
+    The system is interesting in that it doesn't have the same sense of
+direction as others with more absolute senses; rather than providing
+absolute coordinates and thus euclidian direction, there are strict
+distances. The fact that state may be maintained locally per-node for
+wide-ranging maxima is almost icing on the cake.
+
+------=_Part_2306_5941036.1142316457469
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+<br>
+&nbsp;&nbsp; &nbsp;_Predicting_Internet_Network_Distance_with_Coordinates-B=
+ased_Approaches_<br>
+&nbsp;&nbsp; &nbsp;T.S. Eugene Ng and Hui Zhang<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;It's hard to respond to this paper -- I'm operating
+under the assumption that you didn't want us to, since it was difficult
+to ocomprehend the telegraphic speech present in the powerpoint slides.
+Nevertheless, the central concept of the slides is interesting and
+fairly easy. It is relatively expensive to do a ping exchange with each
+other node we wish to establish a distance to; if we model the internet
+as a euclidian space, we can measure distances to central points, and
+use those as coordinates in the internet-space so generated; this lets
+us simply measure distance (in terms of hop count, or ping time, etc)
+to obtain an upper bound on actual ping-time distance. The scheme is
+fairly good, though somewhat expensive for the central servers, albeit
+at a cost proportional to the carrying capacity of the network, not the
+number of distance-related transactions on the network. Also, outages
+in the well-known central entities cannot easily be repaired -- the
+entire system must remeasure against any new landmark that is put into
+the system, which is an individually small cost, but means that there
+are definite points of this system which do not scale and cannot be
+easily repaired/replaced.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_Vivaldi:_A_Decentralized_Network_Coordinate_System_<br>
+&nbsp;&nbsp; &nbsp;Frank Dabek, Russ Cox, Frans Kaashoek, Robert Morris<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Vivaldi attempts to measure internet distances via a
+spring-lattice structure, allowing disparate peer nodes to communicate
+information about physical location -- as measured in milliseconds --
+to each other, for route selection, etc. Alternate measures are
+proposed, the most feasible being to consider the system as not just a
+two dimensional grid but the surface of a sphere, and thus the effects
+of wrap around be internalized to the model. This is rejected because
+the internet does not, in fact, tend to wrap around; America is at the
+&quot;center&quot; of the world-wide-web, at least for now. They model the
+interrnet as a lattice of springs, in that between each pair of hosts
+there is some spring with rest length equal to the RTT between the two
+nodes. They then minimize the squared error function, which is
+equivalent to spring energy, in other words, allowing the springs to
+acheive a natural equilibrium. They divide time into a series of steps,
+and permit the springs to act upon those nodes that are out of
+alignment, thus converging in a strictly local sense to the correct
+answer, using only localized information. In addition, the system
+models the fact that many nodes must be routed through a third party as
+a height vector, derived from the energy stored in the springs, which
+means that euclidean distance is better approximated.<br>
+&nbsp;&nbsp; &nbsp;This is a very tight algorithm, though as pointed
+out, it is prone to find locally minimal (energy) coordinate-states
+rather than globally minimal ones, which means that it is nonoptimal;
+moreover, it is night impossible to do simulated annealing or other
+such random-restart processes, making it difficult to recover from
+these states, without introducing wild shifts. Unrelatedly, the system
+seems logically incomplete: though they model distance from the
+internet core as distance above the euclidean plane, there are two
+cases which are not easily distinguished in this model and not well
+handled: sites that are near each other, yet distant from the internet
+core, and sites that are equidistant from the internet core and removed
+from each other. In the first case, the system behaves perfectly,
+taking the distance between two euclidean &quot;tall&quot; points essential=
+ly
+ignoring the height (if equal). In the latter, however, they will be at
+the same &quot;height&quot; (if equidistant from the core) and thus this ex=
+tra
+travel time will not be factored in correctly, and thus must be modeled
+entirely in euclidean distance in the plane. This is a degenerate case
+of their algorithm (with all heights equal to 0) and thus throws
+suspicion on the height.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_Meridian:_A_Lightweight_Network_Location_Service_withou=
+t_Virtual_Coordinates_<br>
+&nbsp;&nbsp; &nbsp;Bernard Wong, Aleksandrs Slivkins, Emin Gun Sirer<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;This version may be described as a set of series of
+concentric rings; each node maintains some neighbor set organized as
+rings. These rings vary over exponential radii, and are maximized based
+on local measurements (in a local n-space, the paper maximizes the
+volume of the object formed between the various neighbors). This is
+also prone to local optima which are not globally maximum, or even
+necessarily very good, but the system may take wider swings and thus is
+not as prone to stultifying as other systems. It is a decentralized
+system with excellent (logarithmic) performance measures.<br>
+&nbsp;&nbsp; &nbsp;The system is interesting in that it doesn't have
+the same sense of direction as others with more absolute senses; rather
+than providing absolute coordinates and thus euclidian direction, there
+are strict distances. The fact that state may be maintained locally
+per-node for wide-ranging maxima is almost icing on the cake.
+
+------=_Part_2306_5941036.1142316457469--
+

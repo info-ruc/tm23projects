@@ -1,0 +1,64 @@
+Received: from deimos.email.Arizona.EDU (deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.12.4/8.12.4) with ESMTP id h1QLAQdW020899
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 26 Feb 2003 14:10:27 -0700
+Received: from 666-devel.u.arizona.edu (128.196.98.7) by deimos.email.Arizona.EDU (6.0.053)
+        id 3E5CB85800015EB9 for DMDX@psy1.psych.arizona.edu; Wed, 26 Feb 2003 14:20:12 -0700
+Message-Id: <5.1.0.14.2.20030226141735.00b132f8@psy1.psych.arizona.edu>
+Date: Wed, 26 Feb 2003 14:20:09 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Multiway branching question
+In-Reply-To: <5.1.0.14.2.20030226134729.00b1dc88@psy1.psych.arizona.edu>
+References: <5.1.1.6.2.20030226100543.029a8cc8@193.63.253.1>
+ <5.1.0.14.2.20030221153019.00b128f0@psy1.psych.arizona.edu>
+ <5.1.1.6.2.20030221101753.0271ea08@193.63.253.1>
+ <5.1.0.14.2.20030220151137.00b131e8@psy1.psych.arizona.edu>
+ <5.1.1.6.2.20030220180601.02b3c118@193.63.253.1>
+ <5.2.0.9.0.20030220183056.009eeec0@post.psych.unimelb.edu.a u>
+ <5.2.0.9.0.20030220173718.009eec40@post.psych.unimelb.edu.a u>
+ <5.1.0.14.2.20030220084659.00b128d0@psy1.psych.arizona.edu>
+ <5.2.0.9.0.20030220105250.009f8b10@post.psych.unimelb.edu.a u>
+ <5.2.0.9.0.20030219114039.009efb40@post.psych.unimelb.edu.a u>
+ <3E525FE7.5070902@neuro.gu.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 01:48 PM 2/26/2003 -0700, you wrote:
+
+>   Hmm, something's busted.  Not sure if it's your item file or the code 
+> in general but the variable that's supposed to have the name of the key 
+> pressed has NULL in it instead.  I'm looking at it.
+
+
+   No, nothing's busted, your <mwb> must occur in the item that gathers the 
+response.  Your item structure was:
+
++1 <ln +2> "respond same / perhaps / different" , <ln +4> "or matt / kadia
+/ both to repeat" / * <!wav 2> "m_orchid" /! <% 20> "" / <!wav 2> 
+"k_orchid" <mwb +S,0, +P,0, +D,0, +M,201, +K,401, +B,-1>;
++201 <ln +2> "respond same / perhaps / different", <ln +4> "or matt / kadia
+/ both to repeat" / * <!wav 2> "m_orchid";
+~101 <mwb +S,0, +P,0, +D,0, +M,-201, +K,401, +B,-1>;
+
+   It needs to be:
+
++1 <ln +2> "respond same / perhaps / different" , <ln +4> "or matt / kadia
+/ both to repeat" / * <!wav 2> "m_orchid" /! <% 20> "" / <!wav 2> 
+"k_orchid" <mwb +S,0, +P,0, +D,0, +M,201, +K,401, +B,-1>;
++201 <ln +2> "respond same / perhaps / different", <ln +4> "or matt / kadia
+/ both to repeat" / * <!wav 2> "m_orchid" <mwb +S,0, +P,0, +D,0, +M,-201, 
++K,401, +B,-1>;
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Tilting at windmills hurts you more than the windmills.
+
+
+

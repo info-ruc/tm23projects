@@ -1,0 +1,190 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1SHMBt23874
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 12:22:11 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1SHM9SS003679
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 12:22:09 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Tue, 28 Feb 2006 12:22:10 -0500 (EST)
+Message-ID: <2742.128.84.98.90.1141147330.squirrel@webmail.cornell.edu>
+Date: Tue, 28 Feb 2006 12:22:10 -0500 (EST)
+Subject: paper 10
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+P-PAY
+
+deals with a secure micropayment mechanism.
+
+A broker is used to handle accounts, distribute and cash coins, provide
+security etc. Thus, the load on a broker is usually heavy and it also
+serves as a single point of failure and attack. The authors
+
+reasonably claim that utmost security is not required and that the payment
+mechanism must be lightweight so that the cost of the scheme will be less
+than the value of the payment.
+the main disincentive for cheating is that the user will not be able to
+carry out buisness in the future
+
+due to bad credit.
+
+in order to minimise broker involvement:
+1) cashing coins involves a flat fee
+2) when a  coin has to be reassigned in the case that the owner is not
+present/or pretends to be absent,
+
+the holder and the owner will both be charged a small fee.
+
+users require a credit card to join the system which seems like a bad
+idea. it further raises concerns about user anonymity.
+
+SECURITY:  all coins are signed by private keys. this enables detection of
+frauds such as replication,wrongful denial and double spending.
+
+COIN RENEWAL :
+to limit the amount of state kept by a peer, the coin must be renewed
+during a certain time. note that the worst case time to detect any fraud
+is equal to the renewal period. Thus the value of this time imposes a
+tradeoff between broker involvement and fraud-detection time.
+
+it also discusses "pico-payments" for small items such as message
+forwarding or answering queries.
+
+
+
+KARMA
+
+karma represents a scalar value that represents the overall standing of
+each participant. For each node,
+
+a set of k nodes called bankset, keep track of the node's karma increasing
+it when resources are contributed and decreasing it when resources are
+consumed. the karma is signed by the node's private key to make it tamper
+resistant.
+the bank-set also stores the epoch number which along with other
+parameters indicates the adjustments made so that the per-capita income is
+roughly constant. However, each node must be aware of any node joining or
+leaving the system to compute the correction factor which seems
+burdensome.
+
+the amount of karma for each object is selecting by an auction scheme.
+
+
+each node is assigned an id beyond its control which is based on solving a
+cryptographic puzzle result which results in a secure entry algorithm
+preventing sybil attacks.
+
+it is based on a  assumption that on the whole all objects are consumed in
+an equal fashion - i.e. the number of downloads for each object per node
+remains roughly the same. It could be the case that a node shares
+unpopular objects and as a result its karma does not increase. We can also
+look at it from another point and argue that it forces nodes to share
+popular objects  so as to increase their karma.
+In either case, the diversity of system-wide objects decreases.
+A user may also suffer due to routing policies which do not balance load.
+
+
+
+
+
+SHARP
+
+provides a framework for a secure distributed resource management.
+
+goals of such a system:
+1) reservation of resources
+2) prevent stealing of resources held by others
+3) admission control
+4) balance global resource sharing with local autonomy
+5) it must be robust - protect resource availability
+6) secure
+
+STRUCTURE :
+
+Multiple resource managers control different ,possibly overlapping,
+regions of the global resource pool.
+it uses the notion of a soft-state claim called a ticket that expires
+after a certain period so that the system can recover the resources if a
+claim holder fails. The ticket is presented to the site authority which
+may reject the ticket or honor it by issusing a lease for any subset of
+the resources or the term specified on the ticket.
+
+All claims are cryptographically signed to make them unforgeable and
+non-repudiable.
+
+oversubscribed claims:
+they improve resource utilisation but at the same time the probability
+that a site authority will honor the oversubscribed ticket decreases the
+with the increase in oversubscription degree.
+
+
+confinement problem :
+SHARP allows owners of the resource only a bounded amount of time for
+carelessly certifying some malicious entity access to the resource.
+
+The choice of a claim duration represents a tradeoff between
+agility,robustness and renewal overhead.
+
+
+
+
+SAMSARA
+
+enforces fairness in a P2P storage system without requiring trusted third
+parties, symmetric storage relationships, monetary payments or certified
+identities.
+
+it introduces the notion of a storage claim - incompressible placeholders
+for storage. one node is responsible for issuing those rights while
+another is responsible for consuming them.A node is responsible for the
+claims it has forwarded. Thus, nodes would prefer not to forward claims
+whenever possible.
+
+To allow honest nodes to recover from transient failures, a grace period
+is allowed for responding to queries. however, this leads to an attack
+whereyby malicious nodes do not store anything but choose replicas only
+for the grace period, selecting new ones as the period expires.
+The authors suggest a scheme where failures are exponentially more harmful
+for consecutive failed queries in order to protect honest nodes. However,
+the attack above still exists.
+
+
+the nodes also negotitate a Diffe-Hellman key during initial exchange that
+is subject to man-in-the-middle attacks.
+
+sybil attacks do not offer advantages as forwarding a claim yields no
+advantages.
+
+forwarding claims weaken data reliabilty unless a cycle is created whereby
+data reliablity is restored.
+
+the authors also indicate that this placeholders approach would not work
+for renewable resources such as bandwidth and processor cycles.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

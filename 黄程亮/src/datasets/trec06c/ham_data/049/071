@@ -1,0 +1,53 @@
+Received: from netcom14.netcom.com (jfourier@netcom14.netcom.com [192.100.81.126])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id SAA19664
+	for <handyboard@media.mit.edu>; Tue, 3 Aug 1999 18:59:15 -0400 (EDT)
+Received: (from jfourier@localhost)
+	by netcom14.netcom.com (8.8.5-r-beta/8.8.5/(NETCOM v1.02)) id PAA10499;
+	Tue, 3 Aug 1999 15:59:09 -0700 (PDT)
+Date: Tue, 3 Aug 1999 15:59:09 -0700 (PDT)
+From: jf <jfourier@netcom.com>
+Message-Id: <199908032259.PAA10499@netcom14.netcom.com>
+To: handyboard@media.mit.edu, jonathan.swaby@vpss.gatech.edu,
+        robot-board@cmf.nrl.navy.mil
+Subject: Re:  IR sensors
+
+I've been using the Miniboard to send and receive IR messages among
+other things. I find that the board is right on the edges of being
+fast enough to generate the 40KHz carrier and thus, I don't use it
+that way. Rather, I use the Miniboard to control, basically turn on
+and off an auxiliary circuit, either a 555 or a 4060 w/ceramic oscillator,
+which then runs one or two IR LEDs through a simple transistor circuit
+at pretty high, but non-steady, amperage, say 1 A, 1.5 A. 
+
+We took apart a commercial remote and found that the current limiting
+resistor was very small thus the amps going through the IR LED were
+pretty high. 
+
+Be mindful (Jedi saying) that I am not an authority on all this,
+but merely have had some experience.
+
+My method of IR reception (please post if you come up with another)
+is to use a slight variation of the circuit that comes with those
+Sharp (or Radio Shack---their website might have it still) modules
+and hook it to the Pulse Accumulator. Pulses can be long or short
+with spacing in between. The Pulse Accumulator measures the pulse
+lenght and discriminates between Noise, Short Pulse and Long Pulse.
+It also starts a OC interrupt upon the reception of each pulse,
+which can also be stored. When the OC interrupt kicks in, an end-of-message
+is assumed. That is, if there is a pause after a bunch of pulses,
+then that is considered the end of a message and parsing or whatever
+is done.
+
+I find that I can exchange msgs pretty well between two stationary
+positions, but that movement makes for unreliable reception.
+
+I'm using the msgs for timing, so fast receiver action is needed.
+However, for usual IR remote type applications, or non-time-critical
+uses, schemes can be implemented to increase robustness.
+
+I'm still working with the stuff, so if more details are needed, post
+again.
+
+jfourier@netcom.com
+
+

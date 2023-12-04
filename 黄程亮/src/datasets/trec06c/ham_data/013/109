@@ -1,0 +1,158 @@
+Received: from entoo.connect.com.au (entoo.connect.com.au [192.189.54.8])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id GAA11532
+	for <handyboard@media.mit.edu>; Wed, 25 Mar 1998 06:04:35 -0500 (EST)
+Received: from brian (acc6-ppp25.syd.enternet.com.au [210.8.3.217]) by entoo.connect.com.au with SMTP id WAA14839
+  (8.8.6/IDA-1.7); Wed, 25 Mar 1998 22:04:21 +1100 (EST)
+Message-Id: <3.0.32.19980325205644.00aafa10@online-int.com.au>
+X-Sender: mb245039e@online-int.com.au (Unverified)
+X-Mailer: Windows Eudora Pro Version 3.0 (32)
+Date: Wed, 25 Mar 1998 21:04:11 +1000
+To: Jaron Paludanus <j.paludanus@tip.nl>
+From: Brian Lavery <blavery@computer.org>
+Subject: RE: Low battery detection
+Cc: handyboard@media.mit.edu
+Mime-Version: 1.0
+Content-Type: text/enriched; charset="us-ascii"
+
+>>Is it possible for a handy-board program (either 'C' or assembler) to
+
+>>detect a low battery condition?
+
+========================================
+
+>Sure:
+
+>Solder a wire to the "BATTERY +", add 2 resistors to make a voltage
+divider
+
+>(to divide the battery ABSOLUTE MAX condition, say about 12V, down to
+about
+
+>4 volts for the analog 0-5v range), and feed it into an ANALOG input
+point.
+
+> Put a multimeter on the battery to measure its volts in a LOW charge
+
+>condition, and then in a HIGH charge condition.  Read the HB analog
+input
+
+>value for both those conditions, and assume a linear connection between
+bat
+
+>volts and analog reading.
+
+===============================================
+
+>I slowly start to grasp some of the idea about 
+
+>voltage dividers but still don't understand. 
+
+>Won't this setup drain the battery? How does
+
+>one calculate and wire such a thing - in this
+
+>particular case?
+
+==============================================
+
+
+Hi Jaron,
+
+I took the PCB off the battery case, and connected a wire to the +ve
+terminal of the battery pack. Then I connected two resistors like this,
+and brought the wires out, and plugged into the Analog5 connector:
+
+
+      BAT --------R1---------*--------- Analog5 Input
+
+      +ve        (10K)       |             (Active)
+
+                            R2  (4K7)
+
+                             |
+
+                             *--------- Gnd (at Analog5
+
+                                             Connector)
+
+
+(There is an inbuilt 47K resistor from Analog5 Active to +5 in the HB
+itself, but ignore that for the moment.)
+
+
+I use the following code to read the battery voltage:
+
+
+float bvolts(void)
+
+/* BATTERY VOLTS MEASUREMENT - USES ANALOG 5 */
+
+{
+
+    return .1 * (float)   ((((analog(5)-17)*75)/57 + 2)/2) ;
+
+}
+
+
+
+int main()
+
+{
+
+    while (1)
+
+        {
+
+        printf("V =%f\n",bvolts());
+
+        if (bvolts()>12.2)    /* 8 cells x 1.525V/cell  */
+
+            beep();
+
+        sleep(2.0);
+
+        }
+
+    return 0;
+
+}
+
+
+This program I leave running while the battery is charging, and the
+beeper starts when the voltage gets too high.  For your purposes, you
+will need a suitable test to check for falling volts as the battery goes
+flat!
+
+
+Why do I use such a complicated function to calculate BVOLTS() ? Because
+it rounds off the result to 1 decimal place for me, and that is easier to
+read on the LCD panel.  A simpler calculation is:
+
+      <bigger>0.06579*(float)analog(5) - 1.0184
+
+if no rounding is needed.  (Check the algebra of that, I think I got the
+simplification right!)
+
+
+In any case, the reading should be linear for different battery voltages,
+and the "-1.0184" bit is a correction for the 47K inbuilt resistor on the
+HB.
+
+
+Will that flatten the battery?  Well I find the NiCd battery on its own
+leaks away in a few weeks or so.  With the resistors added like above, it
+flattens in a fortnight or two <<g>.  Let's look at a rough
+calculation...  With 10K resistor, say it drains 1 mA, with 10 volts
+across it.  What capacity NiCds? - say 600mAh.  Very roughly that gives
+about 600 hours to drain all away - and 600 hours is about 3 or 4 weeks -
+so that seems to add up.  
+
+
+</bigger>Good luck
+
+Brian Lavery
+
+Sydney
+
+
+

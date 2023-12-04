@@ -1,0 +1,66 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f8IIr4q10230
+	for <egs@cs.cornell.edu>; Tue, 18 Sep 2001 14:53:04 -0400 (EDT)
+Received: from localhost.localdomain (syr-66-66-30-147.twcny.rr.com [66.66.30.147])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id OAA02760;
+	Tue, 18 Sep 2001 14:52:50 -0400 (EDT)
+Received: from localhost (john@localhost)
+	by localhost.localdomain (8.11.0/8.11.0) with ESMTP id f8IIu3u02356;
+	Tue, 18 Sep 2001 14:56:04 -0400
+Date: Tue, 18 Sep 2001 14:56:03 -0400 (EDT)
+From: "John C. Bicket" <jcb35@cornell.edu>
+To: egs@CS.Cornell.EDU
+cc: jcb35@cornell.edu
+Subject: 615 paper 10
+Message-ID: <Pine.LNX.4.21.0109181451460.2346-100000@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+This paper presents associativity based routing, in which the protocol
+selects routes based on nodes being have states of "associativity" based
+on periods of non-movement.  The goal is to establish
+routes that are stable (ie long-lived), and attain higher throughput. It
+is a reactive protocol, dealing with route requests on a per need
+basis.  The paper claims that the protocol's associate property also
+allows fault tolerance in times of base station failures.  Also, they
+claim the protocol is free from loops, deadlock, and packet duplicates.
+
+
+ABR uses a combination of point to point and broadcast routing approaches
+- routes are initiated by the source and set-up based on demand. ABR
+makes routing decisions at the destination, so that only the best route
+will be selective and made active to avoid packet duplicates.    
+
+The "rule of associativity" that the paper discusses states that a mobile
+hosts' association with its neighbor changes as it is migrating and its
+movement period can be identified by association ticks which are
+transmitted on the data link protocol, where each host sends hello
+messages and updates its associativity ticks depending on the nodes it is
+surrounded by.
+
+By appending associativity tick numbers to route requests by intermediate
+nodes, the destination can select a route according to its knowledge of
+all the possible routes.  Breaks in links and intermediate node movements
+are handled by passing new requests up to the source if the source of the
+break is in the lower half of the route and the destination if the break
+is in the upper half.
+
+
+Finally, the paper provided simulations which were not as detailed as
+some of the other papers we have read (well, at least they had simulations
+in this paper), and more information would have been nice, such as
+protocol overhead and such.  The results seemed a little hard to read.
+
+comments:
+
+This protocol was interesting because it had data flow acknowledgment and
+re-transmission scheme incorporated in the protocol.  This has its pros
+and cons, depending on what you're using it for and what protocols are on
+top of it.
+
+This protocol also seemed to be most effective for a very specific type
+of ad hoc network where nodes move for a short period of time but expeience 
+a "dormant" period where they stay in the same area.  The interesting
+thing is that this gives priority to nodes that are more stationary.  
+
+

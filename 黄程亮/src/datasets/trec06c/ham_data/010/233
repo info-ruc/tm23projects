@@ -1,0 +1,67 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA01756
+	for <handyboard@media.mit.edu>; Sat, 7 Feb 1998 09:01:38 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id JAA10048;
+	Sat, 7 Feb 1998 09:01:34 -0500 (EST)
+Message-Id: <199802071401.JAA10048@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Pat Benoy <benoy@slu.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: analog input test 
+In-Reply-To: Your message of "Thu, 05 Feb 98 17:25:44 CST."
+             <34DA4A78.9C11E748@slu.edu> 
+Date: Sat, 07 Feb 98 09:01:34 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+If the sensor headers look like this:
+
+live signal [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]    [ ] [ ] [ ] [ ] [ ] [ ] [X]
+
++5v         [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]    [ ] [ ] [ ] [ ] [ ] [ ] [ ]
+ground      [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]    [ ] [ ] [ ] [ ] [ ] [ ] [X]
+sensor#      15  14  13  12  11  10  9   8   7      6   5   4   3   2   1   0
+
+Then for sensor 0, you use the header pins marked as [X].
+
+If you are sure you have a 10K resistor, and you are using the correct
+pins, and you are getting a reading of 5 or 6 (not 40), then this
+suggests that the resistor pack value is wrong.  You should have a 47K
+resistor pack.  If a 10K resistor yields a value of 5 or 6, you might
+have a 470K resistor pack soldered down between the +5v and signal
+rows.
+
+re: DL, thanks for your observations.  I'll take note of it.
+
+Fred
+
+In your message you said:
+> Fred;
+> 
+> I am at the testanalogs portion of the assembly process.  All has gone
+> well up until this point.    The knob varies between 0 and 255 as
+> expected and the seven numbers all come up either 254 or 255 when I
+> press the START button.  However I am confused as to which headers I
+> should insert the 10k resistor as well as the output I receive depending
+> on which header pairs I use.  Are the two outer most headers the two
+> that are side by side at the edge of the board?  If I insert the
+> resistor in these the readings all stay 254 or 255.  Or are the two
+> outermost headers those which are separated by the in line resistor and
+> the other header, (i.e. the header closest to the edge and the header
+> closest to the plcc socket)?  When I insert the resistor in these
+> headers the number changes to 5 or 6 not 45.  The voltage at pins 51 and
+> 52 check out and I seem to have continuity.
+> 
+> By the way, I attempted to download Pcode using hbdl and dlm using a 233
+> Pentium II, a 166 Pentium, and a 386 all without success.  However, I
+> was successful on the first try on the Pentium II using dl in a DOS
+> window.  Perhaps this should be recommended as the default down loader
+> for PC's.
+> 
+> Love your board;)
+> 
+> Pat Benoy
+> 
+> 
+

@@ -1,0 +1,91 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id LAA09737
+	for <handyboard@media.mit.edu>; Thu, 12 Nov 1998 11:22:03 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id LAA10614;
+	Thu, 12 Nov 1998 11:22:02 -0500 (EST)
+Message-Id: <199811121622.LAA10614@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Bill Bynum <bynum@CS.WM.EDU>
+Cc: handyboard@media.mit.edu
+Subject: Re: Connecting two HandyBoards through their serial ports 
+In-Reply-To: Your message of "Thu, 12 Nov 1998 09:44:19 EST."
+             <199811121444.JAA19101@nc.cs.wm.edu> 
+Date: Thu, 12 Nov 1998 11:22:02 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+Gads Bill, you are right and my info in the FAQ is dead wrong.  I 
+have updated the FAQ with the corrected information.
+
+*Thanks a lot* for working this one through.  There are few things
+more annoying than completely wrong documentation (compiler bugs maybe
+are one of them).
+
+Fred
+
+In your message you said:
+> Hello, everyone:
+> 
+>    Richard Drushel helped me solve the problem that I was having
+> in getting two HandyBoards to communicate through their serial
+> ports by suggesting that I check to be sure that the wiring on the
+> RJ11 cable I was using corresponded to a "null modem" connection.
+> Indeed, the connecting RJ11 cable I was using turned out NOT to be
+> a null modem cable.
+> 
+>    On the HandyBoard FAQ, the following question tells how to 
+> connect two HandyBoards:
+> 
+> > I want to plug two Handy Boards together so that they can
+> > communicate. What kind of cable should I use?
+> > 
+> >    For this application, you must use the network style RJ11 cable
+> >    (as described above). Do not use the normal telephone style
+> >    RJ11 cable used to connect the HB to the serial interface, or
+> >    you will suffer the smoke and burn consequences noted above.
+> 
+>    The question before this one in the FAQ -- "The R11 on my
+> Interface/Charger is smoking hot and is turning black! ..." --
+> describes a network-style RJ11 cable by saying that if you hold
+> the the ends of the cable plug-to-plug, both contact side up, the
+> wires line up as follows:
+> 
+>                      -------+    +--------
+>             ---------  black|    |yellow -----------
+>             ---------    red|    |green  -----------
+>             ---------  green|    |redn   -----------
+>             --------- yellow|    |black  -----------
+>                      -------+    +--------
+> 
+>    Wiring an RJ11 cable this way avoids smoking the power supplies
+> on the two HandyBoards, because the unswitched power leads of the
+> two HandyBoards are connected, the ground leads are connected, the
+> RxD leads are connected and the TxD leads are connected.
+> 
+>    Either the above diagram is wrong (I think that it's right,
+> actually) or the advice in the FAQ to use this kind of cable is
+> wrong, because it is necessary for the RxD and TxD leads on the
+> two HandyBoards to be swapped and the ground leads to be matched.
+> The unswitched power leads aren't needed for serial communication,
+> but if they are connected, then they have to be matched.  Namely, if
+> you wire your RJ11 cable so that when you compare the cable plugs
+> contact side up you get the pairings:
+> 
+>                      -------+    +--------
+>              --------  black|    |black   ------------
+>              --------    red|    |green   ------------
+>              --------  green|    |red     ------------
+>              -------- yellow|    |yellow  ------------
+>                      -------+    +--------
+> 
+> This wiring switches TxD and RxD, but matches up the unswitched power
+> leads and the ground leads on the two robots.
+> 
+>    When you use an RJ11 cable wired this way to connect two HandyBoards,
+> then the serialio.c functions implement serial communication between
+> the two HandyBoards quite nicely.
+> 
+>       Bill Bynum
+> 
+

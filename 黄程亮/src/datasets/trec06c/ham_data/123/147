@@ -1,0 +1,76 @@
+Received: from iceman.cc.utexas.edu (iceman.cc.utexas.edu [146.6.71.66])
+	by cs.utexas.edu (8.13.6/8.13.6) with ESMTP id k41JHkGk025582
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 1 May 2006 14:17:55 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.36) with SMTP id k41JHjGt025953;
+	Mon, 1 May 2006 14:17:45 -0500 (CDT)
+Received: from ironmaiden.mail.utexas.edu (ironmaiden.mail.utexas.edu [128.83.32.53])
+	by iceman.cc.utexas.edu (8.12.11/8.12.11/cc-lists.mc-1.36) with ESMTP id k41JHSqq025909
+	for <cs352-swk@lists.cc.utexas.edu>; Mon, 1 May 2006 14:17:28 -0500 (CDT)
+Received: from nobodaddy.cs.utexas.edu ([128.83.120.154])
+  by ironmaiden.mail.utexas.edu with ESMTP; 01 May 2006 14:17:28 -0500
+X-IronPort-MID: 1849905868
+X-SBRS: 5.5
+X-BrightmailFiltered: true
+X-Brightmail-Tracker: AAAAAQAAA+k=
+X-IronPort-AV: i="4.04,169,1144040400"; 
+   d="scan'208"; a="1849905868:sNHT16232052"
+Received: from silver.cs.utexas.edu (madhavi@silver.cs.utexas.edu [128.83.144.136])
+	by nobodaddy.cs.utexas.edu (8.13.6/8.13.6) with ESMTP id k41JHRMR029444
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <cs352-swk@lists.cc.utexas.edu>; Mon, 1 May 2006 14:17:27 -0500 (CDT)
+Received: (from madhavi@localhost)
+	by silver.cs.utexas.edu (8.13.6/8.13.6/Submit) id k41JHRmS021263;
+	Mon, 1 May 2006 14:17:27 -0500
+Newsgroups: utexas.class.cs352-swk
+Date: Mon, 1 May 2006 14:17:21 -0500 (CDT)
+From: Madhavi Krishnan <madhavi@cs.utexas.edu>
+To: cs352-swk@lists.cc.utexas.edu
+Subject: Re: Output format and order of cache lines
+In-Reply-To: <Pine.LNX.4.63.0605011354150.18920@silver.cs.utexas.edu>
+Message-ID: <Pine.LNX.4.63.0605011415151.18920@silver.cs.utexas.edu>
+References: <e33egi$3ub$1@geraldo.cc.utexas.edu> <e3426n$dh1$1@geraldo.cc.utexas.edu>
+ <Pine.LNX.4.63.0605011354150.18920@silver.cs.utexas.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Reply-To: madhavi@cs.utexas.edu
+Sender: owner-cs352-swk@lists.cc.utexas.edu
+X-Listprocessor-Version: 8.2.10/020311/17:52 -- ListProc(tm) by CREN
+
+Hi CS352-ers,
+
+In my previous mail, the cache contents were not aligned properly.
+
+-----------------------------------------------------------------------
+
+Note the following about the order in which cache lines are printed
+to output file.
+
+When you have multiple invalid cache lines within a set, I choose the last
+line for replacement. This is purely implementation dependent and has no
+design issues. For example, initial cache status
+
+Set Valid Tag Modified Data
+0    F    0    F        0
+0    F    0    F        0
+
+Command: Load 1000
+
+Say, address 1000 matches to index 0. Now I can load 1000 in the first line 
+or the second line (since it is a two
+way set associative cache. My implementation chooses the second one. Hence
+the output is:
+
+Set Valid Tag  Modified Data
+0    F    0      F        0
+0    T    100    F        1000
+
+
+Make sure, you print the cache lines in the order that matches with the output files so
+that "diff" will not give any differences.
+
+Madhavi
+
+
+

@@ -1,0 +1,45 @@
+Received: from io.unm.edu (io.unm.edu [129.24.8.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id LAA18317
+	for <handyboard@media.mit.edu>; Mon, 30 Nov 1998 11:54:30 -0500 (EST)
+Received: from unm.edu([129.24.25.118]) (1523 bytes) by io.unm.edu
+	via sendmail with P:esmtp/R:bind_hosts/T:inet_zone_bind_smtp
+	(sender: <somewhere@unm.edu>) 
+	id <m0zkWah-0000i0C@io.unm.edu>
+	for <handyboard@media.mit.edu>; Mon, 30 Nov 1998 09:54:27 -0700 (MST)
+	(Smail-3.2.0.101 1997-Dec-17 #2 built 1998-Sep-15)
+Message-Id: <3662DCAA.7137C43C@unm.edu>
+Date: Mon, 30 Nov 1998 09:58:02 -0800
+From: Sensor Fusion Group <somewhere@unm.edu>
+Organization: NASA/Pursue
+X-Mailer: Mozilla 4.04 [en] (Win95; I)
+Mime-Version: 1.0
+To: DjKOz97@aol.com
+Cc: handyboard@media.mit.edu
+Subject: Re: Logic level conversion
+References: <c11cd463.3662b4c3@aol.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+To convert from 0-3 to 0-5 I would suspect that all you need is a 2N2222
+NPN transistor with a couple of resistors to bias it.  For example:
+
+                                     +5volts
+                                   100 ohm resistor
+                                     collector ----------0-5 input
+  0-3v output -----1k resistor ----- base
+                                     emitter
+                                     0volts
+
+Depending upon the 0-3v frequency, the resistances can be increased to
+minimized the power used from the batteries.  Also the transistor is
+just off of the top of my head as a general purpose NPN and if higher
+switching speeds become necessary I'm sure there are more appropriate
+choices for transistors.
+
+DjKOz97@aol.com wrote:
+> 
+> I have a device that uses 0 - 3V logic levels for the data output.
+> What can I do to convert the output to match the 68HC11's  0 - 5V logic level?
+> Thanks for the help,
+> Dave
+

@@ -1,0 +1,61 @@
+Received: from mail.montana.com (mailB.montana.com [199.2.139.117])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id SAA28242
+	for <handyboard@media.mit.edu>; Mon, 1 Mar 1999 18:55:44 -0500 (EST)
+Received: from cs.umt.edu (mso5-203.montana.com [208.4.224.203])
+	by mail.montana.com (8.9.2.Beta4/8.9.4) with ESMTP id RAA01098
+	for <handyboard@media.mit.edu>; Mon, 1 Mar 1999 17:00:49 -0700 (MST)
+Message-Id: <36DB2896.544C6F0@cs.umt.edu>
+Date: Mon, 01 Mar 1999 16:53:58 -0700
+From: Will Bain <willbain@cs.umt.edu>
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: Polaroid sonar problems
+References: <36DA5AB5.2B5919C@netvision.net.il>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Guy Berg wrote:
+> Our group is still struggling with the polaroid sonar. We can't get any
+> coherent reading, only readings that are in the range 470-515, which
+> aren't effected by the measured distance.
+> We have the capacitor and resistor installed as required.
+> We tried using a 150ms delay (instead of 50) and we average our
+> readings, we tried taking every tenth reading and displaying it, but
+> nothing seems to work.
+
+I assume that your sonar pings (makes a clicking sound).  If so, then
+you may be getting a premature echo.  You might try mounting the
+transducer in putty to absorb vibration.  You could try lengthening the
+blanking interval to make sure that the "echo" is not just a
+reverberation of the ping; this requires hooking up the blanking pin of
+the sonar board to one of the unused digital outputs and sending it high
+for an adequate period of time.  Note that if you want to use all four
+of the SPI pins as digital outs, you need to do a bit_set(0x1009, 0x3C)
+in the initialization instead of bit_set(0x1009, 0x30).  (I assume
+you're executing sonar_init() prior to executing sonar_sample() )
+
+Also, make sure you start off with the sonar code provided on the HB web
+site before you make any modification to it (I screwed it up a couple
+times myself, trying to improve it ;^)
+
+Other than that, just verify all your connections using a multimeter. 
+Make sure that you have continuity between the echo pin on your Polaroid
+6500 ranging module board (pin 7) and the sensor pin of HB input port 7
+(the top pin of the three).  I've seen dire warnings not to (A) plug in
+the ribbon cable backwards, and (B) try to ping without the transducer
+connected.  I suppose there could be a fried chip somewhere, but without
+an oscilloscope it would be very difficult to find.
+
+Sorry I can't be more helpful :^(
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,                                           The big thieves
+Will Bain,                                        hang the little ones.
+& Tatoosh                                               --Czech proverb
+

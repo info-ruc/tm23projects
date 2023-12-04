@@ -1,0 +1,72 @@
+Received: from wproxy.gmail.com (wproxy.gmail.com [64.233.184.205] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k27GIct23273
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Mar 2006 11:18:38 -0500 (EST)
+Received: by wproxy.gmail.com with SMTP id i3so202106wra
+        for <egs+summary@cs.cornell.edu>; Tue, 07 Mar 2006 08:18:38 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=AcZdfw7zbuWeqGPshgadD9mTn67aaaXIwmcWjKW8nqhDp1bX/Bbb4/iF7TtR4+Gb7Sm1rlGMNyUAAYwNwR28/qroARYAZnXpJhN9nVDZZUqjj6Z+Q3SSgyqFh5C+NpbeEZ3b47BkcgHLEY7hfd2/SjejuhykrmRnhiNPhWnXGIA=
+Received: by 10.54.129.16 with SMTP id b16mr184817wrd;
+        Tue, 07 Mar 2006 08:18:38 -0800 (PST)
+Received: by 10.54.80.9 with HTTP; Tue, 7 Mar 2006 08:18:38 -0800 (PST)
+Message-ID: <6e1ca4560603070818h5bd5da55t4f1496a8603cb2d0@mail.gmail.com>
+Date: Tue, 7 Mar 2006 11:18:38 -0500
+From: "Chiu Wah Kelvin So" <kelvinso@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: Paper 12
+MIME-Version: 1.0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k27GIct23273
+
+	The first paper, "Storage management and caching in PAST…," presents
+a distributed and self-organizing peer-to-peer storage infrastructure.
+PAST supports three simple file operations: insertion, lookup and
+reclaiming(deletion) files. However, it only supports immutable file.
+To insert a file, it first computes the file ID using the SHA-1 hash
+of the file name, public key and a random salt. Then, PAST replicates
+the file to k nodes whose node ID is numerically closest to the file
+ID to maintain high file availability even when nodes fail.
+        Since size of different files and the size of hard drive of
+peers various by orders of magnitude, file may not be able to fit into
+the node which is one of the numerically closest nodes. Therefore, we
+need a mechanism to solve this problem. PAST uses two techniques to
+divert replicas to other nodes when it doesn't fit into the nodes.
+First, PAST allows a node that is not one of the k numerically closest
+nodes to the file ID to alternatively store the file, if it is the
+leaf set of one of those k nodes. This is called replica diversion. If
+both the node and the leaf set of one of those k nodes do not fit into
+file, then it uses file diversion, where the client node will compute
+the file ID with a different salt value and retry the insert
+operation. There is also caching on the lookup path to improve
+performance for popular files. This paper only uses Pastry with a
+storage management layer on top of it. Storage management is only
+useful when storage is scarce. In most of the machines, there are
+plenty of storages. Also, this paper only targets in very small
+problem in which a file system with immutable files. It will be a lot
+more useful if one can update files.
+	The second paper, "Wide-area cooperative storage with CFS," also
+presents an alternative read-only distributed data storage system on
+top of Chord. CFS consists of two layers: DHash, and Chord. DHash
+layer is responsible for storing keyed blocks, maintaining proper
+levels of replication, can caching popular blocks. Chord layer is used
+to efficiently locate blocks of files. Instead of storing a whole file
+into node in PAST, CFS store blocks of files into nodes (Each file
+consists of root block, and each of the root block points to different
+data blocks). Therefore, CFS eliminates the need to manage storage of
+each node since each block of files is fixed size and they can be
+naturally load balanced using DHT. However, it will require multiple
+lookup for a single file. In CFS, File can be updated by its publisher
+who has access to the private key used to sign the root block of file
+while PAST only allows write-once file. To maintain replication, CFS
+stores a block's replicas at the k servers immediately after the
+block's successor on the Chord ring. To have different server storage
+capacities, the server with high storage capacity can enter the
+systems with several virtual servers to load balance the systems. The
+limitation of both of the distributed data storage systems do not
+allow clients to update files, which is a very useful features client
+can have. Also, it requires large bandwidth to maintain k replicas
+when there is churns in the systems.
+

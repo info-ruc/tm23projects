@@ -1,0 +1,77 @@
+Received: from dub-img-2.compuserve.com (dub-img-2.compuserve.com [149.174.206.132])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id BAA29068
+	for <handyboard@media.mit.edu>; Thu, 11 Jun 1998 01:58:07 -0400 (EDT)
+Received: (from mailgate@localhost)
+	by dub-img-2.compuserve.com (8.8.6/8.8.6/2.12) id BAA28177
+	for handyboard@media.mit.edu; Thu, 11 Jun 1998 01:57:36 -0400 (EDT)
+Date: Thu, 11 Jun 1998 01:56:54 -0400
+From: HECTOR NORIEGA <110060.2126@compuserve.com>
+Subject: D/A converter
+Sender: HECTOR NORIEGA <110060.2126@compuserve.com>
+To: Handyboard <handyboard@media.mit.edu>
+Message-Id: <199806110157_MC2-3FDD-EE6A@compuserve.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+
+"Hi",  from Hector Noriega, I am trying to send a data byte from port C o=
+ut
+to a D/A converter
+faster than 1KHZ (target about 10KHZ) . I wrote a test subroutine in
+assembly code but I can =
+
+not enable the address decoder using port B for the msb and port C for th=
+e
+lsb and the data.
+The command that works  in "IC" is poke(6fff, data).
+ Could someone give me a hint with the assembly code?
+****************Here is the assembly code*************************
+* PIOT.ASM Port I/O test; Program by Hector Noriega, 07JUNE98
+* this program is to send data to an external Digital to Analog conv..
+* the main purpose is to characterize how fast can a byte output =
+
+* be latched into the D/A converter.
+* using port "B" with a msb address of  $6F to enable HB decoder U6 to
+* enable (y4) on the expansion bus j3-5. Port C outputs the data
+* byte for the D/A.
+* Using IC the command to accomplish the same thing is =
+
+* poke(0x6fff,volt_out);     /* D/A */
+
+#include "6811regs.asm"
+            ORG  MAIN_START
+subroutine_od2a:
+         LDX   #BASE
+         LDAA  #$60
+         STAA  HPRIO,X    ; test SMOD & MDA bit(normal expanded mode)
+         LDAA  #$00
+         STAA  PIOC,X
+         SEI                           ; turn off system interrupts so th=
+at
+         LDAA  #$FF          ; =
+
+         STAA  DDRC,X     ; Set portc to output
+         STAA  PORTC,X    ; store in latch low byte address
+         LDAA  #$6F           ; 6F load with msb address
+         LDAB  #128           ; data =3D 0 for bypolar Digital to Analog
+Converter
+         STAA  PORTB,X    ; msb byte address
+         STAB  PORTC,X  ; low byte is data
+         CLI                        ; turn on interrupts*/
+         RTS
+*************************** Here is the C program ****************
+* Feedback Controller */
+   int v_opt; =
+
+void main()
+  {
+   while(1)
+    {      =
+
+           v_opt =3D od2a(0);
+    }                         /* end of while */
+   }                          /* end of main program*/
+ =
+
+

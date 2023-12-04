@@ -1,0 +1,78 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iAG1IWFJ019396
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Nov 2004 18:18:32 -0700
+Received: from anybodyi.u.arizona.edu (ppp393.broadband01.tus.dakotacom.net [69.9.25.137])
+	by breaker.dakotacom.net (8.12.2/8.12.2) with ESMTP id iAG1IVTB025373
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Nov 2004 18:18:31 -0700 (MST)
+Message-Id: <5.1.0.14.2.20041115180501.00ba4580@psy1.psych.arizona.edu>
+Date: Mon, 15 Nov 2004 18:14:59 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: DirectDraw Error
+In-Reply-To: <41993E66.2020308@u.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+    My guess is that Microsoft's GDI+ patch has broken NVIDIA's and 
+possibly other manufacturer's drivers -- at least busted one of the 
+features that DMDX uses.  Until I get the thing under a microscope here 
+your best bet is to use the DMDX for bad video cards shortcut or possibly 
+the DMDX for GeForce video cards shortcut.  You could apply SP2 to the XP 
+machine with the problem as I've yet to actually reproduce the failure here 
+and all the machines here are SP2.
+
+At 04:40 PM 11/15/2004 -0700, you wrote:
+>Hi Jonathon,
+>    I've tested approximately 75 subjects on a Windows 2000 machine using 
+> the same DMDX program, and things have worked just fine--until this 
+> morning.  The syntax check didn't output any errors, but when I ran the 
+> script, the following message appeared: "Create memory-120x-17 surface 
+> for qptr failed.  Unknown directdraw error (8007000e{14}).
+>    I found the message copied below in the list archives, but I'm not 
+> sure if it's relevant since the error message is different and my program 
+> has worked fine until now.
+
+   It's not.
+
+>   Since multiple people use the machine, I'm in the process of trying to 
+> determine if anything was downloaded that may be corrupting DMDX.  In the 
+> mean time, do you have any suggestions for what the source of the error 
+> might be?
+
+   The web tosses up this one:
+
+When running an application a message box pops up containing the error message:
+
+     Run-time error '-2147024882 (8007000e)'
+     System Error &H80004005 (-2147467259). Unspecified error.
+
+Meaning:
+
+This error is a VB/VBA automation error. Details on how to interpret this 
+and similar errors can be found at: 
+http://support.microsoft.com/support/kb/articles/Q186/0/63.ASP.
+
+Specifically this error means 'Out of memory'.
+Possible Cause and Remedy:
+
+This error has been encountered when an application was attempting to write 
+to the NT/W2K event log but the NT/W2K event log was full. The event log 
+was set to 'Override events older than NN days' (and there was no system 
+message indicating that it was full). Changing this to 'Overwrite Events as 
+Needed' removed the error.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   HABIT, n. A shackle for the free.
+                                                 - Ambrose Bierce
+                                           The Devil's Dictionary
+
+
+

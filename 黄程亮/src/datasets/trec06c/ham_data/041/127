@@ -1,0 +1,57 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id RAA29074
+	for <Handyboard@media.mit.edu>; Fri, 9 Apr 1999 17:35:45 -0400 (EDT)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Fri, 09 Apr 1999 14:05:08 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id OAA08651;
+	Fri, 9 Apr 1999 14:05:07 -0700 (PDT)
+Date: Fri, 9 Apr 1999 14:05:07 -0700 (Pacific Daylight Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Handyboard@media.mit.edu
+Cc: Curt Mills <hacker@tc.fluke.com>, Curt Mills <BowHunt@iname.com>
+Subject: GCC/HC11 small patch
+In-Reply-To: <199904081946.MAA20298@mail.Legato.COM>
+Message-Id: <Pine.WNT.3.96.990409134944.109D-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+I contacted the original person who did the HC11 port to gcc (Otto Lind),
+and he pointed me to a patch for it.  If you're using gcc-2.8.1 with the
+HC11 patches in it, you may want to try this: 
+
+
+At line 502 of config/m6811/m6811.c, change from:
+
+        {
+	  sprintf (buf, "stab\t%%0+1\t; %s", comment);
+        }
+
+to:
+
+	{
+	  output_asm_insn ("clra", operands);
+	  sprintf (buf, "std\t%%0\t; %s", comment);
+	}
+
+
+Note: A new line was added, "stab" changed to "std", and the "+1" text was
+deleted.
+
+	"make LANGUAGES=c"
+	"make LANGUAGES=c install"
+
+It compiles fine. 
+
+I haven't tried this patch yet to see if it fixes the array indexing
+problem, but I'll try it tonight.  I'll update the patch file on the ftp
+site sometime this weekend to incorporate the mod and some README changes
+that were sent to me.
+
+Curt Mills, WE7U			hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

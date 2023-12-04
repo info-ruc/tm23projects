@@ -1,0 +1,47 @@
+Received: from tsmtp2.mail.isp (mailhost.teleline.es [195.235.113.141] (may be forged))
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id OAA13035
+	for <handyboard@media.mit.edu>; Mon, 5 Jun 2000 14:56:54 -0400 (EDT)
+Received: from teleline.es ([195.235.116.89]) by tsmtp2.mail.isp
+          (Netscape Messaging Server 4.1) with ESMTP id FVP35D05.VGS for
+          <handyboard@media.mit.edu>; Mon, 5 Jun 2000 20:53:37 +0200 
+Message-Id: <393BF82C.3B5AFB14@teleline.es>
+Date: Mon, 05 Jun 2000 20:57:48 +0200
+From: Miguel Recuenco <jmrecu@teleline.es>
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+X-Accept-Language: es-ES,es
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: SCI, IC and interrupts
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi
+
+I need to communicate with my handy board using the serial port using
+the Interrupt for SCI. I tried to test several programs that I found,
+without success. My basic test is the following. 
+
+	1.- I created and .asm file which is a copy of the "sysibeep.asm"
+example of the "interrupt-driven binary Programs" chapter of the IC
+manual, but instead of TOC4INT, I coded SCIINT. I created the
+corresponding .icb file.
+
+	2.- In my IC test program I poked the addess 0x102d to the value 0x2c
+to enable SCI interrupts, and after that I coded and infinite loop.
+I loaded this file and run.
+
+	In this situation, I started a vt emulation on my computer and send a
+lot of characters (ie: holding a key down), the expected result should be
+a low frequency sound of more or less 600 Hz (9600/(8*2)), that I get
+is... that when the first character is sent, the handyBoard heart stops,
+and I have o reset.
+
+
+	what is wrong?, there is any conflict between the SCI interrup and the
+others that IC uses? 
+
+
+:-) 
+
+Miguel
+

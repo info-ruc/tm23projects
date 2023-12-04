@@ -1,0 +1,82 @@
+Received: from darwin.psy.fsu.edu (root@darwin.psy.fsu.edu [128.186.66.5])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id QAA29802
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 13 Nov 2000 16:08:25 -0700
+Received: from kline.psy.fsu.edu (psy111a [128.186.66.78])
+	by darwin.psy.fsu.edu (8.9.3/8.9.3) with ESMTP id SAA22737
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 13 Nov 2000 18:08:07 -0500
+Message-Id: <5.0.1.4.0.20001113173926.0256a620@darwin.psy.fsu.edu>
+Date: Mon, 13 Nov 2000 18:14:37 -0500
+To: DMDX@psy1.psych.arizona.edu
+From: "John P. Kline" <kline@darwin.psy.fsu.edu>
+Subject: [DMDX] Re: Output keywords
+In-Reply-To: <3A106885.CDAC56D4@math.arizona.edu>
+References: <200011131556.PAA12845@mailhost.mrc-cbu.cam.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Josh,
+
+The PIO12 card outputs a byte (i.e. 8 bits).   A single byte can represent 
+decimal values 0 to 255 (256 distinct values) .
+
+10001010 is the binary representation of decimal 138, for example.   This 
+is because each binary place  represents a power of 2.  Thus, a "1" in the 
+right-most column represents 2^0, and the left-most represents 2^8 (i.e. 
+128).  Thus, binary 10001010 = base ten 2^7 + 2^3 + 2^1 =  128 + 8 + 2 = 138.
+
+If I am not mistaken, firing each output separately should be straightforward:
+
+Output bit 0 = 00000001 = 2^ 0 =  1
+Output bit 1 = 00000010 = 2^ 1 = 2
+Output bit 2 = 00000100 = 2^ 2 = 4
+Output bit 3 = 00001000 = 2^ 3 = 8
+Output bit 4 = 00010000 = 2^ 4 = 16
+Output bit 5 = 00100000 = 2^ 5 = 32
+Output bit 6 = 01000000 = 2^ 6 = 64
+Output bit 7 = 10000000 = 2^ 7 = 128
+
+Good luck,
+
+JK
+
+
+At 03:17 PM 11/13/00 -0700, Josh Cowley wrote:
+>I'm trying to test the output of a PIO12 card and I'm getting
+>confused about the relationship between numbers associated with
+>the Output command and the pins that fire when the command is
+>used.  Suppose I wanted to fire output 0 by itself.  Then I fire
+>output 1, then output 2, each by themselves.  What number should
+>follow the Output command for each of these?
+>
+>thanks,
+>Josh
+>
+>--
+>Josh Cowley
+>Department of Philosophy
+>The University of Arizona
+>PO Box 210027
+>Tucson, AZ 85721
+>cowley@u.arizona.edu
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+
+
+___________________________________________________________________
+John P. Kline, Ph.D.                    Office Phone:      850-644-9363
+Assistant Professor                     Lab Phone:         850-644-2049
+Department of Psychology                Fax:               850-644-7739
+Florida State University                        Mailto:kline@psy.fsu.edu
+Tallahassee, FL  32306-1051             http://klinelab.psy.fsu.edu
+___________________________________________________________________
+
+
+

@@ -1,0 +1,120 @@
+Received: from marmot.shef.ac.uk (marmot.shef.ac.uk [143.167.1.4])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j9DAVa5L021300
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 13 Oct 2005 03:31:36 -0700
+Received: from drake.shef.ac.uk ([143.167.2.64])
+	by marmot.shef.ac.uk with esmtp (Exim 4.52)
+	id 1EQ0N5-0004qp-HH
+	for DMDX@psy1.psych.arizona.edu; Thu, 13 Oct 2005 11:31:35 +0100
+Received: from http by drake.shef.ac.uk with local (Exim 4.42)
+	id 1EQ0N5-0001jg-76
+	for DMDX@psy1.psych.arizona.edu; Thu, 13 Oct 2005 11:31:35 +0100
+Received: from drake.shef.ac.uk (drake.shef.ac.uk [143.167.2.64]) 
+	by 143.167.2.64 (IMP) with HTTP 
+	for <cop05vn@localhost>; Thu, 13 Oct 2005 11:31:35 +0100
+Message-ID: <1129199495.434e378728699@webmail.shef.ac.uk>
+Date: Thu, 13 Oct 2005 11:31:35 +0100
+From: V Nguyen <V.Nguyen@sheffield.ac.uk>
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: Clear a picture when a key pressed
+References: <5.1.0.14.2.20051012084830.00ba4888@psy1.psych.arizona.edu>
+In-Reply-To: <5.1.0.14.2.20051012084830.00ba4888@psy1.psych.arizona.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Thank you for your suggestion. It runs properly, but I see some strange things
+in .zil files like this: 
+
+Subject 20, 10/13/2005 00:11:17 on BINHDKH, refresh 16.65ms
+!  Display error at msec 140.44, tick 5 in item 0, frame "Press SPACEBAR to
+start"
+!    moved into video memory 4 ticks late
+!     (previous frame's duration will have been longer)
+!  Display error at msec 2637.95, tick 155 in item 100, frame "  "
+!    moved into video memory 6 ticks late
+!     (previous frame's duration will have been longer)
+Item 100, -587.44
+ 587.44,+2
+!  Display error at msec 15406.13, tick 922 in item 2, frame "clear2"
+!    moved into video memory 37 ticks late
+!     (previous frame's duration will have been longer)
+Item 1001, 241.92
+ 241.92,+1
+!  Display error at msec 15772.27, tick 944 in item 1, frame "clear1"
+!    moved into video memory 17 ticks late
+!     (previous frame's duration will have been longer)
+
+
+Could you tell me how can I do to DMDX not print these line (after (! ) mark) to
+the .zil file.
+
+Kind regards,
+
+VB Nguyen
+
+
+
+Quoting "j.c.f." <jforster@psy1.psych.arizona.edu>:
+
+> At 02:21 PM 10/12/2005 +0100, you wrote:
+> >Dear Sir,
+> >
+> >I'm building an experiment with 3 pictures displayed and a text describes 
+> >one of
+> >these pictures. Participants have to response with 3 pressed key; with a
+> key
+> >pressed, the corresponding picture will disappear (i.e., press 1, the first
+> >picture will disappear; press 2, the second will disappear; and so on). I
+> can
+> >use <zor> and <vzk> keywords to store responses to a .zil file but don't
+> know
+> >how to:
+> >1- Realising a key pressed in each item.
+> >2- Clearing a picture when two others still on screen.
+> 
+>    You can keep the contents of the display from a previous item if the 
+> frames of each item have a no-erase in them, the ! switch.  To erase a 
+> given image you'll have to make a black (or whatever color the background 
+> is) and display it over the corresponding image.  You'll have to have three 
+> items that can take a response and you'll have to have a branch based on 
+> the response to one of three items that erases the specific image for that 
+> response.  If your images are the same size in the same locations then you 
+> can use subroutines for the erasing.  Something like this:
+> 
+> <zil> <zor> <xyjustification 1>
+> 
+> 0 "start" <bu 100>;
+> 
+> 1 ! <bmp> "black" <xy .25,.25> <return>;
+> 2 ! <bmp> "black" <xy .75,.25> <return>;
+> 3 ! <bmp> "black" <xy .5,.75> <return>;
+> 
+> +100 <bmp> "picture1" <xy .25,.25>, <bmp> "picture2" <xy .75,.25>,
+>          <bmp> "picture3" <xy .5,.75> * <mwc +1,1 +2,2, +3,3>;
+> +101 ! * <mwc +1,1 +2,2, +3,3>;
+> +102 ! * <mwc +1,1 +2,2, +3,3>;
+> 
+>    Of course this solution allows you to respond with any key at any time 
+> and doesn't guarantee that they won't press one response more than once and 
+> thus not have erased the whole screen afterwards.
+>                                                 /"\
+>   -jonathan (j.c.f.)                            \ /
+>                                                  X
+>      ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+> 
+>    The bug stops here.
+> 
+> 
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+> 
+
+
+

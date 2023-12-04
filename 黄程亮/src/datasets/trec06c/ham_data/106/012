@@ -1,0 +1,77 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j89FvM5L007780
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 9 Sep 2005 08:57:22 -0700
+Received: from localhost (eomer.email.arizona.edu [10.0.0.219])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 73E2CB267EB
+	for <DMDX@psy1.psych.arizona.edu>; Fri,  9 Sep 2005 08:57:22 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-7.dsl.arizona.edu [128.196.237.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id CBFB9B23915
+	for <DMDX@psy1.psych.arizona.edu>; Fri,  9 Sep 2005 08:57:20 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050909084235.00ba4808@psy1.psych.arizona.edu>
+Date: Fri, 09 Sep 2005 08:57:16 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: Re: missing item number error
+In-Reply-To: <125E143C87C9D744AD879C611475D035027B39C4@ITUPROD-EXCL1.Uni
+ Net.unisa.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 02:15 PM 9/9/2005 +0930, you wrote:
+>Hi Jonathon,
+>
+>Thanks for your advice.  Unfortunately doing as you suggest did not
+>help.  Therefore I am still stuck.  Besides, the syntax I originally
+>used with the backslash definitely works without problem in my other
+>file.  That is, the following causes no problem in my other file:
+>
+>0"READY - PRESS SPACEBAR";$
+>\+10201<ln -3>"have",
+
+   It certainly should function, the only criteria I remember adding to 
+scramble for a backslash was that it had to be at the start of 
+line.  General religious reasons make me follow it with white space however.
+
+><ln -2>"house",
+><ln -1>"their",
+><ln -0>"could",
+><ln 1>"whole",
+><ln 2>"they",
+><ln 3>*!"painted"<c>;
+>
+>Have you got any other advice about what things may be causing a
+>'missing item number' or things like 'RTF control word <\+> used not
+>supported' errors?  I would appreciate any tips or clues.
+
+   Somehow or other DMDX isn't seeing the backslash as a backslash.  Either 
+it's some extended character that just happens to look like a backslash or 
+the RTF is badly formed.  RTF codes all begin with a backslash, you don't 
+see them because Word or whatever it is that you are using interprets them 
+like DMDX does and displays meaningful text.  Open an item file in a text 
+editor (Notepad if you don't have a better one) one day and you'll see what 
+I mean.  In fact it'd be interesting to see just what it is that your file 
+has in it.  What's happening is that somehow your backslash isn't being 
+seen as the text of the item file but an RTF control word, hence it sees \+ 
+which isn't an RTF control word.  Backslashes if they're really backslashes 
+are stripped out by Scramble so DMDX's item parser would never see them in 
+normal operation so when you ignore unknown RTF DMDX's item parser sees it 
+and is looking for a item CR indicator or an item number and it throws the 
+syntax error.  Very weird that the RTF parser would see it as a backslash 
+but Scramble won't.
+
+   Try deleting and retyping the offending section.  Or you can pour the 
+item file though WordPad and see if it can't strip the poorly formed 
+section out.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   We lie loudest when we lie to ourselves.
+
+
+

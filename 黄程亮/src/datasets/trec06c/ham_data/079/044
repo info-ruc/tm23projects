@@ -1,0 +1,62 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB3J46T24430
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 14:04:06 -0500 (EST)
+Received: from dhcp-190.rover.cornell.edu (dhcp-190.rover.cornell.edu [128.84.24.190])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id OAA23588
+	for <egs@cs.cornell.edu>; Mon, 3 Dec 2001 14:04:05 -0500 (EST)
+Subject: 615 PAPER #68
+From: Walter Bell <wbell@CS.Cornell.EDU>
+To: egs@CS.Cornell.EDU
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.99.1+cvs.2001.11.07.16.47 (Preview Release)
+Date: 03 Dec 2001 14:03:44 -0500
+Message-Id: <1007406247.913.33.camel@brute>
+Mime-Version: 1.0
+
+68) Tapestry: An Infrastructure for Fault-tolerant Wide-area Location
+    and Routing
+
+Tapestry is an application level infrastructure for fault tolerance
+with respect to routing and location. The main idea is that given
+Moore's law, we can afford to utilize more and more bits and cycles to
+promote redundancy and therefore better scalability rather than the
+current house of cards which is the Internet. I think this philosophy
+is incredibly flawed-- the only reason why the Internet has scaled as
+it has is because of Moore's law technology growth while the use of
+that technology hasn't substantially changed. This has allowed the
+Internet to scale in the number of hosts, as the cycles needed to
+support a single host has remained relatively constant. What they
+propose would dramatically increase the relative amount of resources
+needed to support a host, which would lead to a quadratic scaling of
+the need for resources on the Internet, which even Moore's law growth
+cannot support.
+
+With that said, they hope to promote a Pastry-like location and
+routing service based on the Plaxton mesh topology construction, where
+routing happens on an overlay network and is done via prefixes of the
+node identifier. Nodes expose objects to root nodes via identifiers
+which propagate with home information throughout the system. They
+replicate root nodes in order to provide better accessibility as well
+as redundency in object directories. State maintenance is done via
+soft state with incredibly large timeouts (on the order of days) which
+makes me question the scalability of this system. Their protocols for
+adding and removing nodes are very complex and expensive which would
+seem to be a large impairment to not only scalability but ability to
+deploy such a system on the Internet.
+
+I was not convinced of the stability of such a scheme as they assume
+that nodes have frequently out of date or wrong information, but yet
+set timeouts to be very high (such as waiting for days to remove a
+dead host.) I hate to be too skeptical, but they had too many places
+where they asked me to believe that certain properties held. I felt
+that the initial idea of stability through statistics (not only
+catchy, but a useful way to view the problem) was a good one, but that
+they promoted a view of routing that was somewhat ill-conceived--
+routing is something that people do in order to get what they really
+want done, and hence it should not require large resources, which is
+exactly the opposite of their focus, where routing was a very
+expensive and primary activity.
+
+
+

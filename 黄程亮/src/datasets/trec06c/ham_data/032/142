@@ -1,0 +1,294 @@
+Received: from srmail.sr.hp.com (srmail.sr.hp.com [15.4.45.14]) by aligator.sr.hp.com with ESMTP (8.8.6 (PHNE_14041)/8.7.3 TIS 5.0) id OAA14344 for <cavanaug@aligator.sr.hp.com>; Thu, 21 Jan 1999 14:49:37 -0800 (PST)
+Received: from palrel1.hp.com by srmail.sr.hp.com with ESMTP
+	(1.37.109.16/15.5+ECS 3.3) id AA182678971; Thu, 21 Jan 1999 14:49:31 -0800
+Received: from mescaline.gnu.org (mescaline.gnu.org [158.121.106.21])
+	by palrel1.hp.com (8.8.6/8.8.5tis) with ESMTP id OAA18323
+	for <cavanaug@sr.hp.com>; Thu, 21 Jan 1999 14:49:29 -0800 (PST)
+Received: (from slist@localhost)
+	by mescaline.gnu.org (8.9.1a/8.9.1) id RAA15849;
+	Thu, 21 Jan 1999 17:06:58 -0500
+Resent-Date: Thu, 21 Jan 1999 17:06:58 -0500
+Received: from palrel3.hp.com (palrel3.hp.com [156.153.255.226])
+	by mescaline.gnu.org (8.9.1a/8.9.1) with ESMTP id PAA06617
+	for <info-cvs@gnu.org>; Thu, 21 Jan 1999 15:30:37 -0500
+Received: from srmail.sr.hp.com (srmail.sr.hp.com [15.4.45.14])
+	by palrel3.hp.com (8.8.6 (PHNE_14041)/8.8.5tis) with ESMTP id MAA14406;
+	Thu, 21 Jan 1999 12:25:27 -0800 (PST)
+Received: from aligator.sr.hp.com by srmail.sr.hp.com with ESMTP
+	(1.37.109.16/15.5+ECS 3.3) id AA116350321; Thu, 21 Jan 1999 12:25:21 -0800
+Received: (from cavanaug@localhost) by aligator.sr.hp.com (8.8.6 (PHNE_14041)/8.7.3 TIS 5.0) id MAA12872; Thu, 21 Jan 1999 12:25:20 -0800 (PST)
+Message-Id: <19990121122520.A12728@aligator.sr.hp.com>
+Date: Thu, 21 Jan 1999 12:25:20 -0800
+From: John Cavanaugh <cavanaug@sr.hp.com>
+To: Luke Diamand <lgd@virata.com>, John Cavanaugh <cavanaug@sr.hp.com>
+Cc: info-cvs@gnu.org
+Subject: Re: Is there a way to control who can make changes to a branch?
+References: <11189.199901201915@glas.dcs.ed.ac.uk> <19990120141042.A2066@aligator.sr.hp.com> <36A6FC56.6A244C69@virata.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary=0ntfKIWw70PvrIHh
+X-Mailer: Mutt 0.93.1
+In-Reply-To: <36A6FC56.6A244C69@virata.com>; from Luke Diamand on Thu, Jan 21, 1999 at 10:07:18AM +0000
+Resent-Message-Id: <"_b_-O.0.5e1.uvufs"@mescaline.gnu.org>
+Resent-From: info-cvs@gnu.org
+X-Mailing-List: <info-cvs@gnu.org> archive/latest/6146
+X-Loop: info-cvs@gnu.org
+Precedence: list
+Resent-Sender: info-cvs-request@gnu.org
+
+
+--0ntfKIWw70PvrIHh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=mutta12728
+
+On Thu, Jan 21, 1999 at 10:07:18AM +0000, Luke Diamand wrote:
+> We are certainly interested!
+> 
+> 
+> John Cavanaugh wrote:
+> > 
+> > I have a patch that made modifications to the options passed to a
+> > precommit trigger that allows one to do this. In fact we are using it
+> > right now.
+> > 
+> > If people are interested I can dig out the mods and email them to the
+> > group.
+
+Ok. This is *not* in a format for general inclusion into CVS because I
+didnt make documentation mods. But everyone should be aware that this is
+an incompatible change in the passed parameters for precommit triggers.
+
+Attached are two files, the first is the patch, the second is the
+trigger script we use.
+
+
+-----------------------------------------------------------------------
+    John Cavanaugh                          Hewlett-Packard Company
+    Project Engineer                        1400 Fountaingrove Pkwy
+    EESof Division                          Santa Rosa, CA 95403-1799
+
+    Email: cavanaug@sr.hp.com           Phone:  707-577-4780
+                                                707-577-3948 (Fax)
+-----------------------------------------------------------------------
+          For every thousand striking at the leaves of evil,
+          there is one striking at the root.
+                                                   -- Thoreau
+-----------------------------------------------------------------------
+
+--0ntfKIWw70PvrIHh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=commit_patch
+
+Index: commit.c
+===================================================================
+RCS file: /cvs/tools/src/cvs-src/src/commit.c,v
+retrieving revision 1.1.1.5
+diff -u -r1.1.1.5 commit.c
+--- commit.c	1998/10/14 17:13:38	1.1.1.5
++++ commit.c	1999/01/21 20:17:49
+@@ -1112,7 +1112,28 @@
+ 	|| li->type == T_MODIFIED
+ 	|| li->type == T_REMOVED)
+     {
+-	run_arg (p->key);
++    char argBuf[PATH_MAX];
++    char *type_stat;
++    char *tag_stat;
++
++    switch (li->type)
++    {
++    case T_ADDED:
++       type_stat="Add";
++       break;
++    case T_MODIFIED:
++       type_stat="Modify";
++       break;
++    case T_REMOVED:
++       type_stat="Remove";
++       break;
++    }
++    if ( strlen(li->tag) == 0 )
++    { tag_stat="main"; }
++    else
++    { tag_stat=li->tag; }
++    sprintf(argBuf,"%s:%s:%s:%s",p->key,type_stat,tag_stat,li->rev_old);
++	run_arg (argBuf);
+     }
+     return (0);
+ }
+
+--0ntfKIWw70PvrIHh
+Content-Type: application/x-perl
+Content-Disposition: attachment; filename="precommit-r1_10.pl"
+
+#!/opt/hpeesofRD/allbin10/perl
+# 
+# Allow list looks like
+#    project_name:<users>
+#
+#Example:
+#   %AllowList=( 
+#      'foo' => "all",                       # Allow all users in project foo
+#      'bar' => "cavanaug",                  # Allow only cavanaug in project bar
+#      'foobar' => "cavanaug,garywh,build",  # Allow "cavanaugh,garywh,build" in project foobar
+#      );
+
+
+%AllowList=( 
+   'foo' => "all",
+   'bar' => "cavanaug",
+   'foobar' => "cavanaug,garywh,build",
+   );
+
+$DenyBranch="r1_10";
+$DenyMesg="You do not have authorization to alter the $DenyBranch branch\n";
+
+
+# DONT EDIT ANYTHING BELOW THIS LINE!!!
+# 
+# Passed Parameters:
+#      $1 is dirname 
+#      $2 is project data of the form "project,operation,branch,revision"
+#                           Example "hpads:Modify:main:100.20"
+
+$proj_path=$ARGV[0];
+($proj_name,$proj_op,$proj_branch,$file_rev)=split(/:/,$ARGV[1]);
+$logname=getpwuid($<);
+
+# If its not the closed branch, let it pass
+unless ( $DenyBranch eq $proj_branch )
+{ exit 0; }
+
+# Unless their are exceptions, deny passage
+unless ( defined($AllowList{$proj_name}) )
+{ print $DenyMesg; exit 1; }
+
+# If "all" is the list, let it pass
+if ($AllowList{$proj_name} eq "all")
+{ exit 0; }
+
+# Unless their name is on the exceptions list, deny passage
+$deny=1;
+foreach $i (split(/,/,$AllowList{$proj_name}))
+{
+  $deny=0 if ($i eq $logname);
+}
+if ( $deny eq 1 )
+{ print $DenyMesg; exit 1; }
+else
+{ exit 0; }
+
+
+# It probably wont matter much, but I used multiple exits as a possible 
+# speed improvement since this is going to get executed all the time...
+
+--0ntfKIWw70PvrIHh--
+
+--0OAP2g/MAC+5xKAE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=commit_patch
+
+Index: commit.c
+===================================================================
+RCS file: /cvs/tools/src/cvs-src/src/commit.c,v
+retrieving revision 1.1.1.5
+diff -u -r1.1.1.5 commit.c
+--- commit.c	1998/10/14 17:13:38	1.1.1.5
++++ commit.c	1999/01/21 20:17:49
+@@ -1112,7 +1112,28 @@
+ 	|| li->type == T_MODIFIED
+ 	|| li->type == T_REMOVED)
+     {
+-	run_arg (p->key);
++    char argBuf[PATH_MAX];
++    char *type_stat;
++    char *tag_stat;
++
++    switch (li->type)
++    {
++    case T_ADDED:
++       type_stat="Add";
++       break;
++    case T_MODIFIED:
++       type_stat="Modify";
++       break;
++    case T_REMOVED:
++       type_stat="Remove";
++       break;
++    }
++    if ( strlen(li->tag) == 0 )
++    { tag_stat="main"; }
++    else
++    { tag_stat=li->tag; }
++    sprintf(argBuf,"%s:%s:%s:%s",p->key,type_stat,tag_stat,li->rev_old);
++	run_arg (argBuf);
+     }
+     return (0);
+ }
+
+--0OAP2g/MAC+5xKAE
+Content-Type: application/x-perl
+Content-Disposition: attachment; filename="precommit-r1_10.pl"
+
+#!/opt/hpeesofRD/allbin10/perl
+# 
+# Allow list looks like
+#    project_name:<users>
+#
+#Example:
+#   %AllowList=( 
+#      'foo' => "all",                       # Allow all users in project foo
+#      'bar' => "cavanaug",                  # Allow only cavanaug in project bar
+#      'foobar' => "cavanaug,garywh,build",  # Allow "cavanaugh,garywh,build" in project foobar
+#      );
+
+
+%AllowList=( 
+   'foo' => "all",
+   'bar' => "cavanaug",
+   'foobar' => "cavanaug,garywh,build",
+   );
+
+$DenyBranch="r1_10";
+$DenyMesg="You do not have authorization to alter the $DenyBranch branch\n";
+
+
+# DONT EDIT ANYTHING BELOW THIS LINE!!!
+# 
+# Passed Parameters:
+#      $1 is dirname 
+#      $2 is project data of the form "project,operation,branch,revision"
+#                           Example "hpads:Modify:main:100.20"
+
+$proj_path=$ARGV[0];
+($proj_name,$proj_op,$proj_branch,$file_rev)=split(/:/,$ARGV[1]);
+$logname=getpwuid($<);
+
+# If its not the closed branch, let it pass
+unless ( $DenyBranch eq $proj_branch )
+{ exit 0; }
+
+# Unless their are exceptions, deny passage
+unless ( defined($AllowList{$proj_name}) )
+{ print $DenyMesg; exit 1; }
+
+# If "all" is the list, let it pass
+if ($AllowList{$proj_name} eq "all")
+{ exit 0; }
+
+# Unless their name is on the exceptions list, deny passage
+$deny=1;
+foreach $i (split(/,/,$AllowList{$proj_name}))
+{
+  $deny=0 if ($i eq $logname);
+}
+if ( $deny eq 1 )
+{ print $DenyMesg; exit 1; }
+else
+{ exit 0; }
+
+
+# It probably wont matter much, but I used multiple exits as a possible 
+# speed improvement since this is going to get executed all the time...
+
+--0OAP2g/MAC+5xKAE--
+

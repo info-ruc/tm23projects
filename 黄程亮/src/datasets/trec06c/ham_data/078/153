@@ -1,0 +1,63 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fA135qR10231
+	for <egs@cs.cornell.edu>; Wed, 31 Oct 2001 22:05:52 -0500 (EST)
+Received: from james (james.ee.cornell.edu [128.84.236.65])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fA135aJ02595
+	for <egs@cs.cornell.edu>; Wed, 31 Oct 2001 22:05:36 -0500
+Date: Wed, 31 Oct 2001 22:04:13 -0500 (EST)
+From: Edward Hua <eyh5@ece.cornell.edu>
+To: egs@CS.Cornell.EDU
+Subject: 615 Paper # 30
+Message-ID: <Pine.GSO.4.21.0110312203390.3657-100000@james.ee.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+The Design and Implementation of an International Naming System
+William Adjie-Winoto, Elliot Schwartz, Hari Balakrishnan, and Jeremy
+Lilley
+
+This paper presents an intentional naming system (INS) that may be used to
+quickly seek out resource discovery and service location in mobile
+networks. It features the following design objectives: expressiveness,
+responsiveness, robustness, and easy configuration.  The INS resolution
+architecture makes three contributions:
+
+ 1)integration of resolution and routing, which allows applications to
+seamlessly handle node and service mobility; it provides flexible group
+communication using an intentional name as the group handle,
+2)self-configuration of resolvers into an overlay network and incoporation
+of load-balancing algorithmsl and
+3)Maintaining weak consistency among replicated resolvers using soft-state
+message exchanges.
+
+The resolution of intentional names is faciliated by the name specifier. A
+name specifier can be used to identify the desired destination in a
+message header. Its attribute-value pair forms the foundation of the
+specifier, which then is expanded to establish a name tree. There are a
+sequence of events that take place in the INS. First, the intentional name
+of the destination service application is discovered; once the request
+reaches the destination, the intentional name resolver (INR) performs a
+lookup on the destination name-specifier in its name tree and returns the
+name-record. 
+
+The INS also addresses the issues of load balancing and scaling in the
+system. Load balancing is resolved by allowing INRs to spawn instances on
+other candidate but inactive resolvers, and killing themselves if they are
+not loaded. The scaling arises when INRs exchange name information with
+other resolvers on a periodic basis and triggered updates. In this
+situation, the technique of virtual space is used. The idea is to
+partition the namespace into virtual spaces, ensuring that each resolver
+only needs to route for a subset of all the active virtual spaces in the
+system. Therefore, one INR is responsible a single virtual space, reducing
+the overlapping among multiple INRs.
+
+An interesting observation in the performance analysis of the INS is that
+when measuring the routing time as a function of the number of names in
+virtual spaces, the time is virtually constant when the recipient of the
+packets resides in a different virtual space than the sender. Furthermore,
+from Figure 15, it can be seen that the time it takes to route packets to
+a remote destination in a different virtual space is much less than the
+time it takes to route pakcets to a destination in the same virtual space
+as the sender. There are no explanations given to this phenomenon.
+
+

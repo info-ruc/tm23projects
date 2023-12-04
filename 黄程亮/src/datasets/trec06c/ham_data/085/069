@@ -1,0 +1,284 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gAQLKnY31542
+	for <ggilfoyl@facstaff.richmond.edu>; Tue, 26 Nov 2002 16:20:49 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gAQLJbe08028
+	for <ggilfoyl@richmond.edu>; Tue, 26 Nov 2002 16:19:37 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002112616193717951
+ for <ggilfoyl@richmond.edu>; Tue, 26 Nov 2002 16:19:37 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gAQLJbv20099
+	for <ggilfoyl@richmond.edu>; Tue, 26 Nov 2002 16:19:37 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gAQLJao09601
+	for <ggilfoyl@richmond.edu>; Tue, 26 Nov 2002 16:19:36 -0500
+Date: Tue, 26 Nov 2002 16:19:36 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: gilfoyle <ggilfoyl@richmond.edu>
+Subject: Re: status of the Richmond cluster
+In-Reply-To: <3DE38266.26E99213@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0211261614440.3237-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status:   
+X-Mozilla-Status: 8013
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004413
+
+Greetings,
+
+The message about not finding ld.so.conf was a problem (fixed). The rest
+is just a result of the caching system, and will not affect the systems
+when they actually run.
+
+I am concerned about the master freezing up. Do you know if it displayed
+any sort of OOPS on the console monitor when it hung?
+
+There are two tactics to get this nailed down. One is to have the slaves
+copy their data directly from their /data? fileserver mounts. Currently,
+the data is being double copied it looks like.
+
+The other is to stagger the start times of the analysis runs at .5 to 1
+minute intervals (perhaps a sleep 30 in a script?).
+
+This will help to narrow things down for a final resolution.
+
+G'day,
+sjames
+
+
+
+On Tue, 26 Nov 2002, gilfoyle wrote:
+
+> hi steven,
+> 
+>    here's the latest.
+> 
+> 1. i restored root. this was done by deleting the old directory and
+> untarring the file from cern containing the libraries and the binaries.
+> i used the version for redhat 7.2 and gcc 2.96. the file is
+> 
+> /usr/root/root_v3.03.09.Linux.RH7.2.gcc296.tar
+> 
+> 2. i executed the 'bpsh -d allup /sbin/ldconfig -v >setuplog-02-nov-25'
+> and got the following.
+> 
+> [root@pscm1]# bpsh -d allup /sbin/ldconfig -v > setuplog-02-nov-25
+> /sbin/ldconfig: Can't open configuration file /etc/ld.so.conf: No such
+> file or directory
+> /sbin/ldconfig: Cannot stat /usr/lib/libnss1_compat.so: No such file or
+> directory
+> /sbin/ldconfig: Cannot stat /usr/lib/libnss1_dns.so: No such file or
+> directory
+> /sbin/ldconfig: Cannot stat /usr/lib/libnss1_files.so: No such file or
+> directory
+> /sbin/ldconfig: Cannot stat /usr/lib/libnss1_nis.so: No such file or
+> directory
+> /sbin/ldconfig: Cannot stat /usr/lib/libnss1_compat.so: No such file or
+> directory
+> /sbin/ldconfig: Cannot stat /usr/lib/libnss1_dns.so: No such file or
+> directory
+> /sbin/ldconfig: Cannot stat /usr/lib/libnss1_files.so: No such file or
+> directory
+> /sbin/ldconfig: Cannot stat /usr/lib/libnss1_nis.so: No such file or
+> directory
+> 
+> ...  lots more.
+> 
+> i have attached the log file i created during this process. i didn't
+> know 
+> if the messages above were a problem or not so i trudged on.
+> 
+> 3. i tried running root from pscm1 and it worked beautifully.
+> 
+> 4. i ran my scripts for submitting jobs to the cluster using four
+> analysis runs. this also ran beautifully. it produced output files
+> in the correct place that looked like things had worked. i was 
+> very happy. i ran this script using slaves 0-3. i had not been able
+> to use slaves 2-3 before.
+> 
+> 5. i ran my scripts using 12 analysis runs next. things started out
+> fine. i was monitoring the number of jobs running on the slaves. at that
+> point the jobs were either transferring data over to the slaves' disk 
+> or starting the analysis. sometime during this process, the master
+> (pscm1) hung and i could get no response. this is similar to what we
+> saw a couple of weeks ago. i waited for quite some time as you 
+> suggested in one of your emails, but i never got a response so i went
+> home.
+> 
+> 6. after i came in this morning i could get no response from pscm1 so i 
+> rebooted the master (actually my secretary did it. i am at JLab today). 
+> root still runs fine on the master. i will ask sasko (our linux person) 
+> to reboot the cluster today.
+> 
+> let me know what you think.
+> 
+> jerry
+> 
+> 
+> 
+> steven james wrote:
+> > 
+> > Greetings,
+> > 
+> > Actually running root has been most informative. There appears to be a
+> > problem with the installation of root PRO. Looking at the dmesg output of
+> > node 3, root.exe is getting a segv when it tries to run. ldd shows that
+> > it's library requirements are unsatisfied (on the master as well!).
+> > 
+> > When I add /usr/root/PRO/lib to /etc/ld/so.conf and run ldconfig, it tells
+> > me that several libraries in that directory are truncated. The real
+> > surprise is that it could run on node 0 at all. Possably the libs somehow
+> > got cached there and were later damaged.
+> > 
+> > The best way to proceed would be to restore /usr/root/PRO/lib from backup
+> > or re-install the package, then bpsh -d allup /sbin/ldconfig -v >setuplog
+> > 
+> > setuplog should show no problems then.
+> > 
+> > I have set up the ld.so.conf on all nodes but 8 in advance to be ready for
+> > this operation.
+> > 
+> > G'day,
+> > sjames
+> > 
+> > On Mon, 18 Nov 2002, gilfoyle wrote:
+> > 
+> > > hi steven,
+> > >
+> > >    i tried running things yesterday and got the following.
+> > >
+> > > 1. i tried running my perl scripts on slaves 10-11 (i.e. analyze two
+> > > runs) and root did not run. the other tasks in the perl script were
+> > > done correctly.
+> > >
+> > > 2. i tried running root with the bpsh command from pscm1. i executed the
+> > > command in the area /scratch/gilfoyle/e5/24023 which is the area on the
+> > > slave. what is the jargon for this? mirror/ghost directory? it did not
+> > > run correctly or produce any output. however, there is a core file in
+> > > the
+> > > /scratch/gilfoyle/e5/24023 area on slave 10.
+> > >
+> > > 3. i tried running my perl scripts on slaves 0-1 since they worked
+> > > before.
+> > > they worked!! root ran and produced output files with filled histograms
+> > > and all the good stuff.
+> > >
+> > > 4. i tried running root on pscm1 (to look at the results of step 3) and
+> > > it did not run! it flashes its little greeting (which is an X-window
+> > > function) and then crashes. the core file is in
+> > > /home/gilfoyle/eod/run/results/.
+> > >
+> > > if you want to run this yourself the commands are the following.
+> > >
+> > > 1. to run root:
+> > >
+> > > root<cr>
+> > >
+> > > if you want to do more than that, let me know and i can give you a
+> > > quick how-to for looking at data.
+> > >
+> > > 2. to run root on slave 10:
+> > >
+> > > bpsh 10 root -b -q /scratch/gilfoyle/e5/24023/run_eod3.C
+> > >
+> > > the data files are already on the slave. usually i would delete them
+> > > after an analysis run, but i have them left them on the disk now for
+> > > testing.
+> > >
+> > > 3. to submit a job to the cluster.
+> > >
+> > > a. go to /home/gilfoyle/eod/run.
+> > > b. execute submit_eod3c.pl<cr>
+> > >
+> > > the scripts are submit_eod3c.pl and run_root_on_node3.pl. the main
+> > > input file is /home/gilfoyle/eod/run/E5_run_numbers.inp which
+> > > determines which runs to analyze. right now it only lists 2 runs so
+> > > only two runs will get analyzed when you run submit_eod3c.pl. the
+> > > script submit_eod3c.pl sets some parameters including which slaves
+> > > to run the analysis on. for example, see the parameter first_node
+> > > in submit_eod3c.p.
+> > >
+> > > let me know if there is more that will help. i'm starting to get a bit
+> > > desperate to get this thing working.
+> > >
+> > > jerry
+> > >
+> > >
+> > >
+> > >
+> > >
+> > > steven james wrote:
+> > > >
+> > > > Greetings,
+> > > >
+> > > > I believe I have all of the library issues dealt with.
+> > > >
+> > > > I noticed a possably confusing behaviour that might have been the root of
+> > > > some of this.
+> > > >
+> > > > Perl depends on several libraries in /lib to run. Unlike those in
+> > > > /usr/lib, they were being managed by caching rather than just being
+> > > > available from NFS. It can take about a minute for the libs to be fetched
+> > > > from the master. During that time, the app will appear hung, but will
+> > > > eventually start.
+> > > >
+> > > > I have pre-cached the files onto the node's local drive to try to avoid
+> > > > that delay.
+> > > >
+> > > > Since the libs are cached, once that startup penelty is paid, it doesn't
+> > > > happen again for those libs on that node until reboot.
+> > > >
+> > > > You can see this happen using tcpdump (I have a binary of it in my home
+> > > > directory). The libs are transferred as a stream of multicast packets.
+> > > >
+> > > > Please let me know if this gets it going. If problems remain, a good
+> > > > approach might be for me to make a copy of your test data and try the runs
+> > > > myself until the expected results come up.
+> > > >
+> > > > G'day,
+> > > > sjames
+> > > >
+> > > > On Thu, 14 Nov 2002, gilfoyle wrote:
+> > > >
+> > > > > hi steven,
+> > > > >
+> > > > >    i'm checking in (when there is no beam) to find out the
+> > > > > status of the cluster. have the library issues been resolved?
+> > > > > if so, what was the solution? i'm itching to let this thing
+> > > > > get cooking.
+> > > > >
+> > > > > jerry
+> > > > >
+> > > > >
+> > > >
+> > > > --
+> > > > -------------------------steven james, director of research, linux labs
+> > > > ... ........ ..... ....                     230 peachtree st nw ste 701
+> > > > the original linux labs                             atlanta.ga.us 30303
+> > > >       -since 1995                              http://www.linuxlabs.com
+> > > >                                    office 404.577.7747 fax 404.577.7743
+> > > > -----------------------------------------------------------------------
+> > >
+> > >
+> > 
+> > --
+> > -------------------------steven james, director of research, linux labs
+> > ... ........ ..... ....                     230 peachtree st nw ste 701
+> > the original linux labs                             atlanta.ga.us 30303
+> >       -since 1995                              http://www.linuxlabs.com
+> >                                    office 404.577.7747 fax 404.577.7743
+> > -----------------------------------------------------------------------
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

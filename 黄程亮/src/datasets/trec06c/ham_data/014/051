@@ -1,0 +1,74 @@
+Received: from dot.crosswinds.net ([209.47.139.147])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id FAA05711
+	for <handyboard@media.mit.edu>; Sun, 5 Apr 1998 05:12:57 -0400 (EDT)
+Received: from sphere (ppp32-sby.indosat.net.id [202.155.3.32])
+	by dot.crosswinds.net (8.8.7/8.8.8) with SMTP id FAA28952;
+	Sun, 5 Apr 1998 05:12:31 -0400 (EDT)
+	(envelope-from adrian@indonesia.crosswinds.net)
+From: "Adrian Susianto" <adrian@indonesia.crosswinds.net>
+To: <handyboard@media.mit.edu>
+Subject: About the first 64 cycles
+Date: Sun, 5 Apr 1998 16:13:23 +0700
+Message-Id: <01bd6073$159f2a20$20039bca@sphere>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.71.1712.3
+X-Mimeole: Produced By Microsoft MimeOLE V4.71.1712.3
+
+From adrian's msg I see that setting the config must be done in the first 64
+cycles, my question
+is how do u do this?? what program will set this chip??could someone plz
+explain just the steps we need to take to achive this,
+---------
+
+Hi..
+
+I try to answer...
+
+Every instruction has cycles to execute.
+For example:
+
+ LDAA has 4 cycles in Extended Addressing Mode
+ LDAA has 2 cycles in Immidiate Addressing Mode
+
+ STAA has 4 cycles in Extented Addressing Mode
+
+ etc... (look at instruction lists from Motorola pink book)
+
+68HC11 has some special conditions you can change before the first 64 cycles.
+It means, you can change the 68HC11 special conditions (ex: CONFIG register) before the total instructions reach 64
+cycles from the starting program.
+After the first 64 cycles, you can't change those special conditions, even you still make it, the MCU will ignore it (it
+has no effect).
+
+And how to do this ?
+Just put your instruction at the top list of your program.
+Example to change the CONFIG register:
+
+BPROT  EQU   $1035
+
+       ORG   $0
+       LDS   #$FF                               | 3 cycles
+       LDAA  #$00   ;Data for clearing BPROT    | 2 cycles
+       STAA  BPROT  ;Clear BPROT                | 4 cycles
+
+The total cycles to execute the program are 9 cycles. It is still below 64 cycles, so your CONFIG register still can be
+cleared.
+
+But if you clear the CONFIG register after 64 cycles (say your program has reach 70 cycles, then you put LDAA  #$00 and
+STAA  BPROT after that), the MCU will have no effect about clearing the CONFIG register.
+
+I hope it helps..
+
+Regards,
+
+Adrian Susianto
+mailto:adrian@indonesia.crosswinds.net.id
+ICQ   : 7725108
+
+
+

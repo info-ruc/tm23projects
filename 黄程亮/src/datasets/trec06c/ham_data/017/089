@@ -1,0 +1,95 @@
+Received: from student.uq.edu.au (root@student.uq.edu.au [130.102.2.20])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id EAA25742
+	for <handyboard@media.mit.edu>; Wed, 20 May 1998 04:08:44 -0400 (EDT)
+Received: from student.uq.edu.au (s003348.student.uq.edu.au [172.20.64.56])
+	by student.uq.edu.au (8.8.8/8.8.7) with ESMTP id SAA09998;
+	Wed, 20 May 1998 18:08:22 +1000 (GMT+1000)
+Message-Id: <35628ED3.EB11952C@student.uq.edu.au>
+Date: Wed, 20 May 1998 18:05:39 +1000
+From: Mark Limb <s003348@student.uq.edu.au>
+X-Mailer: Mozilla 4.04 [en] (Win95; I)
+Mime-Version: 1.0
+To: Arthur Tretyak <atr188@merle.acns.nwu.edu>,
+        "handyboard@media.mit.edu" <handyboard@media.mit.edu>
+Subject: Re: Addresses of SPI ports
+References: <199805192000.PAA03999@merle.acns.nwu.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi Arthur,
+The SPI expansion header is shown below:
+
+    ----------     Pinouts:    1    Gnd
+    |  2  |  1  |                      2    Vcc 5V
+    |  4  |  3  |                      3    SS*
+    |  6  |  5  |                      4    MISO
+    |  8  |  7  |                      5    SCK
+    ----------                      6    MOSI
+                                        7 & 8 Not connected
+
+I assume you will be using the Handy Board as a MASTER device not a SLAVE so
+the following information relates to the SPI MASTER mode.
+
+Port D address is $1008
+
+The SS* pin is connected to Port D5.  It is active low and is used to activate
+the external device, like a chip select pin.
+
+The MISO pin is connected to Port D2.  It is used to serially input data to
+the SPI.  This pin should be connected to the Data Out of the external device.
+
+The SCK pin is connected to Port D4.  It is used to clock the data from the
+SPI data register into the external device via the MOSI pin.  As data is
+outputted it is simultaneously inputted to the SPI data register from the
+external device.  So after one 8bit transfer the SPI data register will
+contain the output from the external device.  This pin should be connected to
+the clock of the external device.
+
+The MOSI pin is connected to Port D3.  It is used to serially output data from
+the SPI.  This pin should be connected to the Data In of the external device.
+
+You should set the DDRD ($1009) pins for I/O according to the function of the
+SPI, ie the SCK (PD4) should be set for output using the DDRD.
+
+The SPI control register ($1028) is used to set the configuration for the SPI,
+bits are as follows:
+7    SPI interrupt enable
+6    SPI system enable (Must be set)
+5    wired OR mode select, (Clear it, unless you know what it does)
+4    Master/Slave select,  (Set for MASTER Mode)
+3    Clock polarity (clear for SCK low idle)
+2    Clock phase select (clear for most devices)
+1,0 Bit rate (clear both for maximum transfer rate, E clock/2)
+
+SPI status register ($1029) just shows flags of the current SPI status
+bits are as follows:
+7    SPI transfer complete flag
+6    Write collision error flag, (set only if SPDR is written during a data
+transfer)
+5    Not used
+4    Mode fault error flag, (Set if SS* is sent low by external device)
+3,2,1,0 Not Used
+
+The Most important register is the SPI data register ($102A).  This is where
+you put your 8bit data block which you want sent through the SPI to the
+external device.
+After a transfer you can read this register to access the information sent
+from the external device.
+
+I hope this info has been helpful
+Joshua Wherrett
+
+Arthur Tretyak wrote:
+
+> Hello.  I was wondering if anyone knows all 4 addresses for all 4 ports of
+> SPI header.  Thank you
+> --
+> *************************************
+> *         Arthur Tretyak            *
+> *       or just Arturchik           *
+> *       a-tretyak@nwu.edu           *
+> *************************************
+
+
+
+

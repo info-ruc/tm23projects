@@ -1,0 +1,76 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id HAA00358
+	for <handyboard@media.mit.edu>; Fri, 15 Oct 1999 07:31:06 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id HAA16851; Fri, 15 Oct 1999 07:31:05 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:6903
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Real-Life-Name: Fred G. Martin
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: "Fred G. Martin" <fredm@media.mit.edu>
+Subject: Re: Start_process problem
+Posted-Date: Fri, 15 Oct 1999 11:30:22 GMT
+Date: Fri, 15 Oct 1999 11:30:22 GMT
+Organization: None
+Message-Id: <199910151130.HAA29614@ml.media.mit.edu>
+References: <19991015005254.99631.qmail@hotmail.com>
+Precedence: list
+
+alex,
+
+each of your processes must be an indefinite loop.  otherwise starting
+them up via start_process just runs through once.  so, e.g.:
+
+
+void checkir() {
+  while (1) {
+    if (digital(4)) { /* go backward for some time */
+       /* turn a little */
+       /* go forward again */
+    }
+  }
+}
+
+fred
+
+
+In your message you said:
+> Hi
+> 	When I try to start a process , the code downloads fine , it runs on th
+e 
+> board with no errors but it only excutes the first proceess once  and none 
+> of the others.
+> 
+> void main()
+> {
+> 	start_process(fwrd());
+> 	start_process(checkir());
+> 	start_process(checkbumpers());
+> }
+> 
+> fwrd is just fd(1) fd(2) check IR  is one checking    digital(4) an turning 
+> the bot 80 degrees amd check bumpers checks a bumper array and moves the bot 
+> with the same function as checkir
+> 
+> any suggestions?
+> 
+> PS
+> 	I know the code works because ive used in :
+> 
+> void main()
+> {
+> 	fwrd();
+> 	checkir();
+> 	checkbumpers();
+> }
+> 	I would use the above code but it taxes the processor to much for me to
+ run 
+> anything else ie: low level vision , maze algotrithm
+> 
+> thanx
+> -robotman
+> 
+

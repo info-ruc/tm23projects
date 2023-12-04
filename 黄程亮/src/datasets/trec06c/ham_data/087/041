@@ -1,0 +1,76 @@
+Received: from sirius.mrc-cbu.cam.ac.uk (sirius.mrc-cbu.cam.ac.uk [193.63.252.1])
+	by psy1.psych.arizona.edu (8.12.8/8.12.4) with ESMTP id h29MX1IA003375
+	for <dmDX@psy1.psych.arizona.edu>; Sun, 9 Mar 2003 15:33:04 -0700
+Received: from [193.63.253.89] (helo=pc057.mrc-cbu.cam.ac.uk)
+	by sirius.mrc-cbu.cam.ac.uk with esmtp (Exim 4.12)
+	id 18s9Uh-0000Sg-00
+	for dmDX@psy1.psych.arizona.edu; Sun, 09 Mar 2003 22:42:11 +0000
+Message-Id: <5.1.0.14.2.20030309222647.01c04838@pophost.mrc-cbu.cam.ac.uk>
+Date: Sun, 09 Mar 2003 22:42:08 +0000
+To: dmDX@psy1.psych.arizona.edu
+From: Mike Ford <mike.ford@mrc-cbu.cam.ac.uk>
+Subject: [DMDX] Progressive demasking problem...
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi.  I have been playing around with DMDX to try and come up with a good 
+way of doing progressive demasking.  I failed and was wondering if anyone 
+had any ideas.  Here's the problem (refresh rate = 10ms for all examples 
+below).  If you do it in a single frame, as below, it works well in terms 
+of visibility of the item...
+
++1 %29  "########" /  %1 * " house " / %28  "########" /  %2 " house " / 
+%27  "########" /  %3 " house " / %26  "########" /  %4 " house " / 
+%25  "########" /  %5 " house " / %24  "########" /  %6 " house " / 
+%23  "########" /  %7 " house " / %22  "########" /  %8 " house " / 
+%21  "########" /  %9 " house " / %20  "########" /  %10 " house " / 
+%19  "########" /  %11 " house " / %18  "########" /  %12 " house " / 
+%17  "########" /  %13 " house " / %16  "########" /  %14 " house " / 
+%15  "########" /  %15 " house " / %14  "########" /  %16 " house " / 
+%13  "########" /  %17 " house " / %12  "########" /  %18 " house " / 
+%11  "########" /  %19 " house " / %10  "########" /  %20 " house " / 
+%9  "########" /  %21 " house " / %8  "########" /  %22 " house " / 
+%7  "########" /  %23 " house " / %6  "########" /  %24 " house " / 
+%5  "########" /  %25 " house " / %4  "########" /  %26 " house " / 
+%3  "########" /  %27 " house " / %2  "########" /  %28 " house " / 
+%1  "########" /  %29 " house " / ;
+
+...however, DMDX has to wait until the frame is finished before it moves on 
+to the next item, which means each frame is 29*300ms=8.7 seconds long, so 
+the experiment will take forever if there are, as planned, 600 items (at 
+least 1.5 hours).  The other option is to use counters to loop and also to 
+increment and decrement the item and the mask as done below (although I 
+still need to sort out how to do the multiway branching such that when the 
+subject responds it quits the loop and goes on to the next item)...
+
+1000 <set 1,29> <set 2, 29> <set 3,1>  ;
+
++1 <%ctr 2> * "########" / <%ctr 3>  * " house " <dec 1> <inc 2> <dec 3> 
+<bicGT 1,0,-1>;
+
+...However, with this method of looping a single item, the word is much 
+more visible.
+
+Any ideas?  Thank you!
+
+- Mike
+
+P.S.  The choice of 300 milliseconds for each mask and target pair is based 
+on the Grainger and Jacobs (1996) progressive demasking work.
+
+oxoxxooxxxoooxxxxooooxxxxxoooooxxxxxxoooooxxxxxooooxxxxoooxxxooxxoxo
+
+*** Note New Extension - 311 ***
+
+Mike Ford
+MRC Cognition & Brain Sciences Unit
+15 Chaucer Rd, Cambridge, CB1 2NQ, UK.
+Tel:   +44 (0)1223 355294 ext 311     Fax:   +44 (0)1223 359062
+
+http://www.mrc-cbu.cam.ac.uk/personal/mike.ford
+oxoxxooxxxoooxxxxooooxxxxxoooooxxxxxxoooooxxxxxooooxxxxoooxxxooxxoxo
+
+

@@ -1,0 +1,89 @@
+Received: from nproxy.gmail.com (nproxy.gmail.com [64.233.182.200] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1EIXNt03373
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 13:33:23 -0500 (EST)
+Received: by nproxy.gmail.com with SMTP id o60so477413nfa
+        for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 10:33:22 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=AUkn5pTx6P0qx2IjeV8BeBb3alDqEgNp85gX6QJdOrynmNWPbnZuN8RC5+e80AAkVMzFZ+5K4airN49Kn7HUnAzXnPTgF9x9QeA20IsBWPi011RTDShlPlv1lzmIavbowxhTnVdugc/A7HhbJR0Uo+/ueJ43HNkJ1MBLJ0Blqvc=
+Received: by 10.48.49.19 with SMTP id w19mr1395599nfw;
+        Tue, 14 Feb 2006 10:33:22 -0800 (PST)
+Received: by 10.48.217.10 with HTTP; Tue, 14 Feb 2006 10:33:21 -0800 (PST)
+Message-ID: <9302f1e20602141033w64c40558wc6584f407c10bdc8@mail.gmail.com>
+Date: Tue, 14 Feb 2006 13:33:21 -0500
+From: Ymir Vigfusson <ymir.vigfusson@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1EIXNt03373
+
+Beehive is an overlay system on top of a structured DHT peer-to-peer
+network such as Pastry. It was motivated by the performance,
+scalability and adaptivity requirements of many common demanding
+applications such as DNS and web servers. These services have
+query distributions that follow a power law distribution.
+Since the underlying P2P system is already scalable and adaptive,
+what Beehive adds is improved average case lookup performance,
+namely O(1). This is accomplished by dynamically maintaining an
+estimate of the popularity of the queried data, and proactively
+replicating popular data. Beehive maintains a fractional parameter C
+that dynamically adjusts to the real-time performance and ensures
+that C fraction of the queries are satisfied at the source node
+(you know the answer before you ask). If not, you will on average
+only ask O(1) nodes, and in the worst case O(log n).
+Proactive replication, as opposed to the passive replication where
+you e.g. store copies of the result on the paths leading there,
+is done by assigning a replication level i to each object, so
+objects at level i are replicated on nodes that have at least i
+matching prefixes with the object. The extremse are level 0, where
+an object is stored on every node, and log_b n where an object
+is only stored on its home node. Beehive tries to find the minimal
+replication level for each object to keep the average lookup time
+down (namely at C). The paper provides the optimization calculations
+and gives a closed-form solution minimizing the total number of
+replicas for a given object. Furthermore, the solution is optimal
+for power query distributions with decay parameter at most 1.
+For the adaptation, Beehive aggregates popularity data from a
+number of nodes to create an estimate of an object's popularity
+by using only a few samples. It turns out for an object replicated
+at level i, there are 2(log(n) - i) rounds of aggregation required
+to gather the statistics from relevent nodes (sending information
+back and forth). It is not crucial that the estimates are completely
+accurate.
+Beehive can be further optimized by merging the aggregation messages
+with the heartbeat messages sent by the underlying P2P network.
+Also, fluctuations in the estimates can limited by employing
+hysterisis (bias the system towards maintaining already existing
+replicas when the popularity different between two objects is small).
+Beehive employs versioning on its objects to achieve strong consistency,
+i.e. queries to a recently updated object should only return the
+modified object. As for joining and parting, there worries are mainly in
+the underlying P2P systems. Beehive uses lazy update propagation mechanism
+to make sure parting doesn't prevent updates from reaching nodes where
+objects are replicated.
+As for a major downside, a thorough security evaluation of the protocol
+needs to be performed. There are many vulnerable spots, for example
+misreporting popularity of an object, or getting it replicated indirectly.
+
+The search paper is a long bloated text of experimental results from
+analyzing different kinds of searches in a few graph models. Basically,
+the naive TTL flooding in a Gnutella network is shown to be bad (for example
+lots of duplicates). Improved methods include expanding ring search, where
+you increase your TTL linearly which improves the message overhead
+significantly compared to regular flooding. However, message duplication
+is still an issue, so the paper proposes doing a random walk using
+so-called "checking" where a number of random walkers periodically
+check with the original requester before walking to the next (random)
+node. The simulations in the paper show that "checking" seems to be the
+right approach for terminating search in random walks.
+The second part of the paper addresses replication, where uniform or
+proportional replication strategies are shown to lose for the optimal
+square-root replication in which the allocation of replicas minimize
+the average search size.
+
+- Ymir
+

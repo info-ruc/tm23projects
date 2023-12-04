@@ -1,0 +1,96 @@
+Received: from math.psu.edu (leibniz.math.psu.edu [146.186.130.2])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id EAA09408
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 04:57:57 -0400 (EDT)
+Received: from weyl.math.psu.edu (weyl.math.psu.edu [146.186.130.226])
+	by math.psu.edu (8.9.3/8.9.3) with ESMTP id EAA13034
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 04:57:56 -0400 (EDT)
+Received: from localhost (viro@localhost)
+	by weyl.math.psu.edu (8.9.3/8.9.3) with ESMTP id EAA10843
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 04:57:55 -0400 (EDT)
+X-Authentication-Warning: weyl.math.psu.edu: viro owned process doing -bs
+Date: Sat, 2 Sep 2000 04:57:55 -0400 (EDT)
+From: Alexander Viro <viro@math.psu.edu>
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] rfork(), getss() etc etc
+In-Reply-To: <E13V846-000Pba-0Y@anchor-post-34.mail.demon.net>
+Message-ID: <Pine.GSO.4.10.10009020407570.9425-100000@weyl.math.psu.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+
+
+On Sat, 2 Sep 2000 nigel@9fs.org wrote:
+
+> Now, what is the problem with this? Firslty, the only way to tell whether
+> you are parent or child after the split is to check the return result from
+> the system call. The inevitable conclusion is that assembly code is
+> required to establish a new stack. This is a retrograde step, and I am
+
+	Simply not true. Kernel is perfectly able to set the usermode ESP
+before returning to userland. Code that does transition from the kernel
+mode to user mode is in the kernel. Usually it's an assembler (check
+forkret() in /sys/src/9/pc/l.s for exact parallel). Picking the right ESP
+value happens in IRETL, same way on all systems in question. Nothing
+special in userland.
+
+> staggered to find open source systems promoting the use of assembly
+> code by including system call variants which cannot be sensibly used
+> without.
+
+	Check the examples of use. Really.
+
+> Secondly, the stack now established is not managed or protected by
+> the kernel. Good grief, this is what we all criticise Win9x and MacOS
+> for.
+
+	Ferchrissake, you've explicitly asked for shared address space. It
+might be stupid, but if you are asking for that, you _are_ getting what
+you ask for. Come on, clone() may be good or bad, but lack of memory
+protection is precisely what you are asking for. And getting on all
+systems in question.
+
+> Thirdly, you can only identify which process you are by calling getpid(),
+> rather than referencing a data structure in your own stack. This is
+> expensive, as it involves a system call, plus some form of mapping
+> (?hash table?) from pid to per process data structure.
+> 
+> This is might be why gettss() was used. It produces a number with
+> a smaller range that getpid(), allowing a simple index to per process
+> data.
+
+	Sigh... I _really_ doubt that folks who had written it need your
+protection. Or unable to speak themselves if they would want to. Not that
+there was much to speak about - code relied on seriously non-portable hack
+that was bound to break at some point. It happened. There are more
+portable and clean solutions, but they rely on the thing that was missing
+in manpages. So there are two things to fix: manpages on Linux and TSS
+hack.
+
+	There are good reasons behind both variants of semantics. There
+are _very_ good reasons not to change either of them. There are relatively
+simple ways to get thread-specific data with multiple-stacks one.
+Example: map the areas on aligned boundary, put the thread-specific data
+in the bottom of the area and use the equivalent of
+
+(Thread_Data *) (ESP & -Alignment) + Alignement - sizeof(Thread_Data)
+
+for access to the current one. Turn that into inlined function and you've
+	* got rid of hash/array/whatever - you have a function that
+returns a pointer to the structure you need.
+	* made it faster than it used to be (1 register->register
+assignment + 2 binary operations with one of the arguments being constant
+- cheaper than extracting TSS and accessing element of array;  definitely
+cheaper than any games with hashes).
+	* made it independent from the implementation of context switches
+used in the kernel.
+
+	IMO it's a win compared to TSS hack. If nothing else, it works ;-)
+
+	As far as I'm concerned that's it. If somebody wants to discuss
+the reasons behind the semantics or compare implementations and their
+consequences - you are welcome, just let's avoid imitating *.advocacy.
+
+

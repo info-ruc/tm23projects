@@ -1,0 +1,272 @@
+Received: by nimbus.cs.stevens.edu (Postfix, from userid 60001)
+	id 18965243C2E; Mon,  6 Feb 2006 13:34:06 -0500 (EST)
+Message-Id: <20060206183406.18965243C2E>
+Date: Mon,  6 Feb 2006 13:34:06 -0500 (EST)
+From: Jan Schaumann <jschauma>
+Reply-To: jschauma
+To: bugs
+Subject: garritan gets confused with multiple keys
+
+>Number:         2119
+>Category:       apple
+>Synopsis:       garritan gets confused with multiple keys
+>Confidential:   no
+>Severity:       serious
+>Priority:       medium
+>Responsible:    jschauma
+>State:          suspended
+>Class:          support
+>Submitter-Id:   stevens
+>Arrival-Date:   Mon Feb 06 13:35:00 -0500 2006
+>Closed-Date:    
+>Last-Modified:  Mon Mar 06 12:45:00 -0500 2006
+>Originator:     Jan Schaumann <jschauma>
+>Release:        N/A
+>Organization:
+stevens
+>Environment:
+>Description:
+Garritan Personal Orchestra is installed on all workstations in the Mac lab.  Each workstation has its own license key (found in '/Library/Preferences/GARRITAN PERSONAL ORCHESTRA.plist').  Starting Garritan works just fine for any regular user, but Garritan then creates the file '~/Library/Preferences/GARRITAN PERSONAL ORCHESTRA.plist' in which it copies the licensing information (including the hardware key) for the version installed on that machine.
+
+This has the side effect that if the user logs out and logs in on another machine and starts Garritan there, it will claim that it is not licensed (since it finds another machines key in the preferences file).
+
+Removing the file '~/Library/Preferences/GARRITAN PERSONAL ORCHESTRA.plist' then allows you to start Garritan on that machine as well.
+
+
+
+This is fairly braindead, but there does not seem to be much we can do about this as far as licensing-file-copying-around-trickery is concerned.  We need to contact Garritan and see if they can solve the problem (prediction: they can't).
+>How-To-Repeat:
+Login on maclab01.
+
+Start Garritan Personal Orchestra.
+
+Quit.
+
+Log out of maclab01
+
+Log in on maclab02.
+
+Start Garritan Personal Orchestra.
+
+Note how it claims to be unlicensed.
+
+Quit Garritan.
+
+Open Terminal
+
+rm ~/Library/Preferences/GARRITAN PERSONAL ORCHESTRA.plist'
+
+Start Garritan
+
+Note how it works fine.
+>Fix:
+
+>Release-Note:
+
+>Audit-Trail:
+
+State-Changed-From-To: open->feedback
+State-Changed-By: jschauma
+State-Changed-When: Tue, 07 Feb 2006 11:52:57 -0500
+State-Changed-Why:
+
+A problem report has been submitted to the tech-support site of
+native-instruments.de, the company that provides licensing for
+garritan.  Let's see if they get back to us, and if so if they have
+any useful suggestions.
+
+
+
+From: Jan Schaumann <jschauma>
+To: bugs
+Cc: 
+Subject: Re: apple/2119: garritan gets confused with multiple keys
+Date: Fri, 17 Feb 2006 18:10:35 -0500
+
+ --Bn2rw/3z4jIqBvZU
+ Content-Type: multipart/mixed; boundary="sm4nu43k4a2Rpi4c"
+ Content-Disposition: inline
+ 
+ 
+ --sm4nu43k4a2Rpi4c
+ Content-Type: text/plain; charset=us-ascii
+ Content-Disposition: inline
+ 
+ 
+ --sm4nu43k4a2Rpi4c
+ Content-Type: message/rfc822; x-spam-type=original
+ Content-Description: original message before SpamAssassin
+ Content-Disposition: inline
+ 
+ Return-Path: <no_reply>
+ X-Original-To: jschauma
+ Delivered-To: jschauma
+ Received: from nexus.stevens.edu (nexus.stevens.edu [155.246.14.12])
+ 	by guinness.cs.stevens-tech.edu (Postfix) with ESMTP id EBE3D164E2
+ 	for <jschauma>; Fri, 17 Feb 2006 11:19:54 -0500 (EST)
+ Received: from po.stevens.edu (po.stevens.edu [155.246.154.12])
+  by nexus.stevens.edu
+  (iPlanet Messaging Server 5.2 HotFix 2.04 (built Feb  8 2005))
+  with ESMTPS id <0IUU00HYVAP6SJ> for jschauma
+  (ORCPT jschauma Fri, 17 Feb 2006 11:19:54 -0500 (EST)
+ Received: from mail.native-instruments.de
+  (mail.native-instruments.de [217.9.41.138])	by po.stevens.edu (8.13.4/8.13.4)
+  with ESMTP id k1HGJqPw010697	for <jschauma>; Fri,
+  17 Feb 2006 11:19:53 -0500
+ Received: from localhost (unknown [127.0.0.1])	by mail.native-instruments.de
+  (mail.native-instruments.de) with ESMTP id 45C19499249	for
+  <jschauma>; Fri, 17 Feb 2006 16:19:51 +0000 (UTC)
+ Received: from mail.bln.native-instruments.de ([127.0.0.1])
+  by localhost (mail2 [127.0.0.1]) (amavisd-new, port 10025)
+  with LMTP id 26094-01-70 for <jschauma>; Fri,
+  17 Feb 2006 17:19:50 +0100 (CET)
+ Received: from mail.native-instruments.de
+  (www20.ext.native-instruments.de [10.10.1.20])
+ 	by mail.bln.native-instruments.de (mail.native-instruments.de)
+  with ESMTP id 8A3EE49923A	for <jschauma>; Fri,
+  17 Feb 2006 17:19:49 +0100 (CET)
+ Received: by www20.ext.native-instruments.de (Postfix, from userid 30)
+ 	id 95358E4D; Fri, 17 Feb 2006 17:19:47 +0100 (CET)
+ Date: Fri, 17 Feb 2006 17:19:47 +0100 (CET)
+ From: no_reply
+ Subject: NFS home -> plist confused
+ To: jschauma
+ Reply-to: no_reply
+ Message-id: <20060217161947.95358E4D>
+ Organization: Native Instruments
+ X-Mailer: Php/libMailv1.3
+ X-Priority: 4 (Low)
+ X-Virus-Scanned: by amavisd-new at native-instruments.de
+ X-PMX-Version: 5.1.2.240295, Antispam-Engine: 2.2.0.0,
+  Antispam-Data: 2006.02.17.074605
+ Mime-Version: 1.0
+ Content-Type: text/plain; charset=us-ascii
+ Content-Disposition: inline; filename=mutt-dogfish-head-7870-14
+ 
+ 
+ If you want to reply to this answer, please use this link: 
+ http://www.native-instruments.de/index.php?id=followup_us&request=65685&uid=396432
+  --------------------------------------------------------------------------------------------------------- 
+ 
+  
+  
+ Hello Jan Schaumann,
+ 
+ I apologize for the late reply. You are correct. This is currently the situation with GPO.
+ 
+ The first time a user opens GPO, the serial number and authorization information will be read out of the local preference file. However, when the user ends the application, the user plist will be written with that information.
+ 
+ In this server setup , it is so that when the user goes to another computer and starts the application GPO first looks in the user preferences folder and there it finds the wrong plist.
+ 
+ We are aware of this shortcoming for universities using GPO. We have developed a new process which we hope will be better, but it is not complete.  
+ 
+ In the past, certain IT specialists have been able to write a script which deletes the user plist when the student logs out. I am afraid I cannot help with how this may be done. When this is not possible, then the user may delete his own plist. 
+ 
+ Our apologies for any inconvenience.
+ 
+ Best regards,
+ 
+ Dan Santucci
+ 
+ -> Daniel Santucci -> Customer Support
+ -> Native Instruments GmbH -> Schlesische Str. 28
+ -> D-10997 Berlin -> Germany
+ -> http://www.native-instruments.com
+ 
+ ->>>>>> NATIVE INSTRUMENTS - Generate the Future of Sound! <<<<<<-
+  
+ ***
+ 
+ KORE - the world's first Universal Sound Platform =>
+ 
+ http://www.native-instruments.com/kore.info
+ 
+ ->>>>>> NATIVE INSTRUMENTS - Generate the Future of Sound! <<<<<<-
+ 
+ 
+ [HISTORY]
+ > 
+ > REQUEST: 65685:
+ > NFS home -> plist confused
+ 
+ > DESCRIPTION:
+ > We have 17 workstations that have Garritan Personal Orchestra installed.  Each workstation has its own registration key, serial number and system id, stored in /Library/Preferences/GARRITAN PERSONAL ORCHESTRA.plist.
+ > 
+ > All users have their home directory on a shared NFS partition, so that it is available on all machines.
+ > 
+ > When a user starts Garritan Orchestra for the first time,  it stores the Key for the software version on the local disk in ~/Library/Preferences/GARRITAN PERSONAL ORCHESTRA.plist.
+ > 
+ > This works fine the first time the application is tarted, but if the user logs in on another machine, the private plist will contain the key for the other machine, and the global configuration (which contains the correct key for the software on that machine) is ignored, leading to a warning that the software is not licensed.
+ > 
+ > The user can work around this by always removing the personal preferences plist before starting Garritan, but that is obviously a cumbersome workaround.  Garritan should not copy the key information into the private file if it is found centrally.
+ > 
+ > (Also, the name of the file \"GARRITAN PERSONAL ORCHESTRA.plist\" deviates from the common name schemes for virtually all other applications, as it is all upper case and contains whitespace).
+ 
+ 
+ --sm4nu43k4a2Rpi4c--
+ 
+ --Bn2rw/3z4jIqBvZU
+ Content-Type: application/pgp-signature
+ Content-Disposition: inline
+ 
+ -----BEGIN PGP SIGNATURE-----
+ Version: GnuPG v1.4.2.1 (NetBSD)
+ 
+ iD8DBQFD9lfrH321zrgOg6URAn38AJ462SHhcQqYYM01xKuf14qmor9tSQCdEy+J
+ zfYvqc4w8bbgfQCqNMZ4458=
+ =+hN/
+ -----END PGP SIGNATURE-----
+ 
+ --Bn2rw/3z4jIqBvZU--
+State-Changed-From-To: feedback->suspended
+State-Changed-By: jschauma
+State-Changed-When: Tue, 21 Feb 2006 22:55:27 -0500
+State-Changed-Why:
+
+Vendor confirms that the problem is in their software and that at the
+moment there's nothing we can do about it.  They may fix it in a future
+version, so we suspend the PR until then.
+
+
+
+From: Jan Schaumann <jschauma>
+To: bugs
+Cc: moriarty mforde
+	ogould
+Subject: Re: apple/2119: garritan gets confused with multiple keys
+Date: Mon, 6 Mar 2006 12:40:18 -0500
+
+ --WhfpMioaduB5tiZL
+ Content-Type: text/plain; charset=us-ascii
+ Content-Disposition: inline
+ 
+ Jan Schaumann <jschauma> wrote:
+ 
+ > >Synopsis:       garritan gets confused with multiple keys
+ 
+ I have implemented a LoginHook that removes the preferences file for
+ each user upon login.  Nasty hack, but this should solve some of the
+ problems with Garritan.
+ 
+ See also: http://www.bombich.com/mactips/loginhooks.html
+ 
+ -Jan
+ 
+ --WhfpMioaduB5tiZL
+ Content-Type: application/pgp-signature
+ Content-Disposition: inline
+ 
+ -----BEGIN PGP SIGNATURE-----
+ Version: GnuPG v1.4.2.1 (NetBSD)
+ 
+ iD8DBQFEDHQCH321zrgOg6URAhECAJ9R0SSiCRb9QekzCghf4qYXvgbhuACfVWjk
+ xIpecYL+2HmKQrBoLrJpWWU=
+ =PZR0
+ -----END PGP SIGNATURE-----
+ 
+ --WhfpMioaduB5tiZL--
+>Unformatted:
+ 
+
+</pre>
+</BODY></HTML>

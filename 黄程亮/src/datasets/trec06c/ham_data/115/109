@@ -1,0 +1,170 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LFlut04362
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 10:47:56 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1LFlsbW010088
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 10:47:54 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Tue, 21 Feb 2006 10:47:55 -0500 (EST)
+Message-ID: <2818.128.84.98.90.1140536875.squirrel@webmail.cornell.edu>
+Date: Tue, 21 Feb 2006 10:47:55 -0500 (EST)
+Subject: paper 9 - security
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+SECURITY
+
+SYBIL ATTACK
+
+exploiting redundancy in a system requires the ability to determine
+whether two entities which appear to be different are actually distinct
+entities. Forging of multiple entities is termed as Sybil attack.
+
+the tempting idea of having a chain of identities vouch for other
+identities fails if the initial bootstrap is compromised.
+
+DIRECT VALIDATION
+The only direct means by which two entities can convince a third entity
+that they are distinct by performing some task that a single entity
+cannot. However, the complexity of this task is limited by the weakest
+valid entity in the system. Thus, if p is the ratio of the resources of a
+faulty entity to a minimally capable entity then f can represent/forge
+floor(p) entities.
+(assuming these challenges are issued concurrently to all entities)
+
+However, if the challenges are not concurrent to all entities forged by
+the malicious entity then it can represent any number of forged entities.
+
+
+INDIRECT IDENTITY VALIDATION
+a group of identities validate another identity. However, a group of
+faulty entities can vouch for other faulty entities.
+
+
+
+DEFENDING AGAINST ECLIPSE ATTACK ON OVERLAY NETWORKS
+
+if an attacker controls a large fraction of the neighbors of correct nodes
+, then it can "eclipse" the correct node and prevent correct overlay
+operation.
+
+Strong structural constraints on the overlay are used to defend against
+this attack.
+
+When the eclipse attack is launched the average indegree of attacker nodes
+will be higher than the average indegree of correct nodes ( this assumes a
+defense against the Sybil attack)
+thus, the correct nodes can identify faulty ones from their indegree values.
+However, the faulty nodes can consume the indegree of the correct node and
+prevent other nodes from pointing to them.
+Thus, the outdegree of each node must also be bounded below a certain
+threshold.
+
+This also requires an efficient auditing scheme to prevent entities from
+lying about their indegrees and outdegrees.the auditing scheme requires
+each node x to maintain a back pointer list. Node x forwards packets only
+from nodes in its backpointer list. x will periodically challenge members
+of its back-pointer set for their neighbor set. If x is not included in
+this set or the size of the set is greater than the threshold , x removes
+the node from its back pointer list.  This requires sender anonymity to be
+efficient - i.e the node being challenged must not know about the
+challenger or else it could include x in its neighbor set. Anonymization
+is carried by forwarding requests to a via its
+
+neighbor node always (for all nodes x). A single anonymizer node does not
+suffice as the anonymizer could be malicious and reveal the identity of
+the sender. Randomizing the period between challenges from the same node
+prevents the attacker from correlating the arrival time of the challenge
+with the identity of the challenger.
+
+
+
+SECURE ROUTING FOR...
+
+this paper presents attacks which prevent correct message delivery in
+structured peer-to-peer overlays and presents defenses against these
+attacks.
+
+secure routing requires :
+1) a secure assignment of node identifiers
+2) secure routing table maintenance
+3) secure message forwarding
+
+
+
+SECURE NODE ASSIGNMENT:
+if attackers are allowed to choose node IDs they can create lots of
+problems e.g. partition the overlay in 2 disjoint sets.
+A formal term for it is the Sybil Attack.
+solution : use a set of trusted CAs to  assign node Ids to principals and
+to sign node certificates that bind a random nodeID to the public key of
+the node and the IP address. Multiple nodeID certificates are allowed per
+IP to prevent denial of service attacks by hijacking IP addresses.
+However, this scheme does not work in those designs which cause node Ids
+to change
+over time(e.g CAN)
+To prevent an attacker from obtaining a large number of certificates, we
+could have them pay a certain amount per certificate so that Sybil attacks
+could be prevented.
+(Distributed NodeID generation suffers from causes mentioned earlier in
+Sybil attack paper)
+
+
+SECURE ROUTING TABLE MAINTENANCE
+Attackers can spoil a routing table over time by supplying bad routing
+updates to it. If they are able to intercept probe messages they can reply
+using other nodes such that the probe sending node has a distorted idea
+about the overlay (probes could be to check alive status or to improve
+routing performance) this results in a cascading effect over time.
+solution: the authors suggest using 2 routing tables :
+one which is used for routing based on network proximity and the other
+that constrains routing table entries.
+(this is based on the observation that systems with strong structural
+constraints on the set of node Ids that can fill a routing table slot are
+less vulnerable to the above attack.) Thus a node updates it constrained
+routing table by using a node that is closest to it(this acts a structural
+constraint).
+
+SECURE MESSAGE FORWARDING
+Faulty nodes may choose not to forward packets thereby lowering system
+performance.
+
+solution : detect faults , use diverse routes
+
+fault detection is based on  a time out mechanism.
+once a fault is detected redundant routing is carried out - i.e. route
+multiple copies of the message over along diverse paths. If  the nodeId
+space is uniformly distributed then this is sufficient. In the other case
+as in Pastry and Chord,
+
+another technique called neighbor anycast that sends copies of the message
+towards the destination key until it reaches a node with the key's root in
+the neighbor set and then this node will use its detailed knowledge for
+efficient routing.
+
+iterative routing was rejected as at any hop an attacker could provide a
+faulty node as the next hop.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

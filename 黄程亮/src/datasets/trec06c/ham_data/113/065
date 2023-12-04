@@ -1,0 +1,84 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0VGXc416028
+	for <egs+summary>; Tue, 31 Jan 2006 11:33:38 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k0VGXbvg023403
+	for <egs+summary>; Tue, 31 Jan 2006 11:33:37 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Tue, 31 Jan 2006 11:33:38 -0500 (EST)
+Message-ID: <2735.128.84.98.90.1138725218.squirrel@webmail.cornell.edu>
+Date: Tue, 31 Jan 2006 11:33:38 -0500 (EST)
+Subject: paper 2
+From: "Abhishek Santosh Gupta" <asg46>
+To: egs+summary
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+Pastry vs Chord
+
+Routing information : Chord maintains fewer entries as opposed to both
+Pastry and Tapestry - chord maintains only m entries as opposed to routing
+table,neighbour and leaf sets. Chord maintains pointers only to its
+predecessors while Pastry has an entire neighbour set(with entries less
+than and greater than its nodeid). Chord does maintain a succesor list
+though.
+The chord paper states in the context of multiple concurrent joins causing
+network partitions -"these cases could be detected and repaired by
+periodic sampling of the ring topology". However, it does not mention how
+sampling could be carried out in a distributed system effectively.
+
+Node insertions : the algorithm requires O(log N) time for insertion of a
+node which is the least amongst all the three.
+
+
+Pastry vs Tapestry
+
+The algorithm for routing was exactly similar in both cases--i.e. both
+used ideas from radix sort for their routing policies. However, the manner
+in which paper dealt with node insertions and deletions was different.
+
+Node deletion :when Tapestry detects a neighbour to be invalid, it does
+not remove the entry from the table (which is what Pastry does) but it
+marks it as invalid. Thus, it gives this failed or deleted node a second
+chance. If the node is back again within the associated time period it
+validates that entry.
+
+Re-routing : In Pastry, no mechanisms existed for re-routing due to
+unsuccessful delivery because of a falied or malicious node. Tapestry
+re-routes via a alternate path after a timeout interval.
+
+
+Multiple roots : The root node (singular) is a single point of failure for
+an object. Tapestry eliminates this by assigning multiple roots to each
+object via addition of a salt to the object id and then carrying out
+hashing ( Pastry has a single root).
+
+
+Mobile Objects : Tapestry also includes mechanisms for dealing with
+objects which are moved from one server to another while Pastry does not.
+
+Tapestry also offers an algorithm to detect query hotspots and offers
+suggestions on locations where additional copies could be placed to
+improve query response times.
+
+
+
+None of the above papers deal with malicious nodes - nodes who may respond
+to departure messages but do not forward packets. Re-routing mechanisms
+seem to fail in the case of such nodes in the system.
+
+Expressive queries is another area that is not dealt with too.
+
+
+Abhishek Gupta
+

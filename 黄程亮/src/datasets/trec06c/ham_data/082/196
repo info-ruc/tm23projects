@@ -1,0 +1,307 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g6UKjIJu020335;
+	Tue, 30 Jul 2002 13:45:18 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.10) with SMTP id g6UHgbJ19053;
+	Tue, 30 Jul 2002 13:42:37 -0400
+Date: Tue, 30 Jul 2002 13:42:37 -0400
+Message-Id: <CA-2002-23.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-23 Multiple Vulnerabilities In OpenSSL
+Precedence: bulk
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 458
+Status: RO
+X-Status: $$$$
+X-UID: 0000000058
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-23 Multiple Vulnerabilities In OpenSSL
+
+   Original release date: July 30, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * OpenSSL   prior   to  0.9.6e,  up  to  and  including  pre-release
+       0.9.7-beta2
+     * OpenSSL pre-release 0.9.7-beta2 and prior with Kerberos enabled
+     * SSLeay library
+
+Overview
+
+   There are four remotely exploitable buffer overflows in OpenSSL. There
+   are  also  encoding  problems  in  the  ASN.1 library used by OpenSSL.
+   Several of these vulnerabilities could be used by a remote attacker to
+   execute  arbitrary  code  on  the  target system. All could be used to
+   create denial of service.
+
+I. Description
+
+   OpenSSL is a widely deployed, open source implementation of the Secure
+   Sockets  Layer  (SSL  v2/v3)  and  Transport  Layer  Security (TLS v1)
+   protocols  as  well  as  a  full-strength general purpose cryptography
+   library.  The  SSL  and  TLS  protocols  are  used to provide a secure
+   connection  between  a  client and a server for higher level protocols
+   such  as HTTP. Four remotely exploitable vulnerabilities exist in many
+   OpenSSL client and server systems.
+
+   VU#102795 - OpenSSL servers contain a buffer overflow during the SSLv2
+   handshake process
+
+     Versions of OpenSSL servers prior to 0.9.6e and pre-release version
+     0.9.7-beta2   contain   a   remotely  exploitable  buffer  overflow
+     vulnerability.  This  vulnerability  can  be  exploited by a client
+     using  a  malformed  key  during  the handshake process with an SSL
+     server  connection.  Note  that  only  SSLv2-supported sessions are
+     affected by this issue.
+
+     This issue is also being referenced as CAN-2002-0656.
+
+   VU#258555 - OpenSSL clients contain a buffer overflow during the SSLv3
+   handshake process
+
+     OpenSSL clients using SSLv3 prior to version 0.9.6e and pre-release
+     version  0.9.7-beta2  contain  a  buffer  overflow vulnerability. A
+     malicious  server can exploit this by sending a large session ID to
+     the client during the handshake process.
+
+     This issue is also being referenced as CAN-2002-0656.
+
+   VU#561275  -  OpenSSL servers with Kerberos enabled contain a remotely
+   exploitable  buffer  overflow vulnerability during the SSLv3 handshake
+   process
+
+     Servers  running  OpenSSL  pre-release  version 0.9.7 with Kerberos
+     enabled    contain   a   remotely   exploitable   buffer   overflow
+     vulnerability.  This  vulnerability can be exploited by a malicious
+     client  sending  a malformed key during the SSLv3 handshake process
+     with the server.
+
+     This issue is also being referenced as CAN-2002-0657.
+
+   VU#308891  -  OpenSSL  contains  multiple buffers overflows in buffers
+   that are used to hold ASCII representations of integers
+
+     OpenSSL clients and servers prior to version 0.9.6e and pre-release
+     version  0.9.7-beta2  contain  multiple remotely exploitable buffer
+     overflow  vulnerabilities  if  running  on  64-bit platforms. These
+     buffers are used to hold ASCII representations of integers.
+
+     This issue is also being referenced as CAN-2002-0655.
+
+   In addition, a separate issue has been identified in OpenSSL involving
+   malformed  ASN.1  encodings.  Affected  components  include SSL or TLS
+   applications,  as  well  as  S/MIME,  PKCS#7, and certificate creation
+   routines.
+
+   VU#748355  -  ASN.1  encoding  errors exist in implementations of SSL,
+   TLS, S/MIME, PKCS#7 routines
+
+     The  ASN.1 library used by OpenSSL has various encoding errors that
+     allow  malformed  certificate  encodings  to be parsed incorrectly.
+     Exploitation   of   this   vulnerability   can   lead   to   remote
+     denial-of-service   issues.   Routines   affected   include   those
+     supporting  SSL  and  TLS applications, as well as those supporting
+     S/MIME, PKCS#7, and certificate creation.
+
+     This issue is also being referenced as CAN-2002-0659.
+
+   Although  these  vulnerabilities affect OpenSSL, other implementations
+   of  the  SSL  protocol  that  use  or  share a common code base may be
+   affected.  This  includes  implementations  that  are derived from the
+   SSLeay library developed by Eric A. Young and Tim J. Hudson.
+
+   As noted in the OpenSSL advisory as well, sites running OpenSSL 0.9.6d
+   servers  on  32-bit platforms with SSLv2 handshaking disabled will not
+   be  affected  by any of the buffer overflows described above. However,
+   due  to  the nature of the ASN.1 encoding errors, such sites may still
+   be affected by denial-of-service situations.
+
+II. Impact
+
+   By  exploiting  the  buffer  overflows  above,  a  remote attacker can
+   execute  arbitrary  code  on  a  vulnerable server or client system or
+   cause   a  denial-of-service  situation.  Exploitation  of  the  ASN.1
+   encoding errors can lead to a denial of service.
+
+III. Solution
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   As  vendors report new information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not listed below or in the individual vulnerability notes,
+   we  have  not  received  their  comments.  Please  contact your vendor
+   directly.
+
+Upgrade to version 0.9.6e of OpenSSL
+
+   Upgrade  to  version 0.9.6e of OpenSSL to resolve the issues addressed
+   in  this  advisory. As noted in the OpenSSL advisory, separate patches
+   are available:
+
+     Combined patches for OpenSSL 0.9.6d:
+     http://www.openssl.org/news/patch_20020730_0_9_6d.txt
+
+   After  either  applying  the  patches  above  or  upgrading to 0.9.6e,
+   recompile  all  applications  using  OpenSSL  to  support  SSL  or TLS
+   services,  and  restart  said services or systems. This will eliminate
+   all known vulnerable code.
+
+   Sites  running  OpenSSL  pre-release  version  0.9.7-beta2 may wish to
+   upgrade to 0.9.7-beta3, which corrects these vulnerabilities. Separate
+   patches are available as well:
+
+     Combined patches for OpenSSL 0.9.7 beta 2:
+     http://www.openssl.org/news/patch_20020730_0_9_7.txt
+
+Disable vulnerable applications or services
+
+   Until  fixes  for  these  vulnerabilities  can be applied, disable all
+   applications  that  use vulnerable implementations of OpenSSL. Systems
+   with  OpenSSL  0.9.7  pre-release  with  Kerberos enabled also need to
+   disable Kerberos to protect against VU#561275. As a best practice, the
+   CERT/CC  recommends  disabling  all  services  that are not explicitly
+   required.  Before  deciding  to disable SSL or TLS, carefully consider
+   the impact that this will have on your service requirements.
+
+   Disabling  SSLv2  handshaking  will prevent exploitation of VU#102795.
+   However,  due  to  the nature of the ASN.1 encoding errors, such sites
+   would still be vulnerable to denial-of-service attacks.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular   vendor   is   not  listed  below  or  in  the  individual
+   vulnerability notes, we have not received their comments.
+
+OpenLDAP
+
+     The OpenLDAP Project uses OpenSSL. Rebuilding OpenLDAP with updated
+     versions  of  OpenSSL  should  adequately  address reported issues.
+     Those  using  packaged  versions  of  OpenLDAP  should  contact the
+     package distributor for update information.
+
+OpenSSL
+
+     Please see http://www.openssl.org/news/secadv_20020730.txt.
+
+Red Hat
+
+     Red  Hat  distributes  affected  versions of OpenSSL in all Red Hat
+     Linux  distributions  as well as the Stronghold web server. Red Hat
+     Linux   errata   packages   that   fix  the  above  vulnerabilities
+     (CAN-2002-0655 and CAN-2002-0656) are available from the URL below.
+     Users of the Red Hat Network are able to update their systems using
+     the  'up2date'  tool. A future update will fix the potential remote
+     DOS in the ASN.1 encoding (CAN-2002-0659)
+
+     http://rhn.redhat.com/errata/RHSA-2002-155.html
+     _________________________________________________________________
+
+   These vulnerabilities were discovered and reported by the following:
+     * VU#102795  -  discovered  by  A.L.  Digital  Ltd and independently
+       discovered and reported by John McDonald of Neohapsis
+     * VU#258555, VU#561275, VU#308891 - discovered by A.L. Digital Ltd
+     * VU#748355 - discovered by Adi Stav and James Yonan independently
+
+   The  CERT/CC  thanks the OpenSSL team for the work they put into their
+   advisory, on which this document is largely based.
+     _________________________________________________________________
+
+   Feedback  can  be  directed  to  the authors: Jason A. Rafail, Cory F.
+   Cohen, Jeffrey S. Havrilla, Shawn V. Hernan.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-23.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+July 30, 2002: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPUa3CaCVPMXQI2HJAQFfMQP+OScRIgv9wK92OnJ+2GMwSbizihkdlczk
+UN8NMKOw7ZB5xF6U4juvac2lYFySvAw6O0h7AkUKIubmJINtxNP+8M174S9WluDF
+Y2Z1BNTcIaDuM6TculYk0+abX/Z1zPt/odAj5wtq0FHAG8JlwwYMuC+iOZPUG2be
+pqVKVFiWAVE=
+=w3ZJ
+-----END PGP SIGNATURE-----
+

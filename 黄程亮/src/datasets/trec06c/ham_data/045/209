@@ -1,0 +1,83 @@
+Received: from steffens.as.arizona.edu by GAFFEL.AS.ARIZONA.EDU (PMDF V4.2-13
+ #2381) id <01JBW7Y5QQ680034KG@GAFFEL.AS.ARIZONA.EDU>; Tue,
+ 1 Jun 1999 17:51:56 MST
+Received: from astro.as.arizona.edu (astro.as.arizona.edu [128.196.208.2]) by
+ steffens.as.arizona.edu (8.9.1/8.9.1) with ESMTP id RAA06415; Tue,
+ 1 Jun 1999 17:51:51 -0700 (MST)
+Received: from GAFFEL.AS.ARIZONA.EDU (gaffel.as.arizona.edu [128.196.210.186])
+ by astro.as.arizona.edu (8.9.1/8.9.1) with ESMTP id RAA24498; Tue,
+ 1 Jun 1999 17:51:50 -0700 (MST)
+Received: from the_tick (gilden.as.arizona.edu) by GAFFEL.AS.ARIZONA.EDU (PMDF
+ V4.2-13 #2381) id <01JBW7XY5ZI80033FE@GAFFEL.AS.ARIZONA.EDU>; Tue,
+ 1 Jun 1999 17:51:47 MST
+Date: Tue, 01 Jun 1999 17:51:43 -0700 (MST)
+From: Dave Ashby <dashby>
+Subject: opd mods
+To: Bill Peters <bpeters>
+Cc: Dave Ashby <dashby>
+Message-id: <Pine.LNX.3.96.990601171514.21783A-100000@the_tick>
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; charset=US-ASCII
+Content-transfer-encoding: 7BIT
+X-Sender: dashby
+
+Hi Bill,
+
+I thought I would send you some notes about the changes that I have made
+to the focus command in the optical pointing daemon.  I have added two
+parameters to the /etc/opdrc file.
+
+  BACKLASH0 - This is the same as the term used to date.  The value we
+              have been using so far is -2000.  I've changed the sign
+              to see how it works.
+  BACKLASH1 - Relaxation term you requested.  This should have the same
+              sign as BACKLASH0.
+
+If you log onto kueppers as smtobs, you will have write access to opdrc.
+If you edit opdrc, the opd will reread the file so there is no need to
+restart opd.
+
+There are now only two options to the focus command.  The following is the
+response help command.
+
+help focus
+  focus [-a] [-m steps]
+    opt a       - autofocus mode
+    opt m       - manual focus mode
+      steps     - number of steps to move
+
+The manual focus uses the new backlash terms, but the autofocus doesn't.
+I am not done with the modifications to the autofocus mode. 
+
+I have attached a copy of the current opdrc file.
+
+-Dave.
+
+#-----------------------------------------------------------------------------#
+# opdrc / optical pointing daemon resource file                           #
+#-----------------------------------------------------------------------------#
+# Comment lines start with '#' in the first column and continue to the end    #
+# of the line.                                                                #
+# Any text after the data value is a commend.                                 #
+# Space, tab, ',' and '=' are all data                            #
+#-----------------------------------------------------------------------------#
+# camera info
+CCDTEMP      = -25.0 C                 target temperature if the CCD
+
+# Communication
+MAILBOX      = OPOINT                  local mailbox name 
+TEST_MAILBOX = OP_TEST
+
+# Files and Directories Directories
+VARFILE      = /var/lib/op/opvar       contains current scan number
+RAWDATA      = /var/spool/op/raw       raw data directory
+REDDATA      = /var/spool/op/red       reduced data directory
+ERRLOG       = /var/log/opd.log        opd log file
+APFILE       = /etc/apogeerc           apogee rc(ini) file
+#OPRRC       = /etc/oprrc              opr resource file
+
+# Focus stuff
+BACKLASH0    = 2000                    remove focus backlash
+BACKLASH1    = 0                       relax the focus
+
+

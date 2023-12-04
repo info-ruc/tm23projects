@@ -1,0 +1,57 @@
+Received: from Princeton.EDU (outbound2.Princeton.EDU [128.112.129.120])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA03711
+	for <handyboard@media.mit.edu>; Tue, 3 Aug 1999 20:12:38 -0400 (EDT)
+Received: from mailserver.Princeton.EDU (mailserver.Princeton.EDU [128.112.129.65])
+	by Princeton.EDU (8.9.3/8.9.3) with ESMTP id UAA14428;
+	Tue, 3 Aug 1999 20:12:37 -0400 (EDT)
+Received: from flagstaff.Princeton.EDU (flagstaff.Princeton.EDU [128.112.131.154])
+	by mailserver.Princeton.EDU (8.9.3/8.9.3) with ESMTP id UAA29116;
+	Tue, 3 Aug 1999 20:12:36 -0400 (EDT)
+Received: from localhost (hoki@localhost)
+	by flagstaff.Princeton.EDU (8.9.1/8.9.1) with ESMTP id UAA05969;
+	Tue, 3 Aug 1999 20:12:21 -0400 (EDT)
+X-Authentication-Warning: flagstaff.Princeton.EDU: hoki owned process doing -bs
+Date: Tue, 3 Aug 1999 20:12:21 -0400 (EDT)
+From: Hidekazu Oki <hoki@Princeton.EDU>
+To: Jonathan Swaby <jonathan.swaby@vpss.gatech.edu>
+Cc: handyboard <handyboard@media.mit.edu>,
+        Robot Board <robot-board@cmf.nrl.navy.mil>
+Subject: Re: IR sensors
+In-Reply-To: <3.0.5.32.19990803114026.008c8910@pop.prism.gatech.edu>
+Message-Id: <Pine.GSO.4.03.9908031959580.3941-100000@flagstaff.Princeton.EDU>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+To blink LEDs at 40khz, you could try using the 555 timer. Radio Shack
+carries the 555 timer chip, a little booklet explaining how to
+use it, and any external components you need.
+
+In addition to the 555 chip, you'll just need three resistors and a
+capacitor to drive that LED. (You will probably not need
+an external transistor, the 555 chip can output 200mA or up to 600mA,
+depending on whether or not it is a lower power version or not.)
+
+One warning:  You can operate the 555 chip at a variety of voltages, but
+you should make sure not to exceed the recommended voltage and current
+limit for the LED.  
+
+If V_in is the voltage you use to operate the 555 chip, you should wire 
+a resistor with resistance R_series in series with the LED before
+connecting to the output of the 555 timer chip, given the LED's rated
+voltage is V_led and rated current, I_LED:
+
+R_series * I_LED + V_led = V_in
+
+Solving for R_series:
+
+R_series = (V_in - V_led ) / I_LED
+
+If you'd like more detailed plans, I could scribble something up, but the
+booklet is worth getting anyway, since you'll need to get the 555 chip and
+a few components anyway.
+
+I hope this is helpful..
+
+-Hide
+
+

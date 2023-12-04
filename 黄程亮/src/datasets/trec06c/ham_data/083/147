@@ -1,0 +1,51 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8J1gmh17308
+	for <egs@cs.cornell.edu>; Wed, 18 Sep 2002 21:42:48 -0400 (EDT)
+Received: from Warren-Lapines-Computer.local. (r105572.resnet.cornell.edu [128.253.240.214])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id VAA05127
+	for <egs@cs.cornell.edu>; Wed, 18 Sep 2002 21:42:46 -0400 (EDT)
+Date: Wed, 18 Sep 2002 21:42:51 -0400
+Mime-Version: 1.0 (Apple Message framework v543)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Subject: 615 Paper 13
+From: Milo Polte <mp98@cornell.edu>
+To: egs@CS.Cornell.EDU
+Content-Transfer-Encoding: 7bit
+Message-Id: <1C2F1A22-CB71-11D6-A16E-003065EE5F0A@cornell.edu>
+X-Mailer: Apple Mail (2.543)
+
+This paper designs a routing protocol motivated by a need to conserve 
+power rather than minimize delay and bandwidth. The basic idea revolves 
+around an eavesdropping node, call it R, listening to a conversation 
+between S and T. If R calculates that it could lower the power 
+consumption required in this travel by acting as an intermediate host 
+(i.e. the total power cost from S to R to T is less than that directly 
+from S to T) then R sends a packet to both S and T alerting them of R's 
+candidacy as a forwarding host. S will now send packets to T's IP 
+address, but with R's MAC address. All the nodes involved will of 
+course have to maintain routing information for this route.
+
+This paper is notable because it is the first paper we have read that 
+attempts to form a routing protocol with the goal of minimizing power 
+consumption rather than, say, hopcount. They attempt to do extensive 
+profiling of their performance which is laudable and characterize under 
+what conditions the algorithm works best (packets send very rapidly or 
+nodes remain mostly still). However, ultimately this algorithm is a 
+simple idea which falls apart in a complex world. Their assumptions are 
+unreasonable. The notion that all communicating nodes are within 
+maximum transmission distance of each other, for example, is pretty 
+unusual (it also breaks their redirecting technique). In none of their 
+simulations do they provide the reader with bandwidth calculation (I 
+would even settle for a 'goodput' measure), and their comparison to 
+MLSR is done on static nodes, whereas the focus of the paper is on 
+mobile hosts. They mention themselves that the route constructed by 
+this algorithm may be sub-optimal.
+
+What this paper truly needs is a smaller scope. As it stands it is 
+pretty poor routing algorithm. It's real use would be as a modification 
+upon existing protocols--The notion of eavesdroppers nominating 
+themselves as a more power efficient route could easily be imagined as 
+a plugin to other protocols like AODV. It would be interesting to see, 
+say, a comparison of the bandwidth, latency, and power consumption of 
+AODV vs. the same metrics on AODV+PARO.
+

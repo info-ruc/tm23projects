@@ -1,0 +1,67 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id XAA06667
+	for <handyboard@media.mit.edu>; Thu, 12 Mar 1998 23:26:13 -0500 (EST)
+Received: from Daddy.4Mercier (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id XAA20255; Thu, 12 Mar 1998 23:26:10 -0500 (EST)
+Message-Id: <3508B4F5.F95B8144@cam.org>
+Date: Thu, 12 Mar 1998 23:24:21 -0500
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.0 [en] (Win95; I)
+Mime-Version: 1.0
+To: MAR ERICSON <mar@cooper.edu>
+Cc: handyboard@media.mit.edu
+Subject: Re: Kent's sonar routines
+X-Priority: 3 (Normal)
+References: <Pine.GSO.3.95.980312185953.20288B-100000@zeus.cooper.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+MAR ERICSON wrote:
+
+> Can anyone clarify something for me?
+>
+> A section of the code of sonar.asm goes as
+> follows:
+>
+> variable_sonar_time
+> sonar_time              FDB       0
+>
+> What does this mean? Why are there two variables
+> before the FDB?
+
+The line "variable_sonar_time" indicates that the
+immediately following FDB will be available to IC
+as an integer variable named "sonar_time".
+
+The next line with the FDB is just a regular
+assembler definition statement to allocate storage
+for the variable and name it for assembler access
+purposes.
+
+> Another section goes as follows:
+>
+> variable_sonar_enable   FCB       0
+> sonar_enable            FCB       0
+>
+> I thought IC integers had to be 2 bytes.
+
+Yes, IC integers have to be 2 bytes.
+
+> And also, are these two different variables?
+
+My guess is "yes and no".  I am guessing they are
+pulling a trick so that IC sees a 2-byte variable
+while assembler sees a 1-byte variable.
+
+I haven't seen this sort of thing before.  If you
+didn't copy it wrong and if it really works then
+my guess would be that it is defining a
+single-byte value for assembler usage, prefixed by
+a guaranteed null byte so that IC can access it
+properly.
+
+/Max
+
+
+

@@ -1,0 +1,226 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id QAA14383
+	for <handyboard@media.mit.edu>; Sun, 10 Sep 2000 16:42:53 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id QAA16831; Sun, 10 Sep 2000 16:43:04 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://news.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:8045
+From: Jerry Normandin <jerrynormandin@ne.mediaone.net>
+X-Real-Life-Name: Jerry Normandin
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: Jerry Normandin <jerrynormandin@ne.mediaone.net>
+Subject: Robot Program for Rover so far...
+Posted-Date: Sun, 10 Sep 2000 20:51:25 GMT
+Date: Sun, 10 Sep 2000 20:51:25 GMT
+Organization: None
+Message-Id: <39BBF44D.F0076C89@ne.mediaone.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+Hi everyone.
+
+Well I decided to go with a Quad Hall Effect encoder.  I mounted
+4 very small magnets on my 1" plastic drive gears and used the
+Hall Effect switch  that Fred recommended.  Here's the code I have
+and the results!
+
+For a 180 degree turn I get 24 ticks
+              90                                12
+              45                                  6
+              22.5                               3
+
+For the lego gears this is ok, possibly later when the gears on the Mars
+Rover
+get updated with some metal gears I will have an optical encoder. For
+now I
+am getting pretty good results with the hall effect encoder
+
+
+Has anyone tried to have multiple devices on the SPI bus?
+RTC, Polaroid Sonar,  Compass ????
+
+
+
+int irccmd = 0;
+int oldirccmd ;
+void main ()
+{
+alloff ();
+sony_init(1);
+
+start_process(getircommand());
+while (irccmd != 23)
+{ if (irccmd == 26 && oldirccmd != irccmd) {
+                go_fwd();
+                                   }
+else if (irccmd == 24 && oldirccmd != irccmd) {
+        go_bwd();
+}
+
+else if (irccmd == 31 && oldirccmd != irccmd){
+go_right ();
+}
+
+else if  (irccmd == 30 && oldirccmd != irccmd) {               int
+irccmd = 0;
+int oldirccmd ;
+void main ()
+{
+alloff ();
+sony_init(1);
+
+start_process(getircommand());
+while (irccmd != 23)
+{ if (irccmd == 26 && oldirccmd != irccmd) {
+                go_fwd();
+                                   }
+else if (irccmd == 24 && oldirccmd != irccmd) {
+        go_bwd();
+}
+
+else if (irccmd == 31 && oldirccmd != irccmd){
+go_right ();
+}
+
+else if  (irccmd == 30 && oldirccmd != irccmd) {
+go_left ();
+}
+else if (irccmd == 63) {
+stop ();
+}
+if (irccmd == 1 && oldirccmd != irccmd) {
+go_beep ();
+}
+}
+printf ("End Test \n");
+}
+
+
+void getircommand()
+{
+                int irc;
+                while(1)
+        {
+                irc = ir_data(0);
+                if(irc)
+                {                                  go_left ();
+}
+else if (irccmd == 63) {
+stop ();
+}
+if (irccmd == 1 && oldirccmd != irccmd) {
+go_beep ();
+}
+}
+printf ("End Test \n");
+}
+
+
+void getircommand()
+{
+                int irc;
+                while(1)
+        {
+                irc = ir_data(0);
+                if(irc)
+                {
+                       if(irc >= 128)
+                                irc -= 127;
+       irccmd = irc;
+
+                }
+                else
+                        defer();
+        }
+}
+
+
+
+void go_fwd()
+{
+  oldirccmd = irccmd;
+ encoder2_counts=0;
+printf ("fwd \n");
+motor (1,25);
+motor (2,25);
+fd (1);
+fd (2);
+                return;
+}
+
+
+void go_bwd () {
+  oldirccmd = irccmd;
+  encoder2_counts=0;
+        printf ("bwd \n");
+motor (1,-25);
+motor (2,-25);
+bk (1);
+                bk (2);
+                return;
+}
+
+void go_right () {
+  oldirccmd = irccmd;
+  encoder2_counts=0;
+                printf ("right \n");
+        motor (1,25);
+                return;
+}
+
+
+void go_bwd () {
+  oldirccmd = irccmd;
+  encoder2_counts=0;
+        printf ("bwd \n");
+motor (1,-25);
+motor (2,-25);
+bk (1);
+                bk (2);
+                return;
+}
+
+void go_right () {
+  oldirccmd = irccmd;
+  encoder2_counts=0;
+                printf ("right \n");
+        motor (1,25);
+                motor (2,-25);
+                  fd (1);
+                bk (2);
+                return;
+}
+
+void go_left () {
+  oldirccmd = irccmd;
+ encoder2_counts=0;
+                printf ("left \n");
+        motor (2,25);
+        motor (1,-25);
+                fd (2);
+                bk (1);
+                return;
+}
+     void stop ()
+{
+  oldirccmd = 100000;
+                printf ("stop \n");
+           printf ("%d encoder ticks \n", encoder2_counts);
+        alloff();
+        sleep (1.5);
+                return;
+}
+
+void  go_beep ()
+
+{
+  oldirccmd = irccmd;
+                printf ("beep \n");
+        beep();
+                return;
+}
+

@@ -1,0 +1,60 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id KAA08693
+	for <Handyboard@media.mit.edu>; Thu, 8 Apr 1999 10:56:02 -0400 (EDT)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Thu, 08 Apr 1999 06:34:26 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id GAA24974;
+	Thu, 8 Apr 1999 06:34:25 -0700 (PDT)
+Date: Thu, 8 Apr 1999 06:36:29 -0700 (Pacific Daylight Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+Reply-To: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Handyboard List <Handyboard@media.mit.edu>
+Cc: Curt Mills <hacker@tc.fluke.com>, Curt Mills <BowHunt@iname.com>
+Subject: Re: GCC 2.8.1 for HC11 
+In-Reply-To: <199904021853.KAA07613@mail.Legato.COM>
+Message-Id: <Pine.WNT.3.96.990408054223.113G-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+The GCC Miniboard library -plus- LCD routines are almost completely ported
+to the Handyboard.  The LCD routines started playing nicely early this
+morning but I haven't added the low-level stuff into the timer interrupt
+yet.  I can now write characters to the display!  Serial-out works. 
+Haven't debugged the beeper yet, and haven't tested serial-in or motor
+routines (don't have any motor chips or IR on my board).
+
+WARNING:  It appears that the GCC/HC11 array indexing isn't working.  I
+had to convert the LCD code to use pointers for the circular queue (which
+actually made the code quite a bit smaller - probably faster too).  If
+anyone knows how to fix array indexing in GCC, please let me know. It's
+probably something in the code that I touched.  I didn't have to touch any
+of the assembler/linker code, so I believe it is a GCC-for-HC11 problem.
+
+WARNING:  The linker (Baldwin?) is buggy, or at least misleading.  I spent
+a lot of energy trying to get each memory segment located into the correct
+memory region.  I found out that by creating some global labels (using
+"::") and assembling/linking again that the map file showed the correct
+addresses for global labels, but incorrect addresses for the memory
+segment.  Believe the global labels.  I added extra labels at the
+beginning/end of various segments so that they became visible in the map
+files. 
+
+Oh yea, did you know that if you create code which is located in the first
+page of memory that the loader will give you an error while trying to load
+it?  ;-)  I guess the running loader code has to live somewhere...
+
+I located the LCD code into 0x0100-0x01ff to get around this (I have an
+E1/E9 chip - 512 bytes RAM).  I'll change it later so the code is moved
+into first page memory from somewhere else when the program starts.  That
+way it'll run on the A-series HC11 chips as well.
+
+I now have the full 32.5K RAM to play in.  Sure is nice.
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

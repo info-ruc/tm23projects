@@ -1,0 +1,61 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id MAA30574
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 18 Dec 2000 12:51:58 -0700
+Received: from kif.u.arizona.edu (128.196.98.27) by deimos.email.Arizona.EDU (5.1.046)
+        id 3A35296D0007C738 for DMDX@psy1.psych.arizona.edu; Mon, 18 Dec 2000 12:51:57 -0700
+Message-Id: <4.3.1.1.20001218123721.00dff2f0@kforster.inbox.email.arizona.edu>
+Date: Mon, 18 Dec 2000 12:52:17 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: Kenneth Forster <kforster@u.arizona.edu>
+Subject: [DMDX] Re: Random item placement
+In-Reply-To: <3A3A7ECF.5A71BA6C@burninglotus.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Mike Dobbs,
+
+At 12:28 PM 12/15/00 -0800, you wrote:
+>I've read the documentation and tutorials regarding the random
+>scrambling of the order of a group of items.  I'm interested in running
+>an experiment in which a series of items are presented - many of these I
+>want to be static, but interspersed I'd like to randomly place other
+>"filler" items that would be taken from a pool.  Is there any way to do
+>this in DMDX?
+
+Jonathan's comment is correct -- enclosing an item between a pair of $s 
+fixes its location, and the other items are then randomly positioned.  But 
+if the filler items are supposed to be a random sample from a larger pool 
+of items, then there is more to it than that.  I don't know whether that 
+was the intent, but even if it wasn't, this is an interesting question.
+
+One possible solution is as follows.  Suppose you have 5 test items to be 
+displayed in constant positions, along with 50 filler items sampled 
+randomly from a pool of 100 items.  This can be achieved with the following 
+arrangement:
+
+n55 f50 s1
+10 filler items
+$ test item 1$
+10 filler items
+$ test item 2 $
+10 filler items
+$ test item 3 $
+10 filler items
+$ test item 4 $
+10 filler items
+$ test item 5 $
+$0 "That's the end."; $
+50 filler items
+
+         Note the scramble parameter value of 1.  This is critical.
+
+         --KIF
+
+
+
+
+
+

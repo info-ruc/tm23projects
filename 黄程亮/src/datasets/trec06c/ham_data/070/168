@@ -1,0 +1,69 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id JAA05271
+	for <handyboard@media.mit.edu>; Wed, 16 Aug 2000 09:16:09 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id JAA20543; Wed, 16 Aug 2000 09:16:09 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://news.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7999
+From: "bouyssou" <thierry.bouyssou@airbus.aeromatra.com>
+X-Real-Life-Name: Thierry Bouyssou
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Question on Handy Board connected to three other 68hc11
+Posted-Date: Wed, 16 Aug 2000 13:15:45 GMT
+Date: Wed, 16 Aug 2000 13:15:45 GMT
+Organization: enterprise
+Message-Id: <FzDzI9.Fq5@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+ Hello,
+
+ I bought an Handy Board and I would like to use it with 3 other 68hc11e2
+ cards.
+
+ These four 68hc11 are connected together with the port D (MISO, MOSI, CLK).
+
+ SS of Handy Board is connected to +5v and Handy Board always is the master.
+
+ On the first 68hc11e2 : SS input and PC0 are connected to y0 of expansion
+ board port.
+ On the second 68hc11e2 : SS input and PC0 are connected to y1 of expansion
+ board port.
+ On the third 68hc11e2 : SS input and PC0 are connected to y2 of expansion
+ board port.
+
+ Therefore, the three 68hc11e2 start an input interrupt when y0 or y1 or y2
+ is connected to 0v.
+
+ But the code on Handy Board isn t correct. Do you see a mistake on my little
+ program ?
+
+ Thanks
+
+ void main ()
+ {
+ int toto,resu;
+
+ toto = 1;
+ while( toto == 1)
+ {
+
+ /* 0x4000 =>  40 to PBx and 00 to PCx */
+ poke(0x1004,0x40);  /* selection the Y0 */
+ poke(0x1003,0x00);
+ poke(0x1009,0x38);  /* reset DDRD */
+ poke(0x1028,0x57);  /* reset SPCR */
+ poke(0x102A,toto);  /* store SPDR */
+
+ while( peek(0x1029) > 0 )   /* wait loop */
+ {
+ }
+
+ resu = peek(0x102A); /* look SPDR */
+ printf("%d\n",resu);
+ }  /* end while */
+ }  /* end main  */
+

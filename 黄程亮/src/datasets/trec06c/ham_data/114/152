@@ -1,0 +1,145 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1EEqat18801
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 09:52:36 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1EEqZle026306
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 09:52:35 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Tue, 14 Feb 2006 09:52:35 -0500 (EST)
+Message-ID: <1938.128.84.98.90.1139928755.squirrel@webmail.cornell.edu>
+Date: Tue, 14 Feb 2006 09:52:35 -0500 (EST)
+Subject: paper 7 - search and replication
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+The authors discuss a query algorithm based on random walks which reduces
+the amount of network traffic by two orders of magnitude (when compared to
+flooding) along with with a square-root replication strategy.
+
+They point out to the fact that when replication strategy is
+uniform, the query distribution is irrelevant whereas when the query
+distribution is uniform, all replication strategies are  equivalent.
+
+LIMITATIONS OF FLOODING:
+
+the load on each individual node is controlled by the value of TTL. But
+choosing the appropriate value of TTL is not easy. Higher TTL results in
+unnecessary burdens on the network traffic while a low TTL may result in
+not finding an object although a copy existed. TTL must be set high as the
+replication ratio of an object is generally unknown so as to prevent the
+previous scenario.
+
+In flooding, it is not possible to increase the number of nodes covered
+without increasing the duplication in the search. Expanding ring technique
+solves the TTL selection problem but does not address the message
+duplication inherent in flooding.
+
+
+RANDOM WALKS:
+
+a node forwards a query message to a randomly chosen subset of its neighbors.
+The node which follows the above policy is termed a "walker".
+note: in  a system, only some walkers exist (other nodes follow flooding
+policy) - experimental results indicate that 16 to 64 walkers give good
+results.
+
+in order to terminate the walks 2 methods have been suggested (TTL and
+checking)
+TTL is the same as in flooding.
+"checking" means that a walker periodically checks with the original
+requester before walking to the next node. The checking method also uses a
+TTL which is used to prevent loops( note that TTL is not so significant in
+this case as opposed to flooding).
+
+The authors have not provided a discussion as to what the above periodic
+interval must be especially in the case that no direct path exists between
+current node and the original requester.( the message could be appended
+with the path it has taken so far and this path must be retraced   to the
+original requester- this check message must also be routed in a different
+manner than ordinary   query messages -- no random subset to be chosen if
+message appended with path)
+
+
+a further improvement involves storing the state for a particular query -
+i.e. the walker remembers the nodes to which it had earlier forwarded the
+same message preventing it from sending the same message again to the same
+node(since the node to which forwarding takes place is selected randomly)
+
+
+
+INSIGHTS DEVELOPED INTO SCALABLE SEARCHING TECHNIQUES:
+
+1) Adaptive termination is important (checking being a good example)
+2) message duplication should be minimized
+
+3) granularity of coverage should be small - this is based on the concept
+that if an additional step  results in covering a large number of nodes,
+some of these nodes covered would be extra - so   covering extra nodes
+should be prevented.
+
+REPLICATION THEORY:
+
+the paper draws light on the fact that uniform and proportional
+replication strategies yield exactly the same average search size
+independent of the query distribution. these different replication
+strategies differ only in the average search size of each object vs the
+utilization rate for each object.
+
+they suggest that Square-Root Replication is optimal based on a result
+from another paper. Square-Root strategy results in  smaller variance in
+average search size as compared to Proportional.
+
+
+IMPLEMENTATION:
+
+they derive the result that replicating proportional to number of sites
+probed would result in a square root distribution.
+
+path replication results in replication on the nodes that are
+topologically on the same path.This would make the system fragile and
+increase traffic on these nodes for popular objects. The authors suggest
+"random replication" as a solution to the above situation.
+
+
+ POTENTIAL FLAWS:
+
+while deriving the result for square-root replication using a differential
+equation, it assumes that it knows ri (replication ratio). Assuming that
+the destination node knows ri, it would have to communicate with other
+nodes for replication and this would involve another set of messages
+especially in the case of random replication( the destination node would
+also have to provide each node(that replicates i), with a value
+of ri in the case that the destination node fails -- assuming non-pointer
+based replication of objects. In case of pointer based replication - the
+amount of "keep-alive" messages would increase as each node that
+replicates i must check status of node hosting i periodically -thereby
+increasing the
+traffic in case of increased replication)
+
+
+The discussion on the square-root replication schemes ignores the case
+where a node fails and the protocol that must be carried out to replicate
+the replicated objects stored at this failed node (especially during the
+initial phase where equilibrium has not been achieved - i.e creation rate
+is
+not equal to deletion rate).
+
+The authors assume that they can somehow control the deletion rate which
+does not seem possible.
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,120 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iAFNeQFJ019198
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Nov 2004 16:40:27 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id E04879E8870
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Nov 2004 16:40:26 -0700 (MST)
+Received: from u.arizona.edu (dingo.psych.arizona.edu [128.196.98.215])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 8B5409F6013
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Nov 2004 16:40:26 -0700 (MST)
+Message-ID: <41993E66.2020308@u.arizona.edu>
+Date: Mon, 15 Nov 2004 16:40:22 -0700
+From: Scott Hayes <smhayes@u.arizona.edu>
+MIME-Version: 1.0
+To: DMDX <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] DirectDraw Error
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi Jonathon,
+    I've tested approximately 75 subjects on a Windows 2000 machine 
+using the same DMDX program, and things have worked just fine--until 
+this morning.  The syntax check didn't output any errors, but when I ran 
+the script, the following message appeared: "Create memory-120x-17 
+surface for qptr failed.  Unknown directdraw error (8007000e{14}).  
+    I found the message copied below in the list archives, but I'm not 
+sure if it's relevant since the error message is different and my 
+program has worked fine until now.  Since multiple people use the 
+machine, I'm in the process of trying to determine if anything was 
+downloaded that may be corrupting DMDX.  In the mean time, do you have 
+any suggestions for what the source of the error might be?  
+Thanks,
+Scott
+
+j.c.f.'s ListServ Threader V1.4.01
+
+Date: Fri, 14 Mar 2003 09:24:36 -0700
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Direct Draw error
+
+
+   Hmm, could be DirectX 9 but seeing as you probably can't get rid of it 
+you'll have to try some newer video drivers.  If you're using the most 
+recent ones then you can try some different color depths, either 8 bit (not 
+recommended but you may have no choice) or 24 or 32 bit.  If you have 
+another video card perhaps you can try that.  OTOH perhaps this is another 
+manifestation of whatever instability it is that VC 6 has introduced into 
+DMDX and if nothing else alters the behavior you'll have to wait till I can 
+figure out what's wrong -- I suspect I have located the basic region of the 
+failure, it appears to be the RTF parser.
+
+At 01:20 PM 3/14/2003 +0100, you wrote:
+>I am getting a frequent but intermittent crash of DMDX from an "Unknown 
+>DirectDraw Error" with the message:  DDS2 memory to qptr Blt failed! 
+>Unknown DirectDraw Error (80004001 [16385])
+>
+>As you can see from the DMDX diagnostics file (below) I am using the 
+>current version of DMDX and also DirectX version 9.0
+>
+>Does anyone have any clues?
+>
+>Thanks,
+>
+>Derek
+>
+>
+>#### extract of DMDX script which offendeth ####
+>
+><n 640>  <azk> <cr> <fd 0 >  <RO 75 , 255>  <id PIO12> <id "keyboard"> 
+><dbc 00255> <dwc 0> <vm 1024 768 768 16 0> <dfs 10> <nfb> <! covert.4.1 
+>Fri Jan 03 14:24:28 2003 >
+>2000 <OutputHex 227> / <fd 61> / <OutputHex 227> / <fd 61> / <OutputHex 227> ;
+>1000 <medialife  320 > <wav> "beep.wav" <svp start> <volume -10000> / ;
+>1000 <wav> "COVERT_intro.wav" <pan 2> <volume -300> /;
+>0 "press mouse to begin";
+>
+># CRASH OCCURS HERE #
+>
+>^244 <! Type 3>  <O 235>   <fd 1> / <fd 7>  <XYJustification 1> <XY 0.5, 
+>0.5> "."  , <fd 7 > * <Timeout 1373> <xy 0.34,0.5> <fm 1.086> 
+><XYJustification 1> "O" / <ne> <fd 83> <XY 0.357,0.5> <XYJustification 1> 
+><fm 1.086> "+" <O 231>   / <XYJustification 1> <XY 0.5, 0.5> "." ;
+>
+>#### end of script extract ####
+>
+>
+>#### diagnostic file ####
+>DMDX Vers. 3.0.0.13 03/14/2003 12:19:17 on machine Joni
+>DMDX Vers. 3.0.0.13
+>Item File <C:\Projects\ANS\DMDX_TST\COVERT\covert.4.1.debug.rtf>
+>Parsed file is <rtfparsed.itm>
+>Getting file -- Wait
+>No scramble
+>Scrambled file is <rtfparsed.itm>
+>EXPERIMENT READY
+>4 video memory buffers at 1024x768 16 bpp
+>
+>2000 <OutputHex 227> / <fd 61> / <OutputHex 227> / <fd 61> / <OutputHex 227> ;
+>Preparation A 0.95ms, B 39.43ms
+>
+>1000 <medialife  320 > <wav> "beep.wav" <svp start> <volume -10000> / ;
+>DQ adjusted by 1 ticks to allow for sound
+>Preparation A 27.01ms, B 0.54ms
+>
+>1000 <wav> "COVERT_intro.wav" <pan 2> <volume -300> /;
+>DQ adjusted by 1 ticks to allow for sound
+>Preparation A 1132.20ms, B 0.58ms
+>
+>0 "press mouse to begin";
+>DDS2 memory to qptr Blt failed!
+>Unknown DirectDraw Error (80004001 [16385])
+>JOB ABORTED
+>
+>#### end of diagnostic file ####
+
+
+
+

@@ -1,0 +1,129 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.200])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k2AHuFg1031309
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Mar 2006 10:56:16 -0700
+Received: by zproxy.gmail.com with SMTP id 13so762476nzp
+        for <DMDX@psy1.psych.arizona.edu>; Fri, 10 Mar 2006 09:56:07 -0800 (PST)
+Received: by 10.64.181.19 with SMTP id d19mr818031qbf;
+        Fri, 10 Mar 2006 09:56:06 -0800 (PST)
+Received: from ?192.168.2.100? ( [86.139.208.92])
+        by mx.gmail.com with ESMTP id e13sm1169676qbe.2006.03.10.09.56.05;
+        Fri, 10 Mar 2006 09:56:06 -0800 (PST)
+Message-ID: <4411BE6F.4040805@gmail.com>
+Date: Fri, 10 Mar 2006 17:59:11 +0000
+From: Joao Verissimo <jl.verissimo@gmail.com>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: Intel i845 chipset
+References: <4411BA32.3020904@bham.ac.uk>
+In-Reply-To: <4411BA32.3020904@bham.ac.uk>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi.
+
+I got that error often, and solved it by increasing the delay parameter.
+(I still get it, but only after a timeout in the previous trial).
+
+I suppose it should be possible for you to get the timings you want by
+using <fd>, no?
+
+So far as I remember from what Jonathan said, it can also be solved by
+inserting the delay instruction in each item, instead of in the
+parameters line. But you still get those frames not moving into memory
+exactly 4 ticks late, but no error (right, Jonathan?)
+
+João
+
+Dana Samson wrote:
+> Dear all,
+> 
+> I have tried to run an experiment on a new computer and received
+> repeatedly the following type of error message *Display error at ms %d,
+> tick %d in %d, frame "%s" moved into video memory %d ticks late *(see
+> end of mail for full error message).
+> 
+> The new computer has the following motherboard:
+> 
+> Gigabyte GA-8I945G Pro
+> 
+> Which has the following chipset
+> 
+> Intel i845 chipset
+> 
+> I am using the onboard graphics (Intel 82845G), which states that a
+> minimum 64MB and a maximum 128MB of memory is available.
+> 
+> The experiment runs fine on older computers (which have different
+> chipsets).
+> 
+> This is what we tried to do to solve the problem, but with no success:
+> 
+> 1. Turned off hyperthreading
+> 2. Updated the chipset drivers
+> 3. Updated the video drivers
+> 4. Disabled all start-up programs and non-windows services
+> 5. Turned off screen saver and power management
+> 
+> What else can we do to try to solve the problem?
+> 
+>> From previous messages on the mailing list (august 2003), I understand 
+> 
+> that the Intel i845 chipset might be at the origin of the problem...
+> 
+> Note that if I increase the value of <d x> (e.g. from <d 4> to <d 76>),
+> I have no error message anymore, but this is not a solution for me really.
+> 
+> 
+> For your information,
+> 
+> here the full error messages:
+> 
+> Subject 9, 03/10/2006 16:30:51 on PSG-DS-02, refresh 13.31ms
+>  Item       RT       COT
+>  9003    452.64      0.00
+> !  Display error at msec 5293.64, tick 387 in item 9053, frame ""
+> !    moved into video memory 31 ticks late
+> !     (previous frame's duration will have been longer)
+>  9053    445.01   2422.42
+> !  Display error at msec 7715.50, tick 569 in item 9028, frame ""
+> !    moved into video memory 31 ticks late
+> !     (previous frame's duration will have been longer)
+>  9028   -468.79   4844.84
+> !  Display error at msec 10164.72, tick 753 in item 9026, frame ""
+> !    moved into video memory 33 ticks late
+> !     (previous frame's duration will have been longer)
+> 
+> 
+> 
+> and here some details of the expe:
+> 
+> <n 180> <cr> <rcot> <s 180> <nfb> <azk> <t 2000> <fd 34> <d 4> <id
+> "keyboard"> <umr> <mr +space> <mpr +d> <mnr +l> <vm 1024,768,768,16,75>
+> <bgc 198198198>
+> 
+> $
+> 0 <ln -3> "*BLUE* = left    *GREEN* = right", "Ready? Press SPACEBAR to
+> continue";
+> 
+> 250 <ms% 1000>/;
+> 
+> $
+> 
+> +9001 <fd 112> / "+" / * <ColorKey> <bmp> "FrontL_LeftB"  ;
+> 
+> +9002 <fd 112> / "+" / * <ColorKey> <bmp> "FrontL_LeftB" ;
+> 
+> +9003 <fd 112> / "+" / * <ColorKey> <bmp> "FrontL_LeftB" ;
+> 
+> -9026 <fd 112> / "+" / * <ColorKey> <bmp> "FrontR_RightG" ;
+> 
+> etc..
+> 
+> Many thanks in advance for your help!
+> Best regards,
+> Dana
+> 
+

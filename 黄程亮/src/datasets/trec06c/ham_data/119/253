@@ -1,0 +1,89 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2UH1MY19546
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 12:01:22 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-246.twcny.res.rr.com [69.207.37.246])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2UH1L4X019974
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 12:01:22 -0500 (EST)
+Message-ID: <000e01c6541b$ab98b600$f625cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 17
+Date: Thu, 30 Mar 2006 12:02:03 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+BitTorrent is a centralized file distribution system.  It is reminiscent of 
+Napster in the way it does its routing, but far more specific per file.  A 
+tracker is stored on a server, for simplicity it is accessible through the 
+HTTP protocol on port 80, and keeps track of the current peers downloading 
+and uploading only one file.  When a client connects to the tracker, the 
+tracker sends back a random subset of the currently available peers who are 
+also downloading (or are done downloading) the file.  A client connects to 
+many peers and downloads subsets of the file which it does not currently 
+have in a rarest-available scheme.  In the mean time, the client is 
+uploading the parts of the file that it previously downloaded to other 
+peers...in this way, clients can self monitor other peers and only upload to 
+those that are allowing them to downloading, trying to making the 
+communication symmetric.
+    The problem with BitTorrent is that is has a central non-scalable point 
+of failure.  The tracker requires a fair amount of bandwidth and with very 
+high numbers of clients (10^5 or higher), it would be non-performant. 
+Furthermore, it is subject to legal attacks and other out-of-network attacks 
+that Napster suffered from.  It is, on the other hand, harder to go after 
+than Napster because trackers and torrents can be stored on anyone's server, 
+not just napster.com.  The other problem with BT is that is seems to derive 
+all of its conclusions by what was already implemented instead of 
+experimentation and mathematics.
+
+Bullet is slightly more general than BT.  It allows streaming video and 
+other mutable file types to be shared between peers.  The central idea 
+behind bullet is similar to that of BT: once a peer has (part of) a file, it 
+can start transferring it to other peers.  To achieve this, Bullet organizes 
+itself into a distribution tree and overlays a mesh on top.  The authors 
+argue that a distribution tree is not performant when any nodes, especially 
+a node close the root, has a slow connection or disconnects.  To alleviate 
+this issue, the overlayed mesh connects peers that are not directly 
+connected in the tree.  The examples the authors gives are a root node, r, 
+and two children: a and b.  If the connections between all nodes is 1mpbs 
+and the root node sends a the file, b can receive it at 2mpbs (instead of 1) 
+because it can download from a and from r at the same time (as long as the 
+mesh has that connection).  In their experiments, Bullet achieved, on 
+average, twice the bandwidth per node than a distribution tree.  It is also 
+less susceptible to random disconnections and low bandwidth nodes.
+    The problem with Bullet seems to be the small amount of overhead 
+bandwidth that is used to propagate node information that builds the mesh. 
+The authors are quick to argue that 30kpbs is not significant enough to slow 
+down the expected high-bandwidth connections that are expected to use it, 
+but streaming video is not limited to high bandwidth connections. 
+Currently, most websites have options of bandwidth between 50kpbs and 
+250kpbs (to satisfy modems up to decent quality broadband connections). 
+This system would be unworkable with video bitrates of 50kpbs (or even 
+100kpbs) because a significant amount of bandwidth relative to the video 
+quality would be required just as overhead.
+
+SplitStream is yet another system, once again more general than BitTorrent, 
+that distributes data from a source to a bunch of clients/peers. 
+SplitStream stripes data into overlapping segments (the overlap is for 
+ECCs).  Multiple distribution trees are created where each client is a leaf 
+in every tree except one in which it is an interior node.  The data that was 
+cut into pieces is then sent along the trees and is received by all clients. 
+In this way, SplitStream tries to achieve equal amounts of upload and 
+download bandwidth between all peers.
+    There are several problem with this approach.  Bandwidth is often 
+non-uniform and slower links can slow down the entire network.  The other 
+problem is the immense amount of resources needed to construct many 
+distribution trees.  In addition, when sending a larger file, the number of 
+trees that are needed goes up.  This seems like a serious flaw, especially 
+in a system with large amounts of churn. 
+

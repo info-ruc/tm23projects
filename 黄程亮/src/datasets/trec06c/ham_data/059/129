@@ -1,0 +1,66 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with ESMTP id UAA19376
+	for <handyboard@media.mit.edu>; Wed, 12 Jan 2000 20:58:04 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id UAA10058; Wed, 12 Jan 2000 20:58:04 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7300
+From: "Scott Harris" <scottrharris@earthlink.net>
+X-Real-Life-Name: Scott Harris
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: SPI Port
+Posted-Date: Thu, 13 Jan 2000 01:57:11 GMT
+Date: Thu, 13 Jan 2000 01:57:11 GMT
+Organization: none
+Message-Id: <Fo943B.7ME@lugnet.com>
+References: <Pine.HPX.4.21.0001120952190.16739-100000@host-06.colby.edu>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+I interfaced my Vector2X to the handyboard without using the SPI port and
+without any machine language.  I set the compass to be in slave mode and used
+three digital outputs on the expansion board to control the RESET, SCLK, and
+SS lines.  I used another two digital inputs to read EOC and SDO.
+
+The driver software is written in IC and is pretty short.  It's just a direct
+implementation of the procedure given in the manual.
+
+I'm thinking about rewriting this in assembly, but there doesn't seem to be
+much point to it.  Most of the time is spent waiting for the compass to
+generate a reading after you request the heading.  Another cool thing is that
+you can just make a loop that constantly reads the compass and spawn this off
+as an IC process.  It'll sit in the background and update a heading variable
+for you.
+
+One caveat about this method is that IC isn't fast enough to catch the least
+significan bit of the compass reading, but I run the compass in the low res
+mode, so I really don't care.
+
+The SPI port does exist on the on the expansion board, mine has an empty spot
+for a connection to a polaroid sonar, I think.
+
+As far as the IR sensors, I'm using the analog readout ones.  They're great.
+I've got five of them on my robot.
+
+Let me know if you want my code for the compass and I'll spruce up the comments
+and send it to you.
+
+-Scott
+
+In lugnet.robotics.handyboard, IRELAND <ctirelan@colby.edu> writes:
+>Hello -
+>I have two sensors that require the SPI port: the Sharp GP2D02 IR sensor,
+>and the Precision Navigation Vector Compass.  I'm hoping that someone can
+>tell me how to use both of these sensors at the same time, on the same
+>port or by using some other pin as a digital output.
+>I'm sure there are ways of doing this, but I have no knowledge of
+>electrical engineering or assembly, so I'm stuck.
+>Another question: is there an SPI port on the Expansion Board, or is this
+>completely taken over by the Expansion Board?
+>
+>Thanks!
+>Chris Ireland
+

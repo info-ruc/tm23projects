@@ -1,0 +1,159 @@
+Received: from luke.srtc.com (luke.srtc.com [208.132.236.3])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id DAA06353
+	for <handyboard@media.mit.edu>; Mon, 23 Nov 1998 03:01:00 -0500 (EST)
+Received: from SRTC (ossifrage [208.132.236.33]) by luke.srtc.com (8.6.12/8.6.9) with ESMTP id CAA01359 for <handyboard@media.mit.edu>; Mon, 23 Nov 1998 02:57:28 -0500
+Received: by SRTC (940816.SGI.8.6.9/SRTC-Client)
+        id DAA10682; Mon, 23 Nov 1998 03:01:59 -0500
+Message-Id: <199811230801.DAA10682@SRTC>
+From: ctaylor@SRTC.COM (Clem Taylor)
+Date: Mon, 23 Nov 1998 03:01:59 -0500
+X-Mailer: Mail User's Shell (7.2.5 10/14/92)
+To: handyboard@media.mit.edu
+Subject: Building an IR/ultrasound co-processor... (LONG)
+
+Hi,
+
+I'm in the process of building a combination IR and ultrasound
+co-processor for my HandyBoard based robot.  It's based on what Chuck
+McManis did for his Cougar bot.  My version will have forward and backward
+looking IR and include the sampling and filtering for two Polaroid 6500
+ranging modules (also forward and backward looking).
+
+I'm in the parts acquisition and planning phase right now and was hoping
+to bounce some of my ideas off the list prior to placing an order with
+DigiKey for the last of the parts.
+
+I'm planning on using the PIC16C77 because it has 2 CCR pins (ranging),
+SPI (communication with HandyBoard) and plenty of IO pins.
+
+Rough layout:
+
+  \ | /
+-   *   -    Each of the lines represents a Sharp IS1U60 and a
+             QEC233QT (\/-) or F5F1QT (|) pair.
+-   *   -
+  / | \      * = ultrasound transducer                       (base is 8x10in)
+
+http://www.eecis.udel.edu/~ctaylor/gort_layout1.gif (a better picture)
+
+Questions:
+   1) DigiKey doesn't sell the TPIC2701, any ideas on a replacement part
+   that DigiKey sells (I need 10 channels total)?
+
+   2) The IS1U60 datasheet has a 47 ohm resistor on the 5V supply and a
+   47uF cap between 5V and ground with a note that this should be as close
+   as possible to the sensor.  I was planning on running ~10in long wires
+   from the PICProto to the IS1U60 and the IR LEDs, is this going to be a
+   problem?  Do I need separate resistor/cap pairs for each sensor/led
+   pair or can I just connect all the 5V and ground lines in parallel?
+
+   3) The PICProto64 sheet shows C3 and C4 as polarized caps, for this I
+   would want to use tantalum caps?
+
+   4) Should the MCLR pullup resistor (R2) be 100 ohms?
+
+   5) Where can I find a cheap (but not to slow) EPROM eraser?  We have a
+   really nice programmer at work, but we don't use EPROMs so we don't
+   have an optical eraser...
+
+In case anyone cares, heres my current part list:
+    PICProto64 $16.95ea (from microEngineering Labs)
+
+    Support parts for PICProto64
+        LM340T-5.0-ND $.70ea
+        5V 1.0AMP regulator (REG1)
+
+        P4841-ND $0.18ea
+        22pF monolithic ceramic cap (C1&C2)
+
+        P2013-ND $.39ea
+        10uF tantalum cap (C3) ??
+
+        P2053-ND $.50ea
+        .1uF tantalum cap (C4) ??
+
+        SE3419-ND $1.20ea (example crystal in PIC databook)
+        Epson CA-301 9.8304M-C 9.8304Mhz crystal (Y1)
+        (* this really should be 9.728Mhz *)
+
+        100H-ND 5/$.27
+        100Ohm 5% carbon film resistor (R2, pullup for MCLK)
+
+        ED3740-ND $1.62ea (will get a bit of use, so I picked a nicer one)
+        40pin DIP solder tail socket from Mill-Max (for PIC)
+
+        (* also needs LED1 and R3, see below *)
+
+        PIC16C77/JW-ND $16.45ea
+        8K x 14 EPROM, 33 IO (8 A/D), 4.0v - 6.0v, max clock 20MHz, 40-CDip
+        (it looks like DigiKey out of stock on this part now :-()
+
+    LEDs
+        HLMP-17{00,19,90}QT-ND $.30ea $2.82/10 (Red, Yellow and Green LEDs)
+        1.8v, 7.5mA, 27mW, 25+- deg beam
+
+        QED233QT-ND $.38ea $3.53/10 (940nm IR LED)
+        1.5V, 100mA, 0.075mW, 18+- deg beam, 940nm
+
+        F5F1QT-ND $.43ea $4.00/10 (940nm IR LED)
+        1.7V,  60mA, 0.28mW, 35+- deg beam (sidelooker)
+
+    LED resistors
+        430H-ND 5/$.27 430ohm resistor (for HLMP-17{00,19,90}QT-ND)
+        (5v-1.8v)/7.5mA ~= 430ohm
+
+        36H-ND 5/$.27 36ohm resistor (for QED233QT-ND)
+        (5v-1.5v)/100mA ~= 36ohm
+
+        47H-ND 5/$.27 47ohm resistor (for F5F1QD-ND and IS1U60)
+        (5v-1.7v)/60mA  ~= 47ohm
+
+    Sharp IS1U60 (from Marshall)
+        $3.18ea
+
+Planned PIC16C77 pinouts: (every pin is used)
+
+SPI interface:
+SS      <-      7       slave select
+SCK     <-      18      serial clock
+SDI     <-      23      serial data in
+SDO     ->      24      serial data out
+
+Polariod ultrasonic ranging modules
+CCP1    <-      17      front ECHO
+CCP2    <-      16      rear  ECHO
+RE0     ->      8       INIT
+RE1     ->      9       BINH
+
+infrared interface
+RA0     <-      2       IR sensor #0 front   0 FL  left side looking
+RA1     <-      3       IR sensor #1 front  45 FLC left
+RA2     <-      4       IR sensor #2 front  90 FC  center
+RA3     <-      5       IR sensor #3 front 135 FRC right
+RA4     <-      6       IR sensor #4 front 180 FR  right side looking
+RB0     <-      33      IR sensor #5 rear  180 RR  right side looking
+RB1     <-      34      IR sensor #6 rear  225 RRC right
+RB2     <-      35      IR sensor #7 rear  270 RC  center
+RB3     <-      36      IR sensor #8 rear  315 RLC left
+RB4     <-      37      IR sensor #9 rear  360 RL  left side looking
+RD0     ->      19      IR LED    #0 front   0 FL  left side looking
+RD1     ->      20      IR LED    #1 front  45 FLC left
+RD2     ->      21      IR LED    #2 front  90 FC  center
+RD3     ->      22      IR LED    #3 front 135 FRC right
+RD4     ->      23      IR LED    #4 front 180 FR  right side looking
+RC6     ->      25      IR LED    #5 rear  180 RR  right side looking
+RC7     ->      26      IR LED    #6 rear  225 RRC right
+RB5     ->      38      IR LED    #7 rear  270 RC  center
+RB6     ->      39      IR LED    #8 rear  315 RLC left
+RB7     ->      40      IR LED    #9 rear  360 RL  left side looking
+
+status
+RE2     ->      10      STATUS0 LED  left bump
+RC0     ->      15      STATUS1 LED  front bump
+RD5     ->      28      STATUS2 LED  right bump
+RD6     ->      29      STATUS3 LED  back bump
+RD7     ->      30      STATUS4 LED  special
+
+              Thanks,
+              Clem
+

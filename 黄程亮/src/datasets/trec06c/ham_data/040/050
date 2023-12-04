@@ -1,0 +1,65 @@
+Received: from Hydro.CAM.ORG (Hydro.CAM.ORG [198.168.100.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id QAA01922
+	for <handyboard@media.mit.edu>; Thu, 25 Mar 1999 16:12:22 -0500 (EST)
+Received: from cam.org (mdavies.HIP.CAM.ORG [199.84.42.249])
+          by Hydro.CAM.ORG (8.8.8/8.8.4) with ESMTP
+	  id QAA01952 for <handyboard@media.mit.edu>; Thu, 25 Mar 1999 16:12:19 -0500 (EST)
+Message-Id: <36FAA65B.35475F02@cam.org>
+Date: Thu, 25 Mar 1999 16:10:51 -0500
+From: Max Davies <mdavies@CAM.ORG>
+X-Mailer: Mozilla 4.5 [en] (Win95; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Re: Help with pointers
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Keith Hearn wrote:
+
+>
+> If you want to point to the low byte of x, you might be able to do
+>   something like this:
+>
+>   int x;
+>   char * p; /*this assumes that a char is one byte*/
+>
+>   p = &x;
+>   p++;
+>
+> Be warned that that is pretty non-portable code. What it actually does
+>   depends on how big int and char are with the specific
+>   compiler/machine combination, and details like byte ordering within
+>   words.
+>
+> The above all applies to "normal" C. I'm not exactl sure how IC would
+>   handle it.
+
+Actually, in 'normal C', to be completely correct you would cast the
+pointer
+conversion to show that you really knew what you were doing, like this:
+
+    p = (char *) &x;
+
+Unfortunately, neither the free ware IC nor IC 3.2 support this.
+
+Here is another way to retrieve the individual bytes of an int:
+
+    lo_byte = x & 0xff;
+    hi_byte = (x >> 4) & 0xff;
+
+Setting the individual bytes is a bit more complicated:
+
+    x = (x & 0xff00) | lo_byte;
+    x = (x & 0x00ff) | (hi_byte << 4);
+
+If you wanted to set both bytes at the same time you could use:
+
+    x = (hi_byte << 4) | lo_byte;
+
+These should work fine in IC and are fairly portable in that changes in
+byte
+ordering don't affect them.  Just keep in mind that in other environments
+an
+int is often 4 bytes long rather than just 2.
+

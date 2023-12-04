@@ -1,0 +1,117 @@
+Received: from smtp2.andrew.cmu.edu (SMTP2.ANDREW.CMU.EDU [128.2.10.82])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id KAA31533
+	for <handyboard@media.mit.edu>; Fri, 10 Sep 1999 10:18:08 -0400 (EDT)
+Received: from unix12.andrew.cmu.edu (UNIX12.ANDREW.CMU.EDU [128.2.15.16])
+	by smtp2.andrew.cmu.edu (8.9.3/8.9.3) with SMTP id KAA17952;
+	Fri, 10 Sep 1999 10:18:00 -0400 (EDT)
+Date: Fri, 10 Sep 1999 10:18:00 -0400 (EDT)
+From: Michael N Rosenblatt <mr4@andrew.cmu.edu>
+To: "KwangJu, Lee" <kjlee@scai.snu.ac.kr>
+Cc: Handyboard <handyboard@media.mit.edu>
+Subject: Re: RF Module
+In-Reply-To: <00db01befa8d$255039e0$eb792e93@snu.ac.kr>
+Message-Id: <Pine.SOL.3.96L.990910094338.1684B-100000@unix12.andrew.cmu.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Hi, Sorry I didn't get back to you yesterday.  
+
+It sounds like you need to tune your radio modules.  It could be your
+transmitter, receiver or both.  If you don't have a function generator to
+create an input square wave for testing, you could try to get a timing
+pulse off the Handy Board somewhere.  The servo libs pulse at about 50 Hz
+(I think) which is likely to be too slow for the radio modules.  You
+really need something in the 300 Hz to 1400 Hz range, and close to 50%
+duty cycle.  There is a timing signal to the motor driver chips, but I'm
+not sure what the frequency is. (does anyone have this info?)
+
+The reason why is is difficult to tune the modules off the pulse created
+by the encoder board is that it transmitts in packets (I think it's a 12
+bit word repeated 3 times per packet).  There is lots of time, between
+packets, you really need a constant input signal.  
+
+Once you have an input wave set up, watch the data out of the RE module on
+your scope and tune the cap.  the modules come pretty reliably tuned from
+the factory, so if you have any that that have not been adjusted, you
+should start by using that to first tune one module, and then tune the
+other (if you have a new transmitter, use it to adjust your receiver...)
+
+good luck,
+Michael   
+
+On Thu, 9 Sep 1999, KwangJu, Lee wrote:
+
+> Thanks your advice. 
+> But I have trouble still.
+> 
+> I've confirm the encoder/decoder operation as you said. They works well.
+> But radio modules, don't work.
+> I assemble transmitter and encoder board, and confirm wave signal on the data in pin
+> with my oscilloscope. But I check the data out pin on the receiver board, it just 
+> stay at HIGH - 5V always. I checked the V+ and GND pin, and it reports 5V and 0V, each.
+> How can I repair it? I connect antenna ground pin to the receiver module ground, and 
+> antenna pin to 30cm jumper wire of 28 gauge.
+> 
+> 
+> ----- Original Message ----- 
+> From: Michael N Rosenblatt <mr4@andrew.cmu.edu>
+> To: KwangJu, Lee <kjlee@scai.snu.ac.kr>
+> Cc: Handyboard <handyboard@media.mit.edu>
+> Sent: Thursday, September 09, 1999 1:39 PM
+> Subject: Re: RF Module
+> 
+> 
+> > 
+> > Hi.
+> > 
+> > Have you tried attaching the data out (middle pin on three pin header) 
+> > from the encoder board to the data in (also middle pin on three pin
+> > header) on the decoder with a common ground to each?  This will allow you
+> > to test the encoder/decoder boards without the radio modules.  
+> > 
+> > As for tuning the variable capacitor on the transmitter and receiver
+> > boards, the best way is to set up a 0-5v square wave ~1KHz on a function
+> > generator and plug it into the data in of the transmitter.  Supply power
+> > and ground to each (doesn't have to be common) and watch the data out on
+> > your scope.  Play with the tuning until the wave is noise-free. 
+> > 
+> > Now, backing up, you realize that you can't use the encoder/decoder boards
+> > to replace the wire serial connection to the computer?  If you have a way
+> > of controlling the 4 digital input lines on the encoder board from your
+> > computer, and you read the 4 output lines on the decoder with the HB's
+> > digital ports, you could establish control from your PC (or alternatively,
+> > you could put switches on the encoder board and control it directly,
+> > manually). However, I'm pretty certain that the internal protocall of the
+> > encoder/decoders, and the baud rate would prevent it from working as a
+> > download cable replacement.  Let me know it you find this to be wrong, as
+> > the Ming boards are a great low-cost RF item.  
+> >   
+> > best,
+> > Michael 
+> > 
+> > 
+> > On Thu, 9 Sep 1999, KwangJu, Lee wrote:
+> > 
+> > > I'm trying to attach RF module to my handy board.
+> > > I purchased the modules from MING system, - RE-99, TX-99, 
+> > > RE-01, TX-01. 
+> > > I want to set up communication between Handy board and IBM-PC
+> > > using these modules. So I assembly the modules, but they don't work.
+> > > I test the encoder/decoder board and they operate well.
+> > > But I attach the receiver module, it can't get signal from transmitter module.
+> > > I guess the transmitter board may be works well since I check it with oscilloscope.
+> > > But however I adjust the variable capacitor on the receiver board, the relay 
+> > > on the encoder board doesn't response. The only time the receiver board response
+> > > is when I connect the antenna ground pin to the transmitter's ground. 
+> > > How can I let them work?
+> > > 
+> > > 
+> > 
+> > 
+> > 
+> > 
+> > 
+> 
+
+

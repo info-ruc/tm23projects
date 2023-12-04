@@ -1,0 +1,75 @@
+Received: from postoffice2.mail.cornell.edu (postoffice2.mail.cornell.edu [132.236.56.10])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OFMjh25364
+	for <egs@cs.cornell.edu>; Tue, 24 Sep 2002 11:22:45 -0400 (EDT)
+Received: from sangeeth.cornell.edu (syr-24-58-36-135.twcny.rr.com [24.58.36.135])
+	by postoffice2.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id LAA03684
+	for <egs@cs.cornell.edu>; Tue, 24 Sep 2002 11:22:44 -0400 (EDT)
+Message-Id: <5.1.0.14.2.20020924111837.00b1e308@postoffice2.mail.cornell.edu>
+X-Sender: sc329@postoffice2.mail.cornell.edu (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Tue, 24 Sep 2002 11:22:50 -0400
+To: egs@CS.Cornell.EDU
+From: Sangeeth Chandrakumar <sc329@cornell.edu>
+Subject: 615 PAPER 19
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+Submitted by - Sangeeth Chadrakumar
+
+CEDAR : A Core-Extraction distributed ad-hoc routing algorithm
+
+
+This paper presents a routing algorithm called Core-Extraction Distributed 
+Ad hoc Routing (CEDAR), which supports QoS routing in ad hoc network 
+environments.
+
+The main goal of CEDAR is to provide routes that are highly likely to 
+satisfy the bandwidth requirement. CEDAR establishes a core of the network, 
+then propagates the link state to the nodes of the core. Route is computed 
+on-demand at core nodes using only the local information.
+
+The core is an approximation of a minimum dominating set of the under-lying 
+network i.e., every node is either a core node or has a link
+to a core node.  Periodic updates by each node carrying the number of 
+neighbors and the number of nodes for which it is a core, helps to
+maintain this dominating set.  The efficiency of this method (how close to 
+the minimum dominating set it actually gets) however is not
+evaluated.  The set of core nodes are then expected to maintain virtual 
+links (of length atmost 3) among the neighbors in the core graph.
+Broadcast of rotue requests to the core-neighbors is done by unicasting 
+through the virtual links and caching RTS/CTS information inorder to make 
+broadcast efficient.  However the RTS/CTS is a scheme usually implemented 
+in hardware and to change a hardware implementation is not a very easy task.
+
+To incorporate the BW guarantee into establishing a path between a source 
+(S) and a destination (D), the paper proposes the use of two
+signaling packets, ito and dto. Each constituent node under a core node's 
+charge is responsible for monitoring the link BWs with its neighbors, and 
+periodically reports this information to the core node via either ito 
+(detecting an increase in BW) or dto (detecting a decrease in BW). This 
+information is useful in assisting the core nodes to identify a suitable 
+route that meets the BW requirement of a data transmssion. The ito-queue 
+and dto-queue located in a core node are flushed in a way that ensures that 
+the news of decreasing BW propogates much faster than the news of 
+increasing BWs.
+
+
+Comments:
+
+One of its strengths is the scalability. Localizing the exchange of 
+link-state information within the core node's coverage allows a new node 
+moving in and out of this coverage to freely associate with and dissociate 
+from the core node. Because each core node only possesses the knowledge of 
+its constituents' link-state information, BW is conserved.
+
+The simulations were weak. They postulate that CEDAR can handle tens to 
+hundreds of nodes, but then proceed to evaluate with 6 nodes. Later, they 
+move to some simulation model [30nodes], but not much details are provided 
+on the real model behind the simulation.
+
+The algorithm also assumes bidirectional links.
+
+The algorithms are not power-aware. core nodes' batteries would be quickly 
+depleted. Besides, the core nodes get overburdened with packets, and the 
+QoS would slide down.
+

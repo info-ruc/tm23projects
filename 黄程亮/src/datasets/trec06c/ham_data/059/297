@@ -1,0 +1,50 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.1/+ALEVE) with ESMTP id MAA02864
+	for <handyboard@media.mit.edu>; Fri, 21 Jan 2000 12:20:03 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id MAA08150; Fri, 21 Jan 2000 12:20:03 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7335
+From: "Dennis Clark" <dlc@verinet.com>
+X-Real-Life-Name: Dennis Clark
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: Modifying a servo for use with HB
+Posted-Date: Fri, 21 Jan 2000 17:19:26 GMT
+Date: Fri, 21 Jan 2000 17:19:26 GMT
+Organization: none
+Message-Id: <Fop44E.660@lugnet.com>
+References: <Foo322.CHL@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+In lugnet.robotics.handyboard, Rick Dodd writes:
+>When connecting my servos (now gear head motors) to
+>the HandyBoard - do I need to a) replace the pot with the resistor
+>network or b) remove the electronics all together?  I'm unclear if the
+>PWM routines on the HB (fd, bk, and motor) are the kind of PWM that
+>control a servo or the kind that control a DC motor.  My gut feeling is
+>DC motor because of the other servo routines (servo_on, servo_off,
+>etc.).
+
+  What sources for servo hacking have you read?  Depending on the servo
+(the Futaba S148 is the easiest), there are a few things to do.  Using the
+148 as my example; Clip off the end-stop and pull the bushing from the spline
+gear and remove the pot-fitting-thingee, replace the bushing.  Now send
+a 1500us pulse every 20-30ms to the servo, twiddle the pot until the motor
+stops moving, rebuild the servo.  That's it.  Some servos need other hacks
+to get the continuous rotation, but by-and-large anything you can do that
+just leaves that pot in will work the best for future adjustment and
+maintenance.
+  Make sure you read the PWM section in "Mobile Robots" to get the idea of
+how to get the output-compare timers working for you to drive your servos.
+The hobby servo PWM is fundamentally different in function to DC motor PWM,
+it controls not only speed but direction - although most people just turn
+the motors full forward or full backward, the further, in either direction,
+you go from that center point, the faster the motor turns in that direction.
+
+have fun,
+DLC
+

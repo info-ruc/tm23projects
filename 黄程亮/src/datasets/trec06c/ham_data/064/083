@@ -1,0 +1,70 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id GAA26098
+	for <handyboard@media.mit.edu>; Thu, 23 Mar 2000 06:24:05 -0500 (EST)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id GAA20459; Thu, 23 Mar 2000 06:24:06 -0500 (EST)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7656
+From: "Frankie Lai" <97139371d@polyu.edu.hk>
+X-Real-Life-Name: Frankie Lai
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Re: Handyboard in mix with SSC II Servo Controller
+Posted-Date: Thu, 23 Mar 2000 11:23:04 GMT
+Date: Thu, 23 Mar 2000 11:23:04 GMT
+Organization: none
+Message-Id: <FrvGyG.FJz@lugnet.com>
+References: <Fru5o6.GzF@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Hi,
+
+There are several steps you should follow.
+1..Download the 9600 serial driver form
+http://lcs.www.media.mit.edu/groups/el/projects/handy-
+board/software/serial.html
+remind you that if you use SSC controllers, download the inverted version.
+
+2...Refer to you SSC manual, connect the serial in pin to PA7 of handyboard,
+PA7 is the digital input9 of HB. Then connect the ground pin to the ground of
+HB, if you do not know where it is, refer to the HB manual, there are lots of
+GND pin on HB.
+
+3...After connecting everything, load the driver you downloaded into HB,
+remember to put it in libs directory.
+
+4...A new function will appear, named pa7i9600. Just use this function to sent
+signals to SSC. An example like following:
+
+pa7i9600(255)
+pa7i9600(3)
+pa7i9600(167)
+
+total 3 signals to call a servo move, the first bit is for initialise the SSC,
+the second one is the servo number, and the last on is the position you want
+it to go.
+
+Hopes help!!!!!
+
+Frankie Lai 97139371d@polyu.edu.hk
+
+
+
+
+
+In lugnet.robotics.handyboard, Zheng Xu writes:
+>Hi,
+>
+>We are trying to conntect Handyboard to SSC II Mini Servo Controller so we can
+>control more servo motors. Can anyone tell us how to connect these two pieces
+>and work them together?
+>
+>Also, where is the serial output of the Handyboard, and ground?
+>
+>thanks in advance,
+>
+>Zheng
+

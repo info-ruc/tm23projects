@@ -1,0 +1,65 @@
+Received: from deimos.email.Arizona.EDU (deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h4JKCXoh010225
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 19 May 2003 13:12:33 -0700
+Received: from 666-devel.u.arizona.edu (128.196.98.7) by deimos.email.Arizona.EDU (6.7.016)
+        id 3EC8D3330000FEDA for DMDX@psy1.psych.arizona.edu; Mon, 19 May 2003 13:19:54 -0700
+Message-Id: <5.1.0.14.2.20030519131048.00b13238@psy1.psych.arizona.edu>
+Date: Mon, 19 May 2003 13:19:54 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: problem with time out and delay parameters
+In-Reply-To: <5.1.0.14.2.20030519090737.00ae2f38@cryptic.rch.unimelb.edu
+ .au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 10:35 AM 5/19/2003 +1000, you wrote:
+>Hi there,
+>
+>I have just begun working with DMDX and I am having a problem getting the 
+>following item file to do as I intend.  Below is a stripped down version 
+>of the item file.  My aim is to design a simple reaction time task to use 
+>with children.  There are two pictures used throughout the task.  These 
+>pictures are presented individually for 2 seconds (frame duration) with an 
+>interval of 3 seconds (delay) between the presentation  of the 
+>pictures.  Children are instructed to respond when they are presented with 
+>a picture on the screen but not respond to another picture.
+>
+>I want the children to be able to respond for that whole 5 seconds 
+>(time-out). That is:
+>frame duration 2 seconds + delay 3 seconds = 5 seconds.
+
+   You'll have to nominate some fraction of that time that the children 
+can't react in, DMDX needs time to prepare items.  Depending on the speed 
+of your machine it might be a little as 50 ms but most machines take longer 
+to read bitmaps -- examining preparation times as per the notes will tell 
+you what your machine is capable of.  You'll want to set the D parameter to 
+that value and subtract it from your timeout.  You'll also want to make the 
+display last for the desired duration so items with reactions to them 
+aren't shorter as per usual DMDX tactics to get fixed trial 
+lengths.  Probable solution assuming 500 ms ISI is along the lines of:
+
+<ep> d30 <fd 120>  <cr>  <t 4500> <nfb> <id mouse> <mr +button 1> <vm 
+640,480,480,16,0> <!safemode 1> <azk> <id keyboard> <eop>
+
+0 <line 2> "Trial", "Press the continue key when ready";
+^401 *g"Red.jpg"/%149/;
++402 *g"spot.jpg"/%149/;
+^403 *g"Red.jpg"/%149/;
++404 *g"spot.jpg"/%149/;
+
+0 "done";
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   There is an easy answer to your problem that is neat,
+plausible, and wrong.
+
+
+

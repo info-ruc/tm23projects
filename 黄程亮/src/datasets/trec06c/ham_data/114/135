@@ -1,0 +1,354 @@
+Received: from fed1rmmtao02.cox.net (fed1rmmtao02.cox.net [68.230.241.37])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k1E6Sag1017377
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 13 Feb 2006 23:28:37 -0700
+Received: from Sharon ([68.231.168.129]) by fed1rmmtao02.cox.net
+          (InterMail vM.6.01.05.02 201-2131-123-102-20050715) with SMTP
+          id <20060214062606.XGFB17006.fed1rmmtao02.cox.net@Sharon>
+          for <DMDX@psy1.psych.arizona.edu>;
+          Tue, 14 Feb 2006 01:26:06 -0500
+Message-ID: <012f01c6312f$df66d480$0401a8c0@Sharon>
+From: "Shiaohui Chan" <shiaohui@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] fMRI timing revisit & some other timing questions
+Date: Mon, 13 Feb 2006 23:28:30 -0700
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_012C_01C630F5.32DD1BF0"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_012C_01C630F5.32DD1BF0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Jonathan,
+
+
+
+I should have found this problem sooner when asking you about the COT =
+thing last week, but I had to wait till the fMRI machine was available =
+to test this out, thus the whole thing was delayed a bit.  Remember last =
+time I asked you which element in item 101 below would trigger the =
+scanner?
+
+
+
+    100 <Output 254> c;
+    101 <o 255> %1 / <o 254> %1/ "READY" <fd 724>/;
+
+
+
+Turned out that I asked the wrong question!  I tested a few short =
+scripts and realized that the scanner actually starts from item 100, not =
+101.  A script like below can test this:=20
+
+
+
+    +099 * "scanner should start after this";
+
+    +100 * <Output 254> c "scanner should start here";
+
+    +101  *<o 255> "this should appear after scanner starts"/ <o 254>/;
+
+    +1001 *"SENTENCE"/!;
+
+
+
+So, the starting time of the scanner is settled, but then I have two =
+more questions. =20
+
+
+
+
+
+1.=20
+
+I want clockon on item 100, but I also want the item to go as quickly as =
+possible, so I am thinking of putting up the smallest timeout.   I tried =
+both <t 0> and <t 17> (t 17 is about a tick) and there was a 16.57 ms =
+difference between them in the output file.  I am just wondering if <t =
+0> is truly the smallest timeout or it's just the imagination of my =
+computer?
+
+
+
+2.=20
+
+I learned it from the DMDX Timing Notes that "If there is no next frame =
+in an item DMDX simply displays that frame and moves on to the next =
+item, regardless of any frame duration specification".  In my scripts, I =
+didn't put a blank frame at the end of item 100, so there shouldn't be a =
+timing difference due to different frame durations.  (A)-(C) below are =
+extracted from 3 different scripts.  In (A) & (B), the duration of item =
+100 is 812.44 ms (49 ticks), while that in (C) is 795.86ms (48 ticks).  =
+Since I didn't use any delay keyword, is the one-tick difference simply =
+the result of different ISI? =20
+
+
+
+(A)100 <Output 254> c "default";
+
+(B)100 <Output 254> c "fd 120" <fd 120>
+
+(C)100 <Output 254> c "fd1" <fd 1>;
+
+
+
+
+
+Thank you in advance for answering my questions.
+
+
+
+Best,
+
+Shiaohui Chan
+
+
+
+PhD Program
+Department of Linguistics
+University of Arizona
+
+
+
+
+
+
+
+
+
+
+------=_NextPart_000_012C_01C630F5.32DD1BF0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2900.2802" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff><SPAN style=3D"FONT-FAMILY: Arial"><SPAN=20
+style=3D"FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; =
+mso-fareast-font-family: &#26032;&#32048;&#26126;&#39636;; =
+mso-ansi-language: EN-US; mso-fareast-language: ZH-TW; =
+mso-bidi-language: AR-SA"><SPAN=20
+style=3D"FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; =
+mso-fareast-font-family: &#26032;&#32048;&#26126;&#39636;; =
+mso-ansi-language: EN-US; mso-fareast-language: ZH-TW; =
+mso-bidi-language: AR-SA">
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><?xml:namespace prefix =3D o ns =3D=20
+"urn:schemas-microsoft-com:office:office" /><o:p><FONT face=3DArial>Hi=20
+Jonathan,</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>I should have =
+found this=20
+problem sooner when asking you about the COT thing last week, but I had =
+to wait=20
+till the fMRI machine was available to test this out, thus the whole =
+thing was=20
+delayed a bit.&nbsp; Remember last time I asked you which element in =
+item 101=20
+below would trigger the scanner?</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT =
+face=3DArial>&nbsp;&nbsp;&nbsp; 100=20
+&lt;Output 254&gt; c;<BR>&nbsp;&nbsp;&nbsp; 101 &lt;o 255&gt; %1 / &lt;o =
+254&gt;=20
+%1/ "READY" &lt;fd 724&gt;/;</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>Turned out that =
+I asked the=20
+wrong question!&nbsp; I tested a few short scripts and realized that the =
+scanner=20
+actually starts from item 100, not 101.&nbsp; A script like below can =
+test this:=20
+</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT =
+face=3DArial>&nbsp;&nbsp;&nbsp; +099 *=20
+"scanner should start after this";</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT =
+face=3DArial>&nbsp;&nbsp;&nbsp; +100 *=20
+&lt;Output 254&gt; c "scanner should start =
+here";</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT =
+face=3DArial>&nbsp;&nbsp;&nbsp;=20
++101&nbsp; *&lt;o 255&gt; "this should appear after scanner starts"/ =
+&lt;o=20
+254&gt;/;</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT =
+face=3DArial>&nbsp;&nbsp;&nbsp; +1001=20
+*=93SENTENCE=94/!;</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>So, the starting =
+time of the=20
+scanner is settled, but then I have two more questions.&nbsp;=20
+</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>1. =
+</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>I want clockon =
+on item 100,=20
+but I also want the item to go as quickly as possible, so I am thinking =
+of=20
+putting up the smallest timeout.&nbsp;&nbsp; I tried both &lt;t 0&gt; =
+and &lt;t=20
+17&gt; (t 17 is about a tick) and there was a 16.57 ms difference =
+between them=20
+in the output file.&nbsp; I am just wondering if &lt;t 0&gt; is truly =
+the=20
+smallest timeout or it's just the imagination of my=20
+computer?</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>2. =
+</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>I learned it =
+from the DMDX=20
+Timing Notes that "If there is no next frame in an item DMDX simply =
+displays=20
+that frame and moves on to the next item, regardless of any frame =
+duration=20
+specification".&nbsp; In my scripts, I didn't put a blank frame at the =
+end of=20
+item 100, so there shouldn't be a timing difference due to different =
+frame=20
+durations.&nbsp; (A)-(C) below are extracted from 3 different =
+scripts.&nbsp; In=20
+(A) &amp; (B), the duration of item 100 is 812.44 ms (49 ticks), while =
+that in=20
+(C) is 795.86ms (48 ticks).&nbsp; Since I didn't use any delay keyword, =
+is the=20
+one-tick difference simply the result of different ISI?&nbsp;=20
+</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>(A)100 =
+&lt;Output 254&gt; c=20
+"default";</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>(B)100 =
+&lt;Output 254&gt; c=20
+"fd 120" &lt;fd 120&gt;</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>(C)100 =
+&lt;Output 254&gt; c=20
+"fd1" &lt;fd 1&gt;;</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>Thank you in =
+advance for=20
+answering my questions.</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial>Best,</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>Shiaohui=20
+Chan</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT face=3DArial>PhD =
+Program<BR>Department of=20
+Linguistics<BR>University of Arizona</FONT></o:p></SPAN></P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><SPAN=20
+style=3D"mso-font-kerning: 0pt"><o:p><FONT=20
+face=3DArial><BR></FONT></o:p></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-pagination: none; =
+mso-layout-grid-align: none"><FONT=20
+face=3DArial></FONT></SPAN></SPAN></SPAN>&nbsp;</P>
+<P class=3DMsoNormal=20
+style=3D"MARGIN: 0in 0in 0pt; mso-pagination: none; =
+mso-layout-grid-align: none"><SPAN=20
+style=3D"FONT-FAMILY: Arial"><FONT=20
+face=3DArial></FONT></SPAN>&nbsp;</P></BODY></HTML>
+
+------=_NextPart_000_012C_01C630F5.32DD1BF0--
+
+

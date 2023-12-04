@@ -1,0 +1,33 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2E4vKt08471
+	for <egs+summary@cs.cornell.edu>; Mon, 13 Mar 2006 23:57:20 -0500 (EST)
+Received: from localhost (cpe-69-207-49-126.twcny.res.rr.com [69.207.49.126])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2E4vIXY001816
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Mon, 13 Mar 2006 23:57:19 -0500 (EST)
+Date: Mon, 13 Mar 2006 23:57:18 -0500
+From: Niranjan Sivakumar <ns253@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 14
+Message-Id: <20060313235718.41387f9c.ns253@cornell.edu>
+Organization: Cornell Law School
+X-Mailer: Sylpheed version 2.2.2 (GTK+ 2.8.13; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: 7bit
+
+Niranjan Sivakumar
+
+Predicting Internet Network Distance with Coordinates-Based Approaches
+Vivaldi:  A Decentralized Network Coordinate System
+Meridian:  A Lightweight Network Location Service without Virtual Coordinates
+
+Global Network Positioning (GNP) is a system that models the Internet as a geometric space in order to allow distance calculations without actually having to measure RTT between any given nodes.  The core of the system is a small set of landmark nodes that are used by other nodes in the system to approximate their position coordinates in the network space.  
+
+Vivaldi is another geometric modeling of the Internet space, but without the centralized landmark servers that are present in GNP.  Vivaldi models the network as a spring system.  Nodes are “pushed” by other nodes as the network changes and nodes communicate with each other with a goal of eventually stabilizing at coordinates that are closely correlated to real RTT.  Nodes in Vivaldi can perform their initial RTT measurements on any node in the system and do not have to contact anything like a landmark node.  
+
+Meridian does not use a coordinate system for discovering network location, but rather relies on a system of multi-resolution rings.  A few neighbor nodes are put into rings based on their measured distance.  Thus, nodes become experts on their locality and can forward queries to other experts at another, more distant, locality.  The system uses gossiping to contact nodes to measure actual latency and discover nodes.  Periodic gossiping keeps latency information up to date.  
+
+One of the biggest weaknesses that is clearly seen with GNP is the requirement for centralized landmark servers.  These can be a target for attack and detract from other benefits provided by the rest of the decentralized network.  Vivaldi deals with the issue of centralized servers, but as the authors admit, it is not robust in the face of malicious nodes.  It seems that the coordinate scheme could be manipulated by attackers, and particularly by attackers that work together to exploit the system.  Meridian seems to put a higher burden on nodes than the coordinate systems.  While the load is not excessive, it's certainly more complex than some other coordinate systems.  Also, as noted in the paper, coordinate based systems may be more general than Meridian.
+

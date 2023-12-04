@@ -1,0 +1,82 @@
+Received: from cygnus.its.unimelb.EDU.AU (smtp2.unimelb.edu.au [128.250.20.112])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j517gK5L029651
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 1 Jun 2005 00:42:21 -0700
+Received: from CONVERSION-DAEMON.SMTP.UNIMELB.EDU.AU by SMTP.UNIMELB.EDU.AU
+ (PMDF V6.2 #30995) id <01LOYEF4G03KB3NBIX@SMTP.UNIMELB.EDU.AU> for
+ DMDX@psy1.psych.arizona.edu; Wed, 01 Jun 2005 17:42:11 +1000
+Received: from Peterpc.psych.unimelb.edu.au
+ (peterpc.psych.unimelb.edu.au [128.250.173.146])
+ by SMTP.UNIMELB.EDU.AU (PMDF V6.2 #30995)
+ with ESMTP id <01LOYEF4CDNIB3NPPH@SMTP.UNIMELB.EDU.AU> for
+ DMDX@psy1.psych.arizona.edu; Wed, 01 Jun 2005 17:42:11 +1000
+Date: Wed, 01 Jun 2005 17:42:11 +1000
+From: Peter Straffon <p.straffon@psych.unimelb.edu.au>
+Subject: [DMDX] Does this do what I think?
+To: DMDX@psy1.psych.arizona.edu
+Message-id: <6.2.1.2.2.20050601171401.028c8a60@mail.unimelb.edu.au>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi all,
+	I'm not a very regular DMDX user so I'm not sure I have this correct.  I 
+would appreciate it if some kind person more experienced would like to 
+assure me I have it right or tell me I have it wrong.
+
+I am setting up an experiment that has the subject respond to a left or 
+right arrow on a black background.  The subject presses "A" if the arrow 
+points to the left, "K" if the arrow points to the right and does nothing 
+if they see anything else.
+
+The display time is approximately 50ms
+The response is accepted for 500ms
+The inter stimulus interval varies between 750 and 1500 ms
+
+I'm using an 800X600 display, JPG graphics (I know BMP would probably be 
+faster) with about 100ms delay after each item to allow time to load the 
+next image.  I have feedback on but will probably turn it off with a <nfb> 
+in the header for the final version.  TimeDX says I have a 11.773ms refresh 
+interval on the current machine.  The second blank part of each item is to 
+give the correct (and varied) ISI of 75-1500ms.
+
+
+<ep>  <fd 4>  <d 8> <cr> <t 500> <vm 800,600,600,16,0> <azk> <dbc 0> <dwc 
+255255255> <id keyboard> <mpr +k> <mnr +a> <eop>
+
+! tick 11.773ms, fd 4 = 47ms, d 8 = 94ms
+! ISI : 594 + blank, require 750 - 1500ms
+! shortest 594 + 14 tick = 759ms
+! longest 594 + 76 = 1488ms
+
+0 "Press the SPACE when ready";
+0 <%ms 30> "Ready" <c>;
+0 <%ms 150> "3" <c>;
+0 <%ms 150> "2" <c>;
+0 <%ms 150> "1" <c>;
+0 <%ms 30> "Go" <c>;
+
++100 * g"right.jpg"/ <% 76> "" /;
+-101 * g"left.jpg"/ <% 76> "" /;
+^102 * g"square.jpg"/ <% 14> "" /;
+-103 * g"left.jpg"/ <% 44> "" /;
+^104 * g"square.jpg"/ <% 76> "" /;
+-103 * g"right.jpg"/ <% 76> "" /;
+--and on for 50 items--
+
+0 <%ms 500> "Done" <c> l ;
+
+If I have this completely wrong please say, I not sure I have the 'concept' 
+of a DMDX trial right.  As the display time is so short I'm worried a small 
+error could through things off and I'd never know.  After reading the help 
+"Timing notes" and some web pages I'm actually less sure I have it right.
+
+Thanks in advance
+Peter
+
+  Peter Straffon                      	p.straffon@psych.unimelb.edu.au
+  School of Behavioural Science       Phone +61(3) 83447773
+  The University Of Melbourne                 AUSTRALIA.
+
+

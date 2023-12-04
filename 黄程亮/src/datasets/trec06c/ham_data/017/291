@@ -1,0 +1,130 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id IAA31380
+	for <handyboard@media.mit.edu>; Sat, 6 Jun 1998 08:51:24 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id IAA20855;
+	Sat, 6 Jun 1998 08:51:07 -0400 (EDT)
+Message-Id: <199806061251.IAA20855@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: John Wong <u2174730@ee.unsw.edu.au>, crhodes@students.uwf.edu,
+        humbersc@et.byu.edu, handyboard@media.mit.edu
+Subject: DC motors vs. servo motors
+Date: Sat, 06 Jun 1998 08:51:07 -0400
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+The nature of the PWM (pulse width modulation) is entirely different
+for servo's vs. plain DC motors.
+
+For a DC motor, it has a two wire connection.  All drive power is
+supplied over these two wires -- think of a light bulb.  When you turn
+on a DC motor, it just starts spinning round and round.  Most DC
+motors are pretty fast, about 5000 RPM (revolutions per minute).
+
+With the DC motor, pulse width modulation refers to the idea of
+controlling the power level by STROBING THE POWER ON AND OFF.  The key
+concept here is DUTY CYCLE -- the percentage of "on time" versus "off
+time."  If the power is on only 1/2 of the time, the motor runs with
+1/2 the power of its full-on operation.  
+
+If you switch the power on and off fast enough, then it just seems
+like the motor is running weaker -- there's no stuttering.  This is
+what PWM means when referring to DC motors.  The Handy Board's DC
+motor power drive circuits simply switch on and off, and the motor
+runs more slowly because it's only receiving power for 25%, 50%, or
+some other fractional percentage of the time.
+
+A servo motor is an entirely different story.  The servo motor is
+actually an assembly of four things: a normal DC motor, a gear
+reduction unit, a position-sensing device (usually a potentiometer --
+a volume control knob), and a control circuit.  
+
+The function of the servo is to receive a control signal that
+represents a DESIRED OUTPUT POSITION OF THE SERVO SHAFT, and apply
+power to its DC motor until its shaft turns to that position.  It uses
+the position-sensing device to determine the rotational position of
+the shaft, so it knows which way the motor must turn to move the shaft
+to the commanded position.  The shaft typically does NOT rotate freely
+round and round like a DC motor, but rather can only turn 200 degrees
+or so back and forth.
+
+The servo has a 3 wire connection: power, ground, and control.  The
+power source must be constantly applied; the servo has its own drive
+electronics that draw current from the power lead to drive the motor.
+
+The control signal is pulse width modulated (PWM), but here the
+DURATION of the positive-going pulse determines the POSITION of the
+servo shaft.  For instance, a 1.520 millisecond pulse is the center
+position for a Futaba S148 servo.  A longer pulse make the servo turn
+to a clockwise-from-center position, and a shorter pulse make the
+servo turn to a counter-clockwise-from-center position.  
+
+The servo control pulse is repeated every 20 milliseconds.  In
+essence, every 20 milliseconds you are telling the servo "go here."
+
+
+To recap, there are two important differences between the control
+pulse of the servo motor versus the DC motor.  First, on the servo
+motor, duty cycle (on-time vs. off-time) has NO MEANING whatsoever --
+all that matters is the absolute duration of the positive-going pulse,
+which corresponds to a commanded output position of the servo shaft.
+Second, the servo has its own power electronics, so VERY LITTLE POWER
+flows over the control signal.  All power is draw from its power lead,
+which must be simply hooked up to a high-current source of 5 volts.
+
+Contrast this to the DC motor.  On the Handy Board, there are specific
+motor driver circuits for four DC motors.  Remember, a DC motor is
+like a light bulb; it has no electronics of its own and it requires a
+large amount of drive current to be supplied to it.  This is the
+function of the L293D chips on the Handy Board, to act as large
+current switches for operating DC motors.
+
+Plans and software drivers have been given to operate two servo motors
+from the HB.  This is done simply by taking spare digital outputs,
+which are used to generate the precise timing waveform that the servo
+uses as a control input.  Very little current flows over these servo
+control signals, because the servo has its own internal drive
+electronics for running its built-in motors.
+
+
+Typically, the term PWM (pulse-width modulation) refers to power
+control on a DC motor, not the servo control waveform.  I can see why
+it makes sense to call the servo control signal a pulse-width
+modulated signal (since the width of the pulses confers a positional
+meaning!), but it is not the traditional usage of the term.
+
+
+Fred
+
+
+
+In your message you said:
+> For servo, there is a certain threshold duty cycle (say 50%) of the PWM
+> signal, where anything above this threshold will make it to run forward,
+> and less will make it to run backward. So, you still need to apply the PWM
+> even if the servo is not moving.
+> And this is because servo is originally used for moving at certain amount
+> of angle, once it is modified as a driving unit, that angular feedback
+> device within the servo will also be modified. And the detail of how it
+> works has somthing to do with the threshold duty cycle. Please correct me
+> if I am wrong, as I am also thinking about using dc motor or servo.
+> 
+> John
+> 
+> At 06:25 PM 6/5/98 -0500, Chris Rhodes wrote:
+> >That did answer my question.  I am not familiar with servo motors, I
+> >have only used plain DC motors.  I am also familiar with PWM.  I was
+> >just unable to determine if the same PWM signal that drives plain DC
+> >motors could also drive servo motors.  From what I understand a servo
+> >motor and DC motor use PWM to control the speed, and if that is the case
+> >I did not see the difference in using the same PWM signal that drives a
+> >DC motor to also drive a servo motor.  Thank you for all of your help.
+> >If I stated anything incorrectly in this paragraph please correct me.
+> >
+> >Chris
+> >
+> >
+> >
+> 
+> 
+

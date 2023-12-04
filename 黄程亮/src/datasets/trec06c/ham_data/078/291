@@ -1,0 +1,204 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id fALMND728505;
+	Wed, 21 Nov 2001 14:23:13 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id OAA25093;
+	Wed, 21 Nov 2001 14:41:53 -0500 (EST)
+Date: Wed, 21 Nov 2001 14:41:53 -0500 (EST)
+Received: by canaveral.red.cert.org; Wed, 21 Nov 2001 14:32:32 -0500
+Message-Id: <CA-2001-32.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-32 Buffer Overflow in HP-UX Line Printer Daemon
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: a119bd4c66aad9995abeb6c0df319fa0
+Status: RO
+X-Status: $$$$
+X-UID: 0000000029
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-32 Buffer Overflow in HP-UX Line Printer Daemon
+
+   Original release date: November 21, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   HP9000 Servers running the following releases:
+
+     * HP-UX Version 10.01
+     * HP-UX Version 10.10
+     * HP-UX Version 10.20
+     * HP-UX Version 11.00
+     * HP-UX Version 11.11
+
+Overview
+
+   The HP-UX line printer daemon (rlpdaemon) enables various clients
+   to share printers over a network. A remotely exploitable buffer
+   overflow vulnerability exists in the rlpdaemon.
+
+I. Description
+
+   By sending a specially crafted print request to an HP-UX host
+   running the rlpdaemon, a local or remote attacker can trigger the
+   buffer overflow. Intruders may find this vulnerability attractive
+   to exploit because the line printer daemon is enabled by default to
+   provide printing services. Additionally, no previous knowledge of
+   or access to the vulnerable system is required for exploitation.
+
+   Internet Security Systems (ISS) and Hewlett-Packard Company have
+   issued the following announcements, respectively:
+
+    Remote Logic Flaw Vulnerability in HP-UX Line Printer Daemon
+
+    Hewlett-Packard Company Security Bulletin #0176
+
+   This vulnerability has been assigned the identifier CAN-2001-0817
+   by the Common Vulnerabilities and Exposures (CVE) group:
+
+    http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2001-0817
+
+   For the latest and most detailed information about this
+   vulnerability, please see VU#638011.
+
+II. Impact
+
+   An attacker can execute arbitrary code on the target system with
+   the privileges of the line printer daemon, typically superuser.
+
+III. Solution
+
+   Install a patch from HP. More information is available in Appendix
+   A.
+
+Restrict access to the lpd service
+
+   As a general practice, we recommend disabling all services that are
+   not explicitly required. You may wish to disable the line printer
+   daemon until a patch can be applied.  If you cannot disable the
+   service, you can limit your exposure to these vulnerabilities by
+   using a router or firewall to restrict access to port 515/TCP
+   (printer). Note that this does not protect you against attackers
+   from within your network.
+
+Appendix A. - Vendor Information
+
+   This appendix contains information provided by vendors for this
+   advisory. When vendors report new information to the CERT/CC, we
+   update this section and note the changes in our revision
+   history. If a particular vendor is not listed below, we have not
+   received their comments.
+
+Hewlett-Packard Company
+
+   Please see Hewlett-Packard Company Security Bulletin #0176.
+
+Appendix B. - References
+
+    1. http://www.kb.cert.org/vuls/id/638011
+    2. http://xforce.iss.net/alerts/advise102.php
+    3. http://www.kb.cert.org/vuls/id/IAFY-54PKL4
+     _________________________________________________________________
+     _________________________________________________________________
+
+   This vulnerability was discovered and researched by Mark Dowd and
+   Kris Hunt of Internet Security Systems (ISS). The CERT/CC thanks
+   ISS for the information contained in their advisory.
+   _________________________________________________________________
+
+   Author: Ian A. Finlay.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-32.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC personnel answer the hotline 08:00-17:00 EST(GMT-5) /
+   EDT(GMT-4) Monday through Friday; they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by
+   email. Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT publications and other security information are available from
+   our web site:
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of
+   your message:
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+
+   Any material furnished by Carnegie Mellon University and the
+   Software Engineering Institute is furnished on an "as is"
+   basis. Carnegie Mellon University makes no warranties of any kind,
+   either expressed or implied as to any matter including, but not
+   limited to, warranty of fitness for a particular purpose or
+   merchantability, exclusivity or results obtained from use of the
+   material. Carnegie Mellon University does not make any warranty of
+   any kind with respect to freedom from patent, trademark, or
+   copyright infringement.
+   _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+
+November 21, 2001:  initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBO/v/ZaCVPMXQI2HJAQET4gP/e7X3trRSEzNeXBlE8TkMX0phGOCDe2xQ
+ksuW+n6Idr+056a1ZqYbA9q8FG8qIRYCR51Hfl5OsX3NeztdjfMLylW+Xkf5sqn7
+w0zmSzj2zXXEHyKz9Zzbfj544E86L2i+yJVjGrtrKyqYaWvJH5bXLWAzFFm3Qpme
+698IC1jYn/k=
+=k4Qj
+-----END PGP SIGNATURE-----
+

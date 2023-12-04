@@ -1,0 +1,43 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id PAA15174
+	for <handyboard@media.mit.edu>; Mon, 3 Apr 2000 15:07:02 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id PAA27197; Mon, 3 Apr 2000 15:07:02 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7699
+From: "Nicolas Delaporte" <Nico.Delaporte@wanadoo.fr>
+X-Real-Life-Name: Nicolas Delaporte
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: IR decode disabling
+Posted-Date: Mon, 3 Apr 2000 19:06:25 GMT
+Date: Mon, 3 Apr 2000 19:06:25 GMT
+Organization: none
+Message-Id: <FsGFqp.Ktr@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Hi everybody,
+
+  I try to disable the IR decoding, as it is written in lib_hb.c that it take
+11% of CPU time, and that it is default ON. So I add the line at begin of
+main :
+	bit_clear(0x39, 0b00000010);
+to disable it. I noticed no improvement, but when I'm disabling the LCD with
+	bit_clear(0x39, 0b00000001);
+I noticed a gain of 1%, as it is written in lib_hb.c
+So I'm wondering if there is anything else to do to disable IR decode.
+
+  I first think it wasen't by default ON, so I add the line :
+	bit_set(0x39, 0b00000010);
+to check this, but my prog wasen't slowed down.
+
+  I hope that someone can help me disabling IR decode, I really need this 11%,
+or confirm me that it is OFF by default.
+
+  In advance, thank you.
+
+P.S. : please forgive my english, I think you guess it isn't my mother tongue.
+

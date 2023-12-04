@@ -1,0 +1,64 @@
+Received: from smtp04.wxs.nl (smtp04.wxs.nl [195.121.6.59])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id PAA02310
+	for <handyboard@media.mit.edu>; Wed, 7 Apr 1999 15:18:19 -0400 (EDT)
+Received: from wxs.nl ([195.121.30.227]) by smtp04.wxs.nl
+          (Netscape Messaging Server 3.61)  with ESMTP id AAA5825
+          for <handyboard@media.mit.edu>; Wed, 7 Apr 1999 21:17:43 +0200
+Message-Id: <370BAF1D.6A6E4C10@wxs.nl>
+Date: Wed, 07 Apr 1999 21:16:45 +0200
+From: MSMKatz <msmkatz@wxs.nl>
+X-Mailer: Mozilla 4.06 [en] (Win95; I)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: 1. Use of sony-ir functions in program; 2. smooth PWM
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi everybody!
+
+My first question is about using the sony-ir functions in a program:
+After loading sony-ir.icb and executing "sony_init(1)" at the IC prompt,
+I can successfully retrieve signals from my sony remote control via the
+function
+"ir_data(0)", again given at the IC prompt.
+However, if I put these functions in a IC program (see below) and
+execute it in the Handy Board, "ir_data(0)" keeps returning the value
+"0" all the time!
+As a beginning IC programmer, I'm obviously missing something here, but
+what?
+
+void
+run(void)
+{
+  sony_init(1);
+  while(1) {
+     printf("Press START ...\n");
+     start_press();
+     while (1) {
+        printf("IR-code = %d\n", ir_data(0));
+        sleep(1.0);
+        printf("Press STOP...\n");
+        sleep(1.0);
+        if (stop_button()) break;
+      }
+   }
+}
+
+My second question is about using the smooth PWM-routines. I've
+downloaded the 'smooth'  pcode_hb.s19 and lib_hb.c files.
+Lib_hb.c has IC code that I believe has been changed in later versions.
+For example: the version of lib_hb.c I currently use has no IC code for
+_raw_analog, which is implemented in assembly in lib_hb.icb.
+Should I copy the smooth PWM routines into my current lib_hb.c and use
+it together with my lib_hb.icb?
+
+I'd appreciate your help on these issues!
+
+Best regards,
+
+Marc Katz
+(I'm on the mailing list!)
+msmkatz@wxs.nl
+
+
+

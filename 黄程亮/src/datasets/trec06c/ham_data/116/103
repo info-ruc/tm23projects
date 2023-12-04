@@ -1,0 +1,32 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k224Sot20588
+	for <egs+summary@cs.cornell.edu>; Wed, 1 Mar 2006 23:28:51 -0500 (EST)
+Received: from localhost (cpe-69-207-49-126.twcny.res.rr.com [69.207.49.126])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k224SnE4019147
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Wed, 1 Mar 2006 23:28:50 -0500 (EST)
+Date: Wed, 1 Mar 2006 23:28:49 -0500
+From: Niranjan Sivakumar <ns253@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 11
+Message-Id: <20060301232849.1ae186e0.ns253@cornell.edu>
+Organization: Cornell Law School
+X-Mailer: Sylpheed version 2.2.0 (GTK+ 2.8.12; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Niranjan Sivakumar
+
+Serving DNS using a Peer-to-Peer Lookup Service
+The Design and Implementation of a Next Generation Name Service for the Internet
+
+Both of these papers are premised on a number of inadequacies that are present in the current DNS implementation.  Among these are a lack of robustness due to a relatively small number of bottleneck-prone servers having to bear the load for many names, a lack of a coherent security, complexity of configuring name servers, unbalanced loads, and generally poor performance.  DDNS is a proposed system that runs on top of DHash, a variant of Chord.  DDNS uses the same granularity level as DNS, a resource set, as its basic elements.  The record sets consist of a domain name and address.  DDNS relies on public key cryptography to sign and verify record sets.  Record sets are inserted into the system and are keyed based on the SHA1 hash of the domain name and record set query type.  DHash will verify the signature before accepting the record set.  DDNS uses a system of replication of resource sets to ensure some level of fault tolerance and proposes a system of caching popular keys !
+ to limit the amount of lookups that would be required when obtaining a record set.  There is also a proposed proxy server to handle legacy DNS requests to ease transition to the new system.
+
+CoDoNS is much like an evolution of the system proposed in DDNS.  Like DDNS, it is again a name service running on top of a DHT.  In this case, the DHT is Beehive.  CoDoNS contains a "bridge" to the legacy DNS sytem, and is able to pull records from it to ease transitioning to the new system.  CoDoNS relies on Beehive's proactive caching scheme to deal with load balancing, to reduce lookup time, and for dealing with Zipf-style distributions and flash popularity like the Slashdot or Digg effects.  CoDoNS also allows servers to be manually updated with cached addresses that serve their locality in order to avoid local queries being sent out to a random place in the network and incurring unnecessary latency.  CoDoNS relies on the DNSSEC standard for security.  CoDoNS can cache DNSEC certificates to speed up the process of clients verifying them.  Also, in the event that clients do not support DNSSEC, they only need to trust their local CoDoNS server.  
+
+One of the flaws with the DDNS paper seems to be that it seems to only go "half way".  While the paper claims to consider the implementation of DNS on a generic DHT at some level, it is definitely focused on Chord.  However, the authors themselves recognize that Chord is not the ideal underlying system for this application.  However, while they have thought about implementing some changes to the system, such as caching for resilience against failure, they do not carry out this analysis very far.  The paper seems to be somewhere between simply evaluating the suitability of DHash (Chord) for supporting a DNS alternative and proposing a peer-to-peer system that would be suitable for the application in question.  One of the problems with CoDoNS appears to be the reliance on DNSSEC.  It is acknowledged in the paper that this system has not really taken off, and it does not seem to be a trivial issue to get it up and running.  One more issue seems to be that while there are some g!
+ uarantees of load balancing in the system, a balanced load may not always be desirable.  It may be a good idea to have some kind of economic system where entities that rely on the system more will provide more resources into the system.
+

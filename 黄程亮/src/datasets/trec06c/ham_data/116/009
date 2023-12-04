@@ -1,0 +1,65 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1S774t05179
+	for <egs@cs.cornell.edu>; Tue, 28 Feb 2006 02:07:04 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1S774bG029152
+	for <egs@cs.cornell.edu>; Tue, 28 Feb 2006 02:07:05 -0500 (EST)
+Received: from 24.59.114.243
+        by webmail.cornell.edu with HTTP;
+        Tue, 28 Feb 2006 02:07:05 -0500 (EST)
+Message-ID: <8326.24.59.114.243.1141110425.squirrel@webmail.cornell.edu>
+Date: Tue, 28 Feb 2006 02:07:05 -0500 (EST)
+Subject: paper 10
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Both SHARP and PPay utilize similar technologies to establish a
+accountable P2P  resource trading/payment system. In both, layered
+cryptographic signatures are used  to pass tickets/coins around. The
+layered signatures make it possible to trace the  path of any rejected
+claims or other attacks to identify the malicious or faulty  party. Thus,
+even though it is possible for users to try to abuse the system, the 
+non-repudiation of the payment stubs makes the culprits identifiable in
+trivial  time. A problem with this is that there is no guarantee that the
+system cannot be  abused; merely that the culprits can be identified.
+However, what does that really  mean? You can identify a node or user as
+malicious and kick them out, but what is  to prevent them from re-entering
+the network under a different alias? PPay suggests  requiring an up-front
+deposit, which works for micropayments that are not very  valuable
+individually. However, neither paper really investigates the security 
+versus performance trade-off of increased auditing to catch malicious
+nodes  earlier.
+
+Karma differs sharply from both SHARP and PPay, which require super peers
+or  centralized brokers to distribute tickets for certain organizations in
+an  unspecified network overlay. Karma is designed as a layer on top a
+ring-based P2P  network overlay, and instead of just relying on
+accountability based on  cryptographic receipts, also tries deter fraud by
+appointing a BankSet to keep  track of the balance of each node in the
+network. By relying on cryptographic  puzzles to make it impractically
+expensive for a malicious user to try to set their  own place on the ring,
+Karma makes it probabilistically unlikely for attackers to  be able to
+control entire segments of the ring, unless a significant fraction of  the
+network is invaded - in which case the network is doomed no matter what.
+The  paper does not deal with durations of cryptographic certificates to
+refute false  claims, but it should be relatively straightforward to
+extend it to include a  signed timestamp.
+
+Samsara is a P2P data storage network and not a payment mechanism unlike
+the other  papers. When a node stores data on another node, the node
+storing gets a claim that  it can use for the other node to store data. If
+a node has insufficient space to  store data, it can push a claim to
+another node that it has a claim for; however,  the original is still
+responsible for the data.
+Periodically, nodes will check to make sure that the claims are being kept
+- ie.  that the nodes they pushed data on to are still storing the data.
+If a node A finds  out that a node B doesn't have the data anymore, A will
+probabalistically drop the data B is storing on A. The more consecutive
+checks B fails, the more data it loses.
+

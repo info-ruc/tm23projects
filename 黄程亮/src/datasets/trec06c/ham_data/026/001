@@ -1,0 +1,57 @@
+Received: from aubrey.stanford.edu (qmailr@aubrey.Stanford.EDU [36.48.0.102])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id KAA12611
+	for <9fans@cse.psu.edu>; Wed, 4 Nov 1998 10:40:33 -0500 (EST)
+Message-Id: <199811041540.KAA12611@cse.psu.edu>
+Received: (qmail 16926 invoked from network); 4 Nov 1998 23:45:56 -0000
+Received: from localhost.stanford.edu (HELO aubrey.stanford.edu) (jimr@127.0.0.1)
+  by localhost.stanford.edu with SMTP; 4 Nov 1998 23:45:56 -0000
+X-url: http://highwire.stanford.edu/~jimr/
+X-face: "!ZH^<"U,NeU:732A<C4y,*Cf?(iP<kPeb6%sXHk7p\H;56mY2n|J?=#=d0*O=8%G:xc2.f
+ @r{2w5^o|Kn_v*t|P68T[9c-c=k90RX}Jht/v
+Reply-to: Jim.Robinson@Stanford.Edu
+From: "James A. Robinson" <Jim.Robinson@Stanford.Edu>
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] Nameserver Question 
+In-reply-to: Message from Michael Carmody <sanfranmike@worldnet.att.net> 
+   of "04 Nov 1998 01:05:08 GMT."References: <363FA83F.163B189A@worldnet.att.net> 
+ <363FA83F.163B189A@worldnet.att.net> 
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <16917.910223155.1@aubrey.stanford.edu>
+Date: Wed, 04 Nov 1998 15:45:56 -0800
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+> to locate a URL that isn't a file on my local machine  I get the error:
+> cs: can't translate address.
+
+
+Can you run ndb/dnsquery?
+
+	term% ndb/dnsquery
+	> aubrey.stanford.edu
+	aubrey.stanford.edu ip	36.48.0.102
+
+
+Your gateway is set up with the entry for the network:
+	#
+	# Networks
+	#
+	ipnet=myrandomlocalnetname ip=36.48.0.0 ipmask=255.255.0.0
+		ipgw=36.48.0.1
+		fs=myfileservername.domain.org
+		auth=mycpuservername
+
+
+> I have the ip addresses of the nameservers, but not what they are called
+
+You can find out the name by using nslookup from your linux box:
+	#maturin:~
+	; nslookup 171.64.7.55
+	Server:  ns.mediacity.com
+	Address:  205.216.172.10
+	
+	Name:    caribou.Stanford.EDU
+	Address:  171.64.7.55
+

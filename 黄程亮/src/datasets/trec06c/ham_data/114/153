@@ -1,0 +1,95 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1EEuFt20094
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 09:56:15 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1EEuEbF028653
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 09:56:14 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Tue, 14 Feb 2006 09:56:15 -0500 (EST)
+Message-ID: <1682.132.236.227.119.1139928975.squirrel@webmail.cornell.edu>
+Date: Tue, 14 Feb 2006 09:56:15 -0500 (EST)
+Subject: PAPER 6
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+"Beehive..." presents a model driven approach (including a detailed
+implementation) to replication in a structured peer-to-peer network,
+specifically in a DHT.  "Search and Replication..." present analses and
+simulation of several search and replication strategies in unstructured
+peer-to-peer networks.  Both papers seek to minimize the cost of lookup,
+in the case of "Beehive..." to achieve O(1) average lookup performance, in
+the case of "Search and Replication..." to avoid the high cost of flooding
+in unstructured networks.
+
+"Beehive..." introduces a model of replication which can be optimized
+given a tunable average lookup performance parameter.  This model is
+implemented in a three phase protocol which naturally integrates with
+existing prefix matching DHT work (Pastry is used in this case).  The
+model gives the optimal (minimum amount of replication to achieve desired
+performance) "replication level" for each object stored in the system. 
+These levels indicate how replication should take place and correspond to
+the prefix matching in the underlying DHT (so level a level k relication
+object is replicated at nodes with prefixes matching k digits. k=logb(n)
+means the object is only stored at the home node and k=0 means the object
+is stored at all nodes).  The model used by Beehive requires knowledge of
+two parameters regarding the distribution of query popularity (assumed to
+be a Zipf distribution).  These parameters are estimated in the first
+phase "aggregation" where each node aggregates access counts for objects
+it stores and forwards these messages on to appropriately selected
+neighbors in its routing table.  The "analysis phase" follows where each
+node uses popularity estimates and a corresponding estimate for the Zipf
+alpha parameter to calculate the appropriate level of replication for each
+object it stores.  Finally the "replication phase" distributes (or
+removes) objects appropriately so that they have the optimal level of
+replication.  "Beehive..." also presents convicing empirical results
+indicating that significantly better performance than no replication and
+passive replication is achieved and that this performance is achieved in
+as little as two analysis intervals (a tunable parameter set at 480minutes
+to minimize protocol costs).  Additionally the protocol is shown to be
+robust in the face of "flash crowds" (e.g. the slashdot effect),
+stabilizing in another two analysis intervals in the worst case (all
+popularities are reversed).
+
+"Search and Replication..." presenents simulations and analyses of search
+and replication in unstructured networks.  In this setting there is no
+prefix matching or efficient underlying DHT style routing.  Specifically
+the Guntella approach to routing (flooding) and replication (aggressive,
+passive caching) is discussed.  Three replication strategies are examined
+with the constraint that the total number of object instances is fixed at
+n*rho = R. These strategies are uniform replication (each object has R/m
+copies irrespective of popularity), proportional replication (each object
+has R*qi copies, where qi is the proportion of queries to object i) and
+square root replication (where each object has lambda * sqrt(qi) copies). 
+The paper points to another source which shows that square root
+replication minimizes search cost given a random walk lookup strategy
+(which the paper argues has several nice properties to achieve good lookup
+performance and avoids flooding).  The paper goes on to  show (via
+simulation) that using a random walk lookup strategy in an unstructured
+random network and "path-replication" (the passive-caching scheme used in
+Freenet where nodes on the query path replicate the queried object)
+achieves results very similar to square-root replication.  Furthermore,
+the paper argues (via simulation), "owner replication" (the
+passive-caching scheme used in Gnutella) doesn't achieve this distribution
+and incurs nearly three times the lookup cost associated with path
+replication.
+
+Both papers examine replication as a strategy to minimize lookups, not as
+a recovery strategy (although Beehive is likely to replicate all objects
+at some low level, therefore at many nodes).  The aggregate storage cost
+of replication is not the focus of either paper, although both consider
+minimizing it for given lookup performance.  "Beehive..." suggests that
+this aspect of replication cost can be addressed by replicating pointers
+to the content, rather than the content itself, but this doesn't address
+the load incurred by content access (in addition to adding another hop to
+the lookup performance parameter).  Alternativly "Beehive..." suggests
+that the model could be expanded to include an analysis of cost of
+replication or update frequency.  Neither paper includes any such
+analysis.
+

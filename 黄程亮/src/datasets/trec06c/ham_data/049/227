@@ -1,0 +1,98 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id PAA05738
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Aug 1999 15:47:24 -0700
+Received: from cg6.psych.arizona.edu (cg6.psych.arizona.edu [128.196.98.27])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with SMTP id PAA08988
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Aug 1999 15:47:24 -0700
+Message-Id: <3.0.6.32.19990813154733.0096b720@pop.u.arizona.edu>
+Date: Fri, 13 Aug 1999 15:47:33 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: Kenneth Forster <kforster@u.arizona.edu>
+Subject: [DMDX] Re: Timing Accuracy
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+ 	
+	Concerning the Myors (1999) article on timing accuracy with Windows:
+
+1.  Relative accuracy of DOS vs Windows.
+
+	Myors uses a very simple test. He just presses a key and keeps it down.
+This sends a continuous stream of keypresses to the O/S at regular
+(definable) intervals. He then measures the intervals between characters.
+
+	Under these circumstances, there is no polling of the keyboard (unlike the
+situation in an actual experiment), so this method excludes that source of
+variability.   So, the ONLY source of error is when the O/S intervenes for
+some purpose.  With DOS, it never intervenes, so timing is perfect.  But
+with Windows, intervention is quite frequent, since it is a multitasking
+operating system.
+
+	The point is that this test exaggerates the difference between DOS and
+Windows. Under actual experimental conditions, with a subject pressing the
+key in response to a display, the difference may be much less.  Figures for
+DM/DMTG suggest that keyboard errors (using the SHIFT keys) range from 13
+to 23 ms (see DMASTR Release Note 13), and they do not appear to differ
+markedly from those available for DMDX, which range from 40-47ms on an old
+AT Keyboard, 33-40ms on an OmniKey 102, and 33-69ms on a cheap Win95 KB.
+The "Input" section of the DMDX Help file contains an extensive discussion
+of these issues.
+
+2. Inevitability of timing errors in Windows
+
+	Myors says that "it is likely that the problems illustrated here are due
+to the multitasking kernel per se and will be evident [even] in programs
+written specifically for Windows."  This is quite wrong.  Jonathan
+specifically set out to write a program that took the multitasking
+characteristics of Windows into account.  He uses the High Performance
+Timer, which comes on the motherboard of Pentiums, which is a very
+accurate, uninterruptable clock.  If DMDX has been told that the refresh
+cycle on this machine (at this screen resolution, with this monitor, and
+this graphics card) is 13.75 ms (this is what TimeDX does), and it notes
+that 14.3256 ms has elapsed since the last refresh, then it infers that it
+must have missed it, due to the fact that DMDX wasn't running when the
+refresh signal actually occurred.  So it adjusts its count accordingly.
+So, no error here.
+
+	When the time comes for a new frame to be displayed,  DMDX sets a switch
+such that the "flip" to the new page will occur at the time of the next
+retrace.  Therefore, so long as DMDX gets control at any stage during the
+penultimate refresh cycle, there will be no error.  However, an error will
+occur if DMDX is pre-empted by the Windows kernel for more than an entire
+refresh cycle.  This does happen occasionally (depends on the speed of the
+CPU and whether you have any other tasks running on your machine), and when
+it does, an error message is displayed on the .azk output for that item,
+and on the file "diagnostics.txt".  TimeDX also has tests that tell you how
+often this happens.
+
+	As for timing RTs correctly, there are various sources of error.  One is
+the time taken for the microprocessor in the keyboard to poll the keys.
+This varies from one keyboard to the next, and from one brand of keyboard
+to the next.  As noted earlier, Myors' method excludes this error
+altogether.  Another source of error is whether DMDX is running at the
+precise moment when a response button is pressed.  DMDX is set up so that
+it asks the kernel for a "call back" every millisecond.  Most of the time,
+this works, but occasionally, the kernel fails, and you might have two or
+three ms elapsing between call-backs.  In this case, the RT will be
+overestimated by two or three ms. (This does not apply to keyboard responses).
+
+	How often does this happen?  Again, it will vary depending on your CPU and
+the other things that are running.  To enable users to find out how often
+this occurs during their experiment, Jonathan has written two Test Modes
+into DMDX that can be called from the .rtf file.  These indicate on the
+screen how many call-back errors occur, and their duration.  Errors as
+great as three or four ms occur with a very low probability on the test
+beds we have used.
+
+3.  Conclusion
+
+	The timing errors involved in DMDX are nowhere near the magnitude
+suggested by Myors (1999), and users should not be alarmed.  However, we
+urge all users to conduct thorough tests on their own machines using the
+various diagnostic tests that have been provided.
+
+	--Ken Forster
+

@@ -1,0 +1,67 @@
+Received: from breaker.dakotacom.net (breaker.dakotacom.net [66.192.152.146])
+	by psy1.psych.arizona.edu (8.12.9/8.12.4) with ESMTP id h42FLEoh016513
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 2 May 2003 08:21:14 -0700
+Received: from anybodyi.u.arizona.edu (uofa-dsl-118.dakotacom.arizona.edu [150.135.175.118])
+	by breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id h42FU4er019071
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 2 May 2003 08:30:05 -0700 (MST)
+Message-Id: <5.1.0.14.2.20030502082739.00b12930@psy1.psych.arizona.edu>
+Date: Fri, 02 May 2003 08:29:22 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: alternate naming and keypress responses
+In-Reply-To: <3EB21DE4.4000207@student.unsw.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 05:27 PM 5/2/2003 +1000, you wrote:
+>Dear list members,
+>
+>My experiment alternates between two types of items:
+>- simple ones requiring a timed picture naming response
+>- complex ones where the subject gives a series of verbal responses, and 
+>the experimenter must press a key to progress to the next item.
+>
+>This means I need DMDX to respond on the simple trials to the voicekey, 
+>and on the complex trials to the keyboard, but importantly NOT to the 
+>voicekey, as subjects will be talking.
+>I have tried to disengage the voicekey using <UnMapRequest>, but without
+
+   Your approach is correct, however the DigitalVOX sends a positive 
+response, not a request. You need to use <UnMapPositiveResponse> or <umpr>.
+
+>success: it still triggers to verbal responses.
+>
+>Here's my attempt to make it work:
+>
+><azk> <cr> <clfb> <id "keyboard"> <id DigitalVOX> <vm 640,480,16,0>
+>0 "Press spacebar to start";
+>+1 <ms% 800> _____ _____ _____ / <ms% 500> / * <umr> <mpr +Space> <ntl> 
+><ln -2> sentence1, <ln 0> sentence2, <ln 2> sentence3 /!;
+>+2 <ms% 2000> * * * * */ <ms% 500> / * <umr> <mpr +DigitalVox> <fd 254> <t 
+>3000> <bmp> picture1;
+>+3 * <fd 254> <t 3000> <bmp> picture2;
+>0 This is the end ";
+>
+>Thanks for any assistance
+>Rachel
+>
+>====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   Trying to squash a rumor is like trying to un-ring a bell.
+                                                - Shana Alexander
+
+
+

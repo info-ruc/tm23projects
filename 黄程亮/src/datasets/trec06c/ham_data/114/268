@@ -1,0 +1,74 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1H6kPt26567
+	for <egs@unix.cucs>; Fri, 17 Feb 2006 01:46:25 -0500 (EST)
+Received: from mail pickup service by exchfe2.cs.cornell.edu with Microsoft SMTPSVC;
+	 Fri, 17 Feb 2006 01:46:17 -0500
+Received: from mail pickup service by exchfe1.cs.cornell.edu with Microsoft SMTPSVC;
+	 Fri, 17 Feb 2006 00:46:48 -0500
+Received: from EXCHVS2.cs.cornell.edu ([128.84.97.24]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 16 Feb 2006 12:05:48 -0500
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Subject: Paper 7
+Date: Thu, 16 Feb 2006 12:04:37 -0500
+Message-ID: <2AA53C9C489B0049B43E56D28088677B52CFD3@EXCHVS2.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Paper 7
+Thread-Index: AcYzGxGPW5x/n9P+RU+pFwTR8CSa2w==
+From: "Kelvin So" <kelvinso@cs.cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+X-OriginalArrivalTime: 16 Feb 2006 17:05:48.0561 (UTC) FILETIME=[3BB6D810:01C6331B]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1H6kPt26567
+
+	"GeoPeer: A Location-Aware Peer-to-Peer System" presents a system
+which can easily support location-aware services. "Querying Peer-to-Peer
+Networks Using P-Trees" presents an index structure called P-tree, which
+efficiently provides range queries while "Mercury: Supporting Scalable
+Multi-Attribute range Queries" presents a system other than DHT to support
+efficient multi-attribute range queries. 
+	Geopeer is a system which supports location-aware operations. It uses
+Delaunay triangulation as the basic routing structure. The identification of
+nodes is correlated to the node location, so the queries and broadcast can be
+easily implemented as location-aware operation. It also uses a light-weight
+and effective schemes to manage long-range contacts to improve performance by
+keeping low diameter of the network. This system is different than the next
+two papers. This paper focuses on location-aware operations while the other
+two papers focus on range search in peer-to-peer systems.
+	P-tree uses a similar indexing structure as B+-tree in database on
+top of DHT to provide efficient range query. The search keys lay in a
+circular logical space. Also, each P-tree node stores only the left-most
+root-to-leaf path of the B+-tree, and relies on other node to complete the
+rest of the B+-tree. Using search a structure, it provides O(logN) search
+performance. In addition, the range queries can be answer efficiently by
+looking at the smallest value in the range, and then scanning the search key
+in the ring clockwise. Since the structure allows peer insertion, deletion
+and failures, P-tree nodes have to allow local inconsistency. Under local
+inconsistency, it still allows search to proceed correctly with degradation
+in performance. But with the Ping Process and Stabilization Process, it will
+eventually transform the P-tree back into consistency state. However, P-tree
+does not store values which are close together into the same node, and it may
+require one hope to get to other node to retrieve each data in the range
+query.
+	Mercury is a system which supports scalable multi-attribute range
+query. It builds a completely new structure called Mercury which uses many
+similar techniques in DHT. Mercury does not use DHT as underlying structure
+because in DHT the hash of a range is not correlated to the hash of the
+values. Mercury uses a hub, logical ring-based structure, for each attribute
+in a query. Each query will be routed in one of the hub depending on the
+query selectivity on each attribute. Each node is corresponded to a range of
+values in each hub. Since Mercury does not use hash of the key to provide
+load-balancing and usually the search key space is not uniformly distributed,
+it has to uses some other techniques to provide load-balancing. If there is a
+highly uneven node in the network, it will leave the hub and rejoin in highly
+dense range to split the load. To provide performance, it also has long range
+links similar to the one in Symphony with knowledge of node distribution. To
+gather statistic of load distribution, node distribution and query
+selectivity, it uses random sampling of nodes to estimate the distributions.
+This structure is better than P-tree because values which are close together
+will be stored in the same node and the lookup will be more efficient. 
+

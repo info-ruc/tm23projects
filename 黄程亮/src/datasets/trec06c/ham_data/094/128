@@ -1,0 +1,65 @@
+Received: from smtpgate.email.arizona.edu (smeagol.email.Arizona.EDU [128.196.133.141])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id i52HGgIn004911
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 2 Jun 2004 10:16:42 -0700
+Received: from 666-devel.u.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 1385D6629E8
+	for <DMDX@psy1.psych.arizona.edu>; Wed,  2 Jun 2004 10:16:42 -0700 (MST)
+Message-Id: <5.1.0.14.2.20040602100342.00b15080@psy1.psych.arizona.edu>
+Date: Wed, 02 Jun 2004 10:16:40 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Using unique participant input in a DMDX script
+In-Reply-To: <Pine.SOL.4.58.0406021721460.12742@orange.csi.cam.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 05:33 PM 6/2/2004 +0100, you wrote:
+>Dear all
+>
+>I am running a target-rating type task and would like each participant to
+>be able to input a unique target name that will then be used in some but
+>not all items following. E.g., I'd like to have three different types of
+>item, two of which ask about predefined targets, but one of which asks
+>about a participant-entered target:
+>
+>+2027<ms% 3000> <ln -1>"Describes you?"/! * <ms% 2000><ln 1>"critical";
+>+3003<ms% 3000> <ln -1>"Describes mother?"/! * <ms% 2000><ln 1>"angry";
+>+1026<ms% 3000> <ln -1>"Describes [unique name]?"/! * <ms% 2000><ln
+>1>"honest";
+>
+>Is this currently possible, or would I just need to do a find-and-replace
+>on the script myself before starting my participant off?
+
+   My initial guess is no.  You can chain one item file to another for that 
+kind of effect but you'd need macro definitions or something that persisted 
+across item files and DMDX goes to quite some length to remove effects 
+across items.    It's certainly possible that a persistent macros flag 
+could get created, but then you'd have to enter the name and there's no way 
+within DMDX I can think of that would allow gathered data to get displayed 
+later.  If you had a very limited range of unique names and could get the 
+subject to choose amongst them it's eminently possible as you could decide 
+which item file to chain but that's not what you're after.  Best solution 
+is to write a batch file that first runs DMDX with a <ztr> item file (start 
+-wait DMDX.exe -run itemfile.rtf) that lets them type their name in and 
+exits DMDX.  Then with some automated scripting thing search the .zil 
+output for the name and do a search and replace in another item file then 
+run that in DMDX.  No problem if you're a scriptfu kind of guy but 
+otherwise pretty big mojo.
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+In the beginning was the word.
+But by the time the second word was added to it,
+there was trouble.
+For with it came syntax ...
+
+                                                    -  John Simon
+
+
+

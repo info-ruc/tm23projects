@@ -1,0 +1,337 @@
+Received: from [128.105.6.20] (HELO sabe.cs.wisc.edu)
+  by svm.vetmed.wisc.edu (CommuniGate Pro SMTP 4.2.7)
+  with ESMTP-TLS id 1464891 for gel-software@svm.vetmed.wisc.edu; Tue, 25 Jan 2005 17:06:53 -0600
+Received: from [192.168.26.17] ([144.92.136.11])
+	(authenticated bits=0)
+	by sabe.cs.wisc.edu (8.13.1/8.13.1) with ESMTP id j0PN6rlL016413
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO)
+	for <gel-software@svm.vetmed.wisc.edu>; Tue, 25 Jan 2005 17:06:53 -0600
+Message-ID: <41F6D10D.3090309@cs.wisc.edu>
+Date: Tue, 25 Jan 2005 17:06:53 -0600
+From: Aaron Darling <darling@cs.wisc.edu>
+User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: GEL software mailing list <gel-software@svm.vetmed.wisc.edu>
+Subject: Re: Differences in output between old version and new version of
+ Mauve
+References: <list-1464343@svm.vetmed.wisc.edu>
+In-Reply-To: <list-1464343@svm.vetmed.wisc.edu>
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<tt>I think the problem may be an SML file format conflict between the
+old and new versions.&nbsp; The SML files in the new version store inexact
+match information, while the old version stored exact match
+information.&nbsp; In order to test whether this is in fact part of the
+problem, try deleting the files ending with .sml in the
+/home/william/sequences/mauve/ directory before running the old version.<br>
+<br>
+Note that the new Mauve release automatically recognizes old format
+.sml files and updates them automatically.&nbsp; So, the old .sml format
+should never be a problem for the newer Mauve.<br>
+<br>
+-Aaron<br>
+</tt><br>
+<br>
+<br>
+<a class="moz-txt-link-abbreviated" href="mailto:wmccaig@nyc.rr.com">wmccaig@nyc.rr.com</a> wrote:
+<blockquote cite="midlist-1464343@svm.vetmed.wisc.edu" type="cite">
+  <pre wrap="">Aaron,
+
+Thank you for the quick response to my questions, I do appreciate it.  I am, in fact, registered with the mailing list, though I have not received any messages before this one.  I had re-registered this morning, just in case.
+
+Following is the information from the output of Mauve which I mentioned in my earlier message.  This is utilizing the older version of Mauve.  The reason I am confused is because I can run the newer version with no problems, but get this message with the old version. I've had this happen on several machines.  I am uncertain if there is a conflict or not with having both versions installed at the same time.  At any rate, here is the information.  Thank you again for your help.
+
+William
+
+
+Executing: 
+./mauveAligner -o /home/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40 --i
+sland-size=50 --island-output=/home/william/mauve_output/279_B31_JD1_N40/279_B31
+_JD1_N40.islands --backbone-size=50 --max-backbone-gap=50 --backbone-output=/hom
+e/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40.backbone --id-matrix=/hom
+e/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40.id_matrix --output-alignm
+ent=/home/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40.alignment --outpu
+t-guide-tree=/home/william/mauve_output/279_B31_JD1_N40/279_B31_JD1_N40.guide_tr
+ee /home/william/sequences/mauve/279-plasmids-Assembly-9-28-04.fas /home/william
+/sequences/mauve/279-plasmids-Assembly-9-28-04.fas.sml /home/william/sequences/m
+auve/Borrelia_burgdorferi_B31.genome /home/william/sequences/mauve/Borrelia_burg
+dorferi_B31.genome.sml /home/william/sequences/mauve/JD1-Assembly-9-28-04.fas /h
+ome/william/sequences/mauve/JD1-Assembly-9-28-04.fas.sml /home/william/sequences
+/mauve/N40-Assembly-10-3-04.fas /home/william/sequences/mauve/N40-Assembly-10-3-
+04.fas.sml 
+Sequence loaded successfully.
+/home/william/sequences/mauve/279-plasmids-Assembly-9-28-04.fas 523576 base pair
+s.
+Sequence loaded successfully.
+/home/william/sequences/mauve/Borrelia_burgdorferi_B31.genome 1519856 base pairs
+.
+Sequence loaded successfully.
+/home/william/sequences/mauve/JD1-Assembly-9-28-04.fas 1518917 base pairs.
+Sequence loaded successfully.
+/home/william/sequences/mauve/N40-Assembly-10-3-04.fas 1342546 base pairs.
+Using 21-mers for initial seeds
+Creating sorted mer list
+Create time was: 1 seconds.
+Creating sorted mer list
+Create time was: 1 seconds.
+Creating sorted mer list
+Create time was: 1 seconds.
+Creating sorted mer list
+Create time was: 1 seconds.
+0%..99%..Exited with code: 139
+
+
+----- Original Message -----
+From: Aaron Darling <a class="moz-txt-link-rfc2396E" href="mailto:darling@cs.wisc.edu">&lt;darling@cs.wisc.edu&gt;</a>
+Date: Tuesday, January 25, 2005 3:45 pm
+Subject: Re: Differences in output between old version and new version of Mauve
+
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">William,
+
+Thanks for the e-mail.  As you guessed, the difference in the 
+number of 
+Intervals between Mauve versions results from both more sensitive 
+alignment and a file format change.
+The output from the new version of Mauve includes an Interval entry 
+for 
+every unaligned region in addition to intervals for the aligned 
+regions.  This was done to support the sequence similarity display 
+in 
+the latest version.
+
+If your previous alignment had 57 intervals and the new one has 
+359, 287 
+of which are unaligned intervals, it sounds like 15 intervals can 
+be 
+attributed to greater sensitivity in the new aligner version.
+
+Yes, I agree it's wasteful to include entries containing nothing 
+but 
+gaps as part of the unaligned intervals.  A future Mauve release 
+may 
+economize the file format.
+
+As for the exiting with error codes, this message is somewhat 
+misleading.  The actual error code number has no significance.  The 
+relevant error should be displayed in the text of the log window.  
+If 
+you can send me a copy of the error message text I can try to help 
+you 
+track down the problem.
+
+-Aaron
+
+
+William McCaig wrote:
+
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">Hello there,
+
+I'm having a problem with the Mauve alignment program and was 
+      </pre>
+    </blockquote>
+    <pre wrap="">wondering if 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">someone could help me to figure out what exactly is going on.  I 
+      </pre>
+    </blockquote>
+    <pre wrap="">was using an 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">older version of Mauve, 20040708, and recently switched to the 
+      </pre>
+    </blockquote>
+    <pre wrap="">newest one, 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">20041216.
+
+The problem is as follows:
+
+Running both versions with the exact same 4 alignment files, at 
+      </pre>
+    </blockquote>
+    <pre wrap="">the default 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">settings, produces two different sets of results.  In the old 
+      </pre>
+    </blockquote>
+    <pre wrap="">version, for 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">instance, I wind up with an IntervalCount of 57, while with the 
+      </pre>
+    </blockquote>
+    <pre wrap="">newer version 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">it's 359.  I'm not certain if the default settings changed between 
+      </pre>
+    </blockquote>
+    <pre wrap="">the two 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">versions, or if this is a result of the "inexact seeds" resulting 
+      </pre>
+    </blockquote>
+    <pre wrap="">in "more 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">sensitive alignments" that was mentioned in the ChangeLog.  
+
+However, I have also noticed a number of Intervals located near 
+      </pre>
+    </blockquote>
+    <pre wrap="">the end of 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">the .alignment file that appear to contain an entry for only one 
+      </pre>
+    </blockquote>
+    <pre wrap="">of the four 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">sequences.  That is, one sequence has an entry and the other three 
+      </pre>
+    </blockquote>
+    <pre wrap="">are 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">nothing but gaps.  This is in the newer output file generated and 
+      </pre>
+    </blockquote>
+    <pre wrap="">is not 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">located in the old one at all.  Is there some setting I am missing 
+      </pre>
+    </blockquote>
+    <pre wrap="">that 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">changed between Versions that would result in this output.  Doing 
+      </pre>
+    </blockquote>
+    <pre wrap="">a count of 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">the intervals, there are 287 or so of these Interval entries.  
+      </pre>
+    </blockquote>
+    <pre wrap="">Perhaps I'm 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">not understanding the exact format of the MultiFASTA output file, 
+      </pre>
+    </blockquote>
+    <pre wrap="">but it 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">seems kind of pointless to have an entry where the sequences you 
+      </pre>
+    </blockquote>
+    <pre wrap="">are 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">comparing to are all gaps.  
+
+I believe that these entries make no difference when it comes to 
+      </pre>
+    </blockquote>
+    <pre wrap="">using the 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">Java Viewer that is included with Mauve, but I actually need the 
+      </pre>
+    </blockquote>
+    <pre wrap="">.alignment 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">output file.
+
+Also, a number of times I have gotten an exit status with error 
+      </pre>
+    </blockquote>
+    <pre wrap="">code 139.  I'm 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">not certain what that or any of the other codes mean.  I can't 
+      </pre>
+    </blockquote>
+    <pre wrap="">figure out 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">exactly what is going wrong, except it appears to happen on one of 
+      </pre>
+    </blockquote>
+    <pre wrap="">my 
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">machines with one version and not on another.  
+
+Any help at all with this would be greatly appreciated.  
+
+Thank you, in advance,
+
+William
+
+#############################################################
+This message is sent to you because you are subscribed to
+ the mailing list <a class="moz-txt-link-rfc2396E" href="mailto:gel-software@svm.vetmed.wisc.edu">&lt;gel-software@svm.vetmed.wisc.edu&gt;</a>.
+To unsubscribe, E-mail to: <a class="moz-txt-link-rfc2396E" href="mailto:gel-software-off@svm.vetmed.wisc.edu">&lt;gel-software-off@svm.vetmed.wisc.edu&gt;</a>
+To switch to the DIGEST mode, E-mail to &lt;gel-software-
+      </pre>
+    </blockquote>
+    <pre wrap=""><a class="moz-txt-link-abbreviated" href="mailto:digest@svm.vetmed.wisc.edu">digest@svm.vetmed.wisc.edu</a>&gt;&gt;To switch to the INDEX mode, E-mail to 
+<a class="moz-txt-link-rfc2396E" href="mailto:gel-software-index@svm.vetmed.wisc.edu">&lt;gel-software-index@svm.vetmed.wisc.edu&gt;</a>
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">Send administrative queries to  &lt;gel-software-
+      </pre>
+    </blockquote>
+    <pre wrap=""><a class="moz-txt-link-abbreviated" href="mailto:request@svm.vetmed.wisc.edu">request@svm.vetmed.wisc.edu</a>&gt;&gt;
+    </pre>
+    <blockquote type="cite">
+      <pre wrap=""> 
+
+      </pre>
+    </blockquote>
+    <pre wrap="">#############################################################
+This message is sent to you because you are subscribed to
+ the mailing list <a class="moz-txt-link-rfc2396E" href="mailto:gel-software@svm.vetmed.wisc.edu">&lt;gel-software@svm.vetmed.wisc.edu&gt;</a>.
+To unsubscribe, E-mail to: <a class="moz-txt-link-rfc2396E" href="mailto:gel-software-off@svm.vetmed.wisc.edu">&lt;gel-software-off@svm.vetmed.wisc.edu&gt;</a>
+To switch to the DIGEST mode, E-mail to &lt;gel-software-
+<a class="moz-txt-link-abbreviated" href="mailto:digest@svm.vetmed.wisc.edu">digest@svm.vetmed.wisc.edu</a>&gt;To switch to the INDEX mode, E-mail to 
+<a class="moz-txt-link-rfc2396E" href="mailto:gel-software-index@svm.vetmed.wisc.edu">&lt;gel-software-index@svm.vetmed.wisc.edu&gt;</a>
+Send administrative queries to  &lt;gel-software-
+<a class="moz-txt-link-abbreviated" href="mailto:request@svm.vetmed.wisc.edu">request@svm.vetmed.wisc.edu</a>&gt;
+
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->
+
+#############################################################
+This message is sent to you because you are subscribed to
+  the mailing list <a class="moz-txt-link-rfc2396E" href="mailto:gel-software@svm.vetmed.wisc.edu">&lt;gel-software@svm.vetmed.wisc.edu&gt;</a>.
+To unsubscribe, E-mail to: <a class="moz-txt-link-rfc2396E" href="mailto:gel-software-off@svm.vetmed.wisc.edu">&lt;gel-software-off@svm.vetmed.wisc.edu&gt;</a>
+To switch to the DIGEST mode, E-mail to <a class="moz-txt-link-rfc2396E" href="mailto:gel-software-digest@svm.vetmed.wisc.edu">&lt;gel-software-digest@svm.vetmed.wisc.edu&gt;</a>
+To switch to the INDEX mode, E-mail to <a class="moz-txt-link-rfc2396E" href="mailto:gel-software-index@svm.vetmed.wisc.edu">&lt;gel-software-index@svm.vetmed.wisc.edu&gt;</a>
+Send administrative queries to  <a class="moz-txt-link-rfc2396E" href="mailto:gel-software-request@svm.vetmed.wisc.edu">&lt;gel-software-request@svm.vetmed.wisc.edu&gt;</a>
+
+  </pre>
+</blockquote>
+</body>
+</html>

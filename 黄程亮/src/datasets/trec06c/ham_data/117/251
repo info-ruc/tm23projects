@@ -1,0 +1,437 @@
+Received: from exchfe2.cs.cornell.edu (exchfenlb-2.cs.cornell.edu [128.84.97.34])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2EGxmt04201
+	for <egs@unix.cucs>; Tue, 14 Mar 2006 11:59:48 -0500 (EST)
+Received: from EXCHVS1.cs.cornell.edu ([128.84.97.23]) by exchfe2.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 14 Mar 2006 11:59:48 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C64788.B333F503"
+Subject: PAPER 14
+Date: Tue, 14 Mar 2006 11:59:46 -0500
+Message-ID: <2EE48095D8C21643B0B70EC95F9BFBAF01526B13@EXCHVS1.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: PAPER 14
+Thread-Index: AcZHiLLYKdTkQlgVSDao8wOytkArXg==
+From: "Ian Kash" <kash@cs.cornell.edu>
+To: "Emin Gun Sirer" <egs@cs.cornell.edu>
+X-OriginalArrivalTime: 14 Mar 2006 16:59:48.0046 (UTC) FILETIME=[B3921EE0:01C64788]
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C64788.B333F503
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Still bouncing to egs+summary
+
+=20
+
+Vivaldi is an algorithm to compute location of nodes in a synthetic
+
+coordinate system, with the goal that distances should approximately
+
+reflect RTTs.  In order to do this the algorithm is designed to
+
+minimize the squared error between the predicted RTTs (i.e. the
+
+distances) and the actual RTTs.  The basic intuition of Vivaldi is
+
+that of a system of springs; the algorithm treats errors are creating
+
+spring forces and uses a gradient descent technique to move the system
+
+towards equilibrium.  To fit internet latencies, Vivaldi uses a 2d
+
+Euclidean metric augmented with a height vector.  This captures the
+
+intution that traffic from a node needs some amount of time to get
+
+into the "core" of the network, then it is routed through the core and
+
+finally needs some time to travel out of the core to the destination.
+
+=20
+
+The choice of minimizing squared error is not very well motivated,
+
+other than that they have a nice procedure for doing it.  Nothing
+
+about the internet innately seems to suggest this metric over other
+
+error metrics.  Furthmore, its is not clear that optimizing for any
+
+metric is really the right goal.  The real goal is to help
+
+applications make good decisions; any metric used is valuable only as
+
+a proxy for that.  The same complaint can be made about the height
+
+metric.  In this case there is a plausable story behind why it is a
+
+good metric, but it is far from definitive (especially given the
+
+observation that internet latencies do not satisfy the triangle
+
+inequality).
+
+=20
+
+Meridian takes an approach that is more application driven in spirit.
+
+Rather than attempting to use a synthetic metric to evaluate queries,
+
+Meridian keeps a logarithmic amount of state at each node that allows
+
+it to rapidly pass queries to nodes capable of giving accurate answers
+
+to them.  The basic organization is a set of rings around the node
+
+with exponentially increasing radii (where the radius measures the
+
+maximum RTT allowable in that ring).  By maintaining a logarithmic
+
+number of peers in each ring, nodes know quite a bit about their local
+
+area and progressively less about areas farther away.  However they
+
+know enough that, with high probability, they can still get queries
+
+answered.  To minimize overhead, maintainance of the rings is done
+
+through gossip.  Meridian is not able to entirely free itself of
+
+assumptions about an underlying metric.  To makre provable guarantees,
+
+some sort of low dimensionality assumption is needed.  However,
+
+Meridian is able to make somewhat weaker assumptions by using
+
+non-geometric assumptions (i.e. growth-constrained or doubling metrics).
+
+
+------_=_NextPart_001_01C64788.B333F503
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:st1=3D"urn:schemas-microsoft-com:office:smarttags" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<DEFANGED_META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<DEFANGED_meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"City"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"place"/>
+<!--[if !mso]>
+ <!-- <DEFANGED_STYLE>
+st1\:*{behavior:url(#default#ieooui) }
+ --> </DEFANGED_STYLE>
+<![endif]-->
+ <!-- <DEFANGED_STYLE>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+ --> </DEFANGED_STYLE>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Still bouncing to =
+egs+summary<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Vivaldi is an algorithm to compute location of nodes =
+in a
+synthetic<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>coordinate system, with the goal that distances =
+should
+approximately<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>reflect RTTs.&nbsp; In order to do this the algorithm =
+is designed
+to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>minimize the squared error between the predicted RTTs =
+(i.e.
+the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>distances) and the actual RTTs.&nbsp; The basic =
+intuition of
+Vivaldi is<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>that of a system of springs; the algorithm treats =
+errors are
+creating<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>spring forces and uses a gradient descent technique =
+to move
+the system<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>towards equilibrium.&nbsp; To fit internet latencies, =
+Vivaldi
+uses a 2d<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Euclidean metric augmented with a height =
+vector.&nbsp; This
+captures the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>intution that traffic from a node needs some amount =
+of time
+to get<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>into the &quot;core&quot; of the network, then it is =
+routed
+through the core and<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>finally needs some time to travel out of the core to =
+the
+destination.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>The choice of minimizing squared error is not very =
+well
+motivated,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>other than that they have a nice procedure for doing =
+it.&nbsp;
+Nothing<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>about the internet innately seems to suggest this =
+metric
+over other<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>error metrics.&nbsp; Furthmore, its is not clear that =
+optimizing
+for any<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>metric is really the right goal.&nbsp; The real goal =
+is to help<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>applications make good decisions; any metric used is
+valuable only as<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>a proxy for that.&nbsp; The same complaint can be =
+made about the
+height<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>metric.&nbsp; In this case there is a plausable story =
+behind why
+it is a<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>good metric, but it is far from definitive =
+(especially given
+the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>observation that internet latencies do not satisfy =
+the
+triangle<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>inequality).<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><st1:City w:st=3D"on"><st1:place w:st=3D"on"><font =
+size=3D2
+  face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'>Meridian</span></font></st1:=
+place></st1:City><font
+size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'> takes an
+approach that is more application driven in =
+spirit.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Rather than attempting to use a synthetic metric to =
+evaluate
+queries,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><st1:City w:st=3D"on"><st1:place w:st=3D"on"><font =
+size=3D2
+  face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'>Meridian</span></font></st1:=
+place></st1:City><font
+size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'> keeps a
+logarithmic amount of state at each node that =
+allows<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>it to rapidly pass queries to nodes capable of giving
+accurate answers<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>to them.&nbsp; The basic organization is a set of =
+rings around
+the node<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>with exponentially increasing radii (where the radius
+measures the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>maximum RTT allowable in that ring).&nbsp; By =
+maintaining a
+logarithmic<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>number of peers in each ring, nodes know quite a bit =
+about
+their local<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>area and progressively less about areas farther =
+away.&nbsp;
+However they<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>know enough that, with high probability, they can =
+still get
+queries<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>answered.&nbsp; To minimize overhead, maintainance of =
+the rings
+is done<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>through gossip.&nbsp; <st1:City =
+w:st=3D"on"><st1:place w:st=3D"on">Meridian</st1:place></st1:City>
+is not able to entirely free itself of<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>assumptions about an underlying metric.&nbsp; To =
+makre provable
+guarantees,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>some sort of low dimensionality assumption is =
+needed.&nbsp;
+However,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><st1:City w:st=3D"on"><st1:place w:st=3D"on"><font =
+size=3D2
+  face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'>Meridian</span></font></st1:=
+place></st1:City><font
+size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'> is able to
+make somewhat weaker assumptions by using<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>non-geometric assumptions (i.e. growth-constrained or
+doubling metrics).<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C64788.B333F503--
+

@@ -1,0 +1,89 @@
+Received: from sunspot.ssl.berkeley.edu (sunspot.ssl.berkeley.edu [128.32.147.25])
+	by apollo.ssl.berkeley.edu (8.11.6+Sun/8.9.3) with ESMTP id h2IJ69U13659
+	for <hhudson@apollo.ssl.berkeley.edu>; Tue, 18 Mar 2003 11:06:09 -0800 (PST)
+Received: from stars.gsfc.nasa.gov (stars.gsfc.nasa.gov [128.183.172.28])
+	by sunspot.ssl.berkeley.edu (8.12.8/8.12.8) with SMTP id h2IJ68dB025204
+	for <hhudson@ssl.berkeley.edu>; Tue, 18 Mar 2003 11:06:09 -0800 (PST)
+Received: from TRANTOR ([128.183.175.17]) by stars.gsfc.nasa.gov with SMTP
+          for hhudson@ssl.berkeley.edu; Tue, 18 Mar 2003 14:06:08 -0500
+Message-ID: <003a01c2ed81$6f3036b0$11afb780@code680.gsfc.nasa.gov>
+From: "Richard Schwartz" <richard@stars.gsfc.nasa.gov>
+To: "Hugh Hudson" <hhudson@ssl.berkeley.edu>
+References: <200303181727.h2IHRFw00266@delsol.ssl.berkeley.edu>
+Subject: Re: individual detectors
+Date: Tue, 18 Mar 2003 14:06:08 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1106
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+Content-Length: 1724
+Status: R
+
+Hugh
+
+It's easy to get the average livetime weighted grid transmission.  First get
+the roll period from an observing summary object:
+
+IDL> temp=obs->getdata(class='hsi_qlook_roll_period')
+IDL> roll=avg(temp.roll_period)
+IDL> print,roll
+4.08838
+Next, set the time_range in an imaging object to some integral number of
+roll periods for the appropriate obs_time_interval:
+IDL> im->set,time_range=[0,roll*10]
+Extract the calib_eventlist and compute:
+IDL> c=im->getdata(class='hsi_calib_eventlist')
+HSI_RD_RASPMT: 56 packets of PMTRAS data were found.
+PMTRAS_ANALYSIS: Blip intensity cutoff set to 94
+PMTRAS_ANALYSIS: Compensating for P-angle = -12.083 degrees
+PMTRAS_ANALYSIS: 1667 points. Period= 4.088239 s 6 stars MAXrmsscatter=
+0.032 degrees.
+IDL>
+IDL> for i=0,8 do print,avg( (*c[i]).gridtran)
+0.174087
+0.177655
+0.122889
+0.187994
+0.165717
+0.201592
+0.223310
+0.217403
+0.218618
+IDL> for i=0,8 do print,avg( (*c[i]).gridtran *(*c[i]).livetime)
+0.170131
+0.172686
+0.119922
+0.183611
+0.161839
+0.196923
+0.218630
+0.212284
+0.213727
+
+So you see there is a good explanatio for the smaller amplitude of 3.  This
+is the first Van Beek grid and fov is a problem for finer grids of this
+design.
+
+Richard
+----- Original Message -----
+From: "Hugh Hudson" <hhudson@ssl.berkeley.edu>
+To: <richard@stars.gsfc.nasa.gov>
+Cc: <Brian.R.Dennis@nasa.gov>; <hhudson@delsol.ssl.berkeley.edu>
+Sent: Tuesday, March 18, 2003 12:27 PM
+Subject: Re: individual detectors
+
+
+> Hmmm, you're right about the slow modulation, I was not thinking about
+> that. We seem not to be limited very strongly by photon count in A0
+> (surprise, surprise) so maybe the best bet is to stick with whichever
+> of G6, G8, or G9 have small slow modulation.
+>
+> More anon
+>
+> Hugh
+
+

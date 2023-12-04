@@ -1,0 +1,92 @@
+Received: from anton.cs.utexas.edu (sharif@anton.cs.utexas.edu [128.83.144.43])
+	by nobodaddy.cs.utexas.edu (8.13.5/8.13.5) with ESMTP id k1O7sgAI026591
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 24 Feb 2006 01:54:42 -0600 (CST)
+Received: (from sharif@localhost)
+	by anton.cs.utexas.edu (8.13.5/8.13.5/Submit) id k1O7sgLX015707;
+	Fri, 24 Feb 2006 01:54:42 -0600
+Date: Fri, 24 Feb 2006 01:54:42 -0600 (CST)
+From: Sadia Sharif <sharif@cs.utexas.edu>
+To: Jeff Diamond <jdiamond@cs.utexas.edu>
+cc: cs395t-mark@cs.utexas.edu
+Subject: Re: TCC brings up a very interesting point...
+In-Reply-To: <43FE55C0.70709@cs.utexas.edu>
+Message-ID: <Pine.LNX.4.63.0602240147540.14281@anton.cs.utexas.edu>
+References: <43FE55C0.70709@cs.utexas.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+
+I agree with you. But maybe it is a question of finding the right set of 
+abstractions?
+Today the debate is about the difficutly of writing parallel programs. A 
+few decades ago
+writing sequential programs was also the domain of the expert few.
+
+Quoting from BEFORE MEMORY WAS VIRTUAL by Peter J. Denning:
+"If you write a matrix multiply algorithm straight from the definition in 
+the
+textbook, you will create a program with three nested loops covering six 
+lines of text.
+This program becomes much more complicated if you cannot fit the three 
+matrices in
+main memory at the same time: you have to decide which rows or columns of 
+which
+matrices you can accommodate in the space available, create a strategy for 
+moving them
+into main memory, and implement that strategy by inserting additional 
+statements into
+the program. You will come to several conclusions from the exercise: (1) 
+devising an
+overlay strategy is time consuming, in this example more than programming 
+the guts of
+the algorithm, (2) the overlay strategy depends on the amount of memory 
+you assume is
+available, and (3) the size of the program increases by a factor of two or 
+three."
+
+Anybody could have written the code for matrix multiplication. But 
+juggling the overlay structure
+to find one that is as compact as possible while still being valid and 
+reasonably efficient is a black art
+requiring considerable trial and 
+error.(http://www.iecc.com/linker/linker08.html)
+
+Virtual memory is a powerful abstraction because it simplifies the 
+programmers job.
+For efficiency he may still need to take into account the size of the 
+cache.
+However this is an optimization, not a necessity.
+
+According to Denning:
+"... the driving force behind virtual memory has always been simplifying 
+programs (and
+programming) by insulating algorithms from the parameters of the memory 
+configuration
+and by allowing separately constructed objects to be shared, reused, and 
+protected."
+
+The billion transistor machines of tomorrow should provide better 
+performance for the code
+written by the average programmer without requiring him to provide the 
+equivalent of memory overlays.
+
+
+On Thu, 23 Feb 2006, Jeff Diamond wrote:
+
+> When it comes to high performance, parallel code, maybe we *shouldn't* want 
+> non-expert programmers to be able to write it.  If we make it seem simple 
+> when it's really not, then everyone will try to write parallel programs. 
+> Currently, if someone writes a poorly optimized program, my OS will multitask 
+> it amoung the rest of my computer and only that program will run slowly.  But 
+> if I launch even a tiny app (say a clock) that a naive programmer wrote with 
+> TCC, now my entire computer can be brought down by cache overflow.   (You 
+> definitely don't want a heart monitor implemented in TCC.)
+>
+> Seems like this is moving in the wrong direction along so many axis...
+> I think an important rule of abstraction is "don't hide something that 
+> matters".
+>
+>
+>
+>
+

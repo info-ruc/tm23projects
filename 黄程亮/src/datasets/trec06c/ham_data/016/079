@@ -1,0 +1,107 @@
+Received: from smtp4.nwnexus.com (smtp4.nwnexus.com [206.63.63.52])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA23273
+	for <handyboard@media.mit.edu>; Mon, 4 May 1998 15:28:35 -0400 (EDT)
+Received: from e847548 (blv-lx200-ip39.nwnexus.net [206.63.43.239])
+	by smtp4.nwnexus.com (8.8.8/8.8.8) with SMTP id MAA07808;
+	Mon, 4 May 1998 12:28:33 -0700 (PDT)
+Message-Id: <199805041928.MAA07808@smtp4.nwnexus.com>
+From: "Mike Davis" <ipscone@halcyon.com>
+To: cmcmanis@freegate.com
+Date: Mon, 4 May 1998 12:26:07 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Subject: Re: LCD Addressing - & - Expanded Mode
+Cc: handyboard@media.mit.edu
+Priority: normal
+In-Reply-To: <354E0E84.2B4F64A4@freegate.com>
+
+Wierd:
+
+Anyway I have some kind of problem with the handyboard.  All steps up 
+to the testing of the LCD went fine.
+
+When I plugged in the LCD and turned it on, it lights up (one line) 
+bright not dim.  I tried to download the pcode_hb.s19 with config set 
+to 0C.  It appeared to download but:
+
+I did not get any sound AND the LCD does not change AND I get an 
+error stating, "Invalid CONFIG reg (0xFF) try again".  If I read this 
+error correctly, it is suggesting that the configuration reg could 
+not be changed.
+
+I have checked the orientation and soldering of each chip and the 
+LCD connector.  All is fine.  I have also written a small ASSM test 
+program and verified that it downloads and executes. 
+
+I am using an equivelant LCD (DCM16249) listed on handyboard web.
+I am using a 68HC811E2 but this should not be a problem since the 
+EEPROM is disabled.
+
+Any clues as to what the problem might be?
+
+Chuck,
+
+You said you sent out some driver code (LCD I assume).  Is is an 
+assem driver?  Where is it?
+
+> Date:          Mon, 04 May 1998 11:52:52 -0700
+> From:          Chuck McManis <cmcmanis@freegate.com>
+> Reply-to:      cmcmanis@freegate.com
+> Organization:  FreeGate Corporation
+> To:            Mike Davis <ipscone@halcyon.com>
+> Cc:            handyboard@media.mit.edu
+> Subject:       Re: LCD Addressing - & - Expanded Mode
+
+> >From the driver code I recently sent out:
+>  * LCD Connections on the Handyboard
+>  *	PORTB bit 0 - R/W
+>  *	PORTB bit 1 - RS (Register Select, 0 = instruction)
+>  *	PORTC 8 bits of Data
+>  *	PORTA bit 4 - E clock
+> 
+> Mike Davis wrote:
+> > Does this mean that the LCD is NOT memory mapped?
+> 
+> That is correct, the LCD is NOT memory mapped, it is connected
+> directly to the pins on the 68HC11 that become ports A, B, and C
+> in "single chip" mode.
+> 
+> > Do I first have to write to Port B then write to Port A, to clock 
+> > it.
+> 
+> That is correct.
+> Something like:
+> 	Write B
+> 	Write C (this is your data)
+> 	Write the clock high
+> 	NOP
+> 	Write the clock low
+> (The NOP is to insure the timing requirements of the LCD are met,
+> you can leave it out but it can screw up when the LCD is cold)
+> 
+> > This must mean that I have to go into and out of expanded mode to 
+> > use both the LCD and the SRAM?  That's kinda wierd.
+> 
+> Not exactly, it means the SRAM is unavailable to you when you are
+> in single chip mode, however there is at least 256 bytes of RAM
+> addressed at address 0 that is available (its inside the
+> processor). It's not "kinda" weird, it is very, very weird. 
+>  
+> > Anything else you can point me to as far as addressing the LCD and
+> > accessing SRAM via assembly code?
+> 
+> Other than the source I sent out? Not really. Note that you can't
+> address SRAM easily in single chip mode. I suspect it is possible
+> but it is much easier to copy stuff from SRAM into the first 256
+> bytes before you switch into single chip mode.
+> 
+> --Chuck
+> 
+--
+-----------------------------------------------------------------
+ipscone@halcyon.com                                 Shoot-To-Win!
+
+Protect the 2nd Amendment!               Your rights may be next!
+-----------------------------------------------------------------
+

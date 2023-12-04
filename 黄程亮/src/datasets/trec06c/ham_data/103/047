@@ -1,0 +1,94 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j5CMm9ZH002734
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Sun, 12 Jun 2005 17:48:09 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id j5CMm98g002733
+	for reliable_computing-outgoing; Sun, 12 Jun 2005 17:48:09 -0500 (CDT)
+Received: from its-exsmtp1.marqnet.mu.edu (email.marquette.edu [134.48.20.169])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j5CMm1qo002729
+	for <reliable_computing@interval.louisiana.edu>; Sun, 12 Jun 2005 17:48:06 -0500 (CDT)
+Received: from its-exfe2.marqnet.mu.edu ([134.48.20.167]) by its-exsmtp1.marqnet.mu.edu with Microsoft SMTPSVC(6.0.3790.211);
+	 Sun, 12 Jun 2005 17:47:49 -0500
+Received: from [192.168.1.100] ([134.48.233.102] RDNS failed) by its-exfe2.marqnet.mu.edu with Microsoft SMTPSVC(6.0.3790.211);
+	 Sun, 12 Jun 2005 17:47:49 -0500
+User-Agent: Microsoft-Entourage/10.1.4.030702.0
+Date: Sun, 12 Jun 2005 17:47:50 -0500
+Subject: Re: Arctan2
+From: George Corliss <George.Corliss@marquette.edu>
+To: Alan Eliasen <eliasen@mindspring.com>,
+        <reliable_computing@interval.louisiana.edu>
+CC: George Corliss <George.Corliss@marquette.edu>
+Message-ID: <BED225C6.18BA4%George.Corliss@Marquette.edu>
+In-Reply-To: <42ACA966.3040902@mindspring.com>
+Mime-version: 1.0
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+X-OriginalArrivalTime: 12 Jun 2005 22:47:49.0444 (UTC) FILETIME=[C2415840:01C56FA0]
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+Alan,
+
+I'm guessing your description might nor be exactly what you meant.  For
+example, Fortran defines ATAN2(Y,X) as the principle argument of the complex
+number X + iY, expressed in radians in the range -pi < ATAN2(Y,X) <= pi.
+The values of X and Y must not both be zero [Metcalf & Reid, 1990, p. 160].
+
+[Does anyone know why (Y, X), not (X, Y)?]
+
+The problem is exemplified by
+   arctan( [-0.1, 0.1], [-1.1, -0.9] )?
+
+[-pi, pi], according to the set definition
+   { arctan(y,x) | x in X, y in Y }.
+
+
+More problematic is arctan( [-0.1, 0.1], [-0.1, 0.1] ).  Your alternatives
+are probably
+   1. NaN, or exception in some sense
+   2. [-pi, pi], in the sense of csets (containment sets)
+
+John Pryce or Bill Walster might wish to chime in, but the idea as I
+understand it, is that you should consider the set of limit points as x--> 0
+and y --> 0.
+
+Depending on their interpretations, arctan( [0, 0], [0,0] ) or
+arctan( 0, 0 ) may be different.
+
+If you are doing a greenfields implementation of interval arithmetic, I
+encourage you to give serious consideration to their cset concept.
+Advantages include: Exception-free execution, more consistent
+interpretations of problematic cases, possible compiler optimizations.
+Disadvantages include: Results in some cases surprise you, automatic
+verification of continuity requires special handling.
+
+Dr. George F. Corliss
+Electrical and Computer Engineering
+Marquette University
+PO Box 1881 
+1515 W. Wisconsin Ave.
+Milwaukee WI 53201-1881 USA
+414-288-6599; Fax: 288-5579; Dept. 288-6280
+Office: Haggerty Engineering 296
+George.Corliss@Marquette.edu
+
+
+
+
+>  I'm implementing interval arithmetic in my programming language "Frink":
+> 
+>  http://futureboy.us/frinkdocs/
+> 
+>  and I'm attempting to implement the two-argument version of
+> arctan[x,y], but I'm encountering a few difficulties in dealing with
+> discontinuities and would like some suggestions.
+> 
+>  If we define arctan[x,y] to return arctan[x/y], but corrected for
+> quadrant, we get a discontinuity when going from quadrant III to
+> quadrant IV where the value jumps from -pi to +pi along the line at x=0
+> where y goes from 0 to -infinity.
+> 
+>  Does anyone have an elegant method or redefinition to overcome this
+> discontinuity?
+
+

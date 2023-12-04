@@ -1,0 +1,24 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.25) with ESMTP id k3BF7b225841
+	for <egs+summary@cs.cornell.edu>; Tue, 11 Apr 2006 11:07:37 -0400 (EDT)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k3BF7Yvn010629;
+	Tue, 11 Apr 2006 11:07:34 -0400 (EDT)
+Message-ID: <329091474.1144768053933.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 11 Apr 2006 11:07:34 -0400 (EDT)
+From: Gopal Parameswaran <gp72@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 20
+Cc: Gopal Parameswaran <gp72@cornell.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k3BF7b225841
+
+Siena
+Siena is an event notification service that the authors have designed to maximize both expressiveness and scalability where expressiveness refers to the ability of the event notification service to provide a powerful data model with which to capture information about events, to express filters and patterns on notifications of interest, and to use that data model as the basis for optimizing notification delivery. Siena is a wide-area, large-scale, decentralized service based on the publish/subscribe protocol and objects of interest advertises and publishes their content and clients subscribe to the services.
+Scribe
+Scribe is a scalable application-level multicast infrastructure that is built on Pastry, object location and routing substrate overlayed on the Internet and supports large numbers of groups and members per group. It uses and leverages Pastry’s reliability, self-organization, and locality properties and uses it to create and manage groups and to build efficient multicast trees for the dissemination of messages to each group. The authors claim that Scribe provides best-effort reliability guarantees and shows results based on a realistic network topology model that it can scale across a wide range of groups and group sizes. Scribe being based on pastry is a fully decentralized model and builds a multicast tree, formed by joining the Pastry routes from each group member to a rendezvous point associated with a group. In Scribe any Scribe node may create a group of nodes and then other nodes can join the groups that have been created after checking the credentials of the joining nodes. To create a group, a Scribe node asks Pastry to route a CREATE message using a unique groupId which is the hash of the group’s textual name concatenated with its creator’s name as the key. Pastry delivers this message to the node with the nodeId numerically closest to groupId. The Scribe deliver method then adds the group to the list of groups it already knows about and also checks the credentials to ensure that the group can be created, and stores the credentials and makes this node the rendezvous point for this group. It can also increase performance by making the groupId the concatenation of the nodeId of the creator and the hash of the textual name of the group. When a Scribe node wishes to join a group, it asks Pastry to route a JOIN message with the group’s groupId as the key and which is routed by Pastry towards the group’s rendezvous point. At each node along the route, Pastry invokes Scribe’s forward method. Forward checks its list of groups to see if it is currently a forwarder; if so, it accepts the node as a child
+o the children table. When a scribe node wishes to leave the group then it records locally that it has left the group and then sends a leave message to its parent in the multicast tree which recursively goes up the tree until it reaches a node that still has entries after removing the node that has left.
+

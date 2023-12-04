@@ -1,0 +1,71 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k22EnNt12777
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 09:49:23 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k22EnKZ2021362
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 09:49:21 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Thu, 2 Mar 2006 09:49:21 -0500 (EST)
+Message-ID: <1702.132.236.227.119.1141310961.squirrel@webmail.cornell.edu>
+Date: Thu, 2 Mar 2006 09:49:21 -0500 (EST)
+Subject: PAPER 11
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Legacy DNS, as argued by Cox, Muthitacharoen and Morris's "Serving DNS..."
+and Ramasubramanian and Sirer's "The Design and Implementation" presenting
+DDNS and CoDoNS respectively, is fragile with respect to workload and
+threats it faces today.  Both papers describe how the heirarchical nature
+of DNS and the coupling of phyisical/administrative structure and abstract
+namespace structure lead to imbalance and tend toward the frequent
+occurence of human error in DNS.  Additionally, Ramasubramanian and Sirer
+present an indepth analysis of a study on DNS failures and weaknesses
+including everything from failures due to network and delegation
+bottlenecks to latency and miconfiguration issues.  Both papers present
+distributed implementations of DNS (DDNS and CoDoNS), hoping to address
+some or all of these issues.  DDNS is a simple ring-based DHT with the
+addition of passive caching.  CoDoNS also builds on  a DHT with the
+addition of Beehive proactive caching (similar to the evaluation used in
+the Beehive paper).  DDNS supports queries on RRSets (from legacy DNS) and
+includes DNSSEC.  CoDoNS is presented as a potial DNS replacement and
+supports a completely legacy DNS interface along with DNSSEC extensions
+(using a centralized authority to verify non-DNSSEC DNS records) and an
+interface to support many current DNS applications (from simple name-to-ip
+or ip-to-name lookup to services such as Akami).
+
+Both papers use real DNS workload measurements to evalute their systems. 
+DDNS is evaluated in a simulated environment against analytical derived
+legacy performance.  The conclusion here is that median response time of
+DDNS is 350ms compared to 43ms for conventional DNS (on average 10 RPCs
+without caching in DDNS vs 2 RPCs with legacy DNS).  DDNS goes on to argue
+that a DHT cannot provide performance and features equivalent to legacy
+DNS.  Ramasubramanian and Sirer present wholly different results.  This
+evaluation is conducted on PlanetLab and runs a DNS workload both against
+CoDoNS and against a legacy DNS implementation.  The results of this
+experiment (along with a strong presentation of how legacy DNS operates)
+show that legacy DNS incurs a median lookup time of 39ms with a mean of
+382ms.  CoDoNS on the other hand (thanks to Beehive proactive caching)
+provides a median lookup time of 1ms and a mean of 106ms (with Beehive
+average lookup cost set to .5
+hops).  Additional results show that CoDoNS similarly outperforms legacy
+DNS in the face of flashcrowds (as expected from Beehive).  And the
+storage cost per node in CoDoNS is roughly 13MB.
+
+These two papers present systems which seek to address similar problems in
+legacy DNS; however, they present two very different results and come to
+two opposite conclusions.  CoDoNS is able to show that many of the issues
+faced in legacy DNS can be addressed by a distributed system and can
+provide much better performance at low per-node cost (in constrast to the
+conclusion made as a result of DDNS).  While CoDoNS addresses many of the
+problems faced by legacy DNS it does not address some new problems arising
+from the decoupling of namespace management from physical and
+administrative location.  DDNS calls some of these out relating to
+traditional problems of a node's incentive to cooperate.
+

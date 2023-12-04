@@ -1,0 +1,55 @@
+Received: from smtp1.andrew.cmu.edu (SMTP1.ANDREW.CMU.EDU [128.2.10.81])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id VAA20147
+	for <handyboard@media.mit.edu>; Tue, 16 Nov 1999 21:11:16 -0500 (EST)
+Received: from HPMENT23.ME.CMU.EDU (HPMENT23.ME.CMU.EDU [128.2.62.145])
+	by smtp1.andrew.cmu.edu (8.9.3/8.9.3) with ESMTP id VAA25353
+	for <handyboard@media.mit.edu>; Tue, 16 Nov 1999 21:11:13 -0500 (EST)
+Date: Tue, 16 Nov 1999 21:10:29 -0500
+From: Jason <jasonp@andrew.cmu.edu>
+To: handyboard@media.mit.edu
+Subject: Re: evaluate inverse cosine, sine in IC
+Message-Id: <2188792133.942786629@HPMENT23.ME.CMU.EDU>
+In-Reply-To: <3830A216.6F10698D@cs.umt.edu>
+Originator-Info: login-token=Mulberry:01uMH4ZyIia9b4PEfeA0Fv1gseb5M+LIXmJGXcuDFr8A==;
+ token_authority=postmaster@andrew.cmu.edu
+X-Mailer: Mulberry (Win32) [1.4.4, s/n S-100002]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+
+
+--On Monday, November 15, 1999, 5:15 PM -0700 Will <nepenthe@montana.com>
+wrote:
+
+> bedirhan wrote:
+>> 
+>> Hi, is there a way to evaluate inverse cosine and sine using IC? Thx
+> 
+> The most efficient way to do it is to use Taylor Series approximations of
+> the functions.  Decide how much precision you need, and then write
+> functions that evaluate the first few terms in the appropriate series.
+> 
+> Usually, a series will converge quite rapidly, and only half a dozen or
+> so terms are needed.  For example, if the sixth term in the series is on
+> the order of 1.0E-6, then you're getting close to the limit of
+> single-precision arithmetic anyway (and certainly close enough for horse
+> shoes, hand grenades, and tactical nuclear weapons).
+> 
+
+to get a better approximation use:
+
+
+   arcsin(x) = pi/2 - sqrt(1 - x)(a0 + a1*x + a2*x^2 + a3*x^3),
+   
+where
+
+   a0 = 1.5707288
+   a1 = -0.2121144
+   a2 = 0.0742610
+   a3 = -0.0187293
+
+
+
+

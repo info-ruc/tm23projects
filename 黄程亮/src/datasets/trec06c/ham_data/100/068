@@ -1,0 +1,224 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j1LFMnbo012602
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Mon, 21 Feb 2005 09:22:49 -0600 (CST)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id j1LFMmJq012601
+	for reliable_computing-outgoing; Mon, 21 Feb 2005 09:22:48 -0600 (CST)
+Received: from smtp2.rz.tu-harburg.de (smtp2.rz.tu-harburg.de [134.28.205.13])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id j1LFMdFj012597
+	for <reliable_computing@interval.louisiana.edu>; Mon, 21 Feb 2005 09:22:45 -0600 (CST)
+Received: from mail2.rz.tu-harburg.de (mail2.rz.tu-harburg.de [134.28.202.179])
+	by smtp2.rz.tu-harburg.de (8.13.1/8.13.1) with ESMTP id j1LFLnfd014674
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Mon, 21 Feb 2005 16:21:50 +0100
+Received: from oem-9n90y5vdt8b.net.waseda.ac.jp ([133.9.117.168])
+	(user=ti3sr mech=LOGIN bits=0)
+	by mail2.rz.tu-harburg.de (8.13.1/8.13.1) with ESMTP id j1LFLgFx023085
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NO);
+	Mon, 21 Feb 2005 16:21:47 +0100
+To: "Sergey P. Shary" <shary@ict.nsc.ru>,
+        reliable_computing@interval.louisiana.edu
+Cc: =?utf-8?B?0JEu0KEuINCU0LbQsNC90YvQsdC10LrQvtCy?= <bakyt@gorodok.net>
+Subject: Re: INTLAB problems
+References: <003001c51591$4c979190$7c00a8c0@COMP0>
+Message-ID: <opsmj46esev059od@oem-9n90y5vdt8b.net.waseda.ac.jp>
+From: "Siegfried M. Rump" <rump@tu-harburg.de>
+Organization: Technical University Hamburg-Harburg
+Content-Type: text/plain; format=flowed; delsp=yes; charset=iso-8859-15
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Date: Mon, 21 Feb 2005 16:21:40 -0100
+In-Reply-To: <003001c51591$4c979190$7c00a8c0@COMP0>
+User-Agent: Opera M2/7.54 (Win32, build 3869)
+X-Scanned-By: TUHH Rechenzentrum content checker on 134.28.205.13
+X-Scanned-By: TUHH Rechenzentrum content checker on 134.28.202.179
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+Sergey,
+
+you can change that:
+
+>> intvalinit('FastIVmult'), a=[infsup(0,1) infsup(2,3)];  
+>> b=[infsup(-2,0.5) infsup(1,3)]; a*b'
+===> Fast interval matrix multiplication in use (maximum overestimation
+          factor 1.5 in radius)
+intval ans =
+[  -1.00000000000000,  10.25000000000001]
+
+>> intvalinit('SharpIVmult'), a=[infsup(0,1) infsup(2,3)];  
+>> b=[infsup(-2,0.5) infsup(1,3)]; a*b'
+===> Slow but sharp interval matrix multiplication in use
+intval ans =
+[   0.00000000000000,   9.50000000000000]
+>>
+
+Best wishes
+
+Siegfried
+
+
+
+
+On Fri, 18 Feb 2005 14:10:24 +0600, Sergey P. Shary <shary@ict.nsc.ru>  
+wrote:
+
+>
+>
+>
+>
+> Colleagues,
+>
+>
+>
+>
+>
+> I have a question on how INTLAB and numerous INTLAB codes operate  
+> interval matrices.
+>
+>
+>
+>
+> Running a simple INTLAB function
+>
+>  ==========================================
+>
+> function y = a_bug
+>
+> a = [  infsup(0,1)   infsup(2,3) ];
+>
+> b = [ infsup(-2,0.5) infsup(1,3) ];
+>
+>
+>     y = a*b';
+>
+>
+>     %y = 0;
+>
+>     %for k = 1 : 2;
+>
+>     %    y = y + a(k)*b(k);
+>
+>     %end
+>
+>
+> ===========================================
+>
+>
+> that computes a "scalar product" of two interval 2-vectors,
+>
+> I get the answer
+>
+>
+>       >> infsup(a_bug)
+>
+>       intval  =
+>
+>       [  -1.00000000000000,  10.25000000000000]
+>
+>
+>
+>
+> However, rewriting the above in mathematically equivalent algorithm
+>
+> that uses "for" cycle
+>
+>
+> ==============================================
+>
+>
+> function y = a_bug
+>
+>
+> a = [  infsup(0,1)   infsup(2,3) ];
+>
+> b = [ infsup(-2,0.5) infsup(1,3) ];
+>
+>
+>     %y = a*b';
+>
+>
+>     y = 0;
+>
+>     for k = 1 : 2;
+>
+>         y = y + a(k)*b(k);
+>
+>     end
+>
+>
+> ==============================================
+>
+>
+>
+> produces
+>
+>
+>            >> infsup(a_bug)
+>
+>             intval  =
+>
+>             [   0.00000000000000,   9.50000000000000]
+>
+>
+>
+>
+>
+>
+> What is the reason of such a discrepancy?
+>
+> It seems to be well known: INTLAB uses a special "fast" midpoint-radius  
+> algorithm
+>
+> for interval matrix multiplication called in compact MATLAB form, and  
+> this algorithm
+>
+> is not "sharp".
+>
+>
+>
+> Well, then I do not understand why G. Hargreaves in his M.S. thesis  
+> "Interval analysis in MATLAB"
+>
+> as well as many others use such a compact form of the interval matrix  
+> product in their INTLAB codes,
+>
+> thus getting a substantial overestimation of their results?
+>
+>
+>
+> This is the case, in particular, for interval Gauss method and Krawczyk  
+> method
+>
+> whose codes are written out by Hargreaves in his thesis.
+>
+>
+>
+>
+>
+> Sergey P. Shary
+>
+>
+>
+>
+>
+>
+>
+
+
+
+-- 
+
+=================================================
+
+Prof. Dr. Siegfried M. Rump
+Arbeitsbereich Informatik III
+Technische Universität Hamburg-Harburg
+Schwarzenbergstr. 95
+21071 Hamburg
+Germany
+
+phone  +49 40 42878 3027
+secr.  +49 40 42878 3227
+fax    +49 40 42878 2489
+

@@ -1,0 +1,93 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2UGh4Y15040
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 11:43:05 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2UGh3H1014314
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 11:43:03 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Thu, 30 Mar 2006 11:43:04 -0500 (EST)
+Message-ID: <1788.132.236.227.119.1143736984.squirrel@webmail.cornell.edu>
+Date: Thu, 30 Mar 2006 11:43:04 -0500 (EST)
+Subject: PAPER 17
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+BitTorrent is a distributed file distribution protocol where downloaders
+of files ("leechers") also upload parts of the file to other peers as the
+file is retrieved.  A torrent is described in a (small) .torrent file
+which enumerates "peices" of the file (the file being broken into fixed
+sized chunks and each piece identifying a chunk) along with a hash of the
+piece, "sub-pieces" of each piece and a "tracker" which coordinates the
+specific torrent.  In addition an initial "seeder" node must have all the
+pieces described in the .torrent file and must be known to the tracker. 
+As new peers participate in the torrent they identify themselves to the
+tracker and select peers from which to download pieces and sub-pieces. 
+Once a whole piece is downloaded and verified (via its hash) the leecher
+must notify the tracker which can publish the peer as a potential site
+from which to download the piece.  Pieces to download are selected to
+retrieve the pieces held by the fewest peers first (to ensure that the
+rarest pieces will be available at many peers).  The tracker provides
+random subsets of peers from which to download the piece constructing a
+random overlay.  Peers additionally use a "choking" algorithm where they
+refuse to upload to peers in order to saturate the connections.  This
+algorithm does a local search for the best connections and provides a
+tit-for-tat mechanism so peers with poor upload performance are "choked",
+incentivizing good behavior.  The tracker is a single point of failure and
+is needed to coordinate the downloads and uploads of every peer in the
+torrent.  While the coordination protocol is lightweight, if the tracker
+goes down, new peers are not able to join the torrent and existing peers
+won't be able to find new pieces not available on the peers they are
+currently connected to.
+
+Bullet builds a mesh over a multicast tree in order to maximize bandwidth
+usage at each node in the network.  The root of the tree holds the
+original content.  The multicast tree is used to distribute the content to
+all nodes in the tree.  However, this model guarantees that the bandwidth
+available will monotonically decrease as you descend the tree.  Bullet
+overlays a mesh on top of this tree to overcome this problem.  A network
+state dissemination protocol is used to provide a fixed-sized random
+subset of network state information to each node in the network using the
+tree.  Information is collected up the tree and distributed down the tree.
+ Each node can use this subset to identify potential peers which are
+likely to have packets which were dropped from the parent (since the
+transmission from the parent is unreliable and potentially out of order). 
+Also this enables the children to achieve more incoming bandwidth than the
+parent can provide.  Because Bullet is layered over a tree, the tree must
+be constructed and maintained requiring overhead which isn't directly used
+to maintain the content delivery system which Bullet could provide.  It
+seems that this is an artificial constraint on the system and limits its
+application and performance.  If a node high up in the tree goes offline,
+the whole subtree will be partitioned and this requires repair by some
+protocol not discussed.  Also leaf nodes will not contribute as much as
+nodes interior to the tree.
+
+SplitStream is also targeted at multimedia streaming and uses multicast
+trees.  SplitStream assumes several stripes of data (potentially coming
+from different source nodes).  Each node specifies a desired number of
+streams to receive (its indegree) and the maximum number of children (its
+outdegree).  A Scribe multicast tree is built for each stripe.  Each
+stripe is identified by an id on for a Pastry ring.  Each node sourcing
+the stripe acquires that id.  Each strip id has a different leading digit
+guaranteeing that each node will be an interior node in only strip tree
+(since stripe trees are the union of the pastry routing paths of nodes in
+the tree).  Node outdegrees are maintained by building an additional extra
+capacity tree and having nodes reject children if having such a child
+would exceed its outdegree.  The extra capacity tree can be used to find a
+node receiving the desired stripe and with extra outdegree.  This
+construction mechanism seems heavy duty (compared to something like
+BitTorrent) and also incurs significant delay, especially for some
+real-time application like video conferencing.  Experimentation on
+PlanetLab show that nearly 40% of nodes experience a delay exceeding 400ms
+which may be too high for a realtime experience.
+
+
+
+
+

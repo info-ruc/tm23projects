@@ -1,0 +1,178 @@
+Received: from ntfax.morganite.COM ([12.4.110.2])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA05328
+	for <handyboard@media.mit.edu>; Fri, 30 Jul 1999 08:45:36 -0400 (EDT)
+Received: by ntfax.nc.morganite.com with Internet Mail Service (5.5.2448.0)
+	id <PK1CV1L5>; Fri, 30 Jul 1999 08:42:45 -0400
+Message-Id: <25FB1DBA323DD311ACB400508B122D93049713@NTMAIL>
+From: "Landahl, Bill" <Bill.Landahl@morganite.com>
+To: HandyBoard <handyboard@media.mit.edu>
+Subject: Millisecond timing
+Date: Fri, 30 Jul 1999 08:44:25 -0400
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BEDA89.05479B00"
+
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+------_=_NextPart_001_01BEDA89.05479B00
+Content-Type: text/plain
+
+
+	I recently bought a Handy Board to use in acquiring time
+measurements varying by one millisecond.  The Handy Board has a clock speed
+of 2kHz, therefore it should be able to measure down to one half
+millisecond.   
+
+	What I have found however is that the smallest time I am measuring
+is 3 millieseconds.  Ther is no code running except for the time acquisition
+code.  My question is, Will it be possible for me to get the one millisecond
+time accuracy I want?  Should I be using system interupts instead of just
+reading system time?  If so, how do I do that?
+
+Below is the code  I am running for the time acquisition.  
+
+
+int x;
+int y;
+float p;
+float n;
+float z;
+void main (void)
+{
+   while(1) { 
+
+      if (digital(10)){              /* capture leading edge*/   
+         while (x < 1){
+            n = seconds();
+            x++;
+         }
+      }  
+      if (digital(11)){               /*capture leading edge*/
+         while (y < 1){
+            p = seconds();
+            y++;
+         }	
+      z = p - n;                   /*floating point math- after data
+acquired*/
+      printf("\nTime= %f",z);
+      } 
+      
+      if (start_button()){
+         x=0;
+         y=0;	
+         reset_system_time();
+      }
+   }
+}
+
+------_=_NextPart_001_01BEDA89.05479B00
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+5.5.2448.0">
+<TITLE>Millisecond timing</TITLE>
+</HEAD>
+<BODY>
+<BR>
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT SIZE=3D2 =
+FACE=3D"Arial">I recently bought a Handy Board to use in acquiring time =
+measurements varying by one millisecond.&nbsp; The Handy Board has a =
+clock speed of 2kHz, therefore it should be able to measure down to one =
+half millisecond.&nbsp;&nbsp; </FONT></P>
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT SIZE=3D2 =
+FACE=3D"Arial">What I have found however is that the smallest time I am =
+measuring is 3 millieseconds.&nbsp; Ther is no code running except for =
+the time acquisition code.&nbsp; My question is, Will it be possible =
+for me to get the one millisecond time accuracy I want?&nbsp; Should I =
+be using system interupts instead of just reading system time?&nbsp; If =
+so, how do I do that?</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Below is the code&nbsp; I am running =
+for the time acquisition.&nbsp; </FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">int x;</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">int y;</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">float p;</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">float n;</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">float z;</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">void main (void)</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">{</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp; while(1) { </FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if =
+(digital(10)){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; /* capture leading edge*/&nbsp;&nbsp; </FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while =
+(x &lt; 1){</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; n =3D seconds();</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; x++;</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+}</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+}&nbsp; </FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if =
+(digital(11)){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; /*capture leading edge*/</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while =
+(y &lt; 1){</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; p =3D seconds();</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; y++;</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z =3D =
+p - =
+n;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*floating point math- after =
+data acquired*/</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+printf(&quot;\nTime=3D %f&quot;,z);</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } =
+</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if =
+(start_button()){</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+x=3D0;</FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+y=3D0;&nbsp;&nbsp; </FONT>
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+reset_system_time();</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+}</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp; }</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">}</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BEDA89.05479B00--
+

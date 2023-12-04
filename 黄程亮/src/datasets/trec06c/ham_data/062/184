@@ -1,0 +1,57 @@
+Received: from arachne.eng.utah.edu (arachne.eng.utah.edu [155.99.222.1])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id LAA14843
+	for <handyboard@media.mit.edu>; Thu, 2 Mar 2000 11:13:16 -0500 (EST)
+Received: from lab1-8.eng.utah.edu (lab1-8.eng.utah.edu [155.99.222.57])
+	by arachne.eng.utah.edu (8.9.1a/8.9.1) with ESMTP id JAA00719;
+	Thu, 2 Mar 2000 09:13:15 -0700 (MST)
+Received: from localhost (kleang@localhost)
+	by lab1-8.eng.utah.edu (8.9.3/8.9.3) with ESMTP id JAA19031;
+	Thu, 2 Mar 2000 09:13:14 -0700 (MST)
+X-Authentication-Warning: lab1-8.eng.utah.edu: kleang owned process doing -bs
+Date: Thu, 2 Mar 2000 09:13:14 -0700 (MST)
+From: Kam Leang <kleang@eng.utah.edu>
+To: "E158 (M.FAZAL)" <M.FAZAL@bham-eee-fs4.bham.ac.uk>
+Cc: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Re: servo motors
+In-Reply-To: <9FDFD60B9F3AD311A1400008C79F4B54111005@BHAM-EEE-FS4>
+Message-Id: <Pine.4.10.10003020909200.18165-100000@lab1-8.eng.utah.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hi,
+Try adding some delay time between turning the servo on and off.  For
+example, 'sleep(2.0);'.  
+
+Add the sleep(2.0) as follows:
+
+> void main()
+> {
+> 	servo_on();	/* on servo */
+> 	servo(3800);	/* full left turn */
+	sleep(2.0);	/* wait for 2 seconds for servo to move */
+> 	servo_off();	/* off servo */
+> 	fd(0);          /* motor 0 on */
+>         sleep(2.0);	/* for 2 secs */
+> 	servo_on();	/* on servo */
+	sleep(2.0);	/* wait */
+> 	servo(2500);	/* mid position */
+> 	servo_off();
+> }
+
+Probably the reason why it runs in interactive mode is because you're
+pausing between each command when you are sending it to the HB.  The sleep
+function above should do just that in your code. 
+
+Good luck,
+kam
+                                                ______    ______
+---------------------------------------------- |_    _|  |_    _|
+ Kam Leang                                       |  |______|  |______
+ University of Utah                              |  |_    _|  |_    _| 
+ Department of Mechanical Engineering            |  | |  | |  | |  |
+ MEB Room 2202 Salt Lake City, UT 84112          |  |_|__|_|  | |  |
+ (Tel) 801.581.7105  (Fax) 801.585.9826          \ ___________/ |  |
+ http://www.leang.com/kam                             |  |______|  |
+----------------------------------------------------- \ ___________/
+
+

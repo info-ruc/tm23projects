@@ -1,0 +1,90 @@
+Received: from ml.media.mit.edu (root@ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id HAA15127
+	for <handyboard@media.mit.edu>; Wed, 20 Jan 1999 07:23:50 -0500 (EST)
+Received: from localhost (fredm@localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id HAA22547;
+	Wed, 20 Jan 1999 07:23:44 -0500 (EST)
+Message-Id: <199901201223.HAA22547@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: fredm@localhost [127.0.0.1] didn't use HELO protocol
+To: pknight@home.com
+Cc: "handyboard@media.mit.edu" <handyboard@media.mit.edu>
+Subject: Re: Battery Level Indicator 
+In-Reply-To: Your message of "Tue, 19 Jan 1999 19:12:23 PST."
+             <36A54997.4C834A58@home.com> 
+Date: Wed, 20 Jan 1999 07:23:43 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+1.  yes, you probably killed your analog 5.  the analog inputs are
+very sensitive to over voltage.  if your ran more than +5v directly
+into the input, you probably killed it.
+
+next time you're playing with funky voltages, put a 5K resistor in
+series with the funky voltage and the analog input.  that should
+protect it.
+
+2.  you can't tell if the robot is stuck by looking at the system
+battery, because (as you discovered!) it doesn't drop by much when the
+robot is stuck.  one of the properties of nicads is that they can
+supply tons of current w/o difficulty.
+
+3.  there is a method to measure the voltage drop across the motor
+driver chips.  this is a reasonable way to see if the motor is
+stalled.  
+
+this was implemented on the MIT 6.270 board.  see page 200 of the
+appendix B document listed at
+
+  http://el.www.media.mit.edu/projects/handy-board/techdocs/
+
+all you have to do is look at the voltage at the point between the
+motor LEDs and their 1K drop resistor.  use a 1K resistor between that
+point and the analog input.
+
+btw, this only works when you're running the motors at full speed.  if
+you are using speed control, the readings get messed up.
+
+fred
+
+
+
+
+In your message you said:
+> I have been playing around with trying to make a battery indicator on
+> my Handy Board.  I did find the below diagram from a earlier posting in
+> March of 98.
+> 
+>      BAT --------R1---------*--------- Analog5 Input
+> 
+>       +ve        (10K)       |             (Active)
+> 
+>                             R2  (4K7)
+> 
+>                              |
+> 
+>                              *--------- Gnd (at Analog5
+> 
+>                                              Connector)
+> 
+> I tried this and it didn't seem to work, although if I changed the
+> 10K and 47K resistor around I manage to get a reading from analog 5.
+> 
+> I was trying to use the battery indicator to check if my robot had hit
+> an object, although the analog reading only seems to drop 1 point
+> between
+> when the motor is running and when it is stalled.  This then makes it 
+> difficult to determine if the voltage is dropping 'cos the battery is
+> running out OR the robot has stalled.
+> I guess my question is, is this a good/bad method to check if the robot 
+> is stuck?.  I do like this method of testing if the robot is stuck 'cos
+> I
+> only have to check one sensor.  Are there other better ways like this???
+> Any help would be appreicated.......
+> Cheers
+> 
+> PS
+> In my playing around I think I have zapped analog(5) as it now reads '0'
+> when there is no input (OOoouups).  Is it truely dead or can I bring it
+> back??.
+> 
+

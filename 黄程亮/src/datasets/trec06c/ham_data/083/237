@@ -1,0 +1,73 @@
+Received: from zinger.cs.cornell.edu (zinger.cs.cornell.edu [128.84.96.55])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OFvRh01848
+	for <egs@cs.cornell.edu>; Tue, 24 Sep 2002 11:57:28 -0400 (EDT)
+Received: from localhost (ashieh@localhost)
+	by zinger.cs.cornell.edu (8.11.3/8.11.3/C-3.2) with ESMTP id g8OFvRC24704
+	for <egs@cs.cornell.edu>; Tue, 24 Sep 2002 11:57:27 -0400 (EDT)
+Date: Tue, 24 Sep 2002 11:57:27 -0400 (EDT)
+From: Alan Shieh <ashieh@CS.Cornell.EDU>
+To: <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 19
+Message-ID: <Pine.GSO.4.33.0209241156490.24689-100000@zinger.cs.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+The central idea behind CEDAR is the use of a "core" dominating set of
+nodes to store and propagate routing information.  Conceivably, such a
+set would be smaller and have lower degree than the original graph.
+A distributed, constant time algorithm is provided for generating an
+the core, which is used to construct a connected overlay network.
+Since the degree of this overlay is (supposedly) low, broadcasts may
+be implemented using unicast without much additional cost. Since the
+overlay has smaller diameter and fewer nodes, on-demand route discovery
+has lower cost.
+
+Routing information is propagated through the core. Since every node
+is at most one hop from some core node, each node always has access to
+some routing information. CEDAR assumes that the probability of
+bandwidth being available through a link for some path drops as the
+distance from the link to the endpoints increases; therefore, routing
+information is propagated a number of hops proportional to the
+bandwidth of a link.
+
+CEDAR also employs asymetric propagation of bandwidth updates in which
+bandwidth decreases are propagated much faster than increases; this
+approach reduces bandwidth usage from some outdated information,
+provides hysteresis against instability, and also conservatively helps
+QoS reservation (by quickly propagating reservations across the
+network).
+
+* Shortcomings
+- The paper claims that a RTS/CTS caching scheme at the MAC layer can
+prevent very many extraneous unicasts during core broadcast (at most
+one per node, "when nearby nodes are a distance 3 apart"). However,
+the RTS/CTS exchange only protects against the hidden/exposed node
+problem for the initiator and receiver; the intermediate node has not
+protected its own airspace.
+
+- There were many problems with the evaluation. Very few datapoints
+were provided. There is no way to tell how the performance ratio
+between optimal routing and CEDAR scales with network diameter (in
+fact, the tested diameters are tiny). It was not clear what the
+sources of routing failures were in the absence of ito/dto waves. Does
+this mean that QoS reservations were not propagated as quickly? Also,
+the authors did not explain where all the lost packets went in the
+recovery process; the numbers in the column don't add up. Did they get
+misrouted and ignored? They should have compared the recovery of CEDAR
+with that of DSR, since both use source routing and support some sort
+of full route-aware rerouting.
+
+* Extensions
+- All state info is stored in the dominators, which means that the
+non-dominating nodes have unutilized space. Moreover, dominators are,
+by nature, hotspots in the network. Perhaps these facts can be used to
+implement dominator load balancing.
+- Quantify more precisely the loss due to greedy routing to the
+furthest possible core node.
+- The TTL calculation and propagation strategy assumes uniform traffic
+patterns within a network. The loss of efficiency in the presence of
+hotspots should be analyzed. Also, an asymetric propagation technique maybe
+useful for providing back pressure to portions of the network that are
+hogging bandwidth (for instance, on one particular side of a link)
+
+

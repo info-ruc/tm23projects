@@ -1,0 +1,33 @@
+Received: from ml.media.mit.edu (ml.media.mit.edu [18.85.13.107])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA00811
+	for <handyboard@media.mit.edu>; Sat, 7 Feb 1998 09:06:34 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by ml.media.mit.edu (8.8.7/8.8.7) with SMTP id JAA20227;
+	Sat, 7 Feb 1998 09:05:13 -0500 (EST)
+Message-Id: <199802071405.JAA20227@ml.media.mit.edu>
+X-Authentication-Warning: ml.media.mit.edu: localhost [127.0.0.1] didn't use HELO protocol
+To: Thomas Hauri <har@twi.ch>
+Cc: Yoni Garbourg    <ygarbour@emerald.tufts.edu>,
+        HandyBoard <handyboard@media.mit.edu>
+Subject: Re: encoder function 
+In-Reply-To: Your message of "Fri, 06 Feb 98 08:31:05 +0100."
+             <34DABC39.64B0CAC2@twi.ch> 
+Date: Sat, 07 Feb 98 09:05:13 -0500
+From: "Fred G. Martin" <fredm@media.mit.edu>
+X-Mts: smtp
+
+Tom, it seems that your routines measure frequency but Yoni wanted to
+count transitions.
+
+Yoni, the approach is similar to what Tom has done in that you must
+use the timer input channels to get high frequencies.  In the TCTL2
+register, set the input lines to interrupt on either rising or falling
+edges.  Create an interrupt routine that increments a memory variable
+on each interrupt, and then resets the interrupt flag for the next
+time.
+
+Each transition on the timer input pin with then cause the memory
+variable to be incremented.
+
+Fred
+

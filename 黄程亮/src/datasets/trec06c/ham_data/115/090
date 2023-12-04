@@ -1,0 +1,82 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1L79At09364
+	for <egs@cs.cornell.edu>; Tue, 21 Feb 2006 02:09:10 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1L79Aim012964
+	for <egs@cs.cornell.edu>; Tue, 21 Feb 2006 02:09:11 -0500 (EST)
+Received: from 24.59.114.243
+        by webmail.cornell.edu with HTTP;
+        Tue, 21 Feb 2006 02:09:11 -0500 (EST)
+Message-ID: <1482.24.59.114.243.1140505751.squirrel@webmail.cornell.edu>
+Date: Tue, 21 Feb 2006 02:09:11 -0500 (EST)
+Subject: paper 8
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+The first two papers focus on two kinds of related attacks that can be
+launched on P2P networks. The first is Sybil, which is where an attacker
+tries to forge multiple identities in order to undermine the system. The
+paper outlines several requirements that can be put into place to restrict
+the number of identities a single entity could assume, which even though
+it cannot fully prevent a Sybil attack, can severely limit the amount of
+damage that can be done. The basic requirements are some sort of
+constrained resource test for validation that is conducted simultaneously
+across the network. In that case, if the test requires c resources to
+answer correctly and a fradulent entity has at most k times more
+resources, then that entity can assume at most k identities since the
+validation is done simultaneously.
+The second paper deals with Eclipse attacks, where an attacker tries to
+take control of the routing done in a network by inserting itself or other
+faulty nodes into numerous routing tables and links. The base assumption
+is that the network has some constraint of the type above on Sybil
+attacks; otherwise, an attacker could forge multiple identities and simply
+overwhelm the number of legitimate nodes with faulty ones. The authors
+limit the damage a node can do by limiting the out- and in-degree of
+nodes, so that no node is pointed to by too many nodes, and no node takes
+up the in-degrees of too many nodes. This prevents a small fraction of the
+nodes from dominating a large fraction of the routing table entries, and
+increase the probability that routing paths chosen do not pass through
+faulty nodes. The degree bounds are enforced using anonymous auditing to
+check the neighbor sets of its neighbors. Assuming that the anonymity
+works and the challenged node does not know who issued the challenge, the
+challenged node would have difficulty faking a neighbor set that contains
+the unknown node while hiding some of its out-degrees so that it appears
+as if it is under the limit.
+The last paper is far more general than either of the previous ones. It
+investigates three factors in P2P network security: nodeID generation,
+routing table maintenence, and message routing. For nodeID generation,
+their conclusion was that distributed generation is unable to prevent
+Sybil attacks, and that the best bet was to have a Certifying Authority
+with a requirement for attaining a certificate to make it expensive or
+impossible to obtain a large number of certificates (eg. monetary or
+unique identifications). For routing table updates, they constrain the
+routing table and use multiple bootstraps to prevent a corrupt bootstrap
+from unduly influencing a new node. The constraints could be such things
+as the out- in-degree constraints from the Eclipse paper, though the
+authors here do not offer any specific suggestions.
+The main content of the paper involves routing failure detection. The
+authors add deterministically chosen replicas for every root, and when a
+node initiates a query, it checks to ensure that the node it is sending
+the query to has a valid set of replicas. For Pastry, the replicas are the
+neighborhood leaf set, and the deterministic property of that is a
+probabilistic maximum width of the set and a balanced left-right property.
+If the replica set returned from the targetted key node is deemed to be
+invalid or doesn't even reach the sender, then redundant routing is
+initiated.
+
+The idea outlined in the Eclipse paper still seems quite vulnerable to
+attackers. Even though it would be difficult to control the entire routing
+table of the majority of the nodes in the network, a dedicated set of
+faulty nodes could still consume all of the in-degrees of certain selected
+sections of a network, possibly partitioning that segment of the ring.
+Furthermore, all of the ideas outlined in the three papers are only
+feasible for networks above a certain size. Smaller networks are naturally
+much more vulnerable since an attacker could easily muster the resources
+or entities to control the majority of the nodes in it.
+

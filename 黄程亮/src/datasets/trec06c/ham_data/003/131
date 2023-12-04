@@ -1,0 +1,328 @@
+Received: from merlion.singnet.com.sg by ECE.ORST.EDU with ESMTP
+	(1.37.109.16/16.2) id AA257951302; Mon, 25 Mar 1996 08:28:22 -0800
+Return-Path: <wengsan@singnet.com.sg>
+Received: from wengsan.singnet.com.sg (ts900-2324.singnet.com.sg [165.21.157.76]) by merlion.singnet.com.sg (8.6.12/8.6.11) with SMTP id AAA28284 for <paul@ece.orst.edu>; Tue, 26 Mar 1996 00:27:58 +0800
+Message-Id: <3157A94F.2145@singnet.com.sg>
+Date: Tue, 26 Mar 1996 00:22:39 -0800
+From: Ho Weng San <wengsan@singnet.com.sg>
+X-Mailer: Mozilla 2.0 (Win16; I)
+Mime-Version: 1.0
+To: paul@ECE.ORST.EDU
+Subject: LCD PROGRAM
+X-Url: http://www.ece.orst.edu/~paul/8051-goodies/paulmon2.html
+Content-Type: multipart/mixed; boundary="------------7AF67F855246"
+Status: RO
+
+This is a multi-part message in MIME format.
+
+--------------7AF67F855246
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I have written some new subroutine for playing around with LCD. I think 
+that it will be good if I share it with all 8051 liker. Still using your 
+LCD.ASM as template.
+
+--------------7AF67F855246
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline; filename="LCDP.ASM"
+
+; SCROLL A MESSAGE ACROSS LCD DISPLAY
+; SJM 05 MAY 95
+
+$MOD51
+
+COUT            EQU 030H        ;Send Acc to serial port
+CIN             EQU 032H        ;Get Acc from serial port
+PHEX            EQU 034H        ;Print Hex value of Acc
+PHEX16          EQU 036H        ;Print Hex value of DPTR
+PSTRING         EQU 038H        ;Print string pointed to by DPTR,
+				;must be terminated by 0 or a high bit set
+				;pressing ESC will stop the printing
+GHEX            EQU 03AH        ;Get Hex input into Acc
+				;Carry set if ESC has been pressed
+GHEX16          EQU 03CH        ;Get Hex input into DPTR
+				;Carry set if ESC has been pressed
+ESC             EQU 03EH        ;Check for ESC key
+				;Carry set if ESC has been pressed
+UPPER           EQU 040H        ;Convert Acc to uppercase
+				;Non-ASCII values are unchanged
+INIT            EQU 042H        ;Initialize serial port
+
+
+;
+;TEST:   MOV     DPTR,#PROMPT1  ;LOCATION OF PROMPT TEXT
+;        LCALL   PSTRING        ;PRINT THE PROMPT
+;        LCALL   CIN            ;GET A CHARACTER
+;        LCALL   COUT           ;ECHO IT BACK
+;        MOV     DPTR,#PROMPT2  ;LOCATION OF THE OTHER TEXT
+;        PUSH    ACC            ;PSTRING MIGHT DESTROY ACC
+;        LCALL   PSTRING        ;PRINT IT
+;        POP     ACC            ;RESTORE ACC
+;        LCALL   PHEX           ;AND PRINT IT IN HEX
+;        MOV     A,#13          ;13=CARRIAGE RETURN
+;        LCALL   COUT           ;PRINT THE CR
+;        RET                    ;WE'RE DONE
+;
+;PROMPT1:.DB     "Press a Key > ",0  ;DON'T FORGET THE NULL
+;PROMPT2:.DB     "  Its ASCII value (in HEX) is: ",0
+
+
+LCD_EN          EQU P1.2        ; LCD_EN LINE
+LCD_RW          EQU P1.1        ; READ/WRITE LINE
+LCD_RS          EQU P1.0        ; REGISTER SELECT LINE
+PPI1_PA         EQU 0H          ; ADDRESS OF DATA PORT A
+PPI1_PB         EQU 1H          ; ADDRESS OF DATA PORT B
+PPI1_PC         EQU 2H          ; ADDRESS OF DATA PORT C
+PPI1_PS         EQU 3H          ; ADDRESS OF CTRL REGISTER
+PPI2_PA         EQU 0H          ; ADDRESS OF DATA PORT A
+PPI2_PB         EQU 1H          ; ADDRESS OF DATA PORT B
+PPI2_PC         EQU 2H          ; ADDRESS OF DATA PORT C
+PPI2_PS         EQU 3H          ; ADDRESS OF CTRL REGISTER
+PPI1_ALL_IN     EQU 9BH         ; ALL INPUT
+PPI1_ALL_OUT    EQU 80H         ; ALL OUTPUT
+PPI2_ALL_IN     EQU 9BH         ; ALL INPUT
+PPI2_ALL_OUT    EQU 80H         ; ALL OUTPUT
+
+
+WRITE_PPI MACRO PPI_ADDR,PPI_DATA
+MOV DPTR,PPI_ADDR
+MOV A,PPI_DATA
+MOVX @DPTR,A
+ENDM
+
+WRITE_A_TO_PPI MACRO PPI_ADDR
+MOV DPTR,PPI_ADDR
+MOVX @DPTR,A
+ENDM
+
+READ_PPI MACRO PPI_ADDR
+MOV DPTR,PPI_ADDR
+MOVX A,@DPTR
+ENDM
+
+SET_DDRAM_ADDR MACRO DDRAM
+MOV A,DDRAM
+ADD A,#80H
+LCALL WR_CTRL
+ENDM
+
+READ_DDRAM_ADDR MACRO
+LCALL RD_ADDR
+ENDM
+
+CLRSCR MACRO 
+MOV A,#1
+LCALL WR_CTRL
+ENDM
+
+HOME MACRO
+MOV A,#0H
+LCALL WR_CTRL
+ENDM
+
+STRING MACRO DDRAM ,ST
+SET_DDRAM_ADDR DDRAM
+MOV DPTR,ST
+LCALL OUTSTR
+ENDM
+
+ORG 9000H
+HEADER: DB 0A5H,0E5H,0E0H,0A5H,0FEH,04FH,00H,00H,
+        DB 00H,00H,00H,00H,00H,00H,00H,00H,00H,
+        DB 00H,00H,00H,00H,00H,00H,00H,00H,00H,
+        DB 00H,00H,0FFH,0FFH,0FFH,0FFH,4CH,43H,
+        DB 44H,00H,00H,00H,00H,00H,00H,00H,00H,
+        DB 00H,00H,00H,00H,00H,00H,00H,00H,00H,
+        DB 00H,00H,00H,00H,00H,00H,00H,00H,00H,
+        DB 00H,00H,00H
+
+WRITE_PPI #PPI1_PS,#PPI1_ALL_OUT     ;SET ALL OUTPUT
+
+MOV A,#38H                                 ; INIT LCD 8 BITS, 5X7 FONT
+LCALL WR_CTRL
+
+MOV A,#0FH                                 ; DISPLAY ON
+LCALL WR_CTRL
+
+MOV A,#6H                                  ; INC
+LCALL WR_CTRL
+
+CLRSCR                                     ; CLEARSCREEN
+
+HOME                                       ; HOME LCD
+
+TOP:  LCALL MAIN
+      LCALL CIN
+      LCALL COUT
+      CJNE A,#31H,NEXT1
+      LCALL CRETURN
+      MOV DPTR,#MESS7
+      LCALL PSTRING
+      LCALL GHEX
+      LCALL WR_CTRL
+      LCALL CRETURN
+      JMP TOP
+NEXT1:CJNE A,#32H,NEXT2
+      LCALL CRETURN
+      MOV DPTR,#MESS8
+      LCALL PSTRING
+      LCALL CIN
+      LCALL WR_DATA
+      LCALL COUT
+      LCALL CRETURN
+      JMP TOP
+NEXT2:CJNE A,#33H,NEXT3
+      LCALL CRETURN
+      LCALL RD_DATA
+      LCALL COUT
+      LCALL CRETURN
+      JMP TOP
+NEXT3:CJNE A,#34H,NEXT4
+      LCALL CRETURN
+      MOV DPTR,#MESS9
+      LCALL PSTRING
+      LCALL RD_ADDR
+      LCALL PHEX
+      LCALL CRETURN
+      JMP TOP
+NEXT4:CJNE A,#35H,NEXT5
+      LCALL CRETURN
+      LJMP BYE
+NEXT5:LCALL CRETURN
+      JMP TOP
+
+WR_DATA:PUSH DPH                           ; SAVE DATA POINTER
+	PUSH DPL
+	LCALL CHECK_BUSY                   ; CHECK BUSY FLAG
+	SETB LCD_RS                        ; REGISTER SELECT GOES HIGH
+	CLR LCD_RW                         ; READ/WRITE GOES LOW
+	WRITE_A_TO_PPI #PPI1_PA            ; WRITE DATA
+	SETB LCD_EN                        ; LCD_EN GOES HIGH
+	CLR LCD_EN                         ; LCD_EN GOES LOW
+	POP DPL
+	POP DPH                            ; RESTORE DATA POINTER
+	RET
+
+WR_CTRL:PUSH DPH                           ; SAVE DATA POINTER
+	PUSH DPL
+	LCALL CHECK_BUSY                   ; CHECK BUSY FLAG
+	CLR LCD_RS                         ; REGISTER SELECT GOES LOW
+	CLR LCD_RW                         ; READ/WRITE GOES LOW
+	WRITE_A_TO_PPI #PPI1_PA            ; WRITE DATA
+	SETB LCD_EN                        ; LCD_EN GOES HIGH
+	CLR LCD_EN                         ; LCD_EN GOES LOW
+	POP DPL                            ; RESTORE DATA POINTER
+	POP DPH
+	RET
+
+CHECK_BUSY:MOV B,A
+	   PUSH DPH
+	   PUSH DPL
+	   CLR LCD_RS
+	   SETB LCD_RW
+	   WRITE_PPI #PPI1_PS,#9BH
+	A1:SETB LCD_EN
+	   READ_PPI #PPI1_PA
+	   CLR LCD_EN
+	   ANL A,#80H
+	   JNZ A1
+	   WRITE_PPI #PPI1_PS,#80H
+	   POP DPL
+	   POP DPH
+	   MOV A,B
+	   RET
+
+RD_DATA:PUSH DPH
+	PUSH DPL
+	SETB LCD_RS
+	SETB LCD_RW
+	WRITE_PPI #PPI1_PS,#9BH
+	SETB LCD_EN
+	READ_PPI #PPI1_PA
+	CLR LCD_EN
+        MOV B,A
+	WRITE_PPI #PPI1_PS,#80H
+        MOV A,B
+	POP DPL
+	POP DPH
+	RET
+
+RD_ADDR:PUSH DPH
+	PUSH DPL
+	CLR LCD_RS
+	SETB LCD_RW
+	WRITE_PPI #PPI1_PS,#9BH
+     A2:SETB LCD_EN
+	READ_PPI #PPI1_PA
+	CLR LCD_EN
+	MOV B,A
+	ANL A,#80H
+	JNZ A2
+	WRITE_PPI #PPI1_PS,#80H
+        MOV A,B
+	POP DPL
+	POP DPH
+	RET
+
+DELAY:MOV R6,#0FFH
+    F:MOV R7,#0FFH
+    Y:DJNZ R7,Y
+      DJNZ R6,F
+      RET
+
+MAIN:MOV DPTR,#MESS1
+     LCALL PSTRING
+     MOV DPTR,#MESS2
+     LCALL PSTRING
+     MOV DPTR,#MESS3
+     LCALL PSTRING
+     MOV DPTR,#MESS4
+     LCALL PSTRING
+     MOV DPTR,#MESS5
+     LCALL PSTRING
+     MOV DPTR,#MESS6
+     LCALL PSTRING
+     RET
+
+CRETURN:MOV A,#0AH
+        LCALL COUT
+        MOV A,#0DH
+        LCALL COUT
+        RET
+
+;********************************************************************
+; SEND A NULL TERMINATED STRING TO LCD
+;*******************************************************************/
+
+OUTSTR:         CLR A
+		MOVC A,@A+DPTR      ; GET CHARACTER
+		JZ EXIT             ; STOP IF CHAR == NULL
+		LCALL WR_DATA       ; ELSE SEND IT
+		LCALL DELAY
+		INC DPTR            ; POINT TO NEXT CHAR
+		SJMP OUTSTR
+EXIT:           RET
+
+MESS1:          DB '1:WRITE LCD CONTROL',0AH,0DH,0
+MESS2:          DB '2:WRITE LCD DATA',0AH,0DH,0
+MESS3:          DB '3:READ LCD DATA',0AH,0DH,0
+MESS4:          DB '4:READ LCD ADDR',0AH,0DH,0
+MESS5:          DB '5:EXIT',0AH,0DH,0
+MESS6:          DB 'CHOOSE SELECTION : ',0
+MESS7:          DB 'ENTER LCD CONTROL VALUE IN HEX :',0
+MESS8:          DB 'ENTER A CHAR :',0
+MESS9:          DB 'LCD POSITION POINTER AT LOCATION :',0
+
+BYE:            RET
+
+		END
+
+
+
+
+
+--------------7AF67F855246--
+
+

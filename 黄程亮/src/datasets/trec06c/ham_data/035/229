@@ -1,0 +1,185 @@
+Received: from icarus.idirect.com (icarus.idirect.com [207.136.80.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id UAA31195
+	for <handyboard@media.mit.edu>; Sun, 14 Feb 1999 20:29:38 -0500 (EST)
+Received: from terminus.idirect.com (terminus.idirect.com [207.136.80.70])
+	by icarus.idirect.com (8.9.3/8.9.3) with ESMTP id UAA14122
+	for <handyboard@media.mit.edu>; Sun, 14 Feb 1999 20:29:36 -0500 (EST)
+Received: from ts6-10tn-10.idirect.com (ts6-10tn-10.idirect.com [216.154.1.74])
+	by terminus.idirect.com (8.9.3/8.9.3) with SMTP id UAA25159
+	for <handyboard@media.mit.edu>; Sun, 14 Feb 1999 20:29:18 -0500 (EST)
+X-Authentication-Warning: terminus.idirect.com: ts6-10tn-10.idirect.com [216.154.1.74] didn't use HELO protocol
+Message-Id: <3.0.6.32.19990214202955.007add00@idirect.com>
+X-Sender: orthner@idirect.com
+X-Mailer: QUALCOMM Windows Eudora Light Version 3.0.6 (32)
+Date: Sun, 14 Feb 1999 20:29:55 -0500
+To: handyboard@media.mit.edu
+From: Duncan Orthner <orthner@idirect.com>
+Subject: Expansion board test routine
+In-Reply-To: <36BF2C03.C1F09E64@iname.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+
+Hello all, 
+
+          Well here it is, for what it's worth. The functions are pretty
+obvious, it works just like the original hbtest.c that Fred wrote. To try
+servos other than #5, you'll have to edit the line:
+
+servo5=(16*knob());
+
+In the test_servo() routine.
+
+Hope this helps, Duncan
+
+expbtest.c
+
+/*
+
+	test program for Handy Board
+	version 1.0 -- 26 nov 95
+	Fred G. Martin (fredm@media.mit.edu)
+        
+        Modified 27 Jan 99 for testing
+        the expansion board inputs and
+        servo outputs by Duncan Orthner 
+        (orthner@idirect.com)
+	
+*/
+
+void
+testmotors(void)
+{
+  while (1) {
+    int i;
+    for (i= 0; i< 4; i++) {
+      fd(i); msleep(250L);
+      bk(i); msleep(250L);
+      off(i);
+    }
+  }
+}
+
+void
+testdigitals(void)
+{
+  printf("Press START ...\n");
+  while (peek(0x7fff)&0x80);
+  beep();
+  
+  printf("Press STOP ...\n");
+  while (peek(0x7fff)&0x40);
+  beep();
+  
+  while (1) {
+    int i;
+    printf("Digital inputs: ");
+    for (i=15; i>6; i--)
+      if (digital(i)) printf("1");
+      else printf("0");
+    printf("\n");
+    msleep(100L);
+  }
+}
+
+void
+testanalogs_2to6(void)
+{
+    printf("Press START to  test knob...\n");
+    start_press();
+    
+    while (1) {
+        printf("Turn knob; STOP to end -> %d\n", knob());
+        msleep(100L);
+        if (stop_button()) {
+            beep();
+            break;
+        }
+    }
+    
+    printf("Press START for analog ins 2-6\n");
+    start_press();
+        
+    while (1) {
+        int i;
+        for (i=6; i >=2; i--)
+          printf("%d ", analog(i));
+        printf("\n");
+        msleep(100L);
+        if (stop_button()) {
+            beep();
+            break;
+        }
+    }
+    
+    printf("\n");
+    
+}
+
+void
+testanalogs_16to23(void)
+{
+    
+    printf("Press START for analogs 16-23\n");
+    start_press();
+        
+    while (1) {
+        int i;
+        for (i=23;i>=16; i--)
+          printf("%d ", analog(i));
+        printf("\n");
+        msleep(100L);
+        if (stop_button()) {
+            beep();
+            break;
+        }
+    }
+    
+    printf("\n");
+    
+}
+
+void
+testanalogs_24to31(void)
+{
+    
+    printf("Press START for analogs 24-31\n");
+    start_press();
+        
+    while (1) {
+        int i;
+        for (i=31;i>=24; i--)
+          printf("%d ", analog(i));
+        printf("\n");
+        msleep(100L);
+        if (stop_button()) {
+            beep();
+            break;
+        }
+    }
+    
+    printf("\n");
+    
+}
+/*
+    adjusts the servo position with the knob
+*/
+
+void test_servo()
+{
+init_expbd_servos(1);
+while(1){
+printf("Press start to  adjust servo...\n");
+start_press();
+printf("Stop to quit\n");
+   while(1) {        
+         servo5=(16*knob());
+        
+         if (stop_button()) {
+            beep();
+            break;
+         }
+   }
+}
+} 
+

@@ -1,0 +1,282 @@
+Received: from skinner.cs.uoregon.edu ([128.223.4.13]) by groucho.cse.psu.edu with SMTP id <2542>; Wed, 3 Nov 1993 02:28:32 -0500
+Received: from majestix.cs.uoregon.edu by skinner.cs.uoregon.edu with SMTP id AA21144
+  (5.65/IDA-1.4.2 for schwartz@groucho.cse.psu.edu); Tue, 2 Nov 93 23:28:11 -0800
+Received: from localhost.cs.uoregon.edu by majestix.cs.uoregon.edu
+	(4.1/UofO CS 27-Mar-91) id AA16134; Tue, 2 Nov 93 23:28:09 PST
+Message-Id: <9311030728.AA16134@majestix.cs.uoregon.edu>
+To:	Scott Schwartz <schwartz@groucho.cse.psu.edu>
+Cc:	9fans@cse.psu.edu
+Subject: Re: sparc fileservers 
+Date:	Wed, 3 Nov 1993 02:28:08 -0500
+From:	mike@majestix.cs.uoregon.edu
+
+>| In fact, we have Plan 9 running here at UO using only the Unix
+>| based file server, since right now there are no spare machines
+>| to dedicate a Plan 9 file server.
+>
+>That's more or less our situation as well.  In a previous message you
+>said that you were running with hacked sources and lots of things
+>didn't work.  I'm interested in hearing more about what you've done and
+>how things are working out these days.
+
+Well, since several people have asked, I've included our diffs (with
+explanations) to u9fs at the end of this message.  Note that they are
+not quite the same as the Bell Labs diffs that Rob mailed out awhile
+back--I had already discovered and fixed some of the problems
+independently.
+
+Most things I've tried seem to work Ok; the exception is the postscript
+interpreter psi, which crashes for me on both the Sparc and the 68020,
+in apparently the same way.  I have not put any deep debugging effort
+into it.  Also, psi worked fine when I tried it on a 486 using kfs.
+So I suspect psi may be interacting with u9fs in some strange way.
+
+As for how I originally got Plan 9 up and working on a sparc
+without a fileserver and without bootp, roughly:
+
+0.  compiled u9fs on some convenient unix box; install in inetd.conf.
+    contrary to the README in the u9fs source directory, plan 9 expects
+    to find u9fs on port 564 (see /lib/ndb/local on the cdrom).
+1.  boot plan9 off the cdrom
+    i actually put the sparc/9sscd kernel in the SunOS root directory and
+    used "b sd()9sscd".
+2.  manually configure the network with ipconfig
+3.  use "srv tcp!1.2.3.4" and then "mount -c /srv/tcp!1.2.3.4 /n/kremvax"
+    to get the Unix system mounted on /n/kremvax.  used /n/kremvax as
+    a scratch area to build a modified kernel.
+4.  the kernel sources are in /sys/src/9.
+    i looked at /sys/src/9/boot/ip.c, which uses bootp to get various
+    information, and used it as a prototype for a new boot method which
+    asks the user to manually enter all that information.
+    then, i used the "/sys/src/9/ss/sscd" configuration as a prototype
+    to create a new "ssuo" configuration, and built my modified kernel
+    with "mk 'CONF=ssuo'" in the ss/ directory.
+
+Disclaimer: as with all free advice, this is worth what it cost.
+These things worked for me, but I didn't keep notes and so this is
+all from 6-month-old memory.  Similar disclaimer applies to the u9fs
+diffs below.
+
+
+Here are our patches for u9fs; they do the following things:
+
+* fix a bug in the handling of seek offsets
+* set the qid.version field from the stat.st_mtime field, rathern than 0.
+  this makes executable caching work correctly.
+* hacks to increase the descriptor table size limit under
+  SunOS (#define DTABLE) and Dynix/PTX (#define SETDTABLESIZE).  this is
+  important since plan 9 keeps open file descriptors to recently
+  used executables, and without this change u9fs quickly runs out
+  of descriptors.
+* a hack to make u9fs work correctly with the Dynix/PTX inetd,
+  and perhaps other System V.3 implementations as well (#define TIRDWR).
+* a hack to make Plan 9 systems get the right system date when booting.
+  Plan 9 gets the system date from the access time of "/".  therefore,
+  we read "/" before accepting any requests from the remote Plan 9.
+* implement the ORCLOSE remove-on-close option used by Plan 9 programs
+  that create temporary files.
+
+diff -rc2 dist/u9fs.c u9fs.c
+*** dist/u9fs.c	Sat Mar 20 04:34:51 1993
+--- u9fs.c	Sun Apr 18 15:58:48 1993
+***************
+*** 8,11 ****
+--- 8,18 ----
+  #include "pwd.h"
+  #include "grp.h"
++ #ifdef TIRDWR
++ #include <stropts.h>
++ #endif
++ #ifdef DTABLE
++ #include <sys/time.h>
++ #include <sys/resource.h>
++ #endif
+  
+  #define	DBG(f)
+***************
+*** 37,40 ****
+--- 44,48 ----
+  	int		fd;
+  	DIR		*dir;
++ 	int		tempf;
+  };
+  
+***************
+*** 132,135 ****
+--- 140,159 ----
+  main(int argc, char *argv[])
+  {
++ #ifdef TIRDWR
++ 	ioctl(0, I_PUSH, "tirdwr");
++ #endif
++ #ifdef SETDTABLESIZE
++ 	setdtablesize(256);
++ #endif
++ #if defined(DTABLE) && defined(RLIMIT_NOFILE)
++ 	{
++ 		struct rlimit rl;
++ 		getrlimit(RLIMIT_NOFILE, &rl);
++ 		rl.rlim_cur = rl.rlim_max;
++ 		if (rl.rlim_cur > 1024)
++ 			rl.rlim_cur = 1024;
++ 		setrlimit(RLIMIT_NOFILE, &rl);
++ 	}
++ #endif
+  	freopen(LOG, "a", stderr);
+  	setbuf(stderr, (void*)0);
+***************
+*** 243,246 ****
+--- 267,281 ----
+  	Pass *p;
+  
++ 	/*
++ 	 * The following hack will force Plan 9 to get the right
++ 	 * system date when we are booting off a Unix server.
++ 	 */
++ 	{
++ 		DIR *dp;
++ 		dp = opendir("/");
++ 		readdir(dp);
++ 		closedir(dp);
++ 	}
++ 
+  	err = 0;
+  	if(file0 == 0){
+***************
+*** 343,347 ****
+  	int fd;
+  	DIR *dir;
+! 	int m, trunc;
+  
+  	rf = rfilefid();
+--- 378,382 ----
+  	int fd;
+  	DIR *dir;
+! 	int m, trunc, tempf;
+  
+  	rf = rfilefid();
+***************
+*** 353,356 ****
+--- 388,392 ----
+  	m = rhdr.mode & (16|3);
+  	trunc = m & 16;	/* OTRUNC */
++ 	tempf = rhdr.mode & 64;		/* ORCLOSE */
+  	switch(m){
+  	case 0:
+***************
+*** 402,405 ****
+--- 438,442 ----
+  	rf->fd->dir = dir;
+  	rf->fd->offset = 0;
++ 	rf->fd->tempf = tempf;
+  	thdr.qid = f->qid;
+  }
+***************
+*** 411,415 ****
+  	File *f, *of;
+  	char *path, *err;
+! 	int fd;
+  	int m;
+  	char name[NAMELEN];
+--- 448,452 ----
+  	File *f, *of;
+  	char *path, *err;
+! 	int fd, tempf;
+  	int m;
+  	char name[NAMELEN];
+***************
+*** 421,424 ****
+--- 458,462 ----
+  	path = bldpath(rf->file->path, rhdr.name, name);
+  	m = omode(rhdr.mode&3);
++ 	tempf = rhdr.mode & 64;		/* ORCLOSE */
+  	errno = 0;
+  	if(rhdr.perm & CHDIR){
+***************
+*** 479,482 ****
+--- 517,521 ----
+  	rf->fd->dir = 0;
+  	rf->fd->offset = 0;
++ 	rf->fd->tempf = tempf;
+  	thdr.qid = f->qid;
+  }
+***************
+*** 535,539 ****
+  			strncpy(d.gid, id2name(gid, stbuf.st_gid), NAMELEN);
+  			d.qid.path = qid(&stbuf);
+! 			d.qid.vers = 0;
+  			d.mode = (d.qid.path&CHDIR)|(stbuf.st_mode&0777);
+  			d.atime = stbuf.st_atime;
+--- 574,578 ----
+  			strncpy(d.gid, id2name(gid, stbuf.st_gid), NAMELEN);
+  			d.qid.path = qid(&stbuf);
+! 			d.qid.vers = stbuf.st_mtime;
+  			d.mode = (d.qid.path&CHDIR)|(stbuf.st_mode&0777);
+  			d.atime = stbuf.st_atime;
+***************
+*** 546,552 ****
+  	}else{
+  		errno = 0;
+! 		if(rf->fd->offset != rhdr.offset)
+  			if(lseek(rf->fd->fd, rhdr.offset, 0) < 0)
+  				errjmp(sys_errlist[errno]);
+  		n = read(rf->fd->fd, rdata, rhdr.count);
+  		if(n < 0)
+--- 585,593 ----
+  	}else{
+  		errno = 0;
+! 		if(rf->fd->offset != rhdr.offset) {
+  			if(lseek(rf->fd->fd, rhdr.offset, 0) < 0)
+  				errjmp(sys_errlist[errno]);
++ 			rf->fd->offset = rhdr.offset;
++ 		}
+  		n = read(rf->fd->fd, rdata, rhdr.count);
+  		if(n < 0)
+***************
+*** 570,576 ****
+  		errjmp(Etoolarge);
+  	errno = 0;
+! 	if(rf->fd->offset != rhdr.offset)
+  		if(lseek(rf->fd->fd, rhdr.offset, 0) < 0)
+  			errjmp(sys_errlist[errno]);
+  	n = write(rf->fd->fd, rhdr.data, rhdr.count);
+  	if(n < 0)
+--- 611,619 ----
+  		errjmp(Etoolarge);
+  	errno = 0;
+! 	if(rf->fd->offset != rhdr.offset) {
+  		if(lseek(rf->fd->fd, rhdr.offset, 0) < 0)
+  			errjmp(sys_errlist[errno]);
++ 		rf->fd->offset = rhdr.offset;
++ 	}
+  	n = write(rf->fd->fd, rhdr.data, rhdr.count);
+  	if(n < 0)
+***************
+*** 688,691 ****
+--- 731,742 ----
+  			if(fd->dir)
+  				closedir(fd->dir);
++ 			if (fd->tempf & 64) {	/* ORCLOSE */
++ 				if (f->qid.path & CHDIR)
++ 					ret = rmdir(f->path);
++ 				else
++ 					ret = unlink(f->path);
++ 				if (ret)
++ 					err = sys_errlist[errno];
++ 			}
+  			free(fd);
+  		}
+***************
+*** 760,764 ****
+  	}
+  	f->qid.path = qid(&stbuf);
+! 	f->qid.vers = 0;
+  	f->stbuf = stbuf;
+  	return 0;
+--- 811,815 ----
+  	}
+  	f->qid.path = qid(&stbuf);
+! 	f->qid.vers = stbuf.st_mtime;
+  	f->stbuf = stbuf;
+  	return 0;
+

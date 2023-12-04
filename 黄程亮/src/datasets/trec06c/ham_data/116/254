@@ -1,0 +1,176 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.205] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k275wDt23723
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Mar 2006 00:58:13 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id i28so1489637nzi
+        for <egs+summary@cs.cornell.edu>; Mon, 06 Mar 2006 21:58:12 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=c35cwBlGP0YxAL2n9oWEP/9nMOB7PBRWhHqt7dzL0J7avBw3z8iM5puUn3f4e5m39mUvb9Iumnu4XJx91eAsAvA7d8ZVfahyu5eN3IPiY+UAMZFJB0NT64sHdOfP96MTsiEPU285AuYoULmI2Diu+82uS8Ae+QzjFa4Apgp7KGU=
+Received: by 10.37.2.46 with SMTP id e46mr5917nzi;
+        Mon, 06 Mar 2006 21:58:12 -0800 (PST)
+Received: by 10.36.147.10 with HTTP; Mon, 6 Mar 2006 21:58:12 -0800 (PST)
+Message-ID: <9aa7a97d0603062158h1a55733do14796b21b4b8ec0@mail.gmail.com>
+Date: Tue, 7 Mar 2006 00:58:12 -0500
+From: "Andrew Cunningham" <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 12
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_421_6026018.1141711092470"
+
+------=_Part_421_6026018.1141711092470
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+
+
+ _Storage_Management_and_Caching_in_PAST,_a_Large-Scale,_Persistend_Peer-to=
+-Peer_Storage_Utility_
+    Antony Rowstron, Peter Druschel
+
+    PAST, a large scale peer-to-peer system, allows persistent storage on a
+self-organizing, Internet-based overlay network of storage nodes
+cooperatively routing file queries, storing multiple replicas of files, and
+caching additional copies of popular files. The paper relies on Pastry for
+many of its qualities, and thus concentrates mostly on attempting to even
+the workload across the network through diverting replicas and files to
+locations of the address space removed from the standard key of the message=
+.
+    The trick used is that files may be stored, rather than at the location
+pointed to by the hash of the file name, at any node in the leaf set of the
+responsible node; to permit widening of horizons, the 'hack' of allowing th=
+e
+two edges of the leaf set to extend the query was permitted. While steps ar=
+e
+taken to avoid malicious users, the strict limit imposed on who may host
+replicas seems out of place -- since we only allow two levels of
+indirection, and fix the size of the leaf set, this will not scale well.
+However, it places a strict limit on the number of additional hops that a
+message query will require, and is necessary for various other reasons.
+Moreover, the statement that if storage is unavailable close by, it is
+globally unavailable is valid under the security assumptions that this pape=
+r
+makes -- i.e., protocols designed to avoid simple byzantine failure -- but
+nevertheless easy to defeat by conspiring foes, who simply refuse to share
+"enough" resources. While IP addresses can be "defended" so that it is
+difficult to partition a legitimate user from the network, it remains the
+case that local free space need not necessarily be indicative of global fre=
+e
+space, simply that it is similar with high probability and inefficient to
+make any stronger discovery.
+
+    _Wide-Area_Cooperative_Storage_With_CFS_
+    Frank Dabek, M. Frans Kaashoek, David Karger, Robert Morris, Ion Stoica
+
+    Providing a similar, though more limited service, than PAST, CFS is
+built on top of Chord to provide a distributed hash table mapping values to
+blocks. This allows a decentralized system whose clients may view the value=
+s
+as files. Due to the use of cryptographic techniques to ensure legitimacy o=
+f
+data, it is impossible for clients to alter data, though updates may be
+performed with access to the secret key used to insert the data.
+    The system is bizarrely POSIX compliant, in that it simply stores
+directory nodes which point to inodes which point to blocks, but rather tha=
+n
+referring to disk areas, they refer to locations in the underlying peer to
+peer network. Caches and copies of these data are replicated throughout the
+network, and the aforementioned cryptography allows the data to be verified=
+.
+A difference between standard hard disks and CFS is that CFS allows blocks
+of data to time-out, and thus be removed from hosting. They simultaneously
+strengthen and weaken Chord, by permitting optimization of finger-tables,
+which permits tunneling attacks, but also specifying secure nodeID
+generation, which tends to slow down many attacks, making them less
+profitable. Perhaps most importantly, however, this system does not assume
+that storage space will be a scarce resource, and thus punts the problem of
+distributing the data (to the previous paper), assuming that it is not a
+problem if overworked nodes simply request that someone else do their work.
+This is perhaps the biggest problem, and one which PAST addresses; in many
+ways CFS is not a file system, despite how easily it can be made to serve a=
+s
+one.
+
+------=_Part_421_6026018.1141711092470
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>
+arc39<br>
+<br>
+&nbsp;&nbsp; &nbsp;_Storage_Management_and_Caching_in_PAST,_a_Large-Scale,_=
+Persistend_Peer-to-Peer_Storage_Utility_<br>
+&nbsp;&nbsp; &nbsp;Antony Rowstron, Peter Druschel<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;PAST, a large scale peer-to-peer system, allows
+persistent storage on a self-organizing, Internet-based overlay network
+of storage nodes cooperatively routing file queries, storing multiple
+replicas of files, and caching additional copies of popular files. The
+paper relies on Pastry for many of its qualities, and thus concentrates
+mostly on attempting to even the workload across the network through
+diverting replicas and files to locations of the address space removed
+from the standard key of the message.<br>
+&nbsp;&nbsp; &nbsp;The trick used is that files may be stored, rather
+than at the location pointed to by the hash of the file name, at any
+node in the leaf set of the responsible node; to permit widening of
+horizons, the 'hack' of allowing the two edges of the leaf set to
+extend the query was permitted. While steps are taken to avoid
+malicious users, the strict limit imposed on who may host replicas
+seems out of place -- since we only allow two levels of indirection,
+and fix the size of the leaf set, this will not scale well. However, it
+places a strict limit on the number of additional hops that a message
+query will require, and is necessary for various other reasons.
+Moreover, the statement that if storage is unavailable close by, it is
+globally unavailable is valid under the security assumptions that this
+paper makes -- i.e., protocols designed to avoid simple byzantine
+failure -- but nevertheless easy to defeat by conspiring foes, who
+simply refuse to share &quot;enough&quot; resources. While IP addresses can=
+ be
+&quot;defended&quot; so that it is difficult to partition a legitimate user=
+ from
+the network, it remains the case that local free space need not
+necessarily be indicative of global free space, simply that it is
+similar with high probability and inefficient to make any stronger
+discovery.<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;_Wide-Area_Cooperative_Storage_With_CFS_<br>
+&nbsp;&nbsp; &nbsp;Frank Dabek, M. Frans Kaashoek, David Karger, Robert Mor=
+ris, Ion Stoica<br>
+&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;Providing a similar, though more limited service,
+than PAST, CFS is built on top of Chord to provide a distributed hash
+table mapping values to blocks. This allows a decentralized system
+whose clients may view the values as files. Due to the use of
+cryptographic techniques to ensure legitimacy of data, it is impossible
+for clients to alter data, though updates may be performed with access
+to the secret key used to insert the data.<br>
+&nbsp;&nbsp; &nbsp;The system is bizarrely POSIX compliant, in that it
+simply stores directory nodes which point to inodes which point to
+blocks, but rather than referring to disk areas, they refer to
+locations in the underlying peer to peer network. Caches and copies of
+these data are replicated throughout the network, and the
+aforementioned cryptography allows the data to be verified. A
+difference between standard hard disks and CFS is that CFS allows
+blocks of data to time-out, and thus be removed from hosting. They
+simultaneously strengthen and weaken Chord, by permitting optimization
+of finger-tables, which permits tunneling attacks, but also specifying
+secure nodeID generation, which tends to slow down many attacks, making
+them less profitable. Perhaps most importantly, however, this system
+does not assume that storage space will be a scarce resource, and thus
+punts the problem of distributing the data (to the previous paper),
+assuming that it is not a problem if overworked nodes simply request
+that someone else do their work. This is perhaps the biggest problem,
+and one which PAST addresses; in many ways CFS is not a file system,
+despite how easily it can be made to serve as one.
+
+------=_Part_421_6026018.1141711092470--
+

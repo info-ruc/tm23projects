@@ -1,0 +1,2388 @@
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA22091; Mon, 24 Apr 95 04:42:39 EDT
+Received: from ghpc6.ihf.RWTH-Aachen.DE by MIT.EDU with SMTP
+	id AA19805; Mon, 24 Apr 95 04:41:31 EDT
+Received: (from walter@localhost) by ghpc6.ihf.rwth-aachen.de (8.6.8/8.6.6) id KAA22649 for magnus@mit.edu; Mon, 24 Apr 1995 10:41:22 +0200
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Message-Id: <199504240841.KAA22649@ghpc6.ihf.rwth-aachen.de>
+Subject: Sending and receiving ADB command from the Mac side
+To: magnus@mit.edu
+Date: Mon, 24 Apr 1995 10:41:21 +0200 (MET DST)
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 5482      
+
+*** EOOH ***
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Subject: Sending and receiving ADB command from the Mac side
+To: magnus@mit.edu
+Date: Mon, 24 Apr 1995 10:41:21 +0200 (MET DST)
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 5482      
+
+Hi Daniel,
+
+last weekend, I got a test program running (see below) which reads and
+writes to the Egret chip from the MacSide.
+
+It compiles with Symantec C 7.0 (link with ANSI lib).
+First command line argument is the number of data sets to receive.
+The following arguments (hex) are sent to the Egret chip. 
+
+The program first reads the given number of data sets (typically from
+the timer tick), then sends the ADB command and then reads again the
+given number of data sets to see the aswer to the command.
+
+ADB commands start with a byte 00, then follows the ADB command as given
+in 'Inside Macintosh: devices', then any arguments (high byte, low
+byte).(i.e. 00 2f  = Talk register 3 of device 2)
+
+The answer string is again 00, 
+then a byte:   00 = success, data set was requested via ADB command
+               02 = timeout ? no such register or device
+               40 = data set was sent by Egret without request 
+                    via ADB command 
+then the command itself followed by the data if requested (TALK command)
+
+What is missing in the program is a repetition of the write_ADB routine
+in the case where a send is aborted due to vPB3 going low.
+At the moment, there is only a message (didn't get vPB3 high) and that's
+it. 
+
+I didn't yet check out the PRAM, RealTimeClock and Power commands.
+
+Anyway, now I think it must be possible to get at least the ADB devices
+to run under NetBSD.
+
+If you have some spare time, you could fiddle around with this stuff.
+I think there is still some work to be done to get this working with
+'real' interrupts. I sent this code also to John (jpw@insoft.com), who
+is very interested in the IIvi/si stuff.
+
+I think there is hope ...
+
+Ciao 
+  Walter
+
+--------------------- cut here -----------------------
+#include <stdio.h>
+#include <console.h>
+
+
+#define VIA1        0x50f00000
+#define vPB            0x0000
+#define vSR            0x1400
+#define vACR        0x1600
+#define vIFR        0x1a00
+
+#define vPB3        0x08
+#define vPB4        0x10
+#define vPB5        0x20
+
+#define vSR_INT        0x04
+#define vSR_DIR        0x10
+#define vSR_IN        0x00
+#define vSR_OUT        0x10
+
+#define VIA_(n) *((unsigned char *) (VIA1 + n))
+
+
+void read_ADB(void);
+void write_ADB(unsigned char*);
+void timeout(long);
+void troedel(long);
+void spl_7(void);
+void spl_0(void);
+
+
+long zeit;
+
+
+int main()
+{
+    int argc;
+    char **argv;
+    int wie_oft, i;
+    unsigned char send_string[16] = "\x00"; /* first byte is length ! */
+    int befehl;
+    
+    argc = ccommand(&argv);
+    
+    printf("Good morning\n");
+    troedel(500000);
+
+    if ( argc >=2 )
+        if (1 == sscanf(argv[1], "%d", &wie_oft) )
+        {
+            for (i=2; i<argc; i++)
+            if (1 == sscanf(argv[i], "%x", &befehl) )
+            {
+                send_string[0]++;
+                send_string[send_string[0]] = 0x00ff & befehl;
+            }
+            else
+            {
+                printf("Bad data\n");
+                exit();
+            } 
+            spl_7();
+            for (i=1; i<= wie_oft; i++)
+                read_ADB();
+            write_ADB(send_string);
+            for (i=1; i<= wie_oft; i++)
+                read_ADB();
+            spl_0();
+        }
+        else printf("Wrong argument\n");
+    else printf("nr_of_receives   adb_command\n");
+
+    return 0;
+}
+
+
+void write_ADB(unsigned char *thestring)
+{
+    int ind, dummy;
+
+
+    if ( (VIA_(vPB) & vPB3) == vPB3 )
+    {
+        VIA_(vPB) |= vPB5;
+        VIA_(vACR) |= vSR_OUT;
+
+        printf("write_ADB:   loading data  ");
+        ind = 1;
+        while ((ind <= thestring[0]) && ( (VIA_(vPB) & vPB3) == vPB3))
+        {
+            printf("  0x%2x", thestring[ind]);
+            VIA_(vSR) = thestring[ind];
+            VIA_(vPB) |= vPB4;
+
+            zeit=10000;
+            while ( (VIA_(vIFR) & vSR_INT) == 0 )  timeout(zeit); 
+            dummy = VIA_(vSR); /* reset SR-intr in IFR */
+
+            VIA_(vPB) &= ~vPB4;
+            troedel(1000);
+            
+            ind++;
+        }
+        printf("\n");
+        VIA_(vPB) &= ~vPB5;
+        VIA_(vACR) &= ~vSR_OUT;
+    }
+    else printf("write_ADB: Didn't get vPB3 high\n");
+}
+
+
+void read_ADB(void)
+{
+    VIA_(vACR) &= ~vSR_OUT;
+
+    zeit=1000000;
+    while ( (VIA_(vPB) & vPB3) == vPB3 )  timeout(zeit); 
+
+    zeit=10000;
+    while ( (VIA_(vIFR) & vSR_INT) == 0 )  timeout(zeit); 
+
+    printf("read_ADB:    Data = (0x%2x)   ",  (int) VIA_(vSR));
+    VIA_(vPB) |= vPB5;
+
+    do
+    {
+        zeit=1000000;
+        while ( (VIA_(vIFR) & vSR_INT) == 0 )  timeout(zeit); 
+        printf("0x%2x  ",  (int) VIA_(vSR));
+
+        VIA_(vPB) |= vPB4;
+        troedel(1000);
+        VIA_(vPB) &= ~vPB4;
+
+    } while ( (VIA_(vPB) & vPB3) == 0 );
+
+    VIA_(vPB) &= ~vPB5;
+    printf("\n");
+    return;
+}
+
+
+void timeout(long zeit)
+{
+    if ( zeit-- != 0 )
+        return;
+    else
+    {
+        printf("panic: timeout()\n");
+        spl_0();
+        exit();
+    }
+}
+
+
+void troedel(long ttt)
+{
+    for ( ; ttt > 0; ttt-- );
+}
+
+void spl_7(void)
+{
+    asm{
+        ori.w #0x0700,SR
+    }
+}
+
+void spl_0(void)
+{
+    asm{
+        and.w #0xf8ff,SR
+    }
+}
+--------------------- cut here -----------------------
+
+
+-- 
+EMail: walter@ghpc8.ihf.rwth-aachen.de   | SnailMail: Walter Ruetten
+                                            _o        Turmstr. 190
+Phone: ++49 241 807945                   _`\_<,       52064 Aachen
+Fax  : ++49 241 8888213                 (*)/'(*)      Germany
+  "History --- an agreeable set of untruths"  -- Powhiri Rika-Heke
+
+
+1, filed,,
+Summary-line: 24-Apr  to: walter@ghpc8.ihf.rwth  #Re: Sending and receiving ADB command from the Mac side
+Mail-from: From magnus@im.lcs.mit.edu Mon Apr 24 16:18:19 1995
+Return-Path: <magnus@im.lcs.mit.edu>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA22638; Mon, 24 Apr 95 16:18:12 EDT
+Received: from im2.lcs.mit.edu by MIT.EDU with SMTP
+	id AA09015; Mon, 24 Apr 95 16:18:06 EDT
+Received: by im2.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA03032; Mon, 24 Apr 95 16:18:02 EDT
+Date: Mon, 24 Apr 95 16:18:02 EDT
+From: magnus@im.lcs.mit.edu (Daniel Risacher)
+Message-Id: <9504242018.AA03032@im2.lcs.mit.edu.lcs.mit.edu>
+To: walter@ghpc8.ihf.rwth-aachen.de, magnus@mit.edu
+In-Reply-To: <199504240841.KAA22649@ghpc6.ihf.rwth-aachen.de> (message from Walter Ruetten on Mon, 24 Apr 1995 10:41:21 +0200 (MET DST))
+Subject: Re: Sending and receiving ADB command from the Mac side
+Reply-To: magnus@mit.edu
+
+*** EOOH ***
+Return-Path: <magnus@im.lcs.mit.edu>
+Date: Mon, 24 Apr 95 16:18:02 EDT
+From: magnus@im.lcs.mit.edu (Daniel Risacher)
+To: walter@ghpc8.ihf.rwth-aachen.de, magnus@mit.edu
+In-Reply-To: <199504240841.KAA22649@ghpc6.ihf.rwth-aachen.de> (message from Walter Ruetten on Mon, 24 Apr 1995 10:41:21 +0200 (MET DST))
+Subject: Re: Sending and receiving ADB command from the Mac side
+Reply-To: magnus@mit.edu
+
+
+
+Hiya, Walter-
+
+It's good to hear you are making progress!  I've been working
+at the problem from the other end; rather than trying to 
+understand the hardware, I'm trying to figure out how the 
+software works, specifically the ROM routines.  
+
+I've made some progress.  I've hacked the NMI handler code
+to do a trace-dump whenever I push Command-Power without disrupting
+things.  So far I've determined that there are (at least)  two
+different loops the netbsd code can get stuck in.
+
+loop #1
+4081481e,20,24,28,30,32,c4,c6,ca,cc,d2,d6,36,(repeats)
+
+loop #2
+4081484a,50, (repeats)  
+
+I'm not sure what loop #1 is waiting for... I haven't looked yet.
+Loop #2 is waiting for an interrupt on VIA1.
+
+
+I'm also now trying to trace the ADBReInit code under macbsd,
+by having it print traces for selected address ranges at a time.
+It's frustrating that a full trace swamps the serial line or 
+scrolls off the monitor fast!  I'm trying to track down whichever
+branch never returns, and what it was waiting for.  Once I'm sure
+what is failing, I'll try to see how it's different from macos.
+
+Anyway, these are the brances which never return
+4080a752 ... 4080a860 goes to      ( this is ADBReInit  )
+4080a8f8              goes to
+4080aa1a ... 4080aa48 goes to
+4080a3dc ... 4080a41c goes to      ( this is ADBOp )
+4080a42c  .  4080a432 goes to
+4080a442 ... ?              
+
+I've created a WWW page with info I've collected so far at:
+http://www-im.lcs.mit.edu/homedirs/magnus/IIsi-adb.html
+
+if you don't mind, I'll put the last mail you sent to me 
+in there somewhere. (and this message too.)
+
+
+1, answered,,
+Mail-from: From walter@ghpc8.ihf.rwth-aachen.de Tue Apr 25 05:10:19 1995
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA23414; Tue, 25 Apr 95 05:09:59 EDT
+Received: from macbeth.ihf.RWTH-Aachen.DE by MIT.EDU with SMTP
+	id AA25068; Tue, 25 Apr 95 05:08:54 EDT
+Received: (from walter@localhost) by macbeth.ihf.rwth-aachen.de (8.6.9/8.6.6) id LAA24939 for magnus@mit.edu; Tue, 25 Apr 1995 11:06:25 +0200
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Message-Id: <199504250906.LAA24939@macbeth.ihf.rwth-aachen.de>
+Subject: MacROMs
+To: magnus@mit.edu
+Date: Tue, 25 Apr 1995 11:06:15 +0200 (MET DST)
+In-Reply-To: <9504242018.AA03032@im2.lcs.mit.edu.lcs.mit.edu> from "Daniel Risacher" at Apr 24, 95 04:18:02 pm
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 2444      
+
+*** EOOH ***
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Subject: MacROMs
+To: magnus@mit.edu
+Date: Tue, 25 Apr 1995 11:06:15 +0200 (MET DST)
+In-Reply-To: <9504242018.AA03032@im2.lcs.mit.edu.lcs.mit.edu> from "Daniel Risacher" at Apr 24, 95 04:18:02 pm
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 2444      
+
+Hi Daniel,
+
+> I've made some progress.  I've hacked the NMI handler code
+> to do a trace-dump whenever I push Command-Power without disrupting
+> things.  So far I've determined that there are (at least)  two
+> different loops the netbsd code can get stuck in.
+I would be interested in this one ...
+
+> loop #1
+> 4081481e,20,24,28,30,32,c4,c6,ca,cc,d2,d6,36,(repeats)
+> loop #2
+> 4081484a,50, (repeats)  
+> 
+> I'm not sure what loop #1 is waiting for... I haven't looked yet.
+This loop is waiting for either
+  vPB3 going high
+     +0024  40814824   BTST       #$03,(A1)       | 0811 0003
+      which means that the routine can send data to the Egret (ADB) chip
+  or 
+     it waits for a shift register interrupt (ADB_ready ? in NetBSD).
+     This interrupt of cause will never occure, because it get killed
+     somewhere in macrom.c:
+>void mrg_initadbintr()
+>{
+>	int i;
+>
+>	via_reg(VIA1, vIFR) = 0x4; /* XXX - why are we setting the flag?  */
+>                             ^*** This is _resetting_ the ADB_ready intr.!!!
+>	via_reg(VIA1, vIER) = 0x84; /* enable ADB interrupt. */
+>}
+
+As there are several messages coming in from the Egret chip (kind of
+timer tick every second), the ADB chip wants to be serviced before
+accepting new commands. But due to the lost interrupt, there ADB chip
+will never be serviced.
+
+> Loop #2 is waiting for an interrupt on VIA1.
+ see above ... 
+
+I looked through the ADBReInit code and found, that *ADBBase (that is
+mrg_adbstore in NetBSD/Mac) is not properly initialized. Some init can
+be found at ADBReInit+0x0b0.
+
+Furthermore, when I force the hanging Egret routine  
+> 4081481e,20,24,28,30,32,c4,c6,ca,cc,d2,d6,36,(repeats)
+to enter the interrupt routine, it stores messages at adress 0 ! because
+mrg_adbstore2 is not initialized (init possibly at Egret+0x03b4)
+
+So there is lots of fun to be expected going through the code, but I
+will follow both attempts in parallel (MacROM an direct interfacing).
+
+> if you don't mind, I'll put the last mail you sent to me 
+> in there somewhere. (and this message too.)
+Should be ok, I hope Apple won't sue me ... :-)
+
+Ciao 
+  Walter
+-- 
+EMail: walter@ghpc8.ihf.rwth-aachen.de   | SnailMail: Walter Ruetten
+                                            _o        Turmstr. 190
+Phone: ++49 241 807945                   _`\_<,       52064 Aachen
+Fax  : ++49 241 8888213                 (*)/'(*)      Germany
+  "History --- an agreeable set of untruths"  -- Powhiri Rika-Heke
+
+
+1, filed,,
+Mail-from: From walter@ghpc8.ihf.rwth-aachen.de Thu Apr 27 04:51:03 1995
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA25632; Thu, 27 Apr 95 04:50:53 EDT
+Received: from macbeth.ihf.RWTH-Aachen.DE by MIT.EDU with SMTP
+	id AA07633; Thu, 27 Apr 95 04:49:43 EDT
+Received: (from walter@localhost) by macbeth.ihf.rwth-aachen.de (8.6.9/8.6.6) id KAA27449 for magnus@mit.edu; Thu, 27 Apr 1995 10:49:29 +0200
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Message-Id: <199504270849.KAA27449@macbeth.ihf.rwth-aachen.de>
+Subject: Re: MacROMs
+To: magnus@mit.edu
+Date: Thu, 27 Apr 1995 10:49:21 +0200 (MET DST)
+In-Reply-To: <9504262008.AA01414@im5.lcs.mit.edu.lcs.mit.edu> from "Daniel Risacher" at Apr 26, 95 04:08:27 pm
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 2717      
+
+*** EOOH ***
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Subject: Re: MacROMs
+To: magnus@mit.edu
+Date: Thu, 27 Apr 1995 10:49:21 +0200 (MET DST)
+In-Reply-To: <9504262008.AA01414@im5.lcs.mit.edu.lcs.mit.edu> from "Daniel Risacher" at Apr 26, 95 04:08:27 pm
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 2717      
+
+Hi Dan,
+
+>     Walter> will disable the specific interrupt.  My understanding of
+>     Walter> line 1 above is that it _resets_ the interrupt flag to
+>     Walter> acknowledge the interrupt (I will look into the manual of
+>     Walter> the 6522 VIA this evening to be sure).
+
+I check it, it is correct.
+
+> Actually, the drivers are supposed to be installed by calling a chain
+> of procedures installed at jADBProc.  BSD sets this to a pointer to
+> adb_jadbproc which is just 'rts'.  The ADBReInit code should initalize
+> the device table, but the device handler code doesn't get installed
+> under the BSD scheme until *after* ADBReInit returns- and is set to be
+> adb_asmcomplete for both the mouse and the kbd by adb_init().
+> 
+> Did that make sense?  I don't think PostEvent matters.  We want the
+> device handler for both kbd and mouse to be adb_asmcomplete.
+> 
+Hmm, does that mean that the only thing we need is an interrupt routine
+which accepts incoming messages from the ADB chip and hands it to
+adb_asmcomplete() ?  That is essentially what ADBOp does if I am not
+mistaken. 
+If so, it should not be to big a problem starting from the Think C
+program. Of cause there is some work to be done to change the routine
+from polling to interrupt operation.
+Furthermore we would possibly lose the address resolution capability of
+ADBReInit. More than one keyboard or mouse could then be a problem.
+
+>     Walter> From what I have seen, there are
+>     Walter> at least three pointers to strings
+>     Walter> which will be sent one after the other and one or two
+>     Walter> strings to accept received messages. I have to bring my
+>     Walter> papers and write it down for you.
+Here is what I found so far (A2 contains ADBState base address):
+      00(A2) Flags
+      02(A2) length of first send string 
+      04(A2) pointer to first send string
+      08(A2) length of second send string
+      0a(A2) pointer to second send setring 
+      0e(A2) space left in receive buffer (see 18(A2))
+      10(A2) index to receive buffer      (see 18(A2))
+      12(A2) length of second receive buffer
+      14(A2) pointer to second receive buffer  
+      18(A2) base pointer to receive buffer
+      2c(A2) ???  (used to reload 30(A2))
+      30(A2) ???
+
+> Also, the ADBState initialization code
+> is at 408147C0. 
+Didn't yet see this one, I wil have a look to it this evening
+
+Ciao 
+   Walter
+-- 
+EMail: walter@ghpc8.ihf.rwth-aachen.de   | SnailMail: Walter Ruetten
+                                            _o        Turmstr. 190
+Phone: ++49 241 807945                   _`\_<,       52064 Aachen
+Fax  : ++49 241 8888213                 (*)/'(*)      Germany
+  "History --- an agreeable set of untruths"  -- Powhiri Rika-Heke
+
+
+1, filed,,
+Mail-from: From walter@ghpc8.ihf.rwth-aachen.de Tue May  2 03:54:20 1995
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA21802; Tue, 2 May 95 03:54:04 EDT
+Received: from ghpc6.ihf.RWTH-Aachen.DE by MIT.EDU with SMTP
+	id AA00178; Tue, 2 May 95 03:53:57 EDT
+Received: (from walter@localhost) by ghpc6.ihf.rwth-aachen.de (8.6.8/8.6.6) id JAA28682 for magnus@mit.edu; Tue, 2 May 1995 09:53:12 +0200
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Message-Id: <199505020753.JAA28682@ghpc6.ihf.rwth-aachen.de>
+Subject: Re: ADBReInit init
+To: magnus@mit.edu
+Date: Tue, 2 May 1995 09:53:11 +0200 (MET DST)
+In-Reply-To: <9504282155.AA21553@im2.lcs.mit.edu.lcs.mit.edu> from "Daniel Risacher" at Apr 28, 95 05:55:48 pm
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 1869      
+
+*** EOOH ***
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Subject: Re: ADBReInit init
+To: magnus@mit.edu
+Date: Tue, 2 May 1995 09:53:11 +0200 (MET DST)
+In-Reply-To: <9504282155.AA21553@im2.lcs.mit.edu.lcs.mit.edu> from "Daniel Risacher" at Apr 28, 95 05:55:48 pm
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 1869      
+
+Hi Dan,
+
+> Your IIvi
+>  00000dd0:  00 00 77 3f  01 00 01 a6
+> My IIsi:
+>  00000dd0:  00 00 77 3f  01 00 01 26
+Thanks for the info.
+
+> For instance, after n seconds, the dummy tick handler
+> jsr's to the ADB handler (or something like that) so
+> that the ADB chip gets serviced and vPB3 goes high.
+
+Yesterday I commented out the reset of the ADB_READY Flag in the vIFR
+which is found in mrg_initadbintr() and implemented the call to Egret
+init (0x408147c4 with a0 set to _ADBBase) whenever the machinetype is
+MACH_CLASSIIsi. 
+After running through the init routine, I get the Lvl1dt panic ervery
+second, which tells us two things:
+1. it is the timer tick 
+2. the Egret chip _gets_ serviced because this timer tick is transmitted
+   as a very normal Egret chip to CPU message, just like the ADB
+   messages. So no need to twiddle with vPB3.
+ 
+I then had trouble with register a2 being altered which causes program
+execution to continue at ADBBase ! which is not a Good Thing (tm).
+Probably have to save some registers before calling the Egret init.
+
+Looking again through the ADBReInit code (the one Brad jumps to), I
+think that these inits might be sufficient to get the ADB via Egret code
+to run. Perhaps there is no need to check the ABDReInit+0x0b0 code
+further. 
+
+I will look into these things further this evening, but I think we are
+very close.
+
+Ciao 
+ Walter
+
+PS: If you happen to catch the CPU looping in the Egret code, most of the
+time a0 should point to the current adb command, so you can look at what
+should happen next. 
+--
+EMail: walter@ghpc8.ihf.rwth-aachen.de   | SnailMail: Walter Ruetten
+                                            _o        Turmstr. 190
+Phone: ++49 241 807945                   _`\_<,       52064 Aachen
+Fax  : ++49 241 8888213                 (*)/'(*)      Germany
+  "History --- an agreeable set of untruths"  -- Powhiri Rika-Heke
+
+
+1, filed, answered,,
+Mail-from: From walter@ghpc8.ihf.rwth-aachen.de Sun May  7 10:41:18 1995
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA09429; Sun, 7 May 95 10:41:12 EDT
+Received: from ghpc6.ihf.RWTH-Aachen.DE by MIT.EDU with SMTP
+	id AA25662; Sun, 7 May 95 10:41:01 EDT
+Received: (from walter@localhost) by ghpc6.ihf.rwth-aachen.de (8.6.8/8.6.6) id QAA16467 for magnus@mit.edu; Sun, 7 May 1995 16:40:59 +0200
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Message-Id: <199505071440.QAA16467@ghpc6.ihf.rwth-aachen.de>
+Subject: Re: ADBReInit init
+To: magnus@mit.edu
+Date: Sun, 7 May 1995 16:40:58 +0200 (MET DST)
+In-Reply-To: <9505061840.AA04388@im2.lcs.mit.edu.lcs.mit.edu> from "Daniel Risacher" at May 6, 95 02:40:35 pm
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 1512      
+
+*** EOOH ***
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Subject: Re: ADBReInit init
+To: magnus@mit.edu
+Date: Sun, 7 May 1995 16:40:58 +0200 (MET DST)
+In-Reply-To: <9505061840.AA04388@im2.lcs.mit.edu.lcs.mit.edu> from "Daniel Risacher" at May 6, 95 02:40:35 pm
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 1512      
+
+> 
+> 
+> Walter -
+> 
+> I'm not sure if this was an inadvertent mistake or if it's important-
+> you wrote (quoted below) that you called the Egret init code with a0
+> set to ADBBase.  When I disassembled this routine (0x408147c4), I 
+ooops, that should have been ADBState, which points to mrg_store2.
+Essentially this is a null operation because I load a0 from 0x0de0
+(ADBState) and the routine stores is at the same place. I am not sure
+about allocating memory with the NewPtr function. Anyway, we already
+have the storage ready.
+
+Trying further, I got again into this infinite (well, quite infinite)
+loop of Egret traps (trapnum = 0x92).
+This morning I realised that the initialisation of ADBBase+0x0184 is
+missing in Brads code. This location is set to 0xff01 and form part of
+the first command sent via the Egret chip. Perhaps this changes
+something.
+hopefully, my Mac is busy compiling the new kernel.
+
+By the way, I will be on hollyday from 9 to 30 of march (to the
+southwest of ireland), so there may be a substatial delay in the
+answering of Emails.
+
+I recently gave an update of our current work to John (jpw@insoft.com).
+Did he already contact you?
+
+So long 
+  Walter
+-- 
+EMail: walter@ghpc8.ihf.rwth-aachen.de   | SnailMail: Walter Ruetten
+                                            _o        Turmstr. 190
+Phone: ++49 241 807945                   _`\_<,       52064 Aachen
+Fax  : ++49 241 8888213                 (*)/'(*)      Germany
+  "History --- an agreeable set of untruths"  -- Powhiri Rika-Heke
+
+
+1,,
+Mail-from: From walter@ghpc8.ihf.rwth-aachen.de Mon May  8 03:45:48 1995
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA09979; Mon, 8 May 95 03:45:36 EDT
+Received: from macbeth.ihf.RWTH-Aachen.DE by MIT.EDU with SMTP
+	id AA20065; Mon, 8 May 95 03:45:17 EDT
+Received: (from walter@localhost) by macbeth.ihf.rwth-aachen.de (8.6.9/8.6.6) id JAA12983; Mon, 8 May 1995 09:44:42 +0200
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Message-Id: <199505080744.JAA12983@macbeth.ihf.rwth-aachen.de>
+Subject: back from ADBReInit
+To: magnus@mit.edu
+Date: Mon, 8 May 1995 09:44:32 +0200 (MET DST)
+Cc: jpw@insoft.com, grantham@tenon.com
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 18761     
+
+*** EOOH ***
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Subject: back from ADBReInit
+To: magnus@mit.edu
+Date: Mon, 8 May 1995 09:44:32 +0200 (MET DST)
+Cc: jpw@insoft.com, grantham@tenon.com
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 18761     
+
+Hi Dan, John and Brad,
+
+hold your breath, yesterday I got through the ADBReInit routine on my
+MacIIvi, though there are some mysteries left.
+
+I took some of the initialization code from ADBReInit+0x0b0 (main
+problem was the missing init at ADBBase+0x184) into macrom.c (see below)
+and got through the ADBReInit code. My changes are all marked with a
+comment starting with WRU and a date (yymmdd).
+
+As the lvl1dt_panic() (from the table in low memory, 0x192) gets called
+every second from the Egret code, I patched the corresponding printf()
+to give only a colon (:), so don't panic when you see colons appearing
+on your screen, it only tells you that the Egret is alive. If there is
+no use for this interrupt, it should be replaced by a rts instruction. 
+
+What remains unclear at the moment is why I only get through ADBReInit
+when compiling with MRG_DEBUG defined. Doing this gives about 100 to 200
+aline supervisor traps to Egret (0x92) and finally several trap messages
+from CountADB etc. Give it some time, on my terminal this lasts around
+30 seconds, on the nubus display around two minutes due to poor
+scrolling speed. 
+
+After the 'Back from ADBReInit', it then list the keyboard and mouse,
+then hangs at grf0 init. Was there something broken in the grf.c of the
+current kernel around 4th of april, when I last supped the kernel ?
+Or is there still something wrong with the ADB stuff ?
+
+When compiling the modified macrom.c without MRG_DEBUG, the only thing I
+get is the colon every second from the timer tick, but after a minute, I
+still don't get the 'Back from ADBReInit'. Might this be a timing
+problem? The aline ... message takes some 10ms to print on the terminal,
+perhaps we need some delay before repeatedly calling the Egret trap?
+
+As I am away on holiday for three weeks from tomorrow, I just add my
+modified version of macrom.c to this Email. Perhaps you get a more
+stable version to run?
+
+Happy hacking,
+  Walter                                (see below for code of macrom.c)
+-- 
+EMail: walter@ghpc8.ihf.rwth-aachen.de   | SnailMail: Walter Ruetten
+                                            _o        Turmstr. 190
+Phone: ++49 241 807945                   _`\_<,       52064 Aachen
+Fax  : ++49 241 8888213                 (*)/'(*)      Germany
+  "History --- an agreeable set of untruths"  -- Powhiri Rika-Heke
+
+-------- begin macrom.c (modified by Walter Ruetten, 07.may.1995) --------
+/*	$NetBSD: macrom.c,v 1.2 1995/03/26 18:10:23 briggs Exp $	*/
+
+/*-
+ * Copyright (C) 1994	Bradley A. Grantham
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *	This product includes software developed by Bradley A. Grantham.
+ * 4. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * Mac ROM Glue
+ *
+ * This allows MacBSD to access (in a limited fashion) routines included
+ * in the Mac ROMs, like ADBReInit.
+ *
+ * As a (fascinating) side effect, this glue allows ROM code (or any other
+ * MacOS code) to call MacBSD kernel routines, like NewPtr.
+ *
+ * Uncleaned-up weirdness, 10/6/94
+ * 	Check mrg_setvectors for IIsi stuff, and generalize the Egret
+ *	(a092) trap.  Right now, I'm hardcoding it to try and make the
+ *	IIsi work.	-BG
+ */
+
+#include <sys/types.h>
+#include <sys/param.h>
+#include "via.h"
+#include "macrom.h"
+#include <sys/malloc.h>
+#include <machine/cpu.h>
+
+#include <machine/frame.h>
+
+	/* trap modifiers (put it macrom.h) */
+#define TRAP_TOOLBOX(a)	((a) & 0x800)
+#define TRAP_PASSA0(a)	((a) & 0x100)
+#define TRAP_NUM(a)	(TRAP_TOOLBOX(a) ? (a) & 0x3ff : (a) & 0xff)
+#define TRAP_SYS(a)	((a) & 0x400)
+#define TRAP_CLEAR(a)	((a) & 0x200)
+
+
+	/* Mac Rom Glue global variables */
+u_char mrg_adbstore[512]; /* ADB Storage - what size does this need to be? */
+u_char mrg_adbstore2[512]; /* ADB Storage - what size does this need to be? */
+u_char mrg_adbstore3[512]; /* ADB Storage - what size does this need to be? */
+caddr_t	mrg_romadbintr = (caddr_t)0x40807002; /* ROM ADB interrupt */
+caddr_t	mrg_rompmintr = 0; /* ROM PM (?) interrupt */
+char *mrg_romident = NULL; /* identifying string for ROMs */
+
+
+/*
+ * Last straw functions; we didn't set them up, so freak out!
+ * When someone sees these called, we can finally go back and
+ * bother to implement them.
+ */
+void mrg_lvl1dtpanic()		/* Lvl1DT stopper */
+{ printf(":");
+/* WRU 950502    printf("Agh!  I was called from Lvl1DT!!!\n"); */
+/* WRU 950501    Debugger(); */
+}
+
+void mrg_lvl2dtpanic()		/* Lvl2DT stopper */
+{ printf("Agh!  I was called from Lvl2DT!!!\n"); Debugger(); }
+
+void mrg_jadbprocpanic()	/* JADBProc stopper */
+{printf("Agh!  Called JADBProc!\n"); Debugger(); }
+
+void mrg_jswapmmupanic()	/* jSwapMMU stopper */
+{printf("Agh!  Called jSwapMMU!\n"); Debugger(); }
+
+void mrg_jkybdtaskpanic()	/* JKybdTask stopper */
+{printf("Agh!  Called JKybdTask!\n"); Debugger(); }
+
+
+long mrg_adbintr()	/* Call ROM ADB Interrupt */
+{
+	if(mrg_romadbintr != NULL)
+	{
+#if defined(MRG_TRACE)
+		tron();
+#endif
+
+		/* Gotta load a1 with VIA address. */
+		/* ADB int expects it from Mac intr routine. */
+		asm("
+			movml	#0xffff, sp@-	| better save all registers! 
+			movl	%0, a0
+			movl	_VIA, a1
+			jbsr	a0@
+			movml	sp@+, #0xffff"	/* better restore all registers! */
+			:
+			: "g" (mrg_romadbintr));
+
+#if defined(MRG_TRACE)
+		troff();
+#endif
+
+	}
+	return(1);
+}
+
+
+long mrg_pmintr()	/* Call ROM PM Interrupt */
+{
+	if(mrg_rompmintr != NULL)
+	{
+#if defined(MRG_TRACE)
+		tron();
+#endif
+
+		/* Gotta load a1 with VIA address. */
+		/* ADB int expects it from Mac intr routine. */
+		asm("
+			movml	#0xffff, sp@-	| better save all registers! 
+			movl	%0, a0
+			movl	_VIA, a1
+			jbsr	a0@
+			movml	sp@+, #0xffff"	/* better restore all registers! */
+			:
+			: "g" (mrg_rompmintr));
+
+#if defined(MRG_TRACE)
+		troff();
+#endif
+
+	}
+	return(1);
+}
+
+
+void mrg_notrap()
+{
+	printf("Aigh!\n");
+	panic("We're doomed!\n");
+}
+
+
+int myowntrap()
+{
+	printf("Oooo!  My Own Trap Routine!\n");
+	return(50);
+}
+
+
+int mrg_NewPtr()
+{
+	int result = noErr;
+	u_int numbytes;
+	u_long trapword;
+	caddr_t ptr;
+
+	asm("	movl	d1, %0
+		movl	d0, %1"
+		: "=g" (trapword), "=g" (numbytes));
+
+#if defined(MRG_SHOWTRAPS)
+	printf("mrg: NewPtr(%d bytes, %sclear, %ssys)", numbytes,
+		TRAP_SYS(trapword) ? "" : "no ",
+		TRAP_CLEAR(trapword) ? "" : "no ");
+#endif
+
+		/* plus 4 for size */
+	ptr = malloc(numbytes + 4 , M_DEVBUF, M_NOWAIT); /* ?? */
+		/* We ignore "Sys;" where else would it come from? */
+		/* plus, (I think), malloc clears block for us */
+
+	if(ptr == NULL){
+		result = memFullErr;
+#if defined(MRG_SHOWTRAPS)
+		printf(" failed.\n");
+#endif
+	}else{
+#if defined(MRG_SHOWTRAPS)
+		printf(" succeded = %x.\n", ptr);
+#endif
+		*(u_long *)ptr = numbytes;
+		ptr += 4;
+	}
+
+	asm("	movl	%0, a0" :  : "g" (ptr));
+	return(result);
+}
+
+
+int mrg_DisposPtr()
+{
+	int result = noErr;
+	caddr_t ptr;
+
+	asm("	movl	a0, %0" : "=g" (ptr));
+
+#if defined(MRG_SHOWTRAPS)
+	printf("mrg: DisposPtr(%x)\n", ptr);
+#endif
+
+	if(ptr == 0){
+		result = memWZErr;
+	}else{
+		free(ptr - 4, M_DEVBUF);
+	}
+
+	return(result);
+}
+
+
+int mrg_GetPtrSize()
+{
+	int result = noErr;
+	caddr_t ptr;
+
+	asm("	movl	a0, %0" : "=g" (ptr));
+
+#if defined(MRG_SHOWTRAPS)
+	printf("mrg: GetPtrSize(%x)\n", ptr);
+#endif
+
+	if(ptr == 0){
+		return(memWZErr);
+	}else
+		return(*(int *)(ptr - 4));
+}
+
+
+int mrg_SetPtrSize()
+{
+	int result = noErr;
+	caddr_t ptr;
+	int newbytes;
+
+	asm("	movl	a1, %0
+		movl	d0, %1"
+		: "=g" (ptr), "=g" (newbytes));
+
+#if defined(MRG_SHOWTRAPS)
+	printf("mrg: SetPtrSize(%x, %d) failed\n", ptr, newbytes);
+#endif
+
+	return(memFullErr);	/* How would I handle this, anyway? */
+}
+
+
+	/* trap jump address tables (different per machine?) */
+	/* Can I just use the tables stored in the ROMs? */
+	/* *Is* there a table stored in the ROMs? */
+	/* (BTW, this table is initialized for Mac II.) */
+caddr_t mrg_OStraps[256] = {
+		/* God, I love gcc.  see GCC2 manual, section 2.17, */
+		/* "labeled elements in initializers." */
+	[0x1e] (caddr_t)mrg_NewPtr,
+		(caddr_t)mrg_DisposPtr,
+		(caddr_t)mrg_SetPtrSize,
+		(caddr_t)mrg_GetPtrSize,
+	[0x77] (caddr_t)0x40807778,	/* CountADBs */
+		(caddr_t)0x40807792,	/* GetIndADB */
+		(caddr_t)0x408077be,	/* GetADBInfo */
+		(caddr_t)0x408077c4,	/* SetADBInfo */
+		(caddr_t)0x40807704,	/* ADBReInit */
+		(caddr_t)0x408072fa,	/* ADBOp */
+	[0x85] 0,			/* PMgrOp (not on II) */
+	[0x92] (caddr_t)0x40814800,	/* Egret */
+};
+
+
+caddr_t mrg_ToolBoxtraps[1024] = {
+	[0x1a0] (caddr_t)mrg_GetResource,
+	[0x1af] (caddr_t)mrg_ResError,
+};
+
+
+	/* handle a supervisor mode A-line trap */
+void mrg_aline_super(struct frame *frame)
+{
+	caddr_t trapaddr;
+	u_short trapword;
+	int isOStrap;
+	int trapnum;
+	int a0passback;
+	u_long a0bucket, d0bucket;
+
+#if defined(MRG_DEBUG)
+	printf("mrg: a super");
+#endif
+
+	trapword = *(u_short *)frame->f_pc;
+#if defined(MRG_DEBUG)
+	printf(" wd 0x%x", trapword);
+#endif
+	isOStrap = ! TRAP_TOOLBOX(trapword);
+	trapnum = TRAP_NUM(trapword);
+#if defined(MRG_DEBUG)
+	printf(" %s # 0x%x", isOStrap? "OS" :
+		"ToolBox", trapnum);
+#endif
+
+	/* Only OS Traps come to us; _alinetrap takes care of ToolBox
+	  traps, which are a horrible Frankenstein-esque abomination. */
+
+	trapaddr = mrg_OStraps[trapnum];
+#if defined(MRG_DEBUG)
+	printf(" addr 0x%x\n", trapaddr);
+/* WRU 950506 */
+/*	if (trapnum == 0x7b)
+		Debugger();
+	if (trapnum == 0x92)
+		printf(" a0 = 0x%x\n", frame->f_regs[8]); */
+#endif
+	if(trapaddr == NULL){
+		printf("unknown %s trap 0x%x, no trap address available\n",
+			isOStrap ? "OS" : "ToolBox", trapword);
+		panic("mrg_aline_super()");
+	}
+	a0passback = TRAP_PASSA0(trapword);
+
+#if defined(MRG_TRACE)
+	tron();
+#endif
+
+/* WRU 950411 */
+/*    Debugger(); */
+
+/* 	put trapword in d1 */
+/* 	put trapaddr in a1 */
+/* 	put a0 in a0 */
+/* 	put d0 in d0 */
+/* save a6 */
+/* 	call the damn routine */
+/* restore a6 */
+/* 	store d0 in d0bucket */
+/* 	store a0 in d0bucket */
+/* This will change a1,d1,d0,a0 and possibly a6 */
+
+	asm("
+		movl	%2, a1
+		movw	%3, d1
+		movl	%4, d0
+		movl	%5, a0
+		jbsr	a1@
+		movl	a0, %0
+		movl	d0, %1"
+
+		: "=g" (a0bucket), "=g" (d0bucket)
+
+		: "g" (trapaddr), "g" (trapword),
+			"m" (frame->f_regs[0]), "m" (frame->f_regs[8])
+
+		: "d0", "d1", "a0", "a1", "a6"
+
+	);
+
+#if defined(MRG_TRACE)
+	troff();
+#endif
+#if defined(MRG_DEBUG)
+ 	printf(" bk");
+#endif
+
+	frame->f_regs[0] = d0bucket;
+	if(a0passback)
+		frame->f_regs[8] = a0bucket;
+
+	frame->f_pc += 2;	/* skip offending instruction */
+
+#if defined(MRG_DEBUG)
+	printf(" exit\n");
+#endif
+}
+
+
+	/* handle a user mode A-line trap */
+void mrg_aline_user()
+{
+#if 1
+	/* send process a SIGILL; aline traps are illegal as yet */
+#else /* how to handle real Mac App A-lines */
+	/* ignore for now */
+	I have no idea!
+	maybe pass SIGALINE?
+	maybe put global information about aline trap?
+#endif
+}
+
+
+extern u_long traceloopstart[];
+extern u_long traceloopend;
+extern u_long *traceloopptr;
+
+
+void dumptrace(
+	void)
+{
+#if defined(MRG_TRACE)
+	u_long *traceindex;
+
+	printf("instruction trace:\n");
+	traceindex = traceloopptr + 1;
+	while(traceindex != traceloopptr)
+	{
+		printf("    %08x\n", *traceindex++);
+		if(traceindex == &traceloopend)
+			traceindex = &traceloopstart[0];
+	}
+#else
+	printf("mrg: no trace functionality enabled\n");
+#endif
+}
+
+
+	/* Set ROM Vectors */
+void mrg_setvectors(
+	romvec_t *rom)
+{
+	if(rom == NULL)
+		return;		/* whoops!  ROM vectors not defined! */
+
+	mrg_romident = rom->romident;
+	mrg_romadbintr = rom->adbintr;
+	mrg_rompmintr = rom->pmintr;
+		/* mrg_adbstore becomes ADBBase */
+	*((unsigned long *)(mrg_adbstore + 0x130)) = (unsigned long)rom->adb130intr;
+
+/* WRU 950424: BEGIN */
+/* in MacIIvi otherwise uninitialized when ADBReInit() runs */
+{
+	int i;
+
+	*((unsigned long *)(0x0dd0)) = 0x0000773f;	/* Egret and ADBReInit look into these */
+	*((unsigned long *)(0x0dd4)) = 0x000001a6;
+
+	for (i=0; i<4; i++)				/* some basic inits */
+		*((unsigned long *)(0x174 + 4*i)) = 0;
+	*((unsigned short *)(0x216)) = 0;
+/*	*((unsigned long *)(0x21a)) = 0x4080aa82;	JKbdTask */
+/*	*((unsigned char *)(0x21e)) = 0;		KdbType	*/
+	*((unsigned short *)(mrg_adbstore + 0x184)) = 0xff01;
+}
+/* WRU 950424: end */
+
+		/* IIsi crap */
+	*((unsigned long *)(mrg_adbstore + 0x180)) = 0x4081517c;
+	*((unsigned long *)(mrg_adbstore + 0x194)) = 0x408151ea;
+
+	jEgret = 0x40814800;
+
+	mrg_OStraps[0x77] = rom->CountADBs;
+	mrg_OStraps[0x78] = rom->GetIndADB;
+	mrg_OStraps[0x79] = rom->GetADBInfo;
+	mrg_OStraps[0x7a] = rom->SetADBInfo;
+	mrg_OStraps[0x7b] = rom->ADBReInit;
+	mrg_OStraps[0x7c] = rom->ADBOp;
+	mrg_OStraps[0x85] = rom->PMgrOp;
+	mrg_OStraps[0x51] = rom->ReadXPRam;
+
+#if defined(MRG_DEBUG)
+	printf("mrg: ROM adbintr 0x%08x\n", mrg_romadbintr);
+	printf("mrg: ROM pmintr 0x%08x\n", mrg_rompmintr);
+	printf("mrg: OS trap 0x77 (CountADBs) = 0x%08x\n", mrg_OStraps[0x77]);
+	printf("mrg: OS trap 0x78 (GetIndADB) = 0x%08x\n", mrg_OStraps[0x78]);
+	printf("mrg: OS trap 0x79 (GetADBInfo) = 0x%08x\n", mrg_OStraps[0x79]);
+	printf("mrg: OS trap 0x7a (SetADBInfo) = 0x%08x\n", mrg_OStraps[0x7a]);
+	printf("mrg: OS trap 0x7b (ADBReInit) = 0x%08x\n", mrg_OStraps[0x7b]);
+	printf("mrg: OS trap 0x7c (ADBOp) = 0x%08x\n", mrg_OStraps[0x7c]);
+	printf("mrg: OS trap 0x85 (PMgrOp) = 0x%08x\n", mrg_OStraps[0x85]);
+
+#endif
+}
+
+
+	/* To find out if we're okay calling ROM vectors */
+int mrg_romready(
+	void)
+{
+	return(mrg_romident != NULL);
+}
+
+
+extern unsigned long		IOBase;
+extern volatile unsigned char	*sccA;
+
+
+	/* initialize Mac ROM Glue */
+void mrg_init()
+{
+	int i;
+	char *findername = "MacBSD FakeFinder";
+	caddr_t ptr;
+	caddr_t *handle;
+	int sizeptr;
+	extern short mrg_ResErr;
+
+	if(mrg_romready()){
+		printf("mrg: '%s' rom glue", mrg_romident);
+
+#if defined(MRG_TRACE)
+#if defined(MRG_FOLLOW)
+		printf(", tracing on (verbose)");
+#else /* ! defined (MRG_FOLLOW) */
+		printf(", tracing on (silent)");
+#endif /* defined(MRG_FOLLOW) */
+#else /* !defined(MRG_TRACE) */
+		printf(", tracing off");
+#endif	/* defined(MRG_TRACE) */
+
+#if defined(MRG_DEBUG)
+		printf(", debug on");
+#else /* !defined(MRG_DEBUG) */
+		printf(", debug off");
+#endif /* defined(MRG_DEBUG) */
+
+#if defined(MRG_SHOWTRAPS)
+		printf(", verbose traps");
+#else /* !defined(MRG_SHOWTRAPS) */
+		printf(", silent traps");
+#endif /* defined(MRG_SHOWTRAPS) */
+	}else{
+		printf("mrg: kernel has no ROM vectors for this machine!\n");
+		return;
+	}
+
+	printf("\n");
+
+#if defined(MRG_DEBUG)
+	printf("mrg: start init\n");
+#endif
+		/* expected globals */
+	ADBBase = &mrg_adbstore[0];
+	ADBState = &mrg_adbstore2[0];
+	ADBYMM = &mrg_adbstore3[0];
+	MinusOne = 0xffffffff;
+	Lo3Bytes = 0x00ffffff;
+	VIA = (caddr_t)Via1Base;
+	MMU32Bit = 1; /* ?means MMU is in 32 bit mode? */
+  	if(TimeDBRA == 0)
+		TimeDBRA = 0xa3b;		/* BARF default is Mac II */
+  	if(ROMBase == 0)
+		ROMBase = (caddr_t)0x40800000;	/* BARF default is Mac II */
+
+	strcpy(&FinderName[1], findername);
+	FinderName[0] = (u_char) strlen(findername);
+#if defined(MRG_DEBUG)
+	printf("After setting globals\n");
+#endif
+
+		/* Fake jump points */
+	for(i = 0; i < 8; i++) /* Set up fake Lvl1DT */
+		Lvl1DT[i] = mrg_lvl1dtpanic;
+	for(i = 0; i < 8; i++) /* Set up fake Lvl2DT */
+		Lvl2DT[i] = mrg_lvl2dtpanic;
+	Lvl1DT[2] = (void (*)())mrg_romadbintr;
+	Lvl1DT[4] = (void (*)())mrg_rompmintr;
+	JADBProc = mrg_jadbprocpanic; /* Fake JADBProc for the time being */
+	jSwapMMU = mrg_jswapmmupanic; /* Fake jSwapMMU for the time being */
+	JKybdTask = mrg_jkybdtaskpanic; /* Fake jSwapMMU for the time being */
+
+	jADBOp = (void (*)())mrg_OStraps[0x7c];	/* probably very dangerous */
+	mrg_VIA2 = (caddr_t)(Via1Base + VIA2 * 0x2000);	/* see via.h */
+	SCCRd = (caddr_t)(IOBase + sccA);   /* ser.c ; we run before serinit */
+
+	switch(mach_cputype()){
+		case MACH_68020:	CPUFlag = 2;	break;
+		case MACH_68030:	CPUFlag = 3;	break;
+		case MACH_68040:	CPUFlag = 4;	break;
+		default:
+			printf("mrg: unknown CPU type; cannot set CPUFlag\n");
+			break;
+	}
+
+#if defined(MRG_TEST)
+	printf("Allocating a pointer...\n");
+	ptr = (caddr_t)NewPtr(1024);
+	printf("Result is 0x%x.\n", ptr);
+	sizeptr = GetPtrSize((Ptr)ptr);
+	printf("Pointer size is %d\n", sizeptr);
+	printf("Freeing the pointer...\n");
+	DisposPtr((Ptr)ptr);
+	printf("Free'd.\n");
+
+	for(i = 0; i < 500000; i++)
+		if((i % 100000) == 0)printf(".");
+	printf("\n");
+
+	mrg_ResErr = 0xdead;	/* set an error we know */
+	printf("Getting error code...\n");
+	i = ResError();
+	printf("Result code (0xdeadbaaf): %x\n", i);
+	printf("Getting a Resource...\n");
+	handle = GetResource('ADBS', 2);
+	printf("Handle result from GetResource: 0x%x\n", handle);
+	printf("Getting error code...\n");
+	i = ResError();
+	printf("Result code (-192?) : %d\n", i);
+
+	for(i = 0; i < 500000; i++)
+		if((i % 100000) == 0)printf(".");
+	printf("\n");
+
+#if defined(MRG_TRACE)
+	printf("Turning on a trace\n");
+	tron();
+	printf("We are now tracing\n");
+	troff();
+	printf("Turning off trace\n");
+	dumptrace();
+#endif /* MRG_TRACE */
+
+	for(i = 0; i < 500000; i++)
+		if((i % 100000) == 0)printf(".");
+	printf("\n");
+#endif /* MRG_TEST */
+
+#if defined(MRG_DEBUG)
+	printf("after setting jump points\n");
+	printf("mrg: end init\n");
+#endif
+}
+
+
+void mrg_initadbintr()
+{
+	int i;
+
+/* WRU 950501
+	via_reg(VIA1, vIFR) = 0x4;	*/
+
+	if(current_mac_model->class == MACH_CLASSII)
+		via_reg(VIA1, vIER) = 0x84; /* enable ADB interrupt on IIs. */
+
+	if(current_mac_model->class == MACH_CLASSIIsi)
+	{
+/* WRU 950502 */
+/*              Debugger(); */
+                /* call init for ADBState */
+		asm("	movml	a0-a2, sp@-
+			movl	0x0de0, a0
+			jbsr	0x408147c4
+			movml	sp@+, a0-a2 ");
+	}
+}
+
+-------- end macrom.c (modified by Walter Ruetten, 07.may.1995) --------
+
+
+1, filed,,
+Summary-line:  8-May  macbsd-general@netbsd.org  #IIsi/IIvi/IIvx/? test kernel
+Mail-from: From owner-macbsd-general@netbsd.org Wed May 10 16:44:10 1995
+Return-Path: <owner-macbsd-general@netbsd.org>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA16186; Wed, 10 May 95 16:44:04 EDT
+Received: from pain.lcs.mit.edu by MIT.EDU with SMTP
+	id AA06578; Wed, 10 May 95 16:43:56 EDT
+Received: (from daemon@localhost) by pain.lcs.mit.edu (8.6.9/8.6.9) id XAA01044; Tue, 9 May 1995 23:15:34 -0400
+Received: from im2.lcs.mit.edu.lcs.mit.edu by pain.lcs.mit.edu (8.6.9/8.6.9) with SMTP id XAA01035; Tue, 9 May 1995 23:15:09 -0400
+Received: by im2.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA06956; Mon, 8 May 95 22:57:37 EDT
+Date: Mon, 8 May 95 22:57:37 EDT
+From: magnus@im.lcs.mit.edu (Daniel Risacher)
+Message-Id: <9505090257.AA06956@im2.lcs.mit.edu.lcs.mit.edu>
+To: macbsd-general@netbsd.org, macbsd-development@netbsd.org
+Subject: IIsi/IIvi/IIvx/? test kernel
+Reply-To: magnus@mit.edu
+Sender: owner-macbsd-general@netbsd.org
+Precedence: list
+X-Loop: macbsd-general@NetBSD.ORG
+
+*** EOOH ***
+Return-Path: <owner-macbsd-general@netbsd.org>
+Date: Mon, 8 May 95 22:57:37 EDT
+From: magnus@im.lcs.mit.edu (Daniel Risacher)
+To: macbsd-general@netbsd.org, macbsd-development@netbsd.org
+Subject: IIsi/IIvi/IIvx/? test kernel
+Reply-To: magnus@mit.edu
+Sender: owner-macbsd-general@netbsd.org
+Precedence: list
+X-Loop: macbsd-general@NetBSD.ORG
+
+
+I am pleased to announce that my IIsi boots successfully with it's own
+extended ADB keyboard and internal video.
+
+Walter Ruetten and I, amoung others, have been working on this for
+some time. Walter has made a strategic breakthrough, but I have the
+joy of seeing it finally work.  Walter got it through ADBReInit, but
+there were still some really wierd bugs.  Today I kludged it until it
+was useful, but the code is still very gross and I don't really know
+why it works exactly.  More work is required. It prints an extra half
+page of wierd debugging messages while booting, but it works ok after
+that.
+
+But, for those of you who want a working kernel on a IIsi-type
+machine, please try :
+
+ftp://im.lcs.mit.edu/magnus/netbsd.950508 
+
+and let me know if you have any success.  This probably will help
+IIsi's & IIvi's, as well as IIvx, and any other machine with ROMs
+similar to the IIsi.  It will probably NOT work on other machines.  If
+you know your ROMs aren't like the IIsi, it's probably not worth the
+effort.
+
+- Daniel Risacher
+
+PS: Since I really have to start working on my classes, and Walter is
+going on vacation, we probably won't work on this stuff for a little
+while.  If anyone else wants to look at it, the file:
+ftp://im.lcs.mit.edu/magnus/macrom.c has all the key changes.  You
+need to compile with MRG_DEBUG defined for it to work, and there are
+some print statements in adb_complete() in adbsys.c which should be
+commented out.
+
+
+1,,
+Summary-line:  7-Jun             jpw@insoft.com  #Low level ADB/ROM stuff
+Mail-from: From jpw@insoft.com Wed Jun  7 09:42:22 1995
+Return-Path: <jpw@insoft.com>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA02648; Wed, 7 Jun 95 09:41:58 EDT
+Received: from uu7.psi.com by MIT.EDU with SMTP
+	id AA05204; Wed, 7 Jun 95 09:41:59 EDT
+Received: by uu7.psi.com (5.65b/4.0.940727-PSI/PSINet) via UUCP;
+        id AA25326 for ; Wed, 7 Jun 95 09:32:14 -0400
+Received: from snake by insoft.com (4.1/InSoftMail-1.4)
+	id AA16047; Wed, 7 Jun 95 09:23:04 EDT
+From: John P. Wittkoski <jpw@insoft.com>
+Message-Id: <9506071323.AA16047@insoft.com>
+Received: by snake (1.37.109.4/MailPunt-1.1)
+	id AA02993; Wed, 7 Jun 95 09:20:49 -0400
+Subject: Low level ADB/ROM stuff
+To: magnus@mit.edu, walter@ghpc8.ihf.rwth-aachen.de
+Date: Wed, 7 Jun 95 9:20:49 EDT
+Cc: briggs@mail.vt.edu, grantham@tenon.com
+Mailer: Elm [revision: 70.85]
+
+*** EOOH ***
+Return-Path: <jpw@insoft.com>
+From: John P. Wittkoski <jpw@insoft.com>
+Subject: Low level ADB/ROM stuff
+To: magnus@mit.edu, walter@ghpc8.ihf.rwth-aachen.de
+Date: Wed, 7 Jun 95 9:20:49 EDT
+Cc: briggs@mail.vt.edu, grantham@tenon.com
+Mailer: Elm [revision: 70.85]
+
+Walter and Dan (and Allen and Brad, too),
+I have been poking around in the lower levels of the ROMs and have found some 
+information which may be useful.
+
+The _Egret routine requires some low memory global to be set, as we well know.
+Although right now these are set up by that direct call from the setup 
+routines, I thought a "cleaner" setup might be nicer.
+
+After going through and commenting almost all of the _Egret routine in ROM,
+I am getting a better understanding of how the whole thing works.
+
+Here are the low level globals that are used by _Egret:
+0x19A	Normally contains pointer to the "process next byte" section of the
+	code. This is called repeatedly after the initial ADB command is 
+	sent. Normally (always?) this is set to point to _Egret+0x112.
+0x648	Points to the routine that actually send the ADB command to the
+	hardware. Normally (always?) this is set to point to _Egret.
+	This must be set because parts of the _Egret routine or the ADBOp
+	code reference this.
+0xCEA	This (word value) stores a delay value for use when toggling the
+	vPB4 bits to ACK a byte to the ADB chip. Its value is divided by 8
+	to obtain the delay value. On a 20MHz IIsi it is usually 0x30D.
+0xDE0	This is a pointer to storage space for the command that _Egret is
+	currently working on. The storage space needs to be at least 0x34 
+	bytes long, but I have not exhaustively verified this. The space
+	itself looks like it does not need to be initialized any special way
+	before calling _Egret.
+0xB22	This is HwCfgFlags. If bit 6 is set, it means the machine has a
+	newer style RTC chip. (Newer being newer that a 128K Mac). This must
+	be set for the RTC based commands to work.
+0xDD4	This is something like HwCfgFlags. It is not used for the ADB commands
+	themselves, but it used by the _WriteXPram, _ReadXPram, _GetDateTime, 
+	and _SetDateTime functions. If (0xDD4) & 0x70 = 0x20, then the RTC 
+	commands use modified ADB commands instead of the older RTC serial 
+	interface.
+
+And I have verified that all the old RTC commands now use modified ADB
+commands. I am in the process of mapping out how to access all the different
+RTC functions and how to encode them properly.
+
+My first happy discovery is sending 0x01 0x03 to the ADB chip returns the
+current clock value (i.e. from the clock chip itself, seconds since 1904)
+This can be used to set the kernel's clock setting at boot time. Note that
+this is _NOT_ a command you send using ADBOp. ADBOp calls Egret for ADB 
+commands. All the RTC commands (_WriteXPram, _ReadXPram, _GetDateTime,
+_SetDateTime) call the Egret routine directly, they do not call ADBOp.
+
+I have also been working on the code that Walter sent about writing to the 
+ADB chip directly. I now have a reliable routines that can read and write 
+to the ADB chip on a IIsi machine without going though the ROMS. I need to 
+clean them up a little however before they are finished. It would not be 
+too difficult to mimic the ROM style ADB routines such as ADBOp, etc and 
+make them call these routines. I do not know if this (direct ADB) is the 
+way to go, since the MRG stuff is basically working, but I have been enjoying 
+learning how the whole thing works regardless.  I plan on putting this code 
+up somewhere soon so it is accessable to those who are interested. I will 
+let you know when and where.
+
+	--John
+
+--
+--------------------------------------------------------------
+ John Wittkoski				InSoft, Inc.
+ Senior Systems Engineer                Phone: (717) 730-9501
+ Email: jpw@insoft.com                  Fax  : (717) 730-9504
+--------------------------------------------------------------
+
+
+1,,
+Summary-line: 14-Jun  walter@ghpc8.ihf.rwth-aac  #Changes to macrom.c
+Mail-from: From walter@ghpc8.ihf.rwth-aachen.de Wed Jun 14 03:29:16 1995
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+Received: from MIT.EDU (PACIFIC-CARRIER-ANNEX.MIT.EDU) by im.lcs.mit.edu (4.1/IM-1.2S) 
+	id AA01603; Wed, 14 Jun 95 03:29:00 EDT
+Received: from ghpc6.ihf.RWTH-Aachen.DE by MIT.EDU with SMTP
+	id AA06737; Wed, 14 Jun 95 03:28:34 EDT
+Received: (from walter@localhost) by ghpc6.ihf.rwth-aachen.de (8.6.8/8.6.6) id JAA00918; Wed, 14 Jun 1995 09:27:15 +0200
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Message-Id: <199506140727.JAA00918@ghpc6.ihf.rwth-aachen.de>
+Subject: Changes to macrom.c
+To: briggs@puma.bevd.blacksburg.va.us (Allen Briggs)
+Date: Wed, 14 Jun 1995 09:27:15 +0200 (MET DST)
+Cc: magnus@mit.edu
+In-Reply-To: <199506091344.JAA04245@puma.bevd.blacksburg.va.us> from "Allen Briggs" at Jun 9, 95 09:44:39 am
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 20308     
+
+*** EOOH ***
+Return-Path: <walter@ghpc8.ihf.rwth-aachen.de>
+From: Walter Ruetten <walter@ghpc8.ihf.rwth-aachen.de>
+Subject: Changes to macrom.c
+To: briggs@puma.bevd.blacksburg.va.us (Allen Briggs)
+Date: Wed, 14 Jun 1995 09:27:15 +0200 (MET DST)
+Cc: magnus@mit.edu
+In-Reply-To: <199506091344.JAA04245@puma.bevd.blacksburg.va.us> from "Allen Briggs" at Jun 9, 95 09:44:39 am
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 20308     
+
+Hi Allen,
+
+here comes the cleaned up version of macrom.c which (hopefully) contains
+only the minimal changes needed to get the Egret chip of IIsi/vi/vx
+running. It is based on the version of macrom.c supped on 11/june/9, the
+file date is 09/april/95 12:04. 
+
+Changes marked 
+  DRR 
+were made by Daniel Risacher (magnus@mit.edu).
+those marked
+  WRU
+are by me, Walter Ruetten (walter@ghpc8.ihf.rwth-aachen.de). We had some
+very helpfull discussion with John Wittkoski (jpw@insoft.com), who
+currently works on a hardware approach to the Egret stuff. That means he
+speaks to the Egret chip directly via the vPB3..5 lines rather than via
+the MRG code. Doing this he recently found the messages to read the
+hardware clock and to shut down the machine! He seems to be the one who
+has the deepest knowledge of what the Egret chip can do.
+
+The kernel I currently work with uses this modified macrom.c. I have
+_not_ tested whether the changes break something on other machines. (By
+the way, the nubus video works again, so don't bother to look into the
+grf* stuff)
+
+Changes to the macrom.c found in the source tree are:
+
+1. void mrg_lvl1dtpanic()
+   
+   was made silent as it is called every second by the Egret routines.
+
+   Probably there should be a dummy routine just for the timer tick
+   (accessed by a jump through address 0x019a) and the other seven jumps
+   in the via1 fake dispatch table (Lvl1DT[]) should remain on the
+   verbose version on mrg_lvl1dtpanic().
+
+2. void mrg_aline_super(struct frame *frame)
+
+   Dan included a variable danprint which triggers _two_ printf("")
+   statement whenever the _NewPtr routine in the MacROMs is called through
+   the traphandler (which in fact happens exactly once on my IIvi).
+
+   Never ask why this works, but Dan says it won't work without these
+   printf() statements or with only one of them.  
+
+3. void mrg_setvectors(romvec_t *rom)
+
+   Some variables describing the machine are initialized to values found
+   on the IIsi and IIvi (0x0dd0 and 0x0dd4).
+
+   Some other variables in low memory are initialized to zero.
+   (Doesn't this criple the vector table used to handle traps and so on???).
+
+   At mrg_adbstore+0x184  a command word is initialized which is used
+   very early while speaking to the Egret chip.
+
+4. void mrg_initadbintr()
+
+   If on a MACH_CLASSIIsi machine, don't fiddle with enabling interrupt,
+   but call the routine _vSetUpTags (0x408147c0) in the MacROMs. 
+   The entry point I used (0x408147c4) avoids calling _NewPtr in the
+   MacROMs and uses the already allocated memory mrg_adbstore2
+   (ADBState) instead. This routine sets up the memory in mrg_adbstore2
+   and enables interrupts.
+
+   Should this entry point eventually be in the machine dependent vector arrays?
+
+While writing this I see that there is still some work to do.  As I will
+be away for two week from thursday, never the less I send you these
+changes for further testing on older machines and perhaps to include it
+in the source tree if it isn't to clumsy.
+
+If further cleanup is required, please let me know.
+
+Ciao
+  Walter
+
+--------- cut here: modified version of macrom.c for MacIIsi/vi/vx ------------
+/*	$NetBSD: macrom.c,v 1.3 1995/04/08 20:46:23 briggs Exp $	*/
+
+/*-
+ * Copyright (C) 1994	Bradley A. Grantham
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *	This product includes software developed by Bradley A. Grantham.
+ * 4. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * Mac ROM Glue
+ *
+ * This allows MacBSD to access (in a limited fashion) routines included
+ * in the Mac ROMs, like ADBReInit.
+ *
+ * As a (fascinating) side effect, this glue allows ROM code (or any other
+ * MacOS code) to call MacBSD kernel routines, like NewPtr.
+ *
+ * Uncleaned-up weirdness, 10/6/94
+ * 	Check mrg_setvectors for IIsi stuff, and generalize the Egret
+ *	(a092) trap.  Right now, I'm hardcoding it to try and make the
+ *	IIsi work.	-BG
+ */
+
+#include <sys/types.h>
+#include <sys/param.h>
+#include "via.h"
+#include "macrom.h"
+#include <sys/malloc.h>
+#include <machine/cpu.h>
+
+#include <machine/frame.h>
+
+	/* trap modifiers (put it macrom.h) */
+#define TRAP_TOOLBOX(a)	((a) & 0x800)
+#define TRAP_PASSA0(a)	((a) & 0x100)
+#define TRAP_NUM(a)	(TRAP_TOOLBOX(a) ? (a) & 0x3ff : (a) & 0xff)
+#define TRAP_SYS(a)	((a) & 0x400)
+#define TRAP_CLEAR(a)	((a) & 0x200)
+
+
+	/* Mac Rom Glue global variables */
+u_char mrg_adbstore[512]; /* ADB Storage - what size does this need to be? */
+u_char mrg_adbstore2[512]; /* ADB Storage - what size does this need to be? */
+u_char mrg_adbstore3[512]; /* ADB Storage - what size does this need to be? */
+caddr_t	mrg_romadbintr = (caddr_t)0x40807002; /* ROM ADB interrupt */
+caddr_t	mrg_rompmintr = 0; /* ROM PM (?) interrupt */
+char *mrg_romident = NULL; /* identifying string for ROMs */
+
+
+/*
+ * Last straw functions; we didn't set them up, so freak out!
+ * When someone sees these called, we can finally go back and
+ * bother to implement them.
+ */
+void mrg_lvl1dtpanic()		/* Lvl1DT stopper */
+{ 
+/* WRU950502: silence it. The timer tick coming from the Egret 
+   triggers the routine via Lvl1DT[2] (adr. 0x19a) every second. */
+/* printf("Agh!  I was called from Lvl1DT!!!\n"); Debugger(); */
+}
+
+void mrg_lvl2dtpanic()		/* Lvl2DT stopper */
+{ printf("Agh!  I was called from Lvl2DT!!!\n"); Debugger(); }
+
+void mrg_jadbprocpanic()	/* JADBProc stopper */
+{printf("Agh!  Called JADBProc!\n"); Debugger(); }
+
+void mrg_jswapmmupanic()	/* jSwapMMU stopper */
+{printf("Agh!  Called jSwapMMU!\n"); Debugger(); }
+
+void mrg_jkybdtaskpanic()	/* JKybdTask stopper */
+{printf("Agh!  Called JKybdTask!\n"); Debugger(); }
+
+
+long mrg_adbintr()	/* Call ROM ADB Interrupt */
+{
+	if(mrg_romadbintr != NULL)
+	{
+#if defined(MRG_TRACE)
+		tron();
+#endif
+
+		/* Gotta load a1 with VIA address. */
+		/* ADB int expects it from Mac intr routine. */
+		asm("
+			movml	#0xffff, sp@-	| better save all registers! 
+			movl	%0, a0
+			movl	_VIA, a1
+			jbsr	a0@
+			movml	sp@+, #0xffff"	/* better restore all registers! */
+			:
+			: "g" (mrg_romadbintr));
+
+#if defined(MRG_TRACE)
+		troff();
+#endif
+
+	}
+	return(1);
+}
+
+
+long mrg_pmintr()	/* Call ROM PM Interrupt */
+{
+	if(mrg_rompmintr != NULL)
+	{
+#if defined(MRG_TRACE)
+		tron();
+#endif
+
+		/* Gotta load a1 with VIA address. */
+		/* ADB int expects it from Mac intr routine. */
+		asm("
+			movml	#0xffff, sp@-	| better save all registers! 
+			movl	%0, a0
+			movl	_VIA, a1
+			jbsr	a0@
+			movml	sp@+, #0xffff"	/* better restore all registers! */
+			:
+			: "g" (mrg_rompmintr));
+
+#if defined(MRG_TRACE)
+		troff();
+#endif
+
+	}
+	return(1);
+}
+
+
+void mrg_notrap()
+{
+	printf("Aigh!\n");
+	panic("We're doomed!\n");
+}
+
+
+int myowntrap()
+{
+	printf("Oooo!  My Own Trap Routine!\n");
+	return(50);
+}
+
+
+int mrg_NewPtr()
+{
+	int result = noErr;
+	u_int numbytes;
+	u_long trapword;
+	caddr_t ptr;
+
+	asm("	movl	d1, %0
+		movl	d0, %1"
+		: "=g" (trapword), "=g" (numbytes));
+
+#if defined(MRG_SHOWTRAPS)
+	printf("mrg: NewPtr(%d bytes, %sclear, %ssys)", numbytes,
+		TRAP_SYS(trapword) ? "" : "no ",
+		TRAP_CLEAR(trapword) ? "" : "no ");
+#endif
+
+		/* plus 4 for size */
+	ptr = malloc(numbytes + 4 , M_DEVBUF, M_NOWAIT); /* ?? */
+		/* We ignore "Sys;" where else would it come from? */
+		/* plus, (I think), malloc clears block for us */
+
+	if(ptr == NULL){
+		result = memFullErr;
+#if defined(MRG_SHOWTRAPS)
+		printf(" failed.\n");
+#endif
+	}else{
+#if defined(MRG_SHOWTRAPS)
+		printf(" succeded = %x.\n", ptr);
+#endif
+		*(u_long *)ptr = numbytes;
+		ptr += 4;
+	}
+
+	asm("	movl	%0, a0" :  : "g" (ptr));
+	return(result);
+}
+
+
+int mrg_DisposPtr()
+{
+	int result = noErr;
+	caddr_t ptr;
+
+	asm("	movl	a0, %0" : "=g" (ptr));
+
+#if defined(MRG_SHOWTRAPS)
+	printf("mrg: DisposPtr(%x)\n", ptr);
+#endif
+
+	if(ptr == 0){
+		result = memWZErr;
+	}else{
+		free(ptr - 4, M_DEVBUF);
+	}
+
+	return(result);
+}
+
+
+int mrg_GetPtrSize()
+{
+	int result = noErr;
+	caddr_t ptr;
+
+	asm("	movl	a0, %0" : "=g" (ptr));
+
+#if defined(MRG_SHOWTRAPS)
+	printf("mrg: GetPtrSize(%x)\n", ptr);
+#endif
+
+	if(ptr == 0){
+		return(memWZErr);
+	}else
+		return(*(int *)(ptr - 4));
+}
+
+
+int mrg_SetPtrSize()
+{
+	int result = noErr;
+	caddr_t ptr;
+	int newbytes;
+
+	asm("	movl	a1, %0
+		movl	d0, %1"
+		: "=g" (ptr), "=g" (newbytes));
+
+#if defined(MRG_SHOWTRAPS)
+	printf("mrg: SetPtrSize(%x, %d) failed\n", ptr, newbytes);
+#endif
+
+	return(memFullErr);	/* How would I handle this, anyway? */
+}
+
+int
+mrg_PostEvent()
+{
+	return 0;
+}
+
+/*
+ * trap jump address tables (different per machine?)
+ * Can I just use the tables stored in the ROMs?
+ * *Is* there a table stored in the ROMs?
+ * (BTW, this table is initialized for Mac II.)
+ */
+caddr_t mrg_OStraps[256] = {
+#ifdef __GNUC__
+		/* God, I love gcc.  see GCC2 manual, section 2.17, */
+		/* "labeled elements in initializers." */
+	[0x1e]	(caddr_t)mrg_NewPtr,
+		(caddr_t)mrg_DisposPtr,
+		(caddr_t)mrg_SetPtrSize,
+		(caddr_t)mrg_GetPtrSize,
+	[0x2f]	(caddr_t)mrg_PostEvent,
+	[0x77]	(caddr_t)0x40807778,	/* CountADBs */
+		(caddr_t)0x40807792,	/* GetIndADB */
+		(caddr_t)0x408077be,	/* GetADBInfo */
+		(caddr_t)0x408077c4,	/* SetADBInfo */
+		(caddr_t)0x40807704,	/* ADBReInit */
+		(caddr_t)0x408072fa,	/* ADBOp */
+	[0x85]	0,			/* PMgrOp (not on II) */
+	[0x92]	(caddr_t)0x40814800,	/* Egret */
+#else
+#error "Using a GNU C extension."
+#endif
+};
+
+
+caddr_t mrg_ToolBoxtraps[1024] = {
+	[0x1a0] (caddr_t)mrg_GetResource,
+	[0x1af] (caddr_t)mrg_ResError,
+};
+
+
+	/* handle a supervisor mode A-line trap */
+void mrg_aline_super(struct frame *frame)
+{
+	caddr_t trapaddr;
+	u_short trapword;
+	int isOStrap;
+	int trapnum;
+	int a0passback;
+	u_long a0bucket, d0bucket;
+/* DRR */
+        int danprint =0;
+
+#if defined(MRG_DEBUG)
+	printf("mrg: a super");
+#endif
+
+	trapword = *(u_short *)frame->f_pc;
+/* DRR */
+        if (trapword == 0xa71e)
+          danprint = 1;
+
+#if defined(MRG_DEBUG)
+	printf(" wd 0x%x", trapword);
+#endif
+	isOStrap = ! TRAP_TOOLBOX(trapword);
+	trapnum = TRAP_NUM(trapword);
+/* DRR begin */
+        if (danprint)
+          {
+	   /* DRR - Without these print statements, ADBReInit fails */
+            printf(""); printf("");
+          }
+/* DRR end */
+
+#if defined(MRG_DEBUG)
+	printf(" %s # 0x%x", isOStrap? "OS" :
+		"ToolBox", trapnum);
+#endif
+
+	/* Only OS Traps come to us; _alinetrap takes care of ToolBox
+	  traps, which are a horrible Frankenstein-esque abomination. */
+
+	trapaddr = mrg_OStraps[trapnum];
+#if defined(MRG_DEBUG)
+	printf(" addr 0x%x\n", trapaddr);
+#endif
+	if(trapaddr == NULL){
+		printf("unknown %s trap 0x%x, no trap address available\n",
+			isOStrap ? "OS" : "ToolBox", trapword);
+		panic("mrg_aline_super()");
+	}
+	a0passback = TRAP_PASSA0(trapword);
+
+#if defined(MRG_TRACE)
+	tron();
+#endif
+
+/* 	put trapword in d1 */
+/* 	put trapaddr in a1 */
+/* 	put a0 in a0 */
+/* 	put d0 in d0 */
+/* save a6 */
+/* 	call the damn routine */
+/* restore a6 */
+/* 	store d0 in d0bucket */
+/* 	store a0 in d0bucket */
+/* This will change a1,d1,d0,a0 and possibly a6 */
+
+	asm("
+		movl	%2, a1
+		movw	%3, d1
+		movl	%4, d0
+		movl	%5, a0
+		jbsr	a1@
+		movl	a0, %0
+		movl	d0, %1"
+
+		: "=g" (a0bucket), "=g" (d0bucket)
+
+		: "g" (trapaddr), "g" (trapword),
+			"m" (frame->f_regs[0]), "m" (frame->f_regs[8])
+
+		: "d0", "d1", "a0", "a1", "a6"
+
+	);
+
+#if defined(MRG_TRACE)
+	troff();
+#endif
+#if defined(MRG_DEBUG)
+ 	printf(" bk");
+#endif
+
+	frame->f_regs[0] = d0bucket;
+	if(a0passback)
+		frame->f_regs[8] = a0bucket;
+
+	frame->f_pc += 2;	/* skip offending instruction */
+
+#if defined(MRG_DEBUG)
+	printf(" exit\n");
+#endif
+}
+
+
+	/* handle a user mode A-line trap */
+void mrg_aline_user()
+{
+#if 1
+	/* send process a SIGILL; aline traps are illegal as yet */
+#else /* how to handle real Mac App A-lines */
+	/* ignore for now */
+	I have no idea!
+	maybe pass SIGALINE?
+	maybe put global information about aline trap?
+#endif
+}
+
+
+extern u_long traceloopstart[];
+extern u_long traceloopend;
+extern u_long *traceloopptr;
+
+
+void dumptrace(
+	void)
+{
+#if defined(MRG_TRACE)
+	u_long *traceindex;
+
+	printf("instruction trace:\n");
+	traceindex = traceloopptr + 1;
+	while(traceindex != traceloopptr)
+	{
+		printf("    %08x\n", *traceindex++);
+		if(traceindex == &traceloopend)
+			traceindex = &traceloopstart[0];
+	}
+#else
+	printf("mrg: no trace functionality enabled\n");
+#endif
+}
+
+
+	/* Set ROM Vectors */
+void mrg_setvectors(
+	romvec_t *rom)
+{
+	if(rom == NULL)
+		return;		/* whoops!  ROM vectors not defined! */
+
+	mrg_romident = rom->romident;
+	mrg_romadbintr = rom->adbintr;
+	mrg_rompmintr = rom->pmintr;
+		/* mrg_adbstore becomes ADBBase */
+	*((unsigned long *)(mrg_adbstore + 0x130)) = (unsigned long)rom->adb130intr;
+
+/* WRU 950424: BEGIN */
+/* in MacIIvi otherwise uninitialized when ADBReInit() runs */
+        if(current_mac_model->class == MACH_CLASSIIsi)
+        {
+	    int i;
+
+	    *((unsigned long *)(0x0dd0)) = 0x0000773f;	/* Egret and ADBReInit look into these */
+	    *((unsigned long *)(0x0dd4)) = 0x000001a6;
+
+	    for (i=0; i<4; i++)				/* some basic inits */
+		*((unsigned long *)(0x174 + 4*i)) = 0;
+	    *((unsigned short *)(0x216)) = 0;
+	    *((unsigned short *)(mrg_adbstore + 0x184)) = 0xff01;
+        }
+/* WRU 950424: end */
+
+		/* IIsi crap */
+	*((unsigned long *)(mrg_adbstore + 0x180)) = 0x4081517c;
+	*((unsigned long *)(mrg_adbstore + 0x194)) = 0x408151ea;
+	jEgret = 0x40814800;
+
+	mrg_OStraps[0x77] = rom->CountADBs;
+	mrg_OStraps[0x78] = rom->GetIndADB;
+	mrg_OStraps[0x79] = rom->GetADBInfo;
+	mrg_OStraps[0x7a] = rom->SetADBInfo;
+	mrg_OStraps[0x7b] = rom->ADBReInit;
+	mrg_OStraps[0x7c] = rom->ADBOp;
+	mrg_OStraps[0x85] = rom->PMgrOp;
+	mrg_OStraps[0x51] = rom->ReadXPRam;
+
+#if defined(MRG_DEBUG)
+	printf("mrg: ROM adbintr 0x%08x\n", mrg_romadbintr);
+	printf("mrg: ROM pmintr 0x%08x\n", mrg_rompmintr);
+	printf("mrg: OS trap 0x77 (CountADBs) = 0x%08x\n", mrg_OStraps[0x77]);
+	printf("mrg: OS trap 0x78 (GetIndADB) = 0x%08x\n", mrg_OStraps[0x78]);
+	printf("mrg: OS trap 0x79 (GetADBInfo) = 0x%08x\n", mrg_OStraps[0x79]);
+	printf("mrg: OS trap 0x7a (SetADBInfo) = 0x%08x\n", mrg_OStraps[0x7a]);
+	printf("mrg: OS trap 0x7b (ADBReInit) = 0x%08x\n", mrg_OStraps[0x7b]);
+	printf("mrg: OS trap 0x7c (ADBOp) = 0x%08x\n", mrg_OStraps[0x7c]);
+	printf("mrg: OS trap 0x7c (PMgrOp) = 0x%08x\n", mrg_OStraps[0x85]);
+
+#endif
+}
+
+
+	/* To find out if we're okay calling ROM vectors */
+int mrg_romready(
+	void)
+{
+	return(mrg_romident != NULL);
+}
+
+
+extern unsigned long		IOBase;
+extern volatile unsigned char	*sccA;
+
+
+	/* initialize Mac ROM Glue */
+void mrg_init()
+{
+	int i;
+	char *findername = "MacBSD FakeFinder";
+	caddr_t ptr;
+	caddr_t *handle;
+	int sizeptr;
+	extern short mrg_ResErr;
+
+	if(mrg_romready()){
+		printf("mrg: '%s' rom glue", mrg_romident);
+
+#if defined(MRG_TRACE)
+#if defined(MRG_FOLLOW)
+		printf(", tracing on (verbose)");
+#else /* ! defined (MRG_FOLLOW) */
+		printf(", tracing on (silent)");
+#endif /* defined(MRG_FOLLOW) */
+#else /* !defined(MRG_TRACE) */
+		printf(", tracing off");
+#endif	/* defined(MRG_TRACE) */
+
+#if defined(MRG_DEBUG)
+		printf(", debug on");
+#else /* !defined(MRG_DEBUG) */
+		printf(", debug off");
+#endif /* defined(MRG_DEBUG) */
+
+#if defined(MRG_SHOWTRAPS)
+		printf(", verbose traps");
+#else /* !defined(MRG_SHOWTRAPS) */
+		printf(", silent traps");
+#endif /* defined(MRG_SHOWTRAPS) */
+	}else{
+		printf("mrg: kernel has no ROM vectors for this machine!\n");
+		return;
+	}
+
+	printf("\n");
+
+#if defined(MRG_DEBUG)
+	printf("mrg: start init\n");
+#endif
+		/* expected globals */
+	ADBBase = &mrg_adbstore[0];
+	ADBState = &mrg_adbstore2[0];
+	ADBYMM = &mrg_adbstore3[0];
+	MinusOne = 0xffffffff;
+	Lo3Bytes = 0x00ffffff;
+	VIA = (caddr_t)Via1Base;
+	MMU32Bit = 1; /* ?means MMU is in 32 bit mode? */
+  	if(TimeDBRA == 0)
+		TimeDBRA = 0xa3b;		/* BARF default is Mac II */
+  	if(ROMBase == 0)
+		ROMBase = (caddr_t)0x40800000;	/* BARF default is Mac II */
+
+	strcpy(&FinderName[1], findername);
+	FinderName[0] = (u_char) strlen(findername);
+#if defined(MRG_DEBUG)
+	printf("After setting globals\n");
+#endif
+
+		/* Fake jump points */
+	for(i = 0; i < 8; i++) /* Set up fake Lvl1DT */
+		Lvl1DT[i] = mrg_lvl1dtpanic;
+	for(i = 0; i < 8; i++) /* Set up fake Lvl2DT */
+		Lvl2DT[i] = mrg_lvl2dtpanic;
+	Lvl1DT[2] = (void (*)())mrg_romadbintr;
+	Lvl1DT[4] = (void (*)())mrg_rompmintr;
+	JADBProc = mrg_jadbprocpanic; /* Fake JADBProc for the time being */
+	jSwapMMU = mrg_jswapmmupanic; /* Fake jSwapMMU for the time being */
+	JKybdTask = mrg_jkybdtaskpanic; /* Fake jSwapMMU for the time being */
+
+	jADBOp = (void (*)())mrg_OStraps[0x7c];	/* probably very dangerous */
+	mrg_VIA2 = (caddr_t)(Via1Base + VIA2 * 0x2000);	/* see via.h */
+	SCCRd = (caddr_t)(IOBase + sccA);   /* ser.c ; we run before serinit */
+
+	switch(mach_cputype()){
+		case MACH_68020:	CPUFlag = 2;	break;
+		case MACH_68030:	CPUFlag = 3;	break;
+		case MACH_68040:	CPUFlag = 4;	break;
+		default:
+			printf("mrg: unknown CPU type; cannot set CPUFlag\n");
+			break;
+	}
+
+#if defined(MRG_TEST)
+	printf("Allocating a pointer...\n");
+	ptr = (caddr_t)NewPtr(1024);
+	printf("Result is 0x%x.\n", ptr);
+	sizeptr = GetPtrSize((Ptr)ptr);
+	printf("Pointer size is %d\n", sizeptr);
+	printf("Freeing the pointer...\n");
+	DisposPtr((Ptr)ptr);
+	printf("Free'd.\n");
+
+	for(i = 0; i < 500000; i++)
+		if((i % 100000) == 0)printf(".");
+	printf("\n");
+
+	mrg_ResErr = 0xdead;	/* set an error we know */
+	printf("Getting error code...\n");
+	i = ResError();
+	printf("Result code (0xdeadbaaf): %x\n", i);
+	printf("Getting a Resource...\n");
+	handle = GetResource('ADBS', 2);
+	printf("Handle result from GetResource: 0x%x\n", handle);
+	printf("Getting error code...\n");
+	i = ResError();
+	printf("Result code (-192?) : %d\n", i);
+
+	for(i = 0; i < 500000; i++)
+		if((i % 100000) == 0)printf(".");
+	printf("\n");
+
+#if defined(MRG_TRACE)
+	printf("Turning on a trace\n");
+	tron();
+	printf("We are now tracing\n");
+	troff();
+	printf("Turning off trace\n");
+	dumptrace();
+#endif /* MRG_TRACE */
+
+	for(i = 0; i < 500000; i++)
+		if((i % 100000) == 0)printf(".");
+	printf("\n");
+#endif /* MRG_TEST */
+
+#if defined(MRG_DEBUG)
+	printf("after setting jump points\n");
+	printf("mrg: end init\n");
+#endif
+}
+
+
+void mrg_initadbintr()
+{
+	int i;
+
+/* WRU 950611 begin */
+	if(current_mac_model->class == MACH_CLASSIIsi)
+	{
+		/* _vSetupTags initializes ADBState (mrg_ADBStore2) and
+                   enables interrupts */
+		asm("	movml	a0-a2, sp@-
+			movl	0x0de0, a0        /* ADBState, mrg_ADBStore2 */
+			jbsr	0x408147c4        /* _vSetUpTags + 0x04 avoids calling _NetPtr */   
+			movml	sp@+, a0-a2 ");
+	}
+        else
+        {
+	    via_reg(VIA1, vIFR) = 0x4; /* XXX - why are we setting the flag?  */
+
+            via_reg(VIA1, vIER) = 0x84; /* enable ADB interrupt. */
+	}	
+/* WRU 950611 end */
+}
+---------- end of: modified version of macrom.c for MacIIsi/vi/vx ------------
+-- 
+EMail: walter@ghpc8.ihf.rwth-aachen.de   | SnailMail: Walter Ruetten
+                                            _o        Turmstr. 190
+Phone: ++49 241 807945                   _`\_<,       52064 Aachen
+Fax  : ++49 241 8888213                 (*)/'(*)      Germany
+  "History --- an agreeable set of untruths"  -- Powhiri Rika-Heke
+
+

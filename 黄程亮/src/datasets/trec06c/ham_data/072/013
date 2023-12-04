@@ -1,0 +1,872 @@
+Received: from mail4.visi.net (geneva.visi.net [206.246.194.4])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id AAA20271
+	for <handyboard@media.mit.edu>; Tue, 19 Sep 2000 00:11:17 -0400 (EDT)
+Received: from naxs.com (root@ppp17.ts1-3.NewportNews.visi.net [209.8.197.81]) by mail4.visi.net (8.8.8/8.8.5) with ESMTP id AAA17479; Tue, 19 Sep 2000 00:10:55 -0400 (EDT)
+Sender: root@mail4.visi.net
+Message-Id: <39C6E757.5F54305A@naxs.com>
+Date: Tue, 19 Sep 2000 00:11:04 -0400
+From: Brat Wizard <brat@naxs.com>
+Organization: Wizard.Org
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.12-20 i686)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Steve Stevens <stevensl@spawar.navy.mil>
+Cc: handyboard@media.mit.edu
+Subject: Re: Hall Effect
+References: <G13HD9.8Lr@lugnet.com>
+Content-Type: multipart/alternative;
+ boundary="------------62C7C30956523E81D1822BE6"
+
+
+--------------62C7C30956523E81D1822BE6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Steve Stevens wrote:
+
+> You are going to find that it is not the encoders as I thought also.  The HB
+> seems to be incapable of reading correctly.  I don't know why, but I have been
+> trying for about 3 months with no/or little success.  Someone knows, but no
+> one is telling.  I have tried Hall effects, IR led's and reluctance pickups.
+> It may do well for 4-5 rpm ,but no faster.  I am now trying averaging.  For
+> 14.95 you can a simple little bike computer that does what $300 can't do.  Go
+> figure.
+
+Hello Steve-
+
+This isn't an answer really, just some ramblings from a fellow tinkerer.... its
+my experience that the more "precision" I try to introduce into my projects, the
+more trouble I have trying to get them to act in a "precise" way.
+
+In thinking through the problem, there seems to be a number of factors that
+aren't immediately apparent- why, for example, can one construct, say, a digital
+plotter that is easily capable of precise movements (even when constructed
+haphazardly!), when, using the same equipment, its very difficult to get a
+"robot" to move- even to within a few _inches_ - of a previously followed path???
+
+I think the answers lie in the stuff that we don't know we're bringing to the
+table... for instance- when you construct a pen plotter, do you consider the fact
+that you aren't really "moving" much of anything? That the "carriage" is being
+positioned back and forth basically along two pre-fixed paths, who's intersection
+just happens to include the domain of the area in which we would like to
+plot...!? A useful side-effect to be sure, and yet, the motion of the carriage is
+essentially "fixed"- in the sense that it can _only_ travel along its two sliding
+axis rails. The real "precision" factor in this case boils down to how
+"precisely" can one control the steppers and how much "slop" is tolerated in the
+various mechanical components (eg. the positioning actuators (often steel wires
+or similar), the assembly that rolls along the carriage-rails (often
+ball-bearing, or even simply a teflon sleeve wrapped around the rail), or the
+amount of "wobble" allowed at the point of the pen). Indeed, it would seem that
+the "restricted nature" of the design ensures at least a certain amount of
+"precision" no matter what. Even a crudely constructed device would be capable of
+producing output that is recognizable at worst!
+
+So, what's so different when we take essentially the same components and try to
+incorporate them into a robot? Why won't the robot "move" with the same level of
+precision... the answer is that it does! It does move with the same level of
+precision- you just changed the parameters of the problem- and so your comparion
+of what's "precise" is not accurate. Ok- so that's a hokey answer- I'll admit it-
+what does "changing the parameters" have to do with precision? The answer is that
+it changes the very basis of the relationship expressed by the term "precision"-
+namely that of "compared to what".
+
+That is really the question- compared to what...?
+
+In the digital plotter setup above, the "compared to what" factors are- the fixed
+nature of the guide rails, the orbital "resolution" of the positioning motors,
+the tensioning (if any) in the guide cables (wires, ropes, whatever), the
+mechanical interplay between the carriage positioning assembly, and of course,
+the amount of "wobbling" the pen tip is allowed to have.... all these factors
+together are used to determine the "precision" of the device.
+
+Mobile robots, generally-speaking, do _not_ have "fixed" positioning rails- which
+is a major component of the plotter's ability to accurately repeat positioning
+movements. Another difference will probably be the way the device is propelled
+(not to mention steered). Wheels, treads, even legs all introduce "slippage"
+factors which may be randomly introduced in almost any given direction, sometimes
+even in multiple directions simultaneously. Certainly one can perform various
+types of vehicle analysis to determine the most likely points of "slippage" given
+a particular wheel, track, leg (or whatever propulsion) arrangement, and can
+design compensating features- but this does not totally account for all types of
+"slippage" (or other mechanical "slop" factors) that can (and will) affect the
+device.
+
+One incredibly good example here of how "slippage" can affect real-wold vehicles
+is the Airplane. Airplanes are absolutely dependent on their ability to produce
+lift and control their movement through vectoring of air pressure/flow (one way
+or another). If anything interferes with either (or both) of these two abilities
+a crash is very likely to result. Even though you may understand the physics,
+dynamics, and characteristics involved in flying an aircraft- it is impossible to
+predict every sort of air pressure, or turbulance conditions that (will) exist at
+any particular point in space- all the time. If it _were_ possible, we really
+wouldn't need pilots to fly the plane! You may say- we don't need pilots now, and
+that may be true- 99 times out of a 100. But I'll bet if you're on that 100th
+flight you would be very glad indeed the pilots were present to compensate for
+something that the aircraft designers couldn't possibly have forseen!
+
+You must also account for the inherent "imprecision" of the other components used
+in the robot (as compared to other similar components that could have been
+employed assuming they were cheap enough, small enough, efficient enough- etc-
+you have to keep the "compared to what" factor in mind all throughout the
+component selection and specification process). Of course, only a select few
+_really_ have the ability to shop with an unlimited budget, have NASA or JPL at
+their convenient disposal, and have the manufacturing capabilities to truly build
+whatever marvel may be needed. The rest of us have to deal with IN-precision.
+(Actually, so do NASA and JPL- its just a fact of life ;)
+
+So, basically, the problem becomes one of NOT how much precision can I afford-
+but instead- How can I deal with the inherent IMPRECISION that I am forced to
+accept? In my own life, I have found that when I'm banging my head against the
+wall, I'm generally looking at the problem all wrong.
+
+Because there is inherent imprecison in mobile robots, the real challenge becomes
+two-fold: A) How can I get as much precision as possible, given my (however)
+limited means, abilities, and ambitions, and B) How can I compensate for the
+imprecision that is left-over?
+
+
+IMO, the first part (A) is pretty much self-apparent: You do what you can with
+what you've got or can afford to buy, build, or create. Dealing with the second
+part (B) is where all the problems come in- "the devil's in the details" as they
+say ;)
+
+
+It might be useful at this point to take a look at humans for a moment- how do WE
+compensate for imprecision? We have SO darned many ways to make up for our
+deficiencies that it would take an incredible number of pages to list them all!
+For example, when you're trying to remember someone's name- do you go down the
+list of everyone you've ever met? I doubt it- I suspect instead you use some sort
+of temporal-associative "hashing" type function (to try to give the process a
+label) to arrive at the name and phone number of the "girl- in- the- red- dress-
+you- met- last- week- at- the- party". Likewise, when you walk across the room to
+pick up the phone to call her, you give not the slightest thought to "getting to
+the phone".
+
+How is it we so effortlessly pick our way through crowded (and sometimes
+dangerous) space to reach the goal we have set for ourselves? We are not built
+from such precise components. We don't (apparently) give any real thought to
+accomplishing the goal- and yet we do it so well.... or do we? How well do you
+suppose we would navigate the SAME room with our eyes closed? Even if we have
+"known" the room all of our lives we would probably still have problems-
+especially, if unbeknownst to us, someone had rearranged all the furniture... and
+yet- with our eyes open- even that wouldn't significantly hinder our progress to
+the phone. We might still make it- though if we do, we will have to "concentrate"
+very hard, using our other senses, and our memories (if possible) to fill in the
+gap(s), and employ other "sensing" techniques to figure out where we are relative
+to where we are going. But- the main thing to keep in mind here is that we are
+_consciously_ applying more "thought-power" to solving the problem "manually"
+(and probably pushing aside other "thoughts" to "free up" the "processing
+ability" to do it). This implies A) that the normal mechanism for accomplishing
+this supposedly simple thing is hidden from our normal "awareness" and B) is
+actually more sophisticated than we usually give it credit for.
+
+
+So here's an astute observation for you... Whatever it is that we do naturally as
+humans- the robots we build aren't doing it. ;)
+
+
+Personally, I think the way we "do it" is by utilizing a number of analysis
+proceedures. First, we have "in mind" the goal- reaching the phone. Second, we
+know (from experience perhaps) that in order to achieve the goal we must perform
+an action, namely to navigate from "here to there". Third, we "scan the
+environment to "take in" the available routes and note possible obstacles. We
+also probably utilize prior-knowledge, when possible, of the environment to make
+"predictions" about the paths and obstacles, as well as recalling
+previously-encountered "hidden" or "unseen" problems. Finally, we use all this
+information to plan, plot, and implement a path to the goal while applying
+various course corrections along the way to account for obstacles or dangers,
+both planned and unplanned. It is really important to notice here that is is this
+analyse, strategize, improvise control system that enable us humans to cope with
+our inefficiencies so well.
+
+I think it is interesting to point out that humans seem to have a
+disproportionately-large amount of processing power devoted to A) Cataloging
+things, events, places, AND _sequences_. B) Recognizing things, events, places,
+and sequences. And C) Moving things (including ourselves) from one place to
+another utilizing the abilities presented by (A) and (B). Comparatively speaking,
+the remaining amount of "brain-power", devoted to the when and why is quite puny.
+We are temporal-spatial beings posessing the ability to manipulate our
+environment for a purpose, and we expect our "robots" to be also.
+
+In contrast to the digital plotter, people achieve "positional-accuracy" (aka
+"precision") through the use of "feedback" and re-calibration/re-registration [of
+the goal] while underway. So instead of being attached to "fixed rails" and using
+ultra-precise motors, gears, sliders, or what-have-you, our control mechanism is
+less-concerned with knowing _precisely_ where we are and instead is more
+concerned with knowing "more or less" _where we are headed_. A very UN-precise
+thing indeed. We don't generally pre-plan our routes to the centimeter, nor stand
+stalled awe-struck over the incredible multitude of potential paths and
+implementation strategies, we simply pick one and go with it. It may or may not
+be the best path to the solution; in fact, my own personal suspicion is that it
+usually isn't. Sometimes it gets us in trouble, but most of the time it does not.
+But, when we _do_ get into trouble, we simply push a new, more immediate goal
+onto our "goal stack"- namely getting ourselves out of our present jam- until the
+situation is resolved _adequately_ (not necessarily perfectly!) to allow us to
+re-compute our path and re-acquire the goal.
+
+
+Here's another thing to consider- You invite a friend over to see your latest
+robotics project and he (or she, no offense to the ladies ;) asks you a simple
+question- "How do I get there?" What do _you_ do? You hand out directions! Simple
+enough- yet- consider what those directions really are- Unless you are the
+consumate gearhead (or flying the aforementioned aircraft ;) you probably DON'T
+say this:
+
+1) Start at Longitude 76.216, Latitude 36.9202, oriented 54.76 degrees from True
+North
+2) Travel 9,738.16 units (1-foot increments) in a straight line
+3) Change heading to 86.18 degrees from True North
+4) Travel 6,283 units (exactly) in a straight line
+5) Change heading to 17.06 degrees from True North
+6) Travel 14.3 units in a straight line
+7) ...
+
+Even though these directions ARE precise, and even though they may be exactly
+correct- you _still_ probably don't give directions like this! (At least, I hope
+you never invite _me_ over with these directions! ;) You are much more likely to
+say:
+
+1) Get to Highway 14 going West
+2) Go about 2 miles until you come to 1st street
+3) Hang a left on 1st street and go two blocks
+4) My house is the third house on the left (its blue)
+5) The address just in case you get lost is: "105 Somewhere Street"
+    or call me at '555-1212'
+
+These are HUMAN-oriented directions, and they work just fine for us- and guess
+what? They are not even CLOSE to being precise. In fact, there are precious few
+precise elements in the above directions and yet _you_ would have an easier time
+following them than the previous set I think.
+
+So what are the salient elements of the second set of directions that make them
+easier to follow? The first point, I think, to consider is that the second set is
+"interpreted" by the recipient as opposed to being "absolute and inflexible".
+Interpretation allows imprecise information to be conveyed (possibly conveyed
+imprecisely as well) and yet still the correct, desired outcome is capable of
+being achieved. Let's pretend we have the problem licked- and are "parsing" the
+above list through our "interpreter"- what might it key in on and what
+suppositions might it require in order to complete the task of following the
+directions?
+
+First of all, it is useful to note that the set of directions is actually a
+"sequence" of steps that are necessary to accomplish the goal. So let's use an
+obvious sequencing notation. Next, it might be interesting to notice the
+action(s) that are expected to be performed in the execution of the sequence.
+Then we would probably want to notice that there is key information presented to
+give us hints and clues regarding the parameters & bounds of that action. And
+finally, extraneous information that may help to resolve ambiguities.
+
+
+Seq-Step #1. [Get to] ( Highway 14, going West )
+
+Seq-Step #2. [Go] ( about 2 miles ) until { [you come] ( to 1st street ) }
+
+Seq-Step #3. [Hang a left] (on 1st street ) [and go] ( two blocks )
+
+Goal-Info-Tip: [ My house,  is the third house,  on the left,  (its blue) ]
+
+Ambiguity-Resolution-Info: [ The address just in case you get lost is: "105
+Somewhere Street", or call me at '555-1212' ]
+
+
+This, of course, is a rather simplistic view but adequate for our discussion- To
+follow the directions you must perform the following: "Get to", "go-until", "hang
+a left", "go-until (implied)". The rest of the list simply conveys the details of
+these operations. However, there is still much that must be pre-supposed in order
+to properly execute the sequence, and we'll not even worry about the problems of
+locomotion- The processor must also be able to _recognize_ when various
+conditions have been met, such as reaching 1st street, or counting houses until
+the count becomes three (not two, excepting that the count then becomes three,
+and the count may not continue to four, and five is right out! ;) This is the
+basis of "way-point" (Landmark-based) navigation which allows for a simpler
+control-command structure/syntax but requires that the processing elements
+interpret the instructions using "pre-learned" (canned) sequences of things,
+events, places and even other sequences. You might say you need "sloppy"
+processors to deal with "sloppy" instructions... (hmmm- this sounds like a job
+for Microsoft... ;)
+
+But you may say- all this is well and good- but something low-level _still_ needs
+to be able to "sense" information, calculate position, and recalibrate & realign
+the mission to the goal. And you would be correct. You still need sensors, you
+still need positioning information, you still need the ability to recognize
+details, and you still need the ability to make sense out of the data you
+receive. The difference though is instead of dealing with the low-level data
+directly, various intermediate "sub-systems" analyze, condense, shape, refine,
+associate and discriminate, or otherwise transmute (or likewise fold, spindle and
+mutilate) the data into a more "meaningful" (read: generally more abstracted)
+form that the "sloppy" processors can digest. The output of the "sloppy"
+processors is then directed back through the "pipeline" where it is
+reverse-transmuted (or whatever) into a form more suited to the low-level
+components (Most of this happens on a totally unconscious level in humans).
+
+Another useful (if not required) component is the ability to "predict" what the
+expected outcome of a particular action (in a sequence) should be, and to apply
+the predicted result to the actual result to obtain a correction factor. Many
+mobile robots already do this sort of processing, say, in their wheel-shaft
+encoders, counting pulses, or timing pulses, or something similar- if the pulses
+or time-value (or whatever) isn't within a pre-computed range, apply a correction
+factor.
+
+It is no different for the "sloppy" processor. It too must make predictions but
+on a more general level- such as if I turn left here, I will be on 2nd street,
+not 1st street. However, since I was on 3rd street previously and I'm now at 2nd
+street, it is likely that if I continue in this direction I will next come to 1st
+street, which is part of my goal-fullfillment list. "Sloppy" processors are
+concerned very little with the actual "mechanical" aspects of performing a task,
+they deal almost exclusively with the abstract components. Its primary obstacle
+is getting over-burdened by details- quite the opposite of the low-level system
+which needs all the details it can get! In my scenario here- the "high-level"
+("sloppy" processor) system is in charge of knowing "why", "when", and "where",
+while the low-level system is concerned with the "how".
+
+"Are we there yet?" At each step in the sequence- this is the condition that must
+be satisfied before the robot can proceed to the next step. Other sequences may
+have other conditions, such as "Is it full yet?" for refilling a gasoline tank,
+or "Is it clean yet?" for vacuuming your carpet, etc. Generally speaking (at
+least IMO), these types of conditions are "high-level" conditions- problems for
+the "sloppy" processors to worry about. Supplying (and transmuting) the
+information to test these conditions however is a low-level problem.
+
+So how many "levels" of processing are required? I dunno. That's what I'm trying
+to figure out myself. A few I
+suspect- perhaps more than a few. But as a general statement- I'd say the
+abstraction factor increases as information flows "higher" in the processing
+system. Where does the low-level end and the high-level start? I dunno that
+either- another thing I'd like to know myself ;) Maybe there isn't even a
+discrete number of "levels" at all- but simply various pathways that data can
+flow in order to be processed for whatever purpose its needed. Maybe processing
+elements are semi-dedicated towards a particular purpose (or class of purposes)
+but can be "shanghied" on an as-needed basis to do more general processing? I
+dunno. I've been pondering many types of control schemes for a long time and I
+don't have any concrete answers yet, just opinions and directions to ponder for
+further clues.... ;) I personally lean toward the idea that there are many
+"agencies" (like Minsky talks about) that each do some sort of fundamental data
+processing or transformation, that interact, perhaps intermittantly, to achieve a
+result.
+
+I also find it interesting that so many elements in our own human society are
+arranged, perhaps innocently, much like we ourselves may in fact be arranged--
+our social circles, for example, are almost always hierarchical in nature- even
+if its a loosely formed hierarchy. Our businesses are almost always arranged in a
+hierarchal manner, our families are generally hierarchal, our friendships &
+allegiances, our governments, our militaries, our educational facilities are
+hierarchal, even our religions are very often hierarchical in nature. We
+naturally seem to form hiearchical structures which may, even accidently, reflect
+strong aspects of our own internal organization and processing abilities.
+Additionally, most of these same structures also exhibit the characteristics of a
+"massively parallel" machine, which, I'm betting, behaves in a manner remarkably
+similar to our own internal processes- on an abstract level at least. I strongly
+suspect that all this is no coincidence, but is a huge, neon-lit clue to our own
+internal workings- that we naturally gravitate into elements that reflect the way
+we work because that's how we intuitively understand to do things.
+
+Ok, I suppose this is akin to saying that a giraffe is more inclined to look up
+because it is not a horse. Who says behaviors and mannerisms aren't evolved in
+the same manner as other biological characteristics anyway? Behaviors that are
+beneficial increase the tendancy for survival and reproduction, behaviors that
+don't affect either are irrelevant...? You never see anything on Discover or TLC
+about that first giraffe on the sweltering african savanah that happened to look
+up for food one day instead of down. That, in and of itself, would have been the
+spark of an entire series of behaviors and mannerisms characteristic for animals
+that look up for food. This seems like such a simple idea when confronted with
+it- but it is something very subtle that few people actually take in
+consideration when they ponder the evolution of a thing- at least it seems to me
+so ;) While our bodies where busy evolving to fill a niche, our brains were busy
+evolving to support the body that fills the niche... a sort of
+bio-feedback-engineering I suppose. If you ever find yourself with a few million
+years to kill with nothing better to do- I suggest you give it a try- can have
+interesting results ;) ;)
+
+So ok- getting back on track (if indeed there was one...?) -- there's one big
+difference right there. Nature gets to play with "billions and billions" of
+neurons (processing elements) to get a job done. Since it has so darned many
+neurons to work with- its no big deal to allocate a few for this task or that
+task or whatever. It can even afford to allocate quite a few for some tasks. We,
+on the other hand, are not so lucky. Until Motorola produces the bionic MC68HC11
+we're stuck with the old silicon version.... but that does NOT mean we're
+completely out of luck.
+
+There are lots of ways to increase processing power- and you can arrange your
+processors in lots of ways- even on-the-fly schemes can be incorporated if you
+really want. That in fact, may not be such a bad idea. So that, in an extreme
+instance, the type of data being processed "configures" the processor doing the
+processing. Von Neuman style processing can be so limiting. It really dampens
+ones thoughts to other ways of achieving results. You can use PIC processors-
+LOTS of Pic processors- PIC's are CHEAP CHEAP CHEAP CHEAP- did I mention they are
+CHEAP? They are little sequence-processors in a box. You tell 'em what to do-
+which pins to toggle when and under what circumstances, and toggle they will.
+They'll toggle their little hearts out. And, if you treat them really really
+nice- they might even let you re-program them on-the-fly so they can do other
+types of processing jobs as the situation dictates. PIC's are so cheap, you can
+afford to chew through them like popcorn.
+
+Another neat thing about PIC's is that they can support serial operations which
+makes hookup really really easy. You can have clusters of PICs working together
+to get a job done report to a more "centralized" PIC which concentrates the data
+and sends it upstream- even this can be serial- as by this time, you have had
+plenty of processing power to handle all sorts of low-level problems, all you
+really need to report is what happened and get new instructions, if any... so the
+PICs work together, much like the neuron-groups in our own biological brains- to
+accomplish simple, low-level tasks, and report them to (and be directed by)
+higher-level functions.
+
+Does this leave out MC68HC11's? Heck no. They're really useful for lots of
+things. It doesn't rule out other processors either. Feel free to mix and match
+(though kitbashing in an x86 involves less kit and more bashing). Processors are
+cheap. If you're not comfortable at the processor core level- _get_ comfortable-
+its where all the action is. The goal is to create a processing-machine that
+meets YOUR (or your projects) processing needs. It doesn't have to be one
+processor. You don't have to shoe-horn it all into one box. You can use
+additional bolt-on processors to handle specific tasks (useful for handling
+things that require lots of processing in a hurry- like navigation, recognition,
+or communication).
+
+And most of all you DON'T need precision! Precision to a point is useful, but
+after that continued insistance is moving your thoughts away from the real
+problem of designing an adequate control system to account for inaccuracies and
+errors. The more "fault-tolerant" the control system, the more flexible the
+resulting processing and control engine will be. If you're having problems
+getting enough precision- ignore it- find some other way of getting the job done-
+in all probability there are plenty of other ways that will work, you just need
+to rethink the problem and be open to creative solutions. Who cares if they are
+the most efficient, most cost-effective, prettiest, or most elegant- as long as
+they WORK- that's what counts- elegance will emerge on its own when its time.
+
+In short, instead of forcing the solution on the result set, try using the result
+set to derive the solution.
+
+
+Ok- enough rambling- go make robots ;)
+
+
+John Whitten
+brat@naxs.com
+
+
+
+
+--
++----------------------------------------------------------------------+
+| "I'll give up my modem when they pry it from my cold, dead fingers!" |
+| John Whitten - brat@naxs.com  http://www.wizard.org                  |
++----------------------------------------------------------------------+
+
+
+
+--------------62C7C30956523E81D1822BE6
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+Steve Stevens wrote:
+<blockquote TYPE=CITE>You are going to find that it is not the encoders
+as I thought also.&nbsp; The HB
+<br>seems to be incapable of reading correctly.&nbsp; I don't know why,
+but I have been
+<br>trying for about 3 months with no/or little success.&nbsp; Someone
+knows, but no
+<br>one is telling.&nbsp; I have tried Hall effects, IR led's and reluctance
+pickups.
+<br>It may do well for 4-5 rpm ,but no faster.&nbsp; I am now trying averaging.&nbsp;
+For
+<br>14.95 you can a simple little bike computer that does what $300 can't
+do.&nbsp; Go
+<br>figure.</blockquote>
+
+<p><br>Hello Steve-
+<p>This isn't an answer really, just some ramblings from a fellow tinkerer....
+its my experience that the more "precision" I try to introduce into my
+projects, the more trouble I have trying to get them to act in a "precise"
+way.
+<p>In thinking through the problem, there seems to be a number of factors
+that aren't immediately apparent- why, for example, can one construct,
+say, a digital plotter that is easily capable of precise movements (even
+when constructed haphazardly!), when, using the same equipment, its very
+difficult to get a "robot" to move- even to within a few _inches_ - of
+a previously followed path???
+<p>I think the answers lie in the stuff that we don't know we're bringing
+to the table... for instance- when you construct a pen plotter, do you
+consider the fact that you aren't really "moving" much of anything? That
+the "carriage" is being positioned back and forth basically along two pre-fixed
+paths, who's intersection just happens to include the domain of the area
+in which we would like to plot...!? A useful side-effect to be sure, and
+yet, the motion of the carriage is essentially "fixed"- in the sense that
+it can _only_ travel along its two sliding axis rails. The real "precision"
+factor in this case boils down to how "precisely" can one control the steppers
+and how much "slop" is tolerated in the various mechanical components (eg.
+the positioning actuators (often steel wires or similar), the assembly
+that rolls along the carriage-rails (often ball-bearing, or even simply
+a teflon sleeve wrapped around the rail), or the amount of "wobble" allowed
+at the point of the pen). Indeed, it would seem that the "restricted nature"
+of the design ensures at least a certain amount of "precision" no matter
+what. Even a crudely constructed device would be capable of producing output
+that is recognizable at worst!
+<p>So, what's so different when we take essentially the same components
+and try to incorporate them into a robot? Why won't the robot "move" with
+the same level of precision... the answer is that it does! It does move
+with the same level of precision- you just changed the parameters of the
+problem- and so your comparion of what's "precise" is not accurate. Ok-
+so that's a hokey answer- I'll admit it- what does "changing the parameters"
+have to do with precision? The answer is that it changes the very basis
+of the relationship expressed by the term "precision"- namely that of "compared
+to what".
+<p>That is really the question- compared to what...?
+<p>In the digital plotter setup above, the "compared to what" factors are-
+the fixed nature of the guide rails, the orbital "resolution" of the positioning
+motors, the tensioning (if any) in the guide cables (wires, ropes, whatever),
+the mechanical interplay between the carriage positioning assembly, and
+of course, the amount of "wobbling" the pen tip is allowed to have....
+all these factors together are used to determine the "precision" of the
+device.
+<p>Mobile robots, generally-speaking, do _not_ have "fixed" positioning
+rails- which is a major component of the plotter's ability to accurately
+repeat positioning movements. Another difference will probably be the way
+the device is propelled (not to mention steered). Wheels, treads, even
+legs all introduce "slippage" factors which may be randomly introduced
+in almost any given direction, sometimes even in multiple directions simultaneously.
+Certainly one can perform various types of vehicle analysis to determine
+the most likely points of "slippage" given a particular wheel, track, leg
+(or whatever propulsion) arrangement, and can design compensating features-
+but this does not totally account for all types of "slippage" (or other
+mechanical "slop" factors) that can (and will) affect the device.
+<p>One incredibly good example here of how "slippage" can affect real-wold
+vehicles is the Airplane. Airplanes are absolutely dependent on their ability
+to produce lift and control their movement through vectoring of air pressure/flow
+(one way or another). If anything interferes with either (or both) of these
+two abilities a crash is very likely to result. Even though you may understand
+the physics, dynamics, and characteristics involved in flying an aircraft-
+it is impossible to predict every sort of air pressure, or turbulance conditions
+that (will) exist at any particular point in space- all the time. If it
+_were_ possible, we really wouldn't need pilots to fly the plane! You may
+say- we don't need pilots now, and that may be true- 99 times out of a
+100. But I'll bet if you're on that 100th flight you would be very glad
+indeed the pilots were present to compensate for something that the aircraft
+designers couldn't possibly have forseen!
+<p>You must also account for the inherent "imprecision" of the other components
+used in the robot (as compared to other similar components that could have
+been employed assuming they were cheap enough, small enough, efficient
+enough- etc- you have to keep the "compared to what" factor in mind all
+throughout the component selection and specification process). Of course,
+only a select few _really_ have the ability to shop with an unlimited budget,
+have NASA or JPL at their convenient disposal, and have the manufacturing
+capabilities to truly build whatever marvel may be needed. The rest of
+us have to deal with IN-precision. (Actually, so do NASA and JPL- its just
+a fact of life ;)
+<p>So, basically, the problem becomes one of NOT how much precision can
+I afford- but instead- How can I deal with the inherent IMPRECISION that
+I am forced to accept? In my own life, I have found that when I'm banging
+my head against the wall, I'm generally looking at the problem all wrong.
+<p>Because there is inherent imprecison in mobile robots, the real challenge
+becomes two-fold: A) How can I get as much precision as possible, given
+my (however) limited means, abilities, and ambitions, and B) How can I
+compensate for the imprecision that is left-over?
+<br>&nbsp;
+<p>IMO, the first part (A) is pretty much self-apparent: You do what you
+can with what you've got or can afford to buy, build, or create. Dealing
+with the second part (B) is where all the problems come in- "the devil's
+in the details" as they say ;)
+<br>&nbsp;
+<p>It might be useful at this point to take a look at humans for a moment-
+how do WE compensate for imprecision? We have SO darned many ways to make
+up for our deficiencies that it would take an incredible number of pages
+to list them all! For example, when you're trying to remember someone's
+name- do you go down the list of everyone you've ever met? I doubt it-
+I suspect instead you use some sort of temporal-associative "hashing" type
+function (to try to give the process a label) to arrive at the name and
+phone number of the "girl- in- the- red- dress- you- met- last- week- at-
+the- party". Likewise, when you walk across the room to pick up the phone
+to call her, you give not the slightest thought to "getting to the phone".
+<p>How is it we so effortlessly pick our way through crowded (and sometimes
+dangerous) space to reach the goal we have set for ourselves? We are not
+built from such precise components. We don't (apparently) give any real
+thought to accomplishing the goal- and yet we do it so well.... or do we?
+How well do you suppose we would navigate the SAME room with our eyes closed?
+Even if we have "known" the room all of our lives we would probably still
+have problems- especially, if unbeknownst to us, someone had rearranged
+all the furniture... and yet- with our eyes open- even that wouldn't significantly
+hinder our progress to the phone. We might still make it- though if we
+do, we will have to "concentrate" very hard, using our other senses, and
+our memories (if possible) to fill in the gap(s), and employ other "sensing"
+techniques to figure out where we are relative to where we are going. But-
+the main thing to keep in mind here is that we are _consciously_ applying
+more "thought-power" to solving the problem "manually" (and probably pushing
+aside other "thoughts" to "free up" the "processing ability" to do it).
+This implies A) that the normal mechanism for accomplishing this supposedly
+simple thing is hidden from our normal "awareness" and B) is actually more
+sophisticated than we usually give it credit for.
+<br>&nbsp;
+<p>So here's an astute observation for you... Whatever it is that we do
+naturally as humans- the robots we build aren't doing it. ;)
+<br>&nbsp;
+<p>Personally, I think the way we "do it" is by utilizing a number of analysis
+proceedures. First, we have "in mind" the goal- reaching the phone. Second,
+we know (from experience perhaps) that in order to achieve the goal we
+must perform an action, namely to navigate from "here to there". Third,
+we "scan the environment to "take in" the available routes and note possible
+obstacles. We also probably utilize prior-knowledge, when possible, of
+the environment to make "predictions" about the paths and obstacles, as
+well as recalling previously-encountered "hidden" or "unseen" problems.
+Finally, we use all this information to plan, plot, and implement a path
+to the goal while applying various course corrections along the way to
+account for obstacles or dangers, both planned and unplanned. It is really
+important to notice here that is is this analyse, strategize, improvise
+control system that enable us humans to cope with our inefficiencies so
+well.
+<p>I think it is interesting to point out that humans seem to have a disproportionately-large
+amount of processing power devoted to A) Cataloging things, events, places,
+AND _sequences_. B) Recognizing things, events, places, and sequences.
+And C) Moving things (including ourselves) from one place to another utilizing
+the abilities presented by (A) and (B). Comparatively speaking, the remaining
+amount of "brain-power", devoted to the when and why is quite puny. We
+are temporal-spatial beings posessing the ability to manipulate our environment
+for a purpose, and we expect our "robots" to be also.
+<p>In contrast to the digital plotter, people achieve "positional-accuracy"
+(aka "precision") through the use of "feedback" and re-calibration/re-registration
+[of the goal] while underway. So instead of being attached to "fixed rails"
+and using ultra-precise motors, gears, sliders, or what-have-you, our control
+mechanism is less-concerned with knowing _precisely_ where we are and instead
+is more concerned with knowing "more or less" _where we are headed_. A
+very UN-precise thing indeed. We don't generally pre-plan our routes to
+the centimeter, nor stand stalled awe-struck over the incredible multitude
+of potential paths and implementation strategies, we simply pick one and
+go with it. It may or may not be the best path to the solution; in fact,
+my own personal suspicion is that it usually isn't. Sometimes it gets us
+in trouble, but most of the time it does not. But, when we _do_ get into
+trouble, we simply push a new, more immediate goal onto our "goal stack"-
+namely getting ourselves out of our present jam- until the situation is
+resolved _adequately_ (not necessarily perfectly!) to allow us to re-compute
+our path and re-acquire the goal.
+<br>&nbsp;
+<p>Here's another thing to consider- You invite a friend over to see your
+latest robotics project and he (or she, no offense to the ladies ;) asks
+you a simple question- "How do I get there?" What do _you_ do? You hand
+out directions! Simple enough- yet- consider what those directions really
+are- Unless you are the consumate gearhead (or flying the aforementioned
+aircraft ;) you probably DON'T say this:
+<p>1) Start at Longitude 76.216, Latitude 36.9202, oriented 54.76 degrees
+from True North
+<br>2) Travel 9,738.16 units (1-foot increments) in a straight line
+<br>3) Change heading to 86.18 degrees from True North
+<br>4) Travel 6,283 units (exactly) in a straight line
+<br>5) Change heading to 17.06 degrees from True North
+<br>6) Travel 14.3 units in a straight line
+<br>7) ...
+<p>Even though these directions ARE precise, and even though they may be
+exactly correct- you _still_ probably don't give directions like this!
+(At least, I hope you never invite _me_ over with these directions! ;)
+You are much more likely to say:
+<p>1) Get to Highway 14 going West
+<br>2) Go about 2 miles until you come to 1st street
+<br>3) Hang a left on 1st street and go two blocks
+<br>4) My house is the third house on the left (its blue)
+<br>5) The address just in case you get lost is: "105 Somewhere Street"
+<br>&nbsp;&nbsp;&nbsp; or call me at '555-1212'
+<p>These are HUMAN-oriented directions, and they work just fine for us-
+and guess what? They are not even CLOSE to being precise. In fact, there
+are precious few precise elements in the above directions and yet _you_
+would have an easier time following them than the previous set I think.
+<p>So what are the salient elements of the second set of directions that
+make them easier to follow? The first point, I think, to consider is that
+the second set is "interpreted" by the recipient as opposed to being "absolute
+and inflexible". Interpretation allows imprecise information to be conveyed
+(possibly conveyed imprecisely as well) and yet still the correct, desired
+outcome is capable of being achieved. Let's pretend we have the problem
+licked- and are "parsing" the above list through our "interpreter"- what
+might it key in on and what suppositions might it require in order to complete
+the task of following the directions?
+<p>First of all, it is useful to note that the set of directions is actually
+a "sequence" of steps that are necessary to accomplish the goal. So let's
+use an obvious sequencing notation. Next, it might be interesting to notice
+the action(s) that are expected to be performed in the execution of the
+sequence. Then we would probably want to notice that there is key information
+presented to give us hints and clues regarding the parameters &amp; bounds
+of that action. And finally, extraneous information that may help to resolve
+ambiguities.
+<br>&nbsp;
+<p>Seq-Step #1. [Get to] ( Highway 14, going West )
+<p>Seq-Step #2. [Go] ( about 2 miles ) until { [you come] ( to 1st street
+) }
+<p>Seq-Step #3. [Hang a left] (on 1st street ) [and go] ( two blocks )
+<p>Goal-Info-Tip: [ My house,&nbsp; is the third house,&nbsp; on the left,&nbsp;
+(its blue) ]
+<p>Ambiguity-Resolution-Info: [ The address just in case you get lost is:
+"105 Somewhere Street", or call me at '555-1212' ]
+<br>&nbsp;
+<p>This, of course, is a rather simplistic view but adequate for our discussion-
+To follow the directions you must perform the following: "Get to", "go-until",
+"hang a left", "go-until (implied)". The rest of the list simply conveys
+the details of these operations. However, there is still much that must
+be pre-supposed in order to properly execute the sequence, and we'll not
+even worry about the problems of locomotion- The processor must also be
+able to _recognize_ when various conditions have been met, such as reaching
+1st street, or counting houses until the count becomes three (not two,
+excepting that the count then becomes three, and the count may not continue
+to four, and five is right out! ;) This is the basis of "way-point" (Landmark-based)
+navigation which allows for a simpler control-command structure/syntax
+but requires that the processing elements interpret the instructions using
+"pre-learned" (canned) sequences of things, events, places and even other
+sequences. You might say you need "sloppy" processors to deal with "sloppy"
+instructions... (hmmm- this sounds like a job for Microsoft... ;)
+<p>But you may say- all this is well and good- but something low-level
+_still_ needs to be able to "sense" information, calculate position, and
+recalibrate &amp; realign the mission to the goal. And you would be correct.
+You still need sensors, you still need positioning information, you still
+need the ability to recognize details, and you still need the ability to
+make sense out of the data you receive. The difference though is instead
+of dealing with the low-level data directly, various intermediate "sub-systems"
+analyze, condense, shape, refine, associate and discriminate, or otherwise
+transmute (or likewise fold, spindle and mutilate) the data into a more
+"meaningful" (read: generally more abstracted) form that the "sloppy" processors
+can digest. The output of the "sloppy" processors is then directed back
+through the "pipeline" where it is reverse-transmuted (or whatever) into
+a form more suited to the low-level components (Most of this happens on
+a totally unconscious level in humans).
+<p>Another useful (if not required) component is the ability to "predict"
+what the expected outcome of a particular action (in a sequence) should
+be, and to apply the predicted result to the actual result to obtain a
+correction factor. Many mobile robots already do this sort of processing,
+say, in their wheel-shaft encoders, counting pulses, or timing pulses,
+or something similar- if the pulses or time-value (or whatever) isn't within
+a pre-computed range, apply a correction factor.
+<p>It is no different for the "sloppy" processor. It too must make predictions
+but on a more general level- such as if I turn left here, I will be on
+2nd street, not 1st street. However, since I was on 3rd street previously
+and I'm now at 2nd street, it is likely that if I continue in this direction
+I will next come to 1st street, which is part of my goal-fullfillment list.
+"Sloppy" processors are concerned very little with the actual "mechanical"
+aspects of performing a task, they deal almost exclusively with the abstract
+components. Its primary obstacle is getting over-burdened by details- quite
+the opposite of the low-level system which needs all the details it can
+get! In my scenario here- the "high-level" ("sloppy" processor) system
+is in charge of knowing "why", "when", and "where", while the low-level
+system is concerned with the "how".
+<p>"Are we there yet?" At each step in the sequence- this is the condition
+that must be satisfied before the robot can proceed to the next step. Other
+sequences may have other conditions, such as "Is it full yet?" for refilling
+a gasoline tank, or "Is it clean yet?" for vacuuming your carpet, etc.
+Generally speaking (at least IMO), these types of conditions are "high-level"
+conditions- problems for the "sloppy" processors to worry about. Supplying
+(and transmuting) the information to test these conditions however is a
+low-level problem.
+<p>So how many "levels" of processing are required? I dunno. That's what
+I'm trying to figure out myself. A few I
+<br>suspect- perhaps more than a few. But as a general statement- I'd say
+the abstraction factor increases as information flows "higher" in the processing
+system. Where does the low-level end and the high-level start? I dunno
+that either- another thing I'd like to know myself ;) Maybe there isn't
+even a discrete number of "levels" at all- but simply various pathways
+that data can flow in order to be processed for whatever purpose its needed.
+Maybe processing elements are semi-dedicated towards a particular purpose
+(or class of purposes) but can be "shanghied" on an as-needed basis to
+do more general processing? I dunno. I've been pondering many types of
+control schemes for a long time and I don't have any concrete answers yet,
+just opinions and directions to ponder for further clues.... ;) I personally
+lean toward the idea that there are many "agencies" (like Minsky talks
+about) that each do some sort of fundamental data processing or transformation,
+that interact, perhaps intermittantly, to achieve a result.
+<p>I also find it interesting that so many elements in our own human society
+are arranged, perhaps innocently, much like we ourselves may in fact be
+arranged-- our social circles, for example, are almost always hierarchical
+in nature- even if its a loosely formed hierarchy. Our businesses are almost
+always arranged in a hierarchal manner, our families are generally hierarchal,
+our friendships &amp; allegiances, our governments, our militaries, our
+educational facilities are hierarchal, even our religions are very often
+hierarchical in nature. We naturally seem to form hiearchical structures
+which may, even accidently, reflect strong aspects of our own internal
+organization and processing abilities. Additionally, most of these same
+structures also exhibit the characteristics of a "massively parallel" machine,
+which, I'm betting, behaves in a manner remarkably similar to our own internal
+processes- on an abstract level at least. I strongly suspect that all this
+is no coincidence, but is a huge, neon-lit clue to our own internal workings-
+that we naturally gravitate into elements that reflect the way we work
+because that's how we intuitively understand to do things.
+<p>Ok, I suppose this is akin to saying that a giraffe is more inclined
+to look up because it is not a horse. Who says behaviors and mannerisms
+aren't evolved in the same manner as other biological characteristics anyway?
+Behaviors that are beneficial increase the tendancy for survival and reproduction,
+behaviors that don't affect either are irrelevant...? You never see anything
+on Discover or TLC about that first giraffe on the sweltering african savanah
+that happened to look up for food one day instead of down. That, in and
+of itself, would have been the spark of an entire series of behaviors and
+mannerisms characteristic for animals that look up for food. This seems
+like such a simple idea when confronted with it- but it is something very
+subtle that few people actually take in consideration when they ponder
+the evolution of a thing- at least it seems to me so ;) While our bodies
+where busy evolving to fill a niche, our brains were busy evolving to support
+the body that fills the niche... a sort of bio-feedback-engineering I suppose.
+If you ever find yourself with a few million years to kill with nothing
+better to do- I suggest you give it a try- can have interesting results
+;) ;)
+<p>So ok- getting back on track (if indeed there was one...?) -- there's
+one big difference right there. Nature gets to play with "billions and
+billions" of neurons (processing elements) to get a job done. Since it
+has so darned many neurons to work with- its no big deal to allocate a
+few for this task or that task or whatever. It can even afford to allocate
+quite a few for some tasks. We, on the other hand, are not so lucky. Until
+Motorola produces the bionic MC68HC11 we're stuck with the old silicon
+version.... but that does NOT mean we're completely out of luck.
+<p>There are lots of ways to increase processing power- and you can arrange
+your processors in lots of ways- even on-the-fly schemes can be incorporated
+if you really want. That in fact, may not be such a bad idea. So that,
+in an extreme instance, the type of data being processed "configures" the
+processor doing the processing. Von Neuman style processing can be so limiting.
+It really dampens ones thoughts to other ways of achieving results. You
+can use PIC processors- LOTS of Pic processors- PIC's are CHEAP&nbsp;CHEAP&nbsp;CHEAP&nbsp;CHEAP-
+did I mention they are CHEAP? They are little sequence-processors in a
+box. You tell 'em what to do- which pins to toggle when and under what
+circumstances, and toggle they will. They'll toggle their little hearts
+out.&nbsp;And, if you treat them really really nice- they might even let
+you re-program them on-the-fly so they can do other types of processing
+jobs as the situation dictates. PIC's are so cheap, you can afford to chew
+through them like popcorn.
+<p>Another neat thing about PIC's is that they can support serial operations
+which makes hookup really really easy. You can have clusters of PICs working
+together to get a job done report to a more "centralized" PIC which concentrates
+the data and sends it upstream- even this can be serial- as by this time,
+you have had plenty of processing power to handle all sorts of low-level
+problems, all you really need to report is what happened and get new instructions,
+if any... so the PICs work together, much like the neuron-groups in our
+own biological brains- to accomplish simple, low-level tasks, and report
+them to (and be directed by) higher-level functions.
+<p>Does this leave out MC68HC11's? Heck no. They're really useful for lots
+of things. It doesn't rule out other processors either. Feel free to mix
+and match (though kitbashing in an x86 involves less kit and more bashing).
+Processors are cheap. If you're not comfortable at the processor core level-
+_get_ comfortable- its where all the action is. The goal is to create a
+processing-machine that meets YOUR (or your projects) processing needs.
+It doesn't have to be one processor. You don't have to shoe-horn it all
+into one box. You can use additional bolt-on processors to handle specific
+tasks (useful for handling things that require lots of processing in a
+hurry- like navigation, recognition, or communication).
+<p>And most of all you DON'T need precision! Precision to a point is useful,
+but after that continued insistance is moving your thoughts away from the
+real problem of designing an adequate control system to account for inaccuracies
+and errors. The more "fault-tolerant" the control system, the more flexible
+the resulting processing and control engine will be. If you're having problems
+getting enough precision- ignore it- find some other way of getting the
+job done- in all probability there are plenty of other ways that will work,
+you just need to rethink the problem and be open to creative solutions.
+Who cares if they are the most efficient, most cost-effective, prettiest,
+or most elegant- as long as they WORK- that's what counts- elegance will
+emerge on its own when its time.
+<p>In short, instead of forcing the solution on the result set, try using
+the result set to derive the solution.
+<br>&nbsp;
+<p>Ok- enough rambling- go make robots ;)
+<br>&nbsp;
+<p>John Whitten
+<br>brat@naxs.com
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<pre>--&nbsp;
++----------------------------------------------------------------------+
+| "I'll give up my modem when they pry it from my cold, dead fingers!" |
+| John Whitten - brat@naxs.com&nbsp; <A HREF="http://www.wizard.org">http://www.wizard.org</A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
++----------------------------------------------------------------------+</pre>
+&nbsp;</html>
+
+--------------62C7C30956523E81D1822BE6--
+
+

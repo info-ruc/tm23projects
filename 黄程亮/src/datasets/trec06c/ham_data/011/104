@@ -1,0 +1,113 @@
+Received: from aramis.et.byu.edu (aramis.et.byu.edu [128.187.74.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA12665
+	for <handyboard@media.mit.edu>; Mon, 16 Feb 1998 15:03:04 -0500 (EST)
+Received: from pc74-93 by aramis.et.byu.edu; Mon, 16 Feb 1998 13:03:02 -0700 (MST)
+Received: by localhost with Microsoft MAPI; Mon, 16 Feb 1998 12:50:23 -0700
+Message-Id: <01BD3AD9.7243EB90.kbsmith@et.byu.edu>
+From: "Kevin B. Smith" <kbsmith@et.byu.edu>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Expanding the memory of the handyboard
+Date: Mon, 16 Feb 1998 12:50:17 -0700
+X-Mailer: Microsoft Internet E-mail/MAPI - 8.0.0.4211
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+A number of students that used the handyboard in our Mechatronics 
+competition needed substantially more memory than the 16,320 bytes 
+currently available.  What options are there to add memory to the 
+handyboard?
+
+
+Thanks to everyone who contributes to handyboard@media.mit.edu
+
+Kevin B. Smith
+
+kbsmith@byu.edu
+
+
+
+-----Original Message-----
+From:	Fred G. Martin [SMTP:fredm@media.mit.edu]
+Sent:	Thursday, February 12, 1998 7:46 AM
+To:	patrick@surfari.net
+Cc:	handyboard@media.mit.edu
+Subject:	Re: Fw: questions on IC
+
+re: #1,
+
+in a sense, the stuff you downloaded *is* there, but IC doesn't know
+how to access it until you re-download.  So yes, each time you restart
+IC, you must re-download your project.
+
+
+re: #2.
+
+there are not good reporting tools for memory usage.  i think the
+'mem' command reports free memeory in the IC application, which isn't
+that relevant.
+
+the way that the 6811 memory is partitioned is follows, there is
+basically 16K for user code.  There is no way to free up more space
+without recompiling IC.   Here are some more details.
+
+
+user program object code + user global variables	16320 bytes available
+runtime OS						 7936 bytes used
+stack space for user processes				 6656 bytes used
+buffer for interaction process				  256 bytes used
+buffer for printing					  256 bytes used
+
+
+When downloading your code, IC tells you how many bytes are going
+down.  You've got 16,320 available.
+
+Fred
+
+In your message you said:
+> This is a multi-part message in MIME format.
+>
+> ------=_NextPart_000_01BD36FA.F5C69CC0
+> Content-Type: text/plain; charset=ISO-8859-1
+> Content-Transfer-Encoding: 7bit
+>
+> If there is ANYONE out there who can give me just a little guidance on
+> these two issues, or at least the first and most important one, I would
+> certainly appreciate hearing from them...  an extended treatise isn't
+> necessary, just a short answer will do...
+> thanks,
+> -patrick
+> ----------
+> > From: Patrick Cutts <patrick@surfari.net>
+> > To: handyboard@media.mit.edu
+> > Subject: questions on IC
+> > Date: Monday, February 09, 1998 10:33 PM
+> >
+> > Hi all,
+> > These questions are probably pretty trivial, but please bear with me, 
+as
+> I
+> > have only been using IC for 2 days:
+> > 1.  I was under the impression that the files I loaded onto my HB would
+> > remain there when I turn it off, I mean, the pcode does, but when I 
+load
+> > files or functions (for example lib_hb.c) using IC, they aren't there 
+the
+> > next time I run IC.  Is this normal?  If so, and they get deleted when 
+I
+> > quit IC, what do I need to do when I want to cut the umbilical and have
+> my
+> > robot roll around on its own?
+> >
+> > 2.  When I use the 'mem' command in IC, I get '<some number> of bytes 
+on
+> > host',  where <some number> appears to be 32K minus the size of the 
+files
+> I
+> > have loaded.  Is this how much memory is left on my HB or my PC?  If it
+> > shows how much memory is left on my PC, is there a way to find out how
+> much
+> > of the 32K is still available on the HB?
+> >
+
+

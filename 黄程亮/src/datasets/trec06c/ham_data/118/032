@@ -1,0 +1,159 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2GHBDt10534
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 12:11:13 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2GHBBoo020524
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 12:11:12 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Thu, 16 Mar 2006 12:11:12 -0500 (EST)
+Message-ID: <1054.128.84.98.90.1142529072.squirrel@webmail.cornell.edu>
+Date: Thu, 16 Mar 2006 12:11:12 -0500 (EST)
+Subject: paper 15 - anonymity
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+CROWDS
+
+
+crowd members are termed as jondos. when a jondo receives a request, it
+flips a biased coin to determine whether or not to forward this request to
+another jondo. each packet has a path identifier to enable jondos to take
+independent actions since it might occupy multiple positions on the path.
+a member of the crowd may submit requests initiated by others users.
+
+SECURITY ANALYSIS
+sender anonymity is not offered against a local eavesdropper.
+receiver anonymity is offered beyond suspicion.
+
+increasing the probability of forwarding a request increases the number of
+collaborating jondos that can be tolerated (since forwarding paths will be
+longer)however system performance decreases.
+
+even crowd members cannot identify the initiator of the request.
+
+crowd based systems can fail in case of malicious members which may drop
+packets or forward incorrect ones.
+
+HTML TIMING ATTACKS :
+when a jondo receives a HTML page as response, it might request for
+additional URLs from that page. The immediate nature of these requests
+opens opportunities for timing attacks by collaborating jondos. Timing
+attacks have been eliminated by the last jondo on the path requesting
+these URLs and sending them on the same path as the original request.
+Thus, the initiator waits for these URLs instead of explicitly issuing
+requests.
+
+
+
+P5
+
+P5 allows users to trade-off the degree of anonymity for communication
+efficiency ( you can decrease the amount of anonymity but not increase it)
+packets are encrypted using the receiver's public key. every message is
+hop-by-hop encrypted (each node acts as a mix).
+
+a broadcast hierarchy is created to make the broadcast mechanism scalable.
+the hierarchy consists of a binary tree which is constructed using the
+public key of the users. each node of the tree contains a bitstring and a
+bitmask (b/m). the bitmask specifies as to how many of the msb of the
+bitstring are valid.
+
+a message sent on (b/m) is forwarded to:
+1) all members in (b/m) group
+2) all members of the group at nodes higher up ( which match some prefix
+of the bitstring b)
+3) all members of the subtree below this node (nodes whose bitstring has
+prefix b)
+
+
+each user in the system can join a set of broadcast groups dependent upon
+the hash of the user's public key. the user can also select the bitmask
+value thus determining the specific group that he wants to join.
+
+noise:
+
+each user generates a fixed amount of traffic at all times to prevent
+local eavesdropping.
+message dropping algorithms must be used to control queue sizes (which
+increase easily due to broadcast mechanism)
+
+
+ANONYMITY ANALYSIS :
+sender and receiver anonymity depend upon group sizes.
+
+ATTACKS :
+
+Correlation attacks will be avoided due to noise packets.
+
+Difference and Intersection attacks map the user to a smaller subset of
+the group based upon the knowledge of his presence in more than 1 group.
+
+
+
+
+
+HERBIVORE FS:
+
+based on DC-nets
+ DC nets have the following properties
+  1) only 1 sender can send at a time
+  2) requires a mediator
+  3) even if 1 member in the clique is malicious the scheme fails beyond
+repair
+
+
+herbivore FS takes care of 1) and 2)
+ 1) to prevent multiple messages from being garbled - a concept of
+transmission slots and reservation protocols exist
+ 2) the mediator is replaced by a broadcast ( or another center node which
+acts a mediator for each round)
+
+
+ 3) the paper talks about a strike table mechanism to remove malicious
+node. However, a malicious node could still target a smaller set of users
+without being striked out.
+
+
+each node is forced to choose a random ID to prevent targeting a
+particular user.
+
+multiple instances of the protocol with different mediators help in
+achieving higher throughputs.
+
+
+INSERTION ATTACKS :
+each node reserves space for two sets of files A and B - A for the files
+that it introduced and B for the files introduced by the clique.
+files placed on the A-list are transferred to the B-list after response to
+the first query. the B-list is managed as a LRU cache. This caching
+mechanism hides the identity of the node as the node does not insert a
+file into the network more than once(each member of the clique then has a
+copy of it in the
+
+B-list)
+dropping of files seems to be a valid tradeoff of availability against
+security.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

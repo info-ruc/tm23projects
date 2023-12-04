@@ -1,0 +1,137 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id SAA23455
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 10 May 2000 18:57:36 -0700
+Received: from homebox.u.arizona.edu (uofa-dsl-17.dakotacom.arizona.edu [150.135.175.17])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with ESMTP id SAA24260
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 10 May 2000 18:57:35 -0700
+Message-Id: <4.3.1.0.20000510182445.00a723c0@psy1.psych.arizona.edu>
+Date: Wed, 10 May 2000 18:57:36 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: 
+In-Reply-To: <000b01bfbacb$252878c0$2f5dc480@cog.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 03:00 PM 5/10/00 -0700, you wrote:
+>Sorry for such a basic question, but I can't figure out how to scramble the
+>presentation of blocks of items as well as the items within each block.  I'm
+>doing a categorization task where the first item of a block tells the
+>subject which category they're working with for the next 8 items.  For
+>example:
+>
+>\
+>$
+>0 "The current category is:",
+><line 1> "BIRD",
+><line 3> "Please indicate for each of the following 8 items",
+><line 4> "whether they belong to the category BIRD or not.";
+>$
+>+105 "###########" /   * "PENGUIN" /;
+>+106 "###########" /   * "SPARROW" /;
+>+107 "###########" /   * "OSTRICH" /;
+>+108 "###########" /   * "QUAIL" /;
+>-0305 "###########" /   * "ANT" /;
+>-1306 "###########" /   * "FOOT" /;
+>-0207 "###########" /   * "SPIDER" /;
+>-1208 "###########" /   * "NOSE" /;
+>
+>\
+>
+>It's very important that the items I have under "BIRD" don't get scrambled
+>with items from other categories (thus the "\").  But it's also important
+>that "BIRD" doesn't always appear in the same place.  So, how do I scramble
+>my categories of items as well as my items within a category?
+>
+>thanks for any help and sorry to bother everyone with such a simple question
+
+
+   It's not simple, it's not doable in DMDX nor is it possible in the other 
+scrambling scheme that I've been tempted to add to DMDX but haven't.  I'd 
+have to come up with some nesting construct and if you've ever seen the 
+scramble code (written by Ken 15 years ago, eek) you'll understand why I 
+haven't added it yet.  I guess it would be possible to add a series of 
+keywords that scramble's code doesn't see for the first pass that can then 
+get replaced with regular $ and \ characters for the second pass through 
+scramble, if I was going to do it I probably should make it N passes 
+too.  That way the first scramble could be done with a G9 and no $ or \ 
+characters to move your groups around preserving their internal order and 
+then for the second pass the $ and \ would be in effect (and the original G 
+not in effect) which would just rearrange the response items.
+
+   Mmmm, more I think about it the easier it sounds, enter the 
+<MultiScrambleX> keywords!  <mss N,N>, <msg N,N>, <msd N> and <msb 
+N>.  Guess there'd have to be a <msi N,N> too.  Only real question would be 
+whether backslashes stayed and the beginning of lines (if you've ever 
+looked at scramble's output things like spaces and newlines move), but we 
+can probably fudge that.  Your item file would become something like:
+
+<ep> <msg 1,9> <mss 2,9>
+</ep>
+<msd 2>
+0 "The current category is:",
+<line 1> "first",
+<line 3> "Please indicate for each of the following 8 items",
+<line 4> "whether they belong to the category BIRD or not.";
+<msd 2>
++105 "###########" / * "PENGUIN" /;
++106 "###########" / * "SPARROW" /;
++107 "###########" / * "OSTRICH" /;
++108 "###########" / * "QUAIL" /;
+-0305 "###########" / * "ANT" /;
+-1306 "###########" / * "FOOT" /;
+-0207 "###########" / * "SPIDER" /;
+-1208 "###########" / * "NOSE" /;
+<msb 2>
+
+<msd 2>
+0 "The current category is:",
+<line 1> "second",
+<line 3> "Please indicate for each of the following 8 items",
+<line 4> "whether they belong to the category BIRD or not.";
+<msd 2>
++105 "###########" / * "PENGUIN" /;
++106 "###########" / * "SPARROW" /;
++107 "###########" / * "OSTRICH" /;
++108 "###########" / * "QUAIL" /;
+-0305 "###########" / * "ANT" /;
+-1306 "###########" / * "FOOT" /;
+-0207 "###########" / * "SPIDER" /;
+-1208 "###########" / * "NOSE" /;
+<msb 2>
+
+<msd 2>
+0 "The current category is:",
+<line 1> "third",
+<line 3> "Please indicate for each of the following 8 items",
+<line 4> "whether they belong to the category BIRD or not.";
+<msd 2>
++105 "###########" / * "PENGUIN" /;
++106 "###########" / * "SPARROW" /;
++107 "###########" / * "OSTRICH" /;
++108 "###########" / * "QUAIL" /;
+-0305 "###########" / * "ANT" /;
+-1306 "###########" / * "FOOT" /;
+-0207 "###########" / * "SPIDER" /;
+-1208 "###########" / * "NOSE" /;
+<msb 2>
+
+   I'll see if it's easily doable and if so I might do it this evening, 
+otherwise it's not likely to happen for a while, I'm building version 2 of 
+TimeDX and DMDX right now...
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Law stands mute in the midst of arms.
+
+
+

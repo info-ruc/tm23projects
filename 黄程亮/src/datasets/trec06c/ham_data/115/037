@@ -1,0 +1,64 @@
+Received: from outmail.freedom2surf.net (outmail1.freedom2surf.net [194.106.33.237])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k1JH33g1021611
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 19 Feb 2006 10:03:04 -0700
+Received: from [192.168.0.3] (i-194-106-39-102.freedom2surf.net [194.106.39.102])
+	by outmail.freedom2surf.net (8.12.10/8.12.10) with ESMTP id k1JH2vRu009176
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 19 Feb 2006 17:02:57 GMT
+Mime-Version: 1.0 (Apple Message framework v746.2)
+In-Reply-To: <5.1.0.14.2.20060216180711.00ba48d0@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20060216180711.00ba48d0@psy1.psych.arizona.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Message-Id: <B43F777A-D5AE-41E1-9EA7-B9D3D623ACF0@psychology.nottingham.ac.uk>
+Content-Transfer-Encoding: 7bit
+From: Walter van Heuven <wvh@psychology.nottingham.ac.uk>
+Subject: [DMDX] Re: Display errors and delay parameter
+Date: Sun, 19 Feb 2006 17:02:55 +0000
+To: DMDX@psy1.psych.arizona.edu
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+On 17 Feb 2006, at 01:11, j.c.f. wrote:
+
+> At 08:02 PM 2/16/2006 +0000, you wrote:
+>
+>
+>> However, when I remove <d 40> from the parameter line the display
+>> errors disappear!
+>
+>   Right, you're not asking it schedule an item to be displayed in  
+> exactly 40 ticks from the end of the last one.  And if DMDX is  
+> sitting around waiting for an RT for 2000ms it's certainly not  
+> going to be able to get around to displaying the next item in 40  
+> ticks.
+
+Thanks. I understand now why using <d 40> in parameter line leads to  
+display errors when I use a timeout of 2000 ms. I just got confused  
+by the effect of delay parameter because <d 40> in the parameter line  
+leads to display errors while <delay 40> at the beginning of an item  
+does not lead to display errors. Thus, delay in the parameter line  
+and delay in an item are not the same. Also, I try to understand  
+their effect on the total trial duration and the ISI.
+
+Removing the <d> parameter from the parameter line makes the total  
+trial duration 48 ticks longer, which is as far as I understand it  
+due to the 'request scheduled' (DMDX housekeeping)? I don't want this  
+because when I press a button the stimulus is not immediately removed  
+from the screen (it takes 48 ticks).
+
+I changed <d 40> to <d 0> and removed <delay 40>. As expected no  
+display errors but the total trial duration is a few ticks longer  
+than I expected.  I guess this is due to DMDX housekeeping. If I use  
+the <delay 40> in an item my calculation of the total trial duration  
+is correct. Thus, the DMDX housekeeping happens then within <delay 40>?
+
+Thanks,
+
+Walter
+
+
+
+
+
+

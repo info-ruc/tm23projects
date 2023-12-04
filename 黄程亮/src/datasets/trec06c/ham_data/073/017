@@ -1,0 +1,50 @@
+Received: from darwin.psy.fsu.edu (root@darwin.psy.fsu.edu [128.186.66.5])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id IAA03975
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Oct 2000 08:56:54 -0700
+From: larowe@darwin.psy.fsu.edu
+Received: from neuroscan (dhcp6779.psy.fsu.edu [128.186.67.79])
+	by darwin.psy.fsu.edu (8.9.3/8.9.3) with SMTP id LAA16740
+	for <DMDX@psy1.psych.arizona.edu>; Fri, 13 Oct 2000 11:56:52 -0400
+Message-Id: <3.0.6.32.20001013120943.007a7940@psy.fsu.edu>
+Date: Fri, 13 Oct 2000 12:09:43 -0400
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: syncing audio with PIO 12 output
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Dear sir:
+
+We tried this code you mailed us:
+
+0 <wav> "file" <svp start> o0 / o255;
+
+I believe the "o0" is supposed to read "%0". I assume the o255 is supposed
+to represent the trigger that goes out to the EEG machine.  
+
+We tried this code, but it still appears that the trigger occurs after the
+sound is done playing, as indicated by the fact that are N100s appear to
+occur about 50ms too early.
+
+According to the help documentation, this code should work.  However, it
+occurs to me that perhaps the mess up is due to the fact that the wave file
+is 50ms in duration, whereas the default frame duration (near as I can
+figure) is 1 tick.  I'm not sure of default frame duration, since I'm new
+to DMDX, but I assume that in my parameter line the "f1" indicates the
+default frame duration parameter.  It appears in my parameter line like this:
+
+<ep> <azk> f1 (etc. etc.)
+
+My thinking is that I can change this default to something higher, say f5,
+and then my wav files will not exceed the default duration, and the wave
+file should then be simultaneously presented with the trigger.
+
+How does this sound?
+
+Steve LaRowe
+Kline Lab
+Flordia State University
+
+

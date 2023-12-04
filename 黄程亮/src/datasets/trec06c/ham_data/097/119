@@ -1,0 +1,139 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id iA6HWKlS006473
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Sat, 6 Nov 2004 11:32:20 -0600 (CST)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.1/Submit) id iA6HWKVH006472
+	for reliable_computing-outgoing; Sat, 6 Nov 2004 11:32:20 -0600 (CST)
+Received: from lakermmtao02.cox.net (lakermmtao02.cox.net [68.230.240.37])
+	by interval.louisiana.edu (8.13.1/8.13.1/ull-interval-math-majordomo-1.5) with ESMTP id iA6HW9RI006468
+	for <reliable_computing@interval.louisiana.edu>; Sat, 6 Nov 2004 11:32:15 -0600 (CST)
+Received: from Inspiron-8200 ([68.226.133.93]) by lakermmtao02.cox.net
+          (InterMail vM.6.01.04.00 201-2131-117-20041022) with SMTP
+          id <20041106173203.WAPQ18789.lakermmtao02.cox.net@Inspiron-8200>
+          for <reliable_computing@interval.louisiana.edu>;
+          Sat, 6 Nov 2004 12:32:03 -0500
+Message-Id: <2.2.32.20041106173328.009f4c1c@pop.louisiana.edu>
+X-Sender: rbk5287@pop.louisiana.edu
+X-Mailer: Windows Eudora Pro Version 2.2 (32)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Sat, 06 Nov 2004 11:33:28 -0600
+To: reliable_computing@interval.louisiana.edu
+From: "R. Baker Kearfott" <rbk@louisiana.edu>
+Subject: A "classroom" problem -- second installment
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+Status:  O
+X-Status: $$$$
+X-UID: 0000000010
+
+Dear Colleagues,
+
+My recommendations to the student in the "classroom example" were
+not exactly correct.  Despite the problem being "simple,"
+it took some additional discussion between me and the student
+to correctly get exact bounds on the range, to within
+"roundout error."  I append again the problem, followed by a
+correct solution.  Are we right?
+
+(I have edited the Mathematica notebook and have supplied more nearly universal
+"TeX-like" notation).
+
+Best regards,
+
+Baker
+==========================================================================
+
+==============================================================================
+The exam question:
+
+A. A petroleum storage tank in the shape of a circular cylinder has an
+   inner radius of between 4.95 and 5.05 meters, and a height of between
+   7.95 meters and 8.05 meters.  The thickness of the vertical walls
+   varies between 1.99cm and 2.01cm, and the density of the wall material
+   (steel) is between 7.85 and 7.91 grams per cubic centimeter.
+
+   Use Mathematica's interval arithmetic capability to compute lower
+   and upper bounds, sharp to within "roundout" error, to the following:
+
+      (1) the total volume of the tank;
+
+      (2) the weight of the vertical walls in kilograms.
+
+   Although the actual computations are relatively simple, present the
+   computations in an organized way, and place your explanation and report
+   directly in the Mathematica notebook.  Format the notebook, including
+   the comments, in a way that makes it easy and pleasing to read.
+
+
+==============================================================================
+A correct solution:
+
+(1) To find the volume of the tank, we use the inner radius of
+the tank and the height of the tank. Use the volume formula for
+the cylinder. We convert the unit of the radius and height of
+the tank to be in centimeters instead of meters:
+
+(Input): r1 = 100*Interval[{4.95, 5.05}]
+
+(Input): h = 100*Interval[{7.95, 8.05}]
+
+(Input): VolTank  =\pi*r1^2*h
+
+(Output):Interval[{6.119661482569413*10^8, 6.449536565177991*10^8}]
+
+The thickness of the vertical walls varies between 1.99 cm and 2.01 cm:
+
+(Input): thick = Interval[{1.99, 2.01}]
+
+We give the density of the vertical wall in kilograms per cubic centimeter:
+
+(Input): d = 0.001* Interval[{7.85, 7.91}]
+
+
+Let us find the exact range of the weight of the wall. To find
+the exact range of weight of the wall. We have to find the
+minimum and maximum possible volume of the wall first.  To this end,
+we note that, for a given thickness, the volume of the wall is an
+increasing function of the inner radius:
+
+(Input): tilr1 = Min[r1]
+
+(Input): tilr2 = tilr1 + Min[thick]
+
+(Input): hatr1 = Max[r1]
+
+(Input): hatr2 = hatr1 + Max[thick]
+
+Now we use the interval arithmetic for these radius to find the
+maximum and minimum possible for the volume of the wall:
+
+(Input): LoBoundVol  = Min[ \pi*(R2^2 - R1^2))*h]
+
+(Input): RR1 = Interval[hatr1]
+
+(Input): RR2 = Interval[hatr2]
+
+(Input): UpBoundVol  =  Max[\pi*(RR2^2 - RR1^2)*h]
+
+(Input): IntervalVolume = Interval[{LoBoundVol, UpBoundVol}]
+
+(Output): Interval[{4.930345702783755*10^6, 5.144303873599082*10^6}]
+
+(Input): BWeight = IntervalVolume*d
+
+(Output): Interval[{38703.2, 40691.4}]
+
+==========================================================================
+
+---------------------------------------------------------------
+R. Baker Kearfott,    rbk@louisiana.edu   (337) 482-5346 (fax)
+(337) 482-5270 (work)                     (337) 993-1827 (home)
+URL: http://interval.louisiana.edu/kearfott.html
+Department of Mathematics, University of Louisiana at Lafayette
+(Room 217 Maxim D. Doucet Hall, 1403 Johnston Street)
+Box 4-1010, Lafayette, LA 70504-1010, USA
+---------------------------------------------------------------
+
+
+

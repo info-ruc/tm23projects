@@ -1,0 +1,54 @@
+Received: from po4.wam.umd.edu (po4.wam.umd.edu [128.8.10.166])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id JAA05145
+	for <handyboard@media.mit.edu>; Wed, 2 Dec 1998 09:54:53 -0500 (EST)
+Received: from rac8.wam.umd.edu ((IDENT root)@rac8.wam.umd.edu [128.8.10.148])
+	by po4.wam.umd.edu (8.9.0.Beta6/8.9.0.Beta6) with ESMTP id JAA22295
+	for <handyboard@media.mit.edu>; Wed, 2 Dec 1998 09:55:28 -0500 (EST)
+Received: from rac8.wam.umd.edu ((IDENT sendmail)@localhost [127.0.0.1])
+	by rac8.wam.umd.edu (8.9.0.Beta6/8.9.0.Beta6) with SMTP id JAA14753
+	for <handyboard@media.mit.edu>; Wed, 2 Dec 1998 09:54:45 -0500 (EST)
+Received: from localhost by rac8.wam.umd.edu (8.9.0.Beta6/8.9.0.Beta6) with SMTP id JAA14727
+	for <handyboard@media.mit.edu>; Wed, 2 Dec 1998 09:54:42 -0500 (EST)
+X-Authentication-Warning: rac8.wam.umd.edu: sinha owned process doing -bs
+Date: Wed, 2 Dec 1998 09:54:42 -0500 (EST)
+From: Shiva Sinha <sinha@wam.umd.edu>
+To: handyboard@media.mit.edu
+Subject: motor code questions
+In-Reply-To: <199812010408.PAA22277@war.Aus.Sun.COM>
+Message-Id: <Pine.GSO.3.95q.981202093535.10432A-100000@rac8.wam.umd.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hi,
+
+I got my Handyboard up and going and was trying the following code for
+driving my motors. (Figure I would try known code before forking out on my
+own). The code I got from the 'Inspiration to implemntation' book. Anyways
+it does not seem to drive the motors (no LEDs lighting), and I was
+wondering if any one knows of any problems with the code. I've looked it
+over and it seems pretty reasonable.
+
+Thanks in advance,
+Shiva Sinha
+----------------------------------------------
+int write_port (int port, int value, int mask)
+{ poke(port,(value & mask) | (peek(port) & ~mask)); }
+
+void motor_cmd(int l_ena, int l_dir, int r_ena, int r_dir)  {
+write_port(port_a, (l_ena & m_mask_l) | (r_ena & m_mask_r), m_mask); 
+   write_port(port_d, (l_dir & m_mask_l) | (r_dir & m_mask_r), m_mask);  }
+
+void move(int operation)  { 
+      if (operation == STOP)
+	 motor_cmd(off_,0,off_,0); 
+      else if (operation == FORWARD)
+         motor_cmd(on,fwd,on,fwd); 
+      else if (operation == BACKWARD)
+	 motor_cmd(on,bkw,on,bkw); 
+      else if (operation == LEFT_TURN)
+	 motor_cmd(on,bkw,on,fwd); 
+      else if (operation == RIGHT_TURN)
+	 motor_cmd(on,fwd,on,bkw); 
+}
+
+

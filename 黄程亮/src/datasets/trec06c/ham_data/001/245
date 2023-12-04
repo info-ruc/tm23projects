@@ -1,0 +1,48 @@
+Received: from psuvax1.cse.psu.edu ([130.203.2.4]) by groucho.cse.psu.edu with SMTP id <2535>; Mon, 7 Mar 1994 21:21:13 -0500
+Received: from steroid.ecst.csuchico.edu ([132.241.1.33]) by psuvax1.cse.psu.edu with SMTP id <294383>; Mon, 7 Mar 1994 21:09:47 -0500
+Received: from localhost (jwjohn@localhost) by steroid.ecst.csuchico.edu (8.6.4/8.6.4) id SAA23599 for 9fans@cse.psu.edu; Mon, 7 Mar 1994 18:09:30 -0800
+From:	Jerry W Johnson <jwjohn@ecst.csuchico.edu>
+Message-Id: <199403080209.SAA23599@steroid.ecst.csuchico.edu>
+Subject: U9fs Compile Help?
+To:	9fans@cse.psu.edu
+Date:	Mon, 7 Mar 1994 21:09:29 -0500
+X-Mailer: ELM [version 2.4 PL23]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Length: 1655      
+
+Hi,
+we've essentially got plan9 right out of the box (not a lot of
+kernel changes). Anyway, while trying to compile u9fs on an hp-715
+running hp-ux 9.01, the following error is displayed:
+cc: "u9fs.c", line 50: error 1000: Unexpected symbol: "DIR".
+cc: "u9fs.c", line 50: error 1573: Type of "dir" is undefined.
+cc: "u9fs.c", line 50: error 1578: Size of member is unknown.
+cc: "u9fs.c", line 67: error 1574: Unknown size for "stbuf".
+cc: "u9fs.c", line 67: error 1578: Size of member is unknown.
+cc: "u9fs.c", line 369: error 1000: Unexpected symbol: "int".
+cc: "u9fs.c", line 368: error 1588: "DIR" undefined.
+cc: "u9fs.c", line 368: error 1588: "dir" undefined.
+cc: "u9fs.c", line 369: error 1588: "m" undefined.
+cc: "u9fs.c", line 372: error 1558: The ! operator takes a scalar operand.
+cc: "u9fs.c", line 369: error 1588: "trunc" undefined.
+cc: "u9fs.c", line 376: error 1530: Undefined struct or union.
+cc: "u9fs.c", line 376: error 1588: "S_IFCHR" undefined.
+cc: "u9fs.c", line 376: error 1563: Expression in if must be scalar.
+cc: "u9fs.c", line 380: error 1567: Switch expression must be an integral type.
+cc: "u9fs.c", line 401: warning 563: Argument #1 is not the correct type.
+
+The source has been updated with some changes Rob Pike sent out last 
+August(?), and is otherwise unchanged. Here is the modified makefile:
+CFLAGS=-N -I. -I/usr/include -I/usr/include/sys -Aa  -DBIGEND -DSYSV -DNEEDPROTO -DLOG='"/tmp/u9fs.log"'
+
+u9fs:	u9fs.o conv.o memmove.o mfmt.o 
+	cc -o u9fs u9fs.o conv.o memmove.o mfmt.o -lbsd
+
+%.o:	%.c  u.h libc.h 9p.h 
+	cc -c $(CFLAGS) $<
+
+Any suggestions, please? Any "gotcha's" I should be aware of?
+TIA. Cheers, --Jerry
+

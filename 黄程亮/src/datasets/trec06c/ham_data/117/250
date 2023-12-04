@@ -1,0 +1,31 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2EGjRt29662
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 11:45:27 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2EGjPbB028807;
+	Tue, 14 Mar 2006 11:45:26 -0500 (EST)
+Message-ID: <2024326674.1142354725380.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 14 Mar 2006 11:45:25 -0500 (EST)
+From: Gopal Parameswaran <gp72@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 14
+Cc: Gopal Parameswaran <gp72@cornell.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: uPortal WEB email client 3.0
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k2EGjRt29662
+
+Predicting Internet network Distances
+In this paper the authors discusses the coordinate -based mechanisms in a peer to peer architecture to predict network distances and discusses a mechanism for mapping nodes called Global Network Positioning which is based on absolute co-ordinates computed from observing the Internet as a geometric space. As soon as end hosts discover themselves they compute the distances between them by using a small set of distributed hosts called landmarks which serve as a frame of reference and are used to map and position the nodes in the network. The number of landmarks would need to be number of dimensions + 1. Once the landmark co-ordinates are known any node can be mapped on to the network map based on its orientation from the landmarks.
+
+Vivaldi:
+This paper discusses a simple light weight algorithm that assigns synthetic co-ordinates to hosts such that the distances between the co-ordinates of two hosts accurately predict the latency between the two hosts. The system of using synthetic co-ordinates is based on the concept that RTT is based on the physical distance between two hosts. However there because transmission time and router electronics introduce distortions in the predictions and the distorted latencies makes the two –dimensional co-ordinate system unsuitable and to correct this issues the authors suggest augmenting the coordinates by a height dimension that improves the prediction accuracy of the system based on measurements from the Internet.
+The Vivaldi algorithm works by first assigning synthetic co-ordinates in a co-ordinate space such that the distance in the co-ordinate space accurately maps the RTT distance between the two hosts. The algorithm does not predict the value of the synthetic coordinates accurately but instead uses an error reduction algorithm to reduce the error and improve the system. It uses an error reduction function that uses the Squared error of the accurate distance in space represented by the RTT and the assumed distance in space given by the difference squared in the co-ordinate space. This error function is then reduced to generate the close mapping. As the authors asserts this algorithm suffers from the disadvantage that it can get caught in a local minima. However a suitable extension to this paper would be to extend the number of dimensions by transformation of the data into a higher dimensional co-ordinate space which can then be converted into an approximate system by collapsing the dimensions one by one. Also as the error margin is reduced in multiple steps the system could also show oscillatory behaviors but in general should converge to well defined RTT maps. 
+
+Meridian:
+This paper discusses a framework for an overlay network structured around multi-resolution rings that support query routing with measurements and uses gossip protocol for dissemination. This paper addresses the three issues of closest node discovery and location and tries to satisfy latency considerations in large scale distributed systems without computing absolute co-ordinates.
+A general technique for a distance metric is to map high dimensional network measurements into a smaller Euclidean space. Though this works for smaller networks it is not suitable for a large scale network and is neither accurate nor complete since the measurements are non-trivial resulting in a sub-optimal solution. Meridian uses a lightweight protocol that is scalable and more accurate for performing node selection based on direct measurement instead of network embedding.
+Meridian is a loose routing system based on multi resolution rings on each node where each ring is based on a distance interval of Alpha and s where Alpha is a constant and s the multiplication factor. Actually Alpha * s determine the interval for the distance for the other nodes with the node. This ring structure enables each node to maintain at most k nodes in its ring and drops peers from overpopulated rings. Meridian periodically assesses ring members about its proximity metrics and replaces the nodes with those that provide it with a greater diversity. The objective of the rings seems to increase the diversity factor using the rings. A list of secondary nodes is maintained in every ring and when a node drops out the dropped nodes are replaced with the secondary nodes randomly.
+Distance metric in Meridian is measured by doing multiple hops to the destination and by measuring the physical latencies. The number of hops that are traversed is used to adjust between the error in the metrics and the increased hop count.
+

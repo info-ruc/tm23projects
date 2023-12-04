@@ -1,0 +1,217 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1GGumt21554
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 11:56:48 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1GGukbk005405
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 11:56:47 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Thu, 16 Feb 2006 11:56:47 -0500 (EST)
+Message-ID: <4721.128.84.98.90.1140109007.squirrel@webmail.cornell.edu>
+Date: Thu, 16 Feb 2006 11:56:47 -0500 (EST)
+Subject: paper 8
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+GEO-PEER
+
+it supports location-constrained queries and information dissemination.
+the previous systems that we have studied use random node identifiers
+which cannot represent a physical location. If node-ids are assigned on a
+geographical basis in previous systems, it would result in disrupting load
+balancing.
+
+BASIC STRUCTURE:
+
+the nodes are arranged to form a planar Delaunay triangulation network
+augmented with long range contacts(LRC). the characteristics of a Delaunay
+triangulation are the following :
+1) expected O(1) node degree
+2) good routing performance
+3) distributed construction
+
+it has lower network diameter due to LRCs.
+
+a large number of messages are required for creating and maintaining the
+Delaunay triangulation.
+
+each node has a set of neighbors and maintains their alive status via
+beacon messages.
+
+each node P, based on its knowledge of its neighbors, computes the
+Delaunay triangle PMN and then sends a "TRIANGULATE" message about this
+information to both M and N. If the neighbors(M & N) agree
+with this assessment of P, a consistent set of "TRIANGULATE" messages are
+exchanged.
+in case of disagreement, a BREAKLINKS message is sent which causes the
+receiver to re-execute the local computation updating its local
+information ( BREAKLINKS contains the nodes whom the receiver should
+triangulate with as thought by the sender).
+
+node failure:
+
+when some neighbor of a failed node F detects the failure, it sends a
+FAILURE message to all its Delaynay neighbors. These neighbors,in turn if
+neighbors of F, correspondingly resend this message  to their neighbors.
+This procedure ensures that all Delaunay neighbors of F become aware of
+its failure and the neighbors recompute the Delaunay triangle.
+
+Some other node P who was not the Delaunay neighbor of F can try to
+triangulate APF. This would result in storing the information about the
+failure of F forever. This problem is overcome by discarding info about F
+after the expiration of a timeout.
+
+when we have more than 3 co-circular nodes each node is the delaunay
+neighbor of the other.
+
+routing algorithm:
+
+the authors have suggested a greedy algorithm selecting that neighbor
+which is closest to the destination. they do point out that the algorithm
+is not "competitive".
+
+
+LRC:
+if routing was based on the greedy algorithm, lookups would be inefficient
+due to the large diameter of the network.
+the authors suggest mechanisms such as Hop level mechanism , hit count
+balancing methods, small world mechanism and e-CAN like mechanisms for LRC
+creation.
+
+hop-level mechanism represents a tree structure with base b and the level
+of a node is determined by its distance from the current node.
+
+to ensure that the hit-count counters do not diverge-they are halved
+periodically.
+
+
+
+P-TREES:
+
+efficiently evaluate range queries besides equality queries.
+
+cost for range queries: O(m+ lx N)
+lx represents log to base d
+
+m : number of peers in selected range
+N : number of peers
+d : order of P-tree
+
+space requirements at each node : O(d lx N)
+
+
+BASIC STRUCTURE:
+
+each node maintains parts of semi-independent B+ - trees. these parts
+represent the left-most root-to-leaf path of corresponding B+ -tree.
+
+P-trees differ from B+ trees as sub-trees have overlapping ranges allowing
+peers to independently grow or shrink their tree; thereby eliminating the
+need for excessive co-ordination and communication b/w peers (this is the
+TAKEAWAY FROM THIS PAPER)
+
+search :
+B+ -tree provides O(lx N) complexity.
+range queries are satisfied by reaching the lower bound first and then
+traversing along the ring.
+
+STATE MAINTENANCE :
+a ping process is used to check whether the node corresponding to the
+table entry has failed or not.
+the stabilize algorithm is used to stabilize each level at a time in
+increasing order of levels.
+
+
+the structure of the P-tree (i.e number of nodes at each level) is highly
+dependent on the number of nodes in the system currently for optimal
+performance. Thus, estimating the number of nodes in the system seems a
+consideration for optimal performance.
+
+
+
+MERCURY:
+
+performs multiple attribute based range queries as well as explicit load
+balancing.
+
+BASIC STRUCTURE:
+it handles multi-attribute queries by creating a routing hub for each
+attribute in the application schema assuming a small number of attributes.
+A hub is a logical collection of nodes in the  system.  each node in the
+hub is responsible for a certain range of the attribute which is
+represented
+by the hub. (a physical node can be part of multiple logical hubs but the
+authors do not discuss this idea)
+
+STORAGE REQUIREMENTS:
+
+1) successor and predecessor links within the attribute hub
+2) k long distance links for efficient intra-hub routing
+3) one cross-link per hub for connecting to other hubs
+
+for better fault tolerance, the authors suggest more links for cross-hub
+and succ/pred nodes.
+
+
+a node randomly joins any hub initially.
+
+ROUTING:
+follows a greedy policy of selecting the closest link from its table.
+the protocol allows additional cached destinations to be added to the table.
+
+
+
+Random walks are used for propagating "keep-alive" messages ( no novelty
+here)
+
+
+LOAD BALANCING:
+
+in order to balance load, each node must estimate the load on other nodes
+in a distributed fashion.
+at each range in the value space, the load is estimated by a weighted
+average of its neighbor nodes preventing bias against low-density samples.
+
+However, their algorithm requires a lightly loaded node to gracefully
+leave its position and join a heavily loaded node thereby splitting the
+heavy load. in the real world, gracefully acceptance of heavy loads does
+not seem practical.
+(the heaviness of  load on a node is determined by comparing it to the
+average load - but they mention no protocol for computing this average
+load)
+
+
+the authors also talk about query selectivity which essentially determines
+the order in which the conjunction of must be carried out. it talks about
+maintaining approximate histograms for each hub but a malicious cross-hub
+link could send wrong values during this estimation. in other words
+calculating this approximate value set seems difficult with malicious
+peers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

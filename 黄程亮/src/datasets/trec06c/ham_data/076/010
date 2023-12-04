@@ -1,0 +1,131 @@
+Received: from fnal.gov (heffalump.fnal.gov [131.225.9.20])
+	by mcs.anl.gov (8.9.3/8.9.3) with ESMTP id SAA38950
+	for <wilde@mcs.anl.gov>; Tue, 10 Apr 2001 18:19:19 -0500
+Received: from sdss.fnal.gov ([131.225.7.28])
+ by smtp.fnal.gov (PMDF V6.0-24 #37519)
+ with ESMTP id <0GBL00L2RNG7PT@smtp.fnal.gov> for wilde@mcs.anl.gov; Tue,
+ 10 Apr 2001 18:19:19 -0500 (CDT)
+Received: from localhost (annis@localhost)	by sdss.fnal.gov (SGI-8.9.3/8.9.3)
+ with SMTP id SAA99332; Tue, 10 Apr 2001 18:19:18 -0500 (CDT)
+Date: Tue, 10 Apr 2001 18:19:18 -0500 (CDT)
+From: James Annis <annis@fnal.gov>
+Subject: Re: Snapshot of quantitative replication requirements
+In-reply-to: <5.0.2.1.0.20010410175522.02561b58@localhost>
+To: Mike Wilde <wilde@mcs.anl.gov>
+Cc: James Annis <annis@fnal.gov>
+Message-id: <Pine.SGI.3.95.1010410180919.1870361I-100000@sdss.fnal.gov>
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; charset=US-ASCII
+X-Authentication-warning: sdss.fnal.gov: annis owned process doing -bs
+
+It wouldn't be incorrect, no.
+
+The basic distinction is number of objects versus number of files.
+The catalog has a very high # of objects/file, while the images have 1/1.
+I guess I might advocate a column with number of objects, as interesting in
+its own right, as a proxy for complexity of the data.
+
+
+> Also, in the numbers below, for 2006, images, replicas/file, did you mean 
+> 10 not 1?
+
+yes. Sorry.
+
+> I assume the number 200M objects by 2006 is spread over the 5000 object 
+> catalogs, and that these catalogs remain roughly O(1GB)? (EVen though thats 
+> beyond the detail of the spreadsheet currently)
+
+
+Yes, that is right.
+
+
+
+On Tue, 10 Apr 2001, Mike Wilde wrote:
+
+> Jim, would it be accurate to roll the numbers for catalogs and images 
+> together into one summary as follows?:
+> 
+> 
+>              Primary data            Replication
+>              # 
+> files         sites   storage_servers     replicas/file   catalog_users
+> 2001    250,000             3                           3               ~100
+> 2006    3,500,000           10                          10              ~1000
+> 
+> 
+> Also, in the numbers below, for 2006, images, replicas/file, did you mean 
+> 10 not 1?
+> 
+> I assume the number 200M objects by 2006 is spread over the 5000 object 
+> catalogs, and that these catalogs remain roughly O(1GB)? (EVen though thats 
+> beyond the detail of the spreadsheet currently)
+> 
+> Thanks!
+> 
+> Mike
+> 
+> 
+> At 01:20 PM 4/10/2001 -0500, you wrote:
+> >Hi Mike
+> >
+> >Here is a first guess as to the column entires in your file:
+> >
+> >             Primary data            Replication
+> >             # 
+> > files         sites   storage_servers     replicas/file   catalog_users
+> >SDSS catalogs
+> >2001    600                 3                           3               ~100
+> >2006    5000                10                          20              ~1000
+> >
+> >SDSS images
+> >2001    250,000             1                           1               ~10
+> >2006   3,500,00             10                          1               ~100
+> >
+> >
+> >catalogs are objectivty databases, each about 1 Gig
+> >     there are two copies of the catalogs, btw.
+> >     ~200,000,000 objects in the catalog in 2006
+> >
+> >images are 5/field, about 28 Meg for a 5 image/field set.
+> >
+> >interesting developments are several groups running large derived catalogs
+> >as web pages. Available on request, but are either large ascii files or
+> >fits binary tables.
+> >
+> >I didn't find the idea of logical collection being used in the SDSS.
+> >I don't actually have numbers for peak usage, but will over the next few
+> >months.
+> >
+> >I would like to have you come out to Fermilab for a visit.
+> >Perhaps when you come out to see Ruth, we can spend some time
+> >talking. Let me know what your schedule is like. We'd like to
+> >ramp up on a GriPhyN testbed over the next 6 months, but our
+> >awareness of what the tools actually do is limited. And the best
+> >way is to talk...
+> >
+> >cheers,
+> >jim
+> >
+> >
+> >
+> >On Tue, 10 Apr 2001, Mike Wilde wrote:
+> >
+> > > Jim, here's the current matrix - hope its readable.
+> > >
+> > > The #s currently assume the Globus replica catalog model of a simple
+> > > 2-level collection-replica hierarchy.
+> > >
+> > > Any numbers or feedback you can add would be very welcome.
+> > >
+> > > Thanks,
+> > >
+> > > Mike
+> > >
+> > > _______________________________
+> > > Mike Wilde
+> > > Math & Computer Science Division
+> > > Argonne National Laboratory
+> > > Argonne, IL   60439    USA
+> > > tel 630.252.7497 fax 5986
+> > >
+> 

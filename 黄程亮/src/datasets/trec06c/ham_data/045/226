@@ -1,0 +1,70 @@
+Received: from jcf (jcf.Psych.arizona.EDU [128.196.98.7])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with SMTP id OAA20365
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 2 Jun 1999 14:18:11 -0700
+Message-Id: <3.0.1.32.19990602142223.006890fc@psy1.psych.arizona.edu>
+Date: Wed, 02 Jun 1999 14:22:23 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] digitalVOX
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+  At the risk of getting snowed with responses I'm canvassing for input on
+how the digital VOX should work as Ken is away in France.  Specifically,
+how the issue of sensitivity should be dealt with.  The way the digital VOX
+is going to work is that with the CLOCKON frame being displayed DMDX will
+starting recording into a fixed length input buffer (length determined by
+the subject RT timeout) and then every 100ms or so (user specifyable) it
+will examine as much of that buffer that has not been examined already and
+that is examinable and look for a sample that exceeds the threshold for
+vocalization and when found calculate when that sample was recorded and
+generate a subject RT accordingly.  It is the determination of that
+threshold that is the intriuging thing.  On a conventional electronic VOX
+you've usually got a dial and meter and you set the microphone apparatus up
+and pretend to be a subject adjusting that threshold dial till you are sure
+it can't be adjusted any better -- you're certainly almost never happy with
+it, but that's a VOX for you.  DMDX is not likely to be any different
+(except that you can get it to record the vocalization as well and perhaps
+perform some post run refinement of RTs), however the issue is how and
+where is that threshold to be set and for how long should it be remembered?
+ Options include:
+	(1) Only allowing it to be set in TimeDX, providing a VU display feedback
+and so forth and the resulting threshold stored in the registry and all
+runs of DMDX simply use that value.
+	(1a) Same as (1) but having another button in the DMDX main dialog to
+determine the threshold and not using TimeDX at all.
+	(2) Allowing DMDX to enter a special mode similar to a testmode (ie, as
+part of an item file) to determine the thresold providing a VU display &c.,
+storing the resulting threshold it in the registry (using that value for
+the initial setting of course).
+	(3) Allowing the experimenter hit a key as DMDX is running that stops the
+job till the threshold is adjusted.
+	(4) A simple item file parameter and forget the registry and all that
+fancy crap.
+
+  I don't like option 3 at all, however it provides the functionality that
+most closely mimics and electronic VOX.  I don't expect anyone will want
+option 4.  I prefer option 1a over option 2 because it's likely that once
+the threshold is set it won't need to be adjusted for individual subjects
+(Ken for instance asks the subject to speak louder instead of adjusting VOX
+sensitivity) and I prefer 1a over 1 so that in the event of constant casual
+adjustment of the threshold being necessary users not necessarily familiar
+with TimeDX won't have to run it and run the risk of inadvertantly borking
+the whole display system.
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+  The brain works from the moment of birth until you stand up to
+speak in public.
+
+
+

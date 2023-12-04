@@ -1,0 +1,113 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA13587
+	for <handyboard@media.mit.edu>; Sat, 30 Oct 1999 08:30:03 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id IAA14359; Sat, 30 Oct 1999 08:30:02 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7000
+From: "Tino Pocorobba" <umas.srl@piazzaonline.it>
+X-Real-Life-Name: Tino Pocorobba
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: simoultaneosly driving stepper motors
+Posted-Date: Sat, 30 Oct 1999 12:29:27 GMT
+Date: Sat, 30 Oct 1999 12:29:27 GMT
+Organization: none
+Message-Id: <FKF1D3.Ay7@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Hi, All
+
+
+My name is Pocorobba Tino.I'm 33 y old and I live in Sicily (Italy).
+I bought a copy of "Mobile Robots:inspiration to implementation" and I studied
+it deeply.
+I've now some problems and I hope that somebody will help me!!!
+I'd like to construct a robot arm with six step motors and to make this the
+motors have to be driven simoultaneously.
+I started writing a IC-program that move only one motor:
+
+
+int abs(int arg)
+{ if (arg< 0)
+  return (-arg); else return arg;}
+
+
+void move1(int step1, long delay1)
+{
+          int i;
+          if (step1>0)
+	  poke(0x5000,0b00000001);
+          else
+	  poke(0x5000,0b00000000);
+        for(i=0;i<abs(step1);i++)
+				      {
+					poke(0x4000,0b00000001);
+                                        msleep(delay1);
+                                        poke(0x4000,0b00000000);
+                                        msleep(delay1);
+					}
+
+}
+As you can note, the program generate a train of step1 impulse for delay1
+frequence(gate 0x4000).The direction is fixed on gate 0x5000.
+I'd like now construct a function tipe:
+move(int step1,.,int step6, long delay1,., long delay6)
+this function should drive simoultaneously six motors.
+This is my first problem.
+Now I tell you the second one.
+The precedent IC-program has a limitation:the max frequence that can generate
+is 2000 Hz.
+I thought to write an ICB-program to go over this limitation
+
+
+org	MAIN_START
+variable_step1:
+	FDB	0
+subroutine_set_step1:
+        std	variable_step1
+ 	rts
+variable_delay1:
+	FDB	0
+subroutine_set_delay1:
+        std	variable_delay1
+ 	rts
+
+subroutine_move1:
+	ldx	variable_step1      (number of impulses)
+loop
+        ldaa    #%10000000
+        staa    $4000
+        bsr     rit
+        ldaa    #%00000000
+        staa    $4000
+        bsr     rit
+        dex
+        bne     loop
+        rts
+rit
+        ldy     variable_delay1
+inner
+        dey
+        bne     inner
+        rts
+
+
+
+
+
+int move11(int step1, int delay1)
+{
+        set_step1(step1);
+        set_delay1(delay1);
+        move1(0);
+}
+
+This program worked only once, why???
+I'd like to build up a program driving six step motors simultaneously without
+the limitation of the 2000 Hz.
+Hoping You 'll help me I send you my best regards.
+

@@ -1,0 +1,41 @@
+Received: by psuvax1.cse.psu.edu id <34067>; Fri, 20 Jan 1995 03:25:59 -0500
+Received: from gloria.cord.edu ([138.129.1.6]) by psuvax1.cse.psu.edu with SMTP id <34061>; Fri, 20 Jan 1995 03:24:54 -0500
+Received: from localhost (tjohnson@localhost) by gloria.cord.edu (8.6.5/8.6.5) id CAA25760 for plan9-fans@cse.psu.edu; Fri, 20 Jan 1995 02:26:26 -0600
+Date:	Fri, 20 Jan 1995 03:26:26 -0500
+From:	Protius <tjohnson@gloria.cord.edu>
+Message-Id: <199501200826.CAA25760@gloria.cord.edu>
+To:	plan9-fans
+Subject: sparc cpu server
+Sender: owner-plan9-fans
+Precedence: bulk
+Reply-To: plan9-fans
+
+
+I am trying to get a Solboure series 4 500 sparcstation clone to be my 
+cpu server.  The first time I tried to get it to boot plan 9, it refused
+to load, saying that the entry point of the kernel conflicted with its
+rom.  I attempted to relocate the kernel by changing the -T 0xE0004000
+argument in the mk file to -T 0xFFFF0000.  Then, I can get it to start
+to tftp its kernel, but then afer it rotates its / a few times, it
+stops dead.
+
+My personal theory is that more then just the -T in the link needs to
+be changed, but I have no idea where the others are.  Is there a guide
+to the kernel somwhere?
+
+Specifics:
+file server: a BSDI machine running u9fs.
+rarp and tftp server: either a 386, or a nextstation running plan 9.
+potential cpu server: a Solbourne series 4 500, with nothing on the SCSI
+bus (it usualy runs unix, and I remove the drives "just in case" (it is
+properly terminated))  One processor, 32megs of ram.  The console is a
+vt200 on serial port A.  There is a framebuffer, but I can't use it.
+(no monitor/keyboard)
+
+Thanks in advance!
+
+-Tommy
+tjohnson@cobber.cord.edu
+
+
+

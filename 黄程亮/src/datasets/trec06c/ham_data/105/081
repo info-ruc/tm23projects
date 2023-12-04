@@ -1,0 +1,153 @@
+Received: from imx2.tcd.ie (imx2.tcd.ie [134.226.1.156])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j7FFrg5L015343
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Aug 2005 08:53:43 -0700
+Received: from Vams.imx2 (imx2.tcd.ie [134.226.1.156])
+	by imx2.tcd.ie (Postfix) with SMTP id 4350B680E6
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Aug 2005 16:53:37 +0100 (IST)
+Received: from imx2.tcd.ie ([134.226.1.156])
+	by imx2.tcd.ie ([134.226.1.156])
+	with SMTP (gateway) id A00885379AF; Mon, 15 Aug 2005 16:53:37 +0100
+Received: from PSY169071 (psy169071.psy.tcd.ie [134.226.169.71])
+	by imx2.tcd.ie (Postfix) with ESMTP id 0D3AD680E6
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 15 Aug 2005 16:53:37 +0100 (IST)
+From: "Andy" <woodsat@tcd.ie>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: Re: RE: RE: Displaying the last frame for 3s or until response
+Date: Mon, 15 Aug 2005 16:52:58 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <5.1.0.14.2.20050815080724.00ba47b8@psy1.psych.arizona.edu>
+Message-Id: <20050815155337.0D3AD680E6@imx2.tcd.ie>
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+Hi Jonathan,
+
+There's a good chance I'm not using <clfb> correctly.  It seems to behave
+identically to <nfb> for me.  It could be this computer however.  I've had
+problems with it running DMDX before.  However, hopefully this is not the
+case and there's something simple I'm forgetting.
+
+
+The code below allows me to display pictures for 3 seconds, after which they
+disappear:
+
+<ep>  <d 38>  <ntl> <cr> <vm 800,600,600,16,0> <clfb> <XYJustification 1>
+<id "keyboard"> <id "mouse"> <zil> <zor> <vzk +w> <vzk +m> <vzk +f> <mpr +m>
+<mpr +f> <DBC 0> <DWC 0002510000> <aikn +m> <aikn +f>  </ep>
+0 "Please press SPACE to start";
+
+=1 <ms% 1000> <bmp> "CROSS" / <bmp> <x 0.5><y 0.5>* <ms% 3000>
+"ALAF263_f2m_btm" /; 
+
+=2 <ms% 1000> <bmp> "CROSS" /  <bmp> <x 0.5><y 0.5>*  <ms% 3000>
+"ALAF263_f2m_top" /;
+
+
+The identical code, removing the "/" at the end of the item line gives me
+the other behaviour I require, that is, the picture disappears immediately
+when the participant responds.  
+
+Unfortunately, I need to be able to do both! The picture disappears after 3
+seconds or when the particpant responds within 3 seconds.  I'm experimenting
+with <ContinueProgressiveX> at the moment to span items but hopefully there
+is a much simpler way to achieve this. 
+
+Thanks for your help, Andy. 
+
+
+ 
+
+-----Original Message-----
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of j.c.f.
+Sent: 15 August 2005 16:08
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: RE: RE: Displaying the last frame for 3s or until
+response
+
+
+Why doesn't <clfb> solve your problem?
+
+At 01:40 PM 8/15/2005 +0100, you wrote:
+>Sorry, I don't think I made my problem that clear.
+>
+>I'm designing an experiment where the participant sees a picture and 
+>must make a response to it.  The picture will either remain on the 
+>screen for 3 seconds, or will be removed from the screen if a response 
+>is made before those 3 seconds are up.  There is no time limit however 
+>for the participant to respond to a given picture (hence <ntl>) once 
+>that picture is removed from view.
+>
+>Unfortunately adding a blank frame to the end of the item will ensure 
+>that the picture lasts for the entire duration to which it was set (in 
+>my case, the default frame duration). If the participant responds 
+>before this time is up, the picture will not immediately disappear as
+needed.
+>
+>I've played with the abort function, <t 4000> (note the 1000ms for 
+>displaying the "CROSS" bmp), <clfb> and am now stuck for ideas! The 
+>only way I can think of around this problem is to create static video 
+>files of my pictures that last for 3 seconds and use this in 
+>conjunction with the abort function.
+>
+>Thanks, Andy.
+>
+>
+>-----Original Message-----
+>From: DMDX-owner@psy1.psych.arizona.edu 
+>[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of Matthew 
+>Finkbeiner
+>Sent: 15 August 2005 12:12
+>To: DMDX@psy1.psych.arizona.edu
+>Subject: [DMDX] RE: Displaying the last frame for 3s or until response
+>
+>I think all you need to do is add another (blank) frame after the 
+>picture, like this:
+>
+>=1 <ms% 1000> <bmp> "CROSS" / <bmp> <x 0.5><y 0.5>* "ALAF263_f2m_btm" / 
+>;
+>
+>Also, if you want three seconds, you probably want <t 3000> in the 
+>header
+>
+>hope that helps
+>
+>Matthew
+>
+>
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+>
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+There's no real need to do housework -- after four years it doesn't get any
+worse.
+
+
+====================================================================
+   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+  'unsubscribe' by itself with no quotes in the body of the email
+  to be removed from the list.  The list archive is available here:
+          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+

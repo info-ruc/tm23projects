@@ -1,0 +1,49 @@
+Received: from Walden.MO.NET (root@Walden.mo.Net [209.96.2.52])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id OAA17931
+	for <handyboard@media.mit.edu>; Tue, 20 Jan 1998 14:40:04 -0500 (EST)
+Received: from mvp.net (DialIP4-6.mvp.net [209.96.14.6]) by Walden.MO.NET (8.8.5/8.6.10) with ESMTP id NAA20268; Tue, 20 Jan 1998 13:44:30 -0600 (CST)
+Message-Id: <34C4FD87.9747737A@mvp.net>
+Date: Tue, 20 Jan 1998 13:39:52 -0600
+From: Rick Moll <rickmoll@mvp.net>
+X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+Mime-Version: 1.0
+To: MAR ERICSON <mar@cooper.edu>, HandyBoard <handyboard@media.mit.edu>
+Cc: Yoni Garbourg <ygarbour@emerald.tufts.edu>, Rick Moll <rickmoll@mvp.net>
+Subject: Re: [Q] power supply for polaroid sonar
+References: <Pine.GSO.3.95.980119184754.9675A-100000@zeus.cooper.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+MAR ERICSON wrote:
+
+> I haven't seen the schematic you're refering to but I believe you can use
+> the +5V bus already on a standard HB. Just connect your PWR/GND to one of
+> those headers "below" one of the A/D inputs. I did this before and it
+> worked. Apparrently, the 1A +5V regulator can handle the 2A surges the
+> sensor loads.
+
+I haven't tried this on the HB; but I have with other processors.  I had
+problems with the sonar ping resetting the processor at times, as well as
+digital noise on the power supply bus causing false echo returns at long
+distances (as the polaroid sonar module waits for an echo it turns up it's
+sensitivity to the echo signal, as well as it's sensitivity to digital noise).
+
+What I found to work well for me was to put a "filter/energy storage bank" at
+each sonar module.  This consisted of a series inductor feeding a large, low
+esr, filter cap.  The inductor was a 100uH, 2A "RF choke", and the cap was a
+2,200uF, 16V and of good quality.  The inductor you can find almost anywhere,
+Radio Shack, Mouser, etc.  For the cap I suggest a good quality one (not the
+kind you find at Radio Shack), like a Panasonic from Digi-Key.
+
+Using this method I was able to power a processor and three polaroid sonar
+modules all from the same 5V supply.
+
+But obviously if it works ok with just hooking it up you don't need to go to all
+this trouble.  I just wanted to point out some potential problems to keep an eye
+out for.
+
+Later,
+
+    Rick Moll
+
+

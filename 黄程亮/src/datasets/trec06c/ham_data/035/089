@@ -1,0 +1,66 @@
+Received: from vernon.siemens-pyramid.com (firewall-user@vernon.siemens-pyramid.com [129.214.1.11])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA19933
+	for <handyboard@media.mit.edu>; Thu, 11 Feb 1999 14:27:17 -0500 (EST)
+Received: from one.pyramid.com (one.pyramid.com [129.214.251.140])
+	by vernon.siemens-pyramid.com (8.8.5/26AUG93-fma/mjr/gauntlet Siemens-ICP-Internet-Gateway)
+	id LAA09878 From: <khearn@raptor.eng.pyramid.com> To: <<handyboard@media.mit.edu>>; Thu, 11 Feb 1999 11:27:16 -0800 (PST)
+Received: from raptor.eng.pyramid.com
+	by one.pyramid.com (8.8.5/Pyramid_Internal_Configuration)
+	id LAA10475; Thu, 11 Feb 1999 11:27:15 -0800 (PST)
+Received: by raptor.eng.pyramid.com (8.8.5/Pyramid_Internal_Configuration)
+	id LAA12823; Thu, 11 Feb 1999 11:27:14 -0800 (PST)
+From: khearn@icp.siemens.com (Keith Hearn)
+Message-Id: <199902111927.LAA12823@raptor.eng.pyramid.com>
+Subject: IR remote problem
+To: handyboard@media.mit.edu
+Date: Thu, 11 Feb 1999 11:27:13 -0800 (PST)
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+
+I picked up a surplus remote control at Halted Specialties
+  (http://www.halted.com/) and am trying to use Max Davies' IRINT.ICB,
+  IR.C and TEST.C, and I'm not having any luck.
+
+I'm seeing two main problems.
+
+1) Some keys give 35 bits of data, and some give 38 bits.
+
+2) The raw data for any given key changes between subsequent presses,
+  switching back and forth between two values. 
+  
+For instance, the "1" key gives 38 bits, with 8004002000 on one 
+  press, then 4002001000 on the next, and then back to 8004002000. 
+
+The "2" key gives 35 bits, cylcing between  8020828020 on one press 
+  and 4024024020 on the next.
+
+I had the same problem with the remote for my Magnavox VCR. THe remote
+  for my Sony TV works fine with the sony_ir routines, so I'm pretty
+  sure the Handy Board and the IR receiver module are workin ok.
+
+The surplus remote is a TV remote, but has no indication as to what
+  brand it is for.
+
+Am I dealing with RC-5 coded remotes? If so, is there any software 
+  for the Handy Board that will decode RC-5? Or am I facing some other
+  issue?
+
+Here are typical values that TEST.C is giving me for pulse widths:
+
+Pulse_mode:	1		Bits:	38 or 35
+Lpulse:		1150		Lspace:	630
+1pulse:		2000		1space:	700
+0pulse:		1000		0space:	700
+Tpulse:		1030		Tspace: 1030
+
+BTW, the Tpulse and Tspace are always identical. Looking in TEST.C,
+  they are both set to the same value. Is this a bug?
+
+  Thanks for any light anyone can shed,
+
+    Keith Hearn
+
+

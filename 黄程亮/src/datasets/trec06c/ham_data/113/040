@@ -1,0 +1,141 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0V5mm420911
+	for <egs+summary>; Tue, 31 Jan 2006 00:48:48 -0500 (EST)
+Received: from [192.168.0.103] (user-10mt73g.cable.mindspring.com [65.110.156.112])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k0V5mlFQ019990
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary>; Tue, 31 Jan 2006 00:48:47 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+To: egs+summary
+Message-Id: <9346C694-1106-4FD6-B185-F1DD4D0A354B>
+Content-Type: multipart/signed; micalg=sha1; boundary=Apple-Mail-3--681797947; protocol="application/pkcs7-signature"
+From: Philip Kuryloski <pjk25>
+Subject: PAPER 2
+Date: Tue, 31 Jan 2006 00:51:15 -0500
+X-Mailer: Apple Mail (2.746.2)
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.0.2
+X-Spam-Level: 
+
+
+--Apple-Mail-3--681797947
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset=US-ASCII;
+	delsp=yes;
+	format=flowed
+
+Pastry and Chord share similar functionality in that they provide  
+object location and efficient routing for location queries.  However,  
+beyond this most basic similarity, their implementations quickly  
+diverge.  Pastry relies on random assignment of node IDs to ensure  
+that localized failure in the underlying internet do not result in  
+the failure of successive pastry nodes.  Chord relies on a consistent  
+hashing scheme designed to maintain an even distribution of keys  
+across multiple nodes despite nodes entering and dropping out of the  
+network.  This gives chord a ring topology for the distribution of  
+keys in the network.  Despite this difference, both schemes result in  
+a log N search time, as each search narrows its search space by a  
+constant factor at each hop.
+
+Because Chord uses a consistent hashing scheme, it has provisions for  
+the addition of multiple nodes nodes with similar keys.  Due to the  
+nature of Chord's routing tables, O(log N) updates are required to  
+redistribute keys.  However, this does necessitate the shuffling of  
+keys from one node to another.  Another shortcoming of Chord is that  
+the consistent hashing scheme requires the use of virtual nodes  
+within real nodes to ensure that each node does in fact receive keys  
+when they are hashed.  Also, Chord does not direct messages based on  
+the latency of links in its underlying network.
+
+Tapestry uses random assignment of node ids in the same manner as  
+Pastry.  Tapestry also uses a digit based search to route messages  
+toward a target, resulting in similarly structured routing tables as  
+Pastry.  Tapestry, unlike Pastry, uses random object keys which do  
+not naturally associate with particular node ids.  This requires that  
+routes be built through the network that associate an object with a  
+particular node.
+
+A unique feature of Tapestry is that it maintains routing table  
+entries for failed nodes and merely marks them as invalid, allowing  
+for minimal expenditure of resources reintegrating that node if it  
+comes back online within a reasonable period of time.
+
+In terms of the integration of new nodes, Tapestry functions in a  
+very similar way to Pastry, borrowing routing table information from  
+neighboring nodes in the node id space.  However, Tapestry also  
+associates an epoch with node/object association messages, supporting  
+the movement of objects from one node to another.  A protocol for  
+caching objects on additional nodes to reduce routing "hotspots" is  
+also provided by tapestry.  This, unlike Pastry, allows the placement  
+of replicas along the path to the original rather than along side of it.
+
+
+
+
+Philip Kuryloski
+444 Rhodes Hall
+Cornell University
+Ithaca, NY 14853-5112
+
+607.255.4222
+pjk25
+
+
+
+
+--Apple-Mail-3--681797947
+Content-Transfer-Encoding: base64
+Content-Type: application/pkcs7-signature;
+	name=smime.p7s
+Content-Disposition: attachment;
+	filename=smime.p7s
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIIGFjCCAs8w
+ggI4oAMCAQICAw+L7TANBgkqhkiG9w0BAQQFADBiMQswCQYDVQQGEwJaQTElMCMGA1UEChMcVGhh
+d3RlIENvbnN1bHRpbmcgKFB0eSkgTHRkLjEsMCoGA1UEAxMjVGhhd3RlIFBlcnNvbmFsIEZyZWVt
+YWlsIElzc3VpbmcgQ0EwHhcNMDUwOTI2MTc1NzM0WhcNMDYwOTI2MTc1NzM0WjBDMR8wHQYDVQQD
+ExZUaGF3dGUgRnJlZW1haWwgTWVtYmVyMSAwHgYJKoZIhvcNAQkBFhFwamsyNUBjb3JuZWxsLmVk
+dTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALFkgyhHSufUWaYxKh+wvUSDmrM8cViE
+JjeRS7Ssdd5tf0ckH2iwktNuSkxSsavsmAY+8zahwJjwk/JWTVyOGW/QsjgA5zoTJeAz4ah/QcKZ
+hou20lN6NvlFZWA43b4/jwtpVVa2RMS1fitkEs7YA9N16akGyXCpJR2i6EVTk7tx8/zf7i7bqg4t
+tmbJaySQyMQ4QV1O+F00m+zms0WZN5XRDqPwU2/WZfUE5BK/pGLkkFheBGSJJssuOsct8ctup0AI
+fJLlLZZhBCEdNeM2x9KfQEm+Tk3Ty0zl0pOewe7oW9vgwBJ2LwTVurzQ7qXeq1VhkDmkQJOwjcxM
+ssGAPXMCAwEAAaMuMCwwHAYDVR0RBBUwE4ERcGprMjVAY29ybmVsbC5lZHUwDAYDVR0TAQH/BAIw
+ADANBgkqhkiG9w0BAQQFAAOBgQBanW/NR5+pfeGOS7lM21kLObfzzGKtHvTFZ/RS0cSgWSKaCZfx
+aLLhqC9EFFFxh0b4wn0zCTv4CQWhrpaPZZC7oroP70kqWypQdjFbQ2rlLrVVS8pE4gtjZnRPFMr0
+BEH+1K7kWB6kTHvg2eI1EotCI92yARGzlzKrXjPonHppijCCAz8wggKooAMCAQICAQ0wDQYJKoZI
+hvcNAQEFBQAwgdExCzAJBgNVBAYTAlpBMRUwEwYDVQQIEwxXZXN0ZXJuIENhcGUxEjAQBgNVBAcT
+CUNhcGUgVG93bjEaMBgGA1UEChMRVGhhd3RlIENvbnN1bHRpbmcxKDAmBgNVBAsTH0NlcnRpZmlj
+YXRpb24gU2VydmljZXMgRGl2aXNpb24xJDAiBgNVBAMTG1RoYXd0ZSBQZXJzb25hbCBGcmVlbWFp
+bCBDQTErMCkGCSqGSIb3DQEJARYccGVyc29uYWwtZnJlZW1haWxAdGhhd3RlLmNvbTAeFw0wMzA3
+MTcwMDAwMDBaFw0xMzA3MTYyMzU5NTlaMGIxCzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3dGUg
+Q29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1haWwg
+SXNzdWluZyBDQTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAxKY8VXNV+065yplaHmjAdQRw
+nd/p/6Me7L3N9VvyGna9fww6YfK/Uc4B1OVQCjDXAmNaLIkVcI7dyfArhVqqP3FWy688Cwfn8R+R
+NiQqE88r1fOCdz0Dviv+uxg+B79AgAJk16emu59l0cUqVIUPSAR/p7bRPGEEQB5kGXJgt/sCAwEA
+AaOBlDCBkTASBgNVHRMBAf8ECDAGAQH/AgEAMEMGA1UdHwQ8MDowOKA2oDSGMmh0dHA6Ly9jcmwu
+dGhhd3RlLmNvbS9UaGF3dGVQZXJzb25hbEZyZWVtYWlsQ0EuY3JsMAsGA1UdDwQEAwIBBjApBgNV
+HREEIjAgpB4wHDEaMBgGA1UEAxMRUHJpdmF0ZUxhYmVsMi0xMzgwDQYJKoZIhvcNAQEFBQADgYEA
+SIzRUIPqCy7MDaNmrGcPf6+svsIXoUOWlJ1/TCG4+DYfqi2fNi/A9BxQIJNwPP2t4WFiw9k6GX6E
+sZkbAMUaC4J0niVQlGLH2ydxVyWN3amcOY6MIE9lX5Xa9/eH1sYITq726jTlEBpbNU1341YheILc
+IRk13iSx0x1G/11fZU8xggLnMIIC4wIBATBpMGIxCzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3
+dGUgQ29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1h
+aWwgSXNzdWluZyBDQQIDD4vtMAkGBSsOAwIaBQCgggFTMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTA2MDEzMTA1NTExNlowIwYJKoZIhvcNAQkEMRYEFK6Wfs+R/AEY
+ViOnuxnQTVp+kMygMHgGCSsGAQQBgjcQBDFrMGkwYjELMAkGA1UEBhMCWkExJTAjBgNVBAoTHFRo
+YXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQZXJzb25hbCBGcmVl
+bWFpbCBJc3N1aW5nIENBAgMPi+0wegYLKoZIhvcNAQkQAgsxa6BpMGIxCzAJBgNVBAYTAlpBMSUw
+IwYDVQQKExxUaGF3dGUgQ29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVy
+c29uYWwgRnJlZW1haWwgSXNzdWluZyBDQQIDD4vtMA0GCSqGSIb3DQEBAQUABIIBAHmNls1JkX9T
+wppvZlJxU28vjVxrcM5boiPU8y+LmdSQBq7dwv+o1jdYEcbFzPRQ3PqJEscBIPkGjaEGWDxRS3Qw
+5Hf1echMmCRAYZIzCEvVhSmJeur6vUy+CvG+/zDYkFmO34/l8Bh+WUybAxQCFauHVsJmpXGH0Rca
+sLH529xpqXyBPAW8CNMjqrsuRFQSCtlizjCRS2DmHYcDf8GywjqeFoIg8+HjSpyH2Z+xlCtyxIpv
+GzL60E4Vo8P99+UYa+TDdO6uwcdXpHxp9PjdeJVryJRpi53MaTeeC2+uCJDWabBdtx5mfoVesSbF
+m7jDZxK3k0L2dOeSkafCYFXEMiMAAAAAAAA=
+
+--Apple-Mail-3--681797947--
+

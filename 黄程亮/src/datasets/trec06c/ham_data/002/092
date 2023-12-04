@@ -1,0 +1,35 @@
+Received: by cheltenham.cs.arizona.edu; Wed, 7 Dec 1994 23:00:02 MST
+To: icon-group-l@cs.arizona.edu
+Date: 7 Dec 1994 21:38:35 -0700
+From: dave@cs.arizona.edu (Dave Schaumann)
+Message-Id: <3c62kb$pnu@caslon.CS.Arizona.EDU>
+Organization: University of Arizona CS Department, Tucson AZ
+Sender: icon-group-request@cs.arizona.edu
+References: <1994Dec7.221649.10939@cs.sfu.ca>
+Subject: Re: [Q] Algorithm for Regexp Subsumption
+Errors-To: icon-group-errors@cs.arizona.edu
+
+
+In article <1994Dec7.221649.10939@cs.sfu.ca>,
+Martin Vorbeck <vorbeck@cs.sfu.ca> wrote:
+
+}  are there any algorithms out there for checking whether a regular
+}expression subsumes another one, ie L(E1) is a subset of L(E2)? I have a
+}"brute-force" solution along these lines:
+}
+}1. Compute equivalent finite automatas A1 (resp A2) for E1 (resp E2).
+}2. Compute A3 = A1 intersected with the complement of A2.
+}3. Test L(A3) = empty  ==>  E2 subsumes E1.
+}
+}But I wonder if this couldn't be done directly on the regular
+}expressions E1 and E2?
+
+Another possibility would be to compute the minimized DFAs, then
+compute the minimized DFA of the union.  If it's the same as either
+of the originals, you've got a match.
+
+Hard to say which method would be quicker.  Since they're essentially
+duals of each other, I wouldn't be surprised if it was a wash.
+
+-Dave
+

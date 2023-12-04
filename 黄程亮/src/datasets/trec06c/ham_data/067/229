@@ -1,0 +1,238 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id WAA23812
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 10 May 2000 22:02:00 -0700
+Received: from homebox.u.arizona.edu (uofa-dsl-17.dakotacom.arizona.edu [150.135.175.17])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with ESMTP id WAA18674;
+	Wed, 10 May 2000 22:01:59 -0700
+Message-Id: <4.3.1.0.20000510213109.00a71b50@psy1.psych.arizona.edu>
+Date: Wed, 10 May 2000 22:02:01 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] DMDX 1.3.00
+Cc: jforster@u.arizona.edu
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   Mwahahahaha, I have created a monster, woe unto any that try and use 
+Multi-Scrambling!  Gads, just about gave myself a brain tumor figuring out 
+how to use it, sheesh.  There's a temporary zip up on the website that has 
+1.3.00 in it, DMDX1300.ZIP, it just has DMDX.EXE in it, no help files or 
+TimeDX, when I get in to work tomorrow I'll put a regular update up.
+
+   Basic abbreviated keywords are:
+
+<msS N1,N2>
+         Scramble parameter S to be used on iteration N1. On iteration N1 
+of the mutli-scrambling this keyword will be replaced with SN2.  As with 
+original scramble parameters these must occur on the first line of item 
+file, they cannot be in the extended parameters.  For the purposes of 
+multi-scrambling that first line also has to be less than 1024 characters, 
+sloppy coding on my part.
+
+<msG N1,N2>
+<msI N1,N2>
+         Same as above but for G and I scramble parameters.
+
+<msD N>
+         Scramble dollars sign for iteration N.
+
+<msB N>
+         Scramble backslash for iteration N.
+
+   When multi-scrambling is used there are additional temporary files left 
+behind so you can attempt to figure out from the aftermath just what 
+happened, multiscrambleN.itm, one for each iteration -- god forbid someone 
+should ever try and use more than two iterations though.  These files are 
+the input to scramble at each iteration, scramble overwrites it's output 
+each time it is used so scrambled.itm only has the final result.
+
+   Sounds straight forward doesn't it?  Well if you thought getting a 
+regular scramble to work was tough this is not just squared but cubed 
+toughness.  The trick is that for each piece of the file that you want to 
+stay put you have to provide dollars for each iteration of the scramble, 
+but, and this is the kicker that took me a while to figure out, they have 
+to be *nested*.  So below the order of those <msd>s around the extended 
+parameter line and the last line are not arbitrary and getting them wrong 
+can lead to some very un-intuitive results.
+
+   The solution to the earlier scramble enigma is as follows:
+
+<ep> <msg 1,9> <mss 1,1> <mss 2,9>
+<msd 1> <msd 2>
+F10 <vm 1024 768 768 16 0 > </ep>
+<msd 2> <msd 1>
+<msb 2>
+<msd 2>
+0 "The current category is:",
+<line 1> "first",
+<line 3> "Please indicate for each of the following 8 items",
+<line 4> "whether they belong to the category BIRD or not.";
+<msd 2>
++105 "####1#######" / * "PENGUIN" /;
++106 "####1#######" / * "SPARROW" /;
++107 "#####1######" / * "OSTRICH" /;
++108 "#####1######" / * "QUAIL" /;
+-0305 "####1#######" / * "ANT" /;
+-1306 "####1#######" / * "FOOT" /;
+-0207 "####1#######" / * "SPIDER" /;
+-1208 "####1#######" / * "NOSE" /;
+<msb 2>
+<msd 2>
+0 "The current category is:",
+<line 1> "second",
+<line 3> "Please indicate for each of the following 8 items",
+<line 4> "whether they belong to the category BIRD or not.";
+<msd 2>
++105 "#####2######" / * "PENGUIN" /;
++106 "####2#######" / * "SPARROW" /;
++107 "######2#####" / * "OSTRICH" /;
++108 "#####2######" / * "QUAIL" /;
+-0305 "####2#######" / * "ANT" /;
+-1306 "####2#######" / * "FOOT" /;
+-0207 "####2#######" / * "SPIDER" /;
+-1208 "####2#######" / * "NOSE" /;
+<msb 2>
+<msd 2>
+0 "The current category is:",
+<line 1> "third",
+<line 3> "Please indicate for each of the following 8 items",
+<line 4> "whether they belong to the category BIRD or not.";
+<msd 2>
++105 "###3########" / * "PENGUIN" /;
++106 "####3#######" / * "SPARROW" /;
++107 "####3#######" / * "OSTRICH" /;
++108 "####3#######" / * "QUAIL" /;
+-0305 "####3#######" / * "ANT" /;
+-1306 "#####3######" / * "FOOT" /;
+-0207 "#####3######" / * "SPIDER" /;
+-1208 "#####3######" / * "NOSE" /;
+
+<msd 1> <msd 2>
+0 "The end" l;
+<msd 2> <msd 1>
+
+
+   The first iteration produces the following output and you can see the 
+dollars symbols are nesting the next iteration's dollars symbols:
+
+<ep> G9        S1        <mss 2,9>
+$       <msd 2>
+F10 <vm 1024 768 768 16 0 > </ep>
+<msd 2> $
+<msb 2>
+<msd 2>
+0 "{\fs28 The current category is:",
+<line 1> "{\fs28 first",
+<line 3> "{\fs28 Please indicate for each of the following 8 items",
+<line 4> "{\fs28 whether they belong to the category BIRD or not.";
+<msd 2>
++105 "{\fs28 ####1#######" / * "{\fs28 PENGUIN" /;
++106 "{\fs28 ####1#######" / * "{\fs28 SPARROW" /;
++107 "{\fs28 #####1######" / * "{\fs28 OSTRICH" /;
++108 "{\fs28 #####1######" / * "{\fs28 QUAIL" /;
+-0305 "{\fs28 ####1#######" / * "{\fs28 ANT" /;
+-1306 "{\fs28 ####1#######" / * "{\fs28 FOOT" /;
+-0207 "{\fs28 ####1#######" / * "{\fs28 SPIDER" /;
+-1208 "{\fs28 ####1#######" / * "{\fs28 NOSE" /;
+<msb 2>
+<msd 2>
+0 "{\fs28 The current category is:",
+<line 1> "{\fs28 second",
+<line 3> "{\fs28 Please indicate for each of the following 8 items",
+<line 4> "{\fs28 whether they belong to the category BIRD or not.";
+<msd 2>
++105 "{\fs28 #####2######" / * "{\fs28 PENGUIN" /;
++106 "{\fs28 ####2#######" / * "{\fs28 SPARROW" /;
++107 "{\fs28 ######2#####" / * "{\fs28 OSTRICH" /;
++108 "{\fs28 #####2######" / * "{\fs28 QUAIL" /;
+-0305 "{\fs28 ####2#######" / * "{\fs28 ANT" /;
+-1306 "{\fs28 ####2#######" / * "{\fs28 FOOT" /;
+-0207 "{\fs28 ####2#######" / * "{\fs28 SPIDER" /;
+-1208 "{\fs28 ####2#######" / * "{\fs28 NOSE" /;
+<msb 2>
+<msd 2>
+0 "{\fs28 The current category is:",
+<line 1> "{\fs28 third",
+<line 3> "{\fs28 Please indicate for each of the following 8 items",
+<line 4> "{\fs28 whether they belong to the category BIRD or not.";
+<msd 2>
++105 "{\fs28 ###3########" / * "{\fs28 PENGUIN" /;
++106 "{\fs28 ####3#######" / * "{\fs28 SPARROW" /;
++107 "{\fs28 ####3#######" / * "{\fs28 OSTRICH" /;
++108 "{\fs28 ####3#######" / * "{\fs28 QUAIL" /;
+-0305 "{\fs28 ####3#######" / * "{\fs28 ANT" /;
+-1306 "{\fs28 #####3######" / * "{\fs28 FOOT" /;
+-0207 "{\fs28 #####3######" / * "{\fs28 SPIDER" /;
+-1208 "{\fs28 #####3######" / * "{\fs28 NOSE" /;
+
+$       <msd 2>
+0 "{\fs28 The end" l;
+<msd 2> $
+
+
+   For the second iteration the following is produced, a more or less 
+straight forward scramble:
+
+<ep>                     S9
+        $
+F10 <vm 1024 768 768 16 0 > </ep>
+$
+
+\     $       0 "{\fs28 The current category is:", <line 1> "{\fs28 
+second", <line 3> "{\fs28 Please indicate for each of the following 8 
+items", <line 4> "{\fs28 whether they belong to the category BIRD or not.";
+  $       +105 "{\fs28 #####2######" / * "{\fs28 PENGUIN" /;
+  +106 "{\fs28 ####2#######" / * "{\fs28 SPARROW" /;
+  +107 "{\fs28 ######2#####" / * "{\fs28 OSTRICH" /;
+  +108 "{\fs28 #####2######" / * "{\fs28 QUAIL" /;
+  -0305 "{\fs28 ####2#######" / * "{\fs28 ANT" /;
+  -1306 "{\fs28 ####2#######" / * "{\fs28 FOOT" /;
+  -0207 "{\fs28 ####2#######" / * "{\fs28 SPIDER" /;
+  -1208 "{\fs28 ####2#######" / * "{\fs28 NOSE" /;
+
+\     $       0 "{\fs28 The current category is:", <line 1> "{\fs28 third", 
+<line 3> "{\fs28 Please indicate for each of the following 8 items", <line 
+4> "{\fs28 whether they belong to the category BIRD or not.";
+  $       +105 "{\fs28 ###3########" / * "{\fs28 PENGUIN" /;
+  +106 "{\fs28 ####3#######" / * "{\fs28 SPARROW" /;
+  +107 "{\fs28 ####3#######" / * "{\fs28 OSTRICH" /;
+  +108 "{\fs28 ####3#######" / * "{\fs28 QUAIL" /;
+  -0305 "{\fs28 ####3#######" / * "{\fs28 ANT" /;
+  -1306 "{\fs28 #####3######" / * "{\fs28 FOOT" /;
+  -0207 "{\fs28 #####3######" / * "{\fs28 SPIDER" /;
+  -1208 "{\fs28 #####3######" / * "{\fs28 NOSE" /;
+
+\     $       0 "{\fs28 The current category is:", <line 1> "{\fs28 first", 
+<line 3> "{\fs28 Please indicate for each of the following 8 items", <line 
+4> "{\fs28 whether they belong to the category BIRD or not.";
+  $       +105 "{\fs28 ####1#######" / * "{\fs28 PENGUIN" /;
+  +106 "{\fs28 ####1#######" / * "{\fs28 SPARROW" /;
+  +107 "{\fs28 #####1######" / * "{\fs28 OSTRICH" /;
+  +108 "{\fs28 #####1######" / * "{\fs28 QUAIL" /;
+  -0305 "{\fs28 ####1#######" / * "{\fs28 ANT" /;
+  -1306 "{\fs28 ####1#######" / * "{\fs28 FOOT" /;
+  -0207 "{\fs28 ####1#######" / * "{\fs28 SPIDER" /;
+  -1208 "{\fs28 ####1#######" / * "{\fs28 NOSE" /;
+        $
+0 "{\fs28 The end" l;
+$
+
+   Well that about nukes this evening's game playing.
+
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Do not underestimate the power of the Force.
+
+
+

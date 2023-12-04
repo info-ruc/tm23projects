@@ -1,0 +1,43 @@
+Received: from giasbma.vsnl.net.in (giasbma.vsnl.net.in [202.54.4.1])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id BAA30431
+	for <handyboard@media.mit.edu>; Sun, 2 May 1999 01:08:25 -0400 (EDT)
+Received: from giasbmc.vsnl.net.in (giasbmc [202.54.4.6])
+	by giasbma.vsnl.net.in (8.8.8/8.8.8) with SMTP id KAA13586;
+	Sun, 2 May 1999 10:47:06 +0500 (IST)
+Date: Sun, 2 May 1999 10:18:22 -0500 (GMT)
+From: "SHETTI.NITIN.MANGESH" <shettin@giasbmc.vsnl.net.in>
+Reply-To: "SHETTI.NITIN.MANGESH" <shettin@giasbmc.vsnl.net.in>
+To: Matt Grob <mgrob@qualcomm.com>
+Cc: handyboard@media.mit.edu
+Subject: Re: string functions and Interactive-C
+In-Reply-To: <Pine.WNT.3.95.990501202519.-465787A-100000@localhost.qualcomm.com>
+Message-Id: <Pine.SOL.3.96.990502095515.2649B-100000@giasbmc.vsnl.net.in>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+> I would like to be able to construct various useful strings and send them
+> out the serial port (not just to the display).  For example, I would like
+> to be able to do something like: 
+> 
+> 	sprintf(buffer,"Motor Temperature is %d",mot_temp);
+> 	send_serial_1(buffer);
+> 
+> 
+> But there is no sprintf function.  Can anyone offer a suggestion or some
+> existing code for creating and sending strings (that include numeric
+> variables) to the serial port?
+
+Dear Matt,
+	Serial i/o routines available in the FAQ at the MIT site for the
+handy board send characters. Write a function which using % and /
+operators to convert a number into digits. The function should send each
+digit as a character along the serial port. 
+	Whenever you wish to send a string ("Motor Temperature is ") use
+the send_serial_1() function you have mentioned. Don't send a newline.
+Next you send the number (mot_temp) digit by digit using the function
+given in para 1.
+	I hope this works.
+							Yours sincerely,
+							     Nitin
+
+

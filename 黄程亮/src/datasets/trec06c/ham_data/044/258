@@ -1,0 +1,63 @@
+Received: from smok.apk.net (smok.apk.net [207.54.158.15])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id JAA18422
+	for <handyboard@media.mit.edu>; Thu, 20 May 1999 09:09:02 -0400 (EDT)
+From: Bob_Kelly/First_Union@firstunion-reit.com
+Received: from funotes.firstunion-reit.com ([206.183.20.41]) by smok.apk.net (8.9.3/8.9.3/apk.981124) with SMTP id JAA14397 for <handyboard@media.mit.edu>; Thu, 20 May 1999 09:00:23 -0400 (EDT)
+Received: by funotes.firstunion-reit.com(Lotus SMTP MTA Internal build v4.6.2  (651.2 6-10-1998))  id 85256777.004716BF ; Thu, 20 May 1999 08:56:28 -0400
+X-Lotus-Fromdomain: FIRST UNION
+To: handyboard@media.mit.edu
+Message-Id: <85256777.00471515.00@funotes.firstunion-reit.com>
+Date: Thu, 20 May 1999 08:56:23 -0400
+Subject: PID controller HELP!!!!!
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+
+
+Hello all....
+
+
+
+I am currently trying to implement some level of shaft encoding/motor
+control on the handy board. I am using the shaft encoder software available
+on the H board site. I am currently using the "slow" version, as the top
+velocity reading I have been able to get is a 13 (same as if I used "fast"
+version). I have 4" wheels and am using reflectance encoders on a
+alternating black and white disk with 32 black stripes per revolution. With
+a velocity of 13 (motors full on) my actual speed is much faster than is
+needed (and safe!) for my project.
+
+I have created a simple software driver that will allow me to control both
+implemented motors with the following go(DES_POWER_LEVEL,
+DES_DIRECTIONAL_BIAS). All that is needed to "slave" the wheels at this
+point is a reliable encoder velocity for each wheel that can then be
+inserted into my go() program.
+
+The problem is, the velocity measurement appears to be too coarse ((int)13
+steps) and does'nt provide reasonble resolution. Is there a way to change
+the output value of the shaft encoding software to a "float" type of value?
+Ideally, the velocity count would max at about 90% of full motor power. I
+know I could use a conversion factor, and I would if the encoder readings
+were not so rough. Should I create new encoder disks with two or three
+times the resolution? I am concerned that at this point that I would exceed
+the mechanical limitations of the Hammamatsu detectors (as used in "Mobile
+Robots..." book) or the ability of the software encoder counter to keep up
+(even with the fast version). Any thoughts on this?
+
+Also, my problem may be the steps of the existing motor control driver for
+the Handy board. I have loaded the Pcode  (or is it the ICB?) that makes
+the LCD print "Smooth PWM" on the start up screen and I also have the
+latest Expansion (3/19/99) board handyboard libraries, but it still appears
+to be adjusting the motor control in rather large steps.
+
+
+Please help, this is extremely frustrating (but still kind of fun in a
+masochistic kind of way)...
+
+Thank you all,
+
+Bob Kelly
+
+
+

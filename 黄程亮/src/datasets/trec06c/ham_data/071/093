@@ -1,0 +1,44 @@
+Received: from rhyolite.chigaku6.co.jp (granite.cias.osakafu-u.ac.jp [157.16.91.52])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id DAA11318
+	for <9fans@cse.psu.edu>; Mon, 4 Sep 2000 03:24:30 -0400 (EDT)
+From: okamoto@granite.cias.osakafu-u.ac.jp
+Message-Id: <200009040724.DAA11318@cse.psu.edu>
+To: plan9@granite.cias.osakafu-u.ac.jp
+Subject: [9fans] Winchip
+Date: Mon, 4 Sep 2000 16:23:35 0900
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+I have a Winchip 240MHz CPU, and added it to /sys/src/9/pc/devarch.c's X86type
+structure as below:
+
+/*
+ * WinChip 240MHz
+ */
+static X86type x86winchip[] =
+{
+	{5,	4,	23,	"Winchip 240MHz",},		/* guesswork */
+	{ -1,	-1,	23,	"unknown", },		/* total default */
+};
+
+I also added lines in cpuidentify() function in the same file as:
+
+	if(strncmp(m->cpuidid, "AuthenticAMD", 12) == 0)
+		t = x86amd;
+	else if(strncmp(m->cpuidid, "CentaurHauls", 12) == 0)
+		t = x86winchip;
+	else
+		t = x86intel;
+
+Is that all the neccessary patch to use this CPU?  Do I forget anything?
+The chip is now recongnized as 240MHz "Winchip 240MHz".
+Woever, when I run it longer time, I get hangup of the machine. :-)
+I'm wondering this is just the heat problem or something else...
+
+Kenji
+
+

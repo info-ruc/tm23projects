@@ -1,0 +1,153 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2EGgMt28397
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 11:42:22 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2EGgLRE026527
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Mar 2006 11:42:21 -0500 (EST)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Tue, 14 Mar 2006 11:42:22 -0500 (EST)
+Message-ID: <1375.128.84.98.90.1142354542.squirrel@webmail.cornell.edu>
+Date: Tue, 14 Mar 2006 11:42:22 -0500 (EST)
+Subject: paper 14 - RTT estimation
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+GNP
+
+in this scheme hosts maintain their co-ordinates computed according to a
+set of landmarks. these co-ordinates allow nodes to compute inter-host
+distances as soon as they discover each other.
+
+each host measures its distance to the landmarks and takes the minimum of
+several paths as distance.
+
+the number of the landmarks must be greater than the dimensionality of the
+co-ordinates in order to compute a larger number of unique co-ordinates.
+
+once the landmark co-ordinates are computed, they are disseminated, along
+with the identifier for the geometric space used and the corresponding
+distance function to any host that wants to participate in GNP.
+
+
+experimental results show high prediction accuracy in case of random
+placement of i-nodes.
+
+
+the ideas in this domain assume that hosts do not lie about their
+co-ordinates although they have a huge incentive for doing so ( reduces
+the amount of load on a node)
+
+the authors themselves state that prediction mechanisms fail in the case
+that Internet paths are not stable.
+
+
+Vivaldi
+
+it is a decentralized algorithm that assigns synthetic co-ordinates to
+hosts such that the distance between the hosts accurately predicts the
+communication latency between the hosts.
+the ability to predict RTT without measuring it directly is important in
+the case when the number of servers is large or when the amount of data is
+small.
+Any prediction scheme would have a certain amount of error- minimizing
+this error is a key goal. Any low dimensional scheme would not be good
+enough due to distorted latencies and violations of triangle inequality.
+
+BASIC ALGORITHM:
+the error is computed is analogous to the displacement in a physical
+mass-spring system: minimizing energy in the spring is equivalent  to
+minimizing the squared-error function.
+
+the central idea is based on the fact that in each period, we compute the
+change in co-ordinates on the basis of the net force in the system
+(reaching convergence after a certain amount of time)
+the period may be constant or variable - DESIGN ISSUE
+a large time step would adjust co-ordinates in large steps which could
+result in oscillations.
+a small time step leads to better convergence with a greater communication
+overhead.
+
+oscillations in co-ordinates can be avoided by including another factor
+that indicates how certain a node is about its co-ordinates. Additionally,
+when communication with other nodes, nodes must also be be aware about the
+certainties of the co-ordinates of other nodes (the converse of which is
+termed as remote error)
+
+ MODEL SELECTION
+the authors have experimentally shown that adding beyond 3 dimensions to
+the co-ordinate system does not make a significant improvement in error
+prediction.
+
+the authors add another height dimension to the 2-d co-ordinate system
+improving the error prediction system (forces may cancel out in 2-d but
+not in 3-d)
+
+
+
+
+
+
+MERIDIAN
+
+
+it consists of an overlay structure around multi-resolution rings, query
+routing with direct measurements, and gossip protocols for dissemination.
+each meridian node keeps track of m*log N peers (m is the number of nodes
+in an annulus) and organizes them into concentric rings of exponentially
+increasing radii.
+each node keeps track of a finite number of rings.
+the total number of rings in the system is clamped to a constant- all
+rings i > j (where j is a system-wide constant) are collapsed into a
+single outermost ring (here radius of i > radius of j)
+
+a query is matched against relevant nodes in the ring and optionally
+forwarded to a node's peers.
+
+meridian achieves geographic diversity by periodically reassessing ring
+membership decisions and replacing ring members with those that provide
+greater diversity(based on selecting the subset of nodes which provide a
+polytopes with largest hyper volume)
+
+nodes are discovered using a gossip protocol which has a re-pinging
+mechanism that ensures that stale information is updated.
+
+
+APPLICATIONS:
+1) closest node discovery : an acceptance threshold is used to reduce the
+reduction in distance at each hop (choosing this threshold is another
+tradeoff issue)
+
+2) central leader election : extends closest node discovery
+
+3) multi-constraint system : can be modeled as a node selection problem
+
+
+TRADEOFFS:
+1) the number of nodes per ring is denoted by k. a large k helps in better
+node selection but at the same time requires more communication b/w the
+nodes.
+2) acceptance interval : responsible for tradeoff between query latency
+and accuracy ( although accuracy not sensitive to threshold > 0.5)
+3) gossip rate : selection vs communication overhead
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+Received: from postoffice.mail.cornell.edu (postoffice.mail.cornell.edu [132.236.56.7])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9N2udo14457
+	for <egs@cs.cornell.edu>; Mon, 22 Oct 2001 22:56:39 -0400 (EDT)
+Received: from dhcp-190.rover.cornell.edu (dhcp-190.rover.cornell.edu [128.84.24.190])
+	by postoffice.mail.cornell.edu (8.9.3/8.9.3) with ESMTP id WAA15174
+	for <egs@cs.cornell.edu>; Mon, 22 Oct 2001 22:56:38 -0400 (EDT)
+Subject: 615 PAPER #26
+From: Walter Bell <wbell@CS.Cornell.EDU>
+To: egs@CS.Cornell.EDU
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-Id: <1003805795.1044.21.camel@brute>
+Mime-Version: 1.0
+X-Mailer: Evolution/0.16.99+cvs.2001.10.18.15.19 (Preview Release)
+Date: 22 Oct 2001 22:56:17 -0400
+
+26) Performance Comparison of Two On-demand Routing Protocols for Ad-
+    hoc Networks
+
+This paper presents a detailed simulation study of DSR and AODV while
+varying the mobility and the number of sources over 50 node and 100
+node networks. Their goal is definitely to critique and provide
+research as to the usability of DSR and AODV in large networks as
+usable implementations become commonplace. They utilize ns-2 in an
+802.11 simulation environment, matching closely to the Broch et
+al. paper. By targeting just 2 protocols, they present a more
+exhaustive study of these two, comparing along 3 axes: number of
+nodes, number of sources, and pause time.
+
+Once again, we see that given a detailed study that neither protocol
+outshines the other in all respects: with high numbers of sources,
+AODV tends to have lower packet delays, but at higher mobility, DSR
+has lower packet delays. We see that both protocols have desirable
+base cases: at low mobility and link failure, we see high throughput,
+low packet delays and low routing load. As we change these parameters,
+the two protocols deviate highly-- we see that as the number of
+sources grows, AODV's routing load highly increases, while DSR's grows
+slowly, almost always having a lower routing load than AODV because of
+aggressive caching.
+
+They present observations that routing load is related to MAC
+overhead and can be used as a good measure for predicting application
+performance. Since AODV's routing load is mostly broadcast messages,
+it tends to be comparable to DSR's load (although still about 40%
+higher), which sends many unicast messages, all of which require an
+RTS/CTS transmission. This MAC interaction is an interesting point
+which we have not discussed thus far-- integration of the routing
+protocol with knowledge of the MAC layer can give better performance
+than our abstract view of the MAC we've assumed this far.
+
+This paper presents a well thought out and detailed discussion of the
+trade-offs between DSR and AODV and presents the idea that future work
+should be directed towards better use of the MAC layer by routing
+protocols.
+
+
+

@@ -1,0 +1,162 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2GGant29760
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 11:36:49 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2GGalCE028690
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Mar 2006 11:36:48 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Thu, 16 Mar 2006 11:36:48 -0500 (EST)
+Message-ID: <1689.132.236.227.119.1142527008.squirrel@webmail.cornell.edu>
+Date: Thu, 16 Mar 2006 11:36:48 -0500 (EST)
+Subject: PAPER 15
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+"Crowds..." presents a system meant to provide anonymity for HTTP (and a
+few other related protocols)
+
+transactions.  The way this is provided is to route requests (and their
+responses) along a path through
+
+a "crowd" of "jondo" nodes.  Each jondo knows the previous and next nodes
+on the path relative to its
+
+position and two successive jondos on a path transmit the request between
+them such that the previous
+
+and next nodes on the path are not directly revealed.  Paths are
+constructed probabilistically such
+
+that each node will forward the message to another jondo rather than the
+end server with some
+
+probability, otherwise the message is delivered to the end server.  Two
+anonymity properties are argued
+
+to be provided to varying degrees: sender anonymity (such that the sender
+is not known to the attacker)
+
+and receiver anonymity (such that the receiver is not known to the
+attacker).  Three types of attackers
+
+are considered: local eavesdropper, collaborating jondos, end server.  A
+high degree of receiver
+
+anonymity is shown to be provided against these attackers as the size of
+the crowd grows and a similar
+
+degree of sender anonymity is shown against collaborating jondos as long
+as non of these jondos
+
+participate in the path (which happens with high probability as the crowd
+grows).  Jondos join a crowd
+
+by contacting a centralized membership server called a "blender". 
+Messages are encrypted between
+
+Jondos and the contents of requests and responses are encrypted along the
+entire routing path within
+
+the crowd.  Performance of such a system seems to degrade very quickly (as
+shown empirically) as the
+
+strength of the anonymity properties increases.  It seems that the RTT
+between initiator and server
+
+scales linearly with path length.  Recall that the probability of
+providing the anonymity properties
+
+scales with the crowd size.  Sybil attacks also seem to pose a difficult
+challenge to such a system
+
+couting on small crowd size (for performance reasons).  Such a small crowd
+also does not provide much
+
+cover to a particular node (even crowds of size four empirically impose
+high latency without much
+
+cover) because joining a crowd reveals all members of the crowd.
+
+P5 provides a tree extenion to a naive global broadcast channel providing
+sender and receiver
+
+anonymity.  Here a tree is formed where each node is a broadcast channel
+in which many peers
+
+participate.  Higher tree-nodes provide a higher degree of anonymity while
+trading off worse
+
+performance.  A peer can always move down the tree to achieve better
+performance at worse anonymity,
+
+but not vice versa.  If a peer wishes to send a message it encrypts the
+contents with the destination
+
+peer's public key (globally known) and adds the destination address (which
+identifies a tree node to
+
+route the message to along which lies the tree node containing the
+destination peer).  The message is
+
+then forwarded up and down the tree accordingly.  When the message arrives
+in the specified tree-node
+
+each peer must decrypt a chunk of the message to see if the message is
+destined for that peer.  Peers
+
+also send noise messages to random addresses periodically to prevent an
+adversary from correlating
+
+messages.  This system provides a tradeoff of performance vs. anonymity (a
+peer can select in which
+
+part of the tree to reside), however even lower tree-nodes require
+substantial network cost even if the
+
+peer sends no useful communication.  Also tree-nodes must have a certain
+number of peers in order to
+
+provide proper anonymity and so the heirarchy must be rebuilt if the
+membership of a tree-node falls
+
+below this treshold.
+
+Herbivore extends DC-net whereby a sender can broadcast a message without
+revealing its source.  Each
+
+pair of peers shares a coinflip and these coinflips are xor'd and
+broadcasted by each peer.  The sender
+
+does this, but additionally xors its message and broadcasts this.  All
+these broadcasts can be xor'd to
+
+retrieve the original message.  Herbivore builds several of these cliques
+and places them on a global
+
+DHT ring to overcome the inherent scalability problems of such a clique. 
+Queries are first broadcasted
+
+in the local clique and every clique member checks their filestore and a
+cache of other files.  When
+
+files are found they are broadcasted to the entire clique which caches a
+copy.  When not found locally
+
+queries are sent to the proper clique via proxies selected from the local
+and remote clique.  Herbivore
+
+overcomes the constant broadcast required in P5 and is decentralized and
+structured unlike Crowds.
+
+There is clearly a tradeoff between bandwidth (performance) and cliquesize
+(strength of anonymity) in
+
+Herbivore which is argued to be inherent in this type of anonymity system.
+

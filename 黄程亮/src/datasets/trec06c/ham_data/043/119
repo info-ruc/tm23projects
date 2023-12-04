@@ -1,0 +1,53 @@
+Received: from imo18.mx.aol.com (imo18.mx.aol.com [198.81.17.8])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA00586
+	for <handyboard@media.mit.edu>; Tue, 4 May 1999 08:59:26 -0400 (EDT)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com (14369)
+	by imo18.mx.aol.com (IMOv20) id yNQWa16144
+	 for <handyboard@media.mit.edu>; Tue, 4 May 1999 08:58:23 -0400 (EDT)
+Message-Id: <8ee0efd9.246048ef@aol.com>
+Date: Tue, 4 May 1999 08:58:23 EDT
+Subject: RE: Battery Status
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 4.0 for Windows 95 sub 13
+
+	I have quite a few battery discharge curves lying around, and one 
+thing I can tell you is that they are all different.  Generally they start at 
+a high voltage, quickly discharge to a normal operating voltage, hold that 
+voltage for a majority of their life, and finally roll off around a "Knee."  
+There is a slope in the normal operating voltage region of the curve, but it 
+is very small especially compared to the other operating regions.  It is easy 
+to tell when the battery has reached its knee, but once the knee shows up you 
+have very little battery life to work with.  The big catch with all this is 
+that these battery curves are all made under constant current conditions.  (I 
+have a device called "The Battery Tool" which places a programmed current 
+load on the battery, and measures the voltage every second.  The computer 
+program on the controlling computer, plots the curves, and computes useful 
+information.)  A robot uses everything except a constant current.
+	I get the impression that you would like to know the status of the 
+battery so that your robot can do something about the battery (seek a 
+charging station) when the battery reaches a certain level.  I think that you 
+will have a hard time doing this with the Handy Board as it is currently 
+made.  Measuring the battery terminal voltage will certainly tell you more 
+than you currently get (nothing).  But you will have to jump through some 
+extra hoops to get useful information out of if.  The first thing you will 
+need to do is to find a way to "idle" the robot while you make your voltage 
+measurement.  You don't have to remove the load, just make it the same for 
+each measurement.  Second you will need a history of typical behavior.  
+Finally you will need a way to update that typical history as the battery 
+ages.  You could probably do the last two parts in the same algorithm if you 
+can set the initial conditions right.
+	I personally feel that the right way to go is with a smart power 
+source.  This is where your NiCads are packaged with a microcontroller and 
+current sensor.  The Micro keeps track of the charge taken (and the current), 
+the last time and amount of charge, and can respond to a host (serial or I2C) 
+clearly stating the expected remaining battery life.
+	It would be nice to hear from the satellite people.  They have to be 
+real battery experts.  (You can't just go up and change a battery.)
+
+Later,
+Pherd
+

@@ -1,0 +1,64 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id FAA03391
+	for <handyboard@media.mit.edu>; Mon, 1 May 2000 05:21:10 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id FAA20237; Mon, 1 May 2000 05:21:10 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7784
+From: "Martin Ziegler" <maziegler@swissonline.ch>
+X-Real-Life-Name: Martin Ziegler
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Subject: Sonar and overflow
+Posted-Date: Mon, 1 May 2000 09:20:41 GMT
+Date: Mon, 1 May 2000 09:20:41 GMT
+Organization: none
+Message-Id: <FtvJAH.FI0@lugnet.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Precedence: list
+
+Hi
+
+I've tried to use my Polaroid Sonar not only for distances up to 2.7 meters. So
+I want to check the overflow flag. But my code doesn't work. Can anybody give
+me some advises?
+
+Here is my code:
+
+long sonar_sample() {
+        int start_time;
+        int help;
+        overflow_counter=0L;
+        poke(0x1023, 1);                                /* clear tic3 flag */
+
+        start_time=peekword(0x100e);        /* capture start time */
+        bit_set(0x1008, 0x20);                        /* trigger pulse */
+        bit_clear(0x1024,0b10000000);                 /* TOI cleared => TOF
+read by software */
+        while (!(peek(0x1000) & 0x1)) {        /* wait until receive echo */
+                if (peek(0x1025)&0b10000000)
+                {
+                        overflow_counter=overflow_counter+1L;
+                        bit_clear(0x1025,0b10000000);
+                }
+                if (overflow_counter>=4L)
+                {
+                        /* if too much time has elapsed, abort */
+                        bit_clear(0x1008, 0x20);
+                        return -1L;
+                }
+                defer();                    /* let others run while waiting */
+        }
+        bit_clear(0x1008, 0x20);                /* clear pulse trigger */
+        help =peekword(0x1014)-start_time;
+        return overflow_counter*65535L +(long)help; /* tic3 has time of echo */
+}
+
+
+
+Thanks
+
+Martin
+

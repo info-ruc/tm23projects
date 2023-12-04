@@ -1,0 +1,79 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1GEQ9t02528
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 09:26:09 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1GEQ8IQ006594
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 16 Feb 2006 09:26:09 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060215132404.03417218@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Thu, 16 Feb 2006 02:11:37 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 8
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+Range queries:
+
+         GeoPeer:
+         The central goal of Geopeer is to produce a location-aware peer to 
+peer substrate.  Instead of being labelled by a random hash, nodes are 
+located in the system by their physical coordinates; messages can then be 
+routed to points near nodes in Euclidean space.  This may be useful for 
+some sorts of location-aware systems, such as sensor networks.  The authors 
+accomplish this with a protocol that allows nodes to spontaneously form a 
+Delauny triangularization (a planar triangle mesh with particular edge 
+length properties)
+         I'm very suspicious of their long-range contacts system.  The 
+analysis is unpersuasive: for below a few hundred nodes, it would probably 
+be easier to just keep a complete node list; the system is only interesting 
+for large networks.  And their evaluation data doesn't explore large values 
+of N.  Also, if the system is deployed on a large scale, node density is 
+likely to be extremely variable --Manhattan might have more nodes than all 
+of the midwest.  It is unclear how this will impact system performance, and 
+in particular the choice of long distance links.
+
+Mercury:
+
+         Mercury and P-Trees are both motivated by the same problem:  the 
+DHT operations of put and get are simply not adequate to the task of range 
+queries. Mercury attempts to solve this in a peer-to-peerish way, by 
+defining a distributing processing scheme.  Mercury groups nodes into 
+logical "attribute groups" for each field in the schema, and then does the 
+range query within the attribute group.
+         Mercury handles multi-attribute queries, but will choke as the 
+schemas and queries grow larger--each query takes place over essentially 
+one attribute hub, and a conjunction of large ranges will not be handled 
+well.  It's not clear how to extend mercury to handle reliable replication, 
+nor how to handle failures in mid-query.
+
+P-Trees:
+         While mercury is a systems-ish approach, P-trees are essentially a 
+generalization of single-machine database data structures (in particular, 
+they are a generalization of B-trees) to the peer-to-peer realm.  The 
+P-Trees is a relative of the B+ tree suitable for peer-to-peer 
+systems.  Each node stores a part of the overall tree.  In this way, range 
+queries can be sent to the nodes responsible for each part of the range, 
+and the overall answers collected.
+         Unfortunately, it is not clear how well P-trees scale to large 
+numbers of nodes--if a node fails, the tree will be temporarily 
+unstable.  The authors have a stabilization procedure running to smooth out 
+inconsistencies.  As the network grows larger though, the number of node 
+failures per second increases (for constant failure rate), and so the 
+process has more and more work.  There presumably is a point where the 
+stabilization process is overloaded, and the system does not converge.  If 
+the system isn't stable, then queries will take significantly 
+longer--raising the probability that a node dies in mid-query.
+
+
+
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

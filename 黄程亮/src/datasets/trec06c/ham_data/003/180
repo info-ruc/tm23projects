@@ -1,0 +1,88 @@
+Received: from pluto.iafrica.com (root@pluto.iafrica.com [192.96.88.137]) by spam.ecst.csuchico.edu (8.7.3/8.7.3) with SMTP id PAA21505 for <dranch@ecst.csuchico.edu>; Wed, 10 Apr 1996 15:44:39 -0700 (PDT)
+Received: from pluto.iafrica.com by pluto.iafrica.com with smtp
+	(Smail3.1.29.1 #20) id m0u78cj-0007LCC; Thu, 11 Apr 96 00:44 GMT+0200
+Message-Id: <m0u78cj-0007LCC@pluto.iafrica.com>
+Comments: Authenticated sender is <ginggs@pe-pop.iafrica.com>
+From: "Graham Inggs" <ginggs@iafrica.com>
+Organization: Internet Africa
+To: "David A. Ranch" <dranch@ecst.csuchico.edu>
+Date: Thu, 11 Apr 1996 00:43:29 +0200
+Subject: Re: AMD 133(160Mhz) settings for odd ASUS GX4 motherboards w/ B
+Reply-to: ginggs@iafrica.com
+Priority: normal
+X-mailer: Pegasus Mail for Windows (v2.23)
+Status: RO
+X-Status: A
+
+Greetings David
+
+> JP16: 1+2,5+6	CPU setting
+> JP17: 1+2,5+6	CPU setting
+> JP18: 1+2,5+6	CPU setting
+> JP19: 1+2	CPU setting 
+> JP20: 1+2	4x clock setting (open for 3x clock)
+> JP21: 2+3	for Write Thru (3+4 for Write Back) 
+> 		Note: I had to use WT cache because I have an Adaptec 2842
+> 		      busmastering controller.  Try the WB setting first!
+> JP22: 1+2,4+5   CPU setting
+How did you arrive at these CPU settings?
+What happens if you set it up the same way as I did?
+JP16: 1-2,4-5
+JP17: 1-2,5-6
+JP18: 1-2
+JP19: 1-2,3-4,5-6
+JP20: 1-2
+JP21: 2-3
+JP22: 1-2,4-5
+This is the same as ASUS recommends for an AMD DX4 SV8B
+on a GX4 mainboard, and for a 5x86 on an SP3 mainboard.
+
+> AT BUS Clock      : 1/4 CLKIN (10Mhz AT BUS at 40Mhz system clock)
+Mine is set at 1/5 CLKIN, does it help pushing the ISA bus a bit?
+> DRAM Speed        : Faster      (My machine won't run stable at FASTEST)
+Mine is on Fastest (my DRAM is 60ns, and my SRAM 15ns)
+>From past experience, even if you have 70ns DRAM, you can still set 
+it to Fastest with a 40MHz bus clock, but you have to slow down if 
+your SRAM is 20ns.
+> Video Shadow      : non-cachable
+Mine is cacheable, do you know any more about this setting?
+When should it be enabled, and when not?
+> Latch Local Bus   : T2
+I don't know much about this one, but when I was setting up my 
+DX4/100MHz as a 2 * 50MHz, I could only get the system to be stable 
+when this was set to T3, so I left it that way.  Maybe this could 
+make your system work at the Fastest setting.
+> Local Bus Ready   : Syncronize
+I don't know anything about this one either, but mine is the same.
+
+> Note:  I'm not sure why but PCbench and DOS benchmarks run FASTER with the
+>        L2 cache sent to Auto (WT) caching.  Any ideas WHY?!?!?!  I've 
+>        left my machine in WT mode since I use Windows95 most of the time.
+I've also had some weird benchmark results.  Try disabling your L2 
+cache completely, and check your results.
+
+WinBench 96:
+                 GWM 96                CPU 16              CPU 32
+L2-WB     5.36                         94.9                    94.1
+L2-WT     5.43                         94.9                    94.1
+L2-none    5.29                         94.6                   94.2
+
+I'm using Windows 3.1 and Win32S 1.30, so I'm not sure if that is the 
+cause of the lower scores.  Either my L2 is not working at all, or 
+something else strange is going on.  I saw in the newsgroup that some 
+other people have also found that the L2 cache doesn't make much of a 
+difference.
+I've been thinking about this, and I know that with the older 486's 
+(DX, DX2, DX4) that going from 0K to 128K L2 cache makes a big 
+difference, but going from 128K to 256K is not noticeable at all.
+Now I've been wondering just how much of the 128K is actually being 
+used during everyday working.  One of the big differences between the 
+5x86 and older 486's is the 5x86 has 16K as opposed to 8K L1 cache.
+Now if the loops in the benchmark tests are >8K but <16K that would 
+explain why disabling the L2 has little effect on the score.
+Otherwise, I either have a faulty CPU or I should look at trying out 
+another motherboard.
+
+Cheers
+Graham
+

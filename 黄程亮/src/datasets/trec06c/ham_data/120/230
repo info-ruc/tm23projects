@@ -1,0 +1,61 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k36F1At03146
+	for <egs@cs.cornell.edu>; Thu, 6 Apr 2006 11:01:10 -0400 (EDT)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k36F17gD024994
+	for <egs@cs.cornell.edu>; Thu, 6 Apr 2006 11:01:08 -0400 (EDT)
+Received: from 132.236.227.122
+        by webmail.cornell.edu with HTTP;
+        Thu, 6 Apr 2006 11:01:09 -0400 (EDT)
+Message-ID: <1528.132.236.227.122.1144335669.squirrel@webmail.cornell.edu>
+Date: Thu, 6 Apr 2006 11:01:09 -0400 (EDT)
+Subject: paper 19
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Overcast is an application-level multicasting system that is layered on
+top of a network overlay. The goals of the authors was to create a
+scalable, reliable multicast system that can used for a variety of tasks
+and not just streaming. The authors used the generic multicast tree as a
+backbone, rendering the system as a single-source multicast, which the
+authors argue is sufficient for almost all purposes. The tree building
+protocol works by first comparing the new node to the root's children. If
+any of the children are suitable, it picks the most suitable one and goes
+down that brach and recurses, until it reaches a node that does not have
+any suitable children. Suitability for Overcast is determined by
+bandwidth. In order to deal with changes in state, Overcast nodes
+periodically reevaluate suitability with their sibilings and parent, and
+shifts position accordingly. Additionally, changes in position, whether
+because of suitability changes or node deaths, result in a propogation of
+change certificates up the tree to inform parents of the changes (since
+each parent must know about all of its descendants). The certificates are
+killed once they reach node that does not see the certificate as a change
+(ie. the node changed was already a descendent of it, and thus does not
+reflect a change from its point of view).
+
+One problem I noticed about Overcast is that in addition to the
+certificate race condition that is fixed by using sequence numbers, there
+seems to be a race condition with the changes themselves. Take two
+siblings that find that the other is suitable during the reevaluation
+period. The node that reconnects itself below the other would be dependent
+on which node notices it first, and it seems possible for each node to try
+to position itself below the other, resulting either in a failure or two
+nodes that both think the other one is its parent. The solution for this
+would simply be to go through the parent to make this change. The parent
+would then recognize that only one of the requests is valid and only
+approve one of the two.
+
+Another issue is that optimizing bandwidth means that the tree could
+become extremely unbalanced. Additionaly, I do not see the bandwidth
+optimization taking into account the number of links a node has since
+those links will be inactive during the entry phase of a new node with
+high probability. The bandwidth available to each link would not be
+accurately estimated until a new file is multicasted and the parent node
+tries to send it down all the links concurrently.
+

@@ -1,0 +1,107 @@
+Received: from mail.VR-Web.de (mail.vr-web.de [195.243.197.42])
+	by sunshine.math.utah.edu (8.9.3/8.9.3) with SMTP id QAA00509
+	for <tex-fonts@math.utah.edu>; Wed, 1 May 2002 16:15:32 -0600 (MDT)
+Message-Id: <200205012215.QAA00509@sunshine.math.utah.edu>
+Received: (qmail 13456 invoked by uid 101); 1 May 2002 22:15:30 -0000
+Received: from pd902b8e6.dip0.t-ipconnect.de (HELO localhost) (217.2.184.230)
+  by svtrick2.entenhausen.vpn with SMTP; 1 May 2002 22:15:30 -0000
+From: "Walter Schmidt" <was@VR-Web.de>
+To: "Michael Sternberg" <sternberg@phys.uni-paderborn.de>
+Cc: "tex-fonts@math.utah.edu" <tex-fonts@sunshine.math.utah.edu>
+Date: Thu, 02 May 2002 00:15:28 +0200 (MSZ)
+Reply-To: "Walter Schmidt" <was@VR-Web.de>
+Priority: Normal
+X-Mailer: PMMail 2.20.2380 for OS/2 Warp 4.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Subject: Re: math fonts for presentations
+
+On Wed, 1 May 2002 21:11:52 +0200, Michael Sternberg wrote:
+
+>> Despite the explanation, it is not clear what exactly you are trying to do.
+>
+>    % test file indicating font issues in FoilTeX
+>    \documentclass{foils}
+>    [...]
+
+You're fighting at several front lines here:
+
+(1) 
+foils.cls defines its own math font families, because the
+normal definitions of the CM font families do not provide
+scaling to more than 25pt.  Unfortunately, foils.cls does
+this in a somewhat strange way, which differs from the
+default math font setup.  For instance, the normal
+definition of \mathrm is changed without need.
+
+(2) 
+There exist no CM Sansserif math italic fonts.
+
+(3) 
+The CM Sansserif _text_ fonts have no bold slanted variant.
+(The EC fonts do, but EC Sansserif is UGLY.)
+
+(4)
+You are misusing a mixture of text and math to typeset
+chemical formulas.  This is evil.
+
+
+With HV-Math you can get it completely right, but if you 
+insist in a "poor man's solution", see the below example.
+
+>I am looking mainly for a math font set that matches sans serif
+>text. 
+
+There is no math font that matches CM Sanserif.  
+Period.
+
+
+best wishes
+
+Walter
+
+%%%%%%%%%%%%%%%%%%%%%%% snip %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{foils}
+
+% make numbers and operator names sans serif:
+\SetSymbolFont{operators}{normal}{OT1}{fcmss}{m}{n}
+\SetSymbolFont{operators}{bold}{OT1}{fcmss}{bx}{n}
+
+% fix \mathrm, which is broken by foils.cls:
+\DeclareSymbolFontAlphabet{\mathrm}{operators}
+
+% Notice that \mathrm is always the _upright_ font, 
+% which is used for numbers and operator names.
+% It's still upright, but sans serif now.
+
+% Unf., there is no complete CM Sansserif Math Italic font.
+% Do NOT typeset variables as sans serif upright, as this
+% is ugly, wrong, misleading and the spacing will be too tight.
+
+% we want vectors in math italic bold
+\usepackage{bm}
+\renewcommand{\vec}[1]{\bm{#1}}
+
+\begin{document}
+\foilhead{Subscripts are not seriffed: {\boldmath $\mathrm{H}_2\mathrm{O}$}}
+
+% Notice that \boldmath makes all formulas bold,
+% within its scope.
+
+{\bfseries\slshape Sansserif Slanted Bold is not available.}
+
+\begin{itemize}
+\item Newton's law for particle $i$:
+
+$\vec{F}_i = \dot{\vec{p}}_i$
+
+\item We see that text is sans serif, but math remains mostly CM.
+
+\end{itemize}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% snap %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+

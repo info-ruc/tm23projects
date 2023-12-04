@@ -1,0 +1,53 @@
+Received: from paw.montana.com (paw.montana.com [199.2.139.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA10973
+	for <handyboard@media.mit.edu>; Sat, 14 Feb 1998 15:07:53 -0500 (EST)
+Received: from Nepenthe (mso2-87.montana.com [208.4.224.87])
+	by paw.montana.com (8.8.5/8.8.5) with SMTP id NAA07253
+	for <handyboard@media.mit.edu>; Sat, 14 Feb 1998 13:58:24 -0700 (MST)
+Date: Sat, 14 Feb 1998 13:58:24 -0700 (MST)
+Message-Id: <199802142058.NAA07253@paw.montana.com>
+X-Sender: willbain@cs.umt.edu (Unverified)
+X-Mailer: Windows Eudora Light Version 1.5.2
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+To: <handyboard@media.mit.edu>
+From: Will Bain <willbain@cs.umt.edu>
+Subject: RE: encoders
+
+At 06:08 PM 2/14/98 +1100, Joe Martin wrote:
+>Does this mean that if you have a very slow pulse the encoder
+>routine may increment more than one time per pulse or is it
+>triggered of only on a rising or falling edge?
+
+In my experience, it doesn't matter how slow the pulse is.  The count is
+increased each time the analog port value crosses outside of the middle
+range defined by the two threshold values as shown below (please note that
+you'll need to view this with a non-proportional font, like Courier):
+          __              __
+         /  \            /  \
+high .../....\........../....\..........
+       /:     \        /:     \
+        :      \      / :      \      / 
+ low ...:.......\..../..:.......\..../..
+        :       :\__/   :       :\__/
+        :       :       :       :
+                                   time-->
+count:  +       +       +       +
+
+Of course, if you only want one count per period, you could just set one or
+the other thresholds to an extreme value and the other to a mid-range value.
+This allows you to count either rising or falling signals.
+
+Good luck to you and your robot.
+
+--Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,             If you can't say anything good about someone,
+Will Bain,                                        sit right here by me.
+& Tatoosh                                   --Alice Roosevelt Longworth
+
+

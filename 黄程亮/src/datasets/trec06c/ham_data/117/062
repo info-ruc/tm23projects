@@ -1,0 +1,40 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k29GZWt13200
+	for <egs@cs.cornell.edu>; Thu, 9 Mar 2006 11:35:32 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k29GZV5M002590
+	for <egs@cs.cornell.edu>; Thu, 9 Mar 2006 11:35:31 -0500 (EST)
+Received: from 128.84.153.30
+        by webmail.cornell.edu with HTTP;
+        Thu, 9 Mar 2006 11:35:32 -0500 (EST)
+Message-ID: <1107.128.84.153.30.1141922132.squirrel@webmail.cornell.edu>
+Date: Thu, 9 Mar 2006 11:35:32 -0500 (EST)
+Subject: paper 13
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Neither of the two papers, RON and One-Hop OSDI, deal with P2P. Rather,
+they deal with the background internet routing between physical links that
+all the P2P papers gloss over when they deal with the virtual links.
+
+Both the papers seek to improve the fault-detection and recovery that
+exist in current internet routing protocols (BGP). However, the two papers
+go about it in different ways. RON uses active monitoring and storing
+link-states to route around failures while One-Hop OSDI uses multiple
+redundant alternative paths in the case of failures. While RON gains
+policy flexibility and active routing around problematic paths, it does so
+at the expense of scalability and a polynomial growth in the number of
+nodes for the background traffic required to keep the RON network updated.
+One-Hop OSDI doesn't require any background traffic, but it does not
+actively route around failed paths. Instead, when node detects a failed
+path, it sends it to a number of randomly selected intermediaries to
+attempt to route around the failed link(s). However, One-Hop generates
+additional traffic when a path failure is detected (on the order of the k
+intermediaries they concurrently route to).
+

@@ -1,0 +1,59 @@
+Received: from urth.netco.com (new-urth.netco.com [206.103.221.15])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA15971
+	for <handyboard@media.mit.edu>; Thu, 22 Apr 1999 14:16:24 -0400 (EDT)
+Received: from dm.wamnet.com([192.168.168.2]) (2685 bytes) by urth.netco.com
+	via sendmail with P:esmtp/R:inet_hosts/T:smtp
+	(sender: <tgb@cozy.core.wamnet.com>) 
+	id <m10aO0s-00EJ5tC@urth.netco.com>
+	for <handyboard@media.mit.edu>; Thu, 22 Apr 1999 13:15:50 -0500 (CDT)
+	(Smail-3.2.0.104 1998-Nov-20 #1 built 1998-Dec-7)
+Received: from cozy.core.wamnet.com.wamnet.com(really [192.168.250.75]) by dm.wamnet.com
+	via sendmail with esmtp
+	id <m10aO0r-00j7xHC@dm.wamnet.com>
+	for <@mail-relay.wamnet.com:handyboard@media.mit.edu>; Thu, 22 Apr 1999 13:15:49 -0500 (CDT)
+	(Smail-3.2 1996-Jul-4 #3 built 1996-Nov-12)
+Received: (from tgb@localhost) by cozy.core.wamnet.com.wamnet.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id NAA26503; Thu, 22 Apr 1999 13:15:45 -0500
+Date: Thu, 22 Apr 1999 13:15:45 -0500
+Message-Id: <199904221815.NAA26503@cozy.core.wamnet.com.wamnet.com>
+From: Tom Brusehaver <tgb@cozy.core.wamnet.com>
+To: Bob_Kelly/First_Union@firstunion-reit.com
+Cc: handyboard@media.mit.edu
+In-Reply-To: <8525675B.005A8968.00@funotes.firstunion-reit.com>
+	(Bob_Kelly/First_Union@firstunion-reit.com)
+Subject: Re: I hope someone can help me...
+Reply-To: tgb@wamnet.com
+References:  <8525675B.005A8968.00@funotes.firstunion-reit.com>
+
+
+>I am planning on getting some LMD18200 motor driver chips from National
+>Semiconductor and I found some info about which pins go to what by doing a
+>search in the H-Board archive. Great resource by the way. It expalains how
+>to take  one of the standard motor drivers out of the board and replace it
+>with .1" headers and run wires to an offboard 18200 chip. This is
+>fine. The
+
+If it is the note I posted, also get the followup.  The initial post I
+think I made a couple errors, and then someone said their chips got
+hot :-o.  Anyway a followup post corrected the information.
+
+>info that I found only gave instructions for pin-outs for running one chip.
+>I would like to run two and still have one of the standard motor drivers in
+>place. There are two "enable pins" (pin 1 and pin 9) on the std h-board
+>chip. These pins, at least pin 1, seems to coorespond to the direction
+>signal input, of which there is only one, on the LMD18200. Does this mean I
+>can connect two LMB18200s two one standard h-b socket? If so, does it
+>matter which PWM input and output pins on the HB should be connected to a
+>second LMD18200?
+
+If you look at the pinouts for the 293 chip, there are 2 h-bridges in
+the single chip.  Using corresponding pins, you can connect 2
+LM18200's to a single socket.  You should connect the corresponding
+forward pin to the same 18200 as you connected the enable pin.  So
+pins 1, 2 (or 7) are for one LM18200, and 9, 10 (or 15) are for the
+other.  
+
+Make sure you heat sink the LM18200, they will get hot unless they are
+really lightly loaded.
+
+Good luck
+

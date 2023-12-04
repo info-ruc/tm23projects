@@ -1,0 +1,110 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1EGW3t24127
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 11:32:03 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1EGW3GP024524
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 11:32:03 -0500 (EST)
+Message-ID: <000301c63184$3ad41720$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 6
+Date: Tue, 14 Feb 2006 11:32:21 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+    The search and replication paper argues that completely unstructured 
+peer-to-peer networks have advantages and can be made (order of magnitude) 
+more effecient with simple methods.  Structured p2p protocols, the authors 
+argue, have problems dealing with massive amount of churn while existing 
+unstructured networks have no problems with it.  The problem, however, is 
+that a search is usually done by flooding the network with requests which 
+exponentially explode.  To alleviate this problem, the authors suggest a 
+gossip-like system called random walkers.  In gossip, each node sends the 
+message to a random subset of neighbors.  In this system each node forwards 
+the message to a random neighbor (preferably one that it has not been 
+forwarded to previously) which then passes the message on.  Each message 
+still has a TTL, but it is used mainly as a backup if the object being 
+searched for does not exist.  This sytem has a two order of magnitude 
+improvement over the current flood-based approach.  Another improvement the 
+authors argue for is an expanding ring search.  Do a flood search with a TTL 
+of 1, then a TTL of 2 and so on until the object is found.  This is 
+reminiscent of an iterative-deepening approach commonly used in AI.  The 
+idea is that if you send out a message with TTL x then the message you sent 
+out with TTL x-1 will be so small in comparison, that you have not used too 
+much unnecessary bandwidth by increasing the TTL only 1.  The paper also 
+talks about object replication and does a lot of math to determines that 
+replicating objects proportional to their popularity is not nearly as 
+effecient as replicating them proportional to the square root of their 
+popularity.  The object is replicated along the path the message took.  One 
+of the nice things about the paper seems to be that a completely random 
+network topology does best with the many of the suggested improvements and 
+implementing these improvements seem like small changes to an existing 
+network.
+    The paper flat out says "As a final note about our abstractions and 
+metrics, we stress that they omit a lot of issues, including the true 
+dynamics of node coming and going in the network, the message delays in the 
+network, the actual load on a network node for processing and propagating 
+messages, etc."  They assume nothing realistic in their tests, their results 
+are not necessarily indicitive of real-world performance.  Furthermore, they 
+say that users will be able to tolerate more search time in order to get 
+lower load on their system.  As a user of one of these networks, I would 
+want to spam out and flood out as many searches as I could possibly fit into 
+my pipe if I could get the search back 200ms faster.  I doubt any user would 
+sacrifice search time for overall network load, they could care less.  False 
+negatives are also a big problem.  A random-walker has a good chance of 
+never finding the object it was looking for despite taking a long time to 
+look for it.  I think a gossip-style approach might be the best of both 
+worlds.  As for the replication, it seems like this would counter a lot of 
+the load they tried to take off the system in the first place.  Each node 
+would have to store significantly more data than it currently does.
+
+    Beehive is an object replication-centered improvement upon current 
+structured p2p systems.  Beehive's authors decided to put it on top of 
+Pastry, although any prefix based structured p2p system could be adapted to 
+their purposes.  The authors assume a zipf-like distribution of objects 
+(which is likely) and use a replication system in order to get expected 
+performance of O(1), specifically C, where C is any constant you make it be. 
+A small C will have massive (although optimal) object replication while a 
+large C will make less replication but more hops.  A C<1 means that with a 
+very high probability, you already have the object you are looking for on 
+your system.  The beehive scheme works by replicating objects at different 
+levels.  An object that is replicated at level 0 is cached in all the nodes 
+in the system while an object with level logN is cached only at the home 
+node.  By using the underlying network's prefix based routing, the object is 
+stored 1 hop closer than the home node.  For example, if an object is placed 
+at location 2133, then level 4 replication would mean only the home node has 
+it (2133) while level 3 implies that all nodes (213*) have the object. 
+Level 2 would mean all the nodes at 21* have the object cached, and so on. 
+It is easy to see that the object is stored at exponentially many places as 
+its level increases.  The replication level of a particular object is based 
+on its popularity, which is measured over the course of a predetermined time 
+interval and sent to a node (which is determinstically chosen) in charge of 
+its replication level.  Active change notifications are sent out in a 
+tree-like manner from the object's home node and in that way avoid 
+unnecessary messages.
+    The biggest problem I noticed with the paper is that high amount of time 
+(measured in hours) that an object takes to get "stable."  In a system with 
+a lot of churn, 16 hours is not a reasonable amount of time to have an 
+object reach optimal replication.  Furthermore, in a system with a lot of 
+nodes and a lot of object, each node will have to store a pretty massive 
+amount of data.  The paper suggests using object pointers instead of actual 
+object, but this, as the paper points out, adds extra hops.  What it doesn't 
+point out is that this is also a single-point of failure.  Furthermore, with 
+each node having a pointer to the same home node, that will unbalance the 
+network massively as each node sends out an object request to that node. 
+Overall, the replication protocol is logical and would work well on DNS and 
+other non-file sharing applications.
+
+--Kevin 
+

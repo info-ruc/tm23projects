@@ -1,0 +1,86 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2UIN3Y10182
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 13:23:03 -0500 (EST)
+Received: from [128.84.218.181] (rrdhcp216-693.redrover.cornell.edu [128.84.218.181])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2UIMwha001989
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 30 Mar 2006 13:23:03 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.3)
+Content-Transfer-Encoding: 7bit
+Message-Id: <B16528C2-3E40-49D5-98E7-DEB674446785@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <PJK25@cornell.edu>
+Subject: PAPER 17
+Date: Thu, 30 Mar 2006 13:22:57 -0500
+X-Mailer: Apple Mail (2.746.3)
+
+BITTORRENT
+
+Bittorrent as outlined in this paper functions in a semi-centralized  
+manner, using a tracker to locate peers who are actively sharing a  
+desired file.  All actual data sharing, however, takes place in a P2P  
+manner.  In general, peers try to enforce a "tit-for-tat" sharing  
+scheme.
+
+In order to maximize global throughput, a variety of techniques are  
+employed.  Files are broken up into half megabyte blocks, with a  
+file's name, size, and SHA1 hashes for each block posted in a torrent  
+file in some well known place.  Each block is broken up into smaller  
+sub blocks, typically 16KB, and at all times 5 sub-blocks are on  
+request from a peer.  Initially a random block is requested, after  
+that the rarest blocks are requested first to preserve the overall  
+availability of a file.  Upstream bandwidth to other peers is limited  
+by the rate at which those peers provide data.  At all times,  one  
+peer is allowed full upstream bandwidth, rotating through the peers,  
+in order to detect a peer which will support higher reciprocating rates.
+
+BULLET
+Bullet is fully distributed and relies upon forming a P2P mesh of  
+nodes.  It does, however transmit disjoint data sets to nodes, in  
+order to maximize the global spread of information.  Rather than  
+request the rarest packets, bullet uses erasure or multiple  
+description coding and requests packets from any other node which is  
+believed to have missing data.  Periodically a message is sent up and  
+down the overlay which produces a randomized  global summary of the  
+data each node has.  These summaries are disseminated, thereby  
+allowing nodes to locate appropriate peers.  Rather than use a "tit- 
+for-tat" choking scheme to control bandwidth, Bullet uses a modified  
+TCP control algorithm called TFRC which attempts do maintain a steady  
+data rate.  It does not react to packet losses or search for  
+bandwidth as aggressively as the standard TCP flow algorithm.
+
+Simulation demonstrates that bullet provides 5 times the transfer  
+rate achieved by a random IP multicast tree.  Other simulations show  
+that Bullet is more effective than gossip protocols.  Bullet seems to  
+be designed not as a batch system like Bittorrent but as a multimedia  
+streaming solution, esentially augmenting tree-based multicast with  
+peer to peer multiple description coded enhancements.  Bittorrent  
+instead implements techniques to enforce upload/download fairness and  
+minimize the likelihood that a file will become partially unavailable  
+over the course of it's shared lifetime.
+
+
+SPLITSTREAM
+
+SplitStream, like Bittorrent, does not use erasure of multiple  
+description codes, and instead attempts to spread slices or blocks of  
+a file throughout the overlay (although the authors do suggest the  
+use of such codes when multimedia content is to be distributed).   
+Rather than request blocks in heuristic manner, however, SplitStream  
+forms multiple multicast trees to distribute each slice of the file.   
+The challenge is then maintaining that this forest of multicast trees  
+remain even in the sense that a node is placed high on the hierarchy  
+of one tree and low on all others.
+
+The overlay which is used as the foundation of SplitStream is Scribe  
+and Pastry.  Scribe is an application level group communication  
+system built on Pastry, and Scribe groups, which have a natural  
+routing tree, are used as members of a slice multicast tree.  Since a  
+scribe routing tree terminates at some arbitrary groupID in the  
+Pastry identifier space, Scribe groups whose groupID differ in the  
+most significant digit will remain disjoint in the sense that a node  
+remains a leaf node in all but one tree.  Bandwidth constraints limit  
+the degree of nodes and the size of these trees.
+

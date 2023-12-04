@@ -1,0 +1,60 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1LEwUt16537
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 09:58:30 -0500 (EST)
+Received: from [128.253.212.208] (r253212208.resnet.cornell.edu [128.253.212.208])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1LEwUXu001246
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 21 Feb 2006 09:58:30 -0500 (EST)
+Message-ID: <43FB2A9A.5010504@cornell.edu>
+Date: Tue, 21 Feb 2006 09:58:34 -0500
+From: Ivan Stoyanov <ids3@cornell.edu>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 8
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+The Sybil Attack
+
+The paper is claiming that a sufficiently recourseful attacker can grab 
+a large part of a peep-to-peer network by simulating a sifficient number 
+of identities, which reduces the resilience of the network due to 
+redundancy. The problem posed is to ensure that distinct identities map 
+to distinct identities. One way to do this is to issue challenges to 
+each identity that will be difficult to respond to by a single entity at 
+the same time. However, the challenges should be computationally 
+feasible for the given time to the least resouceful correct node on the 
+network, thus an attacker can claim as many identities and the floor of 
+the ratio of its resourcefulness to this of the least capable correct node.
+
+The other interesting proposition is that identity checking can be 
+"outsourced" to formerly accepted identities. An identity is accepted 
+only if it has been accepted by a certain number of already accepted 
+nodes. However, once a correct node accepts the threshold number of 
+faulty nodes the group of fauly nodes can make the correct node accept 
+anything else.
+
+
+Defending against Eclipse Atacks on Overlay Networks
+
+An attacker on a overlay network can "eclipse" a certain set of nodes by 
+controlling all links in and out of the set of nodes. The eclipse attack 
+is more general than the sybil attack. The main idea here is that the 
+degree of correct nodes is going to be within certain bounds compared to 
+that of faulty nodes. Bounding the degree will alleviate the strength of 
+the attack.
+
+To do this nodes keep asymentric key paris to encrypt and sign messages. 
+Nodes also keep a "back pointer" list, which is the set of nodes that 
+have that node as a neightbor. The size of that list should be between 
+the stipulated bounds. The list is verified by asking the its members 
+directly. A node whose degree bounds are out of range is ignored.
+
+This approach makes rounting slower since messages need to be 
+signed/encrypted at each hop. However, that may be a small price to pay 
+since the eclipse attacks are very effective and the results show that 
+the approach is reasonably effective.
+

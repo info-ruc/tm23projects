@@ -1,0 +1,487 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g6B2lniQ030272;
+	Wed, 10 Jul 2002 19:47:49 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.12) with SMTP id VAA26793;
+	Wed, 10 Jul 2002 21:36:45 -0400 (EDT)
+Date: Wed, 10 Jul 2002 21:36:45 -0400 (EDT)
+Received: by canaveral.red.cert.org; Wed, 10 Jul 2002 21:30:55 -0400
+Message-Id: <CA-2002-20.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-20 Multiple Vulnerabilities in CDE ToolTalk
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 399
+Status: RO
+X-Status: $$$$
+X-UID: 0000000055
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-20 Multiple Vulnerabilities in CDE ToolTalk
+
+   Original release date: July 10, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+
+Systems Affected
+
+     * Systems running CDE ToolTalk
+
+
+Overview
+
+   Two  vulnerabilities  have  been  discovered  in  the  Common  Desktop
+   Environment   (CDE)   ToolTalk   RPC   database   server.   The  first
+   vulnerability  could  be used by a remote attacker to delete arbitrary
+   files,  cause  a denial of service, or possibly execute arbitrary code
+   or  commands. The second vulnerability could allow a local attacker to
+   overwrite arbitrary files with contents of the attacker's choice.
+
+
+I. Description
+
+   The  Common  Desktop Environment (CDE) is an integrated graphical user
+   interface  that runs on UNIX and Linux operating systems. CDE ToolTalk
+   is  a  message  brokering  system  that  provides  an architecture for
+   applications   to   communicate  with  each  other  across  hosts  and
+   platforms.  The ToolTalk RPC database server, rpc.ttdbserverd, manages
+   communication  between  ToolTalk  applications.  For  more information
+   about CDE, see
+
+          http://www.opengroup.org/cde/
+
+          http://www.opengroup.org/desktop/faq/
+
+   This  advisory  addresses  two new vulnerabilities in the CDE ToolTalk
+   RPC  database  server.  These vulnerabilities are summarized below and
+   are  described  in  further  detail  in their respective vulnerability
+   notes.  A  list  previously  documented  problems  in CDE can be found
+   Appendix B.
+
+
+   VU#975403  -  Common  Desktop  Environment (CDE) ToolTalk RPC database
+   server  (rpc.ttdbserverd) does not adequately validate file descriptor
+   argument to _TT_ISCLOSE()
+
+          The ToolTalk RPC database server does not validate the range of
+          an argument passed to the procedure _TT_ISCLOSE(). As a result,
+          certain  locations in memory can be overwritten with zeros. For
+          more information, please see VU#975403:
+
+                http://www.kb.cert.org/vuls/id/975403
+
+          This  vulnerability  has  been  assigned  CAN-2002-0677  by the
+          Common Vulnerabilities and Exposures (CVE) group.
+
+
+   VU#299816  -  Common  Desktop  Environment (CDE) ToolTalk RPC database
+   server (rpc.ttdbserverd) does not adequately validate file operations
+
+          The  ToolTalk  RPC  database  server  does  not ensure that the
+          target  of  a  file  write  operation is a valid file and not a
+          symbolic link. For more information, please see VU#299816:
+
+                http://www.kb.cert.org/vuls/id/299816
+
+          This  vulnerability  has  been  assigned  CAN-2002-0678  by the
+          Common Vulnerabilities and Exposures (CVE) group.
+
+
+II. Impact
+
+   VU#975403  -  Common  Desktop  Environment (CDE) ToolTalk RPC database
+   server  (rpc.ttdbserverd) does not adequately validate file descriptor
+   argument to _TT_ISCLOSE()
+
+          By   issuing   a   specially  crafted  call  to  the  procedure
+          _TT_ISCLOSE(),   a  remote  attacker  could  overwrite  certain
+          locations   in  memory  with  zeros.  Using  a  combination  of
+          techniques   that  include  valid  ToolTalk  RPC  requests,  an
+          attacker  could  leverage this vulnerability to delete any file
+          that  is  accessible by the ToolTalk RPC database server. Since
+          the  server  typically runs with root privileges, any file on a
+          vulnerable  system  could  be  deleted.  Overwriting  memory or
+          deleting  files could cause a denial of service. It may also be
+          possible to execute arbitrary code and commands.
+
+   VU#299816  -  Common  Desktop  Environment (CDE) ToolTalk RPC database
+   server (rpc.ttdbserverd) does not adequately validate file operations
+
+          By  referencing  a  specially  crafted symbolic link in certain
+          ToolTalk  RPC  requests,  a  local attacker could overwrite any
+          file that is accessible by the the ToolTalk RPC database server
+          with  contents  of  the  attacker's  choice.  Since  the server
+          typically  runs  with root privileges, any file on a vulnerable
+          system could be overwritten. Overwriting root-owned files could
+          lead  to  lead  to  privilege  escalation  or cause a denial of
+          service.
+
+III. Solution
+
+Apply a patch from your vendor
+
+   Appendix A contains information provided by vendors for this advisory.
+   As  vendors report new information to the CERT/CC, we will update this
+   section  and note the changes in our revision history. If a particular
+   vendor  is  not  listed  below,  we  have not received their comments.
+   Please contact your vendor directly.
+
+
+Disable vulnerable service
+
+   Until  patches  are  available  and  can  be  applied, you may wish to
+   disable  the  ToolTalk  RPC  database service. As a best practice, the
+   CERT/CC  recommends  disabling  all  services  that are not explicitly
+   required.  On  a  typical CDE system, it should be possible to disable
+   rpc.ttdbserverd   by   commenting   out   the   relevant   entries  in
+   /etc/inetd.conf and if necessary, /etc/rpc, and then by restarting the
+   inetd process.
+
+   The  program number for the ToolTalk RPC database server is 100083. If
+   references  to  100083 or rpc.ttdbserverd appear in /etc/inetd.conf or
+   /etc/rpc  or  in  output from the rpcinfo(1M) and ps(1) commands, then
+   the ToolTalk RPC database server may be running.
+
+   The  following  example  was  taken  from  a  system running SunOS 5.8
+   (Solaris 8):
+
+   /etc/inetd.conf
+   ...
+   #
+   # Sun ToolTalk Database Server
+   #
+   100083/1     tli    rpc/tcp wait root /usr/dt/bin/rpc.ttdbserverd\
+                       rpc.ttdbserverd  (line wrapped)
+   ...
+
+
+   # rpcinfo -p
+       program vers proto    port  service
+       ...
+        100083    1   tcp   32773
+       ...
+
+
+   # ps -ef
+        UID   PID  PPID  C    STIME TTY      TIME CMD
+       ...
+       root   355   164  0 19:31:27 ?        0:00 rpc.ttdbserverd
+       ...
+
+
+   Before deciding to disable the ToolTalk RPC database server or the RPC
+   portmapper  service, carefully consider your network configuration and
+   service requirements.
+
+
+Block access to vulnerable service
+
+   Until  patches are available and can be applied, you may wish to block
+   access  to  the  ToolTalk  RPC  database  server  and possibly the RPC
+   portmapper service from untrusted networks such as the Internet. Use a
+   firewall or other packet-filtering technology to block the appropriate
+   network  ports.  The ToolTalk RPC database server may be configured to
+   use  port  692/tcp  or  another  port  as indicated in output from the
+   rpcinfo(1M)  command.  In the example above, the ToolTalk RPC database
+   server is configured to use port 32773/tcp. The RPC portmapper service
+   typically  runs  on  ports  111/tcp  and  111/udp.  Keep  in mind that
+   blocking  ports at a network perimeter does not protect the vulnerable
+   service from attacks that originate from the internal network.
+
+   Before  deciding  to  block  or  restrict  access  to the ToolTalk RPC
+   database server or the RPC portmapper service, carefully consider your
+   network configuration and service requirements.
+
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+
+Caldera, Inc.
+
+          Caldera   Open  UNIX  and  Caldera  UnixWare  provide  the  CDE
+          ttdbserverd daemon, and are vulnerable to these issues. We have
+          prepared  fixes  for those two operating systems, and will make
+          them available as soon as these issues are made public.
+
+          SCO  OpenServer  and  Caldera OpenLinux do not provide CDE, and
+          are therefore not vulnerable.
+
+
+Compaq Computer Corporation
+
+          SOURCE:  Compaq Computer Corporation, a wholly-owned subsidiary
+          of  Hewlett-Packard  Company  and  Hewlett-Packard  Company  HP
+          Services Software Security Response Team
+
+          CROSS REFERENCE: SSRT2251
+
+          At  this  time  Compaq does have solutions in final testing and
+          will  publish  HP  Tru64 UNIX security bulletin (SSRT2251) with
+          patch information as soon as testing has completed and kits are
+          available from the support ftp web site.
+
+          A  recommended  workaround however is to disable rpc.ttdbserver
+          until  solutions  are  available.  This  should  only  create a
+          potential  problem  for  public  software packages applications
+          that  use  the  RPC-based  ToolTalk  database server. This step
+          should be evaluated against the risks identified, your security
+          measures  environment,  and  potential impact of other products
+          that may use the ToolTalk database server.
+
+          To disable rpc.ttdbserverd:
+
+          + Comment out the following line in /etc/inetd.conf:
+            rpc.ttdbserverd stream tcp swait root
+            /usr/dt/bin/rpc.ttdbserverd rpc.ttdbserverd  (line wrapped)
+
+          + Force  inetd  to  re-read the configuration file by executing
+            the inetd -h command.
+
+          Note:  The  internet  daemon  should kill the currently running
+          rpc.ttdbserver.    If   not,   manually   kill   any   existing
+          rpc.ttdbserverd process.
+
+
+Cray, Inc.
+
+          Cray,  Inc. does include ToolTalk within the CrayTools product.
+          However,  rpc.ttdbserverd  is not turned on or used by any Cray
+          provided  application. Since a site may have turned this on for
+          their   own   use,   they   can   always   remove   the  binary
+          /opt/ctl/bin/rpc.ttdbserverd if they are concerned.
+
+
+Fujitsu
+
+          Fujitsu's   UXP/V   operating   system   is   affected  by  the
+          vulnerability  reported  in  VU#975403  [or  VU#299816] because
+          UXP/V does not support any CDE functionalties.
+
+
+Hewlett-Packard Company
+
+          HP9000  Series  700/800  running  HP-UX  releases 10.10, 10.20,
+          11.00, and 11.11 are vulnerable.
+
+          Until  patches  are  available, install the appropriate file to
+          replace rpc.ttdbserver.
+
+          Download  rpc.ttdbserver.tar.gz from the ftp site. This file is
+          temporary  and  will be deleted when patches are available from
+          the standard HP web sites, including itrc.hp.com.
+
+              System: hprc.external.hp.com (192.170.19.51)
+               Login: ttdb1
+            Password: ttdb1
+          FTP Access: ftp://ttdb1:ttdb1@hprc.external.hp.com/
+                      ftp://ttdb1:ttdb1@192.170.19.51/
+                File: rpc.ttdbserver.tar.gz
+                 MD5: da1be3aaf70d0e2393bd9a03feaf4b1d
+
+          An HP security bulletin will be released with more information.
+
+
+IBM Corporation
+
+          The  CDE desktop product shipped with AIX is vulnerable to both
+          the  issues  detailed  above  in the advisory. This affects AIX
+          releases  4.3.3  and  5.1.0  An  efix package will be available
+          shortly  from  the IBM software ftp site. The efix packages can
+          be  downloaded  from  ftp.software.ibm.com/aix/efixes/security.
+          This  directory  contains  a  README  file  that  gives further
+          details on the efix packages.
+
+          The following APARs will be available in the near future:
+
+                AIX 4.3.3: IY32368
+
+                AIX 5.1.0: IY32370
+
+
+SGI
+
+          SGI  acknowledges the ToolTalk vulnerabilities reported by CERT
+          and  is  currently  investigating.  No  further  information is
+          available at this time.
+
+          For the protection of all our customers, SGI does not disclose,
+          discuss  or  confirm vulnerabilities until a full investigation
+          has occurred and any necessary patch(es) or release streams are
+          available  for  all  vulnerable  and  supported  IRIX operating
+          systems.  Until SGI has more definitive information to provide,
+          customers are encouraged to assume all security vulnerabilities
+          as  exploitable  and  take appropriate steps according to local
+          site security policies and requirements. As further information
+          becomes available, additional advisories will be issued via the
+          normal  SGI security information distribution methods including
+          the wiretap mailing list on
+          http://www.sgi.com/support/security/.
+
+
+Sun Microsystems, Inc.
+
+          The Solaris RPC-based ToolTalk database server, rpc.ttdbserver,
+          is  vulnerable to the two vulnerabilities [VU#975403 VU#299816]
+          described  in this advisory in all currently supported versions
+          of Solaris:
+
+                Solaris 2.5.1, 2.6, 7, 8, and 9
+
+          Patches  are being generated for all of the above releases. Sun
+          will  publish  a Sun Security Bulletin and a Sun Alert for this
+          issue. The Sun Alert will be available from:
+
+                http://sunsolve.sun.com
+
+          The patches will be available from:
+
+                http://sunsolve.sun.com/securitypatch
+
+          Sun Security Bulletins are available from:
+
+                http://sunsolve.sun.com/security
+
+
+Xi Graphics
+
+          Xi  Graphics deXtop CDE v2.1 is vulnerable to this attack. When
+          announced, the update and accompanying text file will be:
+
+                ftp://ftp.xig.com/pub/updates/dextop/2.1/DEX2100.016.tar.\
+                gz  (line wrapped)
+
+                ftp://ftp.xig.com/pub/updates/dextop/2.1/DEX2100.016.txt
+
+          Most  sites  do  not need to use the ToolTalk server daemon. Xi
+          Graphics  Security  recommends  that non-essential services are
+          never  enabled.  To disable the ToolTalk server on your system,
+          edit   /etc/inetd.conf   and   comment   out,  or  remove,  the
+          'rpc.ttdbserver'  line.  Then,  either restart inetd, or reboot
+          your machine.
+
+
+Appendix B. - References
+
+     * http://www.opengroup.org/cde/
+     * http://www.opengroup.org/desktop/faq/
+     * http://www.cert.org/advisories/CA-2002-01.html
+     * http://www.cert.org/advisories/CA-2001-31.html
+     * http://www.kb.cert.org/vuls/id/172583
+     * http://www.cert.org/advisories/CA-2001-27.html
+     * http://www.kb.cert.org/vuls/id/595507
+     * http://www.kb.cert.org/vuls/id/860296
+     * http://www.cert.org/advisories/CA-1999-11.html
+     * http://www.cert.org/advisories/CA-1998-11.html
+     * http://www.cert.org/advisories/CA-1998-02.html
+
+     _________________________________________________________________
+
+   The  CERT  Coordination  Center  thanks  the  reporters, Iván Arce and
+   Ricardo  Quesada  of  CORE SECURITY TECHNOLOGIES, for their assistance
+   and cooperation in producing this document.
+     _________________________________________________________________
+
+
+   Author: Art Manion
+
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-20.html
+   ______________________________________________________________________
+
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+
+Revision History
+
+   July 10, 2002:  Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPSzfNKCVPMXQI2HJAQGb3AP9Fh4bIxXmwBxxhlcJc+OCvbwWAcOYhO4X
+ymhM/lO/3MvlBof2iANKGAgC0+DNGg+NTHuvpFnfCDdyUR6teiPfxBxJZWTLrPGQ
+bWmYzgs3A+K1Tl+b0wMbLm0BuizzCyoKegTUQ8Qygt4kWQ26NEMMoeE/XCtID0LX
+L5PLJReDnJY=
+=sjVU
+-----END PGP SIGNATURE-----
+

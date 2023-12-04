@@ -1,0 +1,116 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1SG9jt03103
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 11:09:46 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1SG9itu014240
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 11:09:44 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Tue, 28 Feb 2006 11:09:45 -0500 (EST)
+Message-ID: <1859.132.236.227.119.1141142985.squirrel@webmail.cornell.edu>
+Date: Tue, 28 Feb 2006 11:09:45 -0500 (EST)
+Subject: PAPER 9
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Samsara, PPay, SHARP and KARMA each support p2p resource exchange. 
+Symmetric storage exchange allows one node may store data at a second if
+and only if it stores an equal amount for the second.  Samsarsa supports
+this through claims which are uncompressible sequences of data created and
+validated by a storage node and stored by a storing node.  Periodically a
+storage node B storing data for node A can validate that A still stores a
+claim for B.  This claim may later be replaced by actual data from B as
+long as B still stores data for A.  Samsara extends this notion to
+dependency chains where three or more nodes store data in a chain (A
+stores data on B who stores data on C), where there is only one claim
+(storage overhead) per chain at the root of the chain (so A stores a C's
+claim for B).  If a claim fails a validation query, the node performing
+the query probabalistically ejects a storage block from the node failing
+the query.  A might fail a validation query on B's claim, B might respond
+by ejecting A's storage block.  While a simple system, there are several
+weaknesses.  First if chains are avoided then the storage overhead for the
+system equals the amount of data stored in the system.  Second, dependency
+chains are only as strong as the weakest link and a malicious or failed
+node in a dependency chain can trigger a cascading failure along the chain
+(in one direction).  While the paper points out that dependency cycles are
+much more resilient to failures, in fact cycles are only resilient to one
+failure, after which they become a dependency chain.
+
+"PPay..." presents a coin exchange system where a set of trusted brokers
+issue coins to nodes.  These coins can then be securely transferred from
+the owning node to another and delegated from node to node by layering
+secure delegations on the original coin (or previous delegation layers). 
+These coins can later be cashed in at the brokers.  This system is aimed
+at micropayments where the risk of each transaction is very small, so
+detection of illegal transactions can be deferred for some reasonable
+period (so load at the centralized brokers can be performed offline). 
+Additionally a scheme using PPay coins to support pico payments (even
+smaller, less risky transactions) is presented which assumes that a node
+can extend a fixed amount of credit (divided amongst other nodes in
+transactions with the first).  In this scheme transactions need not be
+collected on (by using PPay coins) until the fixed amount of credit is
+exceeded.  The centralized nature of the brokers and implicit trust that
+all nodes must simultaneously share in the brokers goes against the spirit
+of completely decentralized systems.  The picopayment scheme presented is
+well decoupled from the PPay system and might be adapted to use other
+payment schemes.
+
+"SHARP..." presents a system of resource claim advertising where nodes
+issue tickets which are (probabalistic) claims on resources at the node. 
+Other nodes form a network and listen to each other's advertisements
+forwarding requests for these claims.  These claims are validated by site
+domain authorities, which are named in the tickets, are trusted by nodes
+issuing tickets with that site domain.  Resource managers cash in tickets
+across domains by contacting the site authority which in turn issues a
+concrete claim on the resources listed in the claim (or rejects the ticket
+if it conflicts with a previously cashed ticket).  Tickets can be
+subdivided arbitrarily so one agent might obtain a ticket for a large
+block of resources advertised by another node.  This large block might
+then be divided amongst many nodes on whose behalf the original agent
+acts.  To maximize resource utilization, resources can be overbooked (much
+like airline flights) to handle tickets which are never claimed (due to
+holder failure, etc.).  A study on PlanetLab is presented which uses SHARP
+to securely allocate PlanetLab computing resources amongst the PlanetLab
+constituents (including future resource reservations etc.).  SHARP has
+many roles to be played by different agents and includes some
+semi-centralization within domains.  Each domain must have a single site
+authority who is authorized to validate all tickets for this domain
+including keeping state on currently validated tickets and potentially
+future resource reservations.  This model might be appropriate for some
+problems exhibiting nodes to which other nodes are willing to delegate
+this responsibility.  And while we've seen that many p2p systems exhibit
+nodes with greatly different performance characteristics, it's not clear
+that such trust clusters exist generally.
+
+"Karma..." presents a system for completely distributed credit.  A
+transaction between two nodes A and B involves A and B two additional sets
+of nodes acting as the bank sets for A and B.  The bank set of a node A is
+responsible for keeping (by majority rule to support failures and
+disagreements, legitimate and malicious) the "karma" balance of A.  When A
+requests resources from B costing some amount of karma (set by B), the
+bank sets for A and B transfer that amount of karma from A's account to
+B's account.  The transaction involves seven steps starting with a request
+from A to B leading to communication between all memebers of A's bank set
+to B's bank set and to and from A and B and ending with the transfer of
+resources and a validatable receipt.  This protocol ensures that B
+receives both the karma it is due and A receives it's resources and a
+receipt that ensures that B received payment.  Several potential attacks
+are examined and ruled out by the protocol.  No evaluation is presented
+and a mechanism to offset inflation (in a distributed manner) is
+presented, but poorly motivated.  It's not clear what problems inflation
+will cause and it's not clear that additional complexity added by this
+anti-inflation protocol is worth the cost that inflation presents. 
+Additionally, nodes are granted a certain amount of karma upon entering
+the system (in exchange for solving a puzzle, verified by the new node's
+bank set).  It's not clear that this is the best choice and a zero balance
+initialization might be more natural (of course a method for introducing
+currency into the market would be needed in this case).  No analysis of
+this initialization problem is presented.
+
+

@@ -1,0 +1,365 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.11.4/8.11.4) with ESMTP id fAD0aYA14591;
+	Mon, 12 Nov 2001 16:36:34 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id QAA16343;
+	Mon, 12 Nov 2001 16:59:00 -0500 (EST)
+Date: Mon, 12 Nov 2001 16:59:00 -0500 (EST)
+Received: by canaveral.red.cert.org; Mon, 12 Nov 2001 16:53:42 -0500
+Message-Id: <CA-2001-31.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2001-31 Buffer Overflow in CDE Subprocess Control Service
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: e35d39284d9bb2e3817d12ddcf279103
+Status: RO
+X-Status: $$$$
+X-UID: 0000000027
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-31 Buffer Overflow in CDE Subprocess Control Service
+
+   Original release date: November 12, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * Systems running CDE
+
+Overview
+
+   There  is  a  remotely  exploitable buffer overflow vulnerability in a
+   library  function  used  by  the  CDE Subprocess Control Service. This
+   vulnerability  could  be  used  to  crash  the  service  or to execute
+   arbitrary  code with root privileges. This vulnerability is documented
+   in VU#172583.
+
+I. Description
+
+   The  Common  Desktop Environment (CDE) is an integrated graphical user
+   interface  that  runs  on  UNIX  and  Linux operating systems. The CDE
+   Subprocess  Control  Service (dtspcd) is a network daemon that accepts
+   requests  from  clients  to  execute  commands and launch applications
+   remotely.  On  systems  running CDE, dtspcd is spawned by the Internet
+   services  daemon  (typically  inetd  or  xinetd)  in response to a CDE
+   client request. dtspcd is typically configured to run on port 6112/tcp
+   with root privileges.
+
+   For more information about CDE, see
+
+          http://www.opengroup.org/cde/
+
+          http://www.opengroup.org/desktop/faq/
+
+   There  is  a  remotely  exploitable buffer overflow vulnerability in a
+   shared  library  that  is  used  by dtspcd. During client negotiation,
+   dtspcd  accepts  a  length  value  and subsequent data from the client
+   without performing adequate input validation. As a result, a malicious
+   client can manipulate data sent to dtspcd and cause a buffer overflow,
+   potentially executing code with root privileges.
+
+   The  vulnerability  was  first  reported to us in March 1999, and more
+   recently   by  Internet  Security  Systems  (ISS)  X-Force.  For  more
+   information, see
+
+          http://www.kb.cert.org/vuls/id/172583
+
+          http://xforce.iss.net/alerts/advise101.php
+
+   This  vulnerability  has been assigned the identifier CAN-2001-0803 by
+   the Common Vulnerabilities and Exposures (CVE) group:
+
+          http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2001-0803
+
+   Many  common  UNIX  systems  ship  with  CDE  installed and enabled by
+   default.  To  determine  if  your  system is configured to run dtspcd,
+   check for the following entries (may be wrapped):
+
+     /etc/services
+
+         dtspc 6112/tcp
+
+     /etc/inetd.conf
+
+         dtspc   stream   tcp   nowait   root   /usr/dt/bin/dtspcd
+         /usr/dt/bin/dtspcd
+
+   Any system that does not run the CDE Subprocess Control Service is not
+   vulnerable to this problem.
+
+II. Impact
+
+   An attacker can execute arbitrary code with root privileges.
+
+III. Solution
+
+Apply a patch
+
+   Appendix  A  contains  information  from  vendors  who  have  provided
+   information  for  this  advisory.  We  will  update the appendix as we
+   receive more information. If a vendor's name does not appear, then the
+   CERT/CC  did  not  hear  from  that vendor. Please contact your vendor
+   directly.
+
+Limit access to vulnerable service
+
+   Until  patches are available and can be applied, you may wish to limit
+   or  block  access  to  the  Subprocess  Control Service from untrusted
+   networks   such   as   the   Internet.   Using  a  firewall  or  other
+   packet-filtering technology, block or restrict access to the port used
+   by the Subprocess Control Service. As noted above, dtspcd is typically
+   configured  to  listen on port 6112/tcp. It may be possible to use TCP
+   Wrapper or a similar technology to provide improved access control and
+   logging  functionality  for  dtspcd  connections.  Keep  in  mind that
+   blocking  ports at a network perimeter does not protect the vulnerable
+   service  from the internal network. It is important to understand your
+   network  configuration  and  service requirements before deciding what
+   changes are appropriate. TCP Wrapper is available from
+
+          ftp://ftp.porcupine.org/pub/security/index.html
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  When  vendors  report  new  information  to the CERT/CC, we
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+
+Caldera, Inc.
+
+   Caldera  Open  Unix  and UnixWare are vulnerable. Caldera has released
+   Security Advisory CSSA-2001-SCO.30 (URL wrapped):
+
+          ftp://stage.caldera.com/pub/security/openunix/
+          CSSA-2001-SCO.30/CSSA-2001-SCO.30.txt
+
+
+Compaq Computer Corporation
+
+   Case ID SSRT0782U
+   Compaq  has  not been able to reproduce the problem identified in this
+   advisory  for  any Compaq OS. However, with the information available,
+   we  are  including  a  code  change  for Compaq's TRU64 UNIX that will
+   further reduce any potential overflow vulnerability. This updated code
+   will  be  announced when patches are available from the TRU64 UNIX FTP
+   site  and will be included in future releases of TRU64 UNIX. The TRU64
+   UNIX FTP patch site is at:
+
+          http://ftp.support.compaq.com/public/dunix/
+
+   To  subscribe  to automatically receive future NEW Security Advisories
+   from the Compaq's Software Security Response Team via electronic mail,
+   use your browser select the URL:
+
+          http://www.support.compaq.com/patches/mailing-list.shtml
+
+   Select  "Security  and  Individual  Notices"  for  immediate  dispatch
+   notifications directly to your mailbox.
+   To report new Security Vulnerabilities, send mail to:
+
+          security-ssrt@compaq.com
+
+
+Cray Inc.
+
+   UNICOS, UNICOS/mk, and CrayTools are not vulnerable.
+
+
+Fujitsu
+
+   Fujitsu's UXP/V operating system is not vulnerable because it does not
+   support any CDE components.
+
+
+Hewlett-Packard Company
+
+   The  version of dtspcd supplied by HP has a buffer overflow. It is not
+   clear  whether  this  overflow  can  be  exploited.  To  be safe HP is
+   generating  patches  to  fix  this  overflow on the assumption that it
+   might be exploitable.
+
+
+IBM Corporation
+
+   IBM  addressed a buffer overflow in CDE dtspcd in AIX 4.x around April
+   1999. See the following APARs for more information (URLs wrapped):
+   APAR IY06694:
+
+          http://techsupport.services.ibm.com/aix/fixes/v4/X11/
+          X11.Dt.rte.4.3.3.10.info
+
+   APAR IX89419 (AIX 4.3.0):
+
+          http://www-1.ibm.com/servlet/support/manager?rs=0&rt=0&
+          org=apars&doc=29B5A5858069D8A2852567C90039978E
+          http://techsupport.services.ibm.com/aix/fixes/v4/X11/
+          X11.Dt.lib.4.3.2.5.info
+
+   APAR IX89893 (AIX 4.2.0):
+
+          http://www-1.ibm.com/servlet/support/manager?rs=0&rt=0&
+          org=apars&doc=AAF008DAA07200B6852567CC0049B07D
+
+   APAR IX89806 (AIX V4.1 BOS):
+
+          http://www-1.ibm.com/servlet/support/manager?rs=0&rt=0&
+          org=apars&doc=446F48D60A887FF0852567CA005C9920
+
+
+The Open Group
+
+   The   Open   Group  maintains  source  code  for  the  Common  Desktop
+   Environment  (CDE).  The  Open  Group is investigating this issue, and
+   source   licensees  of  The  Open  Group's  CDE  product  can  contact
+   desktop@opengroup.org for advice regarding this issue.
+
+
+SGI
+
+   SGI  acknowledges  the  CDE  vulnerabilities  reported  by CERT and is
+   currently  investigating.  No further information is available at this
+   time.  For the protection of all our customers, SGI does not disclose,
+   discuss  or  confirm  vulnerabilities  until  a full investigation has
+   occurred  and any necessary patch(es) or release streams are available
+   for all vulnerable and supported IRIX operating systems. Until SGI has
+   more  definitive  information  to provide, customers are encouraged to
+   assume   all   security   vulnerabilities   as  exploitable  and  take
+   appropriate  steps  according  to  local  site  security  policies and
+   requirements.  As  further  information  becomes available, additional
+   advisories  will  be  issued  via  the normal SGI security information
+   distribution methods including the wiretap mailing list.
+
+          http://www.sgi.com/support/security/
+
+
+Sun
+
+   The  Sun  dtspcd  daemon is vulnerable to this buffer overflow. Sun is
+   generating  patches  to  address  this  issue  for  all  affected  and
+   supported  versions  of  Solaris. Sun will be releasing a Sun Security
+   Bulletin  once  the  patches  are  officially  released  and  publicly
+   available. The patches will be available from:
+
+          http://sunsolve.sun.com/securitypatch
+
+   Sun Security Bulletins are available from:
+
+          http://sunsolve.sun.com/security
+
+
+Xi Graphics
+
+   We  have  not  been  able to confirm whether we are vulnerable to this
+   exploit,  however  the  potential  for a buffer overrun is present. We
+   will  provide  a  patch  on our FTP site for DeXtop during the week of
+   [November] 12th that addresses this issue.
+
+
+Appendix B. - References
+
+    1. http://www.kb.cert.org/vuls/id/172583
+    2. http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2001-0803
+    3. http://xforce.iss.net/alerts/advise101.php
+    4. http://www.opengroup.org/cde/
+    5. http://www.opengroup.org/desktop/faq/
+     _________________________________________________________________
+     _________________________________________________________________
+
+   The  CERT  Coordination  Center thanks Internet Security Systems (ISS)
+   X-Force, who published an advisory on this issue.
+     _________________________________________________________________
+
+   Author: Art Manion
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-31.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+    Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+    Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+November 12, 2001:  initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBO/BEB6CVPMXQI2HJAQG9PwP/aF15EaiyfA/YOUYmWCtAxhygunt2CqQ5
+cUiUrJYOdVGdalHsUlNTUkQ+QxQec2xAIep5Z3Np4p3pMFHXMXgW1EOEn5KtFwip
+RlG2amdCMTcC8BUSM9h+zW+z1EY6idZ2iCyYr6hh5uMsC65/5v6SWpgKb14DUeSh
+a8z0jOCLPBg=
+=vuwU
+-----END PGP SIGNATURE-----
+

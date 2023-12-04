@@ -1,0 +1,455 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id g5R1Ll57020690;
+	Wed, 26 Jun 2002 18:21:47 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.12) with SMTP id TAA26650;
+	Wed, 26 Jun 2002 19:08:43 -0400 (EDT)
+Date: Wed, 26 Jun 2002 19:08:43 -0400 (EDT)
+Received: by canaveral.red.cert.org; Wed, 26 Jun 2002 19:02:58 -0400
+Message-Id: <CA-2002-18.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-18 OpenSSH Vulnerabilities in Challenge Response
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 369
+Status: RO
+X-Status: $$$$
+X-UID: 0000000053
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-18 OpenSSH Vulnerabilities in Challenge Response
+Handling
+
+   Original release date: June 26, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+     * OpenSSH versions 2.3.1p1 through 3.3
+
+Overview
+
+   There  are  two  related  vulnerabilities  in  the  challenge response
+   handling  code in OpenSSH versions 2.3.1p1 through 3.3. They may allow
+   a  remote  intruder to execute arbitrary code as the user running sshd
+   (often  root).  The first vulnerability affects OpenSSH versions 2.9.9
+   through  3.3  that have the challenge response option enabled and that
+   use  SKEY or BSD_AUTH authentication. The second vulnerability affects
+   PAM  modules  using  interactive  keyboard  authentication  in OpenSSH
+   versions  2.3.1p1  through  3.3,  regardless of the challenge response
+   option  setting.  Additionally,  a  number  of other possible security
+   problems have been corrected in OpenSSH version 3.4.
+
+I. Description
+
+   Two  related  vulnerabilities  have  been  found  in  the  handling of
+   challenge responses in OpenSSH.
+
+   The  first vulnerability is an integer overflow in the handling of the
+   number of responses received during challenge response authentication.
+   If  the  challenge response configuration option is set to yes and the
+   system is using SKEY or BSD_AUTH authentication then a remote intruder
+   may  be  able  to exploit the vulnerability to execute arbitrary code.
+   This  vulnerability  is  present  in versions of OpenSSH 2.9.9 through
+   3.3.  An  exploit  for  this  vulnerability is reported to exist. This
+   vulnerability is partially described in a recent ISS security advisory
+   available at
+
+  http://bvlive01.iss.net/issEn/delivery/xforce/alertdetail.jsp?oid=20584
+
+   The  second vulnerability is a buffer overflow involving the number of
+   responses   received   during   challenge   response   authentication.
+   Regardless  of  the  setting  of  the challenge response configuration
+   option,  systems  using  PAM  modules  that  use  interactive keyboard
+   authentication  (PAMAuthenticationViaKbdInt), may be vulnerable to the
+   remote  execution  of  code.  At  this  time,  it is not known if this
+   vulnerability  is  exploitable.  Both vulnerabilities are corrected by
+   the patches in a recent OpenSSH security advisory available from
+
+          http://www.openssh.com/txt/preauth.adv
+
+   Both vulnerabilities exploit features present only in version 2 of the
+   SSH protocol.
+
+   Vulnerability Note VU#369347 lists the vendors we contacted about this
+   vulnerability. The vulnerability note is available from
+
+          http://www.kb.cert.org/vuls/id/369347
+
+II. Impact
+
+   A  remote  attacker  can  execute code with the privileges of the user
+   running  the sshd (often root). These vulnerabilities may also be used
+   to cause a denial-of-service condition.
+
+III. Solution
+
+Upgrade to OpenSSH version 3.4
+
+   These  vulnerabilities  are eliminated by upgrading to OpenSSH version
+   3.4, which is available from the OpenSSH web site at
+
+          http://www.openssh.com
+
+   OpenSSH  version  3.4 will correct several other software defects with
+   potential security implications not described in this advisory.
+
+Apply a patch from your vendor
+
+   A patch for this problem is included in the OpenSSH advisory at
+
+          http://www.openssh.com/txt/preauth.adv
+
+   This  patch  may  be  manually installed with minor changes to correct
+   these vulnerabilities in all affected versions of OpenSSH. Please note
+   that  applying  the patches described in the OpenSSH advisory does not
+   correct   the   other   software   defects   with  potential  security
+   implications not described in this advisory.
+
+   If  your vendor has provided a patch to correct these vulnerabilities,
+   you  may  want to apply their patch rather than upgrading your version
+   of  sshd.  System  administrators  may  want  to confirm whether their
+   vendor's  patch  includes the other possible vulnerabilities corrected
+   in  OpenSSH 3.4. More information about vendor-specific patches can be
+   found  in the vendor section of this document. Because the publication
+   of  this advisory was unexpectedly accelerated, statements from all of
+   the  affected  vendors were not available at publication time. We will
+   update this document as vendors provide additional information.
+
+Disable SSH protocol version 2
+
+   Since  both  vulnerabilities  are  present  only in protocol version 2
+   features,  disabling  version  2  of  the  protocol  will prevent both
+   vulnerabilities  from being exploited. Typically, this is accomplished
+   by adding the following line to /etc/ssh/sshd_config:
+
+          Protocol 1
+
+   This  option may set to "2,1" by default. System administrators should
+   be aware that disabling protocol version 2 may prevent the sshd daemon
+   from  accepting connections in certain configurations. Applying one or
+   both  of  the  configuration  changes  described  below  may be a less
+   disruptive workaround for this problem.
+
+Disable challenge response authentication
+
+   For  OpenSSH  versions  greater  than  2.9,  system administrators can
+   disable   the   vulnerable   portion   of  the  code  by  setting  the
+   "ChallengeResponseAuthentication"  configuration  option  to  "no"  in
+   their  sshd  configuration  file.  Typically,  this is accomplished by
+   adding the following line to /etc/ssh/sshd_config:
+
+          ChallengeResponseAuthentication no
+
+   This  option may be enabled (set to "yes") by default. This workaround
+   should prevent the first vulnerability from being exploited if SKEY or
+   BSD_AUTH  authentication  is  used.  It  will not prevent the possible
+   exploitation   of  the  vulnerability  via  PAM  interactive  keyboard
+   authentication.
+
+Disable PAM authentication via interactive keyboard
+
+   For  OpenSSH  versions  greater  than  2.9,  system administrators can
+   disable   the  vulnerable  portion  of  the  code  affecting  the  PAM
+   authentication   issue  by  setting  the  "PAMAuthenticationViaKbdInt"
+   configuration  option  to  "no"  in  their  sshd  configuration  file.
+   Typically,  this  is  accomplished  by  adding  the  following line to
+   /etc/ssh/sshd_config:
+
+          PAMAuthenticationViaKbdInt no
+
+   This  option may be disabled (set to "no") by default. This workaround
+   should  prevent  the  second vulnerability from being exploited if PAM
+   interactive  keyboard  authentication is used. It will not prevent the
+   possible  exploitation  of  the  vulnerability  via  SKEY  or BSD_AUTH
+   authentication.
+
+Disable both options in older versions of OpenSSH
+
+   For  OpenSSH  versions  between  2.3.1p1 and 2.9, system adminstrators
+   will   instead  need  to  set  the  following  options  in  their  ssh
+   configuration file:
+
+          KbdInteractiveAuthentication no
+          ChallengeResponseAuthentication no
+
+   Setting  both of these options is believed to prevent the exploitation
+   of  the  vulnerabilities regardless of which authentication mechanisms
+   are used.
+
+Use privilege separation to minimize impact
+
+   System  administrators running OpenSSH versions 3.2 or 3.3 may be able
+   to   reduce   the   impact  of  this  vulnerability  by  enabling  the
+   "UsePrivilegeSeparation"    configuration   option   in   their   sshd
+   configuration  file.  Typically,  this  is  accomplished by adding the
+   following line to /etc/ssh/sshd_config:
+
+          UsePrivilegeSeparation yes
+
+   This  workaround  does  not  prevent  these vulnerabilities from being
+   exploited,  however  due  to  the  privilege separation mechanism, the
+   intruder  may  be  limited  to  a  constrained chroot environment with
+   restricted   privileges.   This  workaround  will  not  prevent  these
+   vulnerabilities  from  creating a denial-of-service condition. Not all
+   operating  system  vendors  have  implemented the privilege separation
+   code, and on some operating systems, it may limit the functionality of
+   OpenSSH.  System administrators are encouraged to carefully review the
+   implications  of  using the workaround in their environment, and use a
+   more  comprehensive solution if one is available. The use of privilege
+   separation   to   limit   the  impact  of  future  vulnerabilities  is
+   encouraged.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+ Compaq Computer Corporation
+
+   SOURCE:  Compaq  Computer  Corporation,  a  wholly-owned subsidiary of
+   Hewlett-Packard  Company  and  Hewlett-Packard  Company  HP  Services.
+   Software Security Response Team
+
+   x-ref:SSRT2263
+
+   At   the   time   of   writing  this  document,  Compaq  is  currently
+   investigating  the  potential  impact  to  HP  Tru64  UNIX, commercial
+   version of SSH for V5.1a.
+
+   As  further  information  becomes available notice will be provided of
+   the  completion/availability of any necessary patches through standard
+   product and security bulletin announcements and be available from your
+   normal HP Services support channel.
+
+ Caldera
+
+   Caldera  OpenLinux OpenSSH has neither the S/KEY nor BSD Auth features
+   compiled  in,  so  it  is  not  vulnerable  to  the Challenge/Response
+   vulnerability.  We  do have the ChallengeResponseAuthentication option
+   on by default, however, so to be safe, we recommend that the option be
+   disabled in the sshd_config file.
+
+   In  addition, the sshd_config PAMAuthenticationViaKbdInt option is off
+   by  default,  so  OpenLinux  is  not  vulnerable  to the other alleged
+   vulnerability  in  a  default  configuration, either. However, Caldera
+   recommends  that this option be disabled if it has been enabled by the
+   system administrator.
+
+ Cray, Inc.
+
+   Cray, Inc. has found the OpenSSH released in Cray Open Software 3.0 to
+   be  vulnerable.  Please  see  Field Notice 5105 and spr 722588 for fix
+   information.
+
+ Debian
+
+   Debian  2.2  (the  current  stable  release)  is not affected by these
+   problems.  The  current  versions  of  our  "testing" distribution, to
+   become  Debian 3.0, and our "unstable" distribution, are both affected
+   by default.
+
+   We recommend that users be certain that both:
+
+     ChallengeResponseAuthentication no
+
+   and
+
+     PAMAuthenticationViaKbdInt no
+
+   are  present  and  uncommented  in  /etc/ssh/sshd_config (and that the
+   server is restarted). Also, we recommend the use of version 3.3p1, now
+   available from security.debian.org (DSA-134). Stable users do not need
+   to  upgrade  and  may  wish  to  wait until the packages have received
+   better testing.
+
+   We intend to provide 3.4p1 packages in the near future.
+
+ Engarde
+
+   Guardian  Digital  ships  OpenSSH  in  all  versions of EnGarde Secure
+   Linux.  Version  3.3p1  was introduced by ESA-20020625-015 on June 25,
+   2002.  This  update  introduces  privilege  separation.  All users are
+   strongly urged to upgrade to this version as soon as possible.
+
+   An  upgrade  to  version 3.4p1 (which properly fixes the bugs) will be
+   made available sometime in the next few days.
+
+ Hewlett-Packard Company
+
+   Hewlett-Packard   provides  a  version  of  SSH:  HP-UX  Secure  Shell
+   (T1471AA)  for  HP-UX  versions 11.00 and 11i. We are investigating to
+   determine whether this product is vulnerable.
+
+ IBM Corporation
+
+   IBM's  AIX  operating  system  does  not  ship  with OpenSSH; however,
+   OpenSSH  is  available  for installation on AIX via the Linux Affinity
+   Toolkit.  The  version  included  on  the CD containing the Toolkit is
+   vulnerable to the latest discovered vulnerability discussed here as is
+   the  version  of  OpenSSH available for downloading from the IBM Linux
+   Affinity website. Anyone running this version is advised to follow the
+   recommendations above to limit their vulnerability.
+
+   We  working  with  the  changes  for  version  3.4 and will have a new
+   package  availble for download as soon as possible. When available the
+   new packages can be downloaded from:
+
+     http://www6.software.ibm.com/dl/aixtbx/aixtbx-p
+
+   This    site   contains   Linux   Affinity   applications   containing
+   cryptographic  algorithms,  and  new  users  of this site are asked to
+   register first.
+
+ Lotus
+
+   Lotus products are not vulnerable to this problem.
+
+ Mandrake Software
+
+   MandrakeSoft  released  OpenSSH  3.3p1  in  updates  Monday  night  to
+   mitigate   this  vulnerability.  Updates  to  OpenSSH  3.4p1  will  be
+   available for download later this week.
+
+ Microsoft Corporation
+
+   Microsoft  products  are  not  affected by the issues detailed in this
+   advisory.
+
+ Network Appliance
+
+   NetApp systems are not vulnerable to this problem.
+
+ OpenBSD
+
+   See http://www.openbsd.org/errata.html#sshd
+
+ OpenSSH
+
+   See http://www.openssh.com/txt/preauth.adv
+
+ Process Software
+
+   MultiNet,  TCPware,  and  SSH  for  OpenVMS  are  not  affected by the
+   problems outlined in this advisory.
+
+ RedHat Inc.
+
+   Red  Hat  Linux  versions 7, 7.1, 7.2 and 7.3 as well as Red Hat Linux
+   Advanced  Server  version  2.1  ship  with  OpenSSH. The Red Hat Linux
+   OpenSSH  packages  were  not  compiled  with  either  BSD_AUTH or SKEY
+   enabled,  therefore  in  order  to  be vulnerable to this issue a user
+   would    need    to    have    enabled    the   configuration   option
+   "PAMAuthenticationViaKbdInt"  in  their  sshd  configuration file (the
+   default is disabled).
+
+   We  are  continuing to investigate this vulnerability and will release
+   updated packages where appropriate.
+
+ SGI
+
+   At this time, SGI does not ship OpenSSH as a part of IRIX.
+
+   The  OpenSSH  privilege separation code mostly works with IRIX, but it
+   uses  a  flag to mmap that isn't in IRIX (MAP_ANON) for compression so
+   you can't have both on at the same time. IRIX doesn't ship with PAM so
+   a lot of the PAM issues aren't issues for us.
+   _________________________________________________________________
+
+   The  CERT/CC  thanks  Theo  de  Raadt and Markus Friedl of the OpenSSH
+   project for their technical assistance in producing this advisory.
+   _________________________________________________________________
+
+   Author: Cory F. Cohen
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-18.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+     June 26, 2002: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPRpGQ6CVPMXQI2HJAQEC1QP/eqRQzNmK0B1h5DvNLtTFmey8wOpfrSpX
+PHbJ2Ps4IYfu+OepUH7UEDGoYkza5jpIoqz+UeRmJfq51IU2RCwcfOOEkbLslra7
+yFEM9oWIVCwC6cOvlkzlXA6cd2uX6YonNxYZ/6tUs3BmQVKxCrzDXBEWV6HC3zis
+1qgt5S8MRYM=
+=+K4J
+-----END PGP SIGNATURE-----
+

@@ -1,0 +1,42 @@
+Received: from mail.montana.com (mailC.montana.com [199.2.139.118])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id MAA20251
+	for <handyboard@media.mit.edu>; Sun, 26 Mar 2000 12:09:08 -0500 (EST)
+Received: from selway.umt.edu (golfswit.montana.com [208.23.167.3])
+	by mail.montana.com (8.9.3/8.9.3) with ESMTP id JAA15743
+	for <handyboard@media.mit.edu>; Sun, 26 Mar 2000 09:56:51 -0700 (MST)
+Message-Id: <38DE43E7.9B06F6BF@selway.umt.edu>
+Date: Sun, 26 Mar 2000 10:07:51 -0700
+From: Will Bain <willb@selway.umt.edu>
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: sonar mapping with evidence grid
+References: <000801bf96e2$5641ee80$9557bcca@jaring.my>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+> William Ho wrote:
+> 
+> Hi,
+> I have connected sonar to my HB and it is time to analyse the data.
+> 
+> Is it true that the sonar range reading is in a cone shape at 30 deg. and not at point form ? I just can't find any information from the Polaroid home page.
+> 
+> Is anyone  there knows how to map using evidence grid method as published in Dr. Hans Moravec's "High Resolution Maps from Wide Angle Sonar?
+> 
+> Thanks.
+> William
+
+Yep, about 30 degrees. There's a pretty good article about how to deal with it on the Seattle Robotics Society web site:
+
+   http://www.seattlerobotics.org/encoder/may97/sonar2.html
+
+Check it out before somebody decides to delete it!
+
+One thing they don't really discuss in the article is how much extra information you might be able to deduce by scanning your surroundings from one point, then moving a known direction and distance, then scanning again. If you could occupy each grid point of your map with any of four values (no information, definitely occupied, evidently occupied, definitely unoccupied) then you could refine your map as you move around and view everything from different angles and ranges.
+
+Note that the trigonometry involved is quite slow to compute unless you use polynomials to approximate. Also, due to memory constraints of the HB, your grid may be quite rough. Best of luck!
+
+-- Will
+

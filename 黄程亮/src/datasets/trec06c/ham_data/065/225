@@ -1,0 +1,38 @@
+Received: from math.psu.edu (leibniz.math.psu.edu [146.186.130.2])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id NAA02286
+	for <9fans@cse.psu.edu>; Mon, 10 Apr 2000 13:00:45 -0400 (EDT)
+Received: from weyl.math.psu.edu (weyl.math.psu.edu [146.186.130.226])
+	by math.psu.edu (8.9.3/8.9.3) with ESMTP id NAA08474
+	for <9fans@cse.psu.edu>; Mon, 10 Apr 2000 13:00:44 -0400 (EDT)
+Received: from localhost (viro@localhost)
+	by weyl.math.psu.edu (8.9.3/8.9.3) with ESMTP id NAA01636
+	for <9fans@cse.psu.edu>; Mon, 10 Apr 2000 13:00:44 -0400 (EDT)
+X-Authentication-Warning: weyl.math.psu.edu: viro owned process doing -bs
+Date: Mon, 10 Apr 2000 13:00:44 -0400 (EDT)
+From: Alexander Viro <viro@math.psu.edu>
+To: 9fans@cse.psu.edu
+Subject: Re: Re: [9fans] truncate syscall
+In-Reply-To: <200004101646.MAA01467@cse.psu.edu>
+Message-ID: <Pine.GSO.4.10.10004101248530.251-100000@weyl.math.psu.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+
+
+On Mon, 10 Apr 2000 jmk@plan9.bell-labs.com wrote:
+
+> just out of curiosity, what are the practical uses of truncation
+> (other than to 0-length)?
+
+mmap(). truncate() is a bad name - it's setsize(). IOW, it can extend
+files. Add the mmap() semantics in that respect and there you go -
+open()/ftruncate() to set the size/mmap() the region/start working; is
+quite common. Yes, you can kludge around it with lseek();write(); but
+that's a kludge, unless we accept that zero-length write() changes the
+file size. Which is not true under a lot of Unices (I seriously suspect
+that it's explicitly prohibited by POSIX or something like that).
+
+

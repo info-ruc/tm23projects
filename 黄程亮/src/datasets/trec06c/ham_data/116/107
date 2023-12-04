@@ -1,0 +1,80 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k227Pkt05815
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 02:25:46 -0500 (EST)
+Received: from [192.168.0.101] (user-10mt73g.cable.mindspring.com [65.110.156.112])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k227PjgA003059
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Thu, 2 Mar 2006 02:25:45 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Transfer-Encoding: 7bit
+Message-Id: <DA4AD448-03F8-41BD-B0F4-2CCAE67997C2@cornell.edu>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+To: egs+summary@cs.cornell.edu
+From: Philip Kuryloski <pjk25@cornell.edu>
+Subject: PAPER 11
+Date: Thu, 2 Mar 2006 02:28:38 -0500
+X-Mailer: Apple Mail (2.746.2)
+
+SERVING DNS USING A PEER-TO-PEER LOOKUP SERVICE
+
+The authors propose DDNS, an implementation of DNS (or more  
+accurately DNSSEC) running on top of DHash, a DHT based on Chord.   
+Although the system is successful in some respects, the authors use  
+its shortcomings to make recommendations on what issues remain in  
+DHTs that limit their effectiveness for DNS.  Despite these  
+limitations, there are some immediate benefits from a DHT based  
+system:  the challenge in administering DNS servers is greatly  
+reduced, and greater load balancing is achieved by eliminating root  
+servers which typically are under very high load.
+
+DDNS still uses CAs and asymmetric cryptography to validate DNS  
+resource record sets which a placed into the DHash DHT.  In order to  
+reduce traffic generated in validating records, DHash's demand based  
+replication/caching scheme is used, as well as the speculative  
+inclusion of additional DNSSEC signatures are stored with resource  
+record sets.
+
+Simulation of DDNS demonstrates effective load balancing, and  
+effective caching for extremely popular items.  However, these items  
+are popular my orders of magnitude of requests, resulting in  
+replication of those objects at every node.  The latency of lookups  
+in DDNS are unfortunately more than 7 times longer on average than  
+traditional DNS.  Also, dynamically generated records are not  
+supported by DDNS.  DDNS is, however, more resilient to denial of  
+service attacks than DNS.
+
+
+THE DESIGN AND IMPLEMENTATION OF A NEXT GENERATION NAME SERVICE FOR  
+THE INTERNET
+
+The authors propose the Cooperative Domain Name System (CoDoNS), a  
+distributed DNS service built on top of a DHT using the Beehive  
+replication framework.  They begin with a discussion of the  
+limitations of the existing DNS system, mainly its susceptibility to  
+DoS attacks, primitive caching scheme, and susceptibility to server  
+misconfiguration.  The Beehive active caching system is analytically  
+driven based on the popularity of objects, greatly reducing the  
+latency of the underlying DHT and addressing a critical issue with  
+other DHT based DNS schemes.  The authors also discuss the  
+limitations of traditional DNSs caching scheme against heavy tailed  
+query distributions, and the fragility of the system introduced by  
+manual configuration.
+
+Codons uses beehive proactive caching layered on top of a Pastry DHT,  
+and proactively queries the existing DNS system for entries which do  
+not yet exist in CoDoNS.  The asymmetric cryptography used in DNSSEC  
+is used is as well for verifying the authenticity of records.  A  
+centralized entity is used to sign records brought into Codons from  
+the legacy DNS.  The authors tests Codons on 75 machines in the  
+PlanetLab network.  They find that the latency of lookups is below  
+that of legacy DNS.  They also find that codons is effective in load  
+balancing even against flash crowds.
+
+The primary difference between DDNS and Codons is the push type  
+proactive caching used in codons versus request driven caching.  As a  
+result it achieves much better lookup latency.  Both schemes do  
+however sit on top of a DHT and are designed as gradual replacements  
+for legacy DNS.  As a result, they rely to some extent on centralized  
+authorities for validating existing DNS records.
+

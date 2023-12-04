@@ -1,0 +1,101 @@
+Received: from teta.cpovo.net ([200.248.147.7])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id IAA16950
+	for <handyboard@media.mit.edu>; Mon, 15 Feb 1999 08:10:52 -0500 (EST)
+X-Internal-Id: 36BECA62000121CB
+Received: from casa (200.248.147.95) by teta.cpovo.net (NPlex 2.0.108); 15 Feb 1999 10:09:21 -0300
+Message-Id: <36BECA62000121CB@teta.cpovo.net> (added by teta.cpovo.net)
+From: "Cesar Mello" <cmello@cpovo.net>
+To: "Simon Schulz" <Simon.Schulz@hagener-tgz.de>, <handyboard@media.mit.edu>
+Subject: Re: Stepper Motor
+Date: Mon, 15 Feb 1999 11:11:20 -0000
+X-Msmail-Priority: Normal
+X-Priority: 3
+X-Mailer: Microsoft Internet Mail 4.70.1155
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+Hi Simon,
+
+> please send it to me, that would be nice ;)
+
+ok I'll send you, but the function names and comments are in Portuguese...
+If I have time I can translate it.
+
+> i'll check that idea with the controler, i think i have build one for the
+LPT
+> port of a pc
+> some months ago (it must be flying around somewhere).
+
+I have suggested in the list some time ago (when I was waiting for my
+HandyBoard components) that people used the PC paralel port to test the
+stepper motor algorithms before going to the Handy Board. But that isn't
+necessary, as it's so easy to program the Handy Board. The same circuit you
+connected to the paralel port can be connected to the HandyBoard, but take
+care not to short circuit it and damage your HB. The appropriate connection
+is shown below.
+
+> But i dont know how to interface the HB to make the thing work :(
+
+Well, if you want to make the same thing I did, wipe out from the sockets
+your motor drivers for a while (L293?). Now if you have a protoboard,
+excellent. You will place wires in the socket holes to the protoboard
+matrix holes. These is a suggested connection, I'm using it in my HB:
+
+U10:
+connect pins 6 and 7 (make a little jumper)
+connect pins 14 and 15
+Stepper motor coil 1 output: pin 3
+Stepper motor coil 2 output: pin 11
+
+U11:
+connect pins 6 and 7
+connect pins 14 and 15
+Stepper motor coil 3: pin 3
+Stepper motor coil 4: pin 11
+Ground: pin 4
+5 VDC out for your circuit (don't exxagerate!): pin 16
+
+This way you will use all your outputs, but this is only for algorithm
+testing... You can use bk() and fd(). The pins connected together turns on
+the red leds for you to see what's going on. (I didn't have an LCD the time
+I did this, my LCD arrived some days ago but I didn't have time and
+connector to place it in the HB yet). For you to use all the 8 outputs,
+these should be the connections:
+
+U10:
+Output 1: pin 1
+Out2: pin 2
+Out3: pin 9
+Out4: Pin 10
+
+U11:
+Out5: Pin 1
+Out6: pin 2
+Out7: Pin 9
+Out8: Pin 10
+GND: Pin 4
+5 VDC out: pin 16
+ 
+PLEASE REMEMBER THE FOLLOWING:
+1 - The current you have in this pins is very LIMITED, you shouldn't drive
+more than 15 mA, so you will have to use external drivers or transistors.
+2 - If you use transistors other than TIP122 that already have a protection
+diode inside it, remember to connect a diode in the reverse way as the
+current flows through the coil. This will prevent your circuit from being
+damaged by the reverse high voltage that the coil makes when turned off
+(sorry, I don't know how to call this in English, hope you could
+understand).
+
+Connecting all the outputs this way you can't use bk() and fd(). You'll
+have to write your own functions to acess the outputs (I didn't write that
+yet, but as soon as I restart playing with the HB I'll make it). With those
+connections the leds won't turn on, for them to blink you will have to
+connect the outputs to the appropriate pins (3, 6, 11 and 14). A logic 0
+turns on the led.
+
+Hope this could help you a bit.
+
+Best regards,
+Cesar
+

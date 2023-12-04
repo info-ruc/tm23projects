@@ -1,0 +1,96 @@
+Received: from wproxy.gmail.com (wproxy.gmail.com [64.233.184.195] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1SH9Ft20441
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 12:09:16 -0500 (EST)
+Received: by wproxy.gmail.com with SMTP id i4so177539wra
+        for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 09:09:15 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=RULAy1UIgIvLKtWV6+hf/IQ6ppThO0OYpF7AIB5KlO8awD0bsl4gLQC3YO0Qc5IMP3ldQDl5Hmx4FEidLRIXwTUHvhCw4B4RZUbsI6dSwnPVqf6+UXHWXKoVGwZsTzXVVUdX6EmzA7hYn3RBec4dDfVt2+MjA/kE6j+iXXbbX50=
+Received: by 10.54.119.5 with SMTP id r5mr814412wrc;
+        Tue, 28 Feb 2006 09:09:14 -0800 (PST)
+Received: by 10.54.81.5 with HTTP; Tue, 28 Feb 2006 09:09:14 -0800 (PST)
+Message-ID: <6e1ca4560602280909r4e20a1b1w3133974a81efa66b@mail.gmail.com>
+Date: Tue, 28 Feb 2006 12:09:14 -0500
+From: "Chiu Wah Kelvin So" <kelvinso@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: Paper 10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id k1SH9Ft20441
+
+The first paper, "Samsara: Honor Among Thieves in Peer-to-Peer
+Storage," presents an infrastructure for symmetric storage exchange
+between peers. Samsara requires each peer to contribute the same
+amount of storage when it stores object in other peers. When a node A
+stores an object in other node B, B needs to store a storage claim in
+node A, which is incompressible placeholder for storage for resource
+exchange. Node B periodically checks if the storage claim is still
+stored on Node A. To reduce the redundant storage needed for storage
+claim, a node simply forwards the query to another node which holds
+the storage claim. To distinguished dishonest nodes and nodes with
+transient failure, node deletes replicas with a probability
+proportional to the number of consecutive failed query. Therefore,
+nodes which suffer transient failures can recover replicas from
+surviving copies in the system. One problem with Samara is that it
+does not deal with malicious nodes. If a node forwards the query to a
+malicious node, it may break the claim forwarding and cause object
+deleted. Nodes with very short session time will have to constantly
+waste bandwidth to replicate object because of the probability
+deletion of objects due to transient failure. Also, this paper only
+presents a solution in very limited problem which is symmetry storage
+exchange. In the next paper, it attacks a more general problem.
+	The second paper, "SHARP: An Architecture for Secure Resource
+Peering," presents an architecture for exchanging various resources,
+such as CPU, memory, instead of just exchanging storage. The three
+main components in SHARP are site authority, service manager, and
+agent. A service manager first requests resource from an agent, and
+then agent will grant resource in form of a ticket which is a soft
+claim that suggests but does not guarantee resource ownership. Ticket
+can be delegated to other peer. Service manager will then presents the
+tickets to the site authority to redeem resources. If the resource is
+granted by site authority, then it will issue a lease for the
+resources. This architecture allows site has direct control over
+resource. At the same time, it uses agent as a level of indirection to
+coordinate resources management. Also, agent is allowed to
+oversubscribe resource claims to balance a higher overall resource
+utilization and number of rejected tickets (because of oversubscribe).
+However, paper assumes sites are trusted and not malicious.
+	The third paper, "PPay: Micropayments for Peer-to-Peer Systems,"
+present an efficient micropayment protocol. In existing micropayment
+protocol, the broken usually has a load O(n), where n is the total
+number of transaction made. PPay uses a concept of floating, and self
+managed currency to greatly reduce broker load to O(m), where m is the
+number of coins in the system. Broker B issues coin to a user U (owner
+of the coin). When a user U pays the coin to other user V, user U will
+have to sign the coin and send it to V. Whenever V needs to pay other
+user, V will need to send the coin back to U such that it can reassign
+to other user. Therefore, broker will not involve in any activity of
+coins, except the initial assignment and cash out of coins, or when
+owner becomes offline. This approach leaves traces of invalid coin
+assignment. Therefore, broker can find out who are the malicious
+users. However, all the coins have the same value in the system. If
+the value of resources in the systems are greatly varies, user may
+need to reassign a lot of coins for buying a single expensive
+resource, and it is inefficient.
+	The forth paper, "KARMA: A Secure Economic Framework for Peer-to-Peer
+Resource Sharing," present a framework on top of DHT to keep track of
+account of users. Each user will have a bank-set, which is a set of
+nodes in DHT, to keep track of its current balance of the user. The
+balance of a user can only be determined by the majority of the nodes
+in bank-set, so Karma will have an accurate balance of users even the
+existence of malicious nodes in DHT. Instead of using consensus
+protocol during transaction between two bank-set for strong
+consistency, Karma allows temporary inconsistencies in the account
+balances of users to achieve better performance. Also, Karma
+periodically recomputes the outstanding account balance to avoid
+inflation and deflation caused by node joining and leaving the
+network. However, if there is churn in the system, the recomputed
+account balance may vary a lot depended on the size of the system at
+the moment.
+
+
+Kelvin So
+

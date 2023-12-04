@@ -1,0 +1,79 @@
+Received: from xproxy.gmail.com (xproxy.gmail.com [66.249.82.204] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1E64gt04969
+	for <egs+summary@cs.cornell.edu>; Tue, 14 Feb 2006 01:04:42 -0500 (EST)
+Received: by xproxy.gmail.com with SMTP id h30so781353wxd
+        for <egs+summary@cs.cornell.edu>; Mon, 13 Feb 2006 22:04:42 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:reply-to:to:subject:date:user-agent:organization:mime-version:content-type:content-transfer-encoding:content-disposition:message-id:from;
+        b=bOMTjKmm2udCm4Vi00cIFxG7+e4Ul/+vsHIDDJVgTDIcmBiMZWnt9iHVxDgZCZ/O6T8jIiQOiTynK48J+cfSPwFuh/oUxiHsLbGca0DDjaaJffa5T7+F51EVzxv5kuZjWC57K5otOZ+pjSvqZahIJPgZ+vY5ciFilLNwQ+GySHk=
+Received: by 10.70.103.19 with SMTP id a19mr3500155wxc;
+        Mon, 13 Feb 2006 22:04:42 -0800 (PST)
+Received: from ?192.168.0.101? ( [69.207.63.116])
+        by mx.gmail.com with ESMTP id h37sm6365489wxd.2006.02.13.22.04.41;
+        Mon, 13 Feb 2006 22:04:42 -0800 (PST)
+Reply-To: ns253@cornell.edu
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 5
+Date: Tue, 14 Feb 2006 01:04:40 -0500
+User-Agent: KMail/1.9
+Organization: Cornell University
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200602140104.40846.ns253@cornell.edu>
+From: Niranjan Sivakumar <niranjan.sivakumar@gmail.com>
+
+Niranjan Sivakumar
+
+Search and Replication in Unstructured Peer-to-Peer Networks
+Beehive:  O(1) Lookup Performance for Power-Law Query Distributions in 
+Peer-to-Peer Overlays
+
+The paper regarding search and replication in unstructured p2p networks 
+considers the idea of improving performance in generally unstructured 
+networks such as Gnutella.  Through a series of simulations they illustrate 
+the drawbacks of two popular search methods, flooding and expanding ring, and 
+provide some analysis of two variants of a random walk search.  The random 
+walk algorithm that would check back to the originating node to terminate 
+generally performed better than the other approaches in their tests.  They 
+also considered replication, and considered two somewhat intuitive 
+approaches, uniform and proportional replication, as well as square-root 
+replication.  Although they admit that implementing a square-root replication 
+method is not trivial, their tests show that this method may be more "fair" 
+and a better solution than the others.
+
+Beehive does not do away with the idea of structured p2p networks, and instead 
+seeks to exploit the underlying mechanism of a ring-based architecture like 
+that of Pastry to implement a relatively simple method of proactive 
+replication that could lead to sub-one hop routing.  An analytical solution 
+that is provided in the paper allows for designers to tune the system for 
+some desired level of performance.  The system uses prefix-matching and the 
+idea that the number of hops can be reduced by progressively replicating 
+files at nodes that share one less prefix than the current node that is 
+holding the object.  However, Beehive does not require a great deal of 
+coordination between nodes when making replication decisions, even as objects 
+fan out.  The system also has a mechanism to evaluate the popularity of a 
+node in order to determine what level an object should be replicated out to.
+
+One of the drawbacks in the Search and Replication paper seems to be their 
+very premise as to why they are focusing on unstructured networks instead of 
+structured networks.  One of their main reasons seems to simply be that few 
+currently available networks are structured.  Furthermore, while their 
+theoretical results are interesting, they themselves indicate that it is 
+quite basic and the take away from the paper seems to be generally applicable 
+"good ideas" for selecting or developing search and replication algorithms.  
+They also did not really provide an exhaustive analysis of algorithms, as 
+they just selected a small sample to test.  
+
+One issue that I noted in the Beehive paper is related to incentives for 
+maintaining cached copies of objects.  Although there is an alternate to hold 
+links instead of an object itself, if the goal is to avoid a "slashdot 
+effect" as is stated in the paper, then it seems that maintaining actual 
+copies would be quite important.  Since the system seems to be pushing copies 
+on to nodes that may not actually have any relationship with the content, 
+this could create some issues with getting willing participants in such a 
+network.
+

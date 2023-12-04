@@ -1,0 +1,60 @@
+Received: from mail.montana.com (mailB.montana.com [199.2.139.117])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA07999
+	for <handyboard@media.mit.edu>; Sun, 21 Feb 1999 13:55:22 -0500 (EST)
+Received: from cs.umt.edu (mso1-13.montana.com [208.4.224.13])
+	by mail.montana.com (8.9.2.Beta4/8.9.4) with ESMTP id LAA29226
+	for <handyboard@media.mit.edu>; Sun, 21 Feb 1999 11:59:46 -0700 (MST)
+Message-Id: <36D05639.62CE9388@cs.umt.edu>
+Date: Sun, 21 Feb 1999 11:53:45 -0700
+From: Will Bain <willbain@cs.umt.edu>
+X-Mailer: Mozilla 4.05 [en] (Win95; U)
+Mime-Version: 1.0
+To: Handyboard Mailing List <handyboard@media.mit.edu>
+Subject: Re: 
+References: <3.0.32.19990220121035.00814210@pop.sirius.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Elliot Anderson wrote:
+>         Has anyone connected more than one sonar sensor to the handyboard?  I'm
+> looking to use the handyboard to connect six sonar sensors to my pc via the
+> parallel port.  I'm using C to talk to and readback from the parallel port.
+>  The sensors can be fired and read in sequence, as long as they can be
+> fired and read back quickly.
+>         I'm using the sensors to grid out a room in order to locate people in a
+> space and track their movements.  The space is typically about 12' long.
+> I'm not a hardware expert, but am somewhat adept at building circuits.
+> Therefore, as much detail on how to handle and build this interface would
+> be helpful.
+
+I'm still working out the best way to connect two sonar modules to the
+HB (using two complete module board/transducer sets).  Both modules
+ping, but I'm getting signal contention with both echo lines connected
+to the same TIC port.
+
+Probably the best way would be to build a simple multiplexor that allows
+driving six transducers from a single sonar module board.  There's a
+Multi-Driver Sonar Schematic by Adam Cox that allows four transducers;
+see the HB web site, software contributed section:
+
+
+http://el.www.media.mit.edu/groups/el/projects/handy-board/software/contrib.html
+
+It seems that, instead of using four digital outputs to drive four
+transducers, the circuit could be modified (using inverters) to use only
+two digital outputs.  Likewise, three digital outs ought to be able to
+switch up to eight transducers, and four ought to handle sixteen
+tranducers, but I haven't worked out the details.  In any case, it's
+very important that one and only one transducer is switched into the
+circuit at a given moment.  Best of luck to you!
+
+-- Will
+                                          , ,
+        __@_/             \_@__           |/
+          |                /__,           o             @_/
+          )\              )              ( \            (\/\\,
+~~~~~~~~~ ' ` ~~~~~~~~~~~ ` ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wendy Parson,               Conscience:  the inner voice which warns us
+Will Bain,                                 that someone may be looking.
+& Tatoosh                                               --H. L. Mencken
+

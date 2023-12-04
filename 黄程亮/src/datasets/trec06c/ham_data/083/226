@@ -1,0 +1,85 @@
+Received: from cornell.edu (cornell.edu [132.236.56.6])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8OEjNh18553
+	for <egs@CS.Cornell.EDU>; Tue, 24 Sep 2002 10:45:23 -0400 (EDT)
+Received: from cornell.edu (syr-24-161-107-202.twcny.rr.com [24.161.107.202])
+	by cornell.edu (8.9.3/8.9.3) with ESMTP id KAA24238
+	for <egs@CS.Cornell.EDU>; Tue, 24 Sep 2002 10:45:22 -0400 (EDT)
+Message-ID: <3D9079CD.1020008@cornell.edu>
+Date: Tue, 24 Sep 2002 10:42:21 -0400
+From: Sean Welch <smw17@cornell.edu>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.4.1) Gecko/20020508 Netscape6/6.2.3
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 19
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+CEDAR
+
+CEDAR is an algorithm designed to provide QoS routing for ad-hoc networks.
+The CEDAR protocol first seeks to build a set of core nodes from the
+network set such that every member of the core set (the dominators) is
+elected by the local nodes.  Local nodes select a dominator based on the
+local (no-hop) node with the largest number of neighbors.  Once the local
+dominator is selected, individual dominators establish virtual links by
+broadcasting the join message out three hops from the originating dominator.
+Once the core set is established, transmissions are accomplished in a
+reactive fashion.  If necessary, the local dominator first determines a
+core path to the local dominator of the destination node.  The destination
+dominator replies with an acknowledgement.  Once the core path is 
+establshed,
+the source dominator attempts to find a path meeting the requested bandwidth
+that transverses the maximum possible distance (furthest dominator region
+based on the core route path).  Within the same distance, the highest
+bandwidth is chosen.  If this route did not reach the destination but did
+reach an intermediate node, the intermediate node repeats the routing as if
+it were the source, and catenates the two paths.  If no route meeting the
+desired bandwidth is possible, the connection attempt fails.
+
+CEDAR adjusts to dynamic topologies in three ways.  The first is the case
+where a link/node is severed.  CEDAR performs both a route recomputation at
+the failure point to re-route in-flight packets, as well as a source route
+recomputation (once notification arrives) to re-establish the link.  This
+is intended to provide both long-term and short term re-routing.  The second
+case is the movement or removal of the dominators.  Due to the dynamic
+election of dominators, a node should be able to select or elect a new
+dominator based on the beacons of other nodes once the failure is detected.
+The final adjustment is the case where a given link encounters a net
+increase or decrease in link bandwidth.  Upon significant bandwidth changes,
+nodes will transmit either an ito (increase) or dto (decrease) packet to the
+local dominator.  The node will also set a TTL based on the bandwidth 
+change,
+restricting the number of hops over which to propagate the information.  
+This
+helps to localize all but the most stable, high-bandwith links, reducing the
+communication overhead.  In addition, dto packets propagate faster than ito
+packets, helping to quash dynamic link variations.
+
+CEDAR is an interesting protocol.  Personally, I like the fact that CEDAR
+makes use of the actual network structure to simplify system routing.  The
+implementation of the core set in a distributed fashion should permit
+reasonable scaling, and the limited distribution rate for information 
+strikes
+an interesting balance in the system, permitting more efficient use of 
+static
+or pseudo-static links.  The simulation results were also interesting, 
+in that
+they show the protocol's behavior, its evolution over time, and the reaction
+to failure conditions.  They show only limited comparisons to other routing
+methods in this work, but given that they chose to use their simulation
+results to better illustrate their work, I can accept that.
+
+One downside I see is that the protocol does not consider the effect of
+dominators on network longevity.  Setting up a core set has advantages, but
+also places an increased load on the core set.  Depending on the network
+application, this additional load may significantly impact network longevity
+and cause premature node expiration.  It also seems (to me) that the 
+addition
+of some form of naming structure based on the information extracted in
+selecting dominators could simplify further the issue of routing, especially
+in the case of a network consisting of a number of stable, high-bandwith
+nodes in addition to more mobile hosts.  
+
+
+

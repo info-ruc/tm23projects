@@ -1,0 +1,182 @@
+Received: from canaveral.red.cert.org (canaveral.red.cert.org [192.88.209.11])
+	by uclink4.berkeley.edu (8.10.1/8.10.1) with ESMTP id f430GhJ09565;
+	Wed, 2 May 2001 17:16:43 -0700 (PDT)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.red.cert.org (8.9.3/8.9.3/1.11) with SMTP id SAA24071;
+	Wed, 2 May 2001 18:24:16 -0400 (EDT)
+Date: Wed, 2 May 2001 18:24:16 -0400 (EDT)
+Received: by canaveral.red.cert.org; Wed, 2 May 2001 18:19:10 -0400
+Message-Id: <CA-2001-10.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+Subject: CERT Advisory CA-2001-10
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 1e3747e02162ae011224161f8e92ad60
+Status: RO
+X-Status: $$$$
+X-UID: 0000000007
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2001-10 Buffer Overflow Vulnerability in Microsoft IIS 5.0
+
+   Original release date: May 02, 2001
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Systems Affected
+
+     * Systems running Microsoft Windows 2000 with IIS 5.0 enabled
+
+Overview
+
+   A vulnerability exists in Microsoft IIS 5.0 running on Windows 2000
+   that allows a remote intruder to run arbitrary code on the victim
+   machine, allowing them to gain complete administrative control of the
+   machine.
+
+   A proof-of-concept exploit is publicly available for this
+   vulnerability, which increases the urgency that system administrators
+   apply the patch.
+
+I. Description
+
+   Windows 2000 includes support for the Internet Printing Protocol (IPP)
+   via an ISAPI extension. According to Microsoft, this extension is
+   installed by default on all Windows 2000 systems, but it is only
+   accesible through IIS 5.0. The IPP extension contains a buffer
+   overflow that could be used by an attacker to execute arbitrary code
+   in the Local System security context, essentially giving the attacker
+   compete control of the system. This vulnerability was discovered by
+   eEye Digital Security.
+
+   Microsoft has issued the following bulletin regarding this
+   vulnerability:
+
+          http://www.microsoft.com/technet/security/bulletin/MS01-023.asp
+
+   This vulnerability has been assigned the identifier CAN-2001-0241 by
+   the Common Vulnerabilities and Exposures (CVE) group:
+
+          http://cve.mitre.org/cgi-bin/cvename.cgi?name=CAN-2001-0241
+
+II. Impact
+
+   Anyone who can reach a vulnerable web server can execute arbitrary
+   code in the Local System security context, resulting in the intruder
+   gaining complete control of the system. Note that this may be
+   significantly more serious than a simple "web defacement."
+
+III. Solution
+
+Apply a patch from your vendor
+
+   A patch is available from Microsoft at
+
+          http://www.microsoft.com/Downloads/Release.asp?ReleaseID=29321
+
+   Additional advice on securing IIS web servers is available from
+
+          http://www.microsoft.com/technet/security/iis5chk.asp
+          http://www.microsoft.com/technet/security/tools.asp
+
+Appendix A. Vendor Information
+
+Microsoft Corporation
+
+   The following documents regarding this vulnerability are available
+   from Microsoft:
+
+          http://www.microsoft.com/technet/security/bulletin/MS01-023.asp
+
+References
+
+    1. VU#516648: Microsoft Windows 2000/Internet Information Server
+       (IIS) 5.0 Internet Printing Protocol (IPP) ISAPI contains buffer
+       overflow, CERT/CC, 05/02/2001,
+       http://www.kb.cert.org/vuls/id/516648
+
+   Authors:  Chad Dougherty, Shawn Hernan.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2001-10.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT personnel answer the hotline 08:00-20:00 EST(GMT-5) / EDT(GMT-4)
+   Monday through Friday; they are on call for emergencies during other
+   hours, on U.S. holidays, and on weekends.
+
+    Using encryption
+
+   We strongly urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+
+   http://www.cert.org/CERT_PGP.key
+
+   If you prefer to use DES, please call the CERT hotline for more
+   information.
+
+    Getting security information
+
+   CERT publications and other security information are available from
+   our web site
+
+   http://www.cert.org/
+
+   To subscribe to the CERT mailing list for advisories and bulletins,
+   send email to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   * "CERT" and "CERT Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any material furnished by Carnegie Mellon University and the Software
+   Engineering Institute is furnished on an "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied as to any matter including, but not limited to, warranty of
+   fitness for a particular purpose or merchantability, exclusivity or
+   results obtained from use of the material. Carnegie Mellon University
+   does not make any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2001 Carnegie Mellon University.
+
+   Revision History
+May 02, 2001: Initial Release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0i for non-commercial use
+Charset: noconv
+
+iQCVAwUBOvCEtQYcfu8gsZJZAQG11QP+Ipbm1xOc1d0fiY6KbQefsvBVbUDKdwFk
+jN2mBm9BM28lniyxvP2Jhbw5vt/6vxFlYKnXF7jQvuw5VpHSPkOs+zuQamt15a0u
+3rd4l2nWgRFo10vaykFPYLYjjpfW0BOz5ULkkgKwjbswDQfQQ00o9EurXDXOt276
+9pPCMThcy4Q=
+=eVKj
+-----END PGP SIGNATURE-----
+

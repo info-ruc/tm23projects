@@ -1,0 +1,72 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id PAA11650
+	for <handyboard@media.mit.edu>; Thu, 20 Jul 2000 15:24:06 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id PAA24726; Thu, 20 Jul 2000 15:24:06 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7975
+From: Gary Livick <glivick@pacbell.net>
+X-Real-Life-Name: Gary Livick
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: glivick@pacbell.net
+Subject: Re: Encoder routines
+Posted-Date: Thu, 20 Jul 2000 19:17:04 GMT
+Date: Thu, 20 Jul 2000 19:17:04 GMT
+Organization: None
+Message-Id: <3977502E.91F2DC59@pacbell.net>
+References: <Fy0E3z.4HJ@lugnet.com>
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Precedence: list
+
+I can offer some input on this, as I have used both the Rug Warrior approach and
+the Handy Board approach that you describe.  As far as which method has an
+advantage over the other is probably a qualitative assessment that is application
+driven, and a bunch of other kinds of babble words as well.
+
+The Rug Warrior method uses the pulse counter and an interrupt to keep track of
+encoder clicks as they call them.  This has the advantage of running more or less
+in the background, and in the case of the interrupt only delaying the execution
+of the main program when it is necessary.  It's disadvantage is that it ties up
+two precious port A pins.  In addition, the way the code is written in the RW
+library, for every combination of a black and white stripe the count is
+incremented by one, halving the potential resolution that could be had by
+counting each transition.
+
+The Handy Board approach uses the polling method to check the state of the wheel
+encoders either once every 1 millisecond or once every 4 milliseconds, depending
+on whether you have chosen the fast or slow encoder routines.  The advantage of
+the Handy Board approach is that analog pins are used to gather the data.  There
+are lots of analog pins on the Handy Board, and it isn't any sacrifice to give up
+a few for encoder duty.  The disadvantage is that they run on the 1000 Hz
+interrupt, taking up time there.  And the way the routines are written, they take
+up a lot more time than is generally necessary, and there is no way to shut them
+off.
+
+In my applications, in which I use a Rug Warrior look-alike (my own board), I
+have the option of using either method.  I've chosen the Handy Board routines,
+rewritten so there is just one that runs four encoders, leaves off the velocity
+portion of the routine, and which I can shut off if they aren't needed so the
+system interrupt takes up less system overhead.
+
+Hope this is informative.
+
+Gary Livick
+
+http://www.teleport.com/~raybutts/
+tiny HC11 boards for your projects
+
+
+
+Timothy Coyle wrote:
+
+> I've looked at the shaft encoder routines and it seems to be getting the
+> encoder voltage at certain times and using that to keep track of ticks. In the
+> past I have used an input capture to keep track of ticks. Is there a certain
+> advantage of one method over the other?
+> THanks
+> Tim
+

@@ -1,0 +1,91 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id XAA12368
+	for <handyboard@media.mit.edu>; Thu, 11 May 2000 23:12:02 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id XAA21440; Thu, 11 May 2000 23:12:01 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7817
+From: "Ray Tang" <raytang_1@hotmail.com>
+X-Real-Life-Name: Ray Tang
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: "Ray Tang" <raytang_1@hotmail.com>
+Subject: Re: Household Positioning System  Re: DGPS
+Posted-Date: Fri, 12 May 2000 03:18:48 GMT
+Date: Fri, 12 May 2000 03:18:48 GMT
+Organization: None
+Message-Id: <FuFFIB.GEB@lugnet.com>
+References: <99.4aa7438.264c33e0@aol.com>
+Precedence: list
+
+I see.  Humm.  May be I can really use this.  OK, if I put a few IR LED with
+ID at different locations in the room, and put them at the same height as
+the robot sensor so I don't need to worry about tilt angle.  If I put the
+sensor fixed on the robot, then I should be able to give the robot some
+sense of direction.  Now, all I need to do is to program the LED with an ID
+code...  Do you have a good scheme so that I can create quite a few number
+of ID codes?
+
+--
+
+                                                            Ray
+
+
+>
+>     No design, just an idea.  The way I see it, you put a "Head" on the
+top
+> of your robot.  It has three sensors mounted for tilt and pan.  The
+easiest
+> way I can see it is to use gear head stepper motors with a "Home" switch
+to
+> point the thing.  The Handy board issues step and direction pulses out a
+> parallel port to a stepper controller chip.  The tilt motor mounts to the
+> shaft of the pan motor.  Ribbon cable runs from the fixet frame to the
+moving
+> stepper and the sensor set.  Mounted to the shaft of the tilt motor is a
+box.
+>  inside the box at one end is a group of four "remote control sensors."
+> These are available from lots of places (Radio shack, BGMicro).  You give
+> them 5 volts and ground and they respond with a digital output "I see it."
+> These four outputs goto digital inputs on the handy board.  When the robot
+> powers up, it homes the sensor switches to the home switches.  When the
+robot
+> enters a room, it stops points the sensors at the angles it expects to see
+to
+> beacons (it has a guess of where it is in the room and a table of where
+the
+> beacons are supposed to be).  If it finds the beacon there, it verifies
+the
+> beacons transmitted code.  If it does not find the beacon, it does a
+square
+> spiral search from the starting location outward until it finds the
+beacon.
+> With the new beacon angles, it revises its pose estimate and proceeds to
+move
+> to its desired location.  The speed of acquiring the beacon will be
+limited
+> by the longest "off" time in the beacons ID code.  (That is you don't want
+to
+> skip a sampled location just because your sensor was looking at that spot
+> when the beacon was sending 0.)  While the robot is moving, the image of
+the
+> beacon will drift off of one of the sensors, and the controller will need
+to
+> issue steps to the pan/tilt system to bring the beacon back onto that
+sensor.
+>  This will help the robot "track" the sensor position.  I suppose you
+could
+> get away with one sensor and constantly scan around the beacon location,
+but
+> this would slow your robot down, and four sensors will tell you if you
+have
+> drifted off the spot, or if the beacon is sending a 0.
+>     Sorry for the length, but this is about all I can say on the topic
+right
+> now.
+>
+> Pherd
+> Currently in Pensacola FL  soon Hartford CT
+>
+

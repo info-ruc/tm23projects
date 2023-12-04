@@ -1,0 +1,48 @@
+Received: from viruswall.tc.fluke.com (viruswall.tc.fluke.com [206.138.179.18])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id OAA04287
+	for <Handyboard@media.mit.edu>; Thu, 8 Apr 1999 14:20:49 -0400 (EDT)
+Received: from 129.196.184.7 by viruswall.tc.fluke.com (InterScan E-Mail VirusWall NT); Thu, 08 Apr 1999 10:35:55 -0800
+Received: from wapiti.tc.fluke.com (wapiti.tc.fluke.com [129.196.136.74])
+	by mailhub.tc.fluke.com (8.9.1/8.9.1) with SMTP id KAA02897;
+	Thu, 8 Apr 1999 10:35:55 -0700 (PDT)
+Date: Thu, 8 Apr 1999 10:35:54 -0700 (Pacific Daylight Time)
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: Chuck McManis <cmcmanis@mcmanis.com>
+Cc: Handyboard List <Handyboard@media.mit.edu>, Curt Mills <BowHunt@iname.com>,
+        Curt Mills <hacker@tc.fluke.com>
+Subject: Re: GCC 2.8.1 for HC11 
+In-Reply-To: <4.1.19990408102525.03d34100@mailhost.hq.freegate.com>
+Message-Id: <Pine.WNT.3.96.990408102804.113M-100000@wapiti.tc.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Thu, 8 Apr 1999, Chuck McManis wrote:
+
+> Curt, may I suggest that rather than re-invent the wheel you take the LCD
+> code out of the Handyboard libraries I wrote that are on the icc11 site.
+
+I took the assembly routine out of the ICC11 library and adapted it
+slightly for GCC (input/output params mostly).  I had to split up the
+assembly and C-code portions into separate files, and have the
+lcd.h/lcd.c/lcdasm.s files ported and working, but haven't finished with
+lcdio.h. Gotta sleep sometime. 
+
+After I converted everything in lcd.c over to pointer-based access, the
+code got smaller and probably a lot faster as well.  I'll go back and try
+to optimize everything for speed later though once it is stable.
+
+One friend I showed the code to said "Wow!  I didn't know anybody ever
+actually read in the busy bit... I'm impressed!".  He's done a lot of LCD
+stuff, and that's the first code he had seen that read anything from the
+LCD module.
+
+Thanks again for letting me use the code.  Saved me probably weeks of
+effort.
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

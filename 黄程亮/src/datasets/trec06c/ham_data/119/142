@@ -1,0 +1,41 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2S7DWY05401
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 02:13:32 -0500 (EST)
+Received: from orpheus3.dataserver.cornell.edu (orpheus3.dataserver.cornell.edu [128.253.161.167])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2S7DWaB013013
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 02:13:32 -0500 (EST)
+Message-ID: <1805298740.1143530010308.JavaMail.webber@orpheus3.dataserver.cornell.edu>
+Date: Tue, 28 Mar 2006 02:13:31 -0500 (EST)
+From: Huang Shiang-Jia <sh366@cornell.edu>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 16
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: uPortal WEB email client 3.0
+
+Reputation management is necessary in a peer-to-peer system because participants might abuse its nature of anonymity to behave maliciously. The twp papers to be discussed today present how to rate other participants' reputation in distributed ways.
+
+* There are several advantages of reputation systems, in addition to isolate malicious peers. One is to provide incentives of file sharing. In the case that reputable peers are rewarded with higher priority, increased connectivity or greater bandwidth, participants would tend to share rather than to freeload. Another benefit is to make the system tidy. Peers tend to delete inauthentic files for its reputation. This makes it more difficult to replicate junk files in the system.
+
+<Issues>
+* In a reputation system, a small fraction of reputable peers may become overloaded.
+* Pre-trusted peers in EigenTrust could be a potential threat to this reputation system. Besides, malicious peers may provide authentic files to earn other peers' trust but actually provide incorrect trust values (higher for malicious peers and lower for good peers) to confuse the aggregation of global trust values.
+
+<EigenTrust>
+* The EigenTrust mechanism represents trust value of peers by eigenvectors. Peers rate each other for each transaction. These local trust values are normalized and aggregated to global ones in a distributed and node-symmetric approach.
+* The basic idea is transitive trust: A peer is likely to trust those who provide it authentic files. Their opinions are given higher weights in the trust value aggregation. This is better than the previous approaches which either aggregate the ratings from only a few peers or cause congestions due to the large-scale aggregations.
+* EigenTrust requires a priori notation of trust, that is, pre-trusted peers, in dealing with inactive peers. The pre-trusted peers are also important as they guarantee convergence of the computation for trust values against malicious collectives, a group of malicious peers who give each other high local trust value and give all other peers low trust values.
+
+<Robust Reputation>
+* This paper proposes a reputation system based on its modified Bayesian approach. Each peer relies mostly on its own observations (first-hand) but makes use of other peers' information (second-hand) when it's helpful.
+* Two kinds of ratings are maintained in each peer. The reputation rating represents nodes' behaviors in the system (normal or misbehaving). The trust rating represents how honest a node is in the system (trustworthy or untrustworthy).
+* The approach copes with false rating from other nodes as follows: If the second-hand report comes from a trustworthy peer or is close to the peer's own first-hand observation, (a) the report is used to slightly modify the reputation rating; (b) the trust rating improves if the first-hand and second-hand information are close, and worsens otherwise.
+
+<Credence>
+According to the description on the webpage:
+* Credence differs from previous works in that it derives trust metrics on objects rather than peers.
+* Each peer collects and evaluates the votes from other peers to estimate the reputation of an object.
+* The peers' votes are weighted depending on the relationships between the peer itself and those peers.
+* It is also the first implemented peer-to-peer reputation scheme.
+

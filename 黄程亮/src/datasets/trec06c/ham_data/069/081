@@ -1,0 +1,204 @@
+Received: from lugnet.com (lugnet.com [209.68.63.236])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id SAA32671
+	for <handyboard@media.mit.edu>; Tue, 4 Jul 2000 18:37:05 -0400 (EDT)
+Received: (from lugnet@localhost) by lugnet.com (8.9.1/8.6.12) id SAA25813; Tue, 4 Jul 2000 18:37:05 -0400 (EDT)
+X-Envelope-To: handyboard@media.mit.edu
+X-Loop: lugnet.robotics.handyboard@lugnet.com
+X-Message-Archive: http://www.lugnet.com/news/display.cgi?lugnet.robotics.handyboard:7919
+From: Gary Livick <glivick@pacbell.net>
+X-Real-Life-Name: Gary Livick
+Sender: news-gateway@lugnet.com
+Errors-To: news-errors@lugnet.com
+To: handyboard@media.mit.edu
+Reply-To: glivick@pacbell.net
+Subject: Re: VECTOR 2X
+Posted-Date: Tue, 4 Jul 2000 22:36:31 GMT
+Date: Tue, 4 Jul 2000 22:36:31 GMT
+Organization: None
+Message-Id: <396266E7.81CD3625@pacbell.net>
+References: <Fx4qMC.HCq@lugnet.com>
+Content-Type: text/plain; x-mac-creator=4D4F5353; x-mac-type=54455854; charset=iso-8859-1
+Mime-Version: 1.0
+Precedence: list
+Content-Transfer-Encoding: quoted-printable
+X-Mime-Autoconverted: from 8bit to quoted-printable by aleve.media.mit.edu id SAA27409
+
+This is my routine to use the Vector 2x with my board (see link below my =
+name)
+with an I/O expansion board connected.  You will need to change the I/O p=
+ort
+#defines to work with the Handy Board I/O ports on your expansion board, =
+but
+other than that it should work fine.  The compass is used in slave mode w=
+ith this
+routine, so connect the pins accordingly (some go to ground, some to +5, =
+follow
+your manual).
+
+To set up the compass, you will need to call reset_compass() from your ma=
+in()
+routine, and then when you want to see what it has to say, use the read()
+function.
+
+#define porth 0x7C00     /* ignore this, it is for setting data direction=
+ on my
+board */
+#define set_h bit_set(0x7e00,0b00000100)
+
+#define pc_low bit_clear(porth,0b00100000)  /* these next 4 ports will be=
+ digital
+outputs on your board */
+#define pc_high bit_set(porth,0b00100000)
+
+#define sclk_low bit_clear(porth,0b01000000)  /* "porth" is port h on my =
+board,
+not a new instruction :-) */
+#define sclk_high bit_set(porth,0b01000000)
+
+#define ss_low bit_clear(porth,0b00001000)
+#define ss_high bit_set(porth,0b00001000)
+
+#define reset_low bit_clear(porth,0b00010000)
+#define reset_high bit_set(porth,0b00010000)
+
+#define read_sdo input_j(1)  /* these will be digitial input points on yo=
+ur board
+*/
+#define check_eoc input_j(0)  /*                  ditto                  =
+      */
+
+
+
+void reset_compass()
+ {set_h;
+  poke(porth,0);  /* this clears all the outputs in general, you may just=
+ want to
+clear some of them on your board, depending on what else you have connect=
+ed */
+  ss_high;
+  pc_high;
+  sclk_high;
+  reset_high;
+  reset_low;
+  msleep(15L);
+  reset_high;
+  msleep(5L);}
+
+
+int read()
+  {int i;
+   int j;
+   int heading;
+
+   heading=3D0;
+
+   sclk_high;
+   ss_high;
+   msleep(15L);
+   pc_low;
+   msleep(15L);
+   pc_high;
+
+   while(!check_eoc)
+    {;}
+
+   msleep(15L);
+   ss_low;
+   msleep(15L);
+
+   for(i=3D1;i<8;i++)
+    {sclk_low;
+     msleep(5L);
+     sclk_high;
+     msleep(5L);}
+
+   sclk_low;
+   msleep(5L);
+   sclk_high;
+   msleep(5L);
+   if(read_sdo=3D=3D1)
+     {heading=3D256;}
+
+   msleep(15L);
+   for(j=3D7;j>0;j--)
+    {sclk_low;
+     msleep(10L);
+     sclk_high;
+     msleep(10L);
+     if(read_sdo !=3D 0)
+      {heading +=3D(int)((2.^(float)(j))+1.);}}
+   sclk_low;
+   msleep(5L);
+
+   pc_high;
+    sclk_high;
+
+   return heading;}
+
+A couple of things to note:
+
+1.  Since this is done in IC, the routine is too slow to pick up the last=
+ bit on
+the heading, degrading maximum accuracy to +/- 2=B0
+
+2.  The Vector 2X doesn't work very well indoors due to disturbances in t=
+he
+magnetic field caused by metalic objects and other fields.
+
+3.  Because of 2., 1. doesn't matter much.
+
+4.  There is a good way to compensate for the errors caused by indoors us=
+e.  You
+must calibrate for the fields as they exist in your robot lab, and then t=
+he
+compass will provide headings that you can use.  Email me when you get to=
+ that
+point.
+
+Good luck,
+
+Gary Livick
+
+http://www.teleport.com/~raybutts/
+tiny HC11 boards for your projects
+
+Robert Kelly wrote:
+
+
+
+> Hi all,
+>
+> I am currently fabricating my new HBoard based robot and have only gott=
+en to
+> the design stages. I have ordered a Vector 2x but haven't recieved it y=
+et. I
+> am not particularly well endowed with electronics or assembly language =
+skills
+> (very little except that I knew enough  to correctly solder my board to=
+gether
+> by following instructions)I can program adequately in IC.
+>
+> I have looked at the Vector 2x stuff submitted by Tom Brushaver (sp?) a=
+nd am
+> not sure it will work with my setup. It looks like his method requires =
+the use
+> of motor ports or something.
+>
+> Has anyone successfully implemented one of these things using the HBoar=
+d and
+> expansion board without permanent modifications?
+>
+> Most importantly, can anyone give explicit instructions(with info on wh=
+at
+> other components are needed, connection from pins on the Vector 2x to t=
+he
+> specific I/O ports on the Hboard and Expansion Board, code if possible)=
+ and
+> even software to get one of these working?
+>
+> Any tips on mounting to reduce interference of the mag field?
+>
+> Thanks all,
+>
+> Bob K.
+

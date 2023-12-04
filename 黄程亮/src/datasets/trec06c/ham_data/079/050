@@ -1,0 +1,56 @@
+Received: from capricorn.ds.csl.cornell.edu (capricorn.csl.cornell.edu [132.236.71.92])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4GK8628869
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 11:20:08 -0500 (EST)
+content-class: urn:content-classes:message
+Subject: 615 Paper 69
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Tue, 4 Dec 2001 11:23:26 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
+Message-ID: <97C142C1212ED545B0023A177F5349C40A0A28@capricorn.ds.csl.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 615 Paper 69
+Thread-Index: AcF84ABKwkPXyjmgRz+NcjlhkfSk9w==
+From: "Avneesh Bhatnagar" <avneesh@csl.cornell.edu>
+To: <egs@CS.Cornell.EDU>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by sundial.cs.cornell.edu id fB4GK8628869
+
+Bayeux
+
+This paper describes the implementation of Bayeux, an application level
+multicast system , which is built upon the Tapestry routing
+architecture, thus deriving its falt tolerance properties. A Bayeux
+multicast session consists of a session name and a UID. A 160 bit hash
+key of this tuple is formed, a a file is created with this identifier,
+which placed at the root of the multicast tree. Clients which need to
+join, should know the unique tuple. The group membership operations
+consist of JOIN,LEAVE,TREE and PRUNE. JOIN messages result in the root
+sending a TREE message to the client. NOdes within this route would add
+the client ID in their receiver ID list for subsequent packet
+forwarding.
+
+The authors evaluate the performance of the multicast implementation
+over simple unicast in terms of link stress. They also investigate
+issues of tree partitioning due to having just one multicast root. This
+problem can be easily alleviated by the Tapestry substrate since it
+provides an easy mechanism for creating multiple root nodes. Tapestry
+guarantees to find a root with high probablity. Other optmizations to
+reduce duplicate packet delivery is to carry out receiver identifier
+clustering in order to group nodes which might share the first m bits of
+a node ID. Simulations based on this show favorable results. An
+interesting evaluation is that of the First Reachable Link selection
+protocol in order to ensure high probability of succesful packet
+delivery on this multicast network. This method does not use duplicate
+packets, but instead involves pervious history of link quality to be
+taken into account when calculating the next best link. When a new link
+is chosen , the membership state is also propagated.
+
+I think that this work was quite interesting, not in view of introducing
+a novel idea, but actually showing the strenghts of the Tapestry routing
+protocol and its degree of extensibility for multicast routing. There is
+one thing that I could not understand and that was how the Tapestry IDs
+were related to IP address space.
+

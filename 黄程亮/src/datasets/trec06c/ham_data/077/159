@@ -1,0 +1,67 @@
+Received: from wilkes.csl.cornell.edu (wilkes.csl.cornell.edu [132.236.71.69])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f8I5BIq12864
+	for <egs@cs.cornell.edu>; Tue, 18 Sep 2001 01:11:18 -0400 (EDT)
+Received: (from daehyun@localhost)
+	by wilkes.csl.cornell.edu (8.9.3/8.9.2) id BAA23572
+	for egs@cs.cornell.edu; Tue, 18 Sep 2001 01:11:13 -0400 (EDT)
+	(envelope-from daehyun)
+From: Daehyun Kim <daehyun@csl.cornell.edu>
+Message-Id: <200109180511.BAA23572@wilkes.csl.cornell.edu>
+Subject: 615 PAPER 10
+To: egs@CS.Cornell.EDU
+Date: Tue, 18 Sep 2001 01:11:13 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL54 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+This paper proposes a routing algorithm called Associativity-Based Routing (ABR).
+
+In ABR, routes are established on-demand and only the actually desire routes are
+maintained. ABR selects a route based on nodes having high associativity states
+that imply high stability.
+
+1. Associativity:
+A Mobile Host (MH) periodically transmits beacons and updates associativity ticks.
+If a MH has low associativity ticks, it is supposed to be in a high state of mobility.
+Otherwise, it is supposed to be in a stable state, which is ideal point to perform
+routing.
+
+2. Route Selection:
+A destination node selects a route based on the associativity ticks and hop distance.
+First, a route with the highest associativity ticks will be selected. If there are
+multiple routes with the same associativity ticks, the shortest route will be selected.
+Further, if even distances are the same, then one of the routes will be arbitrarily
+selected.
+
+ABR consists of two phases - Route Discovery Phase and Route Reconstruction Phase.
+
+1. Route Discovery Phase: Initial phase where a route is established.
+
+2. Route Reconstruction Phase: Maintenance phase where topological changes of the
+                               network are dealt with.
+
+
+In my opinion, this paper has the following strength and weakness.
+
+Strength.
+
+1. Associativity.
+This paper characterizes the behavior of MHs, defines a new concept 'Associativity'
+and proposes a new routing algorithm based on that, which gives originality to this
+paper.
+
+2. Adaptiveness and Scalability.
+ABR is on-demand and maintains only the information for the desire routes. And route
+maintenance algorithm allows locally reconstructing sub set of the route, instead of
+the entire route. So, I think, ABR is adaptive and scalable.
+
+Weakness.
+
+1. Associativity ticks.
+ABR selects the route which has the highest associativity ticks. But, in my opinion,
+stability may not increase for ever as the associativity ticks increase. If the
+associativity ticks are too big, it means that a MH stayed at a location for a long
+time, so it is likely to move soon. I think, more study on the behavior of MHs can leads
+to a mapping from the associativity ticks to stability.
+

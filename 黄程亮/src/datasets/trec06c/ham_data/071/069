@@ -1,0 +1,40 @@
+Received: from math.psu.edu (leibniz.math.psu.edu [146.186.130.2])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id FAA10010
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 05:39:02 -0400 (EDT)
+Received: from weyl.math.psu.edu (weyl.math.psu.edu [146.186.130.226])
+	by math.psu.edu (8.9.3/8.9.3) with ESMTP id FAA18713
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 05:39:01 -0400 (EDT)
+Received: from localhost (viro@localhost)
+	by weyl.math.psu.edu (8.9.3/8.9.3) with ESMTP id FAA10947
+	for <9fans@cse.psu.edu>; Sat, 2 Sep 2000 05:39:01 -0400 (EDT)
+X-Authentication-Warning: weyl.math.psu.edu: viro owned process doing -bs
+Date: Sat, 2 Sep 2000 05:39:00 -0400 (EDT)
+From: Alexander Viro <viro@math.psu.edu>
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] rfork(), getss() etc etc
+In-Reply-To: <Pine.GSO.4.10.10009020511350.9425-100000@weyl.math.psu.edu>
+Message-ID: <Pine.GSO.4.10.10009020536200.9425-100000@weyl.math.psu.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+
+
+Arrgh. Sorry, I really need more coffee...
+
+> 	register (int *)fn(void*) = _fn;
+> 	register void *arg = _arg;
+> 	register unsigned flagd = _flags;
+> 	register int pid;
+> 
+- 	/* new_sp ignored unless flags has CLONE_VM set */
++	/* new_sp ignored if it is 0 */
+> 	pid = _syscall2(__NR_CLONE, flags, new_sp);
+- 	if ((flags & CLONE_VM) && pid == 0)
++	if (pid == 0)
+> 		exit((*fn)(arg));
+> 	return pid;
+
+

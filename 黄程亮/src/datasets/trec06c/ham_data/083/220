@@ -1,0 +1,42 @@
+Received: from postoffice2.mail.cornell.edu (postoffice2.mail.cornell.edu [132.236.56.10])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.10) with ESMTP id g8O3EXh14409
+	for <egs@cs.cornell.edu>; Mon, 23 Sep 2002 23:14:33 -0400 (EDT)
+Received: from XIN (dhcp-ece-167.ece.cornell.edu [132.236.232.167])
+	by postoffice2.mail.cornell.edu (8.9.3/8.9.3) with SMTP id XAA26162
+	for <egs@cs.cornell.edu>; Mon, 23 Sep 2002 23:14:32 -0400 (EDT)
+Message-ID: <00d101c26378$7f09f6e0$a7e8ec84@XIN>
+From: "Xin Zhang" <xz56@cornell.edu>
+To: "Emin Gun Sirer" <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 19
+Date: Mon, 23 Sep 2002 23:14:29 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+
+There are two main points in this paper: core-based algorithm and QoS (with
+respect to bandwidth) routing.
+Cores are elected by neighbors, thus the distance between any two cores is
+at most 3. It may be done further to enlarge the neighborhood but let the
+nodes 2 or more hops away elect their dominator, thus further shrink the
+dominating set. The good point is that the election is local although may
+not necessarily optimal. The shortcoming is in the case of a -> b -> c -> d
+with a and d are cores,  when b wants to send to c, there will  be a detour.
+But a possible solution here is that, since every node maintains a neighbor
+table, it should firstly search in its neighbor table for the destination
+before trying to route the packet through its dominator.
+QoS routing is achieved by using of increase/decrease wave msg. But there
+maybe a problem (or a typo) here at the second case sub-case (b) for the
+handling of increase wave: bw(a, b) in cache should be updated after
+forwarding is done. The establishment of the core path is kind of a DSR alg.
+in multi-path version (then the path is chosen to satisfy QoS requirements).
+So there are problems similar in DSR. Also, the paper didn't mention how the
+path between neighboring cores are decided and how the dom(d) is found.
+The use of RTS-CTS to relieve the problem of hidden-exposed terminal problem
+and the duplicate rebroadcast should be a very good approach.
+
+

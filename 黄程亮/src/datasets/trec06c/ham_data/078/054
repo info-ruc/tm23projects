@@ -1,0 +1,56 @@
+Received: from bureau6.utcc.utoronto.ca (bureau6.utcc.utoronto.ca [128.100.132.16])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f9NFxSo11542
+	for <egs@cs.cornell.edu>; Tue, 23 Oct 2001 11:59:28 -0400 (EDT)
+Received: from webmail3.ns.utoronto.ca ([128.100.132.26] EHLO webmail3 ident: IDENT-NOT-QUERIED [port 34350]) by bureau6.utcc.utoronto.ca with ESMTP id <238718-7992>; Tue, 23 Oct 2001 11:59:24 -0400
+Received: by webmail3.ns.utoronto.ca id <414676-224>; Tue, 23 Oct 2001 11:58:56 -0400
+To: COM S 615 <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 26
+Message-ID: <1003852736.3bd593c01cf91@webmail.utoronto.ca>
+Date: Tue, 23 Oct 2001 11:58:56 -0400 (EDT)
+From: c.tavoularis@utoronto.ca
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: IMP/PHP IMAP webmail program 2.2.3
+
+This paper presents a detailed simulation study of two on-demand routing 
+protocols, AODV and DSR, with accurate MAC and physical layer models. These 
+protocols were evaluated in terms of packet delivery fraction, received 
+throughput in kilobits per second, average end-to-end delay, normalized routing 
+load as well as normalized MAC load. Again, ns-2 was used which models 802.11 
+network characteristics.
+
+Many results are presented, but the general trend is that AODV performs better 
+in high traffic and high load (‘stressful’) situations, while DSR outperforms 
+in low traffic and low load (‘less stressful’) situations. More specifically, 
+DSR has significantly worse packet delivery in high load or high mobility 
+situations, although DSR and AODV have comparable packet delivery otherwise. 
+Delay in DSR is also much higher than AODV in high mobility, although it is 
+slightly less in slow-moving environments. This is an interesting result since 
+DSR focuses on routes with least number of hops, while AODV tends to choose the 
+least congested route. We can see from this result that the shortest route does 
+not imply the least delay. DSR always incurs less routing overhead while 
+frequently incurring higher MAC overhead except in low mobility. 
+
+The reason that DSR performs poorly in high mobility is because it aggressively 
+uses cached information to find new routes when the current route is broken. 
+When topology is changing quickly, the cached route information becomes stale 
+but continues to be used temporarily and even gets propagated to nodes 
+listening in promiscuous mode. An improvement would be to determine an expiry 
+time for cached information. The cached alternate routes improve DSR 
+performance in low mobility situations when the cached routes remain valid for 
+longer. The increased MAC overhead in DSR is due to frequent use of unicast, as 
+opposed to broadcast, which is more costly at the MAC layer due to use of 
+RTS/CTS/Data/ACK exchanges. AODV has more routing overhead because it generates 
+many more RREQs and essentially floods the network when discovering a route.
+
+This paper provides useful MAC layer performance analysis, which is often 
+neglected in the study of routing protocols. It is clear that routing protocol 
+performance is highly dependent on its interaction with lower layers, which has 
+not been optimized in on-demand protocols. One critique would be that although 
+AODV delivers more packets than DSR in stressful environments, its packet 
+delivery ratio is by no means considered sufficient performance for proper 
+operation. Also, unicast is more costly than broadcast at the MAC layer, yet 
+more reliable and I’m surprised that it was not more evident in the simulation 
+results (i.e. affects on packet loss and collisions?).
+

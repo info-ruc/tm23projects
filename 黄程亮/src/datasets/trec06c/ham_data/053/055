@@ -1,0 +1,33 @@
+Received: from smtp1.andrew.cmu.edu (SMTP1.ANDREW.CMU.EDU [128.2.10.81])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id FAA29285
+	for <handyboard@media.mit.edu>; Mon, 27 Sep 1999 05:43:13 -0400 (EDT)
+Received: from SIMON.RES.CMU.EDU (SIMON.RES.CMU.EDU [128.2.146.25])
+	by smtp1.andrew.cmu.edu (8.9.3/8.9.3) with SMTP id FAA27080;
+	Mon, 27 Sep 1999 05:43:08 -0400 (EDT)
+Date: Mon, 27 Sep 1999 05:43:26 -0400
+From: "Will Hein" <wfh@andrew.cmu.edu>
+To: "Asim Kar" <measim@cityu.edu.hk>, handyboard@media.mit.edu
+Subject: Re: Analog I/O as Digital I/O
+Message-Id: <2108135922.938411006@SIMON.RES.CMU.EDU>
+X-Mailer: Mulberry (Win32) [1.3.3, s/n S-100002]
+X-Authenticated: wfh by cyrus.andrew.cmu.edu
+X-Licensed-To: site license
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+> Can the analog input lines be used as a digital input lines (if there is
+> no requirement of analog input)? Because, these lines are connected to
+> the port E of 68hc11, then what are modifications required in the code?
+
+Since the analog inputs read voltage levels, you should be able to just plug
+in any switch or 5-0volt input directly.  To read the values, use the analog
+command, and in theory you should only get two possible values, 255 for
++5volts, and 0 for 0 volts.  Depending on if your inputs are driven logic
+versus switches, you may need to threshold these values and consider
+anything above maybe 200 to be a logic high and anything below 50 to be a
+logic low.  But if you are using precisely 5 volts and 0 volts, or an open
+and closed switch, than the extreme values should be accurate.
+-Will Hein
+Carnegie Mellon University
+

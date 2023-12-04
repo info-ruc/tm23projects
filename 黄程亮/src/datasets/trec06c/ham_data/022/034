@@ -1,0 +1,72 @@
+Received: from alpha.delta.edu (alpha.delta.edu [161.133.129.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id EAA27348
+	for <handyboard@media.mit.edu>; Mon, 17 Aug 1998 04:31:59 -0400 (EDT)
+Received: from pm144-02.dialip.mich.net by alpha.delta.edu; (5.65v3.0/1.1.8.2/06Jan97-0932AM)
+	id AA32116; Mon, 17 Aug 1998 04:36:08 -0400
+Received: from kott.my.domain (dakott@kott.my.domain [192.168.0.1])
+	by kott.my.domain (8.8.8/8.8.5) with SMTP id TAA04977;
+	Thu, 13 Aug 1998 19:18:39 -0400 (EDT)
+Date: Thu, 13 Aug 1998 19:18:39 -0400 (EDT)
+From: David Kott <dakott@alpha.delta.edu>
+Sender: dakott@kott.my.domain
+To: Darkman <lroska@cyberus.ca>
+Cc: handyboard@media.mit.edu
+Subject: Re: PID implementation
+In-Reply-To: <01bdc5f2$a6d44a90$44fa010a@roskal.octranspo.com>
+Message-Id: <Pine.BSF.3.96.980813191001.4930A-100000@kott.my.domain>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Wed, 12 Aug 1998, Darkman wrote:
+
+> Problem:
+> 
+>  I have built a small robot with differential drive using 3+ACI- diam whee
+>  ls turning at 66 RPM +AEA- full power PWM no load.
+>   
+>  Each wheel has a 16 pulses per rev. reflective type shaft encoder.
+>  the robot is controlled by the Handy Board running IC 3.2.
+>   
+>  I'm fairly new to the robotics field and looking for some info or Tips on
+>  how to accomplish some sort of PID control for this robot.
+>   
+>  I toyed around with different timing ideas to move the robot 1 rev but  I
+>  soon found out it's very unreliable type of control due to the fact that
+>  each surface has a different drag coefficient and  battery voltage also
+>  makes a big difference.
+
+It seems that you have a feedback system here.  How does battery voltage
+and surface resistance add error to your system when you have a feedback
+loop to correct your error signal?
+
+>   
+>  Another problem I'm facing is that with the L293D IC's have no brake
+>  capabilities , so once the power to the motor is removed the momentum of 
+>  the robot  moves the robot past it's target.
+>   
+
+No braking?  We solved that problem by effecting reverse current through
+the DC motors we were using for propulsion.  A 70ms pulse worked great.
+We didn't even use any feedback.
+
+
+Any book on modern control systems would detail the basics of a feedback
+system.  Unless you are truly desperate for a very fast system, you
+wouldn't really have to do any calculations.  I would just write up a
+simple program and experimentally much with the coefficients until you
+found a stable system that does what you want.  A full PID controller
+might be overkill.  Just a simple linear feedback system, in all
+likelyhood, would suffice.
+
+
+							-d
+
+
+The box said "Requires Windows 95/NT or better"...
+                                                 So I got Unix.
+
+Free the Source.  Free your Computer... http://www.FreeBSD.org
+                                          http://www.NetBSD.org
+                                            http://www.OpenBSD.org
+
+

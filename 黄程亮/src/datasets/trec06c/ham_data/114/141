@@ -1,0 +1,70 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1E78Bt20402
+	for <egs@cs.cornell.edu>; Tue, 14 Feb 2006 02:08:12 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1E78729004202
+	for <egs@cs.cornell.edu>; Tue, 14 Feb 2006 02:08:08 -0500 (EST)
+Received: from 24.59.114.243
+        by webmail.cornell.edu with HTTP;
+        Tue, 14 Feb 2006 02:08:08 -0500 (EST)
+Message-ID: <1786.24.59.114.243.1139900888.squirrel@webmail.cornell.edu>
+Date: Tue, 14 Feb 2006 02:08:08 -0500 (EST)
+Subject: paper 6
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+The two papers discussed this week both involve replicating objects at
+nodes to  reduce lookup costs. However, the first one is applied on
+unstructured graphs a la  Gnutella while Beehive is applied on ring-based
+prefix routing schemes such as  Pastry.
+The first paper looks at various alternatives to Gnutella's
+power-law-distribution  random graph and flooding-based routing. It tests
+four graph topology generation  algorithms (Power-law Random Graph,
+Gnutella Graph, Random Graph, and 2D Grid) and  expanding-ring TTL
+searches and several variations of random-walk (path tracing)  query
+routing. Finally, it also considers three approaches to replication:
+uniform,  proportional to the Zipf distribution, and square-root of the
+Zipf distribution  (both path replication and random replication).
+The conclusions reached by the paper were that random walk (with checking)
+ performed far better than the flooding based approach because of the
+linear rather  than exponential cost increase with increased TTLs. Also,
+random graphs performed  better than highly-connected PWLGs since the
+lower connectivity actually reduces  messages duplication. The authors
+then take the k-random walk query routing and  replicate objects retrieved
+by succesful searches on k-nodes, which approximates  the square-root
+distribution. The path replication resulted in topologically  dependent
+replication, so they used random replication on k nodes among any of the
+random walks taken.
+Beehive works by replicating entires along prefix-matches in the reverse
+path  sequence of prefix-routing in ring-based networks such as Tapestry
+and Pastry. Each  replication on a lower level (fewer matching prefixs)
+reduces the number of hops to  find the object. In a strict prefix
+matching, the object is stored at the highest  level at a node whose ID
+matches the object ID the most closely. If Beehive  decides, based on the
+aggregation approximation to the Zipf distribution, that an  object should
+have additional copies replicated, copies are pushed to nodes that  match
+one fewer prefixes (ie. are one hop closer on the routing scheme). An
+extension specific to Pastry is that since objects are stored on the
+numerically  closest (and not most prefixes matched) and the last hop is
+based on the leaf  table, the first replication push is done with the leaf
+table and not the  prefix-based routing table.
+
+Beehive does seem to work well for latency-sensitive applications...
+however, it  also seems highly dependent on the network being stable with
+low churn. Consider  that an analysis phase takes about 8 hours and
+adaptation to a flash mob takes 16  hours to reach the target in the worst
+case. Aggregation itself takes 48 minutes,  so if there is a high churn
+rate, significant amounts of aggregation data could be  lost during that
+period and cause an extremely inaccurate estimate of the  popularity of an
+object. On the other hand, there is also the question of whether
+replication on a high-churn network would make sense in the first place,
+since you  would be spending large amounts of resources replicating
+objects that have a high  probability of only being available from that
+node for a short period of time.
+

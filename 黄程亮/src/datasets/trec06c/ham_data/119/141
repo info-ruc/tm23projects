@@ -1,0 +1,77 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2S6PaY21945
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 01:25:36 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k2S6PZMj014482
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 01:25:35 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060326163333.0338ce80@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Tue, 28 Mar 2006 01:26:21 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 16
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+Eigentrust:
+         PageRank is one of the most successful algorithms of the last 15 
+years, and EigenTrust seeks to do something similar with trust in a 
+peer-to-peer system.  The authors show how to compute the principal 
+eigenvector of a matrix (in this case, the trust matrix) in a distributed 
+and reliable way.  The terms of this eigenvector represent the extent to 
+which the corresponding nodes should be trusted.
+         Embarassingly, the system requires a globally agreed set of 
+pre-trusted peers, and the authors go so far as to admit that the algorithm 
+will not perform properly if some of these trusted peers belong to a 
+malicious collective.  "Trust the designers of the network" is not a good 
+peer-to-peer design practice.
+
+
+Robust reputation in peer-to-peer
+         One of the chief difficulties in reputation systems is reconciling 
+the information a node collects directly with what it hears.  The authors 
+propose that a node should take in reports, and use them if they correspond 
+to a node's own perceptions.  In the proposed scheme, the reports are in 
+fact parameters for a  Baysian model of the behavior of other nodes.  The 
+system also elegantly incorporates aging of information, so a node's bad 
+reputation will dissipate over time provided the node stops acting badly.
+         The system may be vulnerable to a long-term attack in which 
+malicious nodes carefully send reports that are within the acceptance 
+thresh-hold of a given node, to try to push its rankings up or down over time.
+
+
+
+Credence:
+         Credence is a system that assigns reputations not to principals, 
+but to objects.  When a node receives information from another node, they 
+weight this report based on the extent to which they've agreed in the past; 
+this means that a node that spews out random reputation information 
+(uncorrelated with the ratings of a given node) will be 
+discounted.  Further, the system will work correctly even if different 
+populations of nodes disagree about the rating to be accorded to an object.
+         Credence relies on participants forwarding votes for each 
+other.  In the presence of malicious peers, the votes gathered may not be a 
+fair sample of the votes cast--malicious peers can preferentially forward 
+votes either pro or con.  Credence also relies on having unique object 
+identifiers; it seems as though a simple hash of the contents isn't 
+sufficient, since that would mean that a peer cannot tell whether a 
+proffered object is genuine without first downloading it.
+
+A last observation:     It might be useful to divide the objects being 
+rated into classes, and work out separate correlation coefficients for each 
+class; it could easily be imagined that a given pair of nodes might agree 
+about how to rate some objects, but disagree about others.  (It should be 
+possible to do this by having each peer use a different identity for voting 
+on each of its perceived classes; the classification need not be global).
+
+
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

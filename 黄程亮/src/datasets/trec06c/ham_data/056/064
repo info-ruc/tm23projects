@@ -1,0 +1,118 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA08117
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 11 Nov 1999 09:31:21 -0700
+Received: from homebox ([150.135.175.43])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with SMTP id JAA26938
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 11 Nov 1999 09:31:19 -0700
+Message-Id: <3.0.1.32.19991111093118.00691b04@psy1.psych.arizona.edu>
+Date: Thu, 11 Nov 1999 09:31:18 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: 
+In-Reply-To: <004901bf2c46$92790200$116716cb@macarthur.uws.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+  Please hold the HTML when you post, it screws up non-MS mail programs.
+
+>>
+dear all,
+
+I am having a problem using the input type keywords with multiple
+responses, wonder if anyone could advise me on this.
+
+my expt design, its an identification task which involves displaying movie
+files of someone saying some chinese words, and subjects are required to
+idenify that particular word from the 6 words given on the screen. those
+words are lablled 1,2,3,4,5,6 with corresponding key inputs:  "A" = 1 , "D"
+=2 , "G" =3, "J" =4 , "L", " ' " on the keyboard
+
+commands that i put in :
+
+<ep> f100  m110 <s 10> <t 3500> <id "keyboard"> <n 12> <mpr "+A"> <mpr "+D">
+<mpr "+G"> <mpr "+J"> <mpr "+L"> <mpr "+'">
+$<vm 640,480,480,24,0> <zil 6> <zek > <ztr > <!safemode 1> <azk> <eop>
+
+My questions are:
+
+1. i'm having difficulties recording subjects' responses.. i tried with the
+typed responses  <ztr> command, but doesn't seem to work..no responses were
+recorded ,  the result file looks as follows (the answer should be key "A")
+,
+<<
+
+  For a start, key bindings will have to go after any zillion mode
+specifications.  Also, specifying <azk> after <zil> is probably going to
+screw things up royally, best case would be that it simply cancels <zil>.
+My guess is that you want to use the zillion one response mode, <zor>.  In
+addition you will have to specify which keys are valid zillion responses
+with <vzk> to stop key releases from interfering with the recorded data.
+Your parameter line should become something like the following:
+
+<ep> f100  m110 <s 10> <t 3500> <id "keyboard"> <n 12> 
+$<vm 640,480,480,24,0> <zil> <zor> <!safemode 1> 
+<vzk "+A"> <vzk "+D">
+<vzk "+G"> <vzk "+J"> <vzk "+L"> <vzk "+'">
+<mpr "+A"> <mpr "+D">
+<mpr "+G"> <mpr "+J"> <mpr "+L"> <mpr "+'">
+<eop>
+
+>>
+
+Subject 4, 11/09/1999 17:38:20 on avlaptop, refresh 16.63ms
+  Item    RT
+!  "to" frame 80 beyond end of A_fu1a.mov, resetting to 69
+!  Played 68 frames of 68 in A_fu1a.mov
+   250   1045
+
+2. is that possible to have feedback for a design like this!?  eg. have
+<mpr "+D"> <mpr "-G"> on one trial, and <mpr "-D"> <mpr "+G">  commands
+design for separate trials!?
+>>
+
+  The + and - refer to whether the response is taken as the key is hit or
+as it is released.  It is possible to have feedback, I assume by your
+question though that what you want to have is one of you six buttons
+correct depending upon the item.  The neat way to do that is with macros
+and by having a macro for each response condition that remaps keys to
+correct and incorrect responses as in the following:
+
+<ep> f100  m110 <s 10> <t 3500> <id "keyboard"> <n 12> 
+$<vm 640,480,480,24,0> <zil> <zor> <!safemode 1>
+<vzk "+A"> <vzk "+D">
+<vzk "+G"> <vzk "+J"> <vzk "+L"> <vzk "+'"> <eop>
+0
+mA= <umpr> <umnr> <mpr "+A"> <mnr "+D"> <mnr "+G"> <mnr "+J"> <mnr "+L">
+<mnr "+'"> = 
+mD=  <umpr> <umnr> <mnr "+A"> <mpr "+D"> <mnr "+G"> <mnr "+J"> <mnr "+L">
+<mnr "+'"> = 
+mG= <umpr> <umnr> <mnr "+A"> <mnr "+D"> <mpr "+G"> <mnr "+J"> <mnr "+L">
+<mnr "+'"> =
+mJ=  <umpr> <umnr> <mnr "+A"> <mnr "+D"> <mnr "+G"> <mpr "+J"> <mnr "+L">
+<mnr "+'"> = 
+mL=  <umpr> <umnr> <mnr "+A"> <mnr "+D"> <mnr "+G"> <mnr "+J"> <mpr "+L">
+<mnr "+'"> = 
+m'=  <umpr> <umnr> <mnr "+A"> <mnr "+D"> <mnr "+G"> <mnr "+J"> <mnr "+L">
+<mpr "+'"> =
+c;
++1 ~A "button A is the correct key" * ;
++2 ~J "button J is the correct key" * ;
++1 ~' "button ' is the correct key" * ;
+
+
+
+-jonathan (j.c.f.)
+
+ /"\
+ \ /
+  X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+ / \ 
+
+"Every time I think I know where it's at, they move it."
+
+
+

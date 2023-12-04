@@ -1,0 +1,59 @@
+Received: from metamorsw.com (metamorsw.com [208.166.93.3])
+	by cse.psu.edu (8.8.8/8.8.8) with ESMTP id AAA16161
+	for <9fans@cse.psu.edu>; Tue, 3 Aug 1999 00:19:51 -0400 (EDT)
+Received: from metamorsw.com (d185fc55a.rochester.rr.com [24.95.197.90])
+	by metamorsw.com (8.8.7/) with ESMTP id AAA24614
+	for <9fans@cse.psu.edu>; Tue, 3 Aug 1999 00:23:17 -0400
+Message-ID: <37A66D72.17C7C1E2@metamorsw.com>
+Date: Tue, 03 Aug 1999 04:17:54 +0000
+From: Christopher Pane <cpane@metamorsw.com>
+Reply-To: cpane@metamorsw.com
+X-Mailer: Mozilla 4.6 [en] (X11; U; Linux 2.2.6 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: 9fans <9fans@cse.psu.edu>
+Subject: [9fans] PC resuming execution of a terminated process on reboot
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+I noticed something strange happen while testing a file system I
+finished implementing.
+
+I imported my file system into another PC terminal on the network.
+
+I then wrote a simple program to run on the remote PC to read raw bytes
+from the imported files system, but forgot to close the file.
+
+Not thinking much about it, I ran to program 3 times, got the info I
+needed then rebooted both machines.
+(the hosting machine and the importing machine).
+
+When I rebooted both computers I got 3 panic messages on the boot
+screens that happened while running my lib/profile. Both systems
+appeared to hang.
+
+I then logged in as another user on one of the PCs, and deleted my test
+program. This appeared to get everyone booting again. The other hanging
+PC (That I did NOT log into as another user), resumed its boot, ignoring
+the errors. When I checked the /proc and also did a ps I saw
+descriptions for the 3 executions of the test program. It was listed as
+broken.
+
+Question:
+
+What was going on here, I am just curious. Did Plan 9 try and restore a
+connection and execution of my test program ?
+
+Did deleting it cause Plan9 to give up on it. Is this some kind of
+post-mortem feature ?
+
+
+Thanks
+
+-Chris
+
+
+

@@ -1,0 +1,208 @@
+Received: from canaveral.indigo.cert.org ([192.88.209.130] verified)
+  by calmail-fe1.berkeley.edu (CommuniGate Pro SMTP 4.1.8)
+  with ESMTP-TLS id 22797264; Fri, 03 Sep 2004 14:46:35 -0700
+Received: from canaveral.indigo.cert.org (localhost [127.0.0.1])
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/1.31) with ESMTP id i83LJAj1010085;
+	Fri, 3 Sep 2004 17:42:16 -0400
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.12.8/8.12.8/Submit/1.1) with SMTP id i83KDVad006601;
+	Fri, 3 Sep 2004 16:13:31 -0400
+Date: Fri, 3 Sep 2004 16:13:31 -0400
+Message-Id: <TA04-247A.28558@us-cert.gov>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: US-CERT Technical Cyber Security Alert TA04-247A -- Vulnerabilities in MIT Kerberos 5 
+Precedence: list
+Status: RO
+X-Status: $$$$
+X-UID: 0000000109
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+                        National Cyber Alert System
+
+                  Technical Cyber Security Alert TA04-247A
+
+
+Vulnerabilities in MIT Kerberos 5
+
+   Original release date: September 3, 2004
+   Last revised: --
+   Source: US-CERT
+
+
+Systems Affected
+
+     * MIT Kerberos 5 versions prior to krb5-1.3.5
+
+     * Applications that use versions of MIT Kerberos 5 libraries prior
+       to krb5-1.3.5
+
+     * Applications that contain code derived from MIT Kerberos 5
+
+   Updated vendor information is available in the systems affected
+   section of the individual vulnerability notes.
+
+
+Overview
+
+   The MIT Kerberos 5 implementation contains several vulnerabilities,
+   the most severe of which could allow an unauthenticated, remote
+   attacker to execute arbitrary code on a Kerberos Distribution Center
+   (KDC). This could result in the compromise of an entire Kerberos
+   realm.
+
+
+I. Description
+
+   There are several vulnerabilities in the MIT implementation of the
+   Kerberos 5 protocol. With one exception (VU#550464), all of the
+   vulnerabilities involve insecure deallocation of heap memory
+   (double-free vulnerabilities) during error handling and Abstract
+   Syntax Notation One (ASN.1) decoding. For further details, please see
+   the following vulnerability notes:
+
+   VU#795632 - MIT Kerberos 5 ASN.1 decoding functions insecurely
+   deallocate memory (double-free)
+
+    The MIT Kerberos 5 library does not securely deallocate heap memory
+    when decoding ASN.1 structures, resulting in double-free
+    vulnerabilities. An unauthenticated, remote attacker could execute
+    arbitrary code on a KDC server, which could compromise an entire
+    Kerberos realm. An attacker may also be able to execute arbitrary code
+    on Kerberos clients, or cause a denial of service on KDCs or clients.
+    (Other resources: MITKRB5-SA-2004-002, CAN-2004-0642)
+
+   VU#866472 - MIT Kerberos 5 ASN.1 decoding function krb5_rd_cred()
+   insecurely deallocates memory (double-free)
+
+    The krb5_rd_cred() function in the MIT Kerberos 5 library does not
+    securely deallocate heap memory when decoding ASN.1 structures,
+    resulting in a double-free vulnerability. A remote, authenticated
+    attacker could execute arbitrary code or cause a denial of service on
+    any system running an application that calls krb5_rd_cred(). This
+    includes Kerberos application servers and other applications that
+    process Kerberos authentication via the MIT Kerberos 5 library,
+    Generic Security Services Application Programming Interface (GSSAPI),
+    and other libraries.
+    (Other resources: MITKRB5-SA-2004-002, CAN-2004-0643)
+
+   VU#350792 - MIT Kerberos krb524d insecurely deallocates memory
+   (double-free)
+
+    The MIT Kerberos krb524d daemon does not securely deallocate heap
+    memory when handling an error condition, resulting in a double-free
+    vulnerability. An unauthenticated, remote attacker could execute
+    arbitrary code on a system running krb524d, which in many cases is
+    also a KDC. The compromise of a KDC system can lead to the compromise
+    of an entire Kerberos realm. An attacker may also be able to cause a
+    denial of service on a system running krb524d.
+    (Other resources: MITKRB5-SA-2004-002, CAN-2004-0772)
+
+   VU#550464 - MIT Kerberos 5 ASN.1 decoding function asn1buf_skiptail()
+   does not properly terminate loop
+
+    The asn1buf_skiptail() function in the MIT Kerberos 5 library does not
+    properly terminate a loop, allowing an unauthenticated, remote
+    attacker to cause a denial of service in a KDC, application server, or
+    Kerberos client.
+    (Other resources: MITKRB5-SA-2004-003, CAN-2004-0644)
+
+
+II. Impact
+
+   The impacts of these vulnerabilities vary, but an attacker may be able
+   to execute arbitrary code on KDCs, systems running krb524d (typically
+   also KDCs), application servers, applications that use Kerberos
+   libraries directly or via GSSAPI, and Kerberos clients. An attacker
+   could also cause a denial of service on any of these systems.
+
+   The most severe vulnerabilities could allow an unauthenticated, remote
+   attacker to execute arbitrary code on a KDC system. This could result
+   in the compromise of both the KDC and an entire Kerberos realm.
+
+
+III. Solution
+
+Apply a patch or upgrade
+
+   Check with your vendor(s) for patches or updates. For information
+   about a specific vendor, please see the systems affected sections in
+   the individual vulnerability notes or contact your vendor directly.
+
+   Alternatively, apply the appropriate source code patch(es) referenced
+   in MITKRB5-SA-2004-002 and MITKRB5-SA-2004-003 and recompile.
+
+   These vulnerabilities will be addressed in krb5-1.3.5.
+
+
+Appendix A. References
+
+     * Vulnerability Note VU#795632 -
+       <http://www.kb.cert.org/vuls/id/795632>
+
+     * Vulnerability Note VU#866472 -
+       <http://www.kb.cert.org/vuls/id/866472>
+
+     * Vulnerability Note VU#350792 -
+       <http://www.kb.cert.org/vuls/id/350792>
+
+     * Vulnerability Note VU#550464 -
+       <http://www.kb.cert.org/vuls/id/550464>
+
+     * MIT krb5 Security Advisory 2004-002 -
+       <http://web.mit.edu/kerberos/advisories/MITKRB5-SA-2004-002-dblfre
+       e.txt>
+
+     * MIT krb5 Security Advisory 2004-003 -
+       <http://web.mit.edu/kerberos/www/advisories/MITKRB5-SA-2004-003-as
+       n1.txt>
+
+     * Kerberos: The Network Authentication Protocol -
+       <http://web.mit.edu/kerberos/www/>
+
+  _______________________________________________________________________
+
+   Thanks to Tom Yu and the MIT Kerberos Development team for addressing
+   these vulnerabilities and coordinating with vendors. MIT credits the
+   following people: Will Fiveash, Joseph Galbraith, John Hawkinson, Marc
+   Horowitz, and Nico Williams.
+  _______________________________________________________________________
+
+
+   Feedback can be directed to the author: Art Manion
+
+  _______________________________________________________________________
+
+   This document is available from:
+   
+     <http://www.us-cert.gov/cas/techalerts/TA04-245A.html>
+  _______________________________________________________________________
+
+
+   Copyright 2004 Carnegie Mellon University. Terms of use
+
+   Terms of use: <http://www.us-cert.gov/legal.html>
+
+  _______________________________________________________________________
+
+   Revision History
+
+    September 3, 2004: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iD8DBQFBOM3iXlvNRxAkFWARAs9xAKC23q9EekPz/InQVWZPeUVhH4bnKwCgkVfh
+vKAOqE4sCXyydZ4BKnNreK8=
+=7R1M
+-----END PGP SIGNATURE-----
+

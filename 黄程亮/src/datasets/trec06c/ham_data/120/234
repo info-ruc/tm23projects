@@ -1,0 +1,100 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k36FxGt15258
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 11:59:16 -0400 (EDT)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k36FxEfj005147
+	for <egs+summary@cs.cornell.edu>; Thu, 6 Apr 2006 11:59:14 -0400 (EDT)
+Received: from 128.84.98.90
+        by webmail.cornell.edu with HTTP;
+        Thu, 6 Apr 2006 11:59:15 -0400 (EDT)
+Message-ID: <2700.128.84.98.90.1144339155.squirrel@webmail.cornell.edu>
+Date: Thu, 6 Apr 2006 11:59:15 -0400 (EDT)
+Subject: paper 19  - OVERCAST
+From: "Abhishek Santosh Gupta" <asg46@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+OVERCAST
+
+Overcast provides a scalable and reliable single-source multicast using an
+overlay network design.
+an overlay network consists of a collection of nodes placed at strategic
+locations in existing network fabric.
+pros of using an overlay network:
+1) incrementally deployable - no change in existing Internet
+infrastructure, only additional servers
+2) adaptable - packets can be made to flow over links which are optimized
+over metrics that matter to the application
+3) robust - ability to route around faults immediately
+4) customizable
+
+cons of using an overlay network:
+1) management complexity
+2) inefficient - cannot be as efficient as code running in every router
+3) information loss due to the presence of firewalls,NATs must  be prevented
+
+
+basic goals:
+1) deployment must require little or no human intervention
+2) costs per node must be minimized
+3) unmodified HTTP clients must be able to join multicast groups
+
+
+basic idea:
+
+distribution trees are built for single-source multicasting and a
+"up/down" protocol is used to maintain global state of the network
+efficiently
+
+tree building protocol:
+a new node contacts the root and becomes its' child. this new node now
+adjusts its position in the tree by checking the bandwidth from its
+parent's children
+
+to it(from the root node). If the bandwidth available is about as high as
+the current bandwidth the node now becomes a child of  this node (which
+was a child
+
+of its parent)
+10K byte packets are used for this measurement - this gives better results
+than using ping packets
+when the reported bandwidth is within 10% of each other, the closer node
+is selected (according to traceroute)
+
+nodes also periodically recheck their decision to locate under their
+parent via packets to its parent,grandparent.
+this makes the design highly tolerant to failures.
+However, malicious nodes can choose to respond to these "up" messages but
+not forward actual data packets - thereby disrupting multicasting
+
+(cycles are also prevented while creating trees)
+
+UP/DOWN protocol
+this enables to keep track of alive nodes
+each node maintains a table of all other nodes in the hierarchy lower than
+itself. this table is stored on disk and cached in the memory of the node
+(although size of such tables should be linearly proportional to number of
+nodes in the system for nodes close to the root)
+
+node failures detected by failure to check in than by active probing.
+
+this protocols involves birth,death, extra-information certificates along
+with certificates propagated by a nodes's children(this requires a parent
+pointer)
+sequence numbers used to resolve conflicting certificates.
+
+robustness increased by replicating the root as a chain on the top.
+
+
+
+
+
+
+
+
+

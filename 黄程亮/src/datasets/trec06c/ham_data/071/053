@@ -1,0 +1,58 @@
+Received: from plan9.cs.bell-labs.com (plan9.bell-labs.com [204.178.31.2])
+	by cse.psu.edu (8.8.8/8.8.8) with SMTP id SAA00827
+	for <9fans@cse.psu.edu>; Fri, 1 Sep 2000 18:04:16 -0400 (EDT)
+From: jmk@plan9.bell-labs.com
+Message-Id: <200009012204.SAA00827@cse.psu.edu>
+Date: Fri, 1 Sep 2000 18:04:09 -0400
+To: 9fans@cse.psu.edu
+Subject: Re: [9fans] FreeBSD 4.0 / Plan9 3rd ed.
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Sender: owner-9fans@cse.psu.edu
+Precedence: bulk
+Reply-To: 9fans@cse.psu.edu
+
+Alexander Viro <viro@math.psu.edu>:
+	>On Fri, 1 Sep 2000, Russ Cox wrote:
+	>
+	>> The Linux drawterm will not work
+	>> in most other places, even under 
+	>> binary emulation, because it depends
+	>> on the task segment selector as
+	>> a unique thread id.  This is the same
+	>
+	>Sorry? "other places" include 2.4, for one thing. Why using gross
+	>architecture-dependent tricks, when PID is there? On Linux
+	>thread==process. There is a rfork() equivalent (clone(2)) and model is
+	>exactly the same as on Plan 9 (process as a set of components that can be
+	>shared between several processes; fork() as a special case of more generic
+	>operation that copies a subset of components and uses the old ones for the
+	>rest, etc.)
+	>
+	>Use of TSS happened to work on x86 prior to 2.3.11 or so, but that relied
+	>on the details of task_struct allocation. 2.4 has TSS-per-CPU  setup and
+	>doesn't bother with changing the register at all - it's cheaper to do
+	>everything by hands. Besides, it lifts the limit on number of processes
+	>and allows to avoid quite a few TLB flushes.
+	>
+	>Use getpid() - it's at least more portable than %tss and definitely much
+	>saner.
+	>
+	>> reason that the Inferno Linux binaries
+	>> don't work under other OSes with
+	>> Linux binary emulation.
+	>
+	>Ditto.
+
+Phil Winterbottom and I did the original Inferno emulation port to Linux
+in, I think, 1996 and that is where a lot of the drawterm code came from.
+At that time few of the wonders you describe above were available. Sure, it's
+a gross architecture-dependent trick but it was no worse than what we were
+porting to at the time.
+
+I'm glad there are now alternatives which could be used to rewrite the code
+more portably, should anyone care to do so. Let's leave it at that.
+
+--jim
+

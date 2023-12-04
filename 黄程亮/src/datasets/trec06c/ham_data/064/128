@@ -1,0 +1,187 @@
+Received: from mta1.snfc21.pbi.net (mta1.snfc21.pbi.net [206.13.28.122])
+	by aleve.media.mit.edu (8.9.3/8.9.3/+ALEVE) with ESMTP id LAA20904
+	for <handyboard@media.mit.edu>; Fri, 24 Mar 2000 11:58:46 -0500 (EST)
+Received: from pacbell.net ([206.170.238.215])
+ by mta1.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.2000.01.05.12.18.p9)
+ with ESMTP id <0FRX001C5QRHOO@mta1.snfc21.pbi.net> for
+ handyboard@media.mit.edu; Fri, 24 Mar 2000 08:50:18 -0800 (PST)
+Date: Fri, 24 Mar 2000 08:50:51 -0800
+From: Gary Livick <glivick@pacbell.net>
+Subject: Re: Handyboard Upload
+To: Stacey Aughe <aughesa@clarkson.edu>
+Cc: handyboard@media.mit.edu
+Reply-To: glivick@pacbell.net
+Message-Id: <38DB9CE9.DD4C2AC1@pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Content-Type: multipart/mixed; boundary="------------5D1097902C6AD77D03D6D3A9"
+X-Accept-Language: en
+References: <Frxp67.A9y@lugnet.com>
+
+This is a multi-part message in MIME format.
+--------------5D1097902C6AD77D03D6D3A9
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+
+Here is a RS232 com driver that you can use to send serial data to other devices.
+It's on the Handy Board Site.
+
+http://lcs.www.media.mit.edu/groups/el/projects/handy-board/software/serial.html
+
+Here is more info similar to the above, also from the Handy Board site:
+
+http://lcs.www.media.mit.edu/groups/el/projects/handy-board/software/contrib/drushel/debug_serialio.c
+
+Then there is the attached from George Musser's Advanced functions library (email
+georgejr@musser.com)
+
+I've never used any of these, but surely you should be able to get what you need
+from one of them. Let us know.
+
+Good luck,
+
+Gary Livick
+Tiny HC11 products for your robot
+http://www.teleport.com/~raybutts/
+
+
+
+
+Stacey Aughe wrote:
+
+> Has anyone out there ever uploaded data collected by the Handyboard back to the
+> PC?  I need to get some distances measured by our sonar sensors back up to the
+> PC for use in another application.  If you can help me, I'd really apprieciate
+> it.
+
+--------------5D1097902C6AD77D03D6D3A9
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="414C4641";
+ name="lib_advanced_serial.c"
+Content-Transfer-Encoding: 7bit
+Content-Description: Document
+Content-Disposition: inline;
+ filename="lib_advanced_serial.c"
+
+/*
+ *  This is part of the lib_advanced.c package.
+ *
+ */
+
+/*****************************************************************************/
+/*                                                                           */
+/*                                serial I/O                                 */
+/*                                                                           */
+/*****************************************************************************/
+
+/*
+ *  The first four routines are Randy Sargent's routines for transmitting and
+ *  receiving single characters and for enabling and disabling the pcode-to-IC
+ *  I/O.  Thereafter the routines are George Musser's additions.
+ *
+ */
+
+void serial_putchar(int c)
+{
+	while (!(peek(SCSR) & 0x80))     /* Wait until transmit buffer empty */
+		;
+	poke(SCDR, c);                   /* Send lower eight bits */
+}
+
+/*****************************************************************************/
+
+int serial_getchar()
+{
+	while (!(peek(SCSR) & 0x20))     /* Wait for received character  */
+		;
+	return peek(SCDR);
+}
+
+/*****************************************************************************/
+
+void disable_pcode_serial()          /* Run this before using above routines */
+{
+	*ignoreserial = 1;               /* Just a flag in the pcode */
+}
+
+/*****************************************************************************/
+
+void enable_pcode_serial()           /* Run this before using IC again */
+{
+	*ignoreserial = 0;
+}
+
+/*****************************************************************************/
+
+void set_baud(int rate)              /* For an 8 MHz clock */
+{
+	if (rate >= 75)
+		poke(BAUD, 0x30 | log2(9600/rate));
+}
+
+/*****************************************************************************
+ *
+ *  odd_parity()
+ *
+ *  Returns 1 if the number of bits in the lower byte of argument is odd,
+ *  otherwise 0.  This is useful if you want to modify the above routines
+ *  to include a parity bit.  In serial_putchar(), it would require extra code
+ *  such as:
+ *
+ *  if (odd_parity(c))
+ *  	poke(SCCR1,0b01010000);
+ *  else
+ *  	poke(SCCR1,0b00010000);
+ *
+ */
+
+int odd_parity(int c)
+{
+	int i, j;
+
+	j = 0;
+	for (i = 8; i; i--) {
+		if (c & 0b00000001) j++;
+		c >>= 1;
+	}
+
+	return (j & 0b00000001);
+}
+
+/*****************************************************************************
+ *
+ *  set_pcode_baud()
+ *
+ *  This subversive little routine pokes the location in the pcode which sets
+ *  the baud rate.  From pcode.asm:
+ *
+ *  init_serial
+ *  	1d 28 20	BCLR	SPCR,X PORTD_WOM 	; turn off wired-or mode
+ *  	86 b0		LDAA	#BAUD9600
+ *  	a7 2b		STAA	BAUD,X
+ *  	a6 0c		LDAA	#TRENA
+ *  	a7 2d		STAA	SCCR2,X
+ *
+ *  For a Rug Warrior (also known as "Bookbot") running the pcode for Mac IC
+ *  3.1, this code fragment begins at address BDEC.
+ *
+ *  Any change to the pcode baud rate will not take effect until the processor
+ *  is rebooted.
+ *
+ */
+
+void set_pcode_baud(int rate) 
+{
+	if (rate >= 75)
+		poke(INIT_SERIAL + 4, 0xb0 | log2(9600/rate));
+}
+
+/*****************************************************************************/
+
+void reset_pcode_baud()              /* Return to default baud of 9600 */
+{
+	poke(INIT_SERIAL + 4, 0xb0);
+}
+
+--------------5D1097902C6AD77D03D6D3A9--
+
+

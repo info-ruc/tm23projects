@@ -1,0 +1,326 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1SHEet21952
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 12:14:40 -0500 (EST)
+Received: from KEVSTOY (cpe-69-207-37-68.twcny.res.rr.com [69.207.37.68])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k1SHEdV5004862
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Feb 2006 12:14:39 -0500 (EST)
+Message-ID: <000601c63c8a$7ff2a680$4425cf45@KEVSTOY>
+Reply-To: "Kevin" <yobz@cornell.edu>
+From: "Kevin" <km266@cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+Subject: PAPER 10
+Date: Tue, 28 Feb 2006 12:14:53 -0500
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0003_01C63C60.94CD5750"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2527
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0003_01C63C60.94CD5750
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Samsara is a p2p file storage system that allows you to store x amount =
+of data on the network in exchange for allowing others to store x data =
+at your node.  The main idea behind Samsara is that storage is not =
+necessarily symmetric, but that it can artificially be made symmetric by =
+allowing "claims."  Consider two nodes, A and B.  A wants to store =
+something on B and in exchange for this, A sets aside storage space on =
+itself for B.  For B to ensure that A actually does this, it composes a =
+block of data equal to the size that A allocates for it and then =
+periodically checks to make sure that A is not cheating.  If A is =
+cheating then there is a chance that B will drop part of A's data on the =
+floor.  This is claimed to not be a serious issue because the =
+probability is small, especially with replicated data.  If C wants to =
+store something on A then A can give C B's claim while storing C's =
+actual data.  In this way, if B ever asks A to validate the claim, A can =
+pass this request on to C.  The more files in the system, the fewer =
+claims are needed but the longer the claim chain might end up being.
+    There seems to be numerous attacks on this system.  The first, which =
+the authors mention, is having a node only store claims.  This is =
+advantageous because the node then only gets pinged once in a while to =
+make sure it is actually storing something, thereby reducing its =
+bandwidth.  The amount of data that is being transferred between nodes =
+is huge, 32GB in most of their examples.  With this much storage, there =
+is a large incentive to try and crack the key used to generate claims.  =
+Once this key is cracked (which might take a long time, months even) =
+then you can effectively reduce storage from 32GB to practically =
+nothing.  The incentive is there because of the massive storage overhead =
+drop.  Once a node cracks one hash, it can then try again with =
+another...once a node amasses several of these, it can have hundreds of =
+gigabytes of storage set aside for less than a megabyte of local =
+storage.  Furthermore, malicious nodes can be very problematic.  If you =
+forward a claim to a node that drops it on the ground, you are punished. =
+ If you do this several times, your data (or at least part of it) is as =
+good as gone.
+
+SHARP talks about generic resource sharing (not necessarily storage as =
+in the previous paper) and how resources can be divided between sites =
+and domains.  A node can get a claim to resources from another node =
+(which may deny this claim later on).  The analogy the paper makes is an =
+airplane ticket: the airline promises a seat to you, but if the flight =
+is oversold then they might deny you boarding permission when you go to =
+claim your ticket.  These claims are unforgeable, therefore not allowing =
+you to print up a fake 'boarding pass.'  To get resources, a service =
+manager gets the site authority to give it a claim (gets the boarding =
+pass).  Then the manager tries to claim the claim for a hard-state =
+claim...basically handing in the boarding pass and then the flight crew =
+lets you onto the plane.  A hard-state claim says that resources WILL be =
+given to you.  Claims are transferable (unlike airline tickets) and/or =
+tradable.
+    The core of SHARP seems to be almost contradictory.  The hope is get =
+rid of a central agency that you trust and that must endure all of the =
+work.  To do this, they use authorities which still need to be =
+authenticated.  Having lots of these authorities is similar to having a =
+server farm, or lots of very trustworthy peers.
+
+PPay (PeerPay) is a micropayment system which tries to get rid of broker =
+load.  The paper says that all current micropayment systems are O(n) in =
+the broker, where n is the number of transactions.  The basic principle =
+is that brokers are overburdened in current systems while peers have =
+little work to do.  This does not scale well (as the number of peers =
+increases and the broker stays constant).  To help alleviate this, peers =
+become responsible for the 'coins' that they are issued by the broker.  =
+Peers can always turn their coins into the broker (therefore making the =
+system O(n) again), but there is a fee to discourage such behavior.  The =
+broker, therefore, is only involved when issuing new coins (or ranges of =
+coins, therefore reducing load even more) and when old coins come back =
+to be cashed.  It is also occasionally used for arbitration purposes and =
+for helping nodes deal with offline peers.  A peer owns a coin and that =
+can be spent by increasing the 'sequence number' and then signing it =
+over to the new node.  This new node can prove that it has the current =
+coin by showing that it has a higher sequence number.  The new node can =
+then use this coin and sends a reassignment request over to the current =
+owner of the node who sends the buyer a new assignment.  Using several =
+lemmas, the authors showed that this system is secure.
+    In the end, this system seems like it has too many loopholes.  The =
+authors constantly stress that micropayments might not need high =
+security because of the small amount of money actually being =
+transferred.  It seems easy for the owner of a node to spend a coin =
+several times.  Once a coin is cashed, his scheme will be found out and =
+then he can be punished somehow.  However, he can be offline then or =
+have given the broker a fake identity or another of other situations can =
+arise.  It seems like if the amount of money that is being dealt with is =
+truly small then it might not be worth a person's time to do this...but =
+'a small amount of money' is relative, especially when dealing with a =
+worldwide economy (imagine a person in a 3rd world country with a failed =
+economy, even micropayments may seem like a lot).  The symmetric =
+picopayment system they introduced (if actually dealing with =
+picopayments) seems like it would work well for non-monetary systems or =
+with truly fractionally tiny payments.
+
+Karma is similar to PPay, but deals with non-real-money economics.  It =
+has a super-node type setup where there are a set of nodes in the system =
+that keeps track of the level of karma in the system.  If you wanted to =
+take over the system, you would have to take over the bank-set =
+(super-nodes).  The bank set keeps track of individual users' Karma, =
+increasing or decreasing it depending on how many resources they give or =
+take.  This is to prevent freeloading in modern p2p systems.  Nodes =
+transfer part of their Karma to other nodes who then provide files or =
+other resources in exchange.  Bank sets verify that the requesting node =
+has enough Karma to give.  Signatures and other security methods are =
+engaged to prevent nodes from cheating.
+------=_NextPart_000_0003_01C63C60.94CD5750
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<DEFANGED_META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<DEFANGED_META content=3D"MSHTML 6.00.5296.0" name=3DGENERATOR>
+ <!-- <DEFANGED_STYLE> --> </DEFANGED_STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>Samsara is a p2p file storage system =
+that allows=20
+you to store x amount of data on the network in exchange for allowing =
+others to=20
+store x data at your node.&nbsp; The main idea behind Samsara is that =
+storage is=20
+not necessarily symmetric, but that it can artificially be made =
+symmetric by=20
+allowing "claims."&nbsp; Consider two nodes, A and B.&nbsp; A wants to =
+store=20
+something on B and in exchange for this, A sets aside storage space on =
+itself=20
+for B.&nbsp; For B to ensure that A actually does this, it composes a =
+block of=20
+data equal to the size that A allocates for it and then periodically =
+checks to=20
+make sure that A is not cheating.&nbsp; If A is cheating then there is a =
+chance=20
+that B will drop part of A's data on the floor.&nbsp; This is claimed to =
+not be=20
+a serious issue because the probability is small, especially with =
+replicated=20
+data.&nbsp; If C wants to store something on A then A can give C B's =
+claim while=20
+storing C's actual data.&nbsp; In this way, if B ever asks A to validate =
+the=20
+claim, A can pass this request on to C.&nbsp; The more files in the =
+system, the=20
+fewer claims are needed but the longer the claim chain might end up=20
+being.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; There seems to be =
+numerous=20
+attacks on this system.&nbsp; The first, which the authors mention, is =
+having a=20
+node only store claims.&nbsp; This is advantageous because the node then =
+only=20
+gets pinged once in a while to make sure it is actually storing =
+something,=20
+thereby reducing its bandwidth.&nbsp; The amount of data that is being=20
+transferred between nodes is huge, 32GB in most of their examples.&nbsp; =
+With=20
+this much storage, there is a large incentive to try and crack the key =
+used to=20
+generate claims.&nbsp; Once this key is cracked (which might take a long =
+time,=20
+months even) then you can effectively reduce storage from 32GB to =
+practically=20
+nothing.&nbsp; The incentive is there because of the massive storage =
+overhead=20
+drop.&nbsp; Once a node cracks one hash, it can then try again with=20
+another...once a node amasses several of these, it can have hundreds of=20
+gigabytes of storage&nbsp;set aside for less than a megabyte of local=20
+storage.&nbsp; Furthermore, malicious nodes can be very =
+problematic.&nbsp; If=20
+you forward a claim to a node that drops it on the ground, you are=20
+punished.&nbsp; If you do this several times, your data (or at least =
+part of it)=20
+is as good as gone.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>SHARP talks about generic resource =
+sharing (not=20
+necessarily storage as in the previous paper) and how resources can be =
+divided=20
+between sites and domains.&nbsp; A node can get a claim to resources =
+from=20
+another node (which may deny this claim later on).&nbsp; The analogy the =
+paper=20
+makes is an airplane ticket: the airline promises a seat to you, but if =
+the=20
+flight is oversold then they might deny you boarding permission when you =
+go to=20
+claim your ticket.&nbsp; These claims are unforgeable, therefore not =
+allowing=20
+you to print up a fake 'boarding pass.'&nbsp; To get resources, a =
+service=20
+manager gets the site authority to give it a claim (gets the boarding=20
+pass).&nbsp; Then the manager tries to claim the claim for a hard-state=20
+claim...basically handing in the boarding pass and then the flight crew =
+lets you=20
+onto the plane.&nbsp; A hard-state claim says that resources WILL be =
+given to=20
+you.&nbsp; Claims are transferable (unlike airline tickets) and/or=20
+tradable.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; The core of SHARP =
+seems to be=20
+almost contradictory.&nbsp; The hope is get rid of a central agency that =
+you=20
+trust and that must endure all of the work.&nbsp; To do this, they use=20
+authorities which still need to be authenticated.&nbsp; Having lots of =
+these=20
+authorities is similar to having a server farm, or lots of very =
+trustworthy=20
+peers.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>PPay (PeerPay) is a micropayment system =
+which tries=20
+to get rid of broker load.&nbsp; The paper says that all current =
+micropayment=20
+systems are O(n) in the broker, where n is the number of =
+transactions.&nbsp; The=20
+basic principle is that brokers are overburdened in current systems =
+while peers=20
+have little work to do.&nbsp; This does not scale well (as the number of =
+peers=20
+increases and the broker stays constant).&nbsp; To help alleviate this, =
+peers=20
+become responsible for the 'coins' that they are issued by the =
+broker.&nbsp;=20
+Peers can always turn their coins into the broker (therefore making the =
+system=20
+O(n) again), but there is a fee to discourage such behavior.&nbsp; The =
+broker,=20
+therefore, is&nbsp;only involved when issuing new coins (or ranges of =
+coins,=20
+therefore reducing load even more) and when old coins come back to be=20
+cashed.&nbsp; It is also occasionally used for arbitration purposes and =
+for=20
+helping nodes deal with offline peers.&nbsp; A peer owns a coin and that =
+can be=20
+spent by increasing the 'sequence number' and then signing it over to =
+the new=20
+node.&nbsp; This new node can prove that it has the current coin by =
+showing that=20
+it has a higher sequence number.&nbsp; The new node can then use this =
+coin and=20
+sends a reassignment request over to the current owner of the node who =
+sends the=20
+buyer a new assignment.&nbsp; Using several lemmas, the authors showed =
+that this=20
+system is secure.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; In the end, this =
+system seems=20
+like it has too many loopholes.&nbsp; The authors constantly stress that =
+
+micropayments might not need high security because of the small amount =
+of money=20
+actually being transferred.&nbsp; It seems easy for the owner of a node =
+to spend=20
+a coin several times.&nbsp; Once a coin is cashed, his scheme will be =
+found out=20
+and then he can be punished somehow.&nbsp; However, he can be offline =
+then or=20
+have given the broker a fake identity or another of other situations can =
+
+arise.&nbsp; It seems like if the amount of money that is being dealt =
+with is=20
+truly small then it might not be worth a person's time to do this...but =
+'a small=20
+amount of money' is relative, especially when dealing with a worldwide =
+economy=20
+(imagine a person in a 3rd world country with a failed economy, even=20
+micropayments may seem like a lot).&nbsp; The symmetric picopayment =
+system they=20
+introduced (if actually dealing with picopayments) seems like it would =
+work well=20
+for non-monetary systems or with truly fractionally tiny =
+payments.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Karma is similar to PPay, but deals =
+with=20
+non-real-money economics.&nbsp; It has a super-node type setup where =
+there are a=20
+set of nodes in the system that keeps track of the level of karma in the =
+
+system.&nbsp; If you wanted to take over the system, you would have to =
+take over=20
+the bank-set (super-nodes).&nbsp; The bank set keeps track of individual =
+users'=20
+Karma, increasing or decreasing it depending on how many resources they =
+give or=20
+take.&nbsp; This is to prevent freeloading in modern p2p systems.&nbsp; =
+Nodes=20
+transfer part of their Karma to other nodes who then provide files or =
+other=20
+resources in exchange.&nbsp; Bank sets verify that the requesting node =
+has=20
+enough Karma to give.&nbsp; Signatures and other security methods are =
+engaged to=20
+prevent nodes from cheating.</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0003_01C63C60.94CD5750--
+

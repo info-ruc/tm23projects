@@ -1,0 +1,72 @@
+Received: from mailgate.bssl.co.uk (bssl-76.bssl.co.uk [194.88.78.76] (may be forged))
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id GAA11302
+	for <handyboard@media.mit.edu>; Wed, 20 Oct 1999 06:01:59 -0400 (EDT)
+Received: from diamond.bssl.co.uk (diamond.bssl.co.uk) by mailgate.bssl.co.uk
+ (Content Technologies SMTPRS 4.0.1) with ESMTP id <Bc2584e4c4801a11be8@mailgate.bssl.co.uk> for <handyboard@media.mit.edu>;
+ Wed, 20 Oct 1999 10:56:20 +0100
+Received: by diamond.bssl.co.uk with Internet Mail Service (5.5.2232.9)
+	id <VCRS4PAX>; Wed, 20 Oct 1999 11:09:56 +0100
+Message-Id: <E189742EB953D2119F3000A024AB237503549A@platinum.bssl.co.uk>
+From: Russell Farnhill <r.farnhill@stor-wave.co.uk>
+To: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: port addresses
+Date: Wed, 20 Oct 1999 11:08:03 +0100
+Mime-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2232.9)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
+Hi all,
+
+I was wondering if anyone has some kind of table or list to show
+the address of all the ports and what each bit is for on each port.
+Iam asking this because I was looking through some modified sonar code
+as below and wondered how people know what address to write to and
+what value to send to that address to enable and set-up the hardware.
+
+In the code below there are lots of pokes and bit_set's to various
+addresses. Where do I find out more about these addresses and what values
+to send to them.
+
+
+Thanks Russ...
+
+
+
+void sonar_init()
+{
+	bit_set(0x1009, 0x30);		/* ddrd */
+	bit_set(0x1021, 5);		/* at tctl2,      */
+	bit_clear(0x1021, 0x0a);	/* set tic3, tic2 for rising edge */
+}
+
+int sonar_sample()
+{
+	int start_time;
+	int first, sec;
+
+	poke(0x1023, 1);    /* clear tic3 flag */
+	poke(0x1023, 2);    /* clear tic2 flag */
+
+	start_time= peekword(0x100e); /* capture start time */
+	bit_set(0x1008, 0x20);   /* trigger pulse */
+
+	while ((peek(0x1023) & 0x3) != 3)  /* wait until receive echo */
+	{
+		if ((peekword(0x100e) - start_time) < 0)
+		{
+			/* if too much time has elapsed, abort */
+   			bit_clear(0x1008, 0x20);
+   			return -1;
+		}
+		defer();     /* let others run while waiting */
+ 	}
+
+ 	bit_clear(0x1008, 0x20);  /* clear pulse trigger */
+ 
+	first = peekword(0x1014) - start_time; /* tic3 has time of echo */
+	sec = peekword(0x1012) - start_time;
+	printf("1:%d 2:%d\n", first, sec);
+	return 1;
+}
+

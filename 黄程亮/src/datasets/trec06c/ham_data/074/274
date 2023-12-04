@@ -1,0 +1,79 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id RAA09377
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 28 Nov 2000 17:53:23 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.20) by deimos.email.Arizona.EDU (5.1.046)
+        id 3A1F0EE50003CB0B for DMDX@psy1.psych.arizona.edu; Tue, 28 Nov 2000 17:53:22 -0700
+Message-Id: <5.0.0.25.2.20001128174938.009d7e20@psy1.psych.arizona.edu>
+Date: Tue, 28 Nov 2000 17:53:21 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Keyboard Accuracy
+In-Reply-To: <3A2421BE.F465FF6B@burninglotus.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 01:21 PM 11/28/00 -0800, you wrote:
+>Greetings again
+>
+>I'm told that the keyboard input is not as accurate as using a PIO card
+>and separate input device.  Can anyone give me a read on *how*
+>inaccurate it is?  If it's off my 1/1000th of a second then that may not
+>concern us as much as if it were a 1/2 second off, or even 1/100th of a
+>second off.
+
+
+   Try reading the docs, whole bunch of stuff in there, you probably want 
+the Input section ;)
+
+I have benched a number of input devices and include the results here 
+FYI.  These were gathered by using a photosensor on the screen (the only 
+way of triggering my solenoid, at the time -- I could have used a PIO line 
+if the hardware was built that way) firing a hefty 12V solenoid.  The Min 
+and Max values are the respective response times, the Min value is as high 
+as it is because it takes some time to get the solenoid moving and then 
+some time for it to push the key it's full travel distance.
+
+PIO12 microswtich       18-20ms This sets the baseline as it has the 
+minimum travel.
+PIO12 KB switch 31-33ms Longer values are due to 6mm of extra travel.
+Generic Joystick        28-31ms Polled every three ms, this small error 
+range shows the generic joysticks and gamepads are good input devices.
+MS Serial Mouse 44-50ms Without the ball.
+MS Serial Mouse 46-52ms With the ball.
+Old AT Keyboard 40-47ms
+OmniKey 102 KB  33-40ms
+Cheap Win95 KB  33-69ms A real surprise, shows that all KBs really have to 
+be tested with a solenoid before use as an RT gathering device.
+
+
+
+   And again a bit later:
+
+Keyboard:
+         508     1
+         512     35
+         513     53
+         523     7
+         524     1
+         526     152
+         527     321
+         530     1               Mean    524.4ms
+                 571             sd      5.154ms
+
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   What is the use of running when we are not on the right road.
+                                                 - German proverb
+
+
+

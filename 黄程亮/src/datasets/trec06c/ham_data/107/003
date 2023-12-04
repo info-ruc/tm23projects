@@ -1,0 +1,591 @@
+Received: from smtp-2.smtp.ucla.edu (smtp-2.smtp.ucla.edu [169.232.47.136])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j970QT5L004380
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 6 Oct 2005 17:26:29 -0700
+Received: from mail.ucla.edu (mail.ucla.edu [169.232.48.141])
+	by smtp-2.smtp.ucla.edu (8.13.4/8.13.4) with ESMTP id j970QSe8030067
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 6 Oct 2005 17:26:28 -0700
+Received: from ian ([164.67.36.96])
+	(authenticated bits=0)
+	by mail.ucla.edu (8.13.4/8.13.4) with ESMTP id j970QRZc006808
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 6 Oct 2005 17:26:27 -0700
+From: "Ian Mathis" <mathis@ucla.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] Salvaging data
+Date: Thu, 6 Oct 2005 17:20:03 -0700
+Message-ID: <000301c5cad4$dcac3d00$602443a4@PSYCHOPHYS>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0004_01C5CA9A.304D6500"
+In-Reply-To: <002601c5cac2$06605590$602443a4@PSYCHOPHYS>
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0004_01C5CA9A.304D6500
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+One last question.  Is there any way to determine when the output was sent
+relative to the sound onset in the data collected without using the <svp
+start> keyword?  Was the output being sent at the end of the wav file or at
+some consistent point during the wav file.
+
+ 
+
+Ian
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+  _____  
+
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of Ian Mathis
+Sent: Thursday, October 06, 2005 3:05 PM
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] RE: Re: output latency
+
+ 
+
+Thanks for the help, guys.  I've tested the latency of the sound card
+before, and it has been fairly small and stable.  I will check it again
+today to make sure.
+
+ 
+
+I've altered the script to include the <svp start> keyword:
+
+ 
+
+1         <ms% 3000> o1 <jpg> "1050" / <ms% 3000> <wav 2> "wnprobe" <svp
+start> o96 /;
+
+ 
+
+As I understand the documentation, this current configuration would mean
+that "wnprobe" will start playing when 96 is output, as is desired.  Is this
+a correct reading?
+
+ 
+
+Ian
+
+ 
+
+  _____  
+
+From: DMDX-owner@psy1.psych.arizona.edu
+[mailto:DMDX-owner@psy1.psych.arizona.edu] On Behalf Of John Curtin
+Sent: Thursday, October 06, 2005 6:35 AM
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] Re: output latency
+
+ 
+
+Ian,
+
+I am assuming that you are measuring startle.  The svp start that Jonathan
+indicated will synch up the request to play the sound with the output.
+However, you should also  know that in our testing, sound cards varied quite
+dramatically in how long the delay was between that request and the actual
+start of the sound (in your case the noise probe).  Perhaps more troubling,
+for some cards, that delay was not only long, but quite variable trial to
+trial ( e.g., range from 4 - 20 ms for one card), which would really screw
+up your ability to measure startle latency if you care about it (and your
+ability to average startle waveforms if you reduce startle that way).  You
+can test this most easily for you card by sending the output of your sound
+card to an analog channel on your physio amplifiers and verifying its onset
+relative to the trigger code you are outputting.  Hope that helps. 
+
+ 
+
+J
+
+ 
+
+On 10/5/05, Ian Mathis <mathis@ucla.edu> wrote: 
+
+Hi list.
+I have a question about the timing of outputs in a frame.
+
+I am presenting white noise probes of 50 ms duration and sending a 
+corresponding trigger code to the data acquisition computer using DMDX.  The
+measured latencies of the physiological responses we are getting don't
+really make sense, and I am trying to figure out what's going on. 
+
+Here is a line that presents the probe and sends the output:
+2         <ms% 5000> o8 <jpg> "6510" / <ms% 1000> o96 <wav 2> "wnprobe"/;
+
+As far as I can tell, the output of "96" is sent at the onset of the wav 
+"wnprobe."  Is this correct?
+
+Our data seems to imply that the output might be coming after the probe is
+played, but that doesn't make sense to me.
+
+Thanks for your help.
+
+Ian
+
+
+
+Kristopher Ian Mathis, M.A.
+Graduate Student, Clinical Psychology
+Dept. of Psychology, UCLA
+
+====================================================================
+  Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+'unsubscribe' by itself with no quotes in the body of the email
+to be removed from the list.  The list archive is available here:
+         http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+====================================================================
+
+
+
+
+-- 
+John J. Curtin, Ph.D. 
+Assistant Professor of Psychology 
+University of Wisconsin 
+1202 West Johnson St. 
+Madison, WI 53706 
+
+Email: jjcurtin@wisc.edu 
+Website: http://dionysus.psych.wisc.edu <http://dionysus.psych.wisc.edu/>  
+Office: 608-262-0387 
+Lab: 608-262-5621 
+Cell: 608-217-6221 
+Fax: 608-262-4029 
+
+
+------=_NextPart_000_0004_01C5CA9A.304D6500
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:st1=3D"urn:schemas-microsoft-com:office:smarttags" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]--><o:SmartTagType
+ namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags" =
+name=3D"PostalCode"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"State"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"City"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"Street"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"address"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"place"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"PlaceType"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"PlaceName"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"PersonName"/>
+<!--[if !mso]>
+<style>
+st1\:*{behavior:url(#default#ieooui) }
+</style>
+<![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:blue;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal;
+	font-family:Arial;
+	color:navy;}
+span.EmailStyle19
+	{mso-style-type:personal-reply;
+	font-family:Arial;
+	color:navy;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext=3D"edit">
+  <o:idmap v:ext=3D"edit" data=3D"1" />
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dblue>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>One last question.&nbsp; Is there =
+any way
+to determine when the output was sent relative to the sound onset in the =
+data
+collected without using the &lt;svp start&gt; keyword?&nbsp; Was the =
+output
+being sent at the end of the wav file or at some consistent point during =
+the
+wav file.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>Ian<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<div>
+
+<div class=3DMsoNormal align=3Dcenter style=3D'text-align:center'><font =
+size=3D3
+face=3D"Times New Roman"><span style=3D'font-size:12.0pt'>
+
+<hr size=3D2 width=3D"100%" align=3Dcenter tabindex=3D-1>
+
+</span></font></div>
+
+<p class=3DMsoNormal><b><font size=3D2 face=3DTahoma><span =
+style=3D'font-size:10.0pt;
+font-family:Tahoma;font-weight:bold'>From:</span></font></b><font =
+size=3D2
+face=3DTahoma><span style=3D'font-size:10.0pt;font-family:Tahoma'>
+DMDX-owner@psy1.psych.arizona.edu =
+[mailto:DMDX-owner@psy1.psych.arizona.edu] <b><span
+style=3D'font-weight:bold'>On Behalf Of </span></b>Ian Mathis<br>
+<b><span style=3D'font-weight:bold'>Sent:</span></b> Thursday, October =
+06, 2005
+3:05 PM<br>
+<b><span style=3D'font-weight:bold'>To:</span></b> <st1:PersonName =
+w:st=3D"on">DMDX@psy1.psych.arizona.edu</st1:PersonName><br>
+<b><span style=3D'font-weight:bold'>Subject:</span></b> [DMDX] RE: Re: =
+output
+latency</span></font><o:p></o:p></p>
+
+</div>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>Thanks for the help, guys.&nbsp;
+I&#8217;ve tested the latency of the sound card before, and it has been =
+fairly
+small and stable.&nbsp; I will check it again today to make =
+sure.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>I&#8217;ve altered the script to =
+include
+the &lt;svp start&gt; keyword:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal style=3D'text-autospace:none'><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>1&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;
+&lt;ms% 3000&gt; o1 &lt;jpg&gt; &quot;1050&quot; / &lt;ms% 3000&gt; =
+&lt;wav
+2&gt; &quot;wnprobe&quot; &lt;svp start&gt; o96 =
+/;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>As I understand the documentation, =
+this
+current configuration would mean that &#8220;wnprobe&#8221; will start =
+playing
+when 96 is output, as is desired.&nbsp; Is this a correct =
+reading?<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>Ian<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<div>
+
+<div class=3DMsoNormal align=3Dcenter style=3D'text-align:center'><font =
+size=3D3
+face=3D"Times New Roman"><span style=3D'font-size:12.0pt'>
+
+<hr size=3D2 width=3D"100%" align=3Dcenter tabindex=3D-1>
+
+</span></font></div>
+
+<p class=3DMsoNormal><b><font size=3D2 face=3DTahoma><span =
+style=3D'font-size:10.0pt;
+font-family:Tahoma;font-weight:bold'>From:</span></font></b><font =
+size=3D2
+face=3DTahoma><span style=3D'font-size:10.0pt;font-family:Tahoma'>
+DMDX-owner@psy1.psych.arizona.edu =
+[mailto:DMDX-owner@psy1.psych.arizona.edu] <b><span
+style=3D'font-weight:bold'>On Behalf Of </span></b><st1:PersonName =
+w:st=3D"on">John
+ Curtin</st1:PersonName><br>
+<b><span style=3D'font-weight:bold'>Sent:</span></b> Thursday, October =
+06, 2005
+6:35 AM<br>
+<b><span style=3D'font-weight:bold'>To:</span></b> <st1:PersonName =
+w:st=3D"on">DMDX@psy1.psych.arizona.edu</st1:PersonName><br>
+<b><span style=3D'font-weight:bold'>Subject:</span></b> [DMDX] Re: =
+output latency</span></font><o:p></o:p></p>
+
+</div>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<div>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Ian,<o:p></o:p></span></font></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>I am assuming that you are measuring startle.&nbsp; The svp =
+start that
+Jonathan indicated will synch up the request to play the sound with the
+output.&nbsp; However, you should also&nbsp; know that in our testing, =
+sound
+cards varied quite dramatically in how long the delay was between that =
+request
+and the actual start of the sound (in your case the noise probe).&nbsp; =
+Perhaps
+more troubling, for some cards, that delay was not only long, but quite
+variable trial to trial ( e.g., range from 4 - 20 ms for one card), =
+which would
+really screw up your ability to measure startle latency if you care =
+about it
+(and your ability to average startle waveforms if you reduce startle =
+that
+way).&nbsp; You can test this most easily for you card by sending the =
+output of
+your sound card to an analog channel on your physio amplifiers and =
+verifying
+its onset relative to the trigger code you are outputting.&nbsp; Hope =
+that
+helps. <o:p></o:p></span></font></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&nbsp;<o:p></o:p></span></font></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>J<br>
+<br>
+&nbsp;<o:p></o:p></span></font></p>
+
+</div>
+
+<div>
+
+<p class=3DMsoNormal><span class=3Dgmailquote><font size=3D3 =
+face=3D"Times New Roman"><span
+style=3D'font-size:12.0pt'>On 10/5/05, <b><span =
+style=3D'font-weight:bold'>Ian
+Mathis</span></b> &lt;<a =
+href=3D"mailto:mathis@ucla.edu">mathis@ucla.edu</a>&gt;
+wrote:</span></font></span> <o:p></o:p></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>Hi list.<br>
+I have a question about the timing of outputs in a frame.<br>
+<br>
+I am presenting white noise probes of 50 ms duration and sending a <br>
+corresponding trigger code to the data acquisition computer using
+DMDX.&nbsp;&nbsp;The<br>
+measured latencies of the physiological responses we are getting =
+don't<br>
+really make sense, and I am trying to figure out what's going on. <br>
+<br>
+Here is a line that presents the probe and sends the output:<br>
+2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ms% 5000&gt; o8
+&lt;jpg&gt; &quot;6510&quot; / &lt;ms% 1000&gt; o96 &lt;wav 2&gt;
+&quot;wnprobe&quot;/;<br>
+<br>
+As far as I can tell, the output of &quot;96&quot; is sent at the onset =
+of the
+wav <br>
+&quot;wnprobe.&quot;&nbsp;&nbsp;Is this correct?<br>
+<br>
+Our data seems to imply that the output might be coming after the probe =
+is<br>
+played, but that doesn't make sense to me.<br>
+<br>
+Thanks for your help.<br>
+<br>
+Ian<br>
+<br>
+<br>
+<br>
+Kristopher Ian Mathis, M.A.<br>
+Graduate Student, Clinical Psychology<br>
+Dept. of Psychology, UCLA<br>
+<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+&nbsp;&nbsp;Send mail to <a =
+href=3D"mailto:DMDX-request@psy1.psych.arizona.edu">DMDX-request@psy1.psy=
+ch.arizona.edu</a>
+with the word<br>
+'unsubscribe' by itself with no quotes in the body of the email<br>
+to be removed from the list.&nbsp;&nbsp;The list archive is available =
+here:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
+href=3D"http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread">http://psy1.ps=
+ych.arizona.edu/cgi-bin/DMDX/thread</a><br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<o:p></o:p></span><=
+/font></p>
+
+</div>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><br>
+<br clear=3Dall>
+<br>
+-- <br>
+John J. Curtin, Ph.D. <br>
+Assistant Professor of <st1:PlaceName =
+w:st=3D"on">Psychology</st1:PlaceName> <br>
+<st1:PlaceType w:st=3D"on">University</st1:PlaceType> of <st1:place =
+w:st=3D"on">Wisconsin</st1:place>
+<br>
+<st1:Street w:st=3D"on"><st1:address w:st=3D"on">1202 West Johnson =
+St</st1:address></st1:Street>.
+<br>
+<st1:place w:st=3D"on"><st1:City w:st=3D"on">Madison</st1:City>, =
+<st1:State w:st=3D"on">WI</st1:State>
+ <st1:PostalCode w:st=3D"on">53706</st1:PostalCode></st1:place> <br>
+<br>
+Email: <a href=3D"mailto:jjcurtin@wisc.edu">jjcurtin@wisc.edu</a> <br>
+Website: <a =
+href=3D"http://dionysus.psych.wisc.edu/">http://dionysus.psych.wisc.edu
+</a><br>
+Office: 608-262-0387 <br>
+Lab: 608-262-5621 <br>
+Cell: 608-217-6221 <br>
+Fax: 608-262-4029 <o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_0004_01C5CA9A.304D6500--
+
+

@@ -1,0 +1,66 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1G6DXt15951
+	for <egs@cs.cornell.edu>; Thu, 16 Feb 2006 01:13:33 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k1G6DWRj008397
+	for <egs@cs.cornell.edu>; Thu, 16 Feb 2006 01:13:32 -0500 (EST)
+Received: from 24.59.114.243
+        by webmail.cornell.edu with HTTP;
+        Thu, 16 Feb 2006 01:13:32 -0500 (EST)
+Message-ID: <1532.24.59.114.243.1140070412.squirrel@webmail.cornell.edu>
+Date: Thu, 16 Feb 2006 01:13:32 -0500 (EST)
+Subject: paper 7
+From: "Theodore Ming Shiuan Chao" <tc99@cornell.edu>
+To: egs@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Mercury and P-Trees both address the issue of DHT's only allowing equality
+lookups  on objects because the nature of consistent hashing makes it
+impossible to resolve  range queries.
+P-Trees are made of nodes that store semi-independent B+-Trees of only the
+ left-most root-to-leaf path, with the current node viewing its value as
+the  smallest for the B+-Tree that it maintains (since the values are
+organized in a  looping ring, any arbitrary value can be set as the
+smallest). Routing range  queries are done by forwarding to the node with
+the largest value less than the  lower bound in the partial B+-Tree
+maintained at the current node. Once that node  becomes at the lowest
+level of the B+-Tree, routing becomes a straight-forward  traversal of the
+ring until it surpasses the upper bound of the query.
+If the tree is consistent, then the search for the lower bound takes O(log
+N)  steps.
+Mercury also maintains the values of attributes in a ring-based topology.
+However,  whereas the nodes in P-Trees each is a unique value, the nodes
+in a Mercury hub are  responsible for contiguous ranges of values. Each
+node stores several long-distance  pointers to nodes responsible for other
+ranges, and several pointers to nodes in  other hubs (of other
+attributes), and routing is just done on a single hub (picked  using some
+criteria) to closest clockwise distance to the lower bound. To detect  and
+deal with potential load imbalances within a hub, Mercury uses a (log n)
+TTL  random sampling and moves nodes from low-load regions to high-load
+regions when it  finds imbalances.
+
+Given the horrendous performance of the ValueLink of non-uniform ranges,
+it is a  wonder they didn't put more emphasis on harmonic distribution of
+the long-distance  links over the number of links (NodeLink) instead.
+Further more, they maintain that  the random sampling will converge to a
+distribution with value widths inversely  proportional to the
+popularity... but offer no analysis of the time required for  it, or the
+cost expectancy of it.
+In P-Trees, the values are stored in the nodes themselves. While it allows
+for  range queries, the implementation outlined in the paper does not
+allow for a  mapping of objects onto nodes.
+Furthermore, neither of the papers investigates what would happen if an
+object's  value changes. In P-Trees, it seems like the node would have to
+be removed and  reinserted every time. Since the changing of the value
+would require rebuilding the  affected partial B+-trees, there is probably
+no other way to handle it. In Mercury,  the handling of this issue seems
+more robust as objects are merely placed along a  ring. All changing the
+value would do would be to change the node responsible for  the object,
+and possibly require a redistribution of load that would be handled by 
+the random sampling.
+

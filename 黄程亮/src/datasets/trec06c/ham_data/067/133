@@ -1,0 +1,66 @@
+Received: from trifid.u.arizona.edu (root@trifid.U.Arizona.EDU [128.196.137.197])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id JAA07920
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 4 May 2000 09:40:05 -0700
+Received: from homebox.u.arizona.edu (uofa-dsl-17.dakotacom.arizona.edu [150.135.175.17])
+	by trifid.u.arizona.edu (8.8.8/8.8.8) with ESMTP id JAA05102
+	for <DMDX@psy1.psych.arizona.edu>; Thu, 4 May 2000 09:40:04 -0700
+Message-Id: <4.3.1.0.20000504092640.00a74da0@psy1.psych.arizona.edu>
+Date: Thu, 04 May 2000 09:40:03 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Video cards & timing.
+In-Reply-To: <4.3.1.2.20000504105858.00ab6100@cassius.its.unimelb.edu.au
+ >
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 12:00 PM 5/4/00 +1000, you wrote:
+>Dear All,
+>
+>I am new to DMDX, but my experience so far been most enjoyable. Many 
+>thanks! I believe it will become a very valuable research tool within our lab.
+>I have two questions that I'm hoping someone will be able to help me with:
+>
+>1.      I have a slave computer which needs to run both DMDX and VPM. The 
+>difficulty is in finding a video card which has both the DOS utilities 
+>required by VPM and the windows requirements of DMDX, especially a decent 
+>amount of on board memory. We have an STB Nitro 3D which seems to do the 
+>job with 4Mb, but still seems to produce quite a few timing errors when I 
+>run *.bmp masking experiments. Does anyone have any suggestions?
+
+   Would have thought absolutely all video cards made these days provided 
+good DOS support, certainly every one I have from NVIDIA does.  The timing 
+errors you are running into are probably caused by there not being enough 
+time to move the next frame into memory because you are using a 
+prohibitively deep display mode (unless of course you are using a D 
+parameter in which case stop using it).  For instance at 1024x768x16 there 
+is only one extra frame buffer in 4M of video memory so DMDX must always 
+have to move the next frame into video memory in the time that the previous 
+frame is displayed, difficult if that frame is a prime that is displayed 
+for a couple of ticks.  Using 800x600x16 frees up another back buffer so 
+DMDX has two frames in which to move the data, 640x640x16 frees up even 
+more.  In any event, unless your VPM program is using register level access 
+for a specific chipset (in which case it's not DOS level compatibility that 
+you need but a chipset compatibility and my guess is you'll never find it) 
+I'd be surprised if any 16M video card that you picked up didn't solve your 
+problems, they all provide VESA 1.2 (or better) support and are all 
+register compatible with the standard VGA chipset, beyond that there is no 
+more to DOS compatibility.
+
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+First Law of Bicycling:
+	No matter which way you ride, it's uphill and against the
+wind.
+
+
+

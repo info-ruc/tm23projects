@@ -1,0 +1,58 @@
+Received: from hotmail.com (law-f204.hotmail.com [209.185.130.114])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with SMTP id OAA25410
+	for <handyboard@media.mit.edu>; Sat, 28 Aug 1999 14:21:26 -0400 (EDT)
+Received: (qmail 75845 invoked by uid 0); 28 Aug 1999 18:20:56 -0000
+Message-Id: <19990828182056.75844.qmail@hotmail.com>
+Received: from 209.170.135.37 by www.hotmail.com with HTTP;
+	Sat, 28 Aug 1999 11:20:55 PDT
+X-Originating-Ip: [209.170.135.37]
+From: "Alex Stewart" <robotman5@hotmail.com>
+To: handyboard@media.mit.edu
+Subject: servo speed problem
+Date: Sat, 28 Aug 1999 11:20:55 PDT
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+
+Hi All
+
+	I recentlly hacked to servo motors  for continues rotation, when i loaded 
+the dual servo motor drivers up and turned on the bot it started out going 
+straight for about 0.5 a sec then started vering left I ve tried on difernt 
+surfaces ,  tried in software to even it out , thers nothing on the frame to 
+make it go left ,( its a talrik junior frame from mekatronix) at looking at 
+the left servo it was going slower, could it be the program im runing is to 
+blame :
+void main()
+{
+	servo_a7_init(1);
+servo_a5_init(1);
+while(1)
+{
+while(digital(5) == 1)
+{
+	servo_a7_pulse = 7000;
+	 servo_a5_pulse = 1000;
+}
+
+while(digital(5) == 0 )
+{
+	servo_a7_pulse = 1000;
+	sleep(0.9);
+	servo_a5_pulse = 7000;
+}
+}
+}
+
+I know the servo pulses seem like it would make the bot continuesly turn but 
+Mr.Robot (place got hacked servos from) did something werid to one of them , 
+I give it a 7000 to go forward like its brother does and all the other 
+servos i tries and it goes backwords , this is the servo I have running 
+forwad all the time the problem servo is the one thats beeing reversed at a 
+obstacle ,, Could all this be both servo s are fried and i should get more
+
+any thax for you help
+Alex
+
+______________________________________________________
+Get Your Private, Free Email at http://www.hotmail.com
+

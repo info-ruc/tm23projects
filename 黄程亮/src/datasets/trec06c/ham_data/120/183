@@ -1,0 +1,66 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k35DLpt23102
+	for <egs+summary@cs.cornell.edu>; Wed, 5 Apr 2006 09:21:51 -0400 (EDT)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k35DLmw7003620
+	for <egs+summary@cs.cornell.edu>; Wed, 5 Apr 2006 09:21:49 -0400 (EDT)
+Received: from 132.236.227.192
+        by webmail.cornell.edu with HTTP;
+        Wed, 5 Apr 2006 09:21:49 -0400 (EDT)
+Message-ID: <1431.132.236.227.192.1144243309.squirrel@webmail.cornell.edu>
+Date: Wed, 5 Apr 2006 09:21:49 -0400 (EDT)
+Subject: PAPER 18
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+Qiu and Srikant present an analysis of BitTorrent like networks in
+"Modeling and Performance Analysis of BitTorrent-Like Peer-to-Peer
+Networks".  "BitTorrent like networks" means that files are divided into
+chunks which are downloaded from seeds.  Additionally downloaders can
+download chunks from each other even if they don't have the entire file.
+Qiu and Srikant develop a model to explore peer evolution, scalability,
+file sharing efficiency and incentives to participate.  This is a fluid
+model which captures the number of seeds, downloaders, arrival rate of
+downloaders, uploading and downloading bandwidth, rate at which
+downloaders and seeds leave the system.
+
+An important aspect of the system is the efficiency which is characterized
+by eta ranging from 0 to 1.  At eta=0 downloaders do not upload.  At eta=1
+all downloaders are uploading to each other.  This is an important aspect
+because this is an important contribution of BitTorrent: that downloaders
+are able to improve system performance because they can be uploaders as
+they download the files.  Qiu and Srikant show that in BitTorrent, if all
+peers follow the protocol, eta approaches 1 with N and the number of
+uploading connections.  The model is also used to show that the uploading
+bandwidth of the system grows with the number of downloaders and in fact
+the download bandwidth of each peer is independent of the number of
+downloaders and so the system is very scalable.  Another important
+contribution of the paper is an analysis of the Nash equilibrium of agents
+in such a system.  In fact, if optimistic unchoking is ignored, each peer
+would upload as much as possible in order to maximize downloading (due to
+incentives in the BitTorrent protocol).  However, optimistic unchoking
+could lead to free-riders (since it allows peers to download without
+uploading), but further analysis shows that this will only utilize a
+fraction (small given BitTorrent parameters) of the bandwidth possible if
+peers do upload.  This analysis suggests that BitTorrent is efficient,
+scalable and provides good incentives for participation (if maximizing
+download bandwidth is more important than minimizing upload bandwidth).
+
+Simulation shows that in many cases the model accurately characterizes the
+number of seeds and downloaders (for large downloader arrival rates).  An
+analysis of a real trace shows that some significant deviation from the
+model exists.  Qiu and Srikant argue that this deviation is within
+expected 95% confidence intervals from the predicted values of number of
+seeds and downloaders.  Further, they argue that the file they considered
+was unpopular and therefore did not exhibit high enough downloder arrival
+rates to fit the model well.  Qiu and Srikant also note that while they
+characterized downloader arrival and seed departure by poisson processes,
+a constant parameter for these distributions was not observed in a real
+trace.
+

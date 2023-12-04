@@ -1,0 +1,76 @@
+Received: from postoffice10.mail.cornell.edu (postoffice10.mail.cornell.edu [132.236.56.14])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k2SFBBY28441
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 10:11:11 -0500 (EST)
+Received: from webmail.cornell.edu (hermes21.mail.cornell.edu [132.236.56.20])
+	by postoffice10.mail.cornell.edu (8.12.10/8.12.6) with ESMTP id k2SFB9w0018304
+	for <egs+summary@cs.cornell.edu>; Tue, 28 Mar 2006 10:11:09 -0500 (EST)
+Received: from 132.236.227.119
+        by webmail.cornell.edu with HTTP;
+        Tue, 28 Mar 2006 10:11:10 -0500 (EST)
+Message-ID: <1680.132.236.227.119.1143558670.squirrel@webmail.cornell.edu>
+Date: Tue, 28 Mar 2006 10:11:10 -0500 (EST)
+Subject: PAPER 16
+From: "Nicholas S Gerner" <nsg7@cornell.edu>
+To: egs+summary@cs.cornell.edu
+User-Agent: SquirrelMail/1.4.5
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+
+EigenTrust is an algorithm for efficiently computing global trust values
+from local trust values in a distributed way.  Specifically, EigenTrust
+considers the matrix of local trust vectors from each peer.  The left
+principle eigen vector of this matrix represents the global trust vector
+for the system as a whole when trust values are aggregated by weighted
+sum, where the local trust values of each peer are weighted by how much
+that peer is trusted throughout the network.  The EigenTrust algorithm is
+distributed such that every peer has a set of other peers calculating its
+trust value and each peer is responsible for calculating the trust value
+of some number of other peers.  To retrieve a trust value for a peer, a
+node uses consistent hashing (under a number of hash functions) and does
+majority voting to determine the trust value of the peer in question. 
+This computation and some additional mechanisms allow EigenTrust to
+address malicious collectives and malicious trust computations.  The paper
+goes on to suggest ways to use global trust values (file sharing
+credibility) and simulates this application with very positive results
+under a number of threat models.  However, the distributed computation
+relies on each node correctly reporting the set of peers which have
+downloaded files from the node in order to get the relevant local trust
+values to compute the global trust value.  It seems as if a malicious node
+could have a relatively small collective and, despite its actual
+behaviour, report that this collective holds all the relevant local trust
+values.  These could incorrectly boost the malicous node's trust value
+(and all the negative trust values will never be taken into account). 
+Also the suggested application will penalize malicous nodes which upload
+inauthentic files, but will not, as is suggested by the paper, address the
+free-rider problem since the trust score is used only for choosing a peer
+to download from.  In fact, it seems as if nodes have incentive to upload
+inauthentic files so they will be less burdened with many file uploads
+(although the paper does show that some degree of load balancing can be
+achieved at least among well trusted nodes).
+
+In "A Roubust Reputation System..." Buchegger and Le Boudec present a
+reputation and trust system for mobile ad hoc networks.  This system uses
+first hand reports to aggregate wider reputation and trust scores.  These
+scores identify misbehavior and trustworthiness (respectively)
+independently.  Buchegger and Le Boudec argue that these are problems
+which can be characterized differently and should be addressed separately.
+ The approach is probabalistic in that it models behavior and credibility
+by two parameters which can be drawn from Beta distributions.  These
+distributions are parameterized and these parameters are altered by first
+and second -hand observations.  The degree to which second-hand
+observations are considered is altered by the trustworthiness of a peer
+(untrustworthy peers are ignored unless their report doesn't significantly
+deviate from the wider aggregate).  The specific application suggested is
+for use in mobile ad hoc networks in order to utilize or ignore neighbors
+during routing or other network services.  An evaluation indicates that
+using this system (specifically using second-hand reports) can cut
+misbehaviour detection time by more than a half.  However, the application
+is not well motivated in this paper and further applications are not
+considered.  It's not clear how well such a system would perform in a very
+mobile environment or with high churn as the reputation and trust still
+take time to accumulate and are not aggregated system wide (first-hand
+reports are only published to immediate neighbors).
+

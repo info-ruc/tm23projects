@@ -1,0 +1,83 @@
+Received: from golem.hagener-tgz.de (golem.hagener-tgz.de [193.175.168.3])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id PAA03999
+	for <handyboard@media.mit.edu>; Mon, 1 Mar 1999 15:18:34 -0500 (EST)
+Received: from hagener-tgz.de (ygramul40.hagener-tgz.de [193.175.168.104])
+	by golem.hagener-tgz.de (8.8.8/8.8.8) with ESMTP id VAA32175;
+	Mon, 1 Mar 1999 21:16:04 +0100
+Message-Id: <36DAF62B.EAFE61F9@hagener-tgz.de>
+Date: Mon, 01 Mar 1999 21:18:51 +0100
+From: Simon Schulz <Simon.Schulz@hagener-tgz.de>
+X-Mailer: Mozilla 4.5 [de]C-CCK-MCD QXW03207  (Win95; I)
+X-Accept-Language: de,en
+Mime-Version: 1.0
+To: "Russell, Casey" <crussell@osec.com>,
+        handyboard <handyboard@media.mit.edu>
+Subject: Re: serial communications
+References: <D1C6ABF12D15D1119A2D006097BCFD4618B8C8@osec102.erols.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+some days ago i played with this too. i send you my files ...
+hope it helps ;)
+
+/* beginning of serial.c */
+
+int char1;
+
+void disable_pcode_serial()   /* necessary to receive characters using
+serial_getchar */
+{
+   poke(0x3c, 1);
+}
+
+void reenable_pcode_serial()   /* necessary for IC to interact with board
+again */
+{
+   poke(0x3c, 0);
+}
+
+int serial_getchar()
+{
+   while ((!(peek(0x102e) & 0x20))&&(!start_button())); /* wait for received
+character */
+   return peek(0x102f);
+}
+
+void serial_putchar(int c)
+{
+   while (!(peek(0x102e) & 0x80));  /* wait until serial transmit empty */
+   poke(0x102f, c);             /* send character */
+}
+/* beginning of my work below !*/
+
+void echo() {
+        /* echo looks for a received char and sends it twice back */
+        disable_pcode_serial();
+
+        while (!start_button()) {
+                char1=serial_getchar();
+
+                 /* prints the actual char , the last char and the ascii
+numbers in brakes on screen */
+                printf("Actual:%c(%d)
+Last:%c(%d)\n",char1,char1,char1,char1);
+
+                serial_putchar(char1);
+                serial_putchar(char1);
+        }
+        reenable_pcode_serial();
+        printf("PCODE-SERiAL ENABLED!");
+}
+
+/* end of file */
+
+just check out the echo(); function . it waits for a send character
+(transmitted by hyper term win95) and sends
+it backk twice.
+hope i have no errors in the code, cause  i rewrote it for you because i
+already modified my version.
+hope it helps !
+
+bye, Simon
+
+

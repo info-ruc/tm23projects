@@ -1,0 +1,44 @@
+Received: from wilkes.csl.cornell.edu (wilkes.csl.cornell.edu [132.236.71.69])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4IjO623961
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 13:45:24 -0500 (EST)
+Received: (from daehyun@localhost)
+	by wilkes.csl.cornell.edu (8.9.3/8.9.2) id NAA76352
+	for egs@cs.cornell.edu; Tue, 4 Dec 2001 13:45:19 -0500 (EST)
+	(envelope-from daehyun)
+From: Daehyun Kim <daehyun@csl.cornell.edu>
+Message-Id: <200112041845.NAA76352@wilkes.csl.cornell.edu>
+Subject: 615 PAPER 69
+To: egs@CS.Cornell.EDU
+Date: Tue, 4 Dec 2001 13:45:19 -0500 (EST)
+X-Mailer: ELM [version 2.4ME+ PL54 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+This paper presents Bayeux which is an efficient application-level
+multicast system that scales to arbitrarily large receiver groups while
+tolerating failures in routers and network links. Bayeux is base on
+Tapestry.
+
+Streaming multimedia applications are growing at an incredible rate
+and they require a large scale multicast mechanism. Using unicast
+mechanism for this purpose is completely impractical.
+Bayeux is an efficient, source-specific, explicit-join, application-level
+multicast system. It combines randomness for load balancing with locality
+for efficient use of network bandwidth. It is based on Tapestry which
+uses a prefix-based routing scheme and provides a simple protocol which
+organizes the multicast receivers into a distribution tree.
+
+Bayeux multicast session is identified by a tuple <session name, UID>.
+It maps the tuple into a 160 bit identifier by SHA-1 and create a file
+with that identifier and place it on the root node. Then, it advertises
+the document by the Tapestry's data location services. Client that wants
+to join a session performs the same operations to generate the file name
+and query for it using Tapestry. Then the root node receives this message
+and allows it to perform the required membership operations. A member
+joins the session by sending a JOIN message to the root, which then replies
+with a TREE message. When a router receives a TREE message, it adds the
+new member ID to the list of receiver IDs and updates the forward table.
+For leaving the session, the similar operations are performed with LEAVE
+and PRUNE messages.
+

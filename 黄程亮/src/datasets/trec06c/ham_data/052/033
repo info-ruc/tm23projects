@@ -1,0 +1,105 @@
+Received: from cosrel1.hp.com (cosrel1.hp.com [156.153.255.170])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id MAA21128
+	for <handyboard@media.mit.edu>; Thu, 9 Sep 1999 12:42:27 -0400 (EDT)
+Received: from a4442pre.esr.hp.com (root@a4442pre.esr.hp.com [15.32.151.14])
+	by cosrel1.hp.com (8.8.6 (PHNE_17135)/8.8.5tis) with ESMTP id KAA11165
+	for <handyboard@media.mit.edu>; Thu, 9 Sep 1999 10:42:34 -0600 (MDT)
+Received: from cup.hp.com (dhcproc4442f81.esr.hp.com [15.32.149.81]) by a4442pre.esr.hp.com with ESMTP (8.8.6 (PHNE_14041)/8.7.3 TIS Messaging 5.0) id JAA01854 for <handyboard@media.mit.edu>; Thu, 9 Sep 1999 09:42:11 -0700 (PDT)
+Message-Id: <37D7E831.AE3DDA3B@cup.hp.com>
+Date: Thu, 09 Sep 1999 13:02:41 -0400
+From: Victor DaCruz <vdacruz@cup.hp.com>
+Organization: Hewlett Packard
+X-Mailer: Mozilla 4.51 [en] (Win98; I)
+X-Accept-Language: en
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Conveting ASM files to ICB
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+
+Hello,
+
+I have not been able to successfully convert ASM files to the ICB format
+to use with Interactive C. As a test I tried to convert servo_a5.icb to
+servo_a5.asm, this is what I got. The file cannot be loaded into IC. Any
+suggestions?
+
+script (as11_ic)
+----------------
+
+copy %1.asm %1.c
+
+gcc -E -traditional -DZERO_PAGE_START=$10 -DMAIN_START=$8020 -o
+ascpp1.asm %1.c
+gcc -E -traditional -DZERO_PAGE_START=$13 -DMAIN_START=$872B -o
+ascpp2.asm %1.c
+as11 ascpp1.asm
+as11 ascpp2.asm - cre > ascpp.cre    <===== this line seems to be
+failing
+
+copy ascpp1.s19+ascpp2.s19+ascpp.cre %1.icb
+
+
+
+output:
+------
+
+
+S1238020000000CEBF00CC8056EDE4CC0A00FD80205FCE10005D271AEC0EF38020ED1A1C3E
+
+S123804020301C0B201D20101C23201C22207F8022391D222039CE10001D23DF7D80222647
+
+S123806010EC1AC39C40B38020ED1A8601B780223BEC1AF38020ED1A1C20301C0B201D2042
+
+S1088080107F80223B8B
+S9030000FC
+S123872B000000CEBF00CC8761EDE4CC0A00FD872B5FCE10005D271AEC0EF3872BED1A1CF6
+
+S123874B20301C0B201D20101C23201C22207F872D391D222039CE10001D23DF7D872D2611
+
+S123876B10EC1AC39C40B3872BED1A8601B7872D3BEC1AF3872BED1A1C20301C0B201D20FA
+
+S108878B107F872D3B67
+S9030000FC
+6811 assembler version 2.1  10-Aug-91
+  please send bugs to Randy Sargent (rsargent@athena.mit.edu)
+  original program by Motorola.
+"servo_a5.c"(67): Warning --- Value Truncated
+"servo_a5.c"(69): Warning --- Value Truncated
+"servo_a5.c"(96): Warning --- Value Truncated
+"servo_a5.c"(99): Warning --- Value Truncated
+"servo_a5.c"(107): Warning --- Value Truncated
+"servo_a5.c"(109): Warning --- Value Truncated
+"servo_a5.c"(67): Warning --- Value Truncated
+"servo_a5.c"(69): Warning --- Value Truncated
+"servo_a5.c"(96): Warning --- Value Truncated
+"servo_a5.c"(99): Warning --- Value Truncated
+"servo_a5.c"(107): Warning --- Value Truncated
+"servo_a5.c"(109): Warning --- Value Truncated
+
+BASE       1000 *0020 0060 0088
+CFORC      100b *0023 0072 0112
+PACTL      1026 *0029
+PORTA      1000 *0022 0034
+PULSE_DEFAULT 0a00 *0035 0052
+SERVO_BIT  0020 *0033 0072 0074 0075 0082 0089 0112
+SERVO_PORT 1000 *0034
+TCNT       100e *0024 0067
+TCTL1      1020 *0026 0071 0073 0111 0113
+TFLG1      1023 *0028 0074 0089
+TMSK1      1022 *0027 0075 0082
+TOC3       101a *0025 0069 0096 0099 0107 0109
+TOC3INT    00e4 *0031 0050
+servo_a5_int 8761 *0087 0049
+servo_a5_pulse 872d *0043 0077 0092 0102 0115
+servo_disable 875d *0081 0063
+servo_enable 8743 *0064
+setup_gap  876c *0095
+setup_pulse 877c *0106 0093
+subroutine_initialize_module 872e *0045
+subroutine_servo_a5_init 873d *0059
+variable_servo_a5_pulse 872b *0040 0053 0068 0098 0108
+
+
+

@@ -1,0 +1,41 @@
+Received: by psuvax1.cse.psu.edu id <34056>; Mon, 6 Feb 1995 04:42:47 -0500
+Received: from plan9.cs.york.ac.uk ([144.32.32.195]) by psuvax1.cse.psu.edu with SMTP id <34052>; Mon, 6 Feb 1995 04:38:22 -0500
+From:	forsyth@plan9.cs.york.ac.uk
+Date:	Fri, 3 Feb 1995 13:17:38 -0500
+To:	<9fans@cs.psu.edu>
+subject: lost blocks in TCP/IP streams
+Message-Id: <95Feb6.043822est.34052@psuvax1.cse.psu.edu>
+Sender: owner-plan9-fans
+Precedence: bulk
+Reply-To: plan9-fans
+
+I have recently tracked down some troublesome kernel
+memory leaks, that turned out to be mainly in the TCP/IP subsystem.
+While doing so, I found several off-by-one allocation errors that
+might lead to kernel heap corruption and subsequent panics.
+
+I'm not sure how worthwhile it is sending the changes out if a new release is
+imminent, but the consequences of the various small errors are annoying enough
+that you might not like to wait even a month or so.  Specifically, if
+you have a machine that receives or sends moderate to heavy TCP/IP traffic, chances
+are that your kernel will gradually/rapidly run out of kernel memory, since it
+fails to free stream Blocks at several key points.  A busy but small machine (one of my 16 Mbyte PCs),
+has run out of memory in under two days.  Very tedious!
+On the other hand, I run several other machines that haven't been
+troubled anything like so much; it depends on the nature of the traffic.
+
+Anyhow, if you are interested in receiving the changes, please let me know by
+email.
+
+If you have a >1.02 Gbyte SCSI disc, also let me know and I can supply
+changes to the port SCSI code to use extended read/write requests when necessary.
+
+Finally, here is an one line change to /sys/src/9/pc/main.c to stop reads of /dev/sysstat
+from mangling memory and eventually crashing the system (386/486 only).  Insert the following
+line as the first executable statement of confinit():
+	conf.nmach = 1;
+Without it, conf.nmach is zero.
+
+
+
+

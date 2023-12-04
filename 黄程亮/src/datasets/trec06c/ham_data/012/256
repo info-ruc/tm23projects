@@ -1,0 +1,114 @@
+Received: from cachecow.surfari.net (cachecow.surfari.net [207.114.135.2])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id XAA04712
+	for <handyboard@media.mit.edu>; Tue, 17 Mar 1998 23:57:15 -0500 (EST)
+Received: from default (s13.surfari.net [207.114.135.23])
+	by cachecow.surfari.net (8.8.5/8.8.5) with ESMTP id UAA19686
+	for <handyboard@media.mit.edu>; Tue, 17 Mar 1998 20:57:08 -0800
+Message-Id: <199803180457.UAA19686@cachecow.surfari.net>
+Reply-To: <patrick@surfari.net>
+From: "Patrick Cutts" <patrick@surfari.net>
+To: "HandyBoard" <handyboard@media.mit.edu>
+Subject: Re: Low battery detection
+Date: Tue, 17 Mar 1998 20:54:44 -0800
+X-Msmail-Priority: Normal
+X-Priority: 3
+X-Mailer: Microsoft Internet Mail 4.70.1161
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+sure, it will drain the battery, but if it's a low enough drain, you don't
+have to worry about it.  for example if you have a 10 amp-hour battery,
+drawing .5 mA would take something like 830 days to drain it.  I wouldn't
+worry too much.
+to calculate the values, just assume a current drain and pick a max
+(battery charged) voltage and insert your battery voltage into ohms law 
+(E=I/R)  andout pops your resistor values:
+
+(example)  you have a 12 volt battery, you want to have a current drain of
+.5 mA and you picked 4.5 volts as your 'fully charged' reading.
+
+12-4.5=7.5
+7.5/.0005=15000  so R1=15K
+4.5/.0005=9000    so R2=9K
+
+wiring:
+connect one end of R1 to the positive term of the battery.  connect the
+other end of R1 to one end of R2.  connect the other end of R2 to the
+battery ground.  connect the junction of R1 and R2 to an analog input of
+the HB.
+
+read the value at the analog input while you have your battery discharged
+to the point at which you want some action to be taken.
+
+program your robot to take the action when that analog input goes below the
+value determined in the previous step.
+
+----------
+> From: Jaron Paludanus <j.paludanus@tip.nl>
+> To: 'Brian Lavery' <blavery@acslink.aone.net.au>;
+handyboard@media.mit.edu
+> Subject: RE: Low battery detection
+> Date: Tuesday, March 17, 1998 10:46 AM
+> 
+> Can you translate this into "EE for dummies?".
+> I slowly start to grasp some of the idea about 
+> voltage dividers but still don't understand. 
+> Won't this setup drain the battery? How does
+> one calculate and wire such a thing - in this
+> particular case?
+> 
+> I ask this because I want to use a lead battery
+> for my lego robot, not only do I have such a 
+> battery already :) but I understood that the 
+> characteristics of these things tend to be a 
+> more gentle curve towards the LOW battery 
+> situation and thus better measurable.
+> 
+> (Opposed to NICADs steep curve from 1.2 to
+> 0 point something very quickly)
+> 
+> Help would be appreciated! 
+> jaron paludanus
+> j.paludanus@tip.nl
+> 
+> 
+> -----Original Message-----
+> From:	Brian Lavery [SMTP:blavery@acslink.aone.net.au]
+> Sent:	Wednesday, October 29, 1997 3:14 AM
+> To:	handyboard@media.mit.edu
+> Subject:	Re: Low battery detection
+> 
+> 
+> >Is it possible for a handy-board program (either 'C' or assembler) to
+> >detect a low battery condition?
+> >
+> 
+> Sure:
+> Solder a wire to the "BATTERY +", add 2 resistors to make a voltage
+divider
+> (to divide the battery ABSOLUTE MAX condition, say about 12V, down to
+about
+> 4 volts for the analog 0-5v range), and feed it into an ANALOG input
+point.
+>  Put a multimeter on the battery to measure its volts in a LOW charge
+> condition, and then in a HIGH charge condition.  Read the HB analog input
+> value for both those conditions, and assume a linear connection between
+bat
+> volts and analog reading.
+> Pity it wasn't built in!
+> 
+> Brian Lavery
+> blavery@computer.org
+> 
+> =============================    ===================================
+> Brian Lavery BE MACS MIEEE       Tel:   +61 (2) 9906 3900
+> Technical Manager                Fax:   +62 (2) 9906 3436
+> Online International Pty Ltd     Email: <blavery@reservhotel.com>
+> 20/130 Pacific Highway           Web:   <http://www.reservhotel.com>
+> St Leonards NSW 2065             and   
+<www.acslink.aone.net.au/reservhotel>
+> Australia                        Personal: <blavery@computer.org>
+> =============================    ===================================
+> 
+

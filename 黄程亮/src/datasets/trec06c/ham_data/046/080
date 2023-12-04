@@ -1,0 +1,94 @@
+Received: from palrel3.hp.com (palrel3.hp.com [156.153.255.226])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id NAA09468
+	for <handyboard@media.mit.edu>; Thu, 10 Jun 1999 13:33:00 -0400 (EDT)
+From: BART_SCHRIJVER@HP-Sonoma-om2.om.hp.com
+Received: from boi164.boi.hp.com (boi164.boi.hp.com [15.56.8.78])
+	by palrel3.hp.com (8.8.6 (PHNE_17135)/8.8.5tis) with ESMTP id KAA26728;
+	Thu, 10 Jun 1999 10:32:52 -0700 (PDT)
+Received: from localhost (root@localhost) by boi164.boi.hp.com with SMTP (8.7.1/8.7.3 TIS 5.0 Openmail) id KAA20839; Thu, 10 Jun 1999 10:32:49 -0700 (PDT)
+X-Openmail-Hops: 1
+Date: Thu, 10 Jun 1999 10:32:46 -0700
+Message-Id: <H0000e110eeb88dc@MHS>
+In-Reply-To: <Pine.GSO.4.04.9906101218380.7073-100000@reyes.cas.american.edu>
+Subject: Re: Hi
+Mime-Version: 1.0
+To: satishmk@email.cas.american.edu
+Cc: handyboard@media.mit.edu
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Disposition: inline; filename="Hi"
+Content-Transfer-Encoding: 7bit
+
+     Satish:
+     
+     The fact that the red and green leds in the lower left corner do not 
+     light up and than shut off after ~1/3 sec. means that your board does 
+     not reset and goes into download mode. This is the reason why the 
+     downloader states: "Wrong Port or board mode".
+     
+     Rechargeable NiCad's are only 1.2V per cell and regular or Alkaline 
+     batteries are 1.5V per cell. So 8 cells of Nicad's translates to 9.2 V 
+     total and 8 cells of regulars is: 12V total.
+     
+     The handyboard design is such that when power is applied with a wall 
+     adapter it tries to trickle charge the NiCad's if they are hooked up. 
+     I do not think it is wise to hook up regular batteries since they 
+     cannot be recharged plus they try to "fight" the charging circuit.
+     
+     Between the batteries and the HB circuit their are two regulators, one 
+     dedicated to keep the 62256 SRAM powered and one for the rest of the 
+     board, so this may have protected sensitive components.
+     
+     The HB buy the way will run without batteries hook up and just with 
+     the wall adapter plugged in.
+     
+     I would start by removing all CMOS components from their sockets 
+     including the 68HC11 (may be difficult to get out of socket), of 
+     course you cannot remove the address latch since it is soldered 
+     underneath the RAM, so be careful with ESD. Then power your board with 
+     just the wall adapter and check out the +5V  rail throughout the 
+     board.
+     
+     If this checks out replace all part and just use the wall adapter, no 
+     batteries.
+     You may already have fried some parts though, either trough statics or 
+     over power.
+     
+     Also, which parts get hot? You said board gets heated, but which part?
+     
+     
+     Hope this helps out, let me know what gives.
+     Bart Schrijver.
+     
+     P.S. For 
+
+
+______________________________ Reply Separator _________________________________
+Subject: Hi
+Author:  Non-HP-satishmk (satishmk@email.cas.american.edu) at 
+HP-PaloAlto,mimegw2
+Date:    6/10/99 9:23 AM
+
+
+Thursday, 10th day of June, 1999, 12:18 AM, EST.
+     
+Hi,
+        I recently joined the HB club by buying a pre assemebled HB. I
+soldered the battery pack terminals to the HB (yes I checked the +ve and 
+-ve terminals). However, when I try to follow the instructions of 
+downloading the .s19 file, I get "Wrong Port or board mode". Also, I 
+noticed that the board gets heated and when I switch the board to download 
+mode, the LEDs don't blink for 1/3 second.
+     
+        Could somebody tell me what I could be doing wrong? Could it be
+because I am using regular batteries instead of recharables?
+     
+Thanks,
+-SAtish.
+--------------------------------------------------------------------------------
+Fortune cookie for the mail...generated automatically by the server.
+     
+The light at the end of the tunnel is the headlight of an approaching 
+train.
+--------------------------------------------------------------------------------
+
+

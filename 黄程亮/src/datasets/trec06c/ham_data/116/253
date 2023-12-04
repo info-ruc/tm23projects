@@ -1,0 +1,79 @@
+Received: from authusersmtp.mail.cornell.edu (granite1.mail.cornell.edu [128.253.83.141])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k275URt16951
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Mar 2006 00:30:27 -0500 (EST)
+Received: from dreadnought.cornell.edu (r253240123.resnet.cornell.edu [128.253.240.123])
+	(authenticated bits=0)
+	by authusersmtp.mail.cornell.edu (8.13.1/8.12.10) with ESMTP id k275URPc017332
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <egs+summary@cs.cornell.edu>; Tue, 7 Mar 2006 00:30:27 -0500 (EST)
+Message-Id: <6.2.1.2.2.20060305135356.0317a230@postoffice8.mail.cornell.edu>
+X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
+Date: Tue, 07 Mar 2006 00:28:24 -0500
+To: egs+summary@cs.cornell.edu
+From: Ari Rabkin <asr32@cornell.edu>
+Subject: PAPER 12
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+
+Samsara:
+         Samsara is a system for fair disk space exchange.  The basic idea 
+is that machine A is willing to store files for machine B, provided that 
+machine B stores a "claim" on behalf of A.  This claim can later be 
+transferred, so that B is storing files on behalf of A, in effect.  If 
+users are unavailable, their stored data is removed, on a probabilistic 
+basis designed to differentiate short outages from permanent cheating.  The 
+system is aimed to stop greedy users, not malicious ones.  This is not 
+necessarily a weakness, depending on the target user base.
+         These scheme, to the extent that it works, works only for storage 
+(permanent or RAM).  It has a number of shortcomings.  Much of the time, 
+one might be willing to store on behalf of others more data than one wishes 
+to store--some users are generous, particularly if the protocol is being 
+used on a corporate or academic intranet.  Samsara does nothing to support 
+such flexible policies.
+
+PAST:
+
+         PAST is a system for storing immutable files on top of a 
+peer-to-peer substrate such as Pastry.  Each file is replicated at the k 
+nodes with IDs nearest the ID of the file.  The file's ID is based on its 
+hash, the hash of its inserter's public key, and a salt.  In the event that 
+these nodes (the "replica set") are unable to store the file, they first 
+attempt to find a nearby node that can, and if that fails, alert the file 
+owner, who will pick a different part of node-ID space.  As a result, the 
+system is able to robustly store files even in conditions of high utilization.
+         PAST stores immutable files, and therefore if a file is altered, 
+it must be deleted and then reinserted.  If a file is deleted and a replica 
+didn't get the reclaim request, there is no provision for it to find out 
+later that the file can be removed.  As a result, the PAST system may 
+become clogged with files that should have been garbage-collected, with 
+corresponding harm to user's quotas.    A similar problem arises with nodes 
+that leave the system permanently; there is no way for nodes with replicas 
+to learn that they can remove those files.  PAST relies on trusted hardware 
+and software; if users have broken clients, the system's guarantees do not 
+apply.
+
+
+CFS:
+         CFS takes a quite different approach from PAST.  Layered over 
+Chord, CFS allows nodes to insert content into the network  CFS uses a 
+filesystem paradigm, where data consists of fixed-sized blocks, some of 
+which are metadata specifying which blocks correspond to which files.  This 
+data is visible to others nodes as a read-only-filesystem.  Data is deleted 
+if not refreshed periodically, preventing storage from being consumed over 
+time.
+         CFS is a clean and elegant system, and the concept of building a 
+block-structured filesystem atop a DHT is a good one.  However, removing 
+data blocks only through timeouts seems like a weakness; if the timeout 
+period is too small, the data's owner will be constantly sending out 
+refresh results.  If the timeout is too large, then old data will pile 
+up.  CFS inherits all the weaknesses of the underlying DHT; in particular, 
+malicious nodes can drop queries or data.
+
+
+
+Ari Rabkin  asr32@cornell.edu      Risley Hall 454   3-2842
+
+The resources of civilization are not yet exhausted.
+         --William Gladstone  
+

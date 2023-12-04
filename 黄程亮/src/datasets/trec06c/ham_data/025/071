@@ -1,0 +1,125 @@
+Received: from imo15.mx.aol.com (imo15.mx.aol.com [198.81.17.5])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA29793
+	for <handyboard@media.mit.edu>; Tue, 27 Oct 1998 09:31:41 -0500 (EST)
+From: FThompson9@aol.com
+Received: from FThompson9@aol.com
+	by imo15.mx.aol.com (IMOv16.10) id STAVa02538
+	 for <handyboard@media.mit.edu>; Tue, 27 Oct 1998 09:30:55 -0500 (EST)
+Message-Id: <6f490876.3635d91f@aol.com>
+Date: Tue, 27 Oct 1998 09:30:55 EST
+To: handyboard@media.mit.edu
+Mime-Version: 1.0
+Subject: Re: Picking a PIC
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: AOL 3.0 16-bit for Windows sub 58
+
+Clem:
+
+In a message dated 98-10-26 23:31:56 EST, you write:
+
+<< I'm looking to offload the processing of IR proximity sensors and
+ ultrasound to a PIC(s). I'm hoping to connect the PIC to a HandyBoard via
+ the SPI.
+ 
+ << I'm trying to decide which is the right PIC for the job.
+ 
+ The PIC16C7x (PIC16C76) series supports SPI, can source 25mA/pin, 2 PWM
+ channels, and has 22 I/Os with 5 ADCs.  >>
+
+
+     Unless you need the A/D channels, look to the PIC 16C6x parts.  The only
+difference is the A/D and price.
+
+<< Cool part!  However, many people
+ seem to use the PIC16F84 because it's based on flash, so you don't have to
+ wait forever to erase them, but it doesn't have all the cool features of
+ the PIC16C7x, specifically SPI.  >>
+
+     I don't find errase time to be a problem most of the time.  I have been
+working a  lot lately with PICs.  Generally I write some code, simulate it,
+burn it, test it and after a while erase it.  In the last 3 months of steady
+progress, there have been only a couple of times where I was actually waiting
+for the eraser to erase the chip so I could blow it again.  (I have a weak
+eraser which will only erase one chip at a time and it takes about 2 hours to
+erase.)  Most of your time should be spent in the simulator checking out your
+code.  Note though that it will not simulate the hardware functions of serial
+I/O (I assume this is also true of the SPI channels).  When you put a byte in
+the TXREG (serial transmit out), it takes a certain amount of time for the
+"TXREG empty" interrupt bit to go on, as though the letter had been shifted
+out, but you do not get to see the I/O bit toggeling.  Also I have not found a
+good way simulate serial data coming.  I just manually put the letter in the
+RCREG and then manually set the "Receive data available" bit in the STATUS
+register.
+ 
+ << Emulating SPI in software seems like a silly waste of cycles.  I'd really
+ like to overlap taking measurements with sending data, which looks like it
+ could be difficult, if it's manually clocking bits out on the serial
+ interface. >>
+
+     I have not done SPI myself yet, but plan to in the next couple of weeks.
+But with the PIC hardware, it should be quite simple.  Given what a PIC costs,
+I would suggest using the hardware SPI.
+ 
+
+
+<< What would you guys recommend as a good general purpose PIC?  Digikey has
+ the PIC16C76/JW for $16.55 and the PIC16F84-04/P is $6.25.  I'm planning
+ to use the PICProto18 or PICProto3 from microEngineering Labs.  With PICs
+ being fairly cheap, it might be easier to just use multiple PICs rather
+ than handling the software complexity of doing everything in one chip.  >>
+
+  I'd say the 16C77, same RAM and ROM as the 76 but you have more A/D, more
+I/O available and it is 10 cents LESS.  It is wider than the 77, and I see
+that as its only drawback.  This is not so much to do more on one chip, but
+when you want ot move to a new project with different needs, you have the
+ports.  I have moved code from one chip to another with only changing two
+lines of code (the ones at the top that says:
+	LIST	p=16c74	;chip type
+	INCLUDE P16C74.INC
+
+   The 16C67 is $1.32 less to loose the A/D, but that really isn't much, and
+if you don't want A/D, just don't enable them.
+
+
+ 
+<< Has anyone connected multiple PICs to a SPI bus, with the HC11 in master
+ mode and the PICs in slave mode?  The 68HC11 docs I have are a little
+ sparse on how multiple slave mode works.  Would I have one slave select
+ line to each PIC and then the HC11 code would have to poll the PICs by
+ selecting each one in turn with some sort of simple packet protocol?  It's
+ ashame that the 68HC11 doesn't support I2C, because it seems that they
+ solve this problem with that interface...>>
+
+Not me.
+ 
+<< We've got a nice programmer at work, so I shouldn't have any trouble
+ programming either chip.  Another complication is that I don't have a PC,
+ so I was hoping to do all my development using one of the free assemblers
+ on my Unix box.
+  >>
+
+     Check their web site:
+
+www.microchip.com
+
+     If there is support for Unix boxes, it will be there.  I am currently
+running Windows 95, but I have run the assembler on an IBM XT (8088).  The
+simulator requires a minimum of x286.  I have just started using MPLAB, which
+is there full up integrated windows development environment.  I'm still going
+through growing pains with this, but it has a lot of features that I really
+enjoy (click on a line in the error listing, and the source code comes up to
+that line)...  But the serial simulation does not seem to be as good as the
+one I had with MPSIM.  (I no longer get a "Transmit Buffer Empty" interrupt
+after a time when sending letters.)
+
+     Let me know if you have any other questions.  Also in all fairness I
+should mention Ben Wirz (of Wirz electronics) preferrs the Flash stuff so you
+might want to ask for his comments supporting this technology.
+
+www.wirz.com
+
+Hope this helps,
+Pherd
+
+

@@ -1,0 +1,91 @@
+Received: from ux1.cso.uiuc.edu by mailbag.cen.uiuc.edu with SMTP id AA18585
+  (5.67b/IDA-1.5 for <dm12937@coewl.cen.uiuc.edu>); Wed, 28 Jun 1995 10:21:34 -0500
+Received: from [128.174.33.73] (nas-si-2.cso.uiuc.edu) by ux1.cso.uiuc.edu with SMTP id AA03478
+  (5.67b8/IDA-1.5 for <dm12937@coewl.cen.uiuc.edu>); Wed, 28 Jun 1995 10:21:49 -0500
+X-Sender: ritz@ux1.cso.uiuc.edu
+Message-Id: <v02120d00ac172d8c0dc4@[128.174.33.73]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Wed, 28 Jun 1995 10:20:32 -0600
+To: David Lloyd Morgan <dm12937@coewl.cen.uiuc.edu>
+From: aritz@uiuc.edu (Andrew Ritz)
+Subject: Re: Getting Started
+Status: RO
+
+I may be getting a bit ahead of myself, but here goes:
+
+
+
+>
+>NIU (Network Interface Unit)
+>
+>- Interface with Ethernet/IEEE 802.3 media
+
+I have the IEEE 802.3 spec at my lab for reference, although I am hesitant
+to let it leave, since it costs about $80.
+
+However, I might make these comments.  I think that it would be a grave
+mistake to:
+
+1. use the 802.3 standard instead of the Ethernet_II spec developed by
+Xerox.  This might just be slight miscommunication here, but do realize the
+the vast majority of the world uses Ethernet_II frames and protocol, which
+includes things like ARP that you are talking about.  802.3 does not use
+ARP; instead it uses things like OSPF HELLO messages. (I may be wrong here,
+but am pretty sure I am not.)  Anyway, I think the ethernet_II spec is what
+we would really want to use, as it is the one in comer's book, etc.
+
+2. I'd hate to see someone have to completely reinvent the wheel.  I'm not
+sure that the low-level interface that you speak of is completely necessary
+for the speed needed.  Of course, I might be wrong here, but what I think
+you are talking about is an interface to one specific type of ethernet
+card.  It might be to everyone's best interest to use the packet driver
+interface instead, or even the winsock interface, since it is so much
+easier to program.  This frees the designer from the details of programming
+one specific ethernet card.
+
+>- Packetize outgoing Multimedia Data
+
+using something with a built-in kernal would eliminate the need for most of
+this, unless you are talking about building your own tcp-ip kernal, which
+could be a *bad* idea, since it would take so long and be such an arduous
+task.  A built in kernal would be better since the kernal would handle all
+the packet sending, etc., and all that would need to be done is basically
+buffer up the data...
+
+>- Perform ARP, RARP, IPMC, IPGM, IP, UDP protocol handling
+
+again, this should be handled by the tcp/ip kernal.
+
+>- Accomodate Multicast (MBONE) protocols?
+
+again, this would be very difficult without some sort of interface to
+program, like the packet driver or even NDIS interface.
+
+>- Direct inbound control traffic to System Control Unit
+
+If you want to send control packets to another port (similar to ftp's
+control port), the tcp/ip kernal would properly multiplex the data to the
+correct port, which the control program could then route to any hardware
+that needs to see it.
+
+
+>
+
+
+
+
+Well, just a few comments I had.  Let me know what you think.  If you want
+to forward anything pertinent on to the group, feel free.  BTW, what type
+of computer were you thinking of interfacing this with?
+
+
+Later,
+Andy
+
+Andrew Ritz  --- aritz@uiuc.edu -- Phone 244-8409 - 1507 DCL
+________________________________________________________________
+"Expect Nothing.  Blame Nobody.  Do Something."  --Someone
+
+
+

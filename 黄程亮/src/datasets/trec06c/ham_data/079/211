@@ -1,0 +1,75 @@
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by dhcp-dyn05.cv.nrao.edu (8.11.6/8.11.6) with ESMTP id g26HS3O12139
+	for <drs@localhost>; Wed, 6 Mar 2002 12:28:03 -0500
+Received: from polaris.cv.nrao.edu [192.33.115.101]
+	by localhost with IMAP (fetchmail-5.9.8)
+	for drs@localhost (single-drop); Wed, 06 Mar 2002 12:28:03 -0500 (EST)
+Received: from cv3.cv.nrao.edu (cv3.cv.nrao.edu [192.33.115.2])
+	by polaris.cv.nrao.edu (8.9.3/8.9.3/CV-SOL-3.0) with ESMTP id MAA18479
+	for <drs@polaris.cv.nrao.edu>; Wed, 6 Mar 2002 12:25:24 -0500 (EST)
+Received: from phobos.caltech.edu (phobos.caltech.edu [131.215.102.1])
+	by cv3.cv.nrao.edu (8.9.3/8.9.3/CV-CV3-4.0) with ESMTP id MAA09429
+	for <drs@nrao.edu>; Wed, 6 Mar 2002 12:25:24 -0500
+Received: from bottom.caltech.edu (bottom [131.215.102.17])
+	by phobos.caltech.edu (8.11.6/8.11.6) with ESMTP id g26HPLk14423
+	for <drs@nrao.edu>; Wed, 6 Mar 2002 09:25:21 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by bottom.caltech.edu (8.11.6/8.11.6) with ESMTP id g26HPKN07625
+	for <drs@nrao.edu>; Wed, 6 Mar 2002 09:25:20 -0800 (PST)
+Date: Wed, 6 Mar 2002 09:25:19 -0800 (PST)
+From: Tim Pearson <tjp@astro.caltech.edu>
+X-X-Sender: tjp@bottom.caltech.edu
+To: Darrell Schiebel <drs@NRAO.EDU>
+Subject: Re: pgplot axis labeling problem
+In-Reply-To: <200203060211.g262B3619217@dhcp20.localdomain>
+Message-ID: <Pine.GSO.4.44.0203060918310.7172-100000@bottom.caltech.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Filter: mailagent [version 3.0 PL73] for drs@nrao.edu
+
+On Tue, 5 Mar 2002, Darrell Schiebel wrote:
+
+>
+> 	Hello,
+>
+> 	I've run into an apparent problem with axis labeling when many
+> 	significant digits are required to label the axis correctly.
+> 	Below is a distilled example. Is this actually a bug? Do you
+> 	have any suggestions for working around it or detecting it?
+>
+> 	Thanks for any help.
+>
+> 							Darrell
+>
+>       PROGRAM PGDEM1
+>       INTEGER PGOPEN
+>       IF (PGOPEN('/XWINDOW') .LE. 0) STOP
+>       CALL PGEX1
+>       CALL PGCLOS
+>       END
+>
+>       SUBROUTINE PGEX1
+>       CALL PGENV(864000000864000.,864000086400000.,1.,100.,0,-1)
+>       CALL PGTBOX('BSTNZHI',0.0,0,' ',0.0,0)
+>       END
+
+Yes, strictly it is a bug, but it is a long-standing one and a
+difficult one to fix satisfactorily. The effect is machine dependent
+and usually manifests itself as an integer overflow or floating
+overflow. For PGBOX to work successfully, the endpoints of the axis
+must be representable withsufficient precision in normal float (not
+double), and the ratio of either endpoint to the tick interval must
+not be too large an integer.  There are some things I could do to
+ameliorate the problem (e.g., changing the arguments of the relevant
+routines to double would help in some cases, but this would require a
+new API), but this would not be a full solution. In cases like this
+you should subtract a large offset from your quantities before trying
+to plot them.
+
+- Tim
+
+Timothy J. Pearson
+Astronomy Dept 105-24, Caltech, Pasadena, California 91125, USA
+Internet:    tjp@astro.caltech.edu
+Telephone:   +1 626 395-4980    FAX: +1 626 568-9352
+

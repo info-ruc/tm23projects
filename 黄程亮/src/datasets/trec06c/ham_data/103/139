@@ -1,0 +1,64 @@
+Received: from dirg.bris.ac.uk (dirg.bris.ac.uk [137.222.10.102])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5LAxR5L002369
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 03:59:27 -0700
+Received: from seis.bris.ac.uk ([137.222.10.93])
+	by dirg.bris.ac.uk with esmtp (Exim 4.51)
+	id 1DkgRg-0004jf-6B
+	for DMDX@psy1.psych.arizona.edu; Tue, 21 Jun 2005 11:57:40 +0100
+Received: from psy193.psy.bris.ac.uk ([137.222.60.193])
+	by seis.bris.ac.uk with esmtp (Exim 4.51)
+	id 1DkgOI-0000pV-Ui
+	for DMDX@psy1.psych.arizona.edu; Tue, 21 Jun 2005 11:54:08 +0100
+Message-ID: <42B7F1CB.4030901@bris.ac.uk>
+Date: Tue, 21 Jun 2005 11:54:03 +0100
+From: Markus Damian <m.damian@bristol.ac.uk>
+MIME-Version: 1.0
+To: DMDX@psy1.psych.arizona.edu
+Subject: [DMDX] deadline procedure
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Hi,
+
+I was wondering if someone could assist me with the following problem: I 
+would like to set up an experiment in which a target stimulus is 
+presented for a fixed amount of time, say, 2000 ms. At a fixed time 
+interval into the trial, say 500 ms, I would like to have DMDX do the 
+following: if there was a response prior to the 500 ms deadline, I want 
+DMDX to do nothing, but if no response occurred by that time, I would 
+like to play a sound, while still awaiting a response until the timeout. 
+In other words, the feedback regarding whether or not participants 
+responded within the deadline interval should occur *within* an ongoing 
+trial.
+
+So far I haven't been able to find a solution to this problem. It is 
+relatively straightforward to have DMDX perform a conditional branch 
+*after* a response occurred, with the LastRT keyword in combination with 
+a bicLE etc. statement. But here I would like to have the deadline sound 
+presented only if *no* response was made by a certain time. One solution 
+that I thought of was to schedule an event, at exactly 500 ms, that 
+looks at LastRT, and performs a conditional branch. But  to my knowledge 
+LastRT contains the last RT collected within the experiment, so DMDX 
+cannot distinguish between RTs collected on the current, and on the 
+previous, trial. Is there a way to reset LastRT between trials? If I 
+could set it to zero at the beginning of each trial, I could then at 500 
+ms state: if LastRT is not 0, then (a response must have occurred within 
+the current trials, and therefore) do nothing, otherwise play the sound.
+
+Any help would be appreciated!
+
+Markus
+
+
+Markus Damian
+University of Bristol
+Department of Experimental Psychology
+8 Woodland Road, 5D5
+Bristol BS8 1TN
+United Kingdom
+
+
+

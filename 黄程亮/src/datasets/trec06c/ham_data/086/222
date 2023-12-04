@@ -1,0 +1,463 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.7/8.12.3) with ESMTP id h1LIvXAX347518;
+	Fri, 21 Feb 2003 10:57:33 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id h1LFPcR05853;
+	Fri, 21 Feb 2003 10:25:38 -0500
+Date: Fri, 21 Feb 2003 10:25:38 -0500
+Message-Id: <CA-2003-06.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2003-06 Multiple vulnerabilities in implementations of the
+Precedence: bulk
+Status: RO
+X-Status: $$$$
+X-UID: 0000000077
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2003-06 Multiple vulnerabilities in implementations of the
+Session Initiation Protocol (SIP)
+
+   Original release date: February 21, 2003
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history can be found at the end of this file.
+
+Systems Affected
+
+   SIP-enabled  products  from  a  wide  variety of vendors are affected.
+   Other  systems  making  use of SIP may also be vulnerable but were not
+   specifically  tested.  Not  all  SIP implementations are affected. See
+   Vendor Information for details from vendors who have provided feedback
+   for this advisory.
+
+   In  addition to the vendors who provided feedback for this advisory, a
+   list  of  vendors  whom  CERT/CC contacted regarding these problems is
+   available from VU#528719.
+
+Overview
+
+   Numerous  vulnerabilities  have  been  reported  in  multiple vendors'
+   implementations    of   the   Session   Initiation   Protocol.   These
+   vulnerabilities  may allow an attacker to gain unauthorized privileged
+   access,  cause  denial-of-service  attacks,  or  cause unstable system
+   behavior.  If your site uses SIP-enabled products in any capacity, the
+   CERT/CC  encourages  you  to  read this advisory and follow the advice
+   provided in the Solution section below.
+
+I. Description
+
+   The  Session  Initiation  Protocol  (SIP)  is  a  developing and newly
+   deployed  protocol  that  is  commonly  used  in Voice over IP (VoIP),
+   Internet telephony, instant messaging, and various other applications.
+   SIP  is  a  text-based  protocol for initiating communication and data
+   sessions between users.
+
+   The  Oulu  University  Secure  Programming  Group  (OUSPG)  previously
+   conducted  research  into vulnerabilities in LDAP, culminating in CERT
+   Advisory CA-2001-18, and SNMP, resulting in CERT Advisory CA-2002-03.
+
+   OUSPG's most recent research focused on a subset of SIP related to the
+   INVITE message, which SIP agents and proxies are required to accept in
+   order to set up sessions. By applying the PROTOS c07-sip test suite to
+   a  variety  of  popular  SIP-enabled  products,  the  OUSPG discovered
+   impacts ranging from unexpected system behavior and denial of services
+   to  remote  code  execution.  Note  that  "throttling"  is an expected
+   behavior.
+
+   Specifications  for  the  Session Initiation Protocol are available in
+   RFC3261:
+
+     http://www.ietf.org/rfc/rfc3261.txt
+
+   OUSPG  has  established the following site with detailed documentation
+   regarding SIP and the implementation test results from the test suite:
+
+     http://www.ee.oulu.fi/research/ouspg/protos/testing/c07/sip/
+
+   The IETF Charter page for SIP is available at
+
+     http://www.ietf.org/html.charters/sip-charter.html
+
+II. Impact
+
+   Exploitation  of these vulnerabilities may result in denial-of-service
+   conditions,  service  interruptions,  and  in  some cases may allow an
+   attacker  to gain unauthorized access to the affected device. Specific
+   impacts will vary from product to product.
+
+III. Solution
+
+   Many  of  the  mitigation steps recommended below may have significant
+   impact   on   your   everyday   network   operations   and/or  network
+   architecture.  Ensure  that  any  changes  made based on the following
+   recommendations  will  not  unacceptably  affect  your ongoing network
+   operations capability.
+
+  Apply a patch from your vendor
+
+     Appendix  A  contains  information  provided  by  vendors  for this
+     advisory.  Please  consult this appendix and VU#528719 to determine
+     if  your  product is vulnerable. If a statement is unavailable, you
+     may need to contact your vendor directly.
+
+  Disable the SIP-enabled devices and services
+
+     As  a general rule, the CERT/CC recommends disabling any service or
+     capability  that  is  not explicitly required. Some of the affected
+     products  may  rely  on  SIP to be functional. You should carefully
+     consider the impact of blocking services that you may be using.
+
+  Ingress filtering
+
+     As  a  temporary  measure, it may be possible to limit the scope of
+     these  vulnerabilities  by  blocking  access  to  SIP  devices  and
+     services at the network perimeter.
+
+     Ingress  filtering  manages  the  flow  of  traffic  as it enters a
+     network  under  your  administrative control. Servers are typically
+     the  only  machines  that  need  to accept inbound traffic from the
+     public  Internet.  Note  that  most  SIP  User Agents (including IP
+     phones  or  "clien"t software) consist of a User Agent Client and a
+     User Agent Server. In the network usage policy of many sites, there
+     are  few  reasons for external hosts to initiate inbound traffic to
+     machines  that  provide no public services. Thus, ingress filtering
+     should  be performed at the border to prohibit externally initiated
+     inbound  traffic  to  non-authorized  services.  For  SIP,  ingress
+     filtering  of  the following ports can prevent attackers outside of
+     your network from accessing vulnerable devices in the local network
+     that are not explicitly authorized to provide public SIP services:
+
+     sip     5060/udp     # Session Initiation Protocol (SIP)
+     sip     5060/tcp     # Session Initiation Protocol (SIP)
+     sip     5061/tcp     # Session Initiation Protocol (SIP) over TLS
+
+     Careful  consideration  should  be  given to addresses of the types
+     mentioned  above  by sites planning for packet filtering as part of
+     their mitigation strategy for these vulnerabilities.
+
+     Please note that this workaround may not protect vulnerable devices
+     from internal attacks.
+
+  Egress filtering
+
+     Egress filtering manages the flow of traffic as it leaves a network
+     under  your administrative control. There is typically limited need
+     for machines providing public services to initiate outbound traffic
+     to  the Internet. In the case of the SIP vulnerabilities, employing
+     egress  filtering  on the ports listed above at your network border
+     may prevent your network from being used as a source for attacks on
+     other sites.
+
+  Block SIP requests directed to broadcast addresses at your router.
+
+     Since  SIP  requests  can be transmitted via UDP, broadcast attacks
+     are  possible. One solution to prevent your site from being used as
+     an  intermediary  in an attack is to block SIP requests directed to
+     broadcast addresses at your router.
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+  America Online Inc
+
+     Not vulnerable.
+
+  Apple Computer Inc.
+
+     There  are currently no applications shipped by Apple with Mac OS X
+     or  Mac  OS  X  Server  which  make  use  of the Session Initiation
+     Protocol.
+
+  Borderware
+
+     No  BorderWare  products  make  use  of  SIP and thus no BorderWare
+     products are affected by this vulnerability.
+
+  Clavister
+
+     No  Clavister  products  currently  incorporate support for the SIP
+     protocol suite, and as such, are not vulnerable.
+     We  would  however like to extend our thanks to the OUSPG for their
+     work  as  well  as  for the responsible manner in which they handle
+     their  discoveries.  Their  detailed  reports  and  test suites are
+     certainly well-received.
+     We  would  also  like  to  reiterate  the  fact that SIP has yet to
+     mature,  protocol-wise  as  well  as implementation-wise. We do not
+     recommend  that  our customers set up SIP relays in parallel to our
+     firewall  products  to  pass  SIP-based  applications  in or out of
+     networks where security is a concern of note.
+
+  F5 Networks
+
+     F5  Networks  does  not have a SIP server product, and is therefore
+     not affected by this vulnerability.
+
+  Fujitsu
+
+     With  regards  to VU#528719, Fujitsu's UXP/V o.s. is not vulnerable
+     because the relevant function is not supported under UXP/V.
+
+  IBM
+
+     SIP is not implemented as part of the AIX operating system.
+
+  IP Filter
+
+     IPFilter  does  not  do  any  SIP specific protocol handling and is
+     therefore not affected by the issues mentioned in the paper cited.
+
+  IPTel
+
+     All versions of SIP Express Router up to 0.8.9 are sadly vulnerable
+     to  the  OUSPG test suite. We strongly advice to upgrade to version
+     0.8.10.  Please  also  apply  the  patch  to  version  0.8.10  from
+     http://www.iptel.org/ser/security/
+     before  installation  and keep on watching this site in the future.
+     We apologize to our users for the trouble.
+
+  Hewlett-Packard Company
+
+     Source:
+     Hewlett-Packard Company
+     Software Security Response Team
+     cross reference id: SSRT2402
+
+     HP-UX - not vulnerable
+     HP-MPE/ix - not vulnerable
+     HP Tru64 UNIX - not vulnerable
+     HP OpenVMS - not vulnerable
+     HP NonStop Servers - not vulnerable
+
+     To  report  potential security vulnerabilities in HP software, send
+     an E-mail message to: mailto:security-alert@hp.com
+
+  Lucent
+
+     No  Lucent products are known to be affected by this vulnerability,
+     however  we  are  still  researching the issue and will update this
+     statement as needed.
+
+  Microsoft Corporation
+
+     Microsoft  has  investigated these issues. The Microsoft SIP client
+     implementation is not affected.
+
+  NEC Corporation
+
+     ===================================================================
+     NEC vendor statement for VU#528719
+     ===================================================================
+
+     sent on February 13, 2002
+     Server Products
+       * EWS/UP 48 Series operating system
+       * - is NOT vulnerable, because it does not support SIP.
+
+     Router Products
+       * IX 1000 / 2000 / 5000 Series
+       * - is NOT vulnerable, because it does not support SIP.
+
+     Other Network products
+       * We continue to check our products which support SIP protocol.
+
+     ===================================================================
+
+  NETBSD
+
+     NetBSD does not ship any implementation of SIP.
+
+  NETfilter.org
+
+     As  the  linux  2.4/2.5  netfilter implementation currently doesn't
+     support  connection  tracking or NAT for the SIP protocol suite, we
+     are not vulnerable to this bug.
+
+  NetScreen
+
+     NetScreen is not vulnerable to this issue.
+
+  Network Appliance
+
+     NetApp products are not affected by this vulnerability.
+
+  Nokia
+
+     Nokia  IP  Security  Platforms  based  on  IPSO, Nokis Small Office
+     Solution  platforms, Nokia VPN products and Nokia Message Protector
+     platform  do  not  initiate  or  terminate  SIP based sessions. The
+     mentioned Nokia products are not susceptible to this vulnerability
+
+  Nortel Networks
+
+     Nortel  Networks is cooperating to the fullest extent with the CERT
+     Coordination  Center. All Nortel Networks products that use Session
+     Initiation  Protocol  SIP)  have  been  tested  and  all  generally
+     available  products, with the following exceptions, have passed the
+     test suite:
+
+     Succession  Communication  Server 2000 and Succession Communication
+     Server  2000  -  Compact  are  impacted  by  the test suite only in
+     configurations   where   SIP-T  has  been  provisioned  within  the
+     Communication  Server; a software patch is expected to be available
+     by the end of February.
+
+     For  further  information  about  Nortel  Networks  products please
+     contact Nortel Networks Global Network Support.
+
+     North America: 1-800-4-NORTEL, or (1-800-466-7835)
+     Europe,  Middle  East & Africa: 00800 8008 9009, or +44 (0) 870 907
+     9009
+
+     Contacts   for  other  regions  available  at  the  Global  Contact
+     <http://www.nortelnetworks.com/help/contact/global/> web page.
+
+  Novell
+
+     Novell has no products implementing SIP.
+
+  Secure Computing Corporation
+
+     Neither  Sidewinder  nor Gauntlet implements SIP, so we do not need
+     to be on the vendor list for this vulnerability.
+
+  SecureWorx
+
+     We  hereby attest that SecureWorx Basilisk Gateway Security product
+     suite  (Firmware  version  3.4.2 or later) is NOT VULNERABLE to the
+     Session   Initiation  Protocol  (SIP)  Vulnerability  VU#528719  as
+     described in the OUSPG announcement (OUSPG#0106) received on Fri, 8
+     Nov 2002 10:17:11 -0500.
+
+  Stonesoft
+
+     Stonesoft's  StoneGate  high  availability firewall and VPN product
+     does not contain any code that handles SIP protocol. No versions of
+     StoneGate are vulnerable.
+
+  Symantec
+
+     Symantec  Corporation  products  are  not vulnerable to this issue.
+     Symantec  does  not implement the Session Initiation Protocol (SIP)
+     in any of our products.
+
+  Xerox
+
+     Xerox is aware of this vulnerability and is currently assessing all
+     products. This statement will be updated as new information becomes
+     available.
+
+Appendix B. - References
+
+    1. http://www.ee.oulu.fi/research/ouspg/protos/
+    2. http://www.kb.cert.org/vuls/id/528719
+    3. http://www.cert.org/tech_tips/denial_of_service.html
+    4. http://www.ietf.org/html.charters/sip-charter.html
+    5. RFC3261 - SIP: Session Initiation Protocol
+    6. RFC2327 - SDP: Session Description Protocol
+    7. RFC2279 - UTF-8, a transformation format of ISO 10646
+    8. Session Initiation Protocol Basic Call Flow Examples 
+    9. Session Initiation Protocol Torture Test Messages, Draft 
+   _________________________________________________________________
+
+   The  CERT  Coordination  Center  thanks  the  Oulu  University  Secure
+   Programming  Group  for  reporting  these  vulnerabilities  to us, for
+   providing  detailed  technical  analysis,  and  for  assisting  us  in
+   preparing  this  advisory.  We  would  also  like  to  acknowledge the
+   "RedSkins"  project  of  "MediaTeam  Oulu"  for  their support of this
+   research.
+   _________________________________________________________________
+
+   Feedback  on  this  document  can be directed to the authors, 
+   Jason A. Rafail and Ian A. Finlay.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2003-06.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2003 Carnegie Mellon University.
+
+   Revision History
+      Feb 21, 2003: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPlZDZmjtSoHZUTs5AQGBKwQAr+4iXdsjC3LcN3QB77+6uslWZlP4AZlG
+IXS4u50QPNhuFw/vnuOG2FM4bCSUE7h+nG3eyakS1dWO3jGyybMFWPyvykYeFUKQ
+17QbmykeWBUVdGmxOeuVmSdmz7MSp6U+FZZmzuUWM85DlSUKoYg8dF7CqVuC137O
+Eisa8/wivlM=
+=p961
+-----END PGP SIGNATURE-----
+

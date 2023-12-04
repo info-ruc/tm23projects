@@ -1,0 +1,115 @@
+Received: from dfw-ix2.ix.netcom.com (dfw-ix2.ix.netcom.com [206.214.98.2])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id EAA02566
+	for <handyboard@media.mit.edu>; Thu, 22 Jul 1999 04:59:43 -0400 (EDT)
+Received: (from smap@localhost)
+          by dfw-ix2.ix.netcom.com (8.8.4/8.8.4)
+	  id DAA01863; Thu, 22 Jul 1999 03:59:06 -0500 (CDT)
+Received: from sji-ca41-207.ix.netcom.com(209.111.208.207) by dfw-ix2.ix.netcom.com via smap (V1.3)
+	id rma001859; Thu Jul 22 03:59:04 1999
+Message-Id: <3.0.3.32.19990722015551.00764194@knowpeace.com>
+X-Sender: doug@knowpeace.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 3.0.3 (32)
+Date: Thu, 22 Jul 1999 01:55:51 -0700
+To: Ziolko Ryan-crz074 <Ryan.Ziolko@motorola.com>
+From: Doug Sutherland <doug@knowpeace.com>
+Subject: Re: Quickcam  - Sharp LCD - Help
+Cc: handyboard@media.mit.edu
+In-Reply-To: <B79009C85505D211B11100805FA784C803E79A7A@s-il02-k.comm.mot
+ .com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+At 03:22 PM 7/21/99 -0500, you wrote:
+
+>Any one have interest in making the B&W (or Color) Quickcam work 
+>in with the handyboard?
+
+There isn't a whole lot of RAM and clock cycles to deal with 
+video on the 68HC11. A more reasonable solution would be to 
+use a wireless transmitter to send video signals to a receiver 
+that interfaces to a TV or some other host computer with more 
+horsepower. The handy board could then be used to drive servos
+or stepper motors to pan/tilt the camera. 
+
+For example you could use a pinhole camera like this:
+http://208.21.248.173/servlet/cat/product/PC63XP.html
+
+With a small transmitter like this:
+http://208.21.248.173/servlet/cat/product/AVX900MICRO.html
+
+And a receiver like this:
+http://208.21.248.173/servlet/cat/product/AVX900R2.html
+
+Then you can use any video capture card to convert the NTSC
+video signal to digital JPEGs or MPEGs. Or if you wanted to 
+display on a monitor you would have to run it through some 
+kind of scan converter to get a VGA or TV signal. There are
+some receivers that output both NTSC and composite RGB. 
+
+>Speaking about the Quickcam, it is possible to modify the 
+>camera so that it can feed into a TV?
+
+Not easily. The QuickCam produces digital output and was 
+designed for parallel port attachment. 
+
+>What part is the CCD on there?
+
+Dunno. But keep in mind that the new QuickCams from 
+Logitech are not the same as the old ones from Connectix.
+Connectix used to make their specs publicly available, 
+which is why there are many drivers for the old cams.
+But since Logitech bought out Connectix, they are no 
+longer making their specs available (fools ...) so it
+is unlikely that drivers will be written by the linux
+or other free software communities. If they were smart
+they'd publish the specs and they'd get more support 
+on additional platforms for free, and they'd sell 
+more cameras too. I have been looking for linux drivers
+for the quickcams, and they only work with the old 
+cameras for this reason. So be aware that there are NO
+drivers or specs for the new logitech cams except for
+the windows drivers supplied by them.
+
+>Also... I have a Sharp LM64K837 24cm [9.4"] Transflective 
+>type, B/W STN-LCD Module[VGA Format] panel.  Since it is 
+>VGA can I just hook it straight up to a video card?
+
+Doubtful. Unless that panel has a standard VGA input 
+header you will require a video card that provides the 
+STN LCD signals. If you do some searching on the web 
+you'll find many boards that support this. But most 
+standard VGA cards don't support LCD panels. 
+
+>If I can, what refresh rates would I use and such.
+
+Better check the Sharp specifications ...
+
+>Could it work with the handyboard?
+
+The VGA screen? What for? The handy board is really 
+an embedded device, not intended to drive peripherals
+like a full VGA monitor. Remember that you don't have
+much RAM to play with here. If you want VGA, you just 
+interface the handyboard to a regular PC with a 
+serial connection. 
+
+I am exploring the possibility of interfacing the HB
+with a small industrial motherboard/PC which is about 
+the same size as a handy board. Then I have interfaces
+to all of the standard PC peripherals, including 
+ethernet, and can also drive VGA CRTs and LCD panels.
+It's viable, but it's expensive. Check this out:
+
+http://208.21.248.173/servlet/cat/product/AVX900R2.html
+
+I have a credit card sized 166 Mhz pentium running on
+one of these mighty mite carrier boards. I then added 
+a PC/104 PCMCIA module with dual PCMCIA slots. I have
+144 MB bootable flash on the carrier board and 260 MB
+available on a PC Card hard drive. This allows me to 
+do anything I want. The handy board acts as a slave 
+device while all of the control logic and fancy GUIs
+resides on the CardPC based system. Food for thought.
+
+Doug
+

@@ -1,0 +1,70 @@
+Received: from wmailz.wt.net (sys48.hou.wt.net [205.230.159.48])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id OAA03698
+	for <handyboard@media.mit.edu>; Fri, 16 Apr 1999 14:03:16 -0400 (EDT)
+Received: from wt.net (sys48.hou.wt.net [205.230.159.48])
+	by wmailz.wt.net (8.8.7/8.8.7) with SMTP id MAA08512
+	for <handyboard@media.mit.edu>; Fri, 16 Apr 1999 12:41:17 -0500 (CDT)
+	(envelope-from michaelj@wt.net)
+From: "Mike Jones"<michaelj@wt.net>
+Sender: michaelj@wt.net
+Reply-To: michaelj@wt.net
+To: handyboard@media.mit.edu
+Date: Fri, 16 Apr 1999 12:41:17 +500
+Subject: Re: design alternatives: servo control and power source
+X-Mailer: DMailWeb Web to Mail Gateway 2.0n, http://netwinsite.com/top_mail.htm
+Message-Id: <3717763d.213a.0@wt.net>
+X-User-Info: 149.58.101.253
+
+>Hello,
+>
+>I am planning to build a robot based on the Lynxmotion Hexapod II
+>and Big Grip kits. There will be 12 servos for lego control, 2 
+>servos for the manipulator, and 2 more for a camera pan/tilt 
+>unit. Everything appears fairly straightforward, but:
+>
+>1) I am trying to decide on whether to use two mini SSCs or the
+>   Ferrettronics chips to control the servos. Does anyone have 
+>   any info/experience that might sway me one way or the other?
+>   Is anyone aware of documentation or tips for using either 
+>   of these with the handy board?
+
+I don't have the Ferrettronics chip datasheet in front of me but some off the
+cuff calculations:
+
+2400 bps/10 bits per byte=240 bytes per second
+each servo will require at least 2 bytes (servo # and position)
+16 servos * 2 = 32 bytes for each position update (if the protocol also has
+a chip address then 16 * 3 = 48 bytes!)
+if you can talk with 2 different chips simultaneously then 32/2=16 bytes per
+update
+
+240/32 = ~7 so your leg position updates will only happen every 1/7 second which
+is pretty slow and the legs would move like driven by stepper motors (stop,
+start, stop, start)
+
+I think the ssc will communicate faster than 2400 bps so updates can happen
+faster.
+
+>
+>2) I am wondering if I can run the servos from the handy board
+>   batteries or if I need to have a separate battery pack for 
+>   the servos. Obviously the HB batteries won't last very long
+>   if they are also running 16 servos, but would this work?
+
+You should be able to run from the same battery as long as to drop the voltage
+down to about 6V but definately be sure to use the same ground or the servos
+won't operate correctly. If you do decide to use separate batteries make sure
+the grounds are also connected.
+
+On a different subject, you may want to join the legged robots mail list. Just
+send an email to 
+
+legged-robots-subscribe@egroups.com
+
+It will respond with a message of instructions. This list has been pretty active
+and can help you with all sorts of issues related to walking robots.
+
+Mike
+(moderator of the legged robots mail list)
+
+

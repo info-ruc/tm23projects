@@ -1,0 +1,83 @@
+Received: from interval.louisiana.edu (daemon@localhost [127.0.0.1])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9HHZ2bM014972
+	for <reliable_computing-outgoing@interval.louisiana.edu>; Mon, 17 Oct 2005 12:35:03 -0500 (CDT)
+Received: (from daemon@localhost)
+	by interval.louisiana.edu (8.13.1/8.13.4/Submit) id j9HHZ2jm014971
+	for reliable_computing-outgoing; Mon, 17 Oct 2005 12:35:02 -0500 (CDT)
+Received: from scanner2.ics.uci.edu (root@scanner2.ics.uci.edu [128.195.1.36])
+	by interval.louisiana.edu (8.13.1/8.13.4/ull-interval-math-majordomo-1.5) with ESMTP id j9HHYr1P014967
+	for <reliable_computing@interval.louisiana.edu>; Mon, 17 Oct 2005 12:34:59 -0500 (CDT)
+Received: from igor.ics.uci.edu (igor.ics.uci.edu [128.195.4.119])
+	by scanner2.ics.uci.edu (8.12.10/8.12.10) with ESMTP id j9HHXFaY001652
+	for <reliable_computing@interval.louisiana.edu>; Mon, 17 Oct 2005 10:33:15 -0700 (PDT)
+Date: Mon, 17 Oct 2005 10:33:13 -0700
+From: Wayne Hayes <wayne@igor.ics.uci.edu>
+To: reliable_computing@interval.louisiana.edu
+Subject: Re: how to solve a interval ODE that sensitive to initial value??
+Message-ID: <20051017173313.GA25022@igor.ics.uci.edu>
+References: <20051017134247.A022F1114748@sjtu.edu.cn>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20051017134247.A022F1114748@sjtu.edu.cn>
+User-Agent: Mutt/1.4i
+X-ICS-MailScanner: Found to be clean
+X-ICS-MailScanner-SpamCheck: not spam (whitelisted),
+	SpamAssassin (score=-96.69, required 5, MSGID_FROM_MTA_SHORT,
+	USER_IN_WHITELIST)
+Sender: owner-reliable_computing@interval.louisiana.edu
+Precedence: bulk
+
+On Mon, Oct 17, 2005 at 09:42:47PM +0800, gfdong wrote:
+> as we know , some non-linear function will be sensitive to initial value.
+> 
+> for example , y\' =f(y,t)     y0=[y0_min , y0_max]
+> the interval at the t_end will be very large so the result will be meaningless ,right?
+
+In the forward error sense, the interval at t_end could be large, if
+the duration of the integration is many Lyapunov times (assuming a
+small excess).  The Lyapunov time is the inverse of the Lyapunov
+exponent, and essentially measures the time it takes for the distance
+between two nearby solutions to increase by a factor of Euler's
+constant.
+
+However, there is a form of backward error analyis called "shadowing"
+that is sometimes (not always) applicable.  A "shadow" of a numerical
+solution is an exact solution remaining close to the numerical solution
+for a long time.  In particular, if the initial value ODE is
+
+    y'(t) = f(y), y(t0) = y0,
+
+and the numerical solution is s(t), t0 <= t <= t1, then a shadow x(t)
+is a solution satisfying
+
+    x'(t) = f(x), x(t0) = x0,
+
+such that 
+
+    || x(t) - y(t) || < epsilon
+
+for all t0 <= t <= t1, for some t1 > t0.  If |t1 - t0| is "long"
+(with a problem- and user-dependent defiinition of what is "long"),
+then the numerical solution s(t) is meaningful in that it can be
+viewed as an "observation" of an exact solution, with epsilon being
+the "observational error".  People such as experimental physicists
+are very comfortable with this idea of observational error and thus
+shadowing is applicable to some physical simulations.  Of course,
+a numerical solution is typically a sequence of points rather than
+a continuous curve s(t), but this restriction is easy to accomodate.
+In some cases a shadow can be proven to exist in the validated interval
+sense, although it is even more computationtally expensive than validated
+ODE integration.  There also exist less rigorous but cheaper non-validated
+shadowing algorithms.
+
+You can find out more about shadowing, including a bunch of papers,
+on my web page,
+
+    http://www.ics.uci.edu/~wayne
+
+There are some (published) survey papers with many references therein.
+
+ - Wayne
+
+

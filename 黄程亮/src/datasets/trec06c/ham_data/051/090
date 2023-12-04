@@ -1,0 +1,50 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.9.0/8.9.0) with ESMTP id OAA22668
+	for <ggilfoyl@facstaff.richmond.edu>; Tue, 31 Aug 1999 14:35:52 -0400 (EDT)
+Received: from claspc1.cebaf.gov (claspc1.cebaf.gov [129.57.33.84])
+	by argyle.richmond.edu (8.9.0/8.9.0) with ESMTP id OAA12334
+	for <ggilfoyl@richmond.edu>; Tue, 31 Aug 1999 14:35:53 -0400 (EDT)
+Received: (from freyberg@localhost)
+	by claspc1.cebaf.gov (8.8.7/8.8.7) id OAA15765;
+	Tue, 31 Aug 1999 14:37:59 -0400
+Date: Tue, 31 Aug 1999 14:37:59 -0400
+Message-Id: <199908311837.OAA15765@claspc1.cebaf.gov>
+From: Arne Freyberger <freyberg@claspc1.cebaf.gov>
+To: ggilfoyl@richmond.edu
+In-reply-to: <37CAAE4E.BF5B2871@richmond.edu> (message from gilfoyle on Mon,
+	30 Aug 1999 12:16:14 -0400)
+Subject: Re: automounter
+Reply-to: freyberg@cebaf.gov
+References:  <37CAAE4E.BF5B2871@richmond.edu>
+Status: RO
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: b4a04cff5fd7867c235475baec316e06
+
+jerry,
+
+Sorry for the delayed response, we were at the beach getting
+hammered by the weather...I think you have run up against the
+ever changing why Linux does things.  There are now TWO automount
+applications (amd and autofs).  Your cluster was originally set up
+with the amd deamon.  The configuration files that you mentioned
+have to do with the "new" way "autofs" that is built into the
+kernel.  
+
+I have not yet figured out how to make autofs look as tranparent
+as amd for NFS mounts.  But...autofs is better than amd...however...
+to get you back:
+
+A) is the "amd" deamon runnning??  ps ax | grep amd
+B) try /etc/rc.d/init.d/amd stop
+       /etc/rc.d/init.d/amd start
+       ps ax | grep amd
+     then try to cd to NFS volumes
+
+if that doesn't work try rebuilding the kernel with AUTOFS disabled....
+
+
+Good luck,
+Arne
+
+

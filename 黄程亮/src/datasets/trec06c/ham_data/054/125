@@ -1,0 +1,74 @@
+Received: from mta4.snfc21.pbi.net (mta4.snfc21.pbi.net [206.13.28.142])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id PAA02309
+	for <handyboard@media.mit.edu>; Mon, 18 Oct 1999 15:46:46 -0400 (EDT)
+Received: from pacbell.net ([206.170.238.215])
+ by mta4.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.05.24.18.28.p7)
+ with ESMTP id <0FJT004LMD9SIA@mta4.snfc21.pbi.net> for
+ handyboard@media.mit.edu; Mon, 18 Oct 1999 12:39:29 -0700 (PDT)
+Date: Mon, 18 Oct 1999 12:38:25 -0700
+From: Gary Livick <glivick@pacbell.net>
+Subject: Re: Handyboard low voltage motor control
+To: Paul Dito <pcd@dolby.com>
+Cc: handyboard@media.mit.edu
+Message-Id: <380B772F.FADA385C@pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Mozilla 4.61 (Macintosh; I; PPC)
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854";
+ x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
+References: <FJt6B3.LLt@lugnet.com> <380B55B1.1C3703C4@pacbell.net>
+ <FJtBMB.B83@lugnet.com>
+
+Good point...
+
+There is another way.  You can build your own h-bridges using mechanical
+relays and maybe a few diodes.  They drop zero volts, which is good.  However,
+you obviously can't PWM the things.  If you just want rudimentary speed
+control, you could add another SPDT relay in line to add a dropping resistor
+in series.....  You can use the motor outputs right off the Handy Board to
+switch your bridges.
+
+If you want PWM, you can build your h-bridges from solid state dc-dc relays.
+They switch in about a half microsecond, so are plenty fast.  Some even have
+flyback diodes built in, and only turn on when forward biased, which is great
+for use in h-bridges.  However, these will drop some voltage, so you have to
+account for it when sizing your motor voltage supply.  To control these, you
+also use the outputs directly off your Handy Board.  I've used the latter
+method myself, and it works great.
+
+Gary Livick
+
+
+
+Paul Dito wrote:
+
+> That'll work, of course, but that also means I'll be dissapating about 8
+> volts  at .5A through the resistor...
+>
+> Gary Livick wrote in message <380B55B1.1C3703C4@pacbell.net>...
+> >
+> >How about a resistor in series?
+> >
+> >Gary Livick
+> >
+> >
+> >
+> >Paul Dito wrote:
+> >
+> >> Hi All,
+> >>
+> >> Most of you guys seem to want more power to control motors, well, I want
+> to
+> >> go the other way. I'm looking to drive 1.5v motors with the handyboard.
+> >> The lowest voltage the L293 can take is 4.5v (Vmin of Vcc1), and that
+> still
+> >> has my motors screaming, even with the minimum PWM from the controller.
+> >> Obviously I can take the outputs of the handyboard to my own H bridge,
+> but
+> >> I'm looking for an easier way out...
+> >>
+> >> Thanks,
+> >> Paul
+> >
+
+

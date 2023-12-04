@@ -1,0 +1,73 @@
+Received: from worf.calspan.com (worf-gw.calspan.com [137.100.253.1])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id JAA28215
+	for <handyboard@media.mit.edu>; Tue, 27 Oct 1998 09:37:58 -0500 (EST)
+Received: (qmail 5827 invoked from network); 27 Oct 1998 14:37:19 -0000
+Received: from geordi.calspan.com (137.100.1.12)
+  by worf.calspan.com with SMTP; 27 Oct 1998 14:37:19 -0000
+Received: (qmail 9489 invoked from network); 27 Oct 1998 14:37:19 -0000
+Received: from unknown (HELO Pirson-PC.calspan.com) (137.100.53.64)
+  by geordi.calspan.com with SMTP; 27 Oct 1998 14:37:19 -0000
+Message-Id: <004c01be01b7$4d303340$40356489@Pirson-PC.calspan.com>
+From: "Bert Pirson" <pirson@calspan.com>
+To: <GDFRITZ@aol.com>, <handyboard@media.mit.edu>
+Subject: Re: My first servo try!  Cool! (C Question)
+Date: Tue, 27 Oct 1998 09:37:18 -0500
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3115.0
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+
+>
+>Q1)  The servo_deg() function requires a float.  How do I
+>get it to use an integer if I want to put it in a loop and
+>use an integer variable?
+>
+>
+
+
+easy way:
+
+for (angle=1; angle<10; angle++)
+    servo_deg((float)angle)
+
+better way:
+
+modify functions from servo.c to accept integers:
+
+int servo_deg_int(int)angle)
+{
+  return servo(degree_to_pulse(angle));
+}
+
+int degree_to_pulse_int((int)angle)
+{
+  int dexcursion_int = 180;
+  return (((angle*(SERVO_RANGE))/dexcursion_int)+MIN_SERVO_WAVETIME);
+}
+
+
+You could also replace degree_to_pulse_int() with an array of pulse lengths.
+For 180 degrees this would use 362 bytes but would be faster.  Its the trade
+off between speed and memory constraints.
+
+int servo_deg_int(int)angle)
+{
+  int degree_to_pulse[181] = {1400, 1418, 1436,  ... etc.};
+
+  return servo(degree_to_pulse[angle]);
+}
+
+
+Have not tried this code, but I don't think there are any typos.
+You should also check to make sure angle is within the range of your servo
+since none of the servo functions have any error checking.
+
+Bert
+
+
+
+

@@ -1,0 +1,139 @@
+Received: from mtiwmhc03.worldnet.att.net (mtiwmhc03.worldnet.att.net [204.127.131.38])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id VAA31268
+	for <handyboard@media.mit.edu>; Thu, 9 Jul 1998 21:14:56 -0400 (EDT)
+Received: from 840141024worldnet.att.net ([12.65.147.37])
+          by mtiwmhc03.worldnet.att.net (InterMail v03.02.03 118 118 102)
+          with SMTP id <19980710011334.GBDX3051@840141024worldnet.att.net>;
+          Fri, 10 Jul 1998 01:13:34 +0000
+Message-Id: <001801bdaba0$462ccc60$2593410c@840141024worldnet.att.net>
+From: "Terry Garthright" <669@worldnet.att.net>
+To: "David Kott" <dakott@alpha.delta.edu>
+Cc: <handyboard@media.mit.edu>
+Subject: Re: check_sensors.c
+Date: Thu, 9 Jul 1998 20:10:05 -0500
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-Mimeole: Produced By Microsoft MimeOLE V4.72.3110.3
+
+Hi Joe&David,All,
+      Let me explain what I would like my handyboard to do.
+
+Guide a lawnmower  by detecting the border of cut and uncut grass.
+
+Monitor a row of 16 +or- ir emitter/detector pairs placed about every two
+inches to report to the motor control board for action to be taken.
+
+The program should read each sensor several times per second.
+1s could indicate uncut  and 0s for cut grass and store in memory.
+Tally the 1s and 0s every second or so.
+If the number was greater than or equal to 2 the final number stored would
+be 1. If the summed value was less than 2 then a value of 0 is stored. the
+grass border would be located where the 1s ended and 0s started.
+
+ An artical appeared in Radio-Electronics some years ago explaining this
+idea called "Build the Lawn Ranger".   Michael A. Tyborski was kind enough
+to send me a copy.
+ I would like to adapt the handeyboard for this control but lack experience
+writing code and the project looks overwhelming only due to the programming
+part.
+
+                                                                    Thanks
+Again
+                                                                    Terry P.
+Gathright
+-----Original Message-----
+From: David Kott <dakott@alpha.delta.edu>
+To: Terry Gathright <669@worldnet.att.net>
+Cc: handyboard@media.mit.edu <handyboard@media.mit.edu>
+Date: Tuesday, July 07, 1998 6:12 PM
+Subject: Re: check_sensors.c
+
+
+>On Fri, 3 Jul 1998, Terry Garthright wrote:
+>
+>>
+>> /* GLOBALS*/
+>>
+>> int num_sensors =6 /* put the number of analog sensor inputs you want*/
+>
+>All C declarations must be terminated with a semicolon.  Try :
+>
+>int num_sensors = 6;
+>                   ^
+>
+>>
+>> void main()
+>>
+>> {
+>>
+>> int sensors[num_sensors];
+>>
+>> int counter;
+>>
+>> while
+>>
+>
+>is this legal syntax for "while"?  Try:
+>
+>while (1)
+>
+>> {
+>>
+>> counter = 0;
+>>
+>> while (counter < num_sensors)
+>>
+>> {
+>>
+>> sensors[counter] = analog(counter);
+>>
+>> printf("%d",sensors [counter] );
+>>
+>> counter++;
+>>
+>> }
+>>
+>> printf("/n");
+>>
+>> sleep(.5);
+>>
+>> }
+>>
+>> }
+>>
+>>
+>
+>If you just wanted to print out the analog sensor value, do you really
+>want to dump them into an array?
+>
+>void main() {
+>int iIndex;
+>
+>   while (1) {
+>     for (iIndex=0; iIndex <= 6 ; iIndex++)
+
+>        printf("%d",analog(iIndex));
+>     }
+>  printf("\n");
+>  msleep(500L);
+>}
+>
+>
+>I think my IC skills are a bit rusty;  there may be errors in my
+>implementation.
+>
+> -d
+>The box said "Requires Windows 95/NT or better"...
+>                                                 So I got Unix.
+>
+>Free the Source.  Free your Computer... http://www.FreeBSD.org
+>                                          http://www.NetBSD.org
+>                                            http://www.OpenBSD.org
+>
+
+

@@ -1,0 +1,37 @@
+Received: from eniac.idirect.ca (eniac.idirect.com [207.136.80.199])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id JAA17310
+	for <handyboard@media.mit.edu>; Thu, 2 Apr 1998 09:59:43 -0500 (EST)
+Received: from gateway (ntsvr7-64.idirect.com [209.161.207.192])
+	by eniac.idirect.ca (8.8.7/8.8.7) with SMTP id JAA06840
+	for <handyboard@media.mit.edu>; Thu, 2 Apr 1998 09:59:43 -0500 (EST)
+Message-Id: <199804021459.JAA06840@eniac.idirect.ca>
+From: "Duncan Orthner" <orthner@[192.168.0.1]>
+To: handyboard@media.mit.edu
+Date: Thu, 2 Apr 1998 10:00:00 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Subject: Re: Servos
+Reply-To: orthner@idirect.ca
+Priority: normal
+In-Reply-To: <199804010427.OAA03037@lucy.cc.swin.edu.au>
+
+
+> 
+> Can you hook up RC servo signal inputs  to the motor drivers?
+> It looks to be feasable as both require a pulse width modulated 
+> signal but I'm not sure if the motor driver's carrier frequency and 
+> range of pulse widths is suitable. Any ideas - it would be good is it 
+> can be done as it makes walking robots "easy" to construct.
+
+
+This won't work, as the servo's require a one-shot, not a variable 
+duty cycle type of pwm (like what comes from the motor drivers on the 
+HB). ie. the width of any given pulse is not consistent, just the 
+overall duty cycle. RC servo's require a consistent pulse output 
+centered around 1500ms, which is the neutral position. Actually, I've 
+found that with Futaba servos, the neutral pulse width is about 
+1350ms.
+
+         hope this helps, Duncan 
+

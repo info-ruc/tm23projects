@@ -1,0 +1,122 @@
+Received: from comp.uark.edu (root@comp.uark.edu [130.184.252.197])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id KAA25775
+	for <handyboard@media.mit.edu>; Wed, 22 Apr 1998 10:11:03 -0400 (EDT)
+Received: from comp.uark.edu (dblank@dangermouse.uark.edu [130.184.201.233]) by comp.uark.edu (8.8.5/8.7.3) with ESMTP id JAA16260 for <handyboard@media.mit.edu>; Wed, 22 Apr 1998 09:11:02 -0500 (CDT)
+Sender: dblank@comp.uark.edu
+Message-Id: <353DFA75.11018A02@comp.uark.edu>
+Date: Wed, 22 Apr 1998 09:11:01 -0500
+From: Douglas Blank <dblank@comp.uark.edu>
+Organization: University of Arkansas, Department of CS
+X-Mailer: Mozilla 4.04 [en] (X11; I; Linux 2.0.33 i686)
+Mime-Version: 1.0
+To: handyboard@media.mit.edu
+Subject: Re: Serial Communication: HB -> Win95
+References: <3.0.32.19980420221107.0072e880@comp.uark.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+To answer my own question, at least partially, here is a Win95 Host
+program to communicate (single bytes) with the HandyBoard over a serial
+line:
+
+/* Win95 Visual C++ Host Code to talk to HandyBoard */
+
+#include <conio.h> // _outp, _inp
+#include <stdlib.h> // sleep
+#include <stdio.h> // printf
+
+unsigned short PORT = 0x3f8; // COM1: 0x3f8 on my computer
+
+int send(char c) {
+        return _outp( PORT, c);
+}
+
+char receive() {
+        char retval;
+        retval = _inp( PORT);
+        _sleep(50);                  // this was necessary; too fast a
+machine?
+        retval = _inp( PORT);
+        return retval;
+}
+
+
+void main(int argc, char *argv[])
+{
+        char c;
+        char key = ' ';
+        while (key != 'q') {
+                key = getch();
+                send(key);
+                printf("Sent %c\n", key); 
+                c = receive();
+                printf("Got %c as a return value\n", c);
+        }
+}
+
+
+Here is a sample HB program to talk to:
+
+void disable_pcode_serial()   
+/* necessary to receive characters using serial_getchar */
+{
+   poke(0x3c, 1);
+}
+
+void reenable_pcode_serial()   
+/* necessary for IC to interact with board again */
+{
+   poke(0x3c, 0);
+}
+
+/*
+======================================================================
+For sending and receiving single bytes, you can use Randy's IC code:
+*/
+
+void serial_putchar(int c)
+{
+   while (!(peek(0x102e) & 0x80));  /* wait until serial transmit empty
+*/
+   poke(0x102f, c);  /* send character */
+}
+
+int serial_getchar()
+{
+   while (!(peek(0x102e) & 0x20)); /* wait for received character */
+   return peek(0x102f);
+}
+
+void main(void) {
+        char c = ' ';
+        disable_pcode_serial();   
+        while (c != 'q') {
+                c = serial_getchar();
+                printf("\nReceived = %c   ", c); 
+                if (c == '1') {
+                        serial_putchar(analog(0));
+                } else if (c == 'a') {
+                        serial_putchar(knob());
+                }                       
+
+      }
+        reenable_pcode_serial();   
+        printf("\nHB Mode!");
+}
+
+
+If anyone has a better solution, please let me know.
+
+-Doug Blank
+
+Douglas Blank wrote:
+ 
+> I am using the serial_putchar() and serial_getchar() communication routines
+> on the HandyBoard, and everything is working fine from the PC to the HB.
+> However, I am having trouble getting the HB to send data back to the PC.
+
+=====================================================================
+dblank@comp.uark.edu            Douglas Blank, University of Arkansas
+Assistant Professor                                  Computer Science
+==================== http://www.uark.edu/~dblank ====================
+

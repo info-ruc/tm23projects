@@ -1,0 +1,41 @@
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id WAA21218
+	for <handyboard@media.mit.edu>; Mon, 22 Feb 1999 22:09:13 -0500 (EST)
+Received: from odin.corp.sgi.com (odin.corp.sgi.com [192.26.51.194]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id TAA11530
+	for <@external-mail-relay.sgi.com:handyboard@media.mit.edu>; Mon, 22 Feb 1999 19:09:04 -0800 (PST)
+	mail_from (barry@barry.detroit.sgi.com)
+Received: from dataserv.detroit.sgi.com by odin.corp.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/951211.SGI)
+	for <@fddi-odin.corp.sgi.com:handyboard@media.mit.edu> id TAA04718; Mon, 22 Feb 1999 19:09:10 -0800
+Received: from barry.detroit.sgi.com (barry.detroit.sgi.com [169.238.128.37]) by dataserv.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id WAA07396 for <@dataserv.detroit.sgi.com:handyboard@media.mit.edu>; Mon, 22 Feb 1999 22:09:09 -0500 (EST)
+Received: (from barry@localhost) by barry.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id TAA18299 for handyboard@media.mit.edu; Mon, 22 Feb 1999 19:09:08 -0800
+From: barry@barry.detroit.sgi.com (Barry Brouillette)
+Message-Id: <199902230309.TAA18299@barry.detroit.sgi.com>
+Subject: Sharp GP2D02 and assembly language
+To: handyboard@media.mit.edu
+Date: Mon, 22 Feb 1999 19:09:08 -0800 (PST)
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+
+Hi,
+I've written a short assembly language routine to access the Sharp GP2D02
+sensor and it works just great but...  I have one question.
+
+Since I use the expansion board's digital outs to control the sensor I
+need to make sure my routine doesn't stomp on any other digtal outs in
+the process.  I used Fred's libexbd.asm to see how to do digital outputs.
+Apparently, you can't read the output latch back in so he keeps a local
+variable USERVAL to keep track of which outputs are set.
+
+My question is this: How can my assembly program access Fred's USERVAL so
+that my program can also know what bits are set by Fred's set_digital_out
+routine?
+
+I assume that I could simply #include libexpd.asm in my program and use 
+the resulting .icb file in place of both his libexpbd.icb and my
+GP2D02.icb but that seems kludgy to me and difficult to explain when
+posting the code.  Any ideas?
+
+Barry
+

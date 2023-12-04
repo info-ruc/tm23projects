@@ -1,0 +1,53 @@
+Received: from deimos.email.Arizona.EDU (root@deimos-adm.email.Arizona.EDU [128.196.133.166])
+	by psy1.psych.arizona.edu (8.8.7/8.8.8) with ESMTP id SAA14961
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 30 Aug 2000 18:28:42 -0700
+Received: from anybodyi.u.arizona.edu (150.135.175.30) by deimos.email.Arizona.EDU (5.1.046)
+        id 39AC848B0001504D for DMDX@psy1.psych.arizona.edu; Wed, 30 Aug 2000 18:28:41 -0700
+Message-Id: <4.3.2.7.2.20000830182457.00a97c80@psy1.psych.arizona.edu>
+Date: Wed, 30 Aug 2000 18:28:40 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: constant time response window regardless of
+  reaction time
+In-Reply-To: <000101c012cc$41db66e0$d4c35c90@jc.psych.wisc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+At 04:50 PM 8/30/00 -0500, you wrote:
+>I am putting together an n-back experiment and had a quick question for the
+>list.
+>I need to present a series of letters, record responses to each letters
+>(button press) and present the next letter in the series a fixed interval
+>after the offset of the previous letter.
+>
+>Basically a block of trials needs to have this timing
+>
+>
+>letter  (500 ms)
+>response window (2000 ms)
+>letter (500 ms)
+>response window (2000 ms)
+
+   So you set <ContinuousRunning> and <Delay 0>.  If you want it to wait 
+for 2000ms regardless of how they respond you'll want <NoFeedBack>, 
+<TimeLimit 2500> and you'll want a dummy display that lasts for 2000ms 
+after the letter:
+
++1 * "A" <ms% 500> / <ms% 2000> / ;
+
+-jonathan (j.c.f.)
+
+  /"\
+  \ /
+   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL
+  / \
+
+   Zappa's Law:
+There are two things on earth that are universal:
+hydrogen and stupidity.
+
+
+

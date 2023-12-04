@@ -1,0 +1,258 @@
+Received: from canaveral.indigo.cert.org (canaveral.indigo.cert.org [192.88.209.169])
+	by uclink4.berkeley.edu (8.12.3/8.12.3) with ESMTP id gADNWQsU008027;
+	Wed, 13 Nov 2002 15:32:27 -0800 (PST)
+Received: from localhost (lnchuser@localhost)
+	by canaveral.indigo.cert.org (8.11.6/8.11.6/1.14) with SMTP id gADLEKC04208;
+	Wed, 13 Nov 2002 16:14:20 -0500
+Date: Wed, 13 Nov 2002 16:14:20 -0500
+Message-Id: <CA-2002-30.1@cert.org>
+From: CERT Advisory <cert-advisory@cert.org>
+To: cert-advisory@cert.org
+Organization: CERT(R) Coordination Center - +1 412-268-7090
+List-Help: <http://www.cert.org/>, <mailto:Majordomo@cert.org?body=help>
+List-Subscribe: <mailto:Majordomo@cert.org?body=subscribe%20cert-advisory>
+List-Unsubscribe: <mailto:Majordomo@cert.org?body=unsubscribe%20cert-advisory>
+List-Post: NO (posting not allowed on this list)
+List-Owner: <mailto:cert-advisory-owner@cert.org>
+List-Archive: <http://www.cert.org/>
+Subject: CERT Advisory CA-2002-30 Trojan Horse tcpdump and libpcap Distributions
+Precedence: bulk
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 1689
+Status: RO
+X-Status: $$$$
+X-UID: 0000000065
+
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+CERT Advisory CA-2002-30 Trojan Horse tcpdump and libpcap Distributions
+
+   Original issue date: November 13, 2002
+   Last revised: --
+   Source: CERT/CC
+
+   A complete revision history is at the end of this file.
+
+Overview
+
+   The  CERT/CC  has received reports that several of the released source
+   code  distributions  of the libpcap and tcpdump packages were modified
+   by an intruder and contain a Trojan horse.
+
+   We  strongly  encourage  sites  that  use, redistribute, or mirror the
+   libpcap  or  tcpdump  packages  to immediately verify the integrity of
+   their distribution.
+
+I. Description
+
+   The  CERT/CC  has received reports that some copies of the source code
+   for  libpcap,  a  packet  acquisition  library, and tcpdump, a network
+   sniffer, have been modified by an intruder and contain a Trojan horse.
+
+   The  following  distributions  were  modified to include the malicious
+   code:
+
+     tcpdump
+
+       md5sum 3a1c2dd3471486f9c7df87029bf2f1e9 tcpdump-3.6.2.tar.gz
+       md5sum 3c410d8434e63fb3931fe77328e4dd88 tcpdump-3.7.1.tar.gz
+
+     libpcap
+
+       md5sum 73ba7af963aff7c9e23fa1308a793dca libpcap-0.7.1.tar.gz
+
+   These  modified  distributions  began  to appear in downloads from the
+   HTTP server www.tcpdump.org on or around Nov 11 2002 10:14:00 GMT. The
+   tcpdump  development  team  disabled  download  of  the  distributions
+   containing  the Trojan horse on Nov 13 2002 15:05:19 GMT. However, the
+   availability  of  these distributions from mirror sites is unknown. At
+   this  time,  it  does not appear that related projects such as WinPcap
+   and WinDump contain this Trojan horse.
+
+   The  Trojan  horse  version  of  the  tcpdump source code distribution
+   contains  malicious  code  that  is run when the software is compiled.
+   This code, executed from the tcpdump configure script, will attempt to
+   connect  (via wget, lynx, or fetch) to port 80/tcp on a fixed hostname
+   in  order  to  download  a  shell script named services. In turn, this
+   downloaded  shell script is executed to generate a C file (conftes.c),
+   which is subsequently compiled and run.
+
+   When  executed,  conftes.c  makes an outbound connection to a fixed IP
+   address  (corresponding  to  the  fixed hostname used in the configure
+   script)  on  port  1963/tcp  and  reads  a single byte. Three possible
+   values for this downloaded byte are checked, each causing conftes.c to
+   respond in different ways:
+
+     * 'A' will cause the Trojan horse to exit
+
+     * 'D'  will  cause  the  Trojan  to  fork itself, spawn a shell, and
+       redirect  this  shell  to  the  connected  IP  address  (Note that
+       communication  to  and from this shell is obfuscated by XORing all
+       bytes with the constant 0x89.)
+
+     * 'M'  will cause the Trojan horse to close the connection and sleep
+       for 3600 seconds
+
+   To  mask  the  activity  of this Trojan horse in tcpdump, libpcap, the
+   underlying  packet-capture  library  of  tcpdump,  has  been  modified
+   (gencode.c) to explicitly ignore all traffic on port 1963 (i.e., a BPF
+   expression of "not port 1963").
+
+II. Impact
+
+   An intruder operating from (or able to impersonate) the remote address
+   specified  in the malicious code could gain unauthorized remote access
+   to any host that compiled a version of tcpdump with this Trojan horse.
+   The  privilege level under which this malicious code would be executed
+   would be that of the user who compiled the source code.
+
+III. Solution
+
+   We   encourage   sites   using  libpcap  and  tcpdump  to  verify  the
+   authenticity  of  their  distribution,  regardless  of  where  it  was
+   obtained.
+
+   Where to get libpcap and tcpdump
+
+   While the compromise of these distributions is being investigated, the
+   tcpdump   and   libpcap  maintainers  recommend  using  the  following
+   distribution sites:
+
+          http://sourceforge.net/projects/tcpdump/
+          http://sourceforge.net/projects/libpcap/
+
+   Sites  that  mirror  the  source  code  are  encouraged  to verify the
+   integrity of their sources. We also encourage users to inspect any and
+   all  other software that may have been downloaded from the compromised
+   site.  Note  that  it  is  not sufficient to rely on the timestamps or
+   sizes  of  the file when trying to determine whether or not you have a
+   copy of the Trojan horse version.
+
+   Verifying checksums
+
+   The MD5 hashes of the vendor suggested updates for libpcap and tcpdump
+   are as follows:
+
+     tcpdump
+
+       md5sum 03e5eac68c65b7e6ce8da03b0b0b225e tcpdump-3.7.1.tar.gz
+
+     libpcap
+
+       md5sum 0597c23e3496a5c108097b2a0f1bd0c7 libpcap-0.7.1.tar.gz
+
+   As a matter of good security practice, the CERT/CC encourages users to
+   verify,  whenever  possible, the integrity of downloaded software. For
+   more information, see
+
+          http://www.cert.org/incident_notes/IN-2001-06.html
+
+Appendix A. - Vendor Information
+
+   This  appendix  contains  information  provided  by  vendors  for this
+   advisory.  As  vendors  report new information to the CERT/CC, we will
+   update this section and note the changes in our revision history. If a
+   particular  vendor  is  not  listed  below, we have not received their
+   comments.
+
+Conectiva
+
+     We  have  checked all our released libpcap and tcpdump packages and
+     confirmed that they do not contain the trojan code.
+
+Debian
+
+     Problematic  packages  are  only  distributed in Debian/unstable. I
+     have  examined  both  source  packages and they did not contain the
+     trojan  code  the  HLUG  reported on their web page. Hence, I guess
+     that Debian distributes safe source.
+
+MontaVista Software, Inc.
+
+     We  have  examined  our  sources, and our software does not contain
+     this trojan. We are not vulnerable to this advisory.
+
+SuSE
+
+     SuSE Linux products are not vulnerable.
+     _________________________________________________________________
+
+   Feedback can be directed to the author: Roman Danyliw, Chad Dougherty.
+   ______________________________________________________________________
+
+   This document is available from:
+   http://www.cert.org/advisories/CA-2002-30.html
+   ______________________________________________________________________
+
+CERT/CC Contact Information
+
+   Email: cert@cert.org
+          Phone: +1 412-268-7090 (24-hour hotline)
+          Fax: +1 412-268-6989
+          Postal address:
+          CERT Coordination Center
+          Software Engineering Institute
+          Carnegie Mellon University
+          Pittsburgh PA 15213-3890
+          U.S.A.
+
+   CERT/CC   personnel   answer  the  hotline  08:00-17:00  EST(GMT-5)  /
+   EDT(GMT-4)  Monday  through  Friday;  they are on call for emergencies
+   during other hours, on U.S. holidays, and on weekends.
+
+Using encryption
+
+   We  strongly  urge you to encrypt sensitive information sent by email.
+   Our public PGP key is available from
+   http://www.cert.org/CERT_PGP.key
+
+   If  you  prefer  to  use  DES,  please  call the CERT hotline for more
+   information.
+
+Getting security information
+
+   CERT  publications  and  other security information are available from
+   our web site
+   http://www.cert.org/
+
+   To  subscribe  to  the CERT mailing list for advisories and bulletins,
+   send  email  to majordomo@cert.org. Please include in the body of your
+   message
+
+   subscribe cert-advisory
+
+   *  "CERT"  and  "CERT  Coordination Center" are registered in the U.S.
+   Patent and Trademark Office.
+   ______________________________________________________________________
+
+   NO WARRANTY
+   Any  material furnished by Carnegie Mellon University and the Software
+   Engineering  Institute  is  furnished  on  an  "as is" basis. Carnegie
+   Mellon University makes no warranties of any kind, either expressed or
+   implied  as  to  any matter including, but not limited to, warranty of
+   fitness  for  a  particular purpose or merchantability, exclusivity or
+   results  obtained from use of the material. Carnegie Mellon University
+   does  not  make  any warranty of any kind with respect to freedom from
+   patent, trademark, or copyright infringement.
+     _________________________________________________________________
+
+   Conditions for use, disclaimers, and sponsorship information
+
+   Copyright 2002 Carnegie Mellon University.
+
+   Revision History
+     November 13, 2002: Initial release
+
+-----BEGIN PGP SIGNATURE-----
+Version: PGP 6.5.8
+
+iQCVAwUBPdKvMWjtSoHZUTs5AQGZMQP8DcGYT+7eGybHZv/npf6vXvnnSBkP0J3C
+K+vmcr3GttVUjpCQLHZsEUi6j8PBD0LeJyml27BSfpk1zkvJ1XTQJHw/mmagmoHz
+rhSCeNDQcxYmPlr+NdDzT9lnJkGAKEsd+/SSNlTUb556VjjR3dYnJB11w1LDyYzE
+bnB5WCmOUew=
+=UFH/
+-----END PGP SIGNATURE-----
+

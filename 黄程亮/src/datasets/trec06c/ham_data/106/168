@@ -1,0 +1,115 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j8SE9p5L008753
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 28 Sep 2005 07:09:51 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id CD997B4540F
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 28 Sep 2005 07:09:51 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-4.dsl.arizona.edu [128.196.237.4])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 1E148B45373
+	for <DMDX@psy1.psych.arizona.edu>; Wed, 28 Sep 2005 07:09:50 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050928065936.00ba4798@psy1.psych.arizona.edu>
+Date: Wed, 28 Sep 2005 07:09:44 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: Bug after upgrading to 3.1.4.1?
+In-Reply-To: <CB2F4C85-B293-4090-96B3-6FD1BC3F51C2@maccs.mq.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+I guess if you were using <cr> and <delay> then that you could be your 
+problem if it's always the first frame of the item that's late:
+
+08/08/05 j.c.f. 3.1.4.1 <cr> with <delay> made rigorous (<c> with <delay> 
+was already)
+06/06/05 j.c.f. 3.1.4.0 <zol>
+06/03/05 j.c.f. 3.1.3.0 background sound
+05/24/05 j.c.f. 3.1.2.7 item_read() spews item during early errors, makes 
+misplaced keyword at start of item easier to debug
+03/30/05 j.c.f. 3.1.2.6 machinename only tries to READ registry computer 
+name for limited access machines
+
+If you really need a fixed ITI then you'll have to make the delay larger, 
+looking at the preparation times will tell you how long the delay needs to be:
+
+http://psy1.psych.arizona.edu/~jforster/dmdx/help/dmdxherrors.htm#preparation
+
+A lot of people are using <d> when there's no call for it, if they don't 
+like the default half second or so between trials then they can use a 
+negative value for the delay which will avoid display errors.
+
+http://psy1.psych.arizona.edu/~jforster/dmdx/help/dmdxhdelaykeyword.htm
+
+At 04:58 PM 9/28/2005 +1000, you wrote:
+>Hi All,
+>
+>I'm trying to troubleshoot a problem script and don't seem to be able
+>to find an up to date changelog on the website.  I was wondering if
+>someone could tell me a list of changes between versions 3.1.2.6 and
+>3.1.4.1
+>
+>The problem is we have some scripts that worked just fine under
+>3.1.2.6 and after we upgraded to 3.1.4.1 they started producing large
+>timing errors.
+>
+>We use disk imaging in our labs so before we upgrade DMDX we roll the
+>entire disk image back to the way it was when we first setup our
+>labs.  This way I can ensure that the only difference from the
+>working setup to the broken one was that we upgraded DMDX.  We've
+>also tried running the same script on different computers with
+>identical hardware as well as an identical disk image to rule out
+>faulty hardware.
+>Details of our lab setup can be found at http://www.maccs.mq.edu.au/ 
+>resources/Computing/DMDX/
+>
+>Examples of the scripts and their .zil/.azk file with the errors in
+>it are here.
+>http://www.maccs.mq.edu.au/~crichard/dmdx/Adjectives/
+>In this .zil file subject 25 was run with our base image with DMDX
+>3.1.2.6 and subject 27 was run after we installed 3.1.4.1
+>
+>http://www.maccs.mq.edu.au/~crichard/dmdx/IAT/
+>In the .azk file in this directory subject 18 was run with 3.1.2.6,
+>subject 19 was run with 3.1.4.1 (in diagnostic mode) and subject 20
+>was run with 3.1.4.1.
+>
+>After these tests I then updated the display drivers to be the
+>current ATI catalyst version and re-ran the tests.
+>3.1.4.1 behaved the same way however.
+>
+>If anyone has any suggestions or knows of any changes between
+>versions that might have caused this they'd be very much appreciated.
+>
+>thanks,
+>Craig
+>
+>--
+>Craig Richardson
+>Systems Administrator
+>Macquarie Centre for Cognitive Science
+>Macquarie University
+>Phone : +61 2 9850 6730
+>Fax : +61 2 9850 6059
+>Web : http://www.maccs.mq.edu.au
+>====================================================================
+>   Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>  'unsubscribe' by itself with no quotes in the body of the email
+>  to be removed from the list.  The list archive is available here:
+>          http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   As a rule software systems do not work well until they have
+been used, and have failed repeatedly, in real applications.
+                         - Dave Parnas, Communications of the ACM
+                                         (33, 6 June 1990 p.636)
+
+
+

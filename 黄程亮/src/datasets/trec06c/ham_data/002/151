@@ -1,0 +1,105 @@
+Received: from optima.CS.Arizona.EDU by cheltenham.CS.Arizona.EDU; Tue, 27 Dec 1994 10:33:28 MST
+Received: from gatekeeper.premenos.com by optima.CS.Arizona.EDU (5.65c/15) via SMTP
+	id AA14327; Tue, 27 Dec 1994 10:33:18 MST
+Received: from localhost (smap@localhost) by gatekeeper.premenos.com (8.6.5/8.6.5) id JAA12653 for <icon-group@cs.arizona.edu>; Tue, 27 Dec 1994 09:33:14 -0800
+Received: from sirtur.premenos.com(150.105.100.47) by mail.premenos.com via smap (V1.3mjr)
+	id sma012651; Tue Dec 27 09:33:04 1994
+Received: by sirtur.sirtur.premenos.com (5.x/SMI-SVR4)
+	id AA04590; Tue, 27 Dec 1994 09:26:09 -0800
+Date: Tue, 27 Dec 1994 09:26:09 -0800
+From: kwalker@sirtur.premenos.com (Ken Walker)
+Message-Id: <9412271726.AA04590@sirtur.sirtur.premenos.com>
+To: icon-group@cs.arizona.edu
+Subject: Re: DeMorgan's Law doesn't work
+X-Sun-Charset: US-ASCII
+
+> From: MENGARINI@news1.delphi.com (MENGARINI@DELPHI.COM)
+> 
+> I needed to find the first filename of the form "w[0-9][0-9]" that was
+> not in use in either of 2 directories.  This code
+>    (  nn := (0 to 9) || (0 to 9)
+>    ,  not exists( downloadDir || "w" || nn )
+>    ,  not exists( targetDir   || "w" || nn )
+>    )|stop( "No names of the form w[0-9][0-9] were unused." )
+> works, but the separation of the 2 "not exists" calls is reminiscent
+> of Algol-family languages' need to code things like
+>    if importantNumber = 1 | importantNumber = 2
+> where Snobol-family languages could just test whether
+>    importantNumber = 1 | 2
+> Analogously, Icon should be able to factor out the 2 "not exists" calls.
+> 
+> But this
+>    (  nn := (0 to 9) || (0 to 9)
+>    ,  not exists( (downloadDir|targetDir) || "w" || nn )
+>    )|stop( "No names of the form w[0-9][0-9] were unused." )
+> doesn't work because DeMorgan's Law doesn't work:
+> if downloadDir || "w" || nn doesn't exist, exists() fails, not exists()
+> succeeds, & the expression succeeds, without ever testing whether
+> targetDir || "w" || nn exists.
+ 
+The second example does work! When exists() fails, the alternation is
+resumed and the existance of the file in the other directory is tested.
+
+The following program shows that DeMorgan's Law holds in Icon:
+
+********** Cut Here *********
+
+# Demonstrate DeMorgan's Law using &null as false and 1 as true.
+#
+record pair(a,b)
+
+procedure main()
+    local x
+
+    #
+    # Print truth tables.
+    #
+    write("A    B    (not A) & (not B)    not (A | B)")
+    write("------------------------------------------")
+    every x := comb() do {
+        writes(format(x.a), "    ", format(x.b), "            ")
+        if ((not \x.a) & (not \x.b)) then
+            writes("T")
+        else
+            writes("F")
+	writes("                 ")
+        if not (\x.a | \x.b) then
+            write("T")
+        else
+            write("F")
+    }
+
+    write()
+    write("A    B    (not A) | (not B)    not (A & B)")
+    write("------------------------------------------")
+    every x := comb() do {
+        writes(format(x.a), "    ", format(x.b), "            ")
+        if ((not \x.a) | (not \x.b)) then
+            writes("T")
+        else
+            writes("F")
+	writes("                 ")
+        if not (\x.a & \x.b) then
+            write("T")
+        else
+            write("F")
+    }
+end
+
+#
+# comb() - produce all 4 pairs of "logical" values.
+#
+procedure comb()
+    suspend pair(1 | &null, 1 | &null)
+end
+
+#
+# Convert a "logical" value to "T" or "F".
+#
+procedure format(x)
+    if \x then
+	return "T"
+    else
+	return "F"
+end
+

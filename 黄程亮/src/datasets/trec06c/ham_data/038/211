@@ -1,0 +1,49 @@
+Received: from zinc.singnet.com.sg (zinc.singnet.com.sg [165.21.7.31])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id GAA20068
+	for <handyboard@media.mit.edu>; Mon, 8 Mar 1999 06:51:18 -0500 (EST)
+Received: from ho818.singnet.com.sg (qtas1045.singnet.com.sg [165.21.58.115])
+	by zinc.singnet.com.sg (8.9.1a/8.9.1) with SMTP id TAA12060
+	for <handyboard@media.mit.edu>; Mon, 8 Mar 1999 19:51:15 +0800 (SGT)
+Date: Mon,  8 Mar 99 19:10:19 PST
+From: edmund <ho106@singnet.com.sg>
+Subject: Sharp GP2D05?
+To: HandyBoard <handyboard@media.mit.edu>
+X-Mailer: Chameleon - TCP/IP for Windows by NetManage, Inc.
+Message-Id: <Chameleon.4.01.2.990308193844.ho106@ho818.singnet.com.sg>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+ hello
+       anyone tried interfacing the Sharp GP2D05 sensors to the handyboard
+       before? i'm thinking of buying some as i need a reliable and cheap
+       digital(Yes/No) sensor. from what i can understand, there are 4
+       wires, Vin, Vcc, Gnd and Vout. the Vcc, Gnd and Vout can be 
+       connected directly to the handyboard digital input while digital
+       input #9 can be configured as an output to provide a signal for Vin.
+       the operating procedure for the GP2D05 also sounds simple enough:
+
+       1. Pull the normally high(3V) Vin low(0V).
+       2. Wait 56ms.
+       3. Read Vout - if LOW(0V) --> no obstacle and vice versa.
+       4. Pull Vin to high again to Reset.
+
+       the question is, will the following code do the job? is it too
+       simple? from what i've seen, it seems that the GP2D02 requires
+       some complicated code to make it work with the handyboard.
+
+       bit_set(0x1000, 0x80);    /* set digital output #9(Vin) low */ 
+       msleep(56L);              /* delay for 56ms */
+       a=digital(5);             /* read digital input #5 and store
+                                    the reading in int variable a. */
+       bit_clear(0x1000, 0x80);  /* set digital #9 high to reset */
+
+
+       any comments, advice or criticism will be greatly appreciated. i'm
+       a robotics newbie and i'm afraid that i would spend a lot of money
+       buying a sensor that doesn't work. please help. thanks a million!
+
+
+ ~edmund
+
+

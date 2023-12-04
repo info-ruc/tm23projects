@@ -1,0 +1,138 @@
+Received: from saffron.cc.columbia.edu (saffron.cc.columbia.edu [128.59.59.102])
+	by jalapeno.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0DGV0CJ000040;
+	Fri, 13 Jan 2006 11:31:00 -0500 (EST)
+Received: from saffron.cc.columbia.edu (localhost [127.0.0.1])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0DGP0i5007101
+	for <cuflow-users-outgoing@columbia.edu>; Fri, 13 Jan 2006 11:25:00 -0500 (EST)
+Received: (from majordom@localhost)
+	by saffron.cc.columbia.edu (8.13.0/8.12.8/Submit) id k0DGP0YK007100
+	for cuflow-users-outgoing; Fri, 13 Jan 2006 11:25:00 -0500 (EST)
+Received: from tepin.cc.columbia.edu (tepin.cc.columbia.edu [128.59.28.169])
+	by saffron.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0DGOnqi007096
+	for <majordom+cuflow-users@saffron.cc.columbia.edu>; Fri, 13 Jan 2006 11:24:50 -0500 (EST)
+Received: from hoshi.dynamicnetworks.us (hoshi.dynamicnetworks.us [216.126.231.195])
+	by tepin.cc.columbia.edu (8.13.0/8.13.0) with ESMTP id k0DGOjEI028862
+	for <cuflow-users@columbia.edu>; Fri, 13 Jan 2006 11:24:49 -0500 (EST)
+Received: (qmail 14466 invoked by uid 89); 13 Jan 2006 16:24:45 -0000
+Received: by simscan 1.1.0 ppid: 14456, pid: 14462, t: 0.6868s
+         scanners: clamav: 0.87/m:34/d:1184 spam: 3.1.0
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on 
+	hoshi.dynamicnetworks.us
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=3.1.0
+Received: from unknown (HELO ?127.0.0.1?) (rgalloway@stonegate-wvc.us@148.175.49.1)
+  by hoshi.dynamicnetworks.us with SMTP; 13 Jan 2006 16:24:44 -0000
+Message-ID: <43C7D44A.10902@dynamicnetworks.us>
+Date: Fri, 13 Jan 2006 09:24:42 -0700
+From: Robert S Galloway <rgalloway@dynamicnetworks.us>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
+MIME-Version: 1.0
+To: Thomas Stegbauer <thomas.stegbauer@tronicplanet.de>
+CC: cuflow-users@columbia.edu
+Subject: Re: cuflow on debian sarge running motorola powerstack (ppc-architecture)
+References: <43C6EAD6.4030005@tronicplanet.de>
+In-Reply-To: <43C6EAD6.4030005@tronicplanet.de>
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: 0 () 
+X-Scanned-By: MIMEDefang 2.48 on 128.59.29.5
+X-Scanned-By: MIMEDefang 2.48 on 128.59.28.169
+Sender: owner-cuflow-users@columbia.edu
+Precedence: bulk
+X-No-Spam-Score: Local
+
+Good morning Thomas.
+
+The error you are seeing is related to the Cflow.pm perl module. The 
+module must be configured and compiled for use with flow-tools files. 
+I'm not sure how to correctly install it when using a debian package of 
+flow-tools. Using the flow-tools tarball, you would do the following:
+
+untar the flow-tools tar.gz
+cd flow-tools-0.66
+cd contrib
+tar -zxvf Cflow-1.051.tar.gz
+cd Cflow-1.051
+perl Makefile.PL
+make
+make install
+
+The Cflow Makefile will look for the flow-tools files itself. It expects 
+to find them in the same folder path, so it's important to follow this 
+exactly as described above.
+
+Let us know how it goes.
+
+Thanks, Robert
+
+P.S. You'll find the same notes here near the bottom of the page.
+http://www.dynamicnetworks.us/netflow/2-getting-started.html
+
+Thomas Stegbauer wrote:
+> hi ml,
+>
+> i am new to this list and cuflow.
+>
+> i am running
+> a linksys wrt54gl with dd-wrt v23 12/25/2005 and started rflow on this
+> router to a flow-tools 0.67.8 from debian sarge.
+> this flow-capture does capture the databases fine. imho without nexthop
+> and outif. a flow-print file looks like:
+>
+>
+> srcIP            dstIP            prot  srcPort  dstPort  octets     
+> packets
+> 193.27.253.47    192.168.0.98   6     8080     1188     126         2
+> 192.168.0.98   193.27.253.47    6     1188     8080     110         2
+> 193.27.253.2     192.168.0.98   6     80       1216     3979        10
+> 192.168.0.98   193.27.253.2     6     1216     80       2695        10
+>
+> when i run flowscan with the CUFlow report i get:
+>
+> 2006/01/13 00:35:24 working on file
+> /var/flow/test/ft-v05.2006-01-13.000000+0100...
+> /var/flow/test/ft-v05.2006-01-13.000000+0100: Invalid index in cflowd
+> flow file: 0xCF100203! Version 5 flow-export is required with *all*
+> fields being saved.
+> 2006/01/13 00:35:24 flowscan-1.020 CUFlow: Cflow::find took  0 wallclock
+> secs ( 0.01 usr +  0.00 sys =  0.01 CPU) for 10136 flow file bytes, flow
+> hit ratio: 0/0
+> 2006/01/13 00:35:24 flowscan-1.020 CUFlow: report took  0 wallclock secs
+> ( 0.00 usr  0.00 sys +  0.03 cusr  0.04 csys =  0.07 CPU)
+> 2006/01/13 00:35:24 rename
+> "/var/flow/test/ft-v05.2006-01-13.000000+0100",
+> "/var/flow/test/saved/ft-v05.2006-01-13.000000+0100": Permission denied
+> 2006/01/13 00:35:24 unlink
+> "/var/flow/test/ft-v05.2006-01-13.000000+0100": Permission denied
+>
+> cause i had before some other troubles and got:
+>
+> ERROR updating /var/flow/rrd/total.rrd: illegal attempt to update using
+> time 1137106800 when last update time is 1137106800 (minimum one second
+> step)
+> ERROR updating /var/flow/rrd/total.rrd: illegal attempt to update using
+> time 1137106800 when last update time is 1137106800 (minimum one second
+> step)
+> ERROR updating /var/flow/rrd/total.rrd: illegal attempt to update using
+> time 1137106800 when last update time is 1137106800 (minimum one second
+> step)
+>
+> i tried running flowscan with a user without the privilege to delete the
+> file, cause somebody said the file got deleted by something while
+> getting processed by CUFlow. 
+> https://www1.columbia.edu/sec/bboard/mj/cuflow-users/archive/2005_08/msg00005.html
+>
+> but with this i saw the problem with not having a complete version 5
+> flow-export
+>
+> is there a way to get CUFlow running without the complete flow-file?
+> cause it is enough for me, to get the packets/time/bytes for some subnet
+> as a graphical output?
+>
+> greetings
+> thomas
+>
+>   
+
+

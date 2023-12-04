@@ -1,0 +1,74 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.9.0/8.9.0) with ESMTP id LAA16418
+	for <ggilfoyl@facstaff.richmond.edu>; Wed, 18 Aug 1999 11:59:00 -0400 (EDT)
+Received: from claspc1.cebaf.gov (claspc1.cebaf.gov [129.57.33.84])
+	by argyle.richmond.edu (8.9.0/8.9.0) with ESMTP id LAA04014
+	for <ggilfoyl@richmond.edu>; Wed, 18 Aug 1999 11:59:00 -0400 (EDT)
+Received: (from freyberg@localhost)
+	by claspc1.cebaf.gov (8.8.7/8.8.7) id MAA04342;
+	Wed, 18 Aug 1999 12:00:47 -0400
+Date: Wed, 18 Aug 1999 12:00:47 -0400
+Message-Id: <199908181600.MAA04342@claspc1.cebaf.gov>
+From: Arne Freyberger <freyberg@claspc1.cebaf.gov>
+To: ggilfoyl@richmond.edu
+In-reply-to: <3784B1F3.295C9671@richmond.edu> (message from gilfoyle on Thu,
+	08 Jul 1999 10:13:07 -0400)
+Subject: Re: getting paid!!!
+Reply-to: freyberg@cebaf.gov
+References:  <3784B1F3.295C9671@richmond.edu>
+Status: U
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: eefd097e7fdcc785ed50edac93b4292a
+
+
+gerry....
+
+here are my commands....
+
+cdwrite is aliased to:
+
+sudo /sbin/rmmod pcd; sudo /sbin/insmod pg; sudo /usr/bin/cdrecord -v speed=2 dev=0,0 !*
+
+mntcdwrite is aliased to:
+
+sudo /sbin/rmmod pg; sudo /sbin/insmod pcd; sudo mount -t iso9660 /dev/pcd0 /mnt/cdwrite
+
+umntwrite is aliased to:
+
+sudo umount /mnt/cdwrite; sudo /sbin/insmod pg
+as user=freyberg I would execute:  cdwrite CD_IMAGE
+
+my sudoers file looks like....
+
+# sudoers file.
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# See the man page for the details on how to write a sudoers file.
+#
+
+# Host alias specification
+Host_Alias LINUX=claspc1.cebaf.gov
+Host_Alias LOCAL=localhost
+# User alias specification
+User_Alias CLASUSERS=freyberg,bedlinsk
+
+# Cmnd alias specification
+#Cmnd_Alias ZIPSTUFF=zipmnt
+Cmnd_Alias RCSTUFF=/etc/rc.d/init.d/msqld stop,/etc/rc.d/init.d/msqld start, /e
+c/rc.d/init.d/httpd stop, /etc/rc.d/init.d/httpd start
+Cmnd_Alias ZIPSTUFF=/bin/mount  -t ext2 /dev/hdb1 /mnt/zip,/sbin/mkfs -t ext2 /
+ev/hdb1,/sbin/fdisk /dev/hdb,/bin/umount /dev/hdb1
+Cmnd_Alias FLOPPYSTUFF=/bin/mount  -t ext2 /dev/fd0 /mnt/floppy,/sbin/mkfs -t e
+t2 /dev/fd0,/bin/umount /dev/fd0
+Cmnd_Alias CDWRITESTUFF=/usr/bin/cdrecord,  /sbin/rmmod pg, /sbin/insmod pg, /s
+in/rmmod pcd, /sbin/insmod pcd, /bin/mount -t iso9660 /dev/pcd0 /mnt/cdwrite, /
+in/mount -t iso9660 /dev/cdrom /mnt/cdrom, /bin/umount /mnt/cdrom, /bin/umount 
+mnt/cdwrite
+# User privilege specification
+root    ALL=(ALL) ALL
+CLASUSERS LINUX= NOPASSWD: ZIPSTUFF, FLOPPYSTUFF
+CLASUSERS LINUX= NOPASSWD: CDWRITESTUFF
+CLASUSERS LINUX= NOPASSWD: RCSTUFF
+

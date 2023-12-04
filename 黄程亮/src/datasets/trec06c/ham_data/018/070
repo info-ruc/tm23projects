@@ -1,0 +1,54 @@
+Received: from alpha.delta.edu (alpha.delta.edu [161.133.129.3])
+	by aleve.media.mit.edu (8.8.7/ML970927) with SMTP id EAA21328
+	for <handyboard@media.mit.edu>; Thu, 11 Jun 1998 04:40:16 -0400 (EDT)
+Received: from pm143-23.dialip.mich.net by alpha.delta.edu; (5.65v3.0/1.1.8.2/06Jan97-0932AM)
+	id AA15900; Thu, 11 Jun 1998 04:43:57 -0400
+Received: from kott.my.domain (dakott@kott.my.domain [192.168.0.1])
+	by kott.my.domain (8.8.8/8.8.5) with SMTP id WAA20714;
+	Wed, 10 Jun 1998 22:08:45 -0400 (EDT)
+Date: Wed, 10 Jun 1998 22:08:44 -0400 (EDT)
+From: David Kott <dakott@alpha.delta.edu>
+Sender: dakott@kott.my.domain
+To: Joe Martin <joema@mpx.com.au>
+Cc: "'handyboard@media.mit.edu'" <handyboard@media.mit.edu>
+Subject: Re: input impedance
+In-Reply-To: <01BD949D.A955F100@dialup-gunax11.mpx.com.au>
+Message-Id: <Pine.BSF.3.96.980610213637.20601C-100000@kott.my.domain>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Wed, 10 Jun 1998, Joe Martin wrote:
+
+> Does anyone know the impedance onto the sensor inputs on the HB and/or any 
+>suggestions for setting them to receive signals sent at 220K Ohm.
+> Joe Martin
+> joema@mpx.com.au
+> 
+> 
+
+Hmmmmmm.. as I recall, there are 47k pullups on those inputs.  These are
+used to condition the signals when used as a digital input.  The 'HC11
+pink book suggests that any input resistance of greater then 10K will
+"...degrade A/D accuracy."  The ADC module draws 400nA continuously.  Your
+220K will drop ~80 mV.  This will result in only 6(ish) bit precision.
+Also, the ADC subsystem is modeled as 20pF cap.  220K driving such a cap
+will increase your acquisition time significatly.   You will definately
+want to condition this signal with a low impedance driver.  I suggest an
+instrumentation amplifier (a special kind of rail to rail, high frequency
+Op-Amp) to condition that signal.  National Semiconductor offers many
+single supply, rail to rail devices. Analog Devices has a pretty keen
+selection too.  I don't remember the particular part number, but NS has a
+swift selection tree.  The output impedance of an OpAmp is quite low.
+This means you will be able to leave the 47K's on the HB ADC inputs alone.  
+
+								-d
+
+
+The box said "Requires Windows 95/NT or better"...
+                                                 So I got Unix.
+
+Free the Source.  Free your Computer... http://www.FreeBSD.org
+                                          http://www.NetBSD.org
+                                            http://www.OpenBSD.org
+
+

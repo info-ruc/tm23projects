@@ -1,0 +1,92 @@
+Received: from argyle.richmond.edu (argyle.richmond.edu [141.166.188.18])
+	by tartan.richmond.edu (8.11.2/8.11.2) with ESMTP id gA8Bd1P02693
+	for <ggilfoyl@facstaff.richmond.edu>; Fri, 8 Nov 2002 06:39:01 -0500
+Received: from penny.richmond.edu (penny.richmond.edu [141.166.188.34])
+	by argyle.richmond.edu (8.11.6/8.11.6) with SMTP id gA8BcG422588
+	for <ggilfoyl@richmond.edu>; Fri, 8 Nov 2002 06:38:16 -0500
+Received: from polyester.richmond.edu ([141.166.188.14])
+ by penny.richmond.edu (NAVGW 2.5.2.17) with SMTP id M2002110806381529454
+ for <ggilfoyl@richmond.edu>; Fri, 08 Nov 2002 06:38:15 -0500
+Received: from ucontrol.mobiledns.com (ucontrol.mobiledns.com [216.162.33.29])
+	by polyester.richmond.edu (8.11.6/8.11.6) with ESMTP id gA8BcFw05163
+	for <ggilfoyl@richmond.edu>; Fri, 8 Nov 2002 06:38:15 -0500
+Received: from localhost (pyro@localhost)
+	by ucontrol.mobiledns.com (8.10.0.Beta6/8.10.0.Beta6) with ESMTP id gA7NbA407203
+	for <ggilfoyl@richmond.edu>; Thu, 7 Nov 2002 18:37:10 -0500
+Date: Thu, 7 Nov 2002 18:37:09 -0500 (EST)
+From: steven james <pyro@linuxlabs.com>
+X-Sender: pyro@ucontrol.mobiledns.com
+To: gilfoyle <ggilfoyl@richmond.edu>
+Subject: Re: thanks and a long question
+In-Reply-To: <3DCB14D4.495E4F0B@richmond.edu>
+Message-ID: <Pine.LNX.4.21.0211071825510.429-100000@ucontrol.mobiledns.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status:   
+X-Mozilla-Status: 9011
+X-Mozilla-Status2: 00000000
+X-UIDL: 38eb267300004200
+
+Greetings,
+
+Found it!
+It looks like all of the newline chars in the scripts got translated to
+the MS <cr><lf> convention. Since the exec system call doesn't see
+anything special about <cr>, it tried to interpret it, so it attempted to
+run the script with /bin/sh<cr>
+
+It doesn't make things any easier that the only way to see that was to
+hexdump the text!
+
+I have renamed the node_up and setup_libs appending -02-nov-08 should you
+want to look at that. I then scp'ed clean versions in. The cluster should
+boot now.
+G'day,
+sjames
+
+
+
+
+On Thu, 7 Nov 2002, gilfoyle wrote:
+
+> hi steven,
+> 
+>    the message in the log is the following.
+> 
+> /var/log/beowulf
+> [root@pscm1]# more node.0
+> /etc/beowulf/node_up: /usr/lib/beoboot/bin/node_up: bad interpreter: No
+> such file or directory
+> 
+> i've added your IP address to hosts.allow.
+> 
+> cheers,
+> 
+> jerry
+> 
+> 
+> steven james wrote:
+> > 
+> > Greetings,
+> > 
+> > The error message itself may be found in /var/log/beowulf/node.<number>
+> > I'll need that for the failed nodes.
+> > 
+> > As an alternative, I could log in and check things out, but it appears
+> > that hosts.deny must have outside access disallowed. Perhaps my
+> > workstation's IP (216.162.33.24) could be allowed ssh access?
+> > 
+> > G'day,
+> > sjames
+> > 
+> 
+> 
+
+-- 
+-------------------------steven james, director of research, linux labs
+... ........ ..... ....                     230 peachtree st nw ste 701
+the original linux labs                             atlanta.ga.us 30303
+      -since 1995                              http://www.linuxlabs.com
+                                   office 404.577.7747 fax 404.577.7743
+-----------------------------------------------------------------------
+

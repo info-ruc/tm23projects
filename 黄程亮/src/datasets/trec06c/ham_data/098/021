@@ -1,0 +1,84 @@
+Received: from fed1rmmtao03.cox.net (fed1rmmtao03.cox.net [68.230.241.36])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id iAUMGoFJ028004
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 30 Nov 2004 15:16:51 -0700
+Received: from sharon ([68.105.129.98]) by fed1rmmtao03.cox.net
+          (InterMail vM.6.01.04.00 201-2131-117-20041022) with SMTP
+          id <20041130221643.OWCV20678.fed1rmmtao03.cox.net@sharon>
+          for <DMDX@psy1.psych.arizona.edu>;
+          Tue, 30 Nov 2004 17:16:43 -0500
+Message-ID: <013f01c4d72a$80b4fe40$0101a8c0@sharon>
+From: "Shiaohui Chan" <shiaohui@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+References: <5.1.0.14.2.20041130075528.00ba4690@psy1.psych.arizona.edu>
+Subject: [DMDX] Fw: Re: Audio & keyboard inputs (DMDX 3.0.4.8)
+Date: Tue, 30 Nov 2004 15:18:21 -0700
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Thanks for being patient with me, Jonathan (and thank all list members for
+tolerating my endless questions!).  I am sorry that I couldn't read the
+documentation hard enough to detect the problems myself.  I am sort of a new
+comer of DMDX, so almost every sentence in the help manual is new to me, but
+I know that shouldn't be an excuse. :-)
+
+> <id RecordVocal> doesn't work with the DigitalVOX (it's mentioned in the
+> documentation).  You need to use <id RecordVocal 1200> or some such
+period.
+
+Thanks for pointing it out, but I still cannot get rid of the problem of
+getting multiple inputs of the same RTs.  Here is part of the script again:
+
+<ep> <cr> <azk> <nfb> <id keyboard> <id RecordVocal 1200> <id DigitalVox>
+<zil> <vzk +DigitalVox> <vzk +J> <vzk +K> </ep>
+
++1 <umpr> <umnr> <mpr +DigitalVox> <mpr +K> <mnr +J> <wav> "sentence1"  <svp
+start> /<fd 350> <bmp> "sequence 1"/*!;
+
+
+This time, instead of saying a whole sentence, I only said one word "HE" to
+the mic and pressed the key "K" at the same time.  And here is what I got in
+the output file (for one item only):
+
+
+1998.00,+DigitalVOX 2101.43,+K 1998.00,+DigitalVOX 1998.00,+DigitalVOX
+1998.00,+DigitalVOX 98.00,+DigitalVOX 1998.00,+DigitalVOX
+1998.00,+DigitalVOX 1998.00,+DigitalVOX 1998.00,+DigitalVOX
+1998.00,+DigitalVOX 1998.00,+DigitalVOX 1998.00,+DigitalVOX
+1998.00,+DigitalVOX 1998.00,+DigitalVOX
+
+(1) Could you tell me why I still got 14 responses at 1998.00 ms?
+
+I guess I have a hard time figuring out how the responses of DigitalVox key
+are recorded because, I think, if the responses are taken every time the
+audio input reaches the threshold, there should be tens of responses with
+different RTs, not the same RTs as I got.  (Maybe you have explained how it
+works somewhere in the documentation but I simply missed it again!)
+
+(2) I probably didn't synchronize my key press and my verbal production as I
+thought I would.  But if subjects do make two responses at the same time,
+can the computer record both of them simultaneously?  Or will it somehow
+record them serially?
+
+
+> >  (2) Could I get one RT each for both keyboard & audio inputs?
+>
+>    No.  You will have to use <zil> for that or two items.  I recommend the
+> later.
+
+Honestly, I don't mind having tens of responses (like what I just
+cut-and-pasted above) because I guess I can manually select the key press RT
+(i.e. 2101.43, +K) and the first DigitalVOX RT (i.e.,1998.00, +DigitalVOX)
+for later data analysis.  I would love to try your suggestion of using two
+items, but since my study is a language task with motor-interference, I
+don't really know how to split the item into two and still get response at
+the same time....
+
+Thanks again!
+shiaohui
+
+

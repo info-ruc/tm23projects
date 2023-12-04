@@ -1,0 +1,62 @@
+Received: from xproxy.gmail.com (xproxy.gmail.com [66.249.82.205] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k0V5tS422916
+	for <egs+summary>; Tue, 31 Jan 2006 00:55:29 -0500 (EST)
+Received: by xproxy.gmail.com with SMTP id h30so916782wxd
+        for <egs+summary>; Mon, 30 Jan 2006 21:55:28 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:from:reply-to:to:subject:date:user-agent:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
+        b=aijWXbdqKMeHBAPfImWHyG9krToe8gbSUSFRpr7ZtOFATKFPiOViMit68cebnRtJ/MkyeLrb5uqF7OyOieesNyI0Zw1dseJehV9Bd6J3Oe3U9q5eYbRIFPmmSA5R73qtSqLjzirEDGwDEQQi1T09LtJsMVF/pYr7g9Pu+ywSSPg=
+Received: by 10.70.74.19 with SMTP id w19mr8247431wxa;
+        Mon, 30 Jan 2006 21:55:27 -0800 (PST)
+Received: from ?192.168.0.102? ( [69.207.63.116])
+        by mx.gmail.com with ESMTP id h35sm10020549wxd.2006.01.30.21.55.27;
+        Mon, 30 Jan 2006 21:55:27 -0800 (PST)
+From: Niranjan Sivakumar <niranjan.sivakumar>
+Reply-To: niranjan.sivakumar
+To: egs+summary
+Subject: PAPER 2
+Date: Tue, 31 Jan 2006 00:55:23 -0500
+User-Agent: KMail/1.9
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200601310055.24259.niranjan.sivakumar>
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on 
+	sundial.cs.cornell.edu
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,RCVD_BY_IP 
+	autolearn=ham version=3.0.2
+X-Spam-Level: 
+
+Niranjan Sivakumar
+
+Chord primarily differs from Pastry in how it implements its routing 
+mechanism.  Whereas Pastry's routing mechanism is based on matching prefixes 
+of a key with those of entries in its routing data structure, Chord maintains 
+comparatively less routing information consisting of information about 
+successive nodes in the ring.  Chord maintains a few successive nodes in its 
+finger table in order to account for failures and changes to the network.  
+Chord forwards queries to nodes in the ring, trying to find the closes ID 
+that would most closely precede that key that is being searched for in order 
+to find its successor.  The finger pointers are spaced such that the distance 
+to the target ID will be halved in successive iterations.
+
+The basic routing mechanism of the Plaxton system employed by Tapestry is very 
+similar to Pastry and is based on matching suffixes (analogous to the 
+prefixes of Pastry.  There is, however, a location system of "root nodes" 
+associated with objects that is unique to Tapestry.  Messages destined for a 
+particular object are routed towards the root, and can diverge to a server 
+holding the object if such a mapping is encountered en route to the root.  
+This allows for copies of objects to be on the network.  The systems deals 
+with root nodes being targets of failure with replication and caching.
+
+One of the weaknesses seen in both of these papers is similar to something 
+that we noticed in the Pastry paper.  There doesn't seem to be a robust 
+method to search for content.  The key based method does not seem to allow 
+for things such as semantic searching or range searching very easily.  Chord 
+also does not seem to have an analogous mechanism to the Pastry neighborhood 
+information to avoid routing queries in an inefficient manner due to the 
+random nature of the nodes in the network.
+

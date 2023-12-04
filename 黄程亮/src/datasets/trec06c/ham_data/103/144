@@ -1,0 +1,103 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5LGrX5L004189
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 09:53:33 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 9236EADD941
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 09:53:33 -0700 (MST)
+Received: from KIFXP (mfg.Psych.arizona.edu [128.196.98.29])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 2171CAC4107
+	for <DMDX@psy1.psych.arizona.edu>; Tue, 21 Jun 2005 09:53:33 -0700 (MST)
+From: "Kenneth Forster" <kforster@u.arizona.edu>
+To: <DMDX@psy1.psych.arizona.edu>
+Subject: [DMDX] RE: deadline procedure
+Date: Tue, 21 Jun 2005 09:53:34 -0700
+Message-ID: <001f01c57681$c3516f80$1d62c480@KIFXP>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+In-Reply-To: <42B7F1CB.4030901@bris.ac.uk>
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+Markus,
+
+	I've always argued that there must be a way to meet any presentation
+requirement with DMDX, but this one is certainly difficult.
+
+	You might try something like the following.  Perhaps this is what
+Jonathan had in mind.  The text displays are just to indicate what happened.
+If you wanted feedback to item 2, you'd have to include your own branching
+code.
+
+<cr> <nfb>
++1 <t 500> * "target" <bic 100>;
++2 <t 3500> <wav> "skid"/ * "target";
+0 <bu 200>;
+100 "response received prior to 500 ms";
+200  "End of item";
+
+	Hope this helps,
+	--Ken
+
+
+
+
+
+> -----Original Message-----
+> From: DMDX-owner@psy1.psych.arizona.edu [mailto:DMDX-
+> owner@psy1.psych.arizona.edu] On Behalf Of Markus Damian
+> Sent: Tuesday, June 21, 2005 3:54 AM
+> To: DMDX@psy1.psych.arizona.edu
+> Subject: [DMDX] deadline procedure
+> 
+> Hi,
+> 
+> I was wondering if someone could assist me with the following problem: I
+> would like to set up an experiment in which a target stimulus is
+> presented for a fixed amount of time, say, 2000 ms. At a fixed time
+> interval into the trial, say 500 ms, I would like to have DMDX do the
+> following: if there was a response prior to the 500 ms deadline, I want
+> DMDX to do nothing, but if no response occurred by that time, I would
+> like to play a sound, while still awaiting a response until the timeout.
+> In other words, the feedback regarding whether or not participants
+> responded within the deadline interval should occur *within* an ongoing
+> trial.
+> 
+> So far I haven't been able to find a solution to this problem. It is
+> relatively straightforward to have DMDX perform a conditional branch
+> *after* a response occurred, with the LastRT keyword in combination with
+> a bicLE etc. statement. But here I would like to have the deadline sound
+> presented only if *no* response was made by a certain time. One solution
+> that I thought of was to schedule an event, at exactly 500 ms, that
+> looks at LastRT, and performs a conditional branch. But  to my knowledge
+> LastRT contains the last RT collected within the experiment, so DMDX
+> cannot distinguish between RTs collected on the current, and on the
+> previous, trial. Is there a way to reset LastRT between trials? If I
+> could set it to zero at the beginning of each trial, I could then at 500
+> ms state: if LastRT is not 0, then (a response must have occurred within
+> the current trials, and therefore) do nothing, otherwise play the sound.
+> 
+> Any help would be appreciated!
+> 
+> Markus
+> 
+> 
+> Markus Damian
+> University of Bristol
+> Department of Experimental Psychology
+> 8 Woodland Road, 5D5
+> Bristol BS8 1TN
+> United Kingdom
+> 
+> 
+> ====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+> ====================================================================
+
+
+

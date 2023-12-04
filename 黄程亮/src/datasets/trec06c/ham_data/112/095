@@ -1,0 +1,187 @@
+Received: from aquila.its.unimelb.EDU.AU (smtp1.unimelb.edu.au [128.250.20.111])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id k0N4DMhY017305
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 22 Jan 2006 21:13:23 -0700
+Received: from CONVERSION-DAEMON.SMTP.UNIMELB.EDU.AU by SMTP.UNIMELB.EDU.AU
+ (PMDF V6.2 #30995) id <01LY3XZ0FCV4BCQXXE@SMTP.UNIMELB.EDU.AU> for
+ DMDX@psy1.psych.arizona.edu; Mon, 23 Jan 2006 15:13:15 +1100
+Received: from Peterpc.psych.unimelb.edu.au
+ (peterpc.psych.unimelb.edu.au [128.250.173.146])
+ by SMTP.UNIMELB.EDU.AU (PMDF V6.2 #30995)
+ with ESMTP id <01LY3XZ0A0PYBCRAZ0@SMTP.UNIMELB.EDU.AU> for
+ DMDX@psy1.psych.arizona.edu; Mon, 23 Jan 2006 15:13:15 +1100
+Date: Mon, 23 Jan 2006 15:13:15 +1100
+From: Peter Straffon <p.straffon@psych.unimelb.edu.au>
+Subject: [DMDX] DMDX RTF strange conversion - adding spaces in filenames
+To: DMDX@psy1.psych.arizona.edu
+Message-id: <6.2.5.6.2.20060123150636.021bac28@psych.unimelb.edu.au>
+MIME-version: 1.0
+Content-type: multipart/alternative;
+ boundary="Boundary_(ID_xs1pQKAoTQ/vRQ4l/NvNWw)"
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+--Boundary_(ID_xs1pQKAoTQ/vRQ4l/NvNWw)
+Content-type: text/plain; charset="us-ascii"; format=flowed
+
+Hi,
+         I'm still working on the lockup but I have noticed another 
+strange behavior on DMDX 3.1.4.1.   I have a file that looks fine in 
+WORDPAD or WORD but when I parse it (with ignore unknown on) it adds 
+extra spaces that confuse the image file path.
+
+I have an RTF file that says
+>0 m1=<umnr><umpr><mpr +1><mnr +2><mnr +3><mnr +4><mnr +5>= c;
+>0 m2=<umnr><umpr><mpr +2><mnr +3><mnr +4><mnr +5><mnr +1>= c;
+>0 m3=<umnr><umpr><mpr +3><mnr +4><mnr +5><mnr +1><mnr +2>= c;
+>0 m4=<umnr><umpr><mpr +4><mnr +5><mnr +1><mnr +2><mnr +3>= c;
+>0 m5=<umnr><umpr><mpr +5><mnr +1><mnr +2><mnr +3><mnr +4>= c ;
+>0 m6=<umnr><umpr><mpr +space>= c;
+>
+>0 "Passage comprehension." ,
+><ln +1>  "Press the spacebar for example passage." ;
+>
+>+1 ~6 * <bmp> "c:\512335\slide1" ;
+>+2 ~2 * <bmp> "c:\512335\slide2" ;
+>+3 ~4 * <bmp> "c:\512335\slide3" ;
+
+the plain text of this section of the RTF is
+>\pard\cf0\lang1033 0 m1=<umnr><umpr><mpr +1><mnr +2><mnr +3><mnr 
+>+4><mnr +5>= c;\par
+>0 m2=<umnr><umpr><mpr +2><mnr +3><mnr +4><mnr +5><mnr +1>= c;\par
+>0 m3=<umnr><umpr><mpr +3><mnr +4><mnr +5><mnr +1><mnr +2>= c;\par
+>0 m4=<umnr><umpr><mpr +4><mnr +5><mnr +1><mnr +2><mnr +3>= c;\par
+>0 m5=<umnr><umpr><mpr +5><mnr +1><mnr +2><mnr +3><mnr +4>= c ;\par
+>0 m6=<umnr><umpr><mpr +space>= c;\par
+>\pard\nowidctlpar\cf1\lang3081\par
+>\lang1033\i\f1\fs24 0 "Passage comprehension." ,\par
+>\cf0\lang3081\i0 <ln +1> \cf1  \lang1033\i "Press the spacebar for 
+>example passage." ;\par
+>\lang3081\i0\f0\fs20\par
+>\pard\cf0\lang1033 +1 ~6 * <bmp> "c:\\512335\\slide1" ;\par
+>+2 ~2 * <bmp> "c:\\512335\\slide2" ;\par
+>+3 ~4 * <bmp> "c:\\512335\\slide3" ;\par
+>+4 ~3 * <bmp> "c:\\512335\\slide4" ;\par
+
+but when I look at RTFPARSED.ITM I see
+>0 m1=<umnr><umpr><mpr +1><mnr +2><mnr +3><mnr +4><mnr +5>= c;
+>0 m2=<umnr><umpr><mpr +2><mnr +3><mnr +4><mnr +5><mnr +1>= c;
+>0 m3=<umnr><umpr><mpr +3><mnr +4><mnr +5><mnr +1><mnr +2>= c;
+>0 m4=<umnr><umpr><mpr +4><mnr +5><mnr +1><mnr +2><mnr +3>= c;
+>0 m5=<umnr><umpr><mpr +5><mnr +1><mnr +2><mnr +3><mnr +4>= c ;
+>0 m6=<umnr><umpr><mpr +space>= c;
+>
+>0 "{\f1 \fs24 \i \cf1 Passage comprehension." ,
+><ln +1>  "{\f1 \fs24 \i \cf1 Press the spacebar for example passage." ;
+>
+>+1 ~6 * <bmp> "{c:\\512335\\slide1" ;
+>+2 ~2 * <bmp> "{c:\\ 512335\\ slide2" ;
+>+3 ~4 * <bmp> "{c:\\ 512335\\ slide3" ;
+>+4 ~3 * <bmp> "{c:\\ 512335\\ slide4" ;
+
+NOTE the extra spaces in the bitmap names for slide2 etc.
+
+I tried this on two different machines and get the same result.
+
+Can anyone make a suggestion as to what is going on here
+
+Peter
+
+  Peter Straffon                         p.straffon@psych.unimelb.edu.au
+  School of Behavioural Science       Phone +61(3) 83447773
+  The University Of Melbourne                 AUSTRALIA.
+
+--Boundary_(ID_xs1pQKAoTQ/vRQ4l/NvNWw)
+Content-type: text/html; charset="us-ascii"
+
+<html>
+<body>
+Hi,<br>
+<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>I'm still
+working on the lockup but I have noticed another strange behavior on DMDX
+3.1.4.1.&nbsp;&nbsp; I have a file that looks fine in WORDPAD or WORD but
+when I parse it (with ignore unknown on) it adds extra spaces that
+confuse the image file path.<br><br>
+I have an RTF file that says<br>
+<blockquote type=cite class=cite cite="">0
+m1=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +1&gt;&lt;mnr +2&gt;&lt;mnr
++3&gt;&lt;mnr +4&gt;&lt;mnr +5&gt;= c;<br>
+0 m2=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +2&gt;&lt;mnr +3&gt;&lt;mnr
++4&gt;&lt;mnr +5&gt;&lt;mnr +1&gt;= c;<br>
+0 m3=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +3&gt;&lt;mnr +4&gt;&lt;mnr
++5&gt;&lt;mnr +1&gt;&lt;mnr +2&gt;= c;<br>
+0 m4=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +4&gt;&lt;mnr +5&gt;&lt;mnr
++1&gt;&lt;mnr +2&gt;&lt;mnr +3&gt;= c;<br>
+0 m5=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +5&gt;&lt;mnr +1&gt;&lt;mnr
++2&gt;&lt;mnr +3&gt;&lt;mnr +4&gt;= c ;<br>
+0 m6=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +space&gt;= c;<br><br>
+<font face="Bookman Old Style, Bookman"><i>0 &quot;Passage
+comprehension.&quot; ,<br>
+</i>&lt;ln +1&gt;&nbsp; <i>&quot;Press the spacebar for example
+passage.&quot; ;<br>
+</i></font><br>
++1 ~6 * &lt;bmp&gt; &quot;c:\512335\slide1&quot; ;<br>
++2 ~2 * &lt;bmp&gt; &quot;c:\512335\slide2&quot; ;<br>
++3 ~4 * &lt;bmp&gt; &quot;c:\512335\slide3&quot; ;</blockquote><br>
+the plain text of this section of the RTF is<br>
+<blockquote type=cite class=cite cite="">\pard\cf0\lang1033 0
+m1=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +1&gt;&lt;mnr +2&gt;&lt;mnr
++3&gt;&lt;mnr +4&gt;&lt;mnr +5&gt;= c;\par<br>
+0 m2=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +2&gt;&lt;mnr +3&gt;&lt;mnr
++4&gt;&lt;mnr +5&gt;&lt;mnr +1&gt;= c;\par<br>
+0 m3=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +3&gt;&lt;mnr +4&gt;&lt;mnr
++5&gt;&lt;mnr +1&gt;&lt;mnr +2&gt;= c;\par<br>
+0 m4=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +4&gt;&lt;mnr +5&gt;&lt;mnr
++1&gt;&lt;mnr +2&gt;&lt;mnr +3&gt;= c;\par<br>
+0 m5=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +5&gt;&lt;mnr +1&gt;&lt;mnr
++2&gt;&lt;mnr +3&gt;&lt;mnr +4&gt;= c ;\par<br>
+0 m6=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +space&gt;= c;\par<br>
+\pard\nowidctlpar\cf1\lang3081\par<br>
+\lang1033\i\f1\fs24 0 &quot;Passage comprehension.&quot; ,\par<br>
+\cf0\lang3081\i0 &lt;ln +1&gt; \cf1&nbsp; \lang1033\i &quot;Press the
+spacebar for example passage.&quot; ;\par<br>
+\lang3081\i0\f0\fs20\par<br>
+\pard\cf0\lang1033 +1 ~6 * &lt;bmp&gt; &quot;c:\\512335\\slide1&quot;
+;\par<br>
++2 ~2 * &lt;bmp&gt; &quot;c:\\512335\\slide2&quot; ;\par<br>
++3 ~4 * &lt;bmp&gt; &quot;c:\\512335\\slide3&quot; ;\par<br>
++4 ~3 * &lt;bmp&gt; &quot;c:\\512335\\slide4&quot;
+;\par</blockquote><br>
+but when I look at RTFPARSED.ITM I see<br>
+<blockquote type=cite class=cite cite="">0
+m1=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +1&gt;&lt;mnr +2&gt;&lt;mnr
++3&gt;&lt;mnr +4&gt;&lt;mnr +5&gt;= c;<br>
+0 m2=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +2&gt;&lt;mnr +3&gt;&lt;mnr
++4&gt;&lt;mnr +5&gt;&lt;mnr +1&gt;= c;<br>
+0 m3=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +3&gt;&lt;mnr +4&gt;&lt;mnr
++5&gt;&lt;mnr +1&gt;&lt;mnr +2&gt;= c;<br>
+0 m4=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +4&gt;&lt;mnr +5&gt;&lt;mnr
++1&gt;&lt;mnr +2&gt;&lt;mnr +3&gt;= c;<br>
+0 m5=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +5&gt;&lt;mnr +1&gt;&lt;mnr
++2&gt;&lt;mnr +3&gt;&lt;mnr +4&gt;= c ;<br>
+0 m6=&lt;umnr&gt;&lt;umpr&gt;&lt;mpr +space&gt;= c;<br><br>
+0 &quot;{\f1 \fs24 \i \cf1 Passage comprehension.&quot; ,<br>
+&lt;ln +1&gt;&nbsp; &quot;{\f1 \fs24 \i \cf1 Press the spacebar for
+example passage.&quot; ;<br><br>
++1 ~6 * &lt;bmp&gt; &quot;{c:\\512335\\slide1&quot; ;<br>
++2 ~2 * &lt;bmp&gt; &quot;{c:\\ 512335\\ slide2&quot; ;<br>
++3 ~4 * &lt;bmp&gt; &quot;{c:\\ 512335\\ slide3&quot; ;<br>
++4 ~3 * &lt;bmp&gt; &quot;{c:\\ 512335\\ slide4&quot; ;</blockquote><br>
+NOTE the extra spaces in the bitmap names for slide2 etc.<br><br>
+I tried this on two different machines and get the same result.<br><br>
+Can anyone make a suggestion as to what is going on here<br><br>
+Peter</body>
+<br>
+<br>
+<div>&nbsp;Peter
+Straffon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<x-tab>&nbsp;&nbsp;&nbsp;</x-tab>p.straffon@psych.unimelb.edu.au</div>
+<div>&nbsp;School of Behavioural
+Science&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phone +61(3) 83447773</div>
+&nbsp;The University Of
+Melbourne&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+AUSTRALIA.</html>
+
+--Boundary_(ID_xs1pQKAoTQ/vRQ4l/NvNWw)--
+

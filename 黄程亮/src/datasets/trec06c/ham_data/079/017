@@ -1,0 +1,54 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.81.8])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fAT8YLT13168
+	for <egs@CS.Cornell.EDU>; Thu, 29 Nov 2001 03:34:21 -0500 (EST)
+Received: from kiki.ece.cornell.edu (kiki.ece.cornell.edu [128.84.83.13])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id fAT8VSM10113;
+	Thu, 29 Nov 2001 03:31:28 -0500
+Date: Thu, 29 Nov 2001 03:37:36 -0500 (EST)
+From: "Panagiotis (Panos) Papadimitratos" <papadp@ece.cornell.edu>
+To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+cc: Panagiotis Papadimitratos <papadp@ece.cornell.edu>
+Subject: 615 PAPER 60
+Message-ID: <Pine.GSO.4.05.10111290304370.6948-100000@kiki.ece.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Review of: "Herald: aChieving a Global Event Notification Service," by
+L.F. Cabrera, m.B.Jones, M. Theimer
+
+Panagiotis Papadimtratos papadp@ece.cornell.edu
+
+The authors present a hybrid of a position paper and a list of design
+directions and goals for a distributed, scalable event notification
+scheme. The basic concept that provides for the distribution of the system
+is the 'Rendez-vous point' (RVP) and differentiates this design from other
+centralized messaging/event notification services. In addition,
+simplicity, traded for guarantees on the notification delivery, is a major
+goal for the system that targets global deployment.
+
+Herald servers are to reside in numerous machines and publisher and
+subscriber client processes create and communicate throught the RVP's.
+Clients create RVP's, events are published and the RVP notifies the
+subcribed processes for corresponding newly published events. RVP's may be
+replicated and reside in different Herald machines in order to increase
+fault tolerance. Soft state is maintained in each RVP (i.e., state becomes
+obsolete unless explicitly updated) via 'time contracts' and the 'history'
+is proposed as a means to deal with periods of disconnection and loss of
+state. 
+
+The extreme flexibility in the creation of RVP's and the absence of any
+naming scheme raises the issue of resource location; is this the reason
+for their proposing the use of agents as the a way to retrieve
+notifications (with administrative RVP's also dealing with changes)? The
+replication could indeed contribute to load balancing and thus scaling,
+but this would also require an explicit way for subscribers to switch from
+one replica to another, which is not straightforward at all, especially
+because processes that are assumed to act autonomously have to motivated
+to do so. Finally, the claim about 'mutually untrusted domains' recurs but
+apart from a generic statement about Access control policies to be
+employed (by herald servers? at RVP's?) there is no further explanation on
+how this parameter is taken into account in the design (or is it merely a
+re-phrasing of 'open, distributed system'?)
+
+

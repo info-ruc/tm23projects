@@ -1,0 +1,88 @@
+Received: from DIRECTORY-DAEMON by EMAIL1.BYU.EDU (PMDF V5.2-31 #31181) 
+ id <01J7J88OY6Q88WYCEL@EMAIL1.BYU.EDU> for swl3@email.byu.edu 
+ (ORCPT rfc822;liddle@byu.edu); Tue, 9 Feb 1999 08:45:16 MST 
+Received: from DIRECTORY-DAEMON by EMAIL1.BYU.EDU (PMDF V5.2-31 #31181) 
+ id <01J7J88NQR008Y7EXA@EMAIL1.BYU.EDU> for stephen_liddle@byu.edu 
+ (ORCPT rfc822;liddle@byu.edu); Tue, 09 Feb 1999 08:45:15 -0700 (MST) 
+Received: from ocean.cs.byu.edu ("port 1047"@ocean.cs.byu.edu [128.187.2.145]) 
+ by EMAIL1.BYU.EDU (PMDF V5.2-31 #31181) 
+ with ESMTP id <01J7J88NCLQQ8WY9Y2@EMAIL1.BYU.EDU>; Tue, 
+ 09 Feb 1999 08:45:14 -0700 (MST) 
+Received: (from dennis@localhost) by ocean.cs.byu.edu (8.7.1/8.7.1) 
+ id IAA11752; Tue, 09 Feb 1999 08:45:08 -0700 (MST) 
+Date: Tue, 09 Feb 1999 08:45:08 -0700 (MST) 
+From: Dennis Ng <dennis@ocean.cs.byu.edu> 
+Subject: NSF Project Proposal Ideas 
+To: campbell@cs.byu.edu, embley@embley.cs.byu.edu, sbk@cs.byu.edu, 
+ quass@byu.edu, liddle@byu.edu, lonz@byu.edu 
+Cc: ng@cs.byu.edu, smithr@cs.byu.edu, bconrad@novell.com, miles@found.com, 
+ mat@earthsoft.com 
+Message-id: <199902091545.IAA11752@ocean.cs.byu.edu> 
+MIME-version: 1.0 
+X-Mailer: ELM [version 2.4 PL25] 
+Content-type: text/plain; charset=US-ASCII 
+Content-transfer-encoding: 7bit 
+
+
+
+For the Web-page Classification problem, we consider the following
+existing methods on data extraction from unstructured documents:
+
+
+A.  Automatic Term Extraction and Weighting:
+
+
+  a) Term Frequency (TF): TF = Number of occurrence of term k in a
+                                document m;
+        W(d,t) = TF(d,t), where W(d,t) = the weight of a term t in a
+                                         document t
+
+
+        Note that TF is known to improve the recall in IR.
+
+
+
+  b) Inverse Document Frequency (IDF): IDF is proportional to 1/[df(t)]
+        which determines the importance of each term that is inversely
+        proportional to the number of documents that contain the term t.
+        IDF measures term occurrence across a collection of documents.
+
+
+        Note that TF(d,t) and IDF(t) would contribute to improve the recall
+                and the precision respectively.
+
+
+
+  c) Weighted Inverse Document Frequency (WIDF): WIDF corresponds to the
+        normalized term frequency over the collection. WIDF differs in
+        each document.
+
+
+
+B. IR Models:
+
+
+   1) Vector Space Model: A document or a query can be represented as a
+        vector, with each term as a t-dimensional axis and a document or 
+        query resides in t-dimensional space.  The magnitude of a document
+        or query results from the computation of associated terms.
+
+
+        i.e., d1 = (t1, t2, . , tn); ..., q1 = (u1, u2, ., uk);
+                where d1 = document 1;
+                      q1 = query 1;
+                      t1 = number of occurrence (or weight) of term1 in a d1; 
+
+
+
+   2) Probabilistic Model: The probability of term j occurring in a 
+        document, given document is (NOT) relevant to a given query.
+
+
+
+   3) Clustering Model: This model is based on clusters of similar documents
+        into a class, called "Centroid", and a "Super-centroid" can be
+        formed from many similar centroid. Using the similarity measure
+        between two centroid or super-centroid, weight of a centroid term
+        is computed as the average of the weights for that term over all
+        documents in a cluster.

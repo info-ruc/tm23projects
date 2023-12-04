@@ -1,0 +1,55 @@
+Received: from fluke.com (mail.fluke.com [206.138.179.7])
+	by aleve.media.mit.edu (8.8.7/ML970927) with ESMTP id PAA20549
+	for <handyboard@media.mit.edu>; Mon, 8 Jun 1998 15:41:39 -0400 (EDT)
+Received: by gateway2.fluke.com id <27790>; Mon, 8 Jun 1998 12:38:06 -0700
+Date: Mon, 8 Jun 1998 12:41:03 -0700
+From: "Curt Mills, WE7U" <hacker@tc.fluke.com>
+To: GJZ@aol.com
+Cc: handyboard@media.mit.edu
+Subject: Re: handshaking
+In-Reply-To: <280cb2cd.357c1e62@aol.com>
+Message-Id: <98Jun8.123806pdt.27790@gateway2.fluke.com>
+X-X-Sender: hacker@dogbert.tc.fluke.com
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Mon, 8 Jun 1998 GJZ@aol.com wrote:
+
+> could you please explain to me the details of handshaking?  i need to
+> understand this before i can go any farther.  exactly what is transponded
+> during this?  and how is this implemented thru assembly language?  thank you.
+
+Regarding your earlier message, if you're just wanting to talk to a GPS,
+then you don't need handshaking, because I haven't found one yet that
+supports it.  It is a simple three-wire interface to most GPS's, TX/RX and
+Ground.  They don't support software-handshaking in/out of GPS's, and the
+hardware handshaking lines just aren't present, so that's out too.  If you
+miss sentences because of any reason at all, tough luck.
+
+What I ended up having to do with my IC programs was optimize them as much
+as possible so that I didn't lose many characters.  They way I chose to do
+that (right or wrong) was to go snag a large buffer worth of characters
+all at once, and then run off and process that buffer's worth.  I also
+couldn't really do much in the way of floating point or anything else that
+took up a lot of time.  I think my update rate ended up being about once
+in four seconds, which means I was losing about half of the sentences at
+4800 baud.  The key point though is that I didn't lose ANY characters when
+I was just concentrating on filling the buffer.
+
+I would then look in the buffer for a particular start sequence (I chose
+the RMC sentence), and then process until I found another RMC sentence, at
+which point I would throw the rest of the buffer away and go collect
+another buffer's worth.
+
+Strange, but it worked.
+
+My next goal is to change over to using GCC as the compiler, so I can get
+much more speed out of the Handyboard and do a lot more processing of the
+data.
+
+Curt Mills, WE7U                         hacker.NO_*SPAM@tc.fluke.com
+Senior Methods Engineer/SysAdmin
+"Lotto:    A tax on people who are bad at math." -- unknown
+"Windows:  Microsoft's tax on computer illiterates." -- WE7U
+
+

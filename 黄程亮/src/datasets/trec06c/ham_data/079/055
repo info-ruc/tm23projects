@@ -1,0 +1,46 @@
+Received: from bureau6.utcc.utoronto.ca (bureau6.utcc.utoronto.ca [128.100.132.16])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id fB4H4X606754
+	for <egs@cs.cornell.edu>; Tue, 4 Dec 2001 12:04:33 -0500 (EST)
+Received: from webmail3.ns.utoronto.ca ([128.100.132.26] EHLO webmail3 ident: IDENT-NOT-QUERIED [port 37244]) by bureau6.utcc.utoronto.ca with ESMTP id <238582-22507>; Tue, 4 Dec 2001 12:04:19 -0500
+Received: by webmail3.ns.utoronto.ca id <414677-225>; Tue, 4 Dec 2001 12:04:13 -0500
+To: COM S 615 <egs@CS.Cornell.EDU>
+Subject: 615 PAPER 69
+Message-ID: <1007485453.3c0d020d0764c@webmail.utoronto.ca>
+Date: Tue, 04 Dec 2001 12:04:13 -0500 (EST)
+From: c.tavoularis@utoronto.ca
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: IMP/PHP IMAP webmail program 2.2.3
+
+Bayeux is an application-level multicast system intended for streaming 
+multimedia from one or few source to large number of destinations. Bayeux 
+employs Tapestry for routing and location. It builds a distribution tree for 
+multicast while trying to minimize delay and bandwidth use, while handling link 
+and node failures.
+
+The goal is to build an efficient network of unicast connections using 
+Tapestry, and then create a data distribution tree rooted at the source and 
+reaching all multicast members. Tapestry forwarding achieved index-by-index can 
+be exploited for multicasting purposes by multiplexing data packets and 
+diverging when an index has changed. Bayeux uses Tapestry’s data location 
+service to publish multicast session with the hash of a unique tuple at the 
+root node. The root node advertises the session, and clients that can identify 
+the session can join by sending a JOIN message to the root. The root replies 
+with a TREE message, such that routers in the forwarding path maintain a list 
+of receiver node Ids. A node can send a LEAVE message to remove itself from the 
+session, which triggers a PRUNE message from the root to notify forwarding 
+routers of the change. Bayeux was evaluated according to relative delay penalty 
+with respect to Tapestry, and physical link stress to measure load balancing. 
+It was shown that overall link stress is lower in Bayeux than in unicast. 
+
+This paper also provides scalability enhancements on top of Tapestry. Tapestry 
+allows Bayeux to load-balance across multiple root nodes using tree 
+partitioning. The root nodes containing the same object are organized into a 
+tapestry network, and each advertises he object. Clients join to the closest 
+root hence the load is distributed.  Tapestry also enables clustering of 
+receiver nodes by id, which further reduces link stress. Bayeux demonstrates an 
+efficient use of the Tapestry infrastructure, and seems to demonstrate the 
+potential to support wide-area multimedia dissemination. It would be useful to 
+actually demonstrate the performance of Bayeux in a real-world scenario.
+

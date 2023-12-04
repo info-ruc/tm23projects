@@ -1,0 +1,91 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j5QKVi5L008200
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 26 Jun 2005 13:31:44 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 42232ADDE8C
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 26 Jun 2005 13:31:44 -0700 (MST)
+Received: from anybodyi.u.arizona.edu (megacentral-9.dsl.arizona.edu [128.196.237.9])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 599A3ADDD44
+	for <DMDX@psy1.psych.arizona.edu>; Sun, 26 Jun 2005 13:31:43 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050626132612.00ba4728@psy1.psych.arizona.edu>
+Date: Sun, 26 Jun 2005 13:31:36 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "j.c.f." <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: duration problem
+In-Reply-To: <6.2.0.14.0.20050626211552.01e302c0@pop.fastwebnet.it>
+References: <5.1.0.14.2.20050619162436.00ba4690@psy1.psych.arizona.edu>
+ <6.2.0.14.0.20050619170903.01e77aa8@pop.fastwebnet.it>
+ <5.1.0.14.2.20050613085149.00ba46e0@psy1.psych.arizona.edu>
+ <6.2.1.2.1.20050613113335.032617d0@pophost.mrc-cbu.cam.ac.u k>
+ <5.1.0.14.2.20050610081105.00ba4600@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050607080708.00ba46a0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606092253.00ba4cd0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606073440.00bc1ce8@psy1.psych.arizona.edu>
+ <6.2.1.2.1.20050606134728.031a4890@pophost.mrc-cbu.cam.ac.u k>
+ <5.1.0.14.2.20050606073440.00bc1ce8@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050606092253.00ba4cd0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050607080708.00ba46a0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050610081105.00ba4600@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050613085149.00ba46e0@psy1.psych.arizona.edu>
+ <5.1.0.14.2.20050619162436.00ba4690@psy1.psych.arizona.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Transfer-Encoding: 8bit
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+I'd guess that your digital video is the cause of the problem.  Try 
+commenting out the <dv> keywords (replace them with <!dv>) and see what the 
+fixation crosses look like.  You'll probably have to comment out the <pdvf> 
+and <pdvt> keywords as well.  The file will display names instead of 
+digital video but you'll be able to check things out without interference 
+from the codecs as I'll bet that the codecs are misbehaving, ie, they're 
+decoding frames earlier than they've been asked to.  You may have to 
+display your fixation crosses in an item before the digital video is played.
+
+At 09:27 PM 6/26/2005 +0200, you wrote:
+>Hi all,
+>I'm writing because i have a problem with the duration of my items, i'd 
+>like to have the fixation cross for about 1000ms but sometimes the cross 
+>comes and goes way more rapidly (i can't say how much exactly), some other 
+>times it looks about correct...
+>this is a sample of my code
+>the refresh rate is 16.60
+>
+>
+><n 32> <cr>  <fd 60> <id Tastiera> <mr "+Spazio"> <zil> <zor> <vzk "+V"> 
+><vzk "+B"> <vzk "+N"> <vzk "+M"> <mpr "+V"> <mpr "+B"> <mpr "+N"> <mpr 
+>"+M"> <d 20> <vm 1280, 1024, 32, 60> <dbc 0> <dwc 255000000> <t 2500> <s 1>
+>$
+>0 "Vedrai brevemente un punto di fissazione dello sguardo (+), poi un 
+>oggetto";
+>0 "seguito da un secondo oggetto. Il tuo compito è di ignorare il primo";
+>0 "e di rispondere al secondo oggetto";
+>0 "devi identificarlo il più rapidamente e correttamente possibile";
+>0 "spingendo il tasto corrispondente";
+>0 "Premi la barra per iniziare";
+>$
+>+1 <umnr> <umpr> <mpr +v> <mnr +b> <mnr +n> <mnr +m> <fd 60> "+" / / <dv> 
+><pdvf 1> <pdvt 15> "staticA31.wmv"/ / * <ms% 700> <dv> <pdvf 1> <pdvt 6> 
+>"targetA3.wmv" <cfb "corretto!"> <wfb "errato!"> / <ms% 700> / ;
+>+2 <umnr> <umpr> <mpr +v> <mnr +b> <mnr +n> <mnr +m> <fd 60> "+" / / <dv> 
+><pdvf 1> <pdvt 15> "exp3A3dipa.wmv"/ / * <ms% 700> <dv> <pdvf 1> <pdvt 6> 
+>"targetA3.wmv" <cfb "corretto!"> <wfb "errato!"> / <ms% 700> / ;
+>
+>Than you very much for the help!
+>All the best,
+>annalisa
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+Interesting but useless facts #48.
+The red flshing beacon atop a firetruck is called a mars light.
+
+
+
+

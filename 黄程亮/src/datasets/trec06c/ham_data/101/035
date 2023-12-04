@@ -1,0 +1,132 @@
+Received: from smtpgate.email.arizona.edu (deagol.email.Arizona.EDU [128.196.133.142])
+	by psy1.psych.arizona.edu (8.12.10/8.12.4) with ESMTP id j2LMfxFJ027956
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 21 Mar 2005 15:41:59 -0700
+Received: from localhost (eowyn.email.arizona.edu [10.0.0.221])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id 78461A77712
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 21 Mar 2005 15:41:59 -0700 (MST)
+Received: from 666-devel.email.arizona.edu (jcf.Psych.arizona.edu [128.196.98.7])
+	by smtpgate.email.arizona.edu (Postfix) with ESMTP id B86E5A83ED3
+	for <DMDX@psy1.psych.arizona.edu>; Mon, 21 Mar 2005 15:41:58 -0700 (MST)
+Message-Id: <5.1.0.14.2.20050321145004.00ba4cd0@psy1.psych.arizona.edu>
+Date: Mon, 21 Mar 2005 15:41:56 -0700
+To: DMDX@psy1.psych.arizona.edu
+From: "Jonathan C. Forster" <jforster@psy1.psych.arizona.edu>
+Subject: [DMDX] Re: counters
+In-Reply-To: <4235CA0A0000984D@ms001msg.mail.fw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Reply-To: DMDX@psy1.psych.arizona.edu
+Sender: DMDX-owner@psy1.psych.arizona.edu
+Precedence: list
+
+
+   You'll have to keep track of the error rates individually, the internal 
+error rate counters will never do what you need.  So for each prototype 
+you'll need a counter for the number of correct responses and a counter for 
+the total number of responses and then a branch that calculates the error 
+rates and branches if any of them are too low.
+
+   Correct response counters will be 10, 20, 30 and 40, totals will be 11, 
+12, 13 and 14. You'll want to repeat the 1000, 2000, 3000 and 4000 items as 
+many times as data points you wish to gather.  The <emit> keywords are for 
+debugging.
+
+100 "start" <set c10=0> <set c11=0>
+             <set c20=0> <set c21=0>
+             <set c30=0> <set c31=0>
+             <set c40=0> <set c41=0>;
+
++1000 "prototype 1 test" * <incic 10> <inc 11>;
++2000 "prototype 2 test" * <incic 20> <inc 21>;
++3000 "prototype 3 test" * <incic 30> <inc 31>;
++4000 "prototype 4 test" * <incic 40> <inc 41>;
+
++1000 "prototype 1 test" * <incic 10> <inc 11>;
++2000 "prototype 2 test" * <incic 20> <inc 21>;
++3000 "prototype 3 test" * <incic 30> <inc 31>;
++4000 "prototype 4 test" * <incic 40> <inc 41>;
+
++1000 "prototype 1 test" * <incic 10> <inc 11>;
++2000 "prototype 2 test" * <incic 20> <inc 21>;
++3000 "prototype 3 test" * <incic 30> <inc 31>;
++4000 "prototype 4 test" * <incic 40> <inc 41>;
+
+200 <emit 10> <emit 11>
+     <emit 20> <emit 21>
+     <emit 30> <emit 31>
+     <emit 40> <emit 41>
+           <bi 100, (c10 * 100 / c11 .lt. 80) .or.
+                    (c20 * 100 / c21 .lt. 80) .or.
+                    (c30 * 100 / c31 .lt. 80) .or.
+                    (c40 * 100 / c41 .lt. 80) >;
+
+At 03:22 PM 3/21/2005 +0000, you wrote:
+>Dear prof. Forster,
+>For the training phase of my exp I have 4 prototypes that people have to
+>recognize; ideally I need to count how many errors they do for each prototype
+>and if in at least 1 prototype they do not do 80% correct they should start
+>again. Unfortunately I was not able to do that, so I solved my probl by 
+>increasing
+>the perc of correct that I want overall (90%) and use a simpler ?biert 10?
+>function.
+>Could you give me some suggestions on how set the four different counters
+>as cue for the branching procedure, - I tried to set an error counter for
+>just one prototype as trial but didn?t work -? I include my code for branching
+>that seems to work,
+>Thank you very much, sorry for the vagueness of my question.
+>annalisa
+>
+>branching:
+><n 32> <cr>  <fd 36> <id Keyboard> <zil> <zor> <vzk "+c"> <vzk "+v"> <vzk
+>"+b"> <vzk "+n"> <mpr "+c"> <mpr "+v"> <mpr "+b"> <mpr "+n"> <d 20> <vm 1280,
+>1024, 16, 75> <dbc 0> <dwc 255000000> <t 1200> <fbp 0> <s 1>
+>$
+>0 "This is object A, you have 2 sec to observe it, press the spacebar to
+>begin" ;
+>77 "+"/ / <dv> <pdvf 1> <pdvt 150>  "prototA.avi.avi" / ;
+>0 "This is object B, you have 2 sec to observe it, press the spacebar to
+>begin" ;
+>78 "+"/ / <dv> <pdvf 1> <pdvt 150>  "prototB.avi.avi" / ;
+>0 "This is object C, you have 2 sec to observe it, press the spacebar to
+>begin" ;
+>79 "+"/ / <dv> <pdvf 1> <pdvt 150>  "prototC.avi.avi" / ;
+>0 "This is object D, you have 2 sec to observe it, press the spacebar to
+>begin" ;
+>80 "+"/ / <dv> <pdvf 1> <pdvt 150>  "prototD.avi.avi" / ;
+>0 "Press the correspondent key to identify the object" ;
+>0 "If you make more than 90% error you will have to start again" ;
+>10000 <ms% 250> / ;
+>$
+>+1 <umnr> <umpr> <mpr +c> <mnr +v> <mnr +b> <mnr +n> <ms% 700> "+"/ / * <ms%
+>500> <dv> <pdvf 1> <pdvt 18> "prototA.avi.avi"/ /;
+>+2 <umnr> <umpr> <mpr +c> <mnr +v> <mnr +b> <mnr +n> <ms% 700> "+"/ / * <ms%
+>500> <dv> <pdvf 1> <pdvt 18> "prototA.avi.avi"/ /;
+>$
+>999 <biergt 10, -10000> / ;
+>0 "The End"; $
+>
+>
+>Annalisa Setti,
+>Post Doc. Psychology
+>Department of Psychology
+>University of Bologna (Italy)
+>
+>
+>
+>====================================================================
+>    Send mail to DMDX-request@psy1.psych.arizona.edu with the word
+>   'unsubscribe' by itself with no quotes in the body of the email
+>   to be removed from the list.  The list archive is available here:
+>           http://psy1.psych.arizona.edu/cgi-bin/DMDX/thread
+>====================================================================
+
+
+                                                /"\
+  -jonathan (j.c.f.)                            \ /
+                                                 X
+     ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL  / \
+
+   You should hardly ever equivocate.
+
+
+

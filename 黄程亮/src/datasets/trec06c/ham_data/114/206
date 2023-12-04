@@ -1,0 +1,214 @@
+Received: from zproxy.gmail.com (zproxy.gmail.com [64.233.162.195] (may be forged))
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1FLWmt04099
+	for <egs+summary@cs.cornell.edu>; Wed, 15 Feb 2006 16:32:49 -0500 (EST)
+Received: by zproxy.gmail.com with SMTP id z31so24313nzd
+        for <egs+summary@cs.cornell.edu>; Wed, 15 Feb 2006 13:32:48 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=Ps3foNqhMjIESzlLMJhNra6dSIPxMDTLSdfQSxLNbXbebDEyNQT/O6SPH2NmLT5DK8/+4kOBcr4VnfjZdfVg5pscL8TbZJCBsf9juNwK3m5foZfdFxQQuDXvwhqChLc+k6IFUlsGft77h0y6zuu4wvG8C5UpwpTsWLHvA9iKL7w=
+Received: by 10.36.65.19 with SMTP id n19mr230642nza;
+        Wed, 15 Feb 2006 13:32:46 -0800 (PST)
+Received: by 10.36.146.8 with HTTP; Wed, 15 Feb 2006 13:32:45 -0800 (PST)
+Message-ID: <9aa7a97d0602151332pd6a83eama5bde998e0a69ef7@mail.gmail.com>
+Date: Wed, 15 Feb 2006 16:32:45 -0500
+From: Andrew Cunningham <lackhand@gmail.com>
+To: egs+summary@cs.cornell.edu
+Subject: PAPER 7
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_8512_21758432.1140039165873"
+
+------=_Part_8512_21758432.1140039165873
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham
+arc39
+    _Geopeer_
+
+    Unusual in that it focuses mostly on overall network topology with
+relatively little attention paid to individual node state, Geopeer is a pee=
+r
+to peer system for dissemenating geographically relevant information throug=
+h
+zones (in a fashion analgous, but unrelated, to CAN's zone-splitting in
+n-space; Geopeer uses triangle boundaries from Delauny triangulations of th=
+e
+system). We can determine to which node a point in space belongs by using
+modified Voronoi cells that define the set of points which are closer to a
+given node than to any other node, without crossing triangle boundaries.
+Each node uses, for its identifier, some function of its location in
+physical space, ensuring a non-evenly distributed covering of the space.
+    For a system that relies on such detailed knowledge of geographical
+proximity, Geopeer is vulnerable to several sorts of attacks. The first is
+that the construction of Long Range Connections must be triggered, which
+means that attempts at widening the network rely on putting the load onto
+other nodes -- an attacker with more resources can spray the network with
+long range requests, bringing it to its knees. The paper also addresses a
+variety of specific applications/optimizations of the network; as a whole,
+the picture of per-node state is so sparse as to be nearly useless.
+
+    _PTrees_
+
+    Unlike other systems, which search for a specific point in node-space
+corresponding to a datum or node, the P Trees system allows ranges to be
+efficiently searched for. It does this by maintaining parts of
+semi-independant B+ trees at each peer. Each peer maintains only the left
+most root-to-leaf path of its corresponding B+ tree, and relies on other
+peers to complete its tree. It builds this over a ring of connected peers,
+and achieves O(m+log[d](N)) search cost for range queries, for N the number
+of peers in the system, m the number of peers in the range, and d the order
+of the tree. It requires O(d*log[d](N)) space at each peer, and resilient t=
+o
+even large failures. It is a P2P application, not routing scheme, and thus
+usable over a system such as Chord.
+    The paper allows peers to function under relatively loose constraints t=
+o
+optimize performance for insertions/deletions; it then aggravates this
+condition by permitting local inconsistency; it has a 'consumer' protocol
+running in the background -- Stabilization Process -- which smoothes out th=
+e
+errors. The reason that this is relevant is that the logarithmic performanc=
+e
+of queries relies on reaching a new B+ tree level / Chord hop, which in an
+inconsistent system is not guaranteed -- this reduces to the normal case of
+searching around a ring. Finally, as presented, the entire system is
+required per quality searched for, which means that the entire overhead -- =
+a
+separate B+ Tree portion -- must be maintained per file, so the performance
+is actually multiplied by some M/N, for M the number of files in the system
+-- precisely what this factor is is a question that this paper doesn't deal
+with, but anecdotally is likely to be large. However, the system *is*
+scalable in number of peers, as they do not assign peers roles as nodes of
+the tree, but rather as leaves, and each maintains a full path to the root
+(node, not peer).
+
+    _Mercury_
+
+    Another protocol for supporting multi-attribute range-based searches, i=
+t
+supports multiple attributes better, and performs load balancing. It does
+this through sampling random nodes in a dynamic overlay network, enabling
+logarithmic-hop routing and nigh-uniform load balancing. The test
+application is a publish-subscribe mechanism over the Mercury protocol, and
+the authors provide a range-based query language to higher layer
+applications. It does this by partitioning the nodes in the system into
+attribute hubs (logical groupings), and each node may participate in
+several; it does not scale well in number of types of attributes. Then, eac=
+h
+node in the hub connects in a circular overlay, with each node responsible
+for a contiguous range of attributes -- this is similar in many ways to CAN=
+,
+in that it is multidimensional and has each node responsible for some range
+in a given direction, with neighbors in each direction along a single ring
+dimension; it is different in that each ring is logically separate from the
+others; we do not operate in n-space but instead n (mostly!) disjoint
+1-spaces. Each hub then broadcasts the query to the correct sector along it=
+s
+ring.
+    This paper is difficult to spot (other than security) holes in. The bes=
+t
+performance is achieved by using the most selective attribute of the query;
+however, there is clearly a tradeoff here, as "most selective" doesn't mean
+most specific -- there is a commonality to consider as well. The number of
+queries for "Linux", though it is a precise string which must be matched
+exactly, is clearly not as precise as looking for Linux news from, say, a
+single date. The method of load balancing, however, explicitly creates an
+opportunity for sybil attacks, as we invite lightly loaded nodes to share
+our workload -- thus giving them an opportunity to seize control of any
+segment they please by spraying that area with requests while executing a
+sybil attack.
+
+------=_Part_8512_21758432.1140039165873
+Content-Type: text/html; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Andrew Cunningham<br>arc39<br>&nbsp;&nbsp; &nbsp;_Geopeer_<br>&nbsp;&nbsp; =
+&nbsp;<br>&nbsp;&nbsp; &nbsp;Unusual in that it focuses mostly on overall n=
+etwork topology with relatively little attention paid to individual node st=
+ate, Geopeer is a peer to peer system for dissemenating geographically rele=
+vant information through zones (in a fashion analgous, but unrelated, to CA=
+N's zone-splitting in n-space; Geopeer uses triangle boundaries from Delaun=
+y triangulations of the system). We can determine to which node a point in =
+space belongs by using modified Voronoi cells that define the set of points=
+ which are closer to a given node than to any other node, without crossing =
+triangle boundaries. Each node uses, for its identifier, some function of i=
+ts location in physical space, ensuring a non-evenly distributed covering o=
+f the space.
+<br>&nbsp;&nbsp; &nbsp;For a system that relies on such detailed knowledge =
+of geographical proximity, Geopeer is vulnerable to several sorts of attack=
+s. The first is that the construction of Long Range Connections must be tri=
+ggered, which means that attempts at widening the network rely on putting t=
+he load onto other nodes -- an attacker with more resources can spray the n=
+etwork with long range requests, bringing it to its knees. The paper also a=
+ddresses a variety of specific applications/optimizations of the network; a=
+s a whole, the picture of per-node state is so sparse as to be nearly usele=
+ss.
+<br>&nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp; &nbsp;_PTrees_<br>&nbsp;&nbsp; &nbs=
+p;<br>&nbsp;&nbsp; &nbsp;Unlike other systems, which search for a specific =
+point in node-space corresponding to a datum or node, the P Trees system al=
+lows ranges to be efficiently searched for. It does this by maintaining par=
+ts of semi-independant B+ trees at each peer. Each peer maintains only the =
+left most root-to-leaf path of its corresponding B+ tree, and relies on oth=
+er peers to complete its tree. It builds this over a ring of connected peer=
+s, and achieves O(m+log[d](N)) search cost for range queries, for N the num=
+ber of peers in the system, m the number of peers in the range, and d the o=
+rder of the tree. It requires O(d*log[d](N)) space at each peer, and resili=
+ent to even large failures. It is a P2P application, not routing scheme, an=
+d thus usable over a system such as Chord.
+<br>&nbsp;&nbsp; &nbsp;The paper allows peers to function under relatively =
+loose constraints to optimize performance for insertions/deletions; it then=
+ aggravates this condition by permitting local inconsistency; it has a 'con=
+sumer' protocol running in the background -- Stabilization Process -- which=
+ smoothes out the errors. The reason that this is relevant is that the loga=
+rithmic performance of queries relies on reaching a new B+ tree level / Cho=
+rd hop, which in an inconsistent system is not guaranteed -- this reduces t=
+o the normal case of searching around a ring. Finally, as presented, the en=
+tire system is required per quality searched for, which means that the enti=
+re overhead -- a separate B+ Tree portion -- must be maintained per file, s=
+o the performance is actually multiplied by some M/N, for M the number of f=
+iles in the system -- precisely what this factor is is a question that this=
+ paper doesn't deal with, but anecdotally is likely to be large. However, t=
+he system *is* scalable in number of peers, as they do not assign peers rol=
+es as nodes of the tree, but rather as leaves, and each maintains a full pa=
+th to the root (node, not peer).
+<br>&nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp; &nbsp;_Mercury_<br>&nbsp;&nbsp; &nb=
+sp;<br>&nbsp;&nbsp; &nbsp;Another protocol for supporting multi-attribute r=
+ange-based searches, it supports multiple attributes better, and performs l=
+oad balancing. It does this through sampling random nodes in a dynamic over=
+lay network, enabling logarithmic-hop routing and nigh-uniform load balanci=
+ng. The test application is a publish-subscribe mechanism over the Mercury =
+protocol, and the authors provide a range-based query language to higher la=
+yer applications. It does this by partitioning the nodes in the system into=
+ attribute hubs (logical groupings), and each node may participate in sever=
+al; it does not scale well in number of types of attributes. Then, each nod=
+e in the hub connects in a circular overlay, with each node responsible for=
+ a contiguous range of attributes -- this is similar in many ways to CAN, i=
+n that it is multidimensional and has each node responsible for some range =
+in a given direction, with neighbors in each direction along a single ring =
+dimension; it is different in that each ring is logically separate from the=
+ others; we do not operate in n-space but instead n (mostly!) disjoint 1-sp=
+aces. Each hub then broadcasts the query to the correct sector along its ri=
+ng.
+<br>&nbsp;&nbsp; &nbsp;This paper is difficult to spot (other than security=
+) holes in. The best performance is achieved by using the most selective at=
+tribute of the query; however, there is clearly a tradeoff here, as &quot;m=
+ost selective&quot; doesn't mean most specific -- there is a commonality to=
+ consider as well. The number of queries for &quot;Linux&quot;, though it i=
+s a precise string which must be matched exactly, is clearly not as precise=
+ as looking for Linux news from, say, a single date. The method of load bal=
+ancing, however, explicitly creates an opportunity for sybil attacks, as we=
+ invite lightly loaded nodes to share our workload -- thus giving them an o=
+pportunity to seize control of any segment they please by spraying that are=
+a with requests while executing a sybil attack.
+<br>&nbsp;&nbsp;&nbsp; <br>
+
+------=_Part_8512_21758432.1140039165873--
+

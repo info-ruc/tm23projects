@@ -1,0 +1,86 @@
+Received: from smtp.wenet.net (meat.hooked.net [206.80.6.50])
+	by aleve.media.mit.edu (8.9.1a/8.9.1/+ALEVE) with ESMTP id KAA05164
+	for <handyboard@media.mit.edu>; Tue, 2 Mar 1999 10:02:31 -0500 (EST)
+Received: from jim (214-151-126.ipt.aol.com [171.214.151.126])
+          by smtp.wenet.net (8.9.0/8.8.4) with SMTP
+	  id HAA09537; Tue, 2 Mar 1999 07:02:23 -0800 (PST)
+Message-Id: <3.0.3.32.19990302100251.02fa063c@mailhost.hooked.net>
+X-Sender: jfong@mailhost.hooked.net
+X-Mailer: QUALCOMM Windows Eudora Pro Version 3.0.3 (32)
+Date: Tue, 02 Mar 1999 10:02:51 -0500
+To: "Mark Tan" <hcoe@hotmail.com>
+From: Jim Fong <jfong@hooked.net>
+Subject: Re: .asm --> .s19
+Cc: handyboard@media.mit.edu
+In-Reply-To: <19990302075519.1656.qmail@hotmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+
+The original IC and pcode was originally written on a Unix machine. There
+are scripts and a makefile that simplify the compile procedure. 
+
+I use a Linux PC to modify the pcode all the time.  If you have access to
+one, download the original pcode source file from 
+ftp://cherupakha.media.mit.edu/pub/projects/6270/interactive-c/source/pcode-
+2.81-dist.tar.Z
+
+Un TAR the distribution, copy your modified pcode_hb.asm to pcode.asm and type
+
+make pcode_hb.s19
+
+this will compile the source code to s19 format. 
+
+You may need to compile a version of AS11 (the hc11 assembler) for your
+machine. You can download the source for that here
+ftp://cherupakha.media.mit.edu/pub/projects/6270/interactive-c/source/as11-s
+ources.tar.Z
+
+The C compiler you need is gcc and you can use the one that comes with
+Linux. It is needed a pre-process the  #INCLUDE lines in the source code.  
+
+If you don't have access to a Linux/Unix box or the above is just greek to
+you, I created a distribution of the Skidmore source code to compile under
+MSDOS.
+
+You can pick up a copy from  my web site at  www.hooked.net/~jfong
+goto Design and Ideas and download pcodepc2.zip.  
+
+I  added Kent Farnsworth PCODE_PC.ZIP modifications to Julian Skidmores
+version of the pcode so it will compile correctly under MSDOS.  
+(Many thanks to Kent for doing the original port to MSDOS)
+
+Make your code changes to the pcode.asm file instead of your version of the
+pcode_hb.asm.  Pcode.asm version has the necessary #INCLUDE lines added so
+it will compile right. 
+
+You may also want to download the floating point division fix (
+math11routines.asm file located on the same page). Copy this version over
+the one found in pcodepc2.zip.
+
+regards,
+
+Jim Fong
+
+At 11:55 PM 3/1/99 PST, you wrote:
+>Hello
+>      I made some changes to the pcode_hb.asm file (by Julian 
+>      Skidmore for the 100 steps PWM) and I need to compile/assemble
+>      it into a .s19 file (pcode_hb.s19) before I can download
+>      it onto the HandyBoard.
+>
+>      It seems to me that I require both a C compiler and an             
+>assembly language assembler as the .asm file contains more 
+>      than mere assembly language. Do I have to first compile the
+>      .asm file using a C compiler (Borland C) and then assemble
+>      it using an assembler? (as11) How should I go about doing
+>      that? Can someone help me out?
+>
+>      Thanks.
+>
+> ~shannon 
+>
+>______________________________________________________
+>Get Your Private, Free Email at http://www.hotmail.com
+>
+>
+

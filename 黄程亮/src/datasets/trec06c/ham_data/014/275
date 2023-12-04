@@ -1,0 +1,74 @@
+Received: from Sealion.Stanford.EDU (Sealion.Stanford.EDU [171.64.75.55])
+	by DB.Stanford.EDU (8.8.8/8.8.8) with SMTP id QAA10770
+	for <chaims>; Wed, 15 Apr 1998 16:52:02 -0700
+Sender: beringer@DB.Stanford.EDU
+Message-ID: <353548FE.406D@db.stanford.edu>
+Date: Wed, 15 Apr 1998 16:55:42 -0700
+From: Dorothea Beringer <beringer@DB.Stanford.EDU>
+X-Mailer: Mozilla 3.01Gold (X11; I; HP-UX A.09.05 9000/712)
+MIME-Version: 1.0
+To: chaims@DB.Stanford.EDU
+Subject: Minutes weekly meeting 4/15/98
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mozilla-Status: 0001
+Content-Length: 2428
+
+Minutes weekly meeting 4/15/98
+==============================
+
+Baby-Demo:
+----------
+Together we went through the whole process of setting up a CHAIMS-server
+and CHAIMS-client using CORBA: writing IDL-files, compiling IDL-files,
+compiling and linking server, registering server etc... 
+
+IDL-file: Though there is one IDL-file for each server, these IDL-files
+only differ in the name of the server, everything else is the same. So
+far, the IDL-file on which the compiler is based is another/older one
+than the one used for the wrappers. 
+Next steps: Hao will finalize the IDL-file as it is used by the wrappers
+and send it out, so Woody can adapt the compiler output to it.
+
+Java-RMI:
+---------
+The exact type for the blobs is not yet clear (Object?). But we decided
+to make the interface similar to the CORBA-IDL, i.e. having several
+parameters and explicit lists of name-value pairs, instead of just one
+string.
+
+Differences in ORB's
+--------------------
+Obviously Orbix and Omnibroker do not handle the bind in the same way.
+Kazuki will send the appropriate information to Woody, so the compiler
+can take care of that. We probably have to insert more information into
+the repository.
+ 
+Excerpts from the work-reports:
+-------------------------------
+Dorothea: Writing proposal. Writing a Java-C++ interface that converts
+an ASN.1-blob into an Java-Gentype. This interface will be needed for
+the RMI-Wrapper, but it could also be used by the IO-megamodule.
+
+Catherine: Sent out specification of interface of RMI-wrappers.
+
+Hao: Apart from the delivery of ASN.1 utilities, I worked with Pankaj to
+integrate ASN.1 into wrapper. The first try failed, because IDL file
+does not seem to like anything that is not CORBA native. The IDL
+preprocessor made a huge fuss about the the header file of the standard
+libraires such as stdio.h. We tried to get aorund it, but finally we
+decided to use CORBA:Any in the IDL and map it to the generic type in
+the implementation....The initial goal of wrapping a simple module will
+slip. I intend to skip the simple module and wrap room-reservation
+module directly.
+
+Kazuki: I updated OmniBroker from 2.0.2 to 2.0.3.
+ioModule is now CORBA server and almost CHAIMS complient.
+I got new material, and it shows how to access the fields
+directly in the native code.
+
+-- 
+Dorothea Beringer   Stanford University   beringer@db.stanford.edu 
+          http://www-db.stanford.edu/people/beringer.html
+--
+

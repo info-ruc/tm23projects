@@ -1,0 +1,406 @@
+Received: from exchfe1.cs.cornell.edu (exchfenlb-1.cs.cornell.edu [128.84.97.33])
+	by sundial.cs.cornell.edu (8.11.7-20031020/8.11.7/M-3.22) with ESMTP id k1FMuHt26958
+	for <egs@unix.cucs>; Wed, 15 Feb 2006 17:56:17 -0500 (EST)
+Received: from EXCHVS2.cs.cornell.edu ([128.84.97.24]) by exchfe1.cs.cornell.edu with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 15 Feb 2006 17:56:17 -0500
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+X-Security: message sanitized on sundial.cs.cornell.edu
+	See http://www.impsec.org/email-tools/sanitizer-intro.html
+	for details. $Revision: 1.148 $Date: 2004-12-19 11:59:17-08 
+X-Security: The postmaster has not enabled quarantine of poisoned messages.
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C63283.072C1EB0"
+Subject: PAPER 7
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Date: Wed, 15 Feb 2006 17:56:15 -0500
+Message-ID: <2EE48095D8C21643B0B70EC95F9BFBAF011011BA@EXCHVS1.cs.cornell.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: PAPER 7
+Thread-Index: AcYygwaNAJiTsXA9Tc6ZIs8KRzCkWw==
+From: "Ian Kash" <kash@cs.cornell.edu>
+To: <egs+summary@cs.cornell.edu>
+X-OriginalArrivalTime: 15 Feb 2006 22:56:17.0264 (UTC) FILETIME=[07628700:01C63283]
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C63283.072C1EB0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+GeoPeer builds a structured P2P network based on geography.  The
+
+lowest level routing infrastructure is a Delaunay triangulation which
+
+ensures that a peer's neighbors are nearby nodes.  This allows it to
+
+handle location based queries or multicasts restricted to specific
+
+locations.  To efficiently route long range messages, the paper
+
+explores several different techniques for establishing long range
+
+contacts.  The methods for maintaining the Delaunay triangulation do
+
+not seem to be robust against churn.  They essentially require nodes
+
+to reach agreement about the correct triangulation.  If all the nodes
+
+agree about who is present and the nodes are in general position, this
+
+is unique so not an issue.  However when things are not in general
+
+position and / or several nodes make changes in the same area that
+
+are seen at different times by different nodes it may be very messy to
+
+get the triangulation established.  Also, this system is vulnerable to
+
+coordinated failures.  If an ISP loses connectivity, many or all of
+
+the people in a particular geographic region may disappear.  As a
+
+result they may also all attempt to rejoin at about the same time.
+
+Finally, the 24 hour cycle means that the population of an area will
+
+vary greatly over the course of the day while systems that map people
+
+randomly may have a varying number of users but each region should
+
+stay proportional.
+
+=20
+
+P-trees introduces a distributed version of a B+tree to allow for
+
+range queries.  It achieves this by having each node store an
+
+incomplete tree and relying on requests to peers to retrieve the
+
+portions needed to complete a query.  Mercury is designed to support
+
+range queries on multiple attributes.  It does this by breaking the
+
+system into logical "attribute hubs", with each hub handling range
+
+queries on a single attribute.  The nodes in that hub can then answer
+
+the multi-attribute query by filtering their results.  Neither of
+
+these papers appeared to present a compelling application for this
+
+technology.  The example given by Ptrees seems like it could be done
+
+as easily with discretizing the value range.  For the example Mercury
+
+uses, it seems a bad idea to build this in a P2P fashion at all
+
+because of the possibility of cheating.  Additionally, Mercury's
+
+solution seems highly inefficient.  They not that it does not scale
+
+well in the number of attributes because each attribute hub has to
+
+maintain all the records and queries are done by searching through all
+
+the matches to filter on the other attribute.  If this is only
+
+workable on small sets of attributes, why not just find an efficient
+
+way to discretize that small set?
+
+
+------_=_NextPart_001_01C63283.072C1EB0
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<DEFANGED_META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<DEFANGED_meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+ <!-- <DEFANGED_STYLE>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+ --> </DEFANGED_STYLE>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>GeoPeer builds a structured P2P network based on =
+geography.&nbsp;
+The<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>lowest level routing infrastructure is a Delaunay
+triangulation which<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>ensures that a peer's neighbors are nearby =
+nodes.&nbsp; This
+allows it to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>handle location based queries or multicasts =
+restricted to
+specific<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>locations.&nbsp; To efficiently route long range =
+messages, the
+paper<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>explores several different techniques for =
+establishing long
+range<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>contacts.&nbsp; The methods for maintaining the =
+Delaunay triangulation
+do<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>not seem to be robust against churn.&nbsp; They =
+essentially
+require nodes<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>to reach agreement about the correct =
+triangulation.&nbsp; If all
+the nodes<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>agree about who is present and the nodes are in =
+general
+position, this<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>is unique so not an issue.&nbsp; However when things =
+are not in
+general<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>position and / or several nodes make changes in the =
+same
+area that<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>are seen at different times by different nodes it may =
+be
+very messy to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>get the triangulation established.&nbsp; Also, this =
+system is
+vulnerable to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>coordinated failures.&nbsp; If an ISP loses =
+connectivity, many or
+all of<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>the people in a particular geographic region may =
+disappear.&nbsp;
+As a<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>result they may also all attempt to rejoin at about =
+the same
+time.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Finally, the 24 hour cycle means that the population =
+of an
+area will<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>vary greatly over the course of the day while systems =
+that
+map people<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>randomly may have a varying number of users but each =
+region
+should<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>stay proportional.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>P-trees introduces a distributed version of a B+tree =
+to
+allow for<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>range queries.&nbsp; It achieves this by having each =
+node store
+an<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>incomplete tree and relying on requests to peers to =
+retrieve
+the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>portions needed to complete a query.&nbsp; Mercury is =
+designed to
+support<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>range queries on multiple attributes.&nbsp; It does =
+this by
+breaking the<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>system into logical &quot;attribute hubs&quot;, with =
+each
+hub handling range<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>queries on a single attribute.&nbsp; The nodes in =
+that hub can
+then answer<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>the multi-attribute query by filtering their =
+results.&nbsp;
+Neither of<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>these papers appeared to present a compelling =
+application
+for this<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>technology.&nbsp; The example given by Ptrees seems =
+like it could
+be done<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>as easily with discretizing the value range.&nbsp; =
+For the
+example Mercury<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>uses, it seems a bad idea to build this in a P2P =
+fashion at
+all<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>because of the possibility of cheating.&nbsp; =
+Additionally,
+Mercury's<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>solution seems highly inefficient.&nbsp; They not =
+that it does
+not scale<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>well in the number of attributes because each =
+attribute hub
+has to<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>maintain all the records and queries are done by =
+searching
+through all<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>the matches to filter on the other attribute.&nbsp; =
+If this is
+only<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>workable on small sets of attributes, why not just =
+find an
+efficient<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>way to discretize that small =
+set?<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C63283.072C1EB0--
+

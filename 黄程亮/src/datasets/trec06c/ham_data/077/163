@@ -1,0 +1,104 @@
+Received: from memphis.ece.cornell.edu (memphis.ece.cornell.edu [128.84.239.87])
+	by sundial.cs.cornell.edu (8.11.3/8.11.3/M-3.7) with ESMTP id f8IEduq10666
+	for <egs@CS.Cornell.EDU>; Tue, 18 Sep 2001 10:39:56 -0400 (EDT)
+Received: from mill (mill.ee.cornell.edu [128.84.236.64])
+	by memphis.ece.cornell.edu (8.11.6/8.11.2) with ESMTP id f8IEdui28615;
+	Tue, 18 Sep 2001 10:39:56 -0400
+Date: Tue, 18 Sep 2001 10:33:06 -0400 (EDT)
+From: "Panagiotis (Panos) Papadimitratos" <papadp@ece.cornell.edu>
+X-Sender: papadp@mill.ee.cornell.edu
+To: Emin Gun Sirer <egs@CS.Cornell.EDU>
+cc: Panagiotis Papadimitratos <papadp@ece.cornell.edu>
+Subject: 615 PAPER 10 
+Message-ID: <Pine.GSO.4.21.0109181032250.21850-100000@mill.ee.cornell.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Review of: "Associativity-Based Routing (ABR) For Ad Hoc Mobile Networks,"  
+by C-K. Toh.
+
+Panagiotis Papadimitratos papadp@ee.cornell.edu
+
+The distinctive feature of ABR, a uni-cast MANET routing protocol, is the
+use of 'associativity' as a primary metric in order to select more stable
+and thus long-lived routes. The reactive nature of the protocol and its
+neighbor discovery mechanism allow fast adaptation to topological changes,
+by prompt failure (link/path breakage) detection, route maintenance
+('reconstruction'), and discarding of stale topology information. A
+feature of central importance (and, arguably, a disadvantage) of the
+presented here protocol is its reliance to the data-link layer protocol,
+and, in particular, the corresponding beaconing scheme that provides the
+means for the quantitative assessment of the association between two
+nodes.
+
+Each node beacons periodically in order to denote its existence and keeps
+track of beacons ('ticks') received from other nodes and updates its
+associativity table (spatial association). The reception of sufficiently
+many ticks (above some threshold value A_{thr}) allows the node to
+identify other immediate neighbors it is associated to. The degree of the
+association is proportional to the number of ticks (temporal association).  
+Each node maintains values for its incident links and resets the table
+entry when a link failure is detected. During the route discovery process,
+each node appends ticks for all incident links to the propagating route
+request packet before re-broadcasting it to its own neighbors. Upon
+receipt of the query packet, the nodes extract any tick information but
+the one concerning the link to the upstream node. In that way, the request
+arrives to the destination carrying the stability information of all links
+along the traversed path. This information is used by the destination,
+which makes the route selection among several (possibly) received requests
+(i.e., accumulated routes). The one with the higher number of presumably
+stable links is chosen, and if more than one, the minimum-hop route. The
+route Reply is return to the source along the reverse of the chosen path
+and this sets the soft state at intermediate nodes, which mark the routes
+as valid and retain the corresponding route length and upstream and
+downstream nodes.
+
+Often mobility (among other factors) renders links unusable and topology
+changes are detected by the absence of beacon receptions. If a failing
+link is part of an active route, the detection can be performed
+independently of the data transmission. This makes the discarding of stale
+topology information possible for downstream links as well, in addition to
+the common propagation of a route error message to the source. Note that
+the topology information caching is implicit, and refers only to the
+active routes known to intermediate nodes; to that extent, ABR does not
+perform caching as DSR does for example. Accordingly, the protocol does
+not support multiple routes, that could be used, for example, as backup of
+a failing primary route. Upon a link failure, the upstream node that
+detects it (pivoting node) initiates a local query, with TTL (or, maximum
+number of hops to propagate) equal to the length of the now failed route
+segment to the destination. If this query fails, the protocol backtracks
+to the predecessor of the pivot, which repeats the same process, and this
+is repeated until the segment length exceeds the half of the initial route
+length. On the other hand, if the destination provides a reply to a local
+query, it returns the best partial route the pivot (which in turn can
+propagate the route change back to the source, although this is a rigid
+requirement).
+
+The same type of message used for discarding the active routes from
+intermediate nodes can be used by the source for a route deletion, which
+can be broadcasted in order to obliterate entries that the source is not
+aware of due to (partial) route reconstructions. The data forwarding is
+simplified (e.g., does not require source routing) since intermediate
+nodes store state information; the packet header contains only the next
+hop, which is updated en-route. Moreover, passive acknowledgments are used
+(with the exception of the last node that actively acks).
+
+ABR features such as the route reconstruction (RRC) appear to be efficient
+in theory, but the required evaluation is not provided in the clearest
+possible way. For example, not only the number of the local queries but
+also the aggregate imposed overhead should have been presented. Moreover,
+the RRC-resulting routes are sub-optimal and possibly less stable, with
+subsequent failures initiating new local queries. In short, the
+overlapping searches incur delays and could very well end up with
+backtracking to a broadcast query. All these aspects should have been
+further explored. On the other hand, the protocol (although it could be
+placed in a purely ad hoc context) is presented as an extension of an
+indoor wireless LAN. This reflects on the simulation set up, which resorts
+to the notion of a wireless cell in order to define the multihop
+connectivity, and, in general, limits the 'visibility' of the paper. In
+conclusion, the concept of route stability is highly relevant to the MANET
+context, and along with other ABR components, constitute an interesting
+case for an on-demand, reactive routing protocol that could achieve
+reduced control overhead.
+
