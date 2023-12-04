@@ -61,12 +61,12 @@ def _email_to_words(self, email):
         with open(email, 'rb') as pf:
             for line in pf.readlines():
                 line = line.strip().decode('gbk','ignore')
-                if not self._check_contain_chinese(line):  # 判断是否是中文
+                if not self._check_contain_chinese(line):  
                     continue
-                word_list = jieba.cut(line, cut_all=False)  # 进行分词处理
+                word_list = jieba.cut(line, cut_all=False)  
                 for word in word_list:
                     if word in self.stop_vocab_dict or not self._check_contain_chinese(word):
-                        continue  # 判断是否为停用词
+                        continue  
                     email_words.append(word)
             return email_words
 
