@@ -12,7 +12,7 @@ def train():
     return 0
 
 def evaluate():
-    return 1.1
+    return 1.11
 
 lr = args.lr
 best_val_loss = None
