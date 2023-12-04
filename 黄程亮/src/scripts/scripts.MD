@@ -1,4 +1,3 @@
-
 def __init__(self,stop_word_file=None,features_vocabulary=None):
         self.features_vocabulary = features_vocabulary
         self.stop_vocab_dict = {}  
