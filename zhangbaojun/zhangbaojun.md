@@ -10,14 +10,14 @@
   
 三、数据说明：      
   3.1. src/datasets目录：      
-       1 question_en:英文问题      
-       2.answer_en:英文答案      
-       3. question_cn:英文问题翻译过来的中文问题      
-       4.answer_cn:翻译过来的中文答案      
-       5.question_en_vector:英文问题和向量       
-       4.question_cn_vector:中文问题的向量      
-       5.article_doi：文献doi      
-      上述数据是实际项目几百万问答对中，抽取10000条做demo. 每行一条记录。
+	1 question_en:英文问题      
+ 	2.answer_en:英文答案      
+	3. question_cn:英文问题翻译过来的中文问题      
+	4.answer_cn:翻译过来的中文答案      
+	5.question_en_vector:英文问题和向量       
+	4.question_cn_vector:中文问题的向量      
+	5.article_doi：文献doi      
+	上述数据是实际项目几百万问答对中，抽取10000条做demo. 每行一条记录。
 
 
   3.2. scripts\python 下文件说明：
