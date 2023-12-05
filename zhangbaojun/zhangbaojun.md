@@ -10,8 +10,8 @@
   
 三、数据说明：      
   3.1. src/datasets目录：      
-	>1 question_en:英文问题      
- 	>2.answer_en:英文答案      
+        1. question_en:英文问题      
+ 	2.answer_en:英文答案      
 	3. question_cn:英文问题翻译过来的中文问题      
 	4.answer_cn:翻译过来的中文答案      
 	5.question_en_vector:英文问题和向量       
