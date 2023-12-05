@@ -1,0 +1,21 @@
+CUDA_VISIBLE_DEVICES=0 accelerate launch --config_file sft_qwen.yaml src/train_bash.py \
+    --stage sft \
+    --model_name_or_path /home/ubuntu/huggingface/Qwen-14B-Chat \
+    --do_train \
+    --dataset match_data,CHIP_YIER_train \
+    --template chatml \
+    --cutoff_len 1500 \
+    --finetuning_type lora \
+    --lora_target c_attn \
+    --output_dir Qwen_for_match_ \
+    --overwrite_cache \
+    --per_device_train_batch_size 1 \
+    --gradient_accumulation_steps 16 \
+    --lr_scheduler_type cosine \
+    --warmup_ratio 0.1 \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 1e-4 \
+    --num_train_epochs 3.0 \
+    --plot_loss \
+    --fp16
