@@ -4,16 +4,20 @@
 	1.3.  用户输入问题后，会即时生成问题向量，在ES8中检索语义相似问题，用中文问话就搜索中文问题，用英文问话就搜索英文问题。   
 	1.4.  匹配语义最相似5个问题，查出对应答案，组成问题/答案提示，将用户问的问题本身及找到的问题答案对，发给Llama2大模型，由大模型综合这些来自于真实外文文献的问题答案对，生成综合答案，返回给用户，作为基于文献内容的答案。   
 	1.5.  这样用户会节省阅读外文文献的时间，跨过语言障碍快速了解文献内容。   
-
 	
 二、运行环境：      
   python3.7, java 1.8及以上
   
-
-三、数据说明：
-  3.1. src/datasets目录：
-       3.1.1 question_en:英文问题 2.answer_en:英文答案 3. question_cn:英文问题翻译过来的中文问题 4.answer_cn:翻译过来的中文答案 5. question_en_vector:英文问题和向量 4.question_cn_vector:中文问题的向量 5.article_doi：文献doi
-             从几百万问答对中，抽取10000条做demo. 每行一条记录。
+三、数据说明：      
+  3.1. src/datasets目录：      
+       1 question_en:英文问题      
+       2.answer_en:英文答案      
+       3. question_cn:英文问题翻译过来的中文问题      
+       4.answer_cn:翻译过来的中文答案      
+       5.question_en_vector:英文问题和向量       
+       4.question_cn_vector:中文问题的向量      
+       5.article_doi：文献doi      
+      上述数据是实际项目几百万问答对中，抽取10000条做demo. 每行一条记录。
 
 
   3.2. scripts\python 下文件说明：
