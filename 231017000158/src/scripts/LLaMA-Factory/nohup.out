@@ -1,0 +1,283 @@
+[2023-10-25 11:19:11,580] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+FlashAttention-2 is not installed, ignore this if you are not using FlashAttention.
+[2023-10-25 11:19:18,465] [INFO] [comm.py:637:init_distributed] cdb=None
+[2023-10-25 11:19:18,465] [INFO] [comm.py:668:init_distributed] Initializing TorchBackend in DeepSpeed with backend nccl
+10/25/2023 11:19:18 - WARNING - llmtuner.tuner.core.parser - `ddp_find_unused_parameters` needs to be set as False for LoRA in DDP training.
+[INFO|training_args.py:1327] 2023-10-25 11:19:18,469 >> Found safetensors installation, but --save_safetensors=False. Safetensors should be a preferred weights saving format due to security and performance reasons. If your model cannot be saved by safetensors please feel free to open an issue at https://github.com/huggingface/safetensors!
+[INFO|training_args.py:1769] 2023-10-25 11:19:18,469 >> PyTorch: setting up devices
+/data/anaconda3/lib/python3.11/site-packages/transformers/training_args.py:1672: FutureWarning: `--push_to_hub_token` is deprecated and will be removed in version 5 of 🤗 Transformers. Use `--hub_token` instead.
+  warnings.warn(
+10/25/2023 11:19:18 - INFO - llmtuner.tuner.core.parser - Process rank: 0, device: cuda:0, n_gpu: 1
+  distributed training: True, compute dtype: torch.float16
+10/25/2023 11:19:18 - INFO - llmtuner.tuner.core.parser - Training/evaluation parameters Seq2SeqTrainingArguments(
+_n_gpu=1,
+adafactor=False,
+adam_beta1=0.9,
+adam_beta2=0.999,
+adam_epsilon=1e-08,
+auto_find_batch_size=False,
+bf16=False,
+bf16_full_eval=False,
+data_seed=None,
+dataloader_drop_last=False,
+dataloader_num_workers=0,
+dataloader_pin_memory=True,
+ddp_backend=None,
+ddp_broadcast_buffers=None,
+ddp_bucket_cap_mb=None,
+ddp_find_unused_parameters=False,
+ddp_timeout=1800,
+debug=[],
+deepspeed=None,
+disable_tqdm=False,
+dispatch_batches=None,
+do_eval=False,
+do_predict=False,
+do_train=True,
+eval_accumulation_steps=None,
+eval_delay=0,
+eval_steps=None,
+evaluation_strategy=IntervalStrategy.NO,
+fp16=True,
+fp16_backend=auto,
+fp16_full_eval=False,
+fp16_opt_level=O1,
+fsdp=[],
+fsdp_config={'min_num_params': 0, 'xla': False, 'xla_fsdp_grad_ckpt': False},
+fsdp_min_num_params=0,
+fsdp_transformer_layer_cls_to_wrap=None,
+full_determinism=False,
+generation_config=None,
+generation_max_length=None,
+generation_num_beams=None,
+gradient_accumulation_steps=16,
+gradient_checkpointing=False,
+greater_is_better=None,
+group_by_length=False,
+half_precision_backend=auto,
+hub_always_push=False,
+hub_model_id=None,
+hub_private_repo=False,
+hub_strategy=HubStrategy.EVERY_SAVE,
+hub_token=<HUB_TOKEN>,
+ignore_data_skip=False,
+include_inputs_for_metrics=False,
+jit_mode_eval=False,
+label_names=None,
+label_smoothing_factor=0.0,
+learning_rate=0.0001,
+length_column_name=length,
+load_best_model_at_end=False,
+local_rank=0,
+log_level=passive,
+log_level_replica=warning,
+log_on_each_node=True,
+logging_dir=ChatGLM2_for_match_/runs/Oct25_11-19-18_jkyl,
+logging_first_step=False,
+logging_nan_inf_filter=True,
+logging_steps=10,
+logging_strategy=IntervalStrategy.STEPS,
+lr_scheduler_type=SchedulerType.COSINE,
+max_grad_norm=1.0,
+max_steps=-1,
+metric_for_best_model=None,
+mp_parameters=,
+no_cuda=False,
+num_train_epochs=3.0,
+optim=OptimizerNames.ADAMW_TORCH,
+optim_args=None,
+output_dir=ChatGLM2_for_match_,
+overwrite_output_dir=False,
+past_index=-1,
+per_device_eval_batch_size=8,
+per_device_train_batch_size=2,
+predict_with_generate=False,
+prediction_loss_only=False,
+push_to_hub=False,
+push_to_hub_model_id=None,
+push_to_hub_organization=None,
+push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
+ray_scope=last,
+remove_unused_columns=True,
+report_to=[],
+resume_from_checkpoint=None,
+run_name=ChatGLM2_for_match_,
+save_on_each_node=False,
+save_safetensors=False,
+save_steps=1000,
+save_strategy=IntervalStrategy.STEPS,
+save_total_limit=None,
+seed=42,
+sharded_ddp=[],
+skip_memory_metrics=True,
+sortish_sampler=False,
+tf32=None,
+torch_compile=False,
+torch_compile_backend=None,
+torch_compile_mode=None,
+torchdynamo=None,
+tpu_metrics_debug=False,
+tpu_num_cores=None,
+use_cpu=False,
+use_ipex=False,
+use_legacy_prediction_loop=False,
+use_mps_device=False,
+warmup_ratio=0.1,
+warmup_steps=0,
+weight_decay=0.0,
+)
+10/25/2023 11:19:18 - INFO - llmtuner.dsets.loader - Loading dataset mydata/sft_data.json...
+10/25/2023 11:19:18 - WARNING - llmtuner.dsets.utils - Checksum failed: missing SHA-1 hash value in dataset_info.json.
+Downloading and preparing dataset json/default to /home/jkyl/.cache/huggingface/datasets/json/default-f1791780d1aab07a/0.0.0/e347ab1c932092252e717ff3f949105a4dd28b27e842dd53157d2f72e276c2e4...
+Downloading data files:   0%|          | 0/1 [00:00<?, ?it/s]Downloading data files: 100%|██████████| 1/1 [00:00<00:00, 7825.19it/s]
+Extracting data files:   0%|          | 0/1 [00:00<?, ?it/s]Extracting data files: 100%|██████████| 1/1 [00:00<00:00, 1424.21it/s]
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 14708 examples [00:00, 43315.15 examples/s]                                                                   Dataset json downloaded and prepared to /home/jkyl/.cache/huggingface/datasets/json/default-f1791780d1aab07a/0.0.0/e347ab1c932092252e717ff3f949105a4dd28b27e842dd53157d2f72e276c2e4. Subsequent calls will reuse this data.
+10/25/2023 11:19:38 - INFO - llmtuner.dsets.loader - Loading dataset mydata/CHIP_YIER_train_data.json...
+10/25/2023 11:19:38 - WARNING - llmtuner.dsets.utils - Checksum failed: missing SHA-1 hash value in dataset_info.json.
+Found cached dataset json (/home/jkyl/.cache/huggingface/datasets/json/default-04b1de583a9ff58b/0.0.0/e347ab1c932092252e717ff3f949105a4dd28b27e842dd53157d2f72e276c2e4)
+[INFO|tokenization_utils_base.py:1850] 2023-10-25 11:19:58,967 >> loading file tokenizer.model
+[INFO|tokenization_utils_base.py:1850] 2023-10-25 11:19:58,967 >> loading file added_tokens.json
+[INFO|tokenization_utils_base.py:1850] 2023-10-25 11:19:58,967 >> loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:1850] 2023-10-25 11:19:58,967 >> loading file tokenizer_config.json
+[INFO|configuration_utils.py:713] 2023-10-25 11:19:59,042 >> loading configuration file /data/chatglm2-6b/config.json
+[INFO|configuration_utils.py:713] 2023-10-25 11:19:59,047 >> loading configuration file /data/chatglm2-6b/config.json
+[INFO|configuration_utils.py:775] 2023-10-25 11:19:59,047 >> Model config ChatGLMConfig {
+  "_name_or_path": "/data/chatglm2-6b",
+  "add_bias_linear": false,
+  "add_qkv_bias": true,
+  "apply_query_key_layer_scaling": true,
+  "apply_residual_connection_post_layernorm": false,
+  "architectures": [
+    "ChatGLMModel"
+  ],
+  "attention_dropout": 0.0,
+  "attention_softmax_in_fp32": true,
+  "auto_map": {
+    "AutoConfig": "configuration_chatglm.ChatGLMConfig",
+    "AutoModel": "modeling_chatglm.ChatGLMForConditionalGeneration",
+    "AutoModelForCausalLM": "modeling_chatglm.ChatGLMForConditionalGeneration",
+    "AutoModelForSeq2SeqLM": "modeling_chatglm.ChatGLMForConditionalGeneration",
+    "AutoModelForSequenceClassification": "modeling_chatglm.ChatGLMForSequenceClassification"
+  },
+  "bias_dropout_fusion": true,
+  "classifier_dropout": null,
+  "eos_token_id": 2,
+  "ffn_hidden_size": 13696,
+  "fp32_residual_connection": false,
+  "hidden_dropout": 0.0,
+  "hidden_size": 4096,
+  "kv_channels": 128,
+  "layernorm_epsilon": 1e-05,
+  "model_type": "chatglm",
+  "multi_query_attention": true,
+  "multi_query_group_num": 2,
+  "num_attention_heads": 32,
+  "num_layers": 28,
+  "original_rope": true,
+  "pad_token_id": 0,
+  "padded_vocab_size": 65024,
+  "post_layer_norm": true,
+  "pre_seq_len": null,
+  "prefix_projection": false,
+  "quantization_bit": 0,
+  "rmsnorm": true,
+  "seq_length": 32768,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float16",
+  "transformers_version": "4.32.0",
+  "use_cache": true,
+  "vocab_size": 65024
+}
+
+[INFO|modeling_utils.py:2776] 2023-10-25 11:19:59,321 >> loading weights file /data/chatglm2-6b/pytorch_model.bin.index.json
+[INFO|modeling_utils.py:1191] 2023-10-25 11:19:59,323 >> Instantiating ChatGLMForConditionalGeneration model under default dtype torch.float16.
+[INFO|configuration_utils.py:768] 2023-10-25 11:19:59,324 >> Generate config GenerationConfig {
+  "_from_model_config": true,
+  "eos_token_id": 2,
+  "pad_token_id": 0,
+  "transformers_version": "4.32.0"
+}
+
+Loading checkpoint shards:   0%|          | 0/7 [00:00<?, ?it/s]Loading checkpoint shards:  14%|█▍        | 1/7 [00:19<01:54, 19.16s/it]Loading checkpoint shards:  29%|██▊       | 2/7 [00:39<01:39, 19.90s/it]Loading checkpoint shards:  43%|████▎     | 3/7 [00:59<01:19, 19.99s/it]Loading checkpoint shards:  57%|█████▋    | 4/7 [01:18<00:58, 19.52s/it]Loading checkpoint shards:  71%|███████▏  | 5/7 [01:40<00:41, 20.53s/it]Loading checkpoint shards:  86%|████████▌ | 6/7 [02:02<00:20, 20.85s/it]Loading checkpoint shards: 100%|██████████| 7/7 [02:13<00:00, 17.74s/it]Loading checkpoint shards: 100%|██████████| 7/7 [02:13<00:00, 19.09s/it]
+[INFO|modeling_utils.py:3551] 2023-10-25 11:22:13,325 >> All model checkpoint weights were used when initializing ChatGLMForConditionalGeneration.
+
+[INFO|modeling_utils.py:3559] 2023-10-25 11:22:13,325 >> All the weights of ChatGLMForConditionalGeneration were initialized from the model checkpoint at /data/chatglm2-6b.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use ChatGLMForConditionalGeneration for predictions without further training.
+[INFO|modeling_utils.py:3136] 2023-10-25 11:22:13,330 >> Generation config file not found, using a generation config created from the model config.
+10/25/2023 11:22:13 - INFO - llmtuner.tuner.core.adapter - Fine-tuning method: LoRA
+10/25/2023 11:23:54 - INFO - llmtuner.tuner.core.loader - trainable params: 14823424 || all params: 6258407424 || trainable%: 0.2369
+[INFO|tokenization_utils_base.py:926] 2023-10-25 11:23:54,116 >> Assigning [] to the additional_special_tokens key of the tokenizer
+Filter:   0%|          | 0/15708 [00:00<?, ? examples/s]Filter:   6%|▋         | 1000/15708 [00:00<00:02, 5099.18 examples/s]Filter:  70%|███████   | 11000/15708 [00:00<00:00, 43221.97 examples/s]                                                                       Running tokenizer on dataset:   0%|          | 0/14826 [00:00<?, ? examples/s]Running tokenizer on dataset:   7%|▋         | 1000/14826 [00:01<00:17, 783.58 examples/s]total_len (3689) > data_args.cutoff_len (2000)
+你将阅读一段来自其他检查结果的病历文本，并根据病历内容回答一个问题。
+病历文本：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：申请床旁超声心动图检查	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：电脑多导联心电图	检查所见：	检查结论：
+检查项目：申请动态心电图检查	检查所见：	检查结论：
+检查项目：申请床旁胸片检查	检查所见：	检查结论：
+检查项目：申请床旁胸片检查	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：申请床旁彩色超声检查	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：申请食道超声心动图监测检查	检查所见：	检查结论：
+检查项目：申请床旁彩色超声检查	检查所见：	检查结论：
+检查项目：申请床旁胸片检查	检查所见：	检查结论：
+检查项目：申请床旁超声心动图检查	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：申请CT检查	检查所见：	检查结论：
+检查项目：申请CT检查	检查所见：	检查结论：
+检查项目：申请CT检查	检查所见：	检查结论：
+检查项目：申请病房彩超检查	检查所见：	检查结论：
+检查项目：申请病房彩超检查	检查所见：	检查结论：
+检查项目：申请病房彩超检查	检查所见：	检查结论：
+检查项目：上腹部X线计算机体层(CT)平扫	检查所见：	检查结论：
+检查项目：下腹部X线计算机体层(CT)平扫	检查所见：	检查结论：
+检查项目：盆腔X线计算机体层(CT)平扫	检查所见：	检查结论：
+检查项目：胸部X线计算机体层(CT)平扫	检查所见：	检查结论：
+检查项目：非妇科脱落细胞学检查与诊断	检查所见：	检查结论：
+检查项目：申请病房彩超检查	检查所见：	检查结论：
+检查项目：申请病房彩超检查	检查所见：	检查结论：
+检查项目：申请床旁彩色超声检查	检查所见：	检查结论：
+检查项目：申请床旁肝胆胰脾双肾彩超	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：电脑多导联心电图	检查所见：	检查结论：
+检查项目：申请床旁超声心动图检查	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：申请心导管检查	检查所见：	检查结论：
+检查项目：申请心导管检查	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：申请CT检查	检查所见：	检查结论：
+检查项目：床边照相加收	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：数字化摄影（指DR、CR)	检查所见：	检查结论：
+检查项目：申请X线检查	检查所见：胸廓两侧对称，双肺纹理增粗、模糊。双下肺可见斑片状密度增高影，边缘模糊。心影增大，主动脉球可见钙化。双侧横膈光滑，双侧肋膈角清晰。胸廓骨质结构无明确异常。	检查结论：1、心影增大，请结合超声等检查；    2、双肺下叶炎症？请结合临床，必要时CT进一步检查。
+检查项目：申请床旁胸片检查	检查所见：气管内见插管，胸廓两侧对称，双肺纹理增粗、模糊。右肺中上肺野见斑片状密度增高影；双下肺似见小斑片状密度增高影，边缘模糊。心影增大，主动脉球可见钙化。双侧横膈光滑，双侧肋膈角清晰。胸廓骨质结构无明确异常。	检查结论：与2020-01-13日胸片比较：    1、右肺中上野密度增高影，较前新出现，炎症可能；    2、双肺下叶炎症不除外，大致同前；    3、心影增大，请结合超声等检查；
+检查项目：申请床旁胸片检查	检查所见：气管内见插管，胸廓两侧对称，双肺纹理增粗、模糊。右肺中上肺野见斑片状密度增高影；双下肺似见小斑片状密度增高影，边缘模糊。心影增大，主动脉球可见钙化。双侧横膈光滑，双侧肋膈角清晰。	检查结论：与2020-01-14日胸片比较：    1、右肺中上野密度增高影，较前密度减低，肺水肿可能，请结合临床复查；    2、双肺下叶炎症不除外，大致同前；    3、心影增大，请结合超声等检查；
+检查项目：申请床旁胸片检查	检查所见：气管内见插管，胸廓两侧对称，双肺纹理增粗、模糊。右肺中上肺野见斑片状密度增高影；双下肺似见小斑片状密度增高影，边缘模糊，右下肺可见索条。心影增大，主动脉球可见钙化。双侧横膈光滑，双侧肋膈角清晰。	检查结论：与2020-01-13日胸片比较：    1、右肺中上野密度增高影，较前增多，右肺门增大，炎症？肺水肿？请结合临床观察；    2、双肺下叶炎症不除外，较前部分吸收，部分新发，请结合临床观察；    3、心影增大，同前，请结合超声等检查；
+检查项目：申请床旁胸片检查	检查所见：气管内见插管，胸廓两侧对称。右肺见多发斑片状高密度影，右肺门影增大；左下肺见多发斑片影。心影增大，主动脉球可见钙化。双侧横膈光滑，双侧肋膈角清晰。	检查结论：与2020-01-17日胸片比较：    1、右肺密度增高影，较前增多，右肺门增大，炎症？肺水肿？请结合临床观察；    2、左肺下叶炎症不除外，较前增多，请结合临床观察；    3、心影增大，同前，请结合超声检查；
+检查项目：申请床旁胸片检查	检查所见：气管内见插管，胸廓两侧对称。右肺见多发斑片状高密度影，右肺门影增大；左下肺见多发斑片影。心影增大，主动脉球可见钙化。双侧横膈光滑，双侧肋膈角清晰。	检查结论：与2020-01-17DR比较：    1、右肺密度增高影，较前略增多，右肺门增大，炎症？或其他？请结合临床复查或必要时CT检查；    2、左肺下叶炎症不除外，较前增多，请结合临床观察；    3、心影增大。
+检查项目：申请床旁胸片检查	检查所见：气管内见插管，胸廓两侧对称。右肺见多发斑片状高密度影，右肺门影增大；左下肺见多发斑片影,双下肺野见多发实性结节影。心影增大，主动脉球可见钙化。双侧横膈光滑，双侧肋膈角清晰。	检查结论：与2020-01-18胸片比较：    1、右肺密度增高影，大致同前，炎症？肺水肿？请结合临床观察；    2、左肺下叶炎症不除外，较前略减轻；    3、心影增大，大致同前；    4、双肺下叶结节影，大致同前。
+检查项目：申请床旁胸片检查	检查所见：气管内见插管，胸廓两侧对称。右肺见多发斑片状高密度影，右肺门影增大；左下肺见多发斑片及条片影。心影增大，主动脉球可见钙化。双侧膈面局部模糊，右侧肋膈角变钝，左侧肋膈角欠锐利。左侧第6前肋走行扭曲。	检查结论：与2020-01-20胸片比较：    1、两肺病变，较前增多、密度增高，炎症？肺水肿？请结合临床观察；    2、心影增大，大致同前；    3、原双肺下叶结节影，此次显示欠清；    4、右侧肋膈角模糊，胸腔积液可能，建议复查；    5、左侧第6前肋走行扭曲。
+检查项目：申请床旁胸片检查	检查所见：气管内见插管。胸廓两侧对称，右肺及左下肺可见片状密度增高影，边界模糊；右肺门影增大；左下肺见多发斑片及条片影。心影增大，主动脉球可见钙化。右侧肋膈角模糊，左侧肋膈角清晰。左侧第6前肋走行扭曲。	检查结论：对比2020-01-24床旁胸片：    1、两肺病变，右肺病变较前范围增大，左下肺病变较前范围减小，请结合临床复查；    2、心影增大，大致同前；    3、右侧胸腔积液，较前增多；    4、左侧第6前肋骨折。
+检查项目：申请床旁胸片检查	检查所见：气管内见插管。胸廓两侧对称，右肺及左下肺可见片状密度增高影，边界模糊；右肺门影增大；左下肺见多发斑片及条片影。心影增大，主动脉球可见钙化。右侧肋膈角模糊，左侧肋膈角浅钝、见外高内低弧形影。左侧第6前肋走行欠规则。	检查结论：对比2020-01-26片：    1、两肺病变，较前稍减少，请结合临床复查；    2、心影增大，大致同前；    3、原右侧胸腔积液，较前吸收减少，左侧少量胸腔积液、新出现；    4、左侧第6前肋走行欠规则，无著变。
+检查项目：申请床旁胸片检查	检查所见：右肺及左下肺可见片状密度增高影，边界模糊；右肺门影增大；左下肺见多发斑片及条片影。心影增大，主动脉球可见钙化。右侧肋膈角模糊，左侧肋膈角浅钝、见外高内低弧形影。左侧第6前肋走行欠规则。	检查结论：对比2020-01-28片：    1、两肺病变，较前增多，感染？肺水肿？请结合临床复查；    2、心影增大，大致同前；    3、双侧少量胸腔积液，基本同前；    4、左侧第6前肋走行欠规则，无著变。
+检查项目：申请CT检查	检查所见：肝脏形态大小如常，轮廓规整，肝实质内未见异常密度影。    胆囊大小如常，胆囊壁厚，腔内未见异常密度影。肝内外胆管可见扩张，胆总管最宽处管径约为1.2cm，胆总管下段似可见结节状高密度影及气体密度影，结节大小约0.6cm×0.5cm。    脾脏形态大小如常，未见异常密度影。    胰腺轮廓清楚，形态大小如常，未见异常密度影。胰管可见扩张，最宽处管径约0.3cm。    双肾位置、形态未见异常，双肾见多发类圆形低密度影，较大者位于右肾，直径约2.3cm，双侧肾盂及输尿管管腔内未见异常密度。    双侧肾上腺形态、大小及密度未见异常。    腹腔及腹膜后间隙未见肿大淋巴结。未见腹腔积液。    子宫宫腔内见极高密度金属影（考虑节育器），双侧附件区未见异常密度影。膀胱充盈可，壁无增厚，腔内未见异常密度影。双侧盆壁及腹股沟区未见肿大淋巴结。    胃肠道未清洁，无法准确评估。肠系膜脂肪间隙密度稍高。	检查结论：与2020-01-07腹盆腔CT比较：    1、胆总管下段结石，大致同前；       肝内外胆管扩张，胰管稍扩张，较前稍减轻；       胆囊炎，较前无著变；    2、双肾多发囊肿可能，同前；    3、肠系膜脂膜炎，同前。
+检查项目：申请CT检查	检查所见：胸廓两侧对称，支气管血管束增重。双侧胸腔见液性密度影，双肺组织部分膨胀不全，右肺为著。双肺内见多发磨玻璃密度影、实变影及索条影；左肺上叶见无壁透亮区；左肺见散在钙化灶。双肺多发支气管管壁增厚，以右肺下叶支气管为著。纵隔内见多发钙化淋巴结。心脏增大，冠状动脉走行区见条状高密度影，肺动脉管腔增宽。双侧胸膜局部增厚。胸骨及双侧多发肋骨形态不规则、断端移位，密度欠均匀。	检查结论：1、双肺内多发磨玻璃密度影、实变影及索条影，考虑炎症可能，建议复查；   双肺多发支气管管壁增厚，以右肺下叶支气管为著，建议复查；2、双侧胸腔积液伴双肺膨胀不全，右侧为著，建议复查；3、左肺上叶肺气肿；4、左肺散在钙化灶；纵隔多发钙化淋巴结，考虑陈旧性病变；5、心脏增大，冠状动脉走行区条状高密度影，肺动脉管腔增宽，请结合临床；6、胸骨及双侧多发肋骨骨折，请结合临床。
+检查项目：送细胞学检查	检查所见：	检查结论：胸水涂片：血性背景内可见大量嗜中性粒细胞，少量淋巴细胞、组织细胞及间皮细胞，未见恶性细胞。
+根据病历内容，请问是否做了X线胸片检查？请直接回答“是”或者“否”。
+                                                                                          
