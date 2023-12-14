@@ -1,0 +1,33 @@
+# tm23projects
+
+reports collected for TM class project @2023
+
+# Team Member
+
+马子骥 231017000155
+
+孙宇欣 231017000150
+
+崔慕春 231017000151
+
+# Report Naming Convension
+
+```
+2020201512
+  ┃
+  ┗ 2020201512.md / 2020201512.tex
+  ┗ doc
+     ┃
+     ┗ 23春-计算机-马子骥&孙宇欣&崔慕春 - 垃圾邮件识别.pdf
+  ┃
+  ┗ src
+    ┃
+    ┗ scripts
+    ┗ dataset  
+```
+
+# Submit your project
+[How to](./Submission-Howto.md)
+
+# Submission Deadline
+2023/12/17
