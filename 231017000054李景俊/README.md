@@ -15,21 +15,20 @@
   模型定义：使用开源框架Bert
   模型训练与调参
   测试
-
-  training如图所示：
-  ![](./src/img/train.png)
-
-
-  Model如图所示：
-  ![](./src/img/model.png)
-  导出的jsonl转换为模型输入的`BIO格式`
-
-  Model Apply：
-  训练环境：NVIDIA Geforce RTX 3090
-
-  模型运行结果(bert)
-  ![](./src/img/test_result.png)
 ```
+  ## training如图所示：
+  ## ![1](./src/img/train_model.png)
+
+
+  ## Model如图所示：
+  ## ![2](./src/img/model.png)
+  ## 导出的jsonl转换为模型输入的`BIO格式`
+
+  ## 模型test结果(bert)
+  ## ![3](./src/img/test_model.png)
+
+  ## 模型运行结果(bert)
+  ## ![4](./src/img/test_result.png)
 
 ```
 
