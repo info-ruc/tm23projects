@@ -91,6 +91,7 @@ CUDA_VISIBLE_DEVICES=0 python src/train_bash.py
 ### 启动微调脚本：nohup sh run\_baichuan\_sft.sh 1>out.log 2>err.log &
 
 训练启动与loss收敛过程，loss收敛曲线见：saves/Baichuan2-13B-Chat/lora/2023-12-15-15-13-18/training\_loss.png
+![training_loss](https://github.com/liudaoguang/tm23projects/assets/141248904/999c1020-bd4f-4c32-bae1-b92cdb290c85)
 
     12/15/2023 16:50:13 - INFO - llmtuner.dsets.loader - Loading dataset fengshui_cognition.json...
     12/15/2023 16:50:13 - WARNING - llmtuner.dsets.utils - Checksum failed: missing SHA-1 hash value in dataset_info.json.
@@ -141,3 +142,5 @@ CUDA_VISIBLE_DEVICES=0 python src/web_demo.py
 ```
 
 风水大模型对话效果如图（见：评测样例与对话效果）：
+<img width="1294" alt="评测样例与对话效果" src="https://github.com/liudaoguang/tm23projects/assets/141248904/b29c9ee5-d7a1-481e-8148-639ec4df39d4">
+
