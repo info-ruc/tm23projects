@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>大模型智能对话</title>
+    <link rel="stylesheet" href="/plugins/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" /> 
+    <link rel="stylesheet" type="text/css" href="/css/chat.css">
+    <link rel="stylesheet" href="/plugins/marked/github-markdown.min.css"/>
+    <link rel="stylesheet" href="/plugins/line-highlight/prism-line-highlight.min.css"/>
+    <style type="text/css">
+    	markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        min-height:615px;
+        overflow-y:scroll;
+        max-width: 980px;
+        margin: 0 auto;
+        display: flex;
+		flex-direction: column;
+		overflow: auto;
+        padding: 45px
+    }
+    @media(max-width:767px) {
+        .markdown-body {
+            padding: 15px
+        }
+    }
+    </style>
+    <link rel="stylesheet" href="/plugins/prism/prism.min.css"/>
+    <link rel="stylesheet" href="/plugins/line-numbers/prism-line-numbers.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="leftSide">
+        <!--header-->
+        <div class="header">
+            <div class="userimg">
+                <i class="layui-icon">&#xe770;</i>
+            </div>
+            <ul class="nav_icons">
+                <li><i class="layui-icon">&#xe611;</i></li>
+                <li><i class="layui-icon">&#xe653;</i></li>
+            </ul>
+        </div>
+        <!--search-->
+        <div class="search_chat">
+            <div>
+                <input type="text" placeholder="搜索...">
+                <i class="layui-icon">&#xe615;</i>
+            </div>
+        </div>
+        <!--ChatList-->
+        <div class="chatlist">
+            <div class="block active">
+                <div class="imgbx">
+                    <i class="layui-icon">&#xe66f;</i>
+                </div>
+                <div class="details">
+                    <div class="listHead">
+                        <h4>我只是个demo</h4>
+                        <p class="time">14:25</p>
+                    </div>
+                    <div class="message_p">
+                        <p>AI智能助手</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="rightSide" style="width:80%">
+        <div class="header">
+            <div class="imgText">
+                <div class="userimg">
+                    <i class="layui-icon">&#xe770;</i>
+                </div>
+                <h4>开心果<br><span>在线</span></h4>
+            </div>
+            <ul class="nav_icons">
+                <li><i class="layui-icon">&#xe611;</i></li>
+                <li><i class="layui-icon">&#xe653;</i></li>
+            </ul>
+        </div>
+        <!--chatbox-->
+        <div class="chatBox markdown-body" id="scrollable">
+            
+        </div>
+        <!--chat input-->
+        <form class="layui-form" action="">
+        	<div class="chatbox_input">
+
+	        	<div class="layui-form-item">
+				    <div class="layui-input-block">
+			        	<input type="text" id = "content" name="content" lay-verify="content" autocomplete="off" placeholder="请输入你的问题" class="layui-input" style="display:inline;width:70%;" >
+		      			<button class="layui-btn layui-btn-radius" lay-submit="" lay-filter="send" style="display:inline;width:18%;margin-left:2%;" ><i class="layui-icon">&#xe609;</i>发送</button>
+	    			</div>
+	        	</div>
+        	</div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/plugins/layui/layui.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/dateUtils.js"></script>
+ <script src="/plugins/marked/marked.min.js"></script>
+ <script src="/plugins/prism/prism-core.min.js"></script>
+ <script src="/plugins/prism/prism-autoloader.min.js"></script>
+ <script src="/plugins/line-numbers/prism-line-numbers.min.js"></script>
+ <script src="/plugins/line-highlight/prism-line-highlight.min.js"></script>
+
+<script type="text/javascript">
+layui.use(['form','layer'],function(){
+	var form = layui.form,
+	layer = parent.layer === undefined ? layui.layer : parent.layer,
+	$ = layui.jquery;
+	form.on("submit(send)",function(data){
+ 		$('.chatBox').append('<div class="message my_message"><p>'+data.field.content+'<br><span>'+DateUtils.formatterTime(new Date())+'</span> </p></div>');
+ 		data.field.reqdate = new Date().getTime();
+ 		/* if(data.field.n !='' && data.field.maxTokens != '' ){
+ 			chat(data.field);
+ 		}else{
+ 			
+ 		} */
+ 		sub(data.field);
+ 		$('#content').val('');
+ 		return false;
+ 	});
+	form.on("submit(sendImg)",function(data){
+		$('.chatBox').append('<div class="message my_message"><p>'+data.field.content+'<br><span>'+DateUtils.formatterTime(new Date())+'</span> </p></div>');
+ 		data.field.reqdate = new Date().getTime();
+		chat(data.field);
+		$('#content').val('');
+ 		return false;
+ 	});
+	var isLoad = false;
+	function chat(data){
+		const frndmsg = "frndmsg-"+data.reqdate;
+		
+		var index = top.layer.msg('图片生成中，请稍候',{icon: 16,time:false,shade:0.8});
+		$.get('chat/downloadImage?content='+data.content+'&maxTokens='+data.maxTokens+'&n='+data.n, function(data){
+			top.layer.close(index);
+			if(data.code ==0){
+				$('.chatBox').append('<div class="frnd_message" id="'+frndmsg+'"><img src="'+data.data[0]+'"/></div>');
+			}else{
+				top.layer.msg(data.msg);
+			}
+		});
+	}
+	function sub(data){
+		const frndmsg = "frndmsg-"+data.reqdate;
+		// 创建 XMLHttpRequest 对象
+		const xhr = new XMLHttpRequest();
+		// 设置请求的 URL
+		xhr.open('POST', 'chat/streamChatWithWeb');
+		// 设置响应类型为 text/event-stream
+		//xhr.setRequestHeader('Content-Type', 'text/event-stream');
+		xhr.setRequestHeader("Content-Type", "application/json");
+		// 监听 readyStateChange 事件
+		xhr.onreadystatechange = () => {
+			// 如果 readyState 是 3，表示正在接收数据
+			if (xhr.readyState === 3) {
+				 // 将数据添加到文本框中
+                var resTxt = xhr.responseText;
+                if(isLoad){
+					$('#'+frndmsg+'').html('');
+                    // 去掉结果的回车换行
+                    resTxt = resTxt.replaceAll(/\r|\n/ig,"");
+					$('#'+frndmsg+'').append('<article>'+marked(resTxt)+'</article>');
+				}else{
+					var responseText = resTxt;
+					if(responseText.indexOf('code')> 0 && responseText.indexOf('msg') > 0){
+						responseText = JSON.parse(responseText);
+						$('.chatBox').append('<div class="frnd_message" id="'+frndmsg+'">'+responseText.msg+'</div>');
+					}else{
+						$('.chatBox').append('<div class="frnd_message" id="'+frndmsg+'">'+marked(responseText)+'</div>');
+					}
+				}
+				isLoad = true;
+				setTimeout(scrollToBottom, 100);
+	    	}
+	        if (xhr.readyState === 4) {//加载已结束
+	        	xhr.abort();
+	        	isLoad = false;
+	        	setTimeout(scrollToBottom, 100);
+	        	/* var scrollable = document.getElementById("scrollable"); //
+	        	scrollable.onscroll = function() { //监听滚动事件
+
+	        	  var scrollHeight = scrollable.scrollHeight;
+	        	 //获取容器的总高度（包括溢出内容）
+
+	        	  var clientHeight = scrollable.clientHeight;
+	        	 //获取容器可见区域的高度（即内容的实际高度）
+
+	        	  if (scrollHeight > clientHeight) { //如果总高度大于可见区域高度，说明还有内容未显示出来
+	        	    scrollable.scrollTop = scrollHeight - clientHeight;
+	        	 //将滚动条位置设置为最大值，使其自动滚动到最下方
+	        	  }
+	        	}; */
+	        }
+	      };
+	      // 发送请求
+	      xhr.send(JSON.stringify(data));
+	}
+	// 获取 <div> 元素
+	var myDiv = document.getElementById('scrollable');
+	// 定义一个滚动函数
+	function scrollToBottom() {
+	  myDiv.scrollTop = myDiv.scrollHeight;
+	}
+});
+</script>
+</body>
+</html>
