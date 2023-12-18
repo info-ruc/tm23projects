@@ -1,0 +1,17 @@
+<configuration>
+    <include resource="base_logback.xml"/>
+
+    <!-- 未设置打印级别，所以继承上级<root>的日志; additivity="true" 日志向上级传递-->
+    <logger name="com.plm" additivity="true"></logger>
+
+    <logger name="access" level="info" additivity="false">
+        <appender-ref ref="ACCESS"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="APP"/>
+        <appender-ref ref="ERROR"/>
+    </root>
+
+</configuration>

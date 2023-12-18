@@ -1,0 +1,100 @@
+spring:
+  application:
+    name: local-grpc-server
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 3000
+    pool:
+      max-active: 100
+      max-wait: -1
+      max-idle: 8
+
+server:
+  port: 8080
+
+grpc:
+  server:
+    port: 9090
+  secret: plm
+
+#多数据源
+multiple:
+  datasource:
+    enable: true
+
+app:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverclassname: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/bidb?useSSL=false&characterEncoding=utf8&useCompress=true
+    username: root
+    password: root
+    maximum-pool-size: 30
+
+dcr:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverclassname: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/bidb_dcr?useSSL=false&characterEncoding=utf8&useCompress=true
+    username: root
+    password: root
+    maximum-pool-size: 30
+
+hc:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverclassname: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/bidb_hc?useSSL=false&characterEncoding=utf8&useCompress=true
+    username: root
+    password: root
+    maximum-pool-size: 30
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+
+#分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+cron:
+  syncHashRateJob: 20000
+  syncHashRateJobEnable: true
+  rejectRatioCalJob: 360000
+  rejectRatioCalJobEnable: true
+  workerRejectRatioCalJob: 360000
+  workerRejectRatioCalJobEnable: true
+
+kafka:
+  center-producer:
+    bootstrap.servers: 127.0.0.1:9092
+    acks: 1
+    retries: 0
+    batch.size: 0
+    compression.type: gzip
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.StringSerializer
+
+management:
+  endpoints:
+    beans: # disable beans endpoint
+      enabled: false
+    web:
+      exposure:
+        include: health,info,env,metrics,prometheus
+      base-path: /
+
+elastic.job:
+  zk.serverLists: localhost:2151
+  zk.namespace: apreceiver
+
+node:
+  ipList: all
+#  ipList: 127.0.0.2,127.0.0.1
