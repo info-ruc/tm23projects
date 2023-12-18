@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: bi-payroll
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: robot.pm@bitmain.com
+    password: robot.pm
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+
+server:
+  port: 8005
+
+#多数据源
+multiple:
+  datasource:
+    enable: true
+
+app:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverclassname: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/bidb?useSSL=false&characterEncoding=utf8&useCompress=true
+    username: root
+    password: root
+    maximum-pool-size: 30
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+
+#分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+cron:
+  syncHashRateJob: 20000
+  syncHashRateJobEnable: true
+  rejectRatioCalJob: 360000
+  rejectRatioCalJobEnable: true
+  workerRejectRatioCalJob: 360000
+  workerRejectRatioCalJobEnable: true
+
+management:
+  endpoints:
+    beans: # disable beans endpoint
+      enabled: false
+    web:
+      exposure:
+        include: health,info,env,metrics,prometheus
+      base-path: /
+
