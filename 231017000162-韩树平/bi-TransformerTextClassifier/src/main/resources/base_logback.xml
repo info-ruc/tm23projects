@@ -1,0 +1,71 @@
+<included>
+    <property name="log.home" value="@log.home@"/>
+
+    <property name="log.default_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|%thread|%logger{1}|%line|%msg%n"/>
+    <property name="log.default_charset" value="UTF-8"/>
+    <property name="log.default_max_history" value="30"/>
+
+    <!-- 控制台日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.default_pattern}</pattern>
+            <charset>${log.default_charset}</charset>
+        </encoder>
+    </appender>
+
+    <!-- 访问日志文件 -->
+    <appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/access.log</file>
+        <!-- ThresholdFilter:临界值过滤器，过滤掉 TRACE 和 DEBUG 级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>${log.default_pattern}</pattern>
+            <charset>${log.default_charset}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/archives/access.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>500MB</maxFileSize>
+            <maxHistory>${log.default_max_history}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 业务日志文件 -->
+    <appender name="APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/app.log</file>
+        <!-- ThresholdFilter:临界值过滤器，过滤掉 TRACE 和 DEBUG 级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>${log.default_pattern}</pattern>
+            <charset>${log.default_charset}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/archives/app.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>1GB</maxFileSize>
+            <maxHistory>${log.default_max_history}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 错误日志文件 -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${log.default_pattern}</pattern>
+            <charset>${log.default_charset}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/archives/error.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>500MB</maxFileSize>
+            <maxHistory>${log.default_max_history}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+</included>
